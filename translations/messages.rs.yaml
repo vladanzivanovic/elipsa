@@ -1,0 +1,18 @@
+pending: 'na čekanju'
+active: 'aktivan'
+disabled: 'zaključan'
+
+new: 'novo'
+discount: 'popust'
+
+data:
+  success_send: 'Podaci su uspešno poslati.'
+  success_deleted: 'Podaci su uspešno obrisani.'
+
+generic_error: 'Došlo je do greške prilikom slanja zahteva.'
+
+error:
+  in_use: '%item% je u upotrebi'
+
+notifications:
+  please_wait: 'Molimo vas sačekajte.'

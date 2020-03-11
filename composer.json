@@ -5,6 +5,12 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "^1.5",
+        "beberlei/doctrineextensions": "^1.2",
+        "friendsofsymfony/jsrouting-bundle": "^2.5",
+        "gedmo/doctrine-extensions": "^2.4",
+        "liip/imagine-bundle": "^2.1",
+        "presta/sitemap-bundle": "^2.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.0.*",
         "symfony/console": "5.0.*",
@@ -27,7 +33,8 @@
         "symfony/twig-pack": "*",
         "symfony/validator": "5.0.*",
         "symfony/web-link": "5.0.*",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "5.0.*",
+        "willdurand/js-translation-bundle": "^3.0"
     },
     "require-dev": {
         "symfony/debug-pack": "*",
@@ -70,6 +77,45 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "develop": [
+            "composer dump-autoload --classmap-authoritative --ansi",
+            "composer install",
+            "composer dump-autoload --classmap-authoritative --ansi",
+            "php bin/console doctrine:cache:clear-metadata",
+            "php bin/console doctrine:migrations:migrate --no-interaction --ansi",
+            "php bin/console assets:install --symlink web/js",
+            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json",
+            "php bin/console javascript:extract-translations",
+            "npm install",
+            "npm run dev"
+        ],
+        "deploy": [
+            "composer dump-autoload --classmap-authoritative --ansi",
+            "composer install",
+            "composer dump-autoload --classmap-authoritative --ansi",
+            "php bin/console doctrine:cache:clear-metadata -e prod",
+            "php bin/console doctrine:migrations:migrate --no-interaction --ansi",
+            "php bin/console cache:clear --no-warmup -e prod --ansi",
+            "php bin/console cache:warmup -e prod",
+            "php bin/console assets:install --symlink web/js",
+            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json",
+            "php bin/console javascript:extract-translations",
+            "npm install",
+            "npm run build",
+            "php bin/console presta:sitemaps:dump web --gzip"
+        ],
+        "cache:clear": [
+            "php bin/console cache:clear --no-warmup --ansi",
+            "php bin/console cache:warmup"
+        ],
+        "cache:clear:prod": [
+            "php bin/console cache:clear --no-warmup -e prod --ansi",
+            "php bin/console cache:warmup -e prod"
+        ],
+        "route-locale-generate": [
+            "php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json",
+            "php bin/console bazinga:js-translation:dump public/js --format json"
         ]
     },
     "conflict": {

@@ -1,0 +1,10 @@
+parameters:
+  badge:
+    1: new
+    2: discount
+  file_types:
+    images:
+      1: 'jpg'
+      2: 'jpeg'
+      3: 'png'
+      4: 'gif'

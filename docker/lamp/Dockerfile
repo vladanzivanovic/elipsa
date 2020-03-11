@@ -12,13 +12,13 @@ RUN a2enmod rewrite
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 
-RUN apt-get update
+RUN apt-get update -y
 RUN apt-get upgrade -y
 
 RUN apt-get install -y php7.3
 RUN apt-get install -y libapache2-mod-php7.3
 RUN apt-get install -y php7.3-mysql
-RUN apt-get update
+RUN apt-get update -y
 RUN apt-get install -y php7.3-gd 
 RUN apt-get install -y php7.3-imagick 
 RUN apt-get install -y php7.3-recode 
@@ -30,6 +30,8 @@ RUN apt-get install -y php7.3-common
 RUN apt-get install -y php7.3-curl
 RUN apt-get install -y php7.3-mbstring
 RUN apt-get install -y php7.3-zip
+RUN apt-get install -y php-intl
+
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
@@ -47,6 +49,8 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && rm -f /tmp/composer-setup.*
 
 COPY 000-default.conf /etc/apache2/sites-available
+
+RUN phpenmod intl
 
 WORKDIR /var/www/html
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="shortcut icon" href="../../../assets/images/favicon.png" />
+
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/admin/app.css') }}"/>
+    {% endblock %}
+</head>
+<body>
+<div class="main-wrapper">
+
+    <!-- partial:../../partials/_sidebar.html -->
+    {% include 'Admin/Components/sideBar.html.twig' %}
+    <!-- partial -->
+
+    <div class="page-wrapper">
+
+        <!-- partial:../../partials/_navbar.html -->
+        {% include 'Admin/Components/navBar.html.twig' %}
+        <!-- partial -->
+
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- partial:../../partials/_footer.html -->
+        {% include 'Admin/Components/footer.html.twig' %}
+        <!-- partial -->
+
+    </div>
+</div>
+{% block javascripts %}
+    <script>
+        const LOCALE = 'rs';
+        const ROUTE_NAME = '{{ app.request.attributes.get('_route') }}';
+        window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
+    </script>
+    <script src="{{ preload(asset('build/runtime.js')) }}"></script>
+    <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'locales': 'rs,en' }) }}"></script>
+    <script type="text/javascript" src="{{ asset('build/js/admin/app.js') }}"></script>
+    <script src="{{ asset('js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock %}
+{% block pageJavascript %}{% endblock %}
+</body>
+</html>

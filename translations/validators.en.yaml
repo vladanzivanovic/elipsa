@@ -1,0 +1,3 @@
+field:
+  not_blank: 'Required field.'
+  max_length: 'Max character number is {{ limit }}.'

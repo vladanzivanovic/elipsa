@@ -1,0 +1,5 @@
+bazinga_js_translation:
+  locale_fallback: rs
+  default_domain: messages
+  active_domains:
+    - messages

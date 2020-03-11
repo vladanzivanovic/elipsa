@@ -1,0 +1,72 @@
+liip_imagine :
+    resolvers:
+        ads_photos:
+            web_path:
+                web_root: "%kernel.project_dir%/storage"
+                cache_prefix: "/cache"
+    loaders:
+        default:
+            filesystem:
+                data_root: "%kernel.project_dir%/storage"
+    filter_sets :
+        #        cache : ads_photos
+        single_thumb :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [70, 70], mode : outbound }
+                background : { size : [70, 70], position : center, color : '#ffffff' }
+        list_thumb :
+            cache: ads_photos
+            quality : 90
+            filters :
+                thumbnail  : { size : [270, 160], mode : outbound }
+                background : { size : [270, 160], position : center, color : '#ffffff' }
+        grid_thumb :
+            cache: ads_photos
+            quality : 90
+            filters :
+                thumbnail  : { size : [250, 200], mode : outbound }
+                background : { size : [250, 200], position : center, color : '#ffffff' }
+        index_thumb_recommended :
+            cache: ads_photos
+            quality : 90
+            filters :
+                thumbnail  : { size : [370, 200], mode : outbound }
+                background : { size : [370, 200], position : center, color : '#ffffff' }
+        index_thumb_category :
+            cache: ads_photos
+            quality : 90
+            filters :
+                thumbnail: { size: [476, 318], mode: outbound }
+                background: { size: [476, 318], position: center, color: '#ffffff' }
+        category_single:
+            cache: ads_photos
+            quality : 100
+            filters:
+                downscale:
+                    max: [ 1600, 1600 ]
+        tmp_images :
+            cache: ads_photos
+            quality : 100
+            filters:
+                downscale:
+                    max: [ 1600, 1600 ]
+        blog_images :
+            cache: ads_photos
+            quality : 100
+            filters:
+                downscale:
+                    max: [ 1000, 1000 ]
+        blog_image_list :
+            cache: ads_photos
+            quality : 100
+            filters:
+                thumbnail: { size: [870, 342], mode: outbound }
+                background: { size: [870, 342], position: center, color: '#ffffff' }
+        tmp_image_thumb :
+            cache: ads_photos
+            quality : 100
+            filters :
+                downscale:
+                    max: [ 300, 300 ]

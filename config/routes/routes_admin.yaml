@@ -1,0 +1,29 @@
+admin.dashboard:
+  path: /
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/dashboard.html.twig
+
+admin.colors:
+  path: /colors
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/colors.html.twig
+
+admin.tags:
+  path: /tags
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/tags.html.twig
+
+admin.categories:
+  path: /categories
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/categories.html.twig
+
+admin.sizes:
+  path: /sizes
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/sizes.html.twig

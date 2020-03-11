@@ -1,0 +1,131 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+class DataTableModel
+{
+    /**
+     * @var int
+     */
+    private $draw;
+
+    /**
+     * @var int
+     */
+    private $offset;
+
+    /**
+     * @var int
+     */
+    private $limit;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $columns;
+
+    /**
+     * @var string
+     */
+    private $orderColumn;
+
+    /**
+     * @var string
+     */
+    private $orderDirection;
+
+    public function __construct(
+        int $draw,
+        int $offset,
+        int $limit,
+        array $columns,
+        int $orderColumn,
+        string $orderDirection
+    ) {
+        $this->draw = $draw;
+        $this->limit = $limit;
+        $this->offset = $offset;
+        $this->setColumns($columns);
+        $this->setOrderColumn($orderColumn);
+        $this->orderDirection = $orderDirection;
+    }
+
+    /**
+     * @param array $columns
+     */
+    private function setColumns(array $columns): void
+    {
+        $this->columns = new ArrayCollection();
+
+        foreach ($columns as $column) {
+            $this->columns->add(new DataTableColumnModel(
+                $column['data'],
+                $column['name'],
+                $column['searchable'] == true,
+                $column['orderable'] == true,
+                $column['search']['value'],
+                $column['search']['regex']
+            ));
+        }
+    }
+
+    private function setOrderColumn(int $orderColumn)
+    {
+        /** @var DataTableColumnModel $dataTableColumn */
+        $dataTableColumn = $this->columns->get($orderColumn);
+
+        $this->orderColumn = $dataTableColumn->getData();
+    }
+
+    /**
+     * @return int
+     */
+    public function getDraw(): int
+    {
+        return $this->draw;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getColumns(): ArrayCollection
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderColumn(): string
+    {
+        return $this->orderColumn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection(): string
+    {
+        return $this->orderDirection;
+    }
+}

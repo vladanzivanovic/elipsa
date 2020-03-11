@@ -1,0 +1,3 @@
+field:
+  not_blank: 'Obasvezno polje.'
+  max_length: 'Maksimalan broj karaktera je {{ limit }}.'

@@ -1,0 +1,18 @@
+pending: 'pending'
+active: 'active'
+disabled: 'disabled'
+
+new: 'new'
+discount: 'discount'
+
+data:
+  success_send: 'Data are successfully sent.'
+  success_deleted: 'Data are successfully deleted.'
+
+generic_error: 'An error has occurred.'
+
+error:
+  in_use: '%item% is in use.'
+
+notifications:
+  please_wait: 'Please wait.'

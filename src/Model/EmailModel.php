@@ -1,0 +1,307 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model;
+
+use Swift_FileStream;
+
+class EmailModel
+{
+    const SCRIPT_USER_REGISTRATION = 'USER_REGISTRATION';
+    const SCRIPT_USER_RESERVATION = 'USER_RESERVATION';
+    const SCRIPT_USER_RESERVATION_RESPONSE = 'USER_RESERVATION_RESPONSE';
+    const SCRIPT_USER_ADD_AD = 'USER_ADD_AD';
+    const SCRIPT_USER_EDIT_AD = 'USER_EDIT_AD';
+    const SCRIPT_USER_RESET_PASSWORD = 'USER_RESET_PASSWORD';
+    const SCRIPT_CONTACT_US = 'CONTACT_US';
+
+    /**
+     * @var string
+     */
+    private $to;
+
+    /**
+     * @var string|null
+     */
+    private $toName = null;
+
+    /**
+     * @var string
+     */
+    private $template;
+
+    /**
+     * @var string
+     */
+    private $replyTo;
+
+    /**
+     * @var string|null
+     */
+    private $replyToName = null;
+
+    /**
+     * @var string|null
+     */
+    private $subject = null;
+
+    /**
+     * @var array
+     */
+    private $templateData;
+
+    /**
+     * @var Swift_FileStream[]|null
+     */
+    private $attachments = null;
+
+    /**
+     * @var string
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $code;
+
+    /**
+     * @var string
+     */
+    private $script;
+
+    /**
+     * @var string
+     */
+    private $body;
+
+    /**
+     * @var string|null
+     */
+    private $errorMsg = null;
+
+    /**
+     * @param string $to
+     */
+    public function setTo(string $to): void
+    {
+        $this->to = $to;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTo(): string
+    {
+        return $this->to;
+    }
+
+    /**
+     * @param string $toName
+     */
+    public function setToName(string $toName): void
+    {
+        $this->toName = $toName;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getToName(): ?string
+    {
+        return $this->toName;
+    }
+
+    /**
+     * @param string $template
+     */
+    public function setTemplate(string $template): void
+    {
+        $this->template = $template;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate(): string
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param string $replyTo
+     */
+    public function setReplyTo(string $replyTo): void
+    {
+        $this->replyTo = $replyTo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReplyTo(): string
+    {
+        return $this->replyTo;
+    }
+
+    /**
+     * @param string $replyToName
+     */
+    public function setReplyToName(string $replyToName): void
+    {
+        $this->replyToName = $replyToName;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReplyToName(): ?string
+    {
+        return $this->replyToName;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSubject(): bool
+    {
+        return is_string($this->subject);
+    }
+
+    /**
+     * @param array $templateData
+     */
+    public function setTemplateData(array $templateData): void
+    {
+        $this->templateData = $templateData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTemplateData(): array
+    {
+        return $this->templateData;
+    }
+
+    /**
+     * @param Swift_FileStream[] $attachments
+     */
+    public function setAttachments(array $attachments): void
+    {
+        $this->attachments = $attachments;
+    }
+
+    /**
+     * @return Swift_FileStream[]|null
+     */
+    public function getAttachments(): ?array
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $script
+     */
+    public function setScript(string $script): void
+    {
+        $this->script = $script;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScript(): string
+    {
+        return $this->script;
+    }
+
+    /**
+     * @param string $body
+     */
+    public function setBody(string $body): void
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setErrorMsg(string $error): void
+    {
+        $this->errorMsg = $error;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getErrorMsg(): ?string
+    {
+        return $this->errorMsg;
+    }
+
+    /**
+     * @return array
+     */
+    public function _toArray(): array
+    {
+        return call_user_func('get_object_vars', $this);
+    }
+}
