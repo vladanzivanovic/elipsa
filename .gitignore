@@ -18,3 +18,5 @@
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+/docker/mysql-mount/
+/public/js/fos_js_routes.json

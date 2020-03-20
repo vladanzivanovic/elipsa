@@ -1,4 +1,5 @@
 {
+    "name": "vladapoz/elipsa",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -84,8 +85,8 @@
             "composer dump-autoload --classmap-authoritative --ansi",
             "php bin/console doctrine:cache:clear-metadata",
             "php bin/console doctrine:migrations:migrate --no-interaction --ansi",
-            "php bin/console assets:install --symlink web/js",
-            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json",
+            "php bin/console assets:install --symlink public/js",
+            "php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json",
             "php bin/console javascript:extract-translations",
             "npm install",
             "npm run dev"
@@ -98,8 +99,8 @@
             "php bin/console doctrine:migrations:migrate --no-interaction --ansi",
             "php bin/console cache:clear --no-warmup -e prod --ansi",
             "php bin/console cache:warmup -e prod",
-            "php bin/console assets:install --symlink web/js",
-            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json",
+            "php bin/console assets:install --symlink public/js",
+            "php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json",
             "php bin/console javascript:extract-translations",
             "npm install",
             "npm run build",
