@@ -11,33 +11,51 @@
     </div>
     <div class="sidebar-body">
         <ul class="nav">
-            <li class="nav-item nav-category">Main</li>
-            <li class="nav-item">
+            <li class="nav-item nav-category">Stranice</li>
+            <li class="nav-item {{ routeName == 'admin.dashboard' ? 'active' : '' }}">
                 <a href="{{ path('admin.dashboard') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Proizvodi</span>
                 </a>
             </li>
-            <li class="nav-item nav-category">šifarnik</li>
+            <li class="nav-item nav-category">Podešavanja</li>
             <li class="nav-item">
+                <a class="nav-link {{ routeName == 'admin.dashboard' ? 'active' : '' }}" data-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">
+                    <i class="link-icon" data-feather="feather"></i>
+                    <span class="link-title">Naslovna stranica</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse" id="uiComponents">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ path('admin.sliders') }}" class="nav-link">Slider</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/ui-components/alerts.html" class="nav-link">Brzi linkovi</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item nav-category">šifarnik</li>
+            <li class="nav-item {{ routeName == 'admin.colors' ? 'active' : '' }}">
                 <a href="{{ path('admin.colors') }}" class="nav-link">
                     <i class="link-icon mdi mdi-format-color-fill"></i>
                     <span class="link-title">Boje</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ routeName == 'admin.tags' ? 'active' : '' }}">
                 <a href="{{ path('admin.tags') }}" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
                     <span class="link-title">Tagovi</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ routeName == 'admin.categories' ? 'active' : '' }}">
                 <a href="{{ path('admin.categories') }}" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
                     <span class="link-title">Kategorije</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ routeName == 'admin.sizes' ? 'active' : '' }}">
                 <a href="{{ path('admin.sizes') }}" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
                     <span class="link-title">Veličine</span>

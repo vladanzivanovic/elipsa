@@ -1,3 +1,4 @@
+{% set routeName = app.request.attributes.get('_route') %}
 <!DOCTYPE html>
 <html lang="{{ app.request.locale|split('_')[0] }}">
 <head>
@@ -12,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('build/css/admin/app.css') }}"/>
     {% endblock %}
 </head>
-<body>
+<body class="{% block bodyClass %}{% endblock %}">
 <div class="main-wrapper">
 
     <!-- partial:../../partials/_sidebar.html -->
@@ -38,7 +39,7 @@
 {% block javascripts %}
     <script>
         const LOCALE = 'rs';
-        const ROUTE_NAME = '{{ app.request.attributes.get('_route') }}';
+        const ROUTE_NAME = '{{ routeName }}';
         window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
     </script>
     <script src="{{ preload(asset('build/runtime.js')) }}"></script>

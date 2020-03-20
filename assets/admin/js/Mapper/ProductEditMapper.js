@@ -10,12 +10,12 @@ class ProductEditMapper {
         this.descEn = $('#description_en', this.form);
         this.code = $('#code', this.form);
         this.badge = $('#badge', this.form);
-        this.category = $('#category', this.form);
+        this.category = $('#categories', this.form);
         this.tags = $('#tags', this.form);
         this.sizes = $('#sizes', this.form);
         this.price = $('#price', this.form);
         this.discount = $('#discount', this.form);
-        this.submitBtn = $('#category_submit');
+        this.submitBtn = $('#product_submit');
     }
 }
 

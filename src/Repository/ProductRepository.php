@@ -62,10 +62,11 @@ class ProductRepository extends ExtendedEntityRepository
                 'p.id',
                 'p.price',
                 'p.status',
-                'pt.title'
+                'pt.title',
+                'pt.slug'
             )
             ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
-            ->setParameter('locale', $this->session->get('_locale'))
+            ->setParameter('locale', 'rs')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->groupBy('pt.slug')

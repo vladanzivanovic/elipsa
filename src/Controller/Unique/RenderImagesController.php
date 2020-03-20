@@ -36,19 +36,18 @@ class RenderImagesController extends AbstractController
     }
 
     /**
-     * @Route("/image-show/{slug}/{filter}", methods={"GET"}, name="app.image_show")
+     * @Route("/image-show/{name}/{filter}", methods={"GET"}, name="app.image_show")
      *
      * @param string $filter
-     * @param Media  $images
+     * @param Image  $image
      *
-     * @return RedirectResponse
+     * @return BinaryFileResponse
      */
-    public function getAdImage(string $filter, Image $image): RedirectResponse
+    public function getImage(string $filter, Image $image): BinaryFileResponse
     {
         $uploadDir = $this->parameterBag->get('upload_image_dir');
-        $file = $this->imageService->setFileObject(['file' => $uploadDir.$image->getOriginalName(), 'fileName' => $image->getOriginalName()]);
 
-        return $this->imageService->resizeOnFly($file, $filter);
+        return $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), $filter);
     }
 
     /**

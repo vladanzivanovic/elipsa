@@ -1,0 +1,71 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Admin;
+
+use App\Entity\ProductColor;
+use App\Repository\ProductColorRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\Annotation\Route;
+
+final class SliderEditPageController extends AbstractController
+{
+    /**
+     * @var ProductColorRepository
+     */
+    private $colorRepository;
+    /**
+     * @var ParameterBagInterface
+     */
+    private $bag;
+
+    /**
+     * ColorEditPageController constructor.
+     *
+     * @param ProductColorRepository $colorRepository
+     * @param ParameterBagInterface  $bag
+     */
+    public function __construct(
+        ProductColorRepository $colorRepository,
+        ParameterBagInterface $bag
+    ) {
+        $this->colorRepository = $colorRepository;
+        $this->bag = $bag;
+    }
+
+    /**
+     * @Route("/add-slider", name="admin.add_slider_page", methods={"GET"})
+     * @Template("Admin/Pages/sliderEdit.html.twig")
+     *
+     * @return array
+     */
+    public function insert(): array
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/edit-color/{slug}", name="admin.edit_color_page", methods={"GET"})
+     * @Template("Admin/Pages/colorEdit.html.twig")
+     *
+     * @param ProductColor $color
+     *
+     * @return array
+     */
+    public function update(ProductColor $color): array
+    {
+        $locales = explode('|', $this->bag->get('locales'));
+        $colorsByLocale = $this->colorRepository->getByMainSlugAndLocales($color->getMainSlug(), $locales);
+
+        $responseArray = ['hex' => $color->getHex()];
+
+        foreach ($colorsByLocale as $localeItem) {
+            $responseArray[$localeItem['locale'].'_title'] = $localeItem['name'];
+        }
+
+        return $responseArray;
+    }
+}

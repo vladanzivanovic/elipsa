@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\ProductColor;
+use App\Entity\ProductHasTags;
 use App\Entity\ProductTags;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -110,6 +112,24 @@ class ProductTagsRepository extends ExtendedEntityRepository
                 'pt.label as title'
             )
             ->where('pt.locale = \'rs\'');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getByProduct(Product $product): array
+    {
+        $query = $this->createQueryBuilder('pt')
+            ->select(
+                'pt.mainSlug'
+            )
+            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = pt.mainSlug AND pht.product = :product')
+            ->where('pt.locale = \'rs\'')
+            ->setParameter('product', $product);
 
         return $query->getQuery()->getArrayResult();
     }

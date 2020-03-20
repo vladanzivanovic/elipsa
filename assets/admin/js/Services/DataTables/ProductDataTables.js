@@ -16,27 +16,24 @@ export default (() => {
             columns: [
                 { data: 'id', title: 'Id' },
                 { data: 'title', title: 'Naziv' },
-                { data: 'price_from', title: 'Cena od', type: "num" },
+                { data: 'price', title: 'Cena od', type: "num" },
                 { data: 'status_text', title: 'Status', width: '200px', render: function (data, type, row, meta) {
-                    const checkedAttr = row.status === 1 ? 'checked' : '';
+                    const checkedAttr = row.status === 2 ? 'checked' : '';
 
-                    let html = CAN_EDIT ? `<p class="status-text">${data}</p><input type="checkbox" class="set-active-ad" data-alias="${row.alias}" ${checkedAttr}/>` : `<p class="status-text">${data}</p>`;
+                    let html = CAN_EDIT ? `<p class="status-text">${data}</p><input type="checkbox" class="set-active-product" data-slug="${row.slug}" ${checkedAttr}/>` : `<p class="status-text">${data}</p>`;
 
-                    if (row.status === 2) {
+                    if (row.status === 3) {
                         html = `<p class="status-text">${data}</p>`;
                     }
 
                     return type === 'display' ? html : data;
                 } },
-                { data: 'owner_name', title: 'Vlasnik', type: "string" },
-                { data: 'show_on_main_page', title: 'Početna strana', type: "string" },
-                { data: 'alias', render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('ads_edit_page', {slug: data})}">Izmeni</a> ` : '';
-                    const calendarLink = CAN_EDIT_CALENDAR ? `<a class="btn btn-link" href="${Routing.generate('ads_calendar_page', {slug: data})}">Kalendar</a>` : '';
+                { data: 'slug', render: function (data, type, row, meta) {
+                    const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.edit_product_page', {slug: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?
-                            editLink+calendarLink+removeButton :
+                            editLink+removeButton :
                             data;
                     } },
             ],

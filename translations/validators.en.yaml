@@ -1,3 +1,4 @@
 field:
   not_blank: 'Required field.'
   max_length: 'Max character number is {{ limit }}.'
+  main_image: 'Main image is not set'

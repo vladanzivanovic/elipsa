@@ -9,6 +9,7 @@ parameters:
     locales: rs|en
     upload_dir: '%kernel.project_dir%/storage/'
     upload_tmp_dir: 'tmp/'
+    upload_image_dir: 'image/'
 
 services:
     # default configuration for services in *this* file
@@ -50,3 +51,10 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+
+    App\EventListener\ImageFileSystemListener:
+        class: App\EventListener\ImageFileSystemListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }

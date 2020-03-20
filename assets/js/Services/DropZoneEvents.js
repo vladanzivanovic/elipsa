@@ -6,6 +6,9 @@ class DropZoneEvents {
         mapper.fileWrapper.on('click touchend', mapper.names.main, e => {
             dropzone.setMainImage(e.currentTarget);
         });
+        mapper.fileWrapper.on('change', '.dropdown-colors', e => {
+            dropzone.setColor(e.currentTarget);
+        })
     }
 }
 

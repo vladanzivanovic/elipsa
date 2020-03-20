@@ -10,10 +10,17 @@
     {{ form.selectbox(id, name, selected, options, placeholder, class, multiple) }}
 {% endmacro %}
 
-{% macro radio(title, id, value, name, class) %}
+{% macro radio(title, id, value, name, class, radioClass) %}
+    <label class="{{ class }}" for="{{ id }}">
+        {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
+        {{ form.input(id, value, name, '', 'radio', radioClass) }} {{ title }}
+    </label>
+{% endmacro %}
+
+{% macro checkbox(title, id, value, name, class) %}
     <label class="radio {{ class }}" for="{{ id }}">
         {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
-        {{ form.input(id, value, name, '', 'radio') }} {{ title }}
+        {{ form.input(id, value, name, '', 'checkbox') }} {{ title }}
     </label>
 {% endmacro %}
 

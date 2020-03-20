@@ -3,6 +3,7 @@ import NotificationService from "../NotificationService";
 import DropZoneMapper from "../Mapper/DropZoneMapper";
 import Loader from "./Dom/Loader";
 import DropZoneEvents from "./DropZoneEvents";
+import DropZoneDom from "./Dom/DropZoneDom";
 
 export default (() => {
 
@@ -12,6 +13,7 @@ export default (() => {
     Private.arrayName = null;
     Private.notify = NotificationService();
     Private.mapper = null;
+    Private.dom = new DropZoneDom();
 
     Public.init = function (parentWrapper) {
         Private.mapper = new DropZoneMapper(parentWrapper);
@@ -57,7 +59,7 @@ export default (() => {
     Public.deleteFile = function (self) {
         Private.arrayName = $(self).parents('.dropzone').data('files');
 
-        const listEl = $(self).parent();
+        const listEl = $(self).parents('li');
         const index = $('li', Private.mapper.fileWrapper).index(listEl);
         const filesCache = Cache.get('adsFiles')[Private.arrayName];
         const deletedFilesCache = Cache.get('adsDeletedFiles')[Private.arrayName];
@@ -87,7 +89,7 @@ export default (() => {
     };
 
     Public.setMainImage = function (self) {
-        let newMain = $(self).parent(),
+        let newMain = $(self).parents('li'),
             oldMain = $('li.main-image', Private.mapper.fileWrapper),
             index = $('li', Private.mapper.fileWrapper).index(newMain);
 
@@ -95,6 +97,16 @@ export default (() => {
 
         Private.changeMainImage(index, oldMain, newMain);
     };
+
+    Public.setColor = function(self) {
+        Private.arrayName = $(self).parents('.dropzone').data('files');
+
+        const listEl = $(self).parents('li');
+        const index = $('li', Private.mapper.fileWrapper).index(listEl);
+        const filesCache = Cache.get('adsFiles')[Private.arrayName];
+
+        filesCache[index].color = $(self).val();
+    }
 
     Public.getFilesArray = function ($name) {
        return $.merge(Cache.get('adsFiles')[$name], Cache.get('adsDeletedFiles')[$name]);
@@ -106,7 +118,7 @@ export default (() => {
         return mainFile.length > 0 ? mainFile[0] : null;
     }
 
-    Public.setFilesFromUrl = function (files, name) {
+    Public.setFiles = function (files, name) {
         Private.setFilesArray(name);
         Private.populateArrays(files);
         Private.generateHtml(files);
@@ -124,8 +136,11 @@ export default (() => {
 
         if (oldMain) {
             oldMain.removeClass('main-image');
+            $('.main-image-btn i', oldMain).addClass('fa-check').removeClass('fa-check-double');
+
         }
         newMain.addClass('main-image');
+        $('.main-image-btn i', newMain).removeClass('fa-check').addClass('fa-check-double');
     }
 
     Private.addFiles = (dropZoneElm, files) => {
@@ -187,24 +202,7 @@ export default (() => {
         $.each(files, function (i, v) {
             if (!v.isDeleted) {
                 hasFiles = true;
-                var mainClass = v.isMain ? 'main-image' : '';
-
-                var li = $('<li>', {
-                    class: 'dropzone-file ' + mainClass,
-                    'data-name': v.fileName,
-                });
-                var remove = $('<span>', {
-                    class: 'dropzone-close col-xs-12 col-md-6',
-                });
-                var img = $('<img>', {
-                    src: v.file,
-                    class: 'dropzone-file-img'
-                });
-
-                $(Private.mapper.fileWrapper).append(
-                    li.append(remove)
-                        .append(img)
-                );
+                Private.dom.generateHtml($(Private.mapper.fileWrapper), v);
             }
         });
 

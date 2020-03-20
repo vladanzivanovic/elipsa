@@ -1,67 +1,60 @@
-import Rest from "../../Rest/AdsEditRest";
-import Mapper from "../../../../js/Mapper/AdsEditMapper";
 import DropZoneService from "../../../../js/Services/DropZoneService";
-import BackendValidator from "../../../../js/Validation/BackendValidator";
-import FormService from "../../../../js/Services/FormService";
-import Notification from "../../../../js/Services/NotificationService";
-import AppHelperService from "../../../../js/Helper/AppHelperService";
+import AppHelperService from "../../../../site/js/AppHelperService";
+import NotificationService from "../../../../js/NotificationService";
 
-export default (() => {
-    let Public = {};
+class ProductEditHandler {
+    constructor() {
+        this.notification = NotificationService();
+    }
 
-    Public.setAd = () => {
-        let form = Mapper().form.serializeArray();
+    save(mapper) {
+        let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_product_api');
+        let type = 'POST';
+        const data = mapper.form.serializeArray();
 
-        form.push({
-            name: 'ads_images',
+        data.push({
+            name: 'images',
             value: JSON.stringify(DropZoneService().getFilesArray('mainImages')),
         });
 
-        Rest().setAd(form)
-            .then(response => {
-                location.href = Routing.generate('admin.dashboard_page');
-            })
-            .fail(error => {
-                var errors = error.responseJSON;
+        if (IS_EDIT) {
+            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_product_api', {slug: SLUG});
+            type = 'PUT';
+        }
+
+        this.notification.showLoadingMessage();
+
+        $.ajax({
+            type,
+            url: urlRoute,
+            data,
+            dataType: 'json',
+            success: () => {
+                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.dashboard'));
+            },
+            error: () => {
+                let errors = error.responseJSON;
 
                 if (!AppHelperService.isJsonString(errors.error)) {
-
+                    this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
                 }
+            }
+        })
+    }
 
-                BackendValidator().validate(Mapper().form, errors);
-            })
-    };
+    changeStatus(checkbox, slug, status) {
+        $.ajax({
+            type: 'PATCH',
+            'url': AppHelperService.generateLocalizedUrl('admin.api_product_change_status', {slug, status}),
+            dataType: 'json',
+            success: (response) => {
+                checkbox.parentElement.firstElementChild.innerText = Translator.trans(response.text, null, 'messages', LOCALE);
+            },
+            error: () => {
+                this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
+            }
+        })
+    }
+}
 
-    Public.editAd = () => {
-        if (!Mapper().form.valid()) {
-            return false;
-        }
-        let form = Mapper().form.serializeArray();
-        const formService = new FormService();
-        form = formService.sanitize(form);
-
-        form.push({
-            name: 'ads_images',
-            value: JSON.stringify(DropZoneService().getFilesArray('mainImages')),
-        });
-
-        Rest().editAd(form)
-            .then(response => {
-                location.href = Routing.generate('admin.dashboard_page');
-            })
-            .fail(error => {
-                var errors = error.responseJSON;
-
-                BackendValidator().validate(Mapper().form, errors);
-            })
-    };
-
-    Public.changeAdStatus = (checkbox, alias, status) => {
-        Rest.changeStatus(alias, status)
-            .then(response => {
-                checkbox.parentElement.firstElementChild.innerText = response.text;
-            })
-    };
-
-    return Public;
-})();
+export default ProductEditHandler;

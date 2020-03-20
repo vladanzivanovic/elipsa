@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\CategoryTranslation;
+use App\Entity\Product;
+use App\Entity\ProductHasCategories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -12,39 +14,29 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method CategoryTranslation[]    findAll()
  * @method CategoryTranslation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CategoryTranslationRepository extends ServiceEntityRepository
+class CategoryTranslationRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CategoryTranslation::class);
     }
 
-    // /**
-    //  * @return CategoryTranslation[] Returns an array of CategoryTranslation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getByProduct(Product $product): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('ct')
+            ->select(
+                'ct.slug'
+            )
+            ->innerJoin('ct.category', 'c')
+            ->innerJoin(ProductHasCategories::class, 'phc', 'WITH', 'phc.category = c AND phc.product = :product')
+            ->where('ct.locale = \'rs\'')
+            ->setParameter('product', $product);
 
-    /*
-    public function findOneBySomeField($value): ?CategoryTranslation
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getArrayResult();
     }
-    */
 }

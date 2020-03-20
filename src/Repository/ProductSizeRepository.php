@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
+use App\Entity\ProductHasSizes;
 use App\Entity\ProductSize;
 use App\Entity\ProductTags;
 use App\Model\DataTableModel;
@@ -48,12 +50,46 @@ class ProductSizeRepository extends ExtendedEntityRepository
             ->select(
                 'ps.id',
                 'ps.size',
-                'ps.slug'
+                'ps.slug',
+                'COUNT(phs.id) as total_used'
             )
+            ->leftJoin('ps.productHasSizes', 'phs')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('ps.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getForOptions(): array
+    {
+        $query = $this->createQueryBuilder('ps')
+            ->select(
+                'ps.size as title',
+                'ps.slug as value'
+            )
+        ;
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getByProduct(Product $product): array
+    {
+        $query = $this->createQueryBuilder('ps')
+            ->select(
+                'ps.slug'
+            )
+            ->innerJoin(ProductHasSizes::class, 'phs', 'WITH', 'phs.size = ps AND phs.product = :product')
+            ->setParameter('product', $product);
 
         return $query->getQuery()->getArrayResult();
     }

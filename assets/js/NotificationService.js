@@ -8,7 +8,7 @@ export default (() => {
         this.show('info', Translator.trans('notifications.please_wait', null, 'messages', LOCALE), true);
     };
 
-    Notification.show = function(type, message, reopen, title) {
+    Notification.show = function(type, message, reopen = true, title) {
         this.reset(reopen);
         this.toastr = toastr[type](message, title);
 

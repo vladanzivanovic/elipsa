@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -13,7 +15,9 @@ class Product
 {
     const STATUS_PENDING = 1;
     const STATUS_ACTIVE = 2;
-    const STATUS_DISABLED = 3;
+    const STATUS_ARCHIVED = 3;
+
+    use TimestampableEntity;
 
     /**
      * @ORM\Id()
@@ -38,27 +42,17 @@ class Product
     private $status;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductSize", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductSize", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productSizes;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productTranslations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasTags", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasTags", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productHasTags;
 
@@ -68,15 +62,9 @@ class Product
     private $badge;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasColor", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasColor", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productHasColors;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -84,14 +72,19 @@ class Product
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productHasCategories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productHasSizes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasImages", mappedBy="product", cascade={"persist", "remove"})
+     */
+    private $productHasImages;
 
     public function __construct()
     {
@@ -101,6 +94,8 @@ class Product
         $this->productHasColors = new ArrayCollection();
         $this->productHasCategories = new ArrayCollection();
         $this->productHasSizes = new ArrayCollection();
+        $this->images = new ArrayCollection();
+        $this->productHasImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -304,18 +299,6 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
     public function getCode(): ?string
     {
         return $this->code;
@@ -388,5 +371,51 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|ProductHasImages[]
+     */
+    public function getProductHasImages(): Collection
+    {
+        return $this->productHasImages;
+    }
+
+    public function addProductHasImage(ProductHasImages $productHasImage): self
+    {
+        if (!$this->productHasImages->contains($productHasImage)) {
+            $this->productHasImages[] = $productHasImage;
+            $productHasImage->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductHasImage(ProductHasImages $productHasImage): self
+    {
+        if ($this->productHasImages->contains($productHasImage)) {
+            $this->productHasImages->removeElement($productHasImage);
+            // set the owning side to null (unless already changed)
+            if ($productHasImage->getProduct() === $this) {
+                $productHasImage->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return ProductTranslation
+     */
+    public function getByLocale(string $locale): ProductTranslation
+    {
+        $filteredTrans = $this->productTranslations->filter(function ($trans) use ($locale) {
+            /** @var ProductTranslation $trans */
+            return $trans->getLocale() === $locale;
+        });
+
+        return $filteredTrans->first();
     }
 }

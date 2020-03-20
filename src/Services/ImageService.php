@@ -4,6 +4,7 @@ namespace App\Services;
 
 //ini_set('memory_limit', '512M');
 
+use App\Entity\Image;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -127,7 +128,7 @@ class ImageService
      * @param UploadedFile $file
      * @param string       $filter
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return BinaryFileResponse
      */
     public function resizeOnFly(UploadedFile $file, string $filter)
     {
@@ -138,6 +139,22 @@ class ImageService
         $image = $this->filterManager->applyFilter($binary, $filter);
 
         return new BinaryFileResponse($file->getPathname());
+    }
+
+    /**
+     * @param array $images
+     *
+     * @return void
+     */
+    public function deleteImages(array $images): void
+    {
+        $rootDir = $this->parameterBag->get('upload_dir');
+        $imageDir = $this->parameterBag->get('upload_image_dir');
+
+        /** @var Image $image */
+        foreach ($images as $image) {
+            $this->deleteImage($this->setFileObject(['file' => $rootDir.$imageDir.$image->getName(), 'fileName' => $image->getName()]));
+        }
     }
 
     private function deleteTmpImage($file):void

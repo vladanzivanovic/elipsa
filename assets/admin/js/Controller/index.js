@@ -56,6 +56,10 @@ let routes = [
         controller: ProductEditController,
     },
     {
+        name: 'admin.edit_product_page',
+        controller: ProductEditController,
+    },
+    {
         name: 'admin.sizes',
         controller: SizesController,
     },

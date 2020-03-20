@@ -39,36 +39,44 @@
         opacity: 0.3;
     }
     &-file {
-        padding: 5px 10px;
+        display: flex;
+        flex-wrap: wrap;
+        height: 150px;
+        background: #fff;
+        padding: 0;
+        justify-content: center;
         line-height: normal;
         font-size: 13px;
-        display: inline-block;
         text-align: center;
         position: relative;
-        width: 100px;
-        min-height: 100px;
+        width: 150px;
         margin: 5px;
-        border-radius: 20px;
-        background: #999;
-        background: linear-gradient(to bottom, #eee, #ddd);
         float: left;
-        cursor: pointer;
         img{
-            max-width:100%;
-            max-height:100%;
+            padding: 5px 10px;
+            max-width: 100px;
+            max-height: 100px;
+        }
+        &__buttons {
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            padding: 5px;
+            justify-content: space-between;
+
+            .main-image-btn > i {
+                color: $purple;
+            }
+            .dropdown-colors {
+                border: none;
+                border-radius: 0;
+                width: 40px;
+                background: #e6e6e6;
+            }
         }
     }
-    &-close {
-        position: absolute;
-        top: -8px;
-        right: -23px;
-        color: #f00;
-        cursor: pointer;
-        &:before {
-            font-family: FontAwesome;
-            content: "\f00d";
-            font-size: 2em;
-        }
+    &-close > i {
+        color: $red;
     }
     &-main:before {
         font-family: FontAwesome;

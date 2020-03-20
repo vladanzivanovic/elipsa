@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
 class Image
 {
+    const RELATED_TYPE_PRODUCT = 1;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -28,8 +32,25 @@ class Image
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
      */
-    private $relatedTo;
+    private $relatedToType;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isMain;
+
+    /**
+     * @var UploadedFile $file
+     * @Assert\Image(maxSize="10M")
+     */
+    private $file;
+
+    /**
+     * @var bool
+     */
+    private $isDeleted = false;
 
     public function getId(): ?int
     {
@@ -60,14 +81,61 @@ class Image
         return $this;
     }
 
-    public function getRelatedTo(): ?int
+    public function setRelatedToType(int $relatedToType): self
     {
-        return $this->relatedTo;
+        $this->relatedToType = $relatedToType;
+
+        return $this;
     }
 
-    public function setRelatedTo(int $relatedTo): self
+    public function getIsMain(): ?bool
     {
-        $this->relatedTo = $relatedTo;
+        return $this->isMain;
+    }
+
+    public function setIsMain(bool $isMain): self
+    {
+        $this->isMain = $isMain;
+
+        return $this;
+    }
+
+    /**
+     * @return null|UploadedFile
+     */
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     *
+     * @return Image
+     */
+    public function setFile(UploadedFile $file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * @param bool $isDeleted
+     *
+     * @return $this
+     */
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

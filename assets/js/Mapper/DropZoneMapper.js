@@ -25,7 +25,7 @@ class DropZoneMapper {
             file: '.dropzone-file',
             input: '.dropzone__input',
             fileRemove: '.dropzone-close',
-            main: '.dropzone-file img'
+            main: '.main-image-btn'
         }
     };
 }

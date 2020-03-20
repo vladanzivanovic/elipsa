@@ -2,14 +2,15 @@ import ProductDataTables from "../Services/DataTables/ProductDataTables";
 // import ProductRemoveHandler from "../Handler/Product/ProductRemoveHandler";
 // import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 import ConfirmationModalService from "../Services/ConfirmationModalService";
+import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 
 const Private = Symbol('private');
 
 class DashboardController {
     constructor() {
-        // if (CAN_VIEW) {
+        if (CAN_VIEW) {
             ProductDataTables().init();
-        // }
+        }
         this[Private]().registerEvents();
     }
 
@@ -28,12 +29,13 @@ class DashboardController {
                  confirmModal.trigger('show');
              });
 
-             // $(document).on('change', '.set-active-ad', e => {
-             //     const alias = e.currentTarget.dataset.alias;
-             //     const status = e.currentTarget.checked ? 1 : 3;
-             //
-             //     ProductEditHandler.changeAdStatus(e.currentTarget, alias, status);
-             // });
+             $(document).on('change', '.set-active-product', e => {
+                 const slug = e.currentTarget.dataset.slug;
+                 const status = e.currentTarget.checked ? 2 : 1;
+                 const handler = new ProductEditHandler();
+
+                 handler.changeStatus(e.currentTarget, slug, status);
+             });
              //
              // $(document).on('click touchend', '.remove-product', e => {
              //     const alias = e.currentTarget.dataset.alias;

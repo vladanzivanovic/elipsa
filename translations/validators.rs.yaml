@@ -1,3 +1,4 @@
 field:
   not_blank: 'Obasvezno polje.'
   max_length: 'Maksimalan broj karaktera je {{ limit }}.'
+  main_image: 'Glavna slika nije postavljena'

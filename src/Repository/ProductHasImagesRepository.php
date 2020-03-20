@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\ProductHasImages;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+/**
+ * @method ProductHasImages|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ProductHasImages|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ProductHasImages[]    findAll()
+ * @method ProductHasImages[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class ProductHasImagesRepository extends ExtendedEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ProductHasImages::class);
+    }
+}

@@ -78,6 +78,22 @@ class ProductColorRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @return array
+     */
+    public function getForOptions(): array
+    {
+        $query = $this->createQueryBuilder('pc')
+            ->select(
+                'pc.hex',
+                'pc.mainSlug as value'
+            )
+            ->where('pc.locale = \'rs\'')
+        ;
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * @param string $mainSlug
      * @param array  $locales
      *
