@@ -1,12 +1,13 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
 import ProductEditMapper from "../Mapper/ProductEditMapper";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
+import ProductDropZoneService from "../../../js/Services/ProductDropZoneService";
 require ('select2/dist/js/select2.full.min');
 
 class ProductEditController {
     constructor() {
         this.mapper = new ProductEditMapper();
-        this.dropZone = DropZoneService();
+        this.dropZone = new ProductDropZoneService(DropZoneService());
 
         this.initializeForm();
 
@@ -15,7 +16,7 @@ class ProductEditController {
 
     initializeForm()
     {
-        this.dropZone.init(this.mapper.form);
+        this.dropZone.init(this.mapper.form, {'colors': COLORS});
         this.initializeSelect();
     }
 

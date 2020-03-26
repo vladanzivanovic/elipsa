@@ -13,7 +13,7 @@ export default (() => {
     Private.arrayName = null;
     Private.notify = NotificationService();
     Private.mapper = null;
-    Private.dom = new DropZoneDom();
+    Public.dom = new DropZoneDom();
 
     Public.init = function (parentWrapper) {
         Private.mapper = new DropZoneMapper(parentWrapper);
@@ -202,7 +202,7 @@ export default (() => {
         $.each(files, function (i, v) {
             if (!v.isDeleted) {
                 hasFiles = true;
-                Private.dom.generateHtml($(Private.mapper.fileWrapper), v);
+                Public.dom.generateHtml($(Private.mapper.fileWrapper), v, Private.options);
             }
         });
 

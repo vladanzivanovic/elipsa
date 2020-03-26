@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\ProductColor;
-use App\Repository\ProductColorRepository;
+use App\Entity\Slider;
+use App\Formatter\Admin\SliderEditResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -14,25 +14,25 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SliderEditPageController extends AbstractController
 {
     /**
-     * @var ProductColorRepository
+     * @var SliderEditResponseFormatter
      */
-    private $colorRepository;
+    private $responseFormatter;
     /**
      * @var ParameterBagInterface
      */
     private $bag;
 
     /**
-     * ColorEditPageController constructor.
+     * SliderEditPageController constructor.
      *
-     * @param ProductColorRepository $colorRepository
-     * @param ParameterBagInterface  $bag
+     * @param SliderEditResponseFormatter $responseFormatter
+     * @param ParameterBagInterface       $bag
      */
     public function __construct(
-        ProductColorRepository $colorRepository,
+        SliderEditResponseFormatter $responseFormatter,
         ParameterBagInterface $bag
     ) {
-        $this->colorRepository = $colorRepository;
+        $this->responseFormatter = $responseFormatter;
         $this->bag = $bag;
     }
 
@@ -48,24 +48,17 @@ final class SliderEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/edit-color/{slug}", name="admin.edit_color_page", methods={"GET"})
-     * @Template("Admin/Pages/colorEdit.html.twig")
+     * @Route("/edit-slider/{id}", name="admin.edit_slider_page", methods={"GET"})
+     * @Template("Admin/Pages/sliderEdit.html.twig")
      *
-     * @param ProductColor $color
+     * @param Slider $slider
      *
      * @return array
      */
-    public function update(ProductColor $color): array
+    public function update(Slider $slider): array
     {
         $locales = explode('|', $this->bag->get('locales'));
-        $colorsByLocale = $this->colorRepository->getByMainSlugAndLocales($color->getMainSlug(), $locales);
 
-        $responseArray = ['hex' => $color->getHex()];
-
-        foreach ($colorsByLocale as $localeItem) {
-            $responseArray[$localeItem['locale'].'_title'] = $localeItem['name'];
-        }
-
-        return $responseArray;
+        return $this->responseFormatter->formatResponse($slider);
     }
 }

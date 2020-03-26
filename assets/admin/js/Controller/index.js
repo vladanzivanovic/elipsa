@@ -9,6 +9,8 @@ import CategoryEditController from "./CategoryEditController";
 import ProductEditController from "./ProductEditController";
 import SizesController from "./SizesController";
 import SizeEditController from "./SizeEditController";
+import SliderEditController from "./SliderEditController";
+import SliderController from "./SliderController";
 
 let routes = [
     {
@@ -70,6 +72,18 @@ let routes = [
     {
         name: 'admin.edit_size_page',
         controller: SizeEditController,
+    },
+    {
+        name: 'admin.add_slider_page',
+        controller: SliderEditController,
+    },
+    {
+        name: 'admin.sliders',
+        controller: SliderController,
+    },
+    {
+        name: 'admin.edit_slider_page',
+        controller: SliderEditController,
     },
 ];
 
