@@ -1,5 +1,5 @@
 class DropZoneDom {
-    generateHtml(fileWrapper, file)
+    generateHtml(fileWrapper, file, options)
     {
         let mainClass = file.isMain ? 'main-image' : '';
         let colorSelect = '';
@@ -27,60 +27,17 @@ class DropZoneDom {
             class: 'fas fa-trash'
         }));
 
-        if (COLORS) {
-            colorSelect = $('<select>', {
-                class: 'dropdown-colors',
-                name: 'color'
-            });
-
-            $.each(COLORS, (i, v) => {
-                const options = {
-                    value: v.value,
-                    'data-hex': v.hex,
-                };
-
-                if (file.hasOwnProperty('color') && file.color === v.value) {
-                    options.selected = 'selected';
-                }
-
-                if (!file.hasOwnProperty('color') && i === 0) {
-                    file.color = v.value;
-                }
-
-                colorSelect.append($('<option>', options));
-            });
-
-        }
-
         let buttonDiv = $('<div>', {
             class: 'dropzone-file__buttons'
         })
             .append(mainBtn)
-            .append(removeBtn)
-            .append(colorSelect);
+            .append(removeBtn);
 
 
         fileWrapper.append(
             li.append(img)
                 .append(buttonDiv)
         );
-
-        colorSelect.select2({
-            minimumResultsForSearch: Infinity,
-            templateSelection: this.optionCallback,
-            templateResult: this.optionCallback,
-        });
-    }
-
-    optionCallback(state)
-    {
-        let $state = null;
-        if (state.element) {
-            $state = $(
-                `<span style="background: ${state.element.dataset.hex};width: 20px; height: 20px; display: block"></span>`
-            );
-        }
-        return $state;
     }
 }
 

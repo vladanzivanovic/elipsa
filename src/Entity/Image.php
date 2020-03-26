@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Image
 {
     const RELATED_TYPE_PRODUCT = 1;
+    const RELATED_TYPE_SLIDER = 2;
 
     /**
      * @ORM\Id()

@@ -70,3 +70,9 @@ liip_imagine :
             filters :
                 downscale:
                     max: [ 300, 300 ]
+        admin_slider_list :
+            cache: ads_photos
+            quality : 75
+            filters :
+                downscale:
+                    max: [ 200, 200 ]

@@ -90,6 +90,6 @@ final class ProductEditController extends AbstractController
 
         $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', Product::class);
 
-        return $this->json(['text' => $statusText], JsonResponse::HTTP_CREATED);
+        return $this->json(['text' => $statusText]);
     }
 }

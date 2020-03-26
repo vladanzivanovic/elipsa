@@ -3,8 +3,9 @@
 {% block title %}Dodavanje/Izmena proizvoda{% endblock %}
 {% block bodyClass %}product-edit{% endblock %}
 
+{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_product_page' %}
+
 {% block content %}
-    {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_product_page' %}
 
     {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena proizvoda' } %}
 
@@ -124,7 +125,7 @@
                     <div class="card-body">
                         <h6 class="card-title">Slike</h6>
                         <div class="row">
-                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'mainImages', 'class': 'dropzone-dark w-100'} %}
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'mainImages', 'class': 'dropzone-dark w-100', 'maxFiles': 100} %}
                         </div><!--Row-->
                     </div>
                 </div>
@@ -139,7 +140,9 @@
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const COLORS = JSON.parse('{{ colors|json_encode|raw }}');
 
-        const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        {% if IS_EDIT %}
+            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        {% endif %}
 
     </script>
 {% endblock %}

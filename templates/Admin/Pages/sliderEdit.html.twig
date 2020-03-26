@@ -23,7 +23,7 @@
                     <div class="card-body">
                         <h6 class="card-title">Slika</h6>
                         <div class="row">
-                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'slider', 'class': 'dropzone-dark w-100'} %}
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'slider', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
                         </div><!--Row-->
                     </div>
                 </div>
@@ -93,17 +93,17 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-check form-check-inline">
-                                    {{ form.radio('Levo', 'text_position', 1, 'position', 'form-check-label', 'form-check-input') }}
+                                    {{ form.radio('Levo', 'text_position_1', 1, 'position', 'form-check-label', 'form-check-input', position == 1 ? 'checked=checked' : null) }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-4">
                                 <div class="form-check form-check-inline">
-                                    {{ form.radio('Sredina', 'text_position', IS_EDIT ? position : '', 'position', 'form-check-label', 'form-check-input') }}
+                                    {{ form.radio('Sredina', 'text_position_2', IS_EDIT ? position : 2, 'position', 'form-check-label', 'form-check-input', position == 2 ? 'checked=checked' : null) }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-4">
                                 <div class="form-check form-check-inline">
-                                    {{ form.radio('Desno', 'text_position', IS_EDIT ? position : '', 'position', 'form-check-label', 'form-check-input') }}
+                                    {{ form.radio('Desno', 'text_position_3', IS_EDIT ? position : 3, 'position', 'form-check-label', 'form-check-input', position == 3 ? 'checked=checked' : null) }}
                                 </div>
                             </div><!-- Col -->
                         </div>
@@ -116,8 +116,8 @@
 {% endblock %}
 {% block pageJavascript %}
     <script>
-        const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
-        const SLUG = '{{ app.request.attributes.get('slug') }}';
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const ID = '{{ app.request.attributes.get('id') }}';
 
         {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');

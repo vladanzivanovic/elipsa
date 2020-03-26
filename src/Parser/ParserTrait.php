@@ -26,7 +26,7 @@ trait ParserTrait
 
             /** @var ParameterBag $langBag */
             $langBag = $langArray[$langCode];
-            $langBag->set($key, $item);
+            $langBag->set(substr($key, 3), $item);
         }
 
         return $langArray;
