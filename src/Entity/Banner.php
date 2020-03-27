@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BannerRepository")
  */
-final class Banner
+class Banner
 {
     public const POSITION_HOME_LEFT = 1;
 
