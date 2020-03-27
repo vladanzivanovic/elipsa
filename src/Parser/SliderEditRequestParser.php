@@ -56,7 +56,8 @@ final class SliderEditRequestParser
     public function parse(ParameterBag $bag, Slider $slider = null): Slider
     {
         if (!$slider instanceof Slider) {
-            $newPosition = $this->sliderRepository->getLastPosition() + 1;
+            $lastPosition = $this->sliderRepository->getLastPosition();
+            $newPosition = count($lastPosition) === 1 ? $lastPosition[0]['position'] + 1 : 1;
 
             $slider = new Slider();
             $slider->setIsActive(false);
