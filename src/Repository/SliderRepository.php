@@ -60,11 +60,11 @@ class SliderRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @return int
+     * @return array
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getLastPosition(): int
+    public function getLastPosition(): array
     {
         $query = $this->createQueryBuilder('s')
             ->select(
@@ -73,7 +73,7 @@ class SliderRepository extends ExtendedEntityRepository
             ->orderBy('s.position', 'DESC')
             ->setMaxResults(1);
 
-        return $query->getQuery()->getSingleScalarResult();
+        return $query->getQuery()->getScalarResult();
     }
 
     /**

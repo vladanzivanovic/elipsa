@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
-use App\Entity\Product;
 use App\Entity\Slider;
 use App\Handler\SliderHandler;
 use App\Helper\ConstantsHelper;
