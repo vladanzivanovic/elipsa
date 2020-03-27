@@ -11,6 +11,8 @@ import SizesController from "./SizesController";
 import SizeEditController from "./SizeEditController";
 import SliderEditController from "./SliderEditController";
 import SliderController from "./SliderController";
+import HomeBannersController from "./HomeBannersController";
+import BannerEditController from "./BannerEditController";
 
 let routes = [
     {
@@ -84,6 +86,18 @@ let routes = [
     {
         name: 'admin.edit_slider_page',
         controller: SliderEditController,
+    },
+    {
+        name: 'admin.banners',
+        controller: HomeBannersController,
+    },
+    {
+        name: 'admin.add_banner_page',
+        controller: BannerEditController,
+    },
+    {
+        name: 'admin.edit_banner_page',
+        controller: BannerEditController,
     },
 ];
 

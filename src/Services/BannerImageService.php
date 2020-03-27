@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Entity\Banner;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\Slider;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Webmozart\Assert\Assert;
 
-final class SliderImageService
+final class BannerImageService
 {
     /**
      * @var ImageService
@@ -33,7 +34,7 @@ final class SliderImageService
     private $bag;
 
     /**
-     * SliderImageService constructor.
+     * BannerImageService constructor.
      *
      * @param ImageService          $imageService
      * @param ParameterBagInterface $bag
@@ -50,12 +51,12 @@ final class SliderImageService
     }
 
     /**
-     * @param Slider $slider
+     * @param Banner $banner
      * @param array  $data
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(Slider $slider, array $data): void
+    public function setImages(Banner $banner, array $data): void
     {
         $rootDir = $this->bag->get('upload_dir');
         $tmpDir = $this->bag->get('upload_tmp_dir');
@@ -64,10 +65,6 @@ final class SliderImageService
         if(empty(array_filter($data))) {
             return;
         }
-
-        Assert::true($this->validateMainImage($data), 'field.main_image');
-
-        $exceptions = [];
 
         foreach ($data as $index => $image) {
             if (!empty($image['id'])) {
@@ -116,11 +113,7 @@ final class SliderImageService
 
             $this->imageRepository->persist($mediaObj);
 
-            $slider->setImage($mediaObj);
-        }
-
-        if (count($exceptions) > 0) {
-            throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
+            $banner->setImage($mediaObj);
         }
     }
 
@@ -140,29 +133,5 @@ final class SliderImageService
 
             $this->img->deleteImage($this->img->setFileObject(['file' => $rootDir.$imageDir.$imageObj->getName(), 'fileName' => $imageObj->getName()]));
         }
-    }
-
-    /**
-     * @param Product $product
-     * @param Image   $image
-     *
-     * @return void
-     */
-    private function updateImage(Product $product, Image $image): void
-    {
-        $this->imageRepository->removeMainImage($product, Image::RELATED_TYPE_PRODUCT);
-
-        $image->setIsMain(true);
-    }
-
-    private function validateMainImage(array $data)
-    {
-        foreach ($data as $image) {
-            if (true === !!$image['isMain']) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

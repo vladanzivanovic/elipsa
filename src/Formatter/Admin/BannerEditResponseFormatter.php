@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
-use App\Entity\Slider;
+use App\Entity\Banner;
 use Symfony\Component\Routing\RouterInterface;
 
-final class SliderEditResponseFormatter
+final class BannerEditResponseFormatter
 {
     use ImageTrait;
 
@@ -17,7 +17,7 @@ final class SliderEditResponseFormatter
     private $router;
 
     /**
-     * SliderEditResponseFormatter constructor.
+     * BannerEditResponseFormatter constructor.
      *
      * @param RouterInterface $router
      */
@@ -28,14 +28,14 @@ final class SliderEditResponseFormatter
     }
 
     /**
-     * @param Slider $slider
+     * @param Banner $banner
      *
      * @return array
      */
-    public function formatResponse(Slider $slider): array
+    public function formatResponse(Banner $banner): array
     {
-        $rsTrans = $slider->getByLocale('rs');
-        $enTrans = $slider->getByLocale('en');
+        $rsTrans = $banner->getByLocale('rs');
+        $enTrans = $banner->getByLocale('en');
 
         return [
             'rs_description' => $rsTrans->getDescription(),
@@ -44,19 +44,19 @@ final class SliderEditResponseFormatter
             'en_description' => $enTrans->getDescription(),
             'en_button' => $enTrans->getButtonText(),
             'en_link' => $enTrans->getButtonLink(),
-            'position' => $slider->getTextPosition(),
-            'selectedImages' => $this->imagesFormatter($this->router, [$this->getImage($slider)]),
+            'position' => $banner->getPosition(),
+            'selectedImages' => $this->imagesFormatter($this->router, [$this->getImage($banner)]),
         ];
     }
 
     /**
-     * @param Slider $slider
+     * @param Banner $banner
      *
      * @return array
      */
-    private function getImage(Slider $slider): array
+    private function getImage(Banner $banner): array
     {
-        $image = $slider->getImage();
+        $image = $banner->getImage();
 
         return [
             'id' => $image->getId(),
