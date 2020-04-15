@@ -10,7 +10,6 @@ use App\Handler\ProductColorHandler;
 use App\Parser\ColorRequestParser;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,11 +62,9 @@ final class ProductColorEditController extends AbstractController
      */
     public function insert(Request $request)
     {
-        $slug = Urlizer::transliterate($request->request->get('rs_title'));
+        $productColor = $this->requestParser->parse($request->request);
 
-        $colors = $this->requestParser->parse($request->request, $slug);
-
-        $this->colorHandler->save($colors);
+        $this->colorHandler->save($productColor);
 
         $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
 
@@ -75,7 +72,7 @@ final class ProductColorEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-color/{slug}", name="admin.edit_color_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/edit-color/{id}", name="admin.edit_color_api", methods={"PUT"}, options={"expose": true})
      *
      * @param Request      $request
      * @param ProductColor $productColor
@@ -86,11 +83,9 @@ final class ProductColorEditController extends AbstractController
      */
     public function update(Request $request, ProductColor $productColor)
     {
-        $slug = Urlizer::transliterate($request->request->get('rs_title'));
+        $productColor = $this->requestParser->parse($request->request, $productColor);
 
-        $colors = $this->requestParser->parse($request->request, $productColor->getMainSlug(), true);
-
-        $this->colorHandler->save($colors, true);
+        $this->colorHandler->save($productColor);
 
         $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
 

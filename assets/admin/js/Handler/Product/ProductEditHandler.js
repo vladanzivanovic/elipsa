@@ -1,5 +1,5 @@
 import DropZoneService from "../../../../js/Services/DropZoneService";
-import AppHelperService from "../../../../site/js/AppHelperService";
+import AppHelperService from "../../../../js/Helper/AppHelperService";
 import NotificationService from "../../../../js/NotificationService";
 
 class ProductEditHandler {
@@ -50,6 +50,18 @@ class ProductEditHandler {
             success: (response) => {
                 checkbox.parentElement.firstElementChild.innerText = Translator.trans(response.text, null, 'messages', LOCALE);
             },
+            error: () => {
+                this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
+            }
+        })
+    }
+
+    toggleShowHomePage(checkbox, slug, status) {
+        $.ajax({
+            type: 'PATCH',
+            'url': AppHelperService.generateLocalizedUrl('admin.api_product_change_home_page', {slug, status}),
+            dataType: 'json',
+            success: () => {},
             error: () => {
                 this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
             }

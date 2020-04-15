@@ -93,4 +93,25 @@ class ProductSizeRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param array $products
+     *
+     * @return array
+     */
+    public function getByProducts(array $products): array
+    {
+        $query = $this->createQueryBuilder('ps')
+            ->select(
+                'p.id as productId',
+                'ps.size'
+            )
+            ->innerJoin(ProductHasSizes::class, 'phs', 'WITH', 'phs.size = ps AND phs.isAvailable = :isAvailable')
+            ->innerJoin(Product::class, 'p', 'WITH', 'p = phs.product')
+            ->where('phs.product IN (:products)')
+            ->setParameter('products', $products)
+            ->setParameter('isAvailable', true);
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

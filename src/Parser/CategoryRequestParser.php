@@ -62,7 +62,9 @@ final class CategoryRequestParser
             $category = new Category();
         }
 
-        if (!empty($bag->get('parent_category'))) {
+        $category->setShowHomePage((boolean) $bag->get('show_home_page'));
+
+        if (!empty($bag->get('parent_category')) && $bag->get('parent_category') !== 'Izaberite...') {
             $parentTranslation = $this->translationRepository->findOneBy(['slug' => $bag->get('parent_category')]);
 
             $category->setParent($parentTranslation->getCategory());

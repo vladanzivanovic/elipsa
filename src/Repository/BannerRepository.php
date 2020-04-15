@@ -58,4 +58,26 @@ class BannerRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    public function getActiveOrderByPosition(string $locale)
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select(
+                'b.id',
+                'b.position',
+                'bt.description',
+                'bt.buttonLink as button_link',
+                'bt.buttonText as button_text',
+                'i.name as image'
+            )
+            ->innerJoin('b.bannerTranslations', 'bt')
+            ->innerJoin('b.image', 'i')
+            ->where('b.isActive = :isActive')
+            ->andWhere('bt.locale = :locale')
+            ->setParameter('isActive', true)
+            ->setParameter('locale', $locale)
+            ->orderBy('b.position');
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

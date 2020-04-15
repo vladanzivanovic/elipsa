@@ -17,10 +17,10 @@
     </label>
 {% endmacro %}
 
-{% macro checkbox(title, id, value, name, class) %}
-    <label class="radio {{ class }}" for="{{ id }}">
+{% macro checkbox(title, id, value, name, class, checkboxClass, additionalAttributes = null) %}
+    <label class="{{ class }}" for="{{ id }}">
         {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
-        {{ form.input(id, value, name, '', 'checkbox') }} {{ title }}
+        {{ form.input(id, value, name, '', 'checkbox', checkboxClass, additionalAttributes) }} {{ title }}
     </label>
 {% endmacro %}
 

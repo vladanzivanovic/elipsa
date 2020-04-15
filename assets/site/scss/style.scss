@@ -1,0 +1,12 @@
+// Bootstrap main SCSS
+@import '../../../node_modules/bootstrap3/dist/css/bootstrap.min.css';
+@import "~font-awesome/css/font-awesome.min.css";
+
+@import "../css/animate.css";
+@import "../css/meanmenu.css";
+@import "../css/responsive.css";
+@import "../css/style.css";
+@import "../css/typography.css";
+
+// Components
+@import "./Components/welcome";

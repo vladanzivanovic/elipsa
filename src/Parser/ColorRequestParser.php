@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
+use App\Entity\ColorTranslation;
 use App\Entity\ProductColor;
+use App\Repository\ColorTranslationRepository;
 use App\Repository\ProductColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -40,33 +42,36 @@ final class ColorRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
-     * @param string       $mainSlug
-     * @param bool         $isEdit
+     * @param ParameterBag      $bag
+     * @param ProductColor|null $productColor
      *
-     * @return ArrayCollection
+     * @return ProductColor
      */
-    public function parse(ParameterBag $bag, string $mainSlug, bool $isEdit = false): ArrayCollection
+    public function parse(ParameterBag $bag, ?ProductColor $productColor = null): ProductColor
     {
         $locales = $this->setLanguageArray($this->parameterBag, $bag);
+
+        if (!$productColor instanceof ProductColor) {
+            $productColor = new ProductColor();
+            $productColor->setHex($bag->get('color'));
+        }
 
         $colors = new ArrayCollection();
 
         foreach ($locales as $locale => $langBag) {
-            $color = new ProductColor();
+            $trans = new ColorTranslation();
 
-            if (true === $isEdit) {
-                $color = $this->colorRepository->findOneBy(['mainSlug' => $mainSlug, 'locale' => $locale]);
+            if (null !== $productColor->getId()) {
+                $trans = $productColor->getByLocale($locale);
             }
 
-            $color->setHex($bag->get('color'));
-            $color->setName($bag->get($locale.'_title'));
-            $color->setMainSlug($mainSlug);
-            $color->setLocale($locale);
+            $trans->setTitle($bag->get($locale.'_title'));
+            $trans->setLocale($locale);
+            $trans->setColor($productColor);
 
-            $colors->add($color);
+            $productColor->addColorTranslation($trans);
         }
 
-        return $colors;
+        return $productColor;
     }
 }

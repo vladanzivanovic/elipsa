@@ -1,5 +1,5 @@
 import dt from 'datatables.net-dt';
-import AppHelperService from "../../../../site/js/AppHelperService";
+import AppHelperService from "../../../../js/Helper/AppHelperService";
 
 export default (() => {
     let Public = {},
@@ -23,13 +23,13 @@ export default (() => {
                     } },
                 { data: 'rs_name', title: 'Naziv - srpski' },
                 { data: 'en_name', title: 'Naziv - engleski' },
-                { data: 'slug', render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_color_page', {slug: data})}">Izmeni</a> ` : '';
-                    const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';
+                { data: 'id', render: function (id, type, row, meta) {
+                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_color_page', {id})}">Izmeni</a> ` : '';
+                    const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${id}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
-                            data;
+                            id;
                     } },
             ],
             order: [[0, 'desc']],

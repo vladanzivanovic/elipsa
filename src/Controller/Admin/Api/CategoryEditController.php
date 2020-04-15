@@ -91,4 +91,18 @@ final class CategoryEditController extends AbstractController
 
         return $this->json(null, JsonResponse::HTTP_CREATED);
     }
+
+    /**
+     * @Route("/api/category-change-home-page/{slug}/{status}", name="admin.api_category_change_home_page", methods={"PATCH"}, options={"expose": true})
+     * @param CategoryTranslation $categoryTranslation
+     * @param int                 $status
+     *
+     * @return JsonResponse
+     */
+    public function toggleHomePage(CategoryTranslation $categoryTranslation, int $status): JsonResponse
+    {
+        $this->categoryHandler->toggleHomePage($categoryTranslation->getCategory(), (bool) $status);
+
+        return $this->json(null);
+    }
 }

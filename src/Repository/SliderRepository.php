@@ -89,4 +89,31 @@ class SliderRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getActiveOrderByPosition(string $locale): array
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select(
+                's.id',
+                's.textPosition as position',
+                'st.description',
+                'st.buttonText as button_text',
+                'st.buttonLink as button_link',
+                'i.name as image'
+            )
+            ->innerJoin('s.sliderTranslations', 'st')
+            ->innerJoin('s.image', 'i')
+            ->where('s.isActive = :isActive')
+            ->andWhere('st.locale = :locale')
+            ->setParameter('isActive', true)
+            ->setParameter('locale', $locale)
+            ->orderBy('s.position');
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

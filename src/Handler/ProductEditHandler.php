@@ -59,9 +59,30 @@ final class ProductEditHandler
         $this->productRepository->flush();
     }
 
-    public function changeStatus(Product $product, int $status)
+    /**
+     * @param Product $product
+     * @param int     $status
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function changeStatus(Product $product, int $status): void
     {
         $product->setStatus($status);
+
+        $this->productRepository->flush();
+    }
+
+    /**
+     * @param Product $product
+     * @param bool    $status
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function toggleHomePage(Product $product, bool $status): void
+    {
+        $product->setShowHomePage($status);
 
         $this->productRepository->flush();
     }

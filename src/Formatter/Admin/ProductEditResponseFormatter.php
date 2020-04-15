@@ -98,6 +98,7 @@ final class ProductEditResponseFormatter
             'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'mainSlug'),
             'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
             'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByProduct($product)),
+            'show_home_page' => $product->getShowHomePage(),
         ];
 
         return $product;

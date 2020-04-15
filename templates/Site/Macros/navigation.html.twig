@@ -1,0 +1,25 @@
+{% macro childNav(categories) %}
+    <ul class="child-submenu">
+        {% for category in categories %}
+            <li class="{{ category['children'] is defined ? 'bold' : '' }}">
+                <a href="#">{{ category['title'] }}</a>
+                {% if category['children'] is defined %}
+                    {{ self.childNav(category['children']) }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro mobileChildNav(categories) %}
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="#">{{ category['title'] }}</a>
+                {% if category['children'] is defined %}
+                    {{ self.mobileChildNav(category['chidren']) }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}

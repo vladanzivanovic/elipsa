@@ -24,26 +24,18 @@ class ImageRepository extends ExtendedEntityRepository
 
     /**
      * @param Product $product
-     * @param int     $relatedToType
+     *
+     * @return Image[]
      */
-    public function removeMainImage(Product $product, int $relatedToType): void
+    public function getProductImages(Product $product): array
     {
-        $subQuery = $this->_em->createQueryBuilder()
-            ->select('1')
-            ->from(ProductHasImages::class, 'phi')
-            ->where('phi.image = i')
-            ->andWhere('phi.product = :product');
-
-        $this->createQueryBuilder('i')
-            ->update()
-            ->set('i.isMain', 0)
+        $query = $this->createQueryBuilder('i')
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i')
-            ->where('i.relatedToType = :relatedToType')
-            ->andWhere('EXISTS ('.$subQuery->getDQL().')')
-            ->setParameter('product', $product)
-            ->setParameter('relatedToType', $relatedToType)
-            ->getQuery()
-            ->execute();
+            ->where('phi.product = :product')
+            ->setParameter('product', $product);
+
+        return $query->getQuery()->getResult();
+
     }
 
     /**
@@ -58,7 +50,7 @@ class ImageRepository extends ExtendedEntityRepository
                 'i.id',
                 'i.name as fileName',
                 'i.isMain',
-                'pc.mainSlug as color'
+                'pc.id as color'
             )
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i AND phi.product = :product')
             ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')

@@ -16,3 +16,46 @@ error:
 
 notifications:
   please_wait: 'Please wait.'
+
+price: price
+
+navi:
+  home: Home
+  about_us: About us
+  locations: Locations
+  loyalty: Loyalty program
+  catalogue: Catalogue
+  shop: Shop
+  blog: Blog
+  ask_us: Ask us
+  contact: Contact
+  account: My account
+
+serbian: Serbian
+english: English
+
+size: size
+color: color
+categories: categories
+filters: filters
+limit: limit
+
+veličina: size
+boja: color
+kategorije: categories
+sortiranje: sort
+cena: price
+
+next_page: next
+prev_page: prev
+last_page: last
+first_page: first
+
+available_sizes: available sizes
+available_colors: available colors
+
+most_selled: most selled
+from_lowest_price: lower price first
+from_highest_price: higher price first
+on_sale: on sale
+first_new: new

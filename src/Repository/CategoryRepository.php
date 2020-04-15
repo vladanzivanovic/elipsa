@@ -49,7 +49,8 @@ class CategoryRepository extends ExtendedEntityRepository
                 'GROUP_CONCAT(ct.title) as titles',
                 'GROUP_CONCAT(ct.locale) as locales',
                 'IFELSE(ct.locale = \'rs\', ct.slug, NULL) slug',
-                'ctparent.title as parent'
+                'ctparent.title as parent',
+                'c.showHomePage as show_home_page'
             )
             ->innerJoin(CategoryTranslation::class, 'ct', 'WITH', 'ct.category = c')
             ->leftJoin(CategoryTranslation::class, 'ctparent', 'WITH', 'ctparent.category = c.parent AND ctparent.locale = \'rs\'')
@@ -82,5 +83,56 @@ class CategoryRepository extends ExtendedEntityRepository
         }
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getHomePageCategories(string $locale): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select(
+                'c.id',
+                'ct.title',
+                'ct.slug'
+            )
+            ->innerJoin('c.categoryTranslations', 'ct')
+            ->where('ct.locale = :locale')
+            ->andWhere('c.showHomePage = :showHomePage')
+            ->setParameter('locale', $locale)
+            ->setParameter('showHomePage', true);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getForNavigationMenu(string $locale): array
+    {
+        $sql = "with RECURSIVE cte AS (
+                    SELECT c.id, c.parent_id, ct.title, ct.slug, 1 AS lvl
+                    FROM category as c
+                    INNER JOIN category_translation ct ON c.id = ct.category_id
+                    WHERE parent_id IS NULL AND
+                          ct.locale = :locale
+                    UNION ALL
+                    SELECT c2.id, c2.parent_id, t.title, t.slug, lvl + 1
+                    FROM category as c2
+                    INNER JOIN cte ON cte.id = c2.parent_id
+                    INNER JOIN category_translation t ON c2.id = t.category_id
+                    WHERE t.locale = :locale
+                )
+                SELECT * FROM cte order by lvl;";
+
+        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt->execute(['locale' => $locale]);
+
+        return $stmt->fetchAll();
     }
 }

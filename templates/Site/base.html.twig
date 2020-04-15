@@ -1,0 +1,73 @@
+{% set routeName = app.request.attributes.get('_route') %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
+
+<head>
+    <!--- Basic Page Needs  -->
+    <meta charset="utf-8">
+    <title>{% block title %}Elipsa{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Specific Meta  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700" rel="stylesheet">
+    <!-- CSS -->
+
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/app.css') }}"/>
+    {% endblock %}
+    {% block pageStyleSheets %}{% endblock %}
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body data-spy="scroll" data-target="#scroll-menu" data-offset="100" class="{% block bodyClass %}{% endblock %}">
+    <div id="preloader"></div>
+    {% set categories = navigation_menu(app.request.locale) %}
+
+    <!-- header-start -->
+    <header>
+        {{ include('Site/Components/headerTop.html.twig') }}
+        {{ include('Site/Components/headerBottom.html.twig') }}
+    </header>
+    <!-- header-end -->
+
+    {% block content %}{% endblock %}
+
+    <!-- footer-start -->
+    <footer>
+        {{ include('Site/Components/footerTop.html.twig') }}
+        {{ include('Site/Components/footerBottom.html.twig') }}
+    </footer>
+
+    {{ include('Site/Components/newsletterPopup.html.twig') }}
+    <!-- footer-end -->
+    {% block javascripts %}
+        <script>
+            const LOCALE = 'rs';
+            const ROUTE_NAME = '{{ routeName }}';
+            window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
+        </script>
+        <script src="{{ preload(asset('build/runtime.js')) }}"></script>
+        <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
+        <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': 'rs,en' }) }}"></script>
+        <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': 'rs,en' }) }}"></script>
+        <script type="text/javascript" src="{{ asset('build/js/site/core.js') }}"></script>
+        <script src="{{ asset('js/router.min.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    {% endblock %}
+    {% block pageJavascript %}{% endblock %}
+</body>
+</html>

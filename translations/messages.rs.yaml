@@ -16,3 +16,41 @@ error:
 
 notifications:
   please_wait: 'Molimo vas sačekajte.'
+
+price: cena
+
+navi:
+  home: Početna
+  about_us: O nama
+  locations: Lokacije
+  loyalty: Loyalty program
+  catalogue: Katalog
+  shop: Prodavnica
+  blog: Blog
+  ask_us: Pitajte nas
+  contact: Kontant
+  account: Moj nalog
+
+serbian: Srpski
+english: Engleski
+
+size: veličina
+color: boja
+categories: kategorije
+filters: filteri
+sort: sortiranje
+limit: limit
+
+next_page: sledeća
+prev_page: prethodna
+last_page: poslednja
+first_page: prva
+
+available_sizes: dostupne veličine
+available_colors: dostupne boje
+
+most_selled: najprodavanije
+from_lowest_price: najjeftinije prvo
+from_highest_price: njaskuplje prvo
+on_sale: na rasprodaji
+first_new: najnoviji

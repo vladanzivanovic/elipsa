@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Api;
 use App\Entity\ProductColor;
 use App\Handler\ProductColorHandler;
 use App\Repository\ProductHasColorRepository;
+use App\Repository\ProductHasImagesRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,43 +20,44 @@ final class ProductColorRemoveController extends AbstractController
      * @var ProductColorHandler
      */
     private $colorHandler;
+
     /**
-     * @var ProductHasColorRepository
+     * @var ProductHasImagesRepository
      */
-    private $hasColorRepository;
+    private $hasImagesRepository;
 
     /**
      * ProductColorRemoveController constructor.
      *
-     * @param ProductColorHandler       $colorHandler
-     * @param ProductHasColorRepository $hasColorRepository
+     * @param ProductColorHandler        $colorHandler
+     * @param ProductHasImagesRepository $hasImagesRepository
      */
     public function __construct(
         ProductColorHandler $colorHandler,
-        ProductHasColorRepository $hasColorRepository
+        ProductHasImagesRepository $hasImagesRepository
     ) {
         $this->colorHandler = $colorHandler;
-        $this->hasColorRepository = $hasColorRepository;
+        $this->hasImagesRepository = $hasImagesRepository;
     }
 
     /**
-     * @Route("/api/remove-color/{slug}", name="admin.remove_color_api", methods={"DELETE"}, options={"expose": true})
+     * @Route("/api/remove-color/{id}", name="admin.remove_color_api", methods={"DELETE"}, options={"expose": true})
      *
      * @param ProductColor $productColor
      *
      * @return JsonResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function remove(ProductColor $productColor)
     {
-        $mainSlug = $productColor->getMainSlug();
-
-        $productCount = $this->hasColorRepository->count(['color' => $mainSlug]);
+        $productCount = $this->hasImagesRepository->count(['color' => $productColor]);
 
         if ($productCount > 0) {
             throw new BadRequestHttpException(json_encode(['message' => 'error.in_use']));
         }
 
-        $this->colorHandler->remove($mainSlug);
+        $this->colorHandler->remove($productColor);
 
         return $this->json([]);
     }

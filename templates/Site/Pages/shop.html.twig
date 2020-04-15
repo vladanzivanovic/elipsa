@@ -1,0 +1,188 @@
+{% extends ('Site/base.html.twig') %}
+
+{% block bodyClass %}shop-page{% endblock %}
+{% block title %}Elipsa - prodavnica{% endblock %}
+
+{% set search = search_criteria is not null ? search_criteria.all : [] %}
+
+{% block content %}
+    <div id="shop-loader" class="hide"></div>
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'Proizvodi'}) }}
+
+    {% import 'Site/Macros/sideBar.html.twig' as childNavList %}
+
+    {% set pagination = products.pagination %}
+
+    <!-- shop-left-sidebar-area-start -->
+    <div class="shop-left-sidebar-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="shop-sidebar-area">
+                        <div class="sidebar-widget widget-categories">
+                            <h4 class="sidebar-title">{{ 'categories' | trans }}</h4>
+                            {% for main in categories %}
+                                <div class="sidebar-box">
+                                    {% if main.children is defined %}
+                                        <button class="sidebar-accordion-button" data-toggle="collapse" data-target="#{{ main.id }}">{{ main.title }}</button>
+                                        <ul class="sidebar-list sidebar-list__categories collapse in" id="{{ main.id}}">
+                                            {% for child in main.children %}
+                                                <li>
+                                                    {% if child.children is defined %}
+                                                        {{ childNavList.childCategory(child, search.categories is defined ? search.categories : []) }}
+                                                    {% else %}
+                                                        <a class="category-btn {{ search.categories is defined and child.slug in search.categories ? 'active' : '' }}" href="#" data-search-name="categories" data-search="{{ child.slug }}">{{ child.title }}</a>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <button class="sidebar-category-button category-btn {{ search.categories is defined and main.slug in search.categories ? 'active' : '' }}" data-search-name="categories" data-search="{{ main.slug }}">{{ main.title }}</button>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="sidebar-widget widget-shop-by">
+                            <h4 class="sidebar-title">{{ 'filters' | trans }}</h4>
+                            <div class="sidebar-box">
+                                <span class="sidebar-box-title">{{ 'price' | trans }}</span>
+                                <div class="priceslider">
+                                    <p>
+                                        <input type="text" id="shop-amount" readonly>
+                                    </p>
+                                    <div id="shop-slider-range"></div>
+                                </div>
+                            </div>
+                            <div class="sidebar-box">
+                                <span class="sidebar-box-title">{{ 'color' | trans }}</span>
+                                <ul class="sidebar-list">
+                                    {% for color in colors %}
+                                    <li><a class="color-box color-btn {{ search.color is defined and color.slug in search.color ? 'active' : '' }}" href="#" data-search-name="color" data-search="{{ color.slug }}"><span class="color" style="background-color: {{ color.hex }}"></span> {{ color.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="sidebar-box">
+                                <span class="sidebar-box-title">{{ 'size' | trans }}</span>
+                                <ul class="sidebar-list">
+                                    {% for size in sizes %}
+                                        <li><a href="#" class="size-btn {{ search.size is defined and size.title in search.size ? 'active' : '' }}" data-search-name="size" data-search="{{ size.title }}">{{ size.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget widget-banner">
+                            <div class="sidebar-banner-box">
+                                <div class="sbb-img">
+                                    <img src="img/banner/sidebar.jpg" alt="">
+                                </div>
+                                <div class="sbb-content">
+                                    <h5>Hot promotion</h5>
+                                    <h2>Save up to <span>35%</span> off</h2>
+                                    <p>Lorem Ipsum has been the industry's.</p>
+                                    <a href="#">-View more-</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="shop-grid">
+                        <div class="shop-menu clearfix">
+                            {% set shopOptions = app_params('shop') %}
+                            {% set sortOptions = shopOptions['list_sort'] %}
+                            <div class="deafult-sorting">
+                                <select class="sort-option">
+                                    {% for index, option in sortOptions %}
+                                        <option class="text-capitalize" value="{{ index }}" {{ search.sort is defined and search.sort[0] == index ? 'selected="selected" : ""' }}>{{ option | trans }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="show-product">
+                                {% set showedItems = shopOptions['items_per_page'] %}
+                                <select class="limit-product">
+                                    {% for showedItem in showedItems %}
+                                        <option value="{{ showedItem }}" {{ search.limit is defined and search.limit[0] == showedItem ? 'selected="selected" : ""' }}>{{ showedItem }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="shop-grid-contents">
+                            <div class="search-criteria"></div>
+                            <div class="tab-content">
+                                <div id="grid" class="tab-pane fade in active">
+                                    <div class="grid-items">
+                                        <div class="row">
+                                            {% for product in products.data %}
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="single-featured-item">
+                                                        <div class="sfi-img">
+                                                            <a href="single-product.html"><img src="{{ product.image_link_list }}" alt="{{ default_alt_tag }}"></a>
+                                                            <ul class="sfi-tag-list">
+                                                                {% for tag in product_tags[product.id] %}
+                                                                    <li><a href="#">{{ tag }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                            <div class="sfi-img-content sfi-data-content">
+                                                                <p class="text-capitalize">{{ 'available_colors' | trans }}:</p>
+                                                                <ul class="sfi-data-color">
+                                                                    {% for color in product_colors[product.id] %}
+                                                                        <li>
+                                                                            <a style="background-color: {{ color }}" href="#"></a>
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                                <p class="text-capitalize">{{ 'available_sizes' | trans }}:</p>
+                                                                <ul>
+                                                                    {% for productSize in product_sizes[product.id] %}
+                                                                        <li>
+                                                                            <a href="#">{{ productSize }}</a>
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="sfi-content">
+                                                            <div class="sfi-buttons">
+                                                                <ul class="clearfix">
+                                                                    <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
+                                                                    <li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>
+                                                                    <li><a href="single-product.html" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="sfi-name-cat">
+                                                                <a class="sfi-name" href="single-product.html">{{ product.title }}</a>
+                                                            </div>
+                                                            <div class="sfi-price-rating">
+                                                                <p class="sfi-price text-uppercase"><span>{{ product.discount > 0 ? product.discount : product.price }} RSD</span></p>
+                                                                {% if product.discount > 0 %}
+                                                                    <p class="sfi-old-price">-{{ product.price }} RSD</p>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        {{ include('Site/Components/paginate.html.twig') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- shop-left-sidebar-area-end -->
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/shop.css') }}"/>
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const IS_FIRST_PAGE = {{ app.request.attributes.get('page') == 1 ? 1 : 0 }};
+
+        const SEARCH_CRITERIA = JSON.parse('{{ search | json_encode | raw }}');
+        const PRICES = [{{ prices.lowPrice }}, {{ prices.highPrice }}];
+    </script>
+{% endblock %}

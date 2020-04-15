@@ -3,7 +3,7 @@
  * in the layout. This is just a helper module to get that object.
  */
 
-const routes = require('../../../public/js/fos_js_routes.json');
-import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources';
+const routes = require('../../public/js/fos_js_routes.json');
+import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources';
 
 Routing.setRoutingData(routes);

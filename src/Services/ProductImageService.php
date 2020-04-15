@@ -89,8 +89,12 @@ final class ProductImageService
         $exceptions = [];
 
         foreach ($data as $index => $image) {
+            $color = $this->colorRepository->find($image['color']);
+
             if (isset($image['id'])) {
                 $imageObj = $this->imageRepository->find($image['id']);
+                $hasImage = $this->hasImagesRepository->findOneBy(['product' => $product, 'image' => $imageObj]);
+                $hasImage->setColor($color);
 
                 if(isset($image['deleted']) && true === $image['deleted']) {
                     $image['file'] = $rootDir.$imageDir.$imageObj->getOriginalName();
@@ -98,7 +102,6 @@ final class ProductImageService
                     $imageObj->setFile($file);
                     $imageObj->setIsDeleted(true);
 
-                    $hasImage = $this->hasImagesRepository->findOneBy(['product' => $product, 'image' => $imageObj]);
                     $this->hasImagesRepository->delete($hasImage);
                     $this->imageRepository->delete($imageObj);
 
@@ -108,6 +111,7 @@ final class ProductImageService
                 if (true === $image['isMain']) {
                     $this->updateImage($product, $imageObj);
                 }
+
                 continue;
             }
 
@@ -115,7 +119,6 @@ final class ProductImageService
                 $image['file'] = $rootDir.$tmpDir.$image['fileName'];
                 $file = $this->img->setFileObject($image);
             } catch (FileNotFoundException $exception) {
-                dd($exception);
                 $exceptions[] = $image['fileName'];
 
                 continue;
@@ -140,7 +143,6 @@ final class ProductImageService
             $this->imageRepository->persist($mediaObj);
 
             $hasImages = new ProductHasImages();
-            $color = $this->colorRepository->findOneBy(['mainSlug' => $image['color']]);
             $hasImages->setProduct($product);
             $hasImages->setImage($mediaObj);
             $hasImages->setColor($color);
@@ -179,7 +181,12 @@ final class ProductImageService
      */
     private function updateImage(Product $product, Image $image): void
     {
-        $this->imageRepository->removeMainImage($product, Image::RELATED_TYPE_PRODUCT);
+        $images = $this->imageRepository->getProductImages($product);
+
+        /** @var Image $image */
+        foreach ($images as $img) {
+            $img->setIsMain(false);
+        }
 
         $image->setIsMain(true);
     }

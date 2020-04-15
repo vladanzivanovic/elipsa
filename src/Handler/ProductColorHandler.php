@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Entity\ProductColor;
 use App\Helper\ValidatorHelper;
 use App\Repository\ProductColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,35 +38,37 @@ final class ProductColorHandler
     }
 
     /**
-     * @param ArrayCollection $colors
-     * @param bool            $isEdit
+     * @param ProductColor $productColor
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(ArrayCollection $colors, bool $isEdit = false): void
+    public function save(ProductColor $productColor): void
     {
-        $errors = $this->validator->validate($colors, null, "SetColor");
+        $errors = $this->validator->validate($productColor, null, "SetColor");
 
         if ($errors->count() > 0) {
             throw new UnprocessableEntityHttpException(json_encode($this->validator->parseErrors($errors)));
         }
 
-        if (false === $isEdit) {
-            foreach ($colors as $color) {
-                $this->colorRepository->persist($color);
-            }
+        if (null === $productColor->getId()) {
+            $this->colorRepository->persist($productColor);
         }
 
         $this->colorRepository->flush();
     }
 
     /**
-     * @param string $mainSLug
+     * @param ProductColor $productColor
+     *
      * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function remove(string $mainSLug): void
+    public function remove(ProductColor $productColor): void
     {
-        $this->colorRepository->remove($mainSLug);
+        $this->colorRepository->delete($productColor);
+
+        $this->colorRepository->flush();
     }
 }

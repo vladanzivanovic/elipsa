@@ -1,4 +1,4 @@
-import AppHelperService from "../../../../site/js/AppHelperService";
+import AppHelperService from "../../../../js/Helper/AppHelperService";
 import NotificationService from "../../../../js/NotificationService";
 import ColorsDataTables from "../../Services/DataTables/ColorsDataTables";
 
@@ -13,7 +13,7 @@ class ColorHandler {
         const data = mapper.form.serializeArray();
 
         if (IS_EDIT) {
-            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_color_api', {slug: SLUG});
+            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_color_api', {id: ID});
             type = 'PUT';
         }
 
@@ -33,12 +33,12 @@ class ColorHandler {
         })
     }
 
-    remove(slug) {
+    remove(id) {
         this.notification.showLoadingMessage();
 
         $.ajax({
             type: 'DELETE',
-            url: AppHelperService.generateLocalizedUrl('admin.remove_color_api', {slug}),
+            url: AppHelperService.generateLocalizedUrl('admin.remove_color_api', {id}),
             success: () => {
                 ColorsDataTables().reload();
                 this.notification.remove();
