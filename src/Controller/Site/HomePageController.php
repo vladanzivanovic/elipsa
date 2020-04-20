@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
-use App\Collectors\HomePageCollectors;
+use App\Collector\HomePageCollector;
 use App\Formatter\Site\HomePageResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class HomePageController extends AbstractController
 {
     /**
-     * @var HomePageCollectors
+     * @var HomePageCollector
      */
     private $pageCollectors;
     /**
@@ -25,11 +25,11 @@ final class HomePageController extends AbstractController
     /**
      * HomePageController constructor.
      *
-     * @param HomePageCollectors        $pageCollectors
+     * @param HomePageCollector         $pageCollectors
      * @param HomePageResponseFormatter $responseFormatter
      */
     public function __construct(
-        HomePageCollectors $pageCollectors,
+        HomePageCollector $pageCollectors,
         HomePageResponseFormatter $responseFormatter
     ) {
         $this->pageCollectors = $pageCollectors;

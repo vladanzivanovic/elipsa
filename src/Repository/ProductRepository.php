@@ -89,41 +89,6 @@ class ProductRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param array  $categories
-     * @param string $locale
-     *
-     * @return array
-     */
-    public function getForHomePage(array $categories, string $locale): array
-    {
-        $query = $this->createQueryBuilder('p')
-            ->select(
-                'p.id',
-                'pt.title',
-                'pt.slug',
-                'p.price',
-                'p.discount',
-                'i.name as image',
-                'GROUP_CONCAT(IDENTITY(phc.category)) as categories'
-            )
-            ->innerJoin('p.productTranslations', 'pt')
-            ->innerJoin('p.productHasCategories', 'phc')
-            ->innerJoin('p.productHasImages', 'phi')
-            ->innerJoin('phi.image', 'i')
-            ->where('p.showHomePage = :showHomePage')
-            ->andWhere('pt.locale = :locale')
-            ->andWhere('phc.category IN (:categories)')
-            ->andWhere('i.isMain = :isMain')
-            ->setParameter('showHomePage', true)
-            ->setParameter('locale', $locale)
-            ->setParameter('categories', $categories)
-            ->setParameter('isMain', true)
-            ->groupBy('p.id');
-
-        return $query->getQuery()->getArrayResult();
-    }
-
-    /**
      * @return array
      */
     public function getLowestAndHighestPrice(): array
@@ -223,5 +188,59 @@ class ProductRepository extends ExtendedEntityRepository
         }
 
         return $query;
+    }
+
+    /**
+     * @param string  $locale
+     * @param array   $categories
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getRelatedProducts(string $locale, array $categories, Product $product): array
+    {
+        $searchParams = new ParameterBag(['categories' => $categories]);
+
+        $query = $this->getDqlForPaginationPage($locale, $searchParams)
+            ->andWhere('p <> :product')
+            ->setParameter('product', $product)
+            ->setMaxResults(6);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array  $categories
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getForHomePage(array $categories, string $locale): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select(
+                'p.id',
+                'pt.title',
+                'pt.slug',
+                'p.price',
+                'p.discount',
+                'i.name as image',
+                'GROUP_CONCAT(IDENTITY(phc.category)) as categories'
+            )
+            ->innerJoin('p.productTranslations', 'pt')
+            ->innerJoin('p.productHasCategories', 'phc')
+            ->innerJoin('p.productHasImages', 'phi')
+            ->innerJoin('phi.image', 'i')
+            ->where('p.showHomePage = :showHomePage')
+            ->andWhere('pt.locale = :locale')
+            ->andWhere('phc.category IN (:categories)')
+            ->andWhere('i.isMain = :isMain')
+            ->setParameter('showHomePage', true)
+            ->setParameter('locale', $locale)
+            ->setParameter('categories', $categories)
+            ->setParameter('isMain', true)
+            ->groupBy('p.id');
+
+        return $query->getQuery()->getArrayResult();
     }
 }

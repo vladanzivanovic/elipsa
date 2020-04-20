@@ -1,10 +1,15 @@
 import CoreController from "../../../js/CoreController";
 import ShopPageController from "./ShopPageController";
+import ProductPageController from "./ProductPageController";
 
 let routes = [
     {
         name: 'site.shop_page',
         controller: ShopPageController,
+    },
+    {
+        name: 'site.product_page',
+        controller: ProductPageController,
     },
 ];
 

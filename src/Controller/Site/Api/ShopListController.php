@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Api;
 
-use App\Collectors\ShopPageCollectors;
+use App\Collector\ShopPageCollector;
 use App\Formatter\Site\ShopPageResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ShopListController extends AbstractController
 {
     /**
-     * @var ShopPageCollectors
+     * @var ShopPageCollector
      */
     private $collectors;
 
@@ -25,11 +25,11 @@ final class ShopListController extends AbstractController
     private $formatter;
 
     /**
-     * @param ShopPageCollectors        $collectors
+     * @param ShopPageCollector         $collectors
      * @param ShopPageResponseFormatter $formatter
      */
     public function __construct(
-        ShopPageCollectors $collectors,
+        ShopPageCollector $collectors,
         ShopPageResponseFormatter $formatter
     ) {
         $this->collectors = $collectors;

@@ -18,6 +18,7 @@ Encore
     .addStyleEntry('css/site/app', './assets/site/scss/style.scss')
     .addStyleEntry('css/site/pages/home', './assets/site/scss/Pages/_home.scss')
     .addStyleEntry('css/site/pages/shop', './assets/site/scss/Pages/_shop.scss')
+    .addStyleEntry('css/site/pages/product', './assets/site/scss/Pages/_product.scss')
     .addStyleEntry('css/admin/app',[
         './assets/admin/scss/style.scss',
     ])

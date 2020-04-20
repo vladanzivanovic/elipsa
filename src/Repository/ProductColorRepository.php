@@ -146,7 +146,8 @@ class ProductColorRepository extends ExtendedEntityRepository
             ->select(
                 'DISTINCT pc.hex',
                 'ct.slug',
-                'p.id as productId'
+                'p.id as productId',
+                'pc.id'
             )
             ->innerJoin('pc.colorTranslations', 'ct')
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.color = pc')

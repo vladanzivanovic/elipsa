@@ -54,7 +54,8 @@ class ImageRepository extends ExtendedEntityRepository
             )
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i AND phi.product = :product')
             ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')
-            ->setParameter('product', $product);
+            ->setParameter('product', $product)
+            ->orderBy('pc.id');
 
         return $query->getQuery()->getArrayResult();
     }

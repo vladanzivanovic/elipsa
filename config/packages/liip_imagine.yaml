@@ -22,6 +22,18 @@ liip_imagine :
             filters :
                 thumbnail  : { size : [370, 551], mode : outbound }
                 background : { size : [370, 551], position : center, color : '#ffffff' }
+        product_image :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [428, 547], mode : outbound }
+                background : { size : [428, 547], position : center, color : '#ffffff' }
+        product_image_thumb :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [111, 140], mode : outbound }
+                background : { size : [111, 140], position : center, color : '#ffffff' }
         grid_thumb :
             cache: ads_photos
             quality : 90

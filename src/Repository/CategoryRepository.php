@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\CategoryTranslation;
+use App\Entity\Product;
 use App\Model\DataTableModel;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
@@ -134,5 +135,28 @@ class CategoryRepository extends ExtendedEntityRepository
         $stmt->execute(['locale' => $locale]);
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * @param Product $product
+     * @param string  $locale
+     *
+     * @return array
+     */
+    public function getByProduct(Product $product, string $locale): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select(
+                'ct.title',
+                'ct.slug'
+            )
+            ->innerJoin('c.categoryTranslations', 'ct')
+            ->innerJoin('c.productHasCategories', 'phc')
+            ->where('ct.locale = :locale')
+            ->andWhere('phc.product = :product')
+            ->setParameter('locale', $locale)
+            ->setParameter('product', $product);
+
+        return $query->getQuery()->getArrayResult();
     }
 }
