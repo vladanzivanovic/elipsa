@@ -59,3 +59,17 @@ from_lowest_price: lower price first
 from_highest_price: higher price first
 on_sale: on sale
 first_new: new
+
+select.color: select color
+select.size: select size
+
+add_to_cart: add to cart
+
+tags: tags
+
+share_link: share link
+
+product.description: product description
+product.material_cleaning: material and cleaning
+
+related_products: related products

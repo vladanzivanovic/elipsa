@@ -133,34 +133,36 @@
                             <div class="fi-row">
                                 <div class="row">
                                     <div class="feature-pro-carousel owl-carousel">
+                                        {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                         {% for product in productCategory %}
-                                            <div class="col-xs-12">
-                                                <div class="single-featured-item">
-                                                    <div class="sfi-img">
-                                                        <a href="#"><img src="{{ product['image_link'] }}" alt="{{ default_alt_tag }}"></a>
-                                                        <div class="sfi-img-content">
-                                                            <ul class="clearfix">
-                                                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                                                <li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>
-                                                                <li><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="sfi-content">
-                                                        <div class="sfi-name-cat">
-                                                            <a class="sfi-name" href="#">{{ product['title'] }}</a>
-                                                            <span class="sfi-cat">T-shirt</span>
-                                                        </div>
-                                                        <div class="sfi-price-rating">
-                                                            <p class="sfi-price text-capitalize">{{ 'price' | trans }}: <span>{{ product['discount'] > 0 ? product['discount'] : product['price'] }}</span></p>
+                                            {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-xs-12') }}
+{#                                            <div class="col-xs-12">#}
+{#                                                <div class="single-featured-item">#}
+{#                                                    <div class="sfi-img">#}
+{#                                                        <a href="#"><img src="{{ product['image_link'] }}" alt="{{ default_alt_tag }}"></a>#}
+{#                                                        <div class="sfi-img-content">#}
+{#                                                            <ul class="clearfix">#}
+{#                                                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>#}
+{#                                                                <li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>#}
+{#                                                                <li><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a></li>#}
+{#                                                            </ul>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="sfi-content">#}
+{#                                                        <div class="sfi-name-cat">#}
+{#                                                            <a class="sfi-name" href="#">{{ product['title'] }}</a>#}
+{#                                                            <span class="sfi-cat">T-shirt</span>#}
+{#                                                        </div>#}
+{#                                                        <div class="sfi-price-rating">#}
+{#                                                            <p class="sfi-price text-capitalize">{{ 'price' | trans }}: <span>{{ product['discount'] > 0 ? product['discount'] : product['price'] }}</span></p>#}
 
-                                                            {% if product['discount'] > 0 %}
-                                                                <p class="sfi-old-price">-{{ product['price'] }}</p>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+{#                                                            {% if product['discount'] > 0 %}#}
+{#                                                                <p class="sfi-old-price">-{{ product['price'] }}</p>#}
+{#                                                            {% endif %}#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
                                         {% endfor %}
                                     </div>
                                 </div>

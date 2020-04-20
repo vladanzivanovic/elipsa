@@ -54,3 +54,16 @@ from_lowest_price: najjeftinije prvo
 from_highest_price: njaskuplje prvo
 on_sale: na rasprodaji
 first_new: najnoviji
+
+select.color: izaberite boju
+select.size: izberite veličinu
+add_to_cart: dodaj u korpu
+
+tags: tagovi
+
+share_link: Link za deljenje
+
+product.description: opis proizvoda
+product.material_cleaning: materijali i održavanje
+
+related_products: slični proizvodi

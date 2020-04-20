@@ -9,6 +9,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ShopPageResponseFormatter
 {
+    use FormatterTrait;
+
     /**
      * @var RouterInterface
      */
@@ -40,9 +42,7 @@ final class ShopPageResponseFormatter
         $sortMapping = $this->bag->get('shop')['sort_mapping'];
 
         $data['products']['data'] = array_map(function ($product) {
-
             $product['image_link_list'] = $this->router->generate('app.image_show', ['name' => $product['image'], 'filter' => 'list_thumb']);
-            $product['image_link_grid'] = $this->router->generate('app.image_show', ['name' => $product['image'], 'filter' => 'grid_thumb']);
 
             return $product;
         }, $data['products']['data']);
@@ -56,53 +56,5 @@ final class ShopPageResponseFormatter
         }
 
         return $data;
-    }
-
-    /**
-     * @param array $productColors
-     *
-     * @return array
-     */
-    private function formatColors(array $productColors): array
-    {
-        $formattedProduct = [];
-
-        foreach ($productColors as $productColor) {
-            $formattedProduct[$productColor['productId']][] = $productColor['hex'];
-        }
-
-        return $formattedProduct;
-    }
-
-    /**
-     * @param array $productSizes
-     *
-     * @return array
-     */
-    private function formatSizes(array $productSizes): array
-    {
-        $formattedProduct = [];
-
-        foreach ($productSizes as $productSize) {
-            $formattedProduct[$productSize['productId']][] = $productSize['size'];
-        }
-
-        return $formattedProduct;
-    }
-
-    /**
-     * @param array $productTags
-     *
-     * @return array
-     */
-    private function formatTags(array $productTags): array
-    {
-        $formattedProduct = [];
-
-        foreach ($productTags as $productTag) {
-            $formattedProduct[$productTag['productId']][] = $productTag['label'];
-        }
-
-        return $formattedProduct;
     }
 }

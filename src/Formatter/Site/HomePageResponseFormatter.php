@@ -10,6 +10,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class HomePageResponseFormatter
 {
+    use FormatterTrait;
+
     /**
      * @var RouterInterface
      */
@@ -43,6 +45,10 @@ final class HomePageResponseFormatter
 
         $data['banners'] = $this->formatBanners($data['banners']);
         $data['products'] = $this->formatProducts($data['categories'], $data['products']);
+
+        $data['product_colors'] = $this->formatColors($data['product_colors']);
+        $data['product_sizes'] = $this->formatSizes($data['product_sizes']);
+        $data['product_tags'] = $this->formatTags($data['product_tags']);
 
         return $data;
     }
@@ -82,7 +88,7 @@ final class HomePageResponseFormatter
                 $categoryArray = explode(',', $product['categories']);
 
                 if (in_array($category['id'], $categoryArray)) {
-                    $product['image_link'] = $this->router->generate('app.image_show', ['name' => $product['image'], 'filter' => 'list_thumb']);
+                    $product['image_link_list'] = $this->router->generate('app.image_show', ['name' => $product['image'], 'filter' => 'list_thumb']);
 
                     $formattedProducts[$category['slug']][] = $product;
                 }

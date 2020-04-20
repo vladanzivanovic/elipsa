@@ -57,6 +57,7 @@ class ProductSizeRepository extends ExtendedEntityRepository
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('ps.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->groupBy('ps.id')
         ;
 
         return $query->getQuery()->getArrayResult();

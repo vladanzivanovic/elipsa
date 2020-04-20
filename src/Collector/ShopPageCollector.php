@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Collectors;
+namespace App\Collector;
 
-use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
@@ -14,7 +13,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ShopPageCollectors
+final class ShopPageCollector
 {
     /**
      * @var ProductColorRepository
