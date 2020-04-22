@@ -93,6 +93,13 @@ class CategoryRepository extends ExtendedEntityRepository
      */
     public function getHomePageCategories(string $locale): array
     {
+        $subQuery = $this->_em->createQueryBuilder()
+            ->select('1')
+            ->from(Product::class, 'p')
+            ->innerJoin('p.productHasCategories', 'phc')
+            ->where('p.showHomePage = :showHomePage')
+            ->andWhere('phc.category = c');
+
         $query = $this->createQueryBuilder('c')
             ->select(
                 'c.id',
@@ -102,6 +109,7 @@ class CategoryRepository extends ExtendedEntityRepository
             ->innerJoin('c.categoryTranslations', 'ct')
             ->where('ct.locale = :locale')
             ->andWhere('c.showHomePage = :showHomePage')
+            ->andWhere('EXISTS ('.$subQuery->getDQL().')')
             ->setParameter('locale', $locale)
             ->setParameter('showHomePage', true);
 
