@@ -3,10 +3,35 @@
 @import "../Components/common-product";
 
 .mobile.home {
-  .home3-slider-container .nivo-directionNav > a {
-    height: 30px;
-    line-height: 30px;
-    width: 30px;
+  #home3_slider {
+    overflow: visible;
+
+    .nivo-caption {
+      position: relative;
+
+      .slide3-text {
+        * {
+          font-size: 14px !important;
+          line-height: 14px !important;
+          margin-bottom: 2px !important;
+        }
+
+        .cap-view {
+          margin-top: 20px !important;
+          a {
+            font-size: 15px !important;
+            padding: 5px 10px;
+            border-radius: 0;
+          }
+        }
+      }
+    }
+
+    .nivo-directionNav > a {
+      height: 30px;
+      line-height: 30px;
+      width: 30px;
+    }
   }
 
   .home3-banner-area {
