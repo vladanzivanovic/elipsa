@@ -52,6 +52,18 @@
                 {% if banners[1] is defined %}
                     {% set firstBanner = banners[1] %}
                     <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="h3b-single-banner-4 h3b-single-banner">
+                            <div class="h3b-img">
+                                <img src="{{ firstBanner['image_link'] }}" alt="">
+                            </div>
+                            <div class="h3b-content-banner-4 h3b-content">
+                                <h3>{{ firstBanner['description'][0] is defined ? firstBanner['description'][0] : '&nbsp;' }}</h3>
+                                <h2>{{ firstBanner['description'][0] is defined ? firstBanner['description'][1] : '&nbsp;' }}</h2>
+                                <a href="{{ firstBanner['button_link'] }}">{{ firstBanner['button_text'] }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
                         <div class="h3b-single-banner-1 h3b-single-banner">
                             <div class="h3b-img">
                                 <img src="{{ firstBanner['image_link'] }}" alt="">
@@ -101,8 +113,8 @@
                             </div>
                             <div class="h3b-content-banner-4 h3b-content">
                                 <h3>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][0] : '&nbsp;' }}</h3>
-                                <h2>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][0] : '&nbsp;' }}</h2>
-                                <a href="{{ thirdBanner['button_link'] }}">{{ fourthBanner['button_text'] }}</a>
+                                <h2>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][1] : '&nbsp;' }}</h2>
+                                <a href="{{ fourthBanner['button_link'] }}">{{ fourthBanner['button_text'] }}</a>
                             </div>
                         </div>
                     </div>
@@ -119,7 +131,7 @@
                     <div class="col-xs-12">
                         <div class="home-2-feature-item-tab-control">
                             <ul class="fi-tab">
-                                {% for category in categories %}
+                                {% for category in home_categories %}
                                     <li class="{{ loop.first ? 'active' : '' }}"><a data-toggle="tab" href="#{{ category.slug }}">{{ category.title }}</a></li>
                                 {% endfor %}
                             </ul>

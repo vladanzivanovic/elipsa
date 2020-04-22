@@ -93,7 +93,7 @@ final class HomePageCollector
         return [
             'sliders'           => $sliders,
             'banners'           => $banners,
-            'categories'        => $categories,
+            'home_categories'   => $categories,
             'products'          => $products,
             'product_colors'    => $productColors,
             'product_sizes'     => $productSizes,

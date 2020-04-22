@@ -44,7 +44,7 @@ final class HomePageResponseFormatter
         }, $data['sliders']);
 
         $data['banners'] = $this->formatBanners($data['banners']);
-        $data['products'] = $this->formatProducts($data['categories'], $data['products']);
+        $data['products'] = $this->formatProducts($data['home_categories'], $data['products']);
 
         $data['product_colors'] = $this->formatColors($data['product_colors']);
         $data['product_sizes'] = $this->formatSizes($data['product_sizes']);
