@@ -63,20 +63,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="h3b-single-banner-1 h3b-single-banner">
-                            <div class="h3b-img">
-                                <img src="{{ firstBanner['image_link'] }}" alt="">
-                            </div>
-                            <div class="h3b-content-banner-1 h3b-content">
-                                {% set description = firstBanner['description'] %}
-                                <h4>{{ description[0] is defined ? description[0] : '&nbsp;' }}</h4>
-                                <h3>{{ description[1] is defined ? description[1] }} <br />{{ description[2] is defined ? description[2] : '&nbsp;' }}</h3>
-                                <p>{{ description[3] is defined ? description[3] : '&nbsp;' }}</p>
-                                <a href="{{ firstBanner['button_link'] }}">{{ firstBanner['button_text'] }}</a>
-                            </div>
-                        </div>
-                    </div>
                 {% endif %}
                 <div class="col-md-4 hidden-sm col-xs-12 home-middle-banners">
                     {% if banners[2] is defined %}
