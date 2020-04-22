@@ -1,0 +1,68 @@
+{% import 'Site/Macros/sideBar.html.twig' as childNavList %}
+
+<div class="shop-sidebar-area {{ filterClass }}">
+    <div class="sidebar-widget widget-categories">
+        <h4 class="sidebar-title">{{ 'categories' | trans }}</h4>
+        {% for main in categories %}
+            <div class="sidebar-box">
+                {% if main.children is defined %}
+                    <button class="sidebar-accordion-button" data-toggle="collapse" data-target="#{{ main.id }}">{{ main.title }}</button>
+                    <ul class="sidebar-list sidebar-list__categories collapse in" id="{{ main.id}}">
+                        {% for child in main.children %}
+                            <li>
+                                {% if child.children is defined %}
+                                    {{ childNavList.childCategory(child, search.categories is defined ? search.categories : []) }}
+                                {% else %}
+                                    <a class="category-btn {{ search.categories is defined and child.slug in search.categories ? 'active' : '' }}" href="#" data-search-name="categories" data-search="{{ child.slug }}">{{ child.title }}</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <button class="sidebar-category-button category-btn {{ search.categories is defined and main.slug in search.categories ? 'active' : '' }}" data-search-name="categories" data-search="{{ main.slug }}">{{ main.title }}</button>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="sidebar-widget widget-shop-by">
+        <h4 class="sidebar-title">{{ 'filters' | trans }}</h4>
+        <div class="sidebar-box">
+            <span class="sidebar-box-title">{{ 'price' | trans }}</span>
+            <div class="priceslider">
+                <p>
+                    <input type="text" id="shop-amount" readonly>
+                </p>
+                <div id="shop-slider-range"></div>
+            </div>
+        </div>
+        <div class="sidebar-box">
+            <span class="sidebar-box-title">{{ 'color' | trans }}</span>
+            <ul class="sidebar-list">
+                {% for color in colors %}
+                    <li><a class="color-box color-btn {{ search.color is defined and color.slug in search.color ? 'active' : '' }}" href="#" data-search-name="color" data-search="{{ color.slug }}"><span class="color" style="background-color: {{ color.hex }}"></span> {{ color.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sidebar-box">
+            <span class="sidebar-box-title">{{ 'size' | trans }}</span>
+            <ul class="sidebar-list">
+                {% for size in sizes %}
+                    <li><a href="#" class="size-btn {{ search.size is defined and size.title in search.size ? 'active' : '' }}" data-search-name="size" data-search="{{ size.title }}">{{ size.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{#    <div class="sidebar-widget widget-banner">#}
+{#        <div class="sidebar-banner-box">#}
+{#            <div class="sbb-img">#}
+{#                <img src="img/banner/sidebar.jpg" alt="">#}
+{#            </div>#}
+{#            <div class="sbb-content">#}
+{#                <h5>Hot promotion</h5>#}
+{#                <h2>Save up to <span>35%</span> off</h2>#}
+{#                <p>Lorem Ipsum has been the industry's.</p>#}
+{#                <a href="#">-View more-</a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+</div>

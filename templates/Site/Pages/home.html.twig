@@ -1,5 +1,7 @@
 {% extends ('Site/base.html.twig') %}
 
+{% block bodyClass %}home{% endblock %}
+
 {% block content %}
     <!-- home2-slider-start -->
     <div class="home3-slider-container">
@@ -64,7 +66,7 @@
                         </div>
                     </div>
                 {% endif %}
-                <div class="col-md-4 hidden-sm col-xs-12">
+                <div class="col-md-4 hidden-sm col-xs-12 home-middle-banners">
                     {% if banners[2] is defined %}
                         {% set secondBanner = banners[2] %}
                         <div class="h3b-single-banner-2 h3b-single-banner">

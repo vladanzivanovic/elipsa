@@ -64,6 +64,16 @@ class ShopPageController {
 
             this.toggleFilter(event, 'price', ui.values.join('-'), ui.values.join('-'), true);
         });
+
+        this.mapper.filterBtnOpen.on('click touchend', e => {
+            $('body').addClass('disable-scroll');
+            document.getElementById("myNav").style.height = "100%";
+        });
+
+        this.mapper.filterBtnClose.on('click touchend', e => {
+            $('body').removeClass('disable-scroll');
+            document.getElementById("myNav").style.height = "0%";
+        })
     }
 
     toggleFilter(e, name, value, text, onlyOne) {
@@ -85,6 +95,8 @@ class ShopPageController {
         const apiUrl = this.router.generateUrl();
 
         this.shopService.applyFilter(apiUrl);
+
+        this.mapper.filterBtnClose.click();
     }
 }
 

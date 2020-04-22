@@ -1,3 +1,19 @@
 @import "~nivo-slider/nivo-slider.css";
 @import "~owl.carousel";
 @import "../Components/common-product";
+
+.mobile.home {
+  .home3-slider-container .nivo-directionNav > a {
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+  }
+
+  .home3-banner-area {
+    padding-bottom: 20px;
+
+    .home-middle-banners {
+      margin: 10px 0;
+    }
+  }
+}

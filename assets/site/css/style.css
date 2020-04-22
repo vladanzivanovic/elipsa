@@ -33,7 +33,7 @@ Version      : 1.0
     7. Cart Page
     8. Checkout
     9. Wishlist
-    10. Order Tracker
+    10. ShopOrder Tracker
     11. My Account
     12. About Us
     13. Blog
@@ -85,7 +85,7 @@ div#preloader {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 10000;
 }
 
 .menu-area.navbar-fixed-top {
@@ -5035,11 +5035,11 @@ footer {
 
 .related-pro-carousel .owl-nav {}
 
-.related-pro-carousel .owl-nav > div {
-    background: #ed1d7f none repeat scroll 0 0;
-    color: #fff;
+.related-pro-carousel .owl-nav > div, .related-pro-carousel .owl-nav > button {
+    background: #ed1d7f none repeat scroll 0 0 !important;
+    color: #fff !important;
     height: 70px;
-    line-height: 70px;
+    line-height: 70px !important;
     position: absolute;
     text-align: center;
     top: 30%;
@@ -5829,7 +5829,7 @@ p.cart_product_name a {
 /*----------------------------------------*/
 
 
-/*  10. Order Tracker
+/*  10. ShopOrder Tracker
 /*----------------------------------------*/
 
 .order-tracker-area {

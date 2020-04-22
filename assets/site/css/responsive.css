@@ -631,13 +631,14 @@ Version      : 1.0
     /*home1*/
     .header-top-left {
         margin-bottom: 20px;
+        text-align: center !important;
     }
     .logo {
         margin-right: 0;
     }
     .header-top-right {
         margin-bottom: 10px;
-        text-align: center;
+        text-align: center !important;
     }
     .login-or-register {
         margin-right: 10px;
@@ -793,6 +794,7 @@ Version      : 1.0
     .show-product select {
         margin-bottom: 30px;
         width: 100%;
+        float: none;
     }
     .shop-pagination-area .pagination-showing {
         float: none;
@@ -822,13 +824,13 @@ Version      : 1.0
         margin-top: 15px;
     }
     .product-tab-content {
-        width: 100%;
+        width: 100% !important;
     }
     .product-tab-menu {
-        float: left;
-        margin-top: 10px;
-        text-align: center;
-        width: 100%;
+        float: left !important;
+        margin-top: 10px !important;
+        text-align: center !important;
+        width: 100% !important;
     }
     .product-tab-menu .product-tab li {
         display: inline-block;

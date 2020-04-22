@@ -9,6 +9,8 @@ class ShopPageMapper {
         this.selectedCriteria  = $('.selected-filter-btn');
         this.priceRange        = $('#shop-slider-range');
         this.amountPrice       = $('#shop-amount');
+        this.filterBtnOpen     = $('#filter-btn-open');
+        this.filterBtnClose    = $('#filter-btn-close');
     }
 }
 

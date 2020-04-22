@@ -47,7 +47,7 @@ final class BannerEditController extends AbstractController
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function insert(Request $request): JsonResponse
     {

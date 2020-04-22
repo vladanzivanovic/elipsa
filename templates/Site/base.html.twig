@@ -33,7 +33,7 @@
     <![endif]-->
 </head>
 
-<body data-spy="scroll" data-target="#scroll-menu" data-offset="100" class="{% block bodyClass %}{% endblock %}">
+<body data-spy="scroll" data-target="#scroll-menu" data-offset="100" class="{{ is_mobile() or is_tablet() ? 'mobile' : '' }} {% block bodyClass %}{% endblock %}">
     <div id="preloader"></div>
     {% set categories = navigation_menu(app.request.locale) %}
 

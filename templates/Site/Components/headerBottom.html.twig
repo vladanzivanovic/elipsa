@@ -21,13 +21,13 @@
                                             <div class="col-md-4">
                                                 <div class="mega-menu-part">
                                                     <div class="mega-menu-content">
-                                                        <a class="mega-menu-title" href="#">{{ main['title'] }}</a>
-                                                        {% if main['children'] is defined %}
+                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ main.slug }) }}">{{ main.title }}</a>
+                                                        {% if main.children is defined %}
                                                             <ul>
-                                                                {% for child in main['children'] %}
-                                                                    <li class="sub-menu-holder"><a href="#">{{ child['title'] }}</a>
-                                                                        {% if child['children'] is defined %}
-                                                                           {{ childNavList.childNav(child['children']) }}
+                                                                {% for child in main.children %}
+                                                                    <li class="sub-menu-holder"><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ child.slug }) }}">{{ child.title }}</a>
+                                                                        {% if child.children is defined %}
+                                                                           {{ childNavList.childNav(child.children) }}
                                                                         {% endif %}
                                                                     </li>
                                                                 {% endfor %}
@@ -92,16 +92,16 @@
                                 </ul>
                             </li>
                             <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
-                            <li><a href="list-page.html">{{ 'navi.shop' | trans }}</a>
+                            <li><a href="{{ path('site.shop_page') }}">{{ 'navi.shop' | trans }}</a>
                                 <ul>
                                     {% for main in categories %}
-                                        <li><a href="04-Shop-Grid-Left-Sidebar.html">{{ main['title'] }}</a>
-                                            {% if main['children'] is defined %}
+                                        <li><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ main.slug }) }}">{{ main.title }}</a>
+                                            {% if main.children is defined %}
                                                 <ul>
-                                                    {% for child in main['children'] %}
-                                                        <li><a href="05-Shop-Grid-Right-Sidebar.html">{{ child['title'] }}</a>
-                                                            {% if child['children'] is defined %}
-                                                                {{ childNavList.mobileChildNav(child['children']) }}
+                                                    {% for child in main.children %}
+                                                        <li><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ child.slug }) }}">{{ child.title }}</a>
+                                                            {% if child.children is defined %}
+                                                                {{ childNavList.mobileChildNav(child.children) }}
                                                             {% endif %}
                                                         </li>
                                                     {% endfor %}

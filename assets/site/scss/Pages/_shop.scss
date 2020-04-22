@@ -1,7 +1,14 @@
 @import "~jquery-ui/themes/base/slider.css";
 @import "../Components/common-product";
+@import "../Components/filter";
 
 .shop-page {
+  .home3-slider-container .nivo-directionNav > a {
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+  }
+
   .sidebar-box {
     margin-top: 10px;
     .sidebar-category-button {
@@ -103,6 +110,40 @@
 
     > .tab-content {
       margin-top: 20px;
+    }
+  }
+
+  .shop-menu {
+    text-align: right;
+
+    label {
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0;
+      color: #222222;
+    }
+
+    select {
+      margin-right: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) and (min-width: 240px) {
+  .shop-left-sidebar-area {
+    padding-top: 20px;
+  }
+  .shop-menu {
+    display: flex;
+    justify-content: space-between;
+    text-align: left !important;
+
+    > div {
+      margin-right: 15px;
+
+      select {
+        padding: 0 10px;
+      }
     }
   }
 }
