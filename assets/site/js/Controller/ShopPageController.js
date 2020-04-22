@@ -34,13 +34,13 @@ class ShopPageController {
             this.toggleFilter(e, 'color', e.currentTarget.dataset.search, e.currentTarget.innerText, false);
         });
         this.mapper.size.on('click touchend', e => {
-            this.toggleFilter(e, 'size', e.currentTarget, e.currentTarget.innerText, false);
+            this.toggleFilter(e, 'size', e.currentTarget.innerText, e.currentTarget.innerText, false);
         });
         this.mapper.sortOption.on('change', e => {
-            this.toggleFilter(e, 'sort', e.currentTarget.value, null, false);
+            this.toggleFilter(e, 'sort', e.currentTarget.value, null, true);
         });
         this.mapper.limit.on('change', e => {
-            this.toggleFilter(e, 'limit', e.currentTarget.value, null, false);
+            this.toggleFilter(e, 'limit', e.currentTarget.value, null, true);
         });
 
         $(document).on('click touchend', '.selected-filter-btn', e => {
