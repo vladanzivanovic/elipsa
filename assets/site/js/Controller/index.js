@@ -19,6 +19,7 @@ $(document).ready(() => {
     let core = new CoreController();
 
     core.showFlashMsg();
+    core.siteMobileMenu();
     if (route) {
         new route.controller();
     }
