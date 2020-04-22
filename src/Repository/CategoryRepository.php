@@ -98,6 +98,7 @@ class CategoryRepository extends ExtendedEntityRepository
             ->from(Product::class, 'p')
             ->innerJoin('p.productHasCategories', 'phc')
             ->where('p.showHomePage = :showHomePage')
+            ->andWhere('p.status = :activeStatus')
             ->andWhere('phc.category = c');
 
         $query = $this->createQueryBuilder('c')
@@ -111,7 +112,8 @@ class CategoryRepository extends ExtendedEntityRepository
             ->andWhere('c.showHomePage = :showHomePage')
             ->andWhere('EXISTS ('.$subQuery->getDQL().')')
             ->setParameter('locale', $locale)
-            ->setParameter('showHomePage', true);
+            ->setParameter('showHomePage', true)
+            ->setParameter('activeStatus', Product::STATUS_ACTIVE);
 
         return $query->getQuery()->getArrayResult();
     }

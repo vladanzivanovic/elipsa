@@ -235,10 +235,12 @@ class ProductRepository extends ExtendedEntityRepository
             ->andWhere('pt.locale = :locale')
             ->andWhere('phc.category IN (:categories)')
             ->andWhere('i.isMain = :isMain')
+            ->andWhere('p.status = :activeStatus')
             ->setParameter('showHomePage', true)
             ->setParameter('locale', $locale)
             ->setParameter('categories', $categories)
             ->setParameter('isMain', true)
+            ->setParameter('activeStatus', Product::STATUS_ACTIVE)
             ->groupBy('p.id');
 
         return $query->getQuery()->getArrayResult();
