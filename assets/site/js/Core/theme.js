@@ -482,8 +482,19 @@ require('webpack-jquery-ui');
     hide-login-register
     -----------------------*/
     document.getElementById("login_register_content").style.display = "none";
-    $("#login_register").on('click', function() {
-        $("#login_register_content").fadeToggle("slow");
+    $("#login_register").on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        $.each($('.open'), (index, element) => {
+            if (!$(e.currentTarget).closest($(element)).length) {
+                $(element).fadeOut("slow");
+                $(element).removeClass('open');
+            }
+        })
+
+        $("#login_register_content").fadeIn("slow");
+        $('#login_register_content').addClass('open');
     });
 
 
@@ -491,9 +502,29 @@ require('webpack-jquery-ui');
     hide-show-sign-in-form
     -----------------------*/
     document.getElementById("my_cart").style.display = "none";
-    $("#top_cart").on('click', function() {
-        $("#my_cart").fadeToggle("slow");
+    $("#top_cart").on('click touchend', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        $.each($('.open'), (index, element) => {
+            if (!$(e.currentTarget).closest($(element)).length) {
+                $(element).fadeOut("slow");
+                $(element).removeClass('open');
+            }
+        })
+
+        $("#my_cart").fadeIn("slow");
+        $('#my_cart').addClass('open');
     });
+
+    $(document).on('click touchend', e => {
+        $.each($('.open'), (index, element) => {
+            if (!$(e.target).closest($(element)).length) {
+                $(element).fadeOut("slow");
+                $(element).removeClass('open');
+            }
+        })
+    })
 
 
     /*-----------------------

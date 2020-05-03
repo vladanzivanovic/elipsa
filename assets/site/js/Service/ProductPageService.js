@@ -40,6 +40,26 @@ class ProductPageService {
         $('.color-btn.active').removeClass('active');
         colorElm.addClass('active');
     }
+
+    toggleActiveSize(elm) {
+        $('.size-btn.active').removeClass('active');
+
+        $(elm).addClass('active');
+    }
+
+    toggleActivationShopButton() {
+        const color = $('.color-btn.active');
+        const size = $('.size-btn.active');
+        const quantity = this.mapper.quantity.val();
+
+        if (color.length > 0 && size.length > 0 && quantity > 0) {
+            this.mapper.addBtn.removeClass('disabled');
+
+            return true;
+        }
+
+        this.mapper.addBtn.addClass('disabled');
+    }
 }
 
 export default ProductPageService;

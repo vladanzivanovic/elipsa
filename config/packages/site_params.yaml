@@ -1,4 +1,6 @@
 parameters:
+  site_info:
+    url: '%env(resolve:SITE_URL)%'
   shop:
     list_sort:
       1: most_selled

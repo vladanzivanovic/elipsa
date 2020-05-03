@@ -1,6 +1,8 @@
-import CoreController from "../../../js/CoreController";
+import CoreController from "../CoreController";
 import ShopPageController from "./ShopPageController";
 import ProductPageController from "./ProductPageController";
+import CheckoutPageController from "./CheckoutPageController";
+import CartPageController from "./CartPageController";
 
 let routes = [
     {
@@ -11,6 +13,14 @@ let routes = [
         name: 'site.product_page',
         controller: ProductPageController,
     },
+    {
+        name: 'site.cart_page',
+        controller: CartPageController,
+    },
+    {
+        name: 'site.checkout_page',
+        controller: CheckoutPageController,
+    },
 ];
 
 $(document).ready(() => {
@@ -18,8 +28,9 @@ $(document).ready(() => {
 
     let core = new CoreController();
 
-    core.showFlashMsg();
+    core.baseCore.showFlashMsg();
     core.siteMobileMenu();
+
     if (route) {
         new route.controller();
     }

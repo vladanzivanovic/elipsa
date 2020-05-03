@@ -15,6 +15,9 @@ class ShopOrder
     public const STATUS_NEW = 1;
     public const STATUS_COMPLETED = 2;
 
+    public const PAYMENT_TYPE_ON_DELIVERING = 1;
+    public const PAYMENT_TYPE_CREDIT_CARD = 2;
+
     use TimestampableEntity;
 
     /**
@@ -45,9 +48,30 @@ class ShopOrder
     private $shippingAddress;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="orderId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="orderId", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $orderProducts;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="shopOrders", cascade={"persist", "remove"})
+     */
+    private $user;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $paymentType;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $note;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PromotionCoupon", inversedBy="shopOrders")
+     */
+    private $coupon;
 
     public function __construct()
     {
@@ -134,6 +158,70 @@ class ShopOrder
                 $orderProduct->setOrderId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPaymentType(): ?int
+    {
+        return $this->paymentType;
+    }
+
+    /**
+     * @param int|null $paymentType
+     *
+     * @return $this
+     */
+    public function setPaymentType(?int $paymentType): self
+    {
+        $this->paymentType = $paymentType;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param string|null $note
+     *
+     * @return $this
+     */
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getCoupon(): ?PromotionCoupon
+    {
+        return $this->coupon;
+    }
+
+    public function setCoupon(?PromotionCoupon $coupon): self
+    {
+        $this->coupon = $coupon;
 
         return $this;
     }

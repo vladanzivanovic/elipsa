@@ -59,4 +59,51 @@ class ImageRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param Product $product
+     *
+     * @return Image
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getMainByProduct(Product $product): Image
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i'
+            )
+            ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i AND phi.product = :product')
+            ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')
+            ->where('i.isMain = :isMain')
+            ->setParameter('product', $product)
+            ->setParameter('isMain', true)
+            ->orderBy('pc.id');
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Product      $product
+     *
+     * @param ProductColor $color
+     *
+     * @return Image
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getFirstByColorAndProduct(Product $product, ProductColor $color): Image
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i'
+            )
+            ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i AND phi.product = :product')
+            ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')
+            ->innerJoin('phi.color', 'color')
+            ->where('color = :color')
+            ->setParameter('product', $product)
+            ->setParameter('color', $color)
+            ->setMaxResults(1);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

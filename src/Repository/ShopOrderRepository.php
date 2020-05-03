@@ -12,39 +12,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method ShopOrder[]    findAll()
  * @method ShopOrder[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ShopOrderRepository extends ServiceEntityRepository
+class ShopOrderRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ShopOrder::class);
     }
-
-    // /**
-    //  * @return ShopOrder[] Returns an array of ShopOrder objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ShopOrder
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

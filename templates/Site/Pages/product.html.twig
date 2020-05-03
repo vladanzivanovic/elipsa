@@ -65,15 +65,15 @@
                             <span class="letter-capitalize">{{ 'select.size' | trans }}:</span>
                             <ul>
                                 {% for size in sizes %}
-                                    <li><a href="#">{{ size.size }}</a></li>
+                                    <li><a href="#" class="size-btn">{{ size.size }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="spd-add-cart">
                             <p class="quantity cart-plus-minus">
-                                <input type="text" value="1" />
+                                <input type="text" id="product-quantity" value="1" />
                             </p>
-                            <button type="button" class="spd-add-to hvr-bs letter-capitalize">{{ 'add_to_cart' | trans }}</button>
+                            <button type="button" class="spd-add-to hvr-bs letter-capitalize disabled">{{ 'add_to_cart' | trans }}</button>
                         </div>
                         <div class="spd-meta">
                             <div class="spd-meta-type">
@@ -247,4 +247,9 @@
 
 {% block pageStyleSheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/product.css') }}"/>
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const SLUG = '{{ app.request.attributes.get('slug') }}';
+    </script>
 {% endblock %}

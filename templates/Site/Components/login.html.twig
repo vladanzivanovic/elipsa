@@ -55,48 +55,32 @@
             </div>
         </div>
     </div>
+
+    {% set cartData = cart_list(app.request.locale, app.session) %}
     <div class="top-cart">
-        <span id="top_cart"><i class="fa fa-shopping-basket"></i>Korpa <span class="cart-number">(0)</span></span>
+        <span id="top_cart" tabindex="3" class="letter-capitalize"><i class="fa fa-shopping-basket"></i><span class="letter-capitalize d-inline-block">{{ 'cart.name' | trans }}</span> <span class="cart-number">(<span class="cart-length">{{ cartData.products | length }}</span>)</span></span>
         <div class="my-cart" id="my_cart">
             <div class="my-cart-products">
-                {#                                <div class="single-mcp clearfix">#}
-                {#                                    <div class="single-mcp-img">#}
-                {#                                        <img src="cart/azra_cart.jpg" alt="">#}
-                {#                                    </div>#}
-                {#                                    <div class="single-mcp-content">#}
-                {#                                        <a class="mcp-product-name" href="#">Azra</a>#}
-                {#                                        <span class="mcp-pro-quantity">1 x <span class="mcp-pro-price">$50</span></span>#}
-                {#                                    </div>#}
-                {#                                    <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>#}
-                {#                                </div>#}
-                {#                                <div class="single-mcp clearfix">#}
-                {#                                    <div class="single-mcp-img">#}
-                {#                                        <img src="cart/elen_cart.jpg" alt="">#}
-                {#                                    </div>#}
-                {#                                    <div class="single-mcp-content">#}
-                {#                                        <a class="mcp-product-name" href="#">Elen</a>#}
-                {#                                        <span class="mcp-pro-quantity">1 x <span class="mcp-pro-price">$50</span></span>#}
-                {#                                    </div>#}
-                {#                                    <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>#}
-                {#                                </div>#}
-                {#                                <div class="single-mcp clearfix">#}
-                {#                                    <div class="single-mcp-img">#}
-                {#                                        <img src="cart/lula_cart.jpg" alt="">#}
-                {#                                    </div>#}
-                {#                                    <div class="single-mcp-content">#}
-                {#                                        <a class="mcp-product-name" href="#">Lula</a>#}
-                {#                                        <span class="mcp-pro-quantity">1 x <span class="mcp-pro-price">$50</span></span>#}
-                {#                                    </div>#}
-                {#                                    <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>#}
-                {#                                </div>#}
+                {% for product in cartData.products %}
+                    <div class="single-mcp clearfix single-product" data-id="{{ product.id }}">
+                        <div class="single-mcp-img">
+                            <img src="{{ product.image_link }}" alt="">
+                        </div>
+                        <div class="single-mcp-content">
+                            <a class="mcp-product-name" href="#">{{ product.name }}</a>
+                            <span class="mcp-pro-quantity"><span class="quantity-number">{{ product.quantity }}</span> x <span class="mcp-pro-price">{{ product.discount > 0 ? product.discount : product.price }} RSD</span></span>
+                        </div>
+                        <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>
+                    </div>
+                {% endfor %}
             </div>
             <div class="my-cart-total-cost">
-                <span>Total cost</span>
-                <span class="cost">$500</span>
+                <span class="letter-capitalize">{{ 'cart.total_products' | trans }}</span>
+                <span class="cost"><span class="cost__number">{{ cartData.total }}</span> RSD</span>
             </div>
             <div class="viewcart-checkout">
-                <a class="viewcart" href="#">View cart</a>
-                <a class="checkout" href="#">Check out</a>
+                <a class="viewcart letter-capitalize" href="{{ path('site.cart_page') }}">{{ 'cart.view' | trans }}</a>
+                <a class="checkout letter-capitalize" href="{{ path('site.checkout_page') }}">{{ 'cart.checkout' | trans }}</a>
             </div>
         </div>
     </div>

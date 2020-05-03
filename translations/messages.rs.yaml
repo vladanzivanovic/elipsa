@@ -67,3 +67,52 @@ product.description: opis proizvoda
 product.material_cleaning: materijali i održavanje
 
 related_products: slični proizvodi
+
+cart.name: korpa
+cart.total_products: ukupno
+cart.total_shipping: ukupno sa poštarinom
+cart.view: pogledaj korpu
+cart.checkout: naruči
+cart.personal_data: vaši podaci
+cart.order_complete: završi narudžbinu
+cart.continue_shopping: nastavi kupovinu
+cart.update: osveži korpu
+cart.next_step: sledeći korak
+cart.shipping: poštarina
+cart.empty: vaša korpa je prazna
+cart.total_cost: iznos vaše korpe
+cart.promo_coupon: promotivni kod
+cart.promo_coupon_text: unesite promotivni kod ukoliko ga imate.
+cart.add_coupon_btn: dodaj kod
+
+cart.table.image: slika
+cart.table.product_name: proizvod
+cart.table.price: cena
+cart.table.quantity: količina
+cart.table.total: ukupno
+
+title.your_cart: Vaša korpa
+title.cart_personal_data: Vaša korpa - unos ličnih podataka
+
+checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
+checkout.billing_address: podaci o platiocu
+checkout.order_notes: dodatni tekst o naružbini
+checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
+checkout.your_order: vaša narudžbina
+checkout.product_total: proizvodi <span>ukupno</span>
+checkout.create_account: kreirajte nalog
+checkout.payment.by_taking: pouzećem
+checkout.paymeny.credit_card: karticom
+checkout.complete_order: završi narudžbinu
+
+country: država
+first_name: ime
+last_name: prezime
+address: adresa
+city: mesto
+zip_code: poštanski broj
+email: email adresa
+mobile_telephone: mobilni telefon
+create_account: napravite nalog
+password: lozinka
+

@@ -46,12 +46,12 @@ liip_imagine :
             filters :
                 thumbnail  : { size : [370, 200], mode : outbound }
                 background : { size : [370, 200], position : center, color : '#ffffff' }
-        index_thumb_category :
+        cart_thumb :
             cache: ads_photos
             quality : 90
             filters :
-                thumbnail: { size: [476, 318], mode: outbound }
-                background: { size: [476, 318], position: center, color: '#ffffff' }
+                thumbnail: { size: [96, 107], mode: outbound }
+                background: { size: [96, 107], position: center, color: '#ffffff' }
         category_single:
             cache: ads_photos
             quality : 100

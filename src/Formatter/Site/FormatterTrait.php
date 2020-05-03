@@ -4,8 +4,6 @@ namespace App\Formatter\Site;
 
 trait FormatterTrait
 {
-
-
     /**
      * @param array $productColors
      *

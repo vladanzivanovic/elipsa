@@ -24,13 +24,6 @@ class CoreController {
         }
     }
 
-    siteMobileMenu() {
-        $('nav#mobile_menu_active').meanmenu({
-            meanScreenWidth: "991",
-            meanMenuContainer: '.mobile-menu-area .container',
-        });
-    }
-
     [Private]() {
         let Private = {};
 

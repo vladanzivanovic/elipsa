@@ -72,11 +72,6 @@ class EmailModel
     private $script;
 
     /**
-     * @var string
-     */
-    private $body;
-
-    /**
      * @var string|null
      */
     private $errorMsg = null;
@@ -118,7 +113,7 @@ class EmailModel
      */
     public function setTemplate(string $template): void
     {
-        $this->template = $template;
+        $this->template = $template.'.html.twig';
     }
 
     /**
@@ -263,22 +258,6 @@ class EmailModel
     public function getScript(): string
     {
         return $this->script;
-    }
-
-    /**
-     * @param string $body
-     */
-    public function setBody(string $body): void
-    {
-        $this->body = $body;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBody(): string
-    {
-        return $this->body;
     }
 
     /**

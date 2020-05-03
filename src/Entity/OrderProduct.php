@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderProductRepository")
@@ -26,17 +27,23 @@ class OrderProduct
 
     /**
      * @ORM\Column(type="string", length=5)
+     *
+     * @Assert\NotBlank(message="product.size")
      */
     private $size;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductColor", inversedBy="orderProducts")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank(message="product.color")
      */
     private $color;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="product.quantity")
+     * @Assert\Positive(message="product.quantity_positive_number")
      */
     private $quantity;
 
@@ -46,7 +53,7 @@ class OrderProduct
     private $price;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProductTranslation", mappedBy="orderProduct", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderProductTranslation", mappedBy="orderProduct", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $orderProductTranslations;
 
@@ -60,6 +67,17 @@ class OrderProduct
      * @ORM\Column(type="string", length=255)
      */
     private $code;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Image")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $discount;
 
     public function __construct()
     {
@@ -182,6 +200,30 @@ class OrderProduct
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?int
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?int $discount): self
+    {
+        $this->discount = $discount;
 
         return $this;
     }

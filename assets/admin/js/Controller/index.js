@@ -13,6 +13,9 @@ import SliderEditController from "./SliderEditController";
 import SliderController from "./SliderController";
 import HomeBannersController from "./HomeBannersController";
 import BannerEditController from "./BannerEditController";
+import SettingsPageController from "./SettingsPageController";
+import CouponsController from "./CouponsController";
+import CouponsEditController from "./CouponsEditController";
 
 let routes = [
     {
@@ -98,6 +101,22 @@ let routes = [
     {
         name: 'admin.edit_banner_page',
         controller: BannerEditController,
+    },
+    {
+        name: 'admin.settings_page',
+        controller: SettingsPageController,
+    },
+    {
+        name: 'admin.coupons',
+        controller: CouponsController,
+    },
+    {
+        name: 'admin.add_coupon_page',
+        controller: CouponsEditController,
+    },
+    {
+        name: 'admin.edit_coupon_page',
+        controller: CouponsEditController,
     },
 ];
 

@@ -1,3 +1,5 @@
+import ProductPageHandler from "../Handler/ProductPageHandler";
+
 require('@fancyapps/fancybox');
 
 import ProductPageMapper from "../Mapper/ProductPageMapper";
@@ -7,6 +9,7 @@ class ProductPageController {
     constructor() {
         this.mapper = ProductPageMapper;
         this.service = new ProductPageService();
+        this.handler = new ProductPageHandler();
 
         this.service.showImagesByColor($('.color-btn.active'));
 
@@ -19,6 +22,29 @@ class ProductPageController {
             e.stopPropagation();
 
             this.service.showImagesByColor($(e.currentTarget));
+
+            this.service.toggleActivationShopButton();
+        });
+
+        this.mapper.size.on('click touchend', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.service.toggleActiveSize(e.currentTarget);
+
+            this.service.toggleActivationShopButton();
+        });
+
+        this.mapper.quantity.on('change', e => {
+            this.service.toggleActivationShopButton();
+        });
+
+        this.mapper.quantityBtn.on('click touchend', e => {
+           this.service.toggleActivationShopButton();
+        });
+
+        this.mapper.addBtn.on('click touchend', e => {
+            this.handler.save();
         });
     }
 }

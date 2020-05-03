@@ -1,0 +1,26 @@
+<!-- shopping-head-area-start -->
+<div class="shopping-head-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="shopping-head">
+                    <div class="clerafix">
+                        <div class="sh-menu-item {{ routeName == 'site.cart_page' ? 'active': '' }}">
+                            <p class="letter-capitalize">{{ 'cart.name' | trans }}</p>
+                            <span>01</span>
+                        </div>
+                        <div class="sh-menu-item {{ routeName == 'site.checkout_page' ? 'active' : '' }}">
+                            <p class="letter-capitalize">{{ 'cart.personal_data' | trans }}</p>
+                            <span>02</span>
+                        </div>
+                        <div class="sh-menu-item">
+                            <p class="letter-capitalize">{{ 'cart.order_complete' | trans }}</p>
+                            <span>03</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- shopping-head-area-end -->

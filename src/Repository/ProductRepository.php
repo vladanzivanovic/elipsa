@@ -245,4 +245,26 @@ class ProductRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param Product $product
+     *
+     * @return Image
+     * @throws NonUniqueResultException
+     */
+    public function getMainImage(Product $product): Image
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select(
+                'image'
+            )
+            ->innerJoin('p.productHasImages', 'phi')
+            ->innerJoin('phi.image', 'image')
+            ->where('p = :product')
+            ->andWhere('image.isMain = :isMain')
+            ->setParameter('product', $product)
+            ->setParameter('isMain', true);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

@@ -39,7 +39,7 @@ class ShopPageService {
 
     applyFilter(url)
     {
-        $('#shop-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
+        $('#page-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
         $.ajax({
             type: 'GET',
             url: url,
@@ -49,7 +49,7 @@ class ShopPageService {
                     .append(this.dom.generateProducts(response));
 
                 $('#scroll-to-products').trigger('click');
-                $('#shop-loader').addClass('hide');
+                $('#page-loader').addClass('hide');
             },
             error: error => {
 
