@@ -42,6 +42,7 @@ final class OrderCompleteController extends AbstractController
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
      */
     public function completeOrder(Request $request): JsonResponse
     {
