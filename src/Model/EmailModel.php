@@ -9,10 +9,7 @@ use Swift_FileStream;
 class EmailModel
 {
     const SCRIPT_USER_REGISTRATION = 'USER_REGISTRATION';
-    const SCRIPT_USER_RESERVATION = 'USER_RESERVATION';
-    const SCRIPT_USER_RESERVATION_RESPONSE = 'USER_RESERVATION_RESPONSE';
-    const SCRIPT_USER_ADD_AD = 'USER_ADD_AD';
-    const SCRIPT_USER_EDIT_AD = 'USER_EDIT_AD';
+    const SCRIPT_USER_ORDERED = 'USER_ORDERED';
     const SCRIPT_USER_RESET_PASSWORD = 'USER_RESET_PASSWORD';
     const SCRIPT_CONTACT_US = 'CONTACT_US';
 
@@ -75,6 +72,16 @@ class EmailModel
      * @var string|null
      */
     private $errorMsg = null;
+
+    /**
+     * @var string
+     */
+    private $from;
+
+    /**
+     * @var string
+     */
+    private $fromName;
 
     /**
      * @param string $to
@@ -282,5 +289,37 @@ class EmailModel
     public function _toArray(): array
     {
         return call_user_func('get_object_vars', $this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
+    /**
+     * @param string $from
+     */
+    public function setFrom(string $from): void
+    {
+        $this->from = $from;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFromName(): string
+    {
+        return $this->fromName;
+    }
+
+    /**
+     * @param string $fromName
+     */
+    public function setFromName(string $fromName): void
+    {
+        $this->fromName = $fromName;
     }
 }

@@ -14,7 +14,7 @@ $.validator.addMethod(
         const field = $(`label[for="${compareToId}"]`).text();
         const comparedField = $(`label[for="${compareFromId}"]`).text();
 
-        return Translator.trans('fields.is_lower_then', {field, comparedField}, 'validators', LOCALE);
+        return Translator.trans('field.is_lower_then', {field, comparedField}, 'validators', LOCALE);
     }
 );
 
@@ -26,7 +26,7 @@ $.validator.addMethod('isValidDate', function (val, elm, params) {
 
     return moment(moment(val, dateFormat).format(dateFormat), dateFormat, true).isValid();
 }, function (params, elm) {
-    return Translator.trans('fields.date_not_valid', null, 'validators', LOCALE);
+    return Translator.trans('field.date_not_valid', null, 'validators', LOCALE);
 });
 
 $.validator.addMethod('dateFromTo', function (val, elm, params) {
@@ -39,7 +39,7 @@ $.validator.addMethod('dateFromTo', function (val, elm, params) {
     const field = params.names[0];
     const comparedField = params.names[1];
 
-    return Translator.trans('fields.is_higher_then', {field, comparedField}, 'validators', LOCALE);
+    return Translator.trans('field.is_higher_then', {field, comparedField}, 'validators', LOCALE);
 });
 
 $.validator.addMethod('dateToFrom', function (val, elm, params) {
@@ -54,14 +54,14 @@ $.validator.addMethod('dateToFrom', function (val, elm, params) {
     const field = params.names[0];
     const comparedField = params.names[1];
 
-    return Translator.trans('fields.is_higher_then', {field, comparedField}, 'validators', LOCALE);
+    return Translator.trans('field.is_higher_then', {field, comparedField}, 'validators', LOCALE);
 });
 
 $.validator.addMethod(
     'isSelectBoxEmpty',
     function (val, elm, params) {
         return (val && val != -1) || val != -1;
-    }, Translator.trans('fields.required', null, 'validators', LOCALE)
+    }, Translator.trans('field.required', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -69,7 +69,7 @@ $.validator.addMethod(
     function (val, elm, params) {
         var regEx = new RegExp(/(\+)?(\d{1,3})([ ]|[\/._-])(\d{1,3})[-._-\s]?(\d{2,4})[-._-\s](\d{2,4})/g);
         return !regEx.test(val);
-    }, Translator.trans('fields.phone_not_allowed', null, 'validators', LOCALE)
+    }, Translator.trans('field.phone_not_allowed', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -78,7 +78,7 @@ $.validator.addMethod(
         var regEx = /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
         return !regEx.test(val);
 
-    }, Translator.trans('fields.email_not_allowed', null, 'validators', LOCALE)
+    }, Translator.trans('field.email_not_allowed', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -88,7 +88,7 @@ $.validator.addMethod(
 
         return !regEx.test(val);
 
-    }, Translator.trans('fields.web_not_allowed', null, 'validators', LOCALE)
+    }, Translator.trans('field.web_not_allowed', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod('backEndvalidators', function (value, element, params) {
@@ -99,7 +99,7 @@ $.validator.addMethod(
     'dropZoneHasImage',
     function (val, elm, params) {
         return elm.parentElement.lastElementChild.children.length > 0;
-    }, Translator.trans('fields.images_required', null, 'validators', LOCALE)
+    }, Translator.trans('field.images_required', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -109,7 +109,7 @@ $.validator.addMethod(
 
         return Array.from(imageList).findIndex(image => image.classList.contains('main-image')) > -1;
 
-    }, Translator.trans('fields.main_image_required', null, 'validators', LOCALE)
+    }, Translator.trans('field.main_image_required', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -134,7 +134,7 @@ $.validator.addMethod(
 
         return true;
 
-    }, Translator.trans('fields.required', null, 'validators', LOCALE)
+    }, Translator.trans('field.required', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -147,13 +147,15 @@ $.validator.addMethod(
         }
         return true;
 
-    }, Translator.trans('fields.required', null, 'validators', LOCALE)
+    }, Translator.trans('field.required', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
-    'setErrorIfSummernoteIsEmpty',
+    'requiredOnDemand',
     function (val, elm, params) {
-
-        return (val !== "<p><br></p>" && val !== "<p></p>")
-    }, Translator.trans('fields.required', null, 'validators', LOCALE)
+        if ($(`${params.selector}:checked`).length > 0) {
+            return !!val;
+        }
+        return true;
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
 );

@@ -7,16 +7,17 @@ use App\Event\EmailEvent;
 use App\Helper\RandomCodeGenerator;
 use App\Model\EmailModel;
 use App\Repository\EmailRepository;
+use App\Repository\SettingsRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 final class EmailSubscriber implements EventSubscriberInterface
 {
     private $codeGenerator;
     private $parameterBag;
-    private $siteInfo;
 
     /**
      * @var MailerInterface
@@ -26,26 +27,31 @@ final class EmailSubscriber implements EventSubscriberInterface
      * @var EmailRepository
      */
     private $emailRepository;
+    /**
+     * @var SettingsRepository
+     */
+    private $settingsRepository;
 
     /**
      * @param RandomCodeGenerator   $codeGenerator
      * @param ParameterBagInterface $parameterBag
      * @param MailerInterface       $mailer
      * @param EmailRepository       $emailRepository
+     * @param SettingsRepository    $settingsRepository
      */
     public function __construct(
         RandomCodeGenerator $codeGenerator,
         ParameterBagInterface $parameterBag,
         MailerInterface $mailer,
-        EmailRepository $emailRepository
+        EmailRepository $emailRepository,
+        SettingsRepository $settingsRepository
     )
     {
         $this->codeGenerator = $codeGenerator;
         $this->parameterBag = $parameterBag;
-        $this->siteInfo = $this->parameterBag->get('site_info');
-
         $this->mailer = $mailer;
         $this->emailRepository = $emailRepository;
+        $this->settingsRepository = $settingsRepository;
     }
 
     /**
@@ -67,8 +73,9 @@ final class EmailSubscriber implements EventSubscriberInterface
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setAndSendEmail(EmailModel $emailModel): void
+    public function setAndSendEmail(EmailEvent $event): void
     {
+        $emailModel = $event->getEmailModel();
         $templateData = $emailModel->getTemplateData();
         $templateData['code'] = $this->codeGenerator->random();
 
@@ -76,7 +83,7 @@ final class EmailSubscriber implements EventSubscriberInterface
 
 
         if (false === $emailModel->hasSubject()) {
-            $emailModel->setSubject('Poruka sa sajta '.$_ENV['SITE_URL']);
+            $emailModel->setSubject('Poruka sa sajta Elipsa');
         }
 
         $this->send($emailModel);
@@ -94,10 +101,10 @@ final class EmailSubscriber implements EventSubscriberInterface
         try {
             $emailInstance = (new TemplatedEmail())
                 ->subject($emailModel->getSubject())
-                ->from($this->siteInfo['site_email'], $this->siteInfo['site_name'])
-                ->replyTo($emailModel->getReplyTo(), $emailModel->getReplyToName())
-                ->to($emailModel->getTo(), $emailModel->getToName())
-                ->htmlTemplate($emailModel->getTemplate())
+                ->from(new Address($emailModel->getFrom(), $emailModel->getFromName()))
+                ->replyTo(new Address($emailModel->getReplyTo(), $emailModel->getReplyToName()))
+                ->to(new Address($emailModel->getTo(), $emailModel->getToName()))
+                ->htmlTemplate('Site/Emails/'.$emailModel->getTemplate())
                 ->context($emailModel->getTemplateData());
 
             if (!empty($emailModel->getAttachments())) {
@@ -128,7 +135,7 @@ final class EmailSubscriber implements EventSubscriberInterface
     {
         $email = new Email();
 
-        $email->setFromemail($emailModel->getReplyTo() ?? $this->siteInfo['site_email']);
+        $email->setFromemail($emailModel->getReplyTo() ?? $emailModel->getFrom());
         $email->setToemail($emailModel->getTo());
         $email->setRawdata(json_encode($emailModel->_toArray()));
         $email->setStatus($emailModel->getStatus());

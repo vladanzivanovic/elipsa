@@ -53,7 +53,7 @@ final class OrderCompleteController extends AbstractController
 
         $order = $this->requestParser->parse($request->request, $request->getSession()->get('order'));
 
-        $this->orderHandler->save($order);
+        $this->orderHandler->save($order, true);
 
         $request->getSession()->remove('order');
 

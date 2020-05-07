@@ -16,13 +16,17 @@ class CheckoutHandler {
             value: paymentType,
         });
 
+        if (! this.mapper.form.valid()) {
+            return false;
+        }
+
         $.ajax({
             type: 'PUT',
             url: AppHelperService.generateLocalizedUrl('site_api.complet_order'),
             data: FormHelperService.sanitize(data),
             dataType: 'json',
             success: response => {
-
+                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('site.checkout_completed_successful'));
             },
             error: error => {
 

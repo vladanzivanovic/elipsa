@@ -23,11 +23,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <form id="checkout-form" enctype="multipart/form-data" class="row">
                 <div class="col-md-8 col-sm-12 col-xs-12">
                     <div class="billing-address">
                         <h4 class="checkout-box-title letter-capitalize">{{ 'checkout.billing_address' | trans }}</h4>
-                        <form id="checkout-form" enctype="multipart/form-data" class="checkout-billing-adress-box">
+                        <div class="checkout-billing-adress-box">
                             <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('order_complete') }}" />
                             <div class="billing-address-input clearfix">
                                 {{ form.input('country' | trans ~ ' *', 'country', '', 'country', '', 'text', null, '', 'text-uppercase') }}
@@ -65,7 +65,7 @@
                                 <p class="text-uppercase">{{ 'checkout.order_notes' | trans }}</p>
                                 {{ inputs.input('orderNotes', '', 'order_note', '') }}
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12 col-xs-12">
@@ -98,7 +98,7 @@
                                     <label for="byTaking" class="letter-capitalize">{{ 'checkout.payment.by_taking' | trans }}</label>
                                 </div>
                                 <div class="select-payment-method">
-                                    {{ inputs.input('creditCard', 2, 'payment_type', '', 'radio') }}
+                                    {{ inputs.input('creditCard', 2, 'payment_type', '', 'radio', '', 'data-show-error-after=yes') }}
                                     <label for="creditCard" class="letter-capitalize">{{ 'checkout.paymeny.credit_card' | trans }}</label>
                                 </div>
                                 <div class="place-order">
@@ -108,8 +108,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <!-- checkout-area-end -->
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/checkout.css') }}">
 {% endblock %}

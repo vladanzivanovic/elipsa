@@ -78,15 +78,15 @@ Version      : 1.0
     }
     /*cart*/
     .sh-menu-item {
-        margin-left: 6%;
-        width: 27%;
+        margin-left: 6% !important;
+        width: 27% !important;
     }
     .sh-menu-item p {
-        font-size: 14px;
+        font-size: 14px !important;
     }
     .sh-menu-item span {
-        font-size: 24px;
-        right: 15%;
+        font-size: 24px !important;
+        right: 15% !important;
     }
     .sccb-shipping-input label {
         display: block;
@@ -304,11 +304,11 @@ Version      : 1.0
     }
     /*cart*/
     .sh-menu-item p {
-        font-size: 12px;
+        font-size: 12px !important;
     }
     .sh-menu-item span {
-        font-size: 18px;
-        right: 15%;
+        font-size: 18px !important;
+        right: 15% !important;
     }
     .sh-menu-item::before {
         display: none;
@@ -521,17 +521,17 @@ Version      : 1.0
     }
     /*shopping-cart*/
     .sh-menu-item {
-        display: block;
+        display: block !important;
         margin-bottom: 10px;
-        margin-left: 0;
-        width: 85%;
+        margin-left: 0 !important;
+        width: 85% !important;
     }
     .sh-menu-item p {
-        font-size: 16px;
+        font-size: 16px !important;
     }
     .sh-menu-item span {
-        font-size: 18px;
-        right: 12%;
+        font-size: 18px !important;
+        right: 12% !important;
     }
     .scca-head .scb-update {
         float: none;
@@ -868,17 +868,17 @@ Version      : 1.0
     }
     /*shopping-cart*/
     .sh-menu-item {
-        display: block;
+        display: block !important;
         margin-bottom: 10px;
-        margin-left: 0;
-        width: 85%;
+        margin-left: 0 !important;
+        width: 85% !important;
     }
     .sh-menu-item p {
-        font-size: 16px;
+        font-size: 16px !important;
     }
     .sh-menu-item span {
-        font-size: 18px;
-        right: 12%;
+        font-size: 18px !important;
+        right: 12% !important;
     }
     .scca-head .scb-update {
         float: none;

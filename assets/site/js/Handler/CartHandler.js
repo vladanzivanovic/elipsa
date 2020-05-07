@@ -2,6 +2,7 @@ import AppHelperService from "../../../js/Helper/AppHelperService";
 import CartDom from "../Dom/CartDropDownDom";
 import cartPageMapper from "../Mapper/CartPageMapper";
 import NotificationService from "../../../js/NotificationService";
+import loader from "../Dom/LoaderDom";
 
 class CartHandler {
     constructor() {
@@ -62,7 +63,7 @@ class CartHandler {
     }
 
     setCoupon() {
-        $('#page-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
+        loader.show();
         this.pageMapper.promoCouponErrorText.empty();
 
         $.ajax({
@@ -84,13 +85,16 @@ class CartHandler {
                 this.pageMapper.shippingPrice.text(totalWithDiscount >= FREE_SHIPPING ? 0 : SHIPPING);
                 this.pageMapper.totalShipping.text(Math.round(totalWithShipping));
 
-                $('#page-loader').addClass('hide');
-
+                loader.hide();
             },
             error: error => {
-                this.pageMapper.promoCouponErrorText.text(Translator.trans(error.responseJSON.message, null, 'validators', LOCALE));
-                $('#page-loader').addClass('hide');
+                if (error.responseJSON.message) {
+                    this.pageMapper.promoCouponErrorText.text(Translator.trans(error.responseJSON.message, null, 'validators', LOCALE));
+                } else {
+                    this.pageMapper.promoCouponErrorText.text(Translator.trans('promo_coupon.not_found', null, 'validators', LOCALE));
+                }
 
+                loader.hide();
             }
         })
     }

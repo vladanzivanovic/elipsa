@@ -101,7 +101,7 @@ final class OrderCompleteRequestParser
         $user->setFirstName($bag->get('first_name'));
         $user->setLastName($bag->get('last_name'));
 
-        if ($bag->get('create_account')) {
+        if ($bag->get('create_account') && null === $user->getPassword()) {
             $encodedPwd = $this->passwordEncoder->encodePassword($user, $bag->get('password'));
             $user->setPassword($encodedPwd);
             $user->setRoles(['ROLE_USER']);

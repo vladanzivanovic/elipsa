@@ -3,7 +3,6 @@
 {% block title %}{{ 'title.your_cart' | trans }}{% endblock %}
 
 {% block content %}
-    <div id="page-loader" class="hide"></div>
     {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'cart.name' | trans }], 'activePage': 'cart.name' | trans}) }}
 
     {{ include('Site/Components/cartHeader.html.twig') }}

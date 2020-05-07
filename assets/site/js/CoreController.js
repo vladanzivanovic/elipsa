@@ -1,10 +1,13 @@
 import BaseCoreController from "../../js/CoreController";
 import CartHandler from "./Handler/CartHandler";
+import loader from "./Dom/LoaderDom";
 
 class CoreController {
     constructor() {
         this.baseCore = new BaseCoreController();
         this.handler = new CartHandler();
+
+        loader;
 
         this.registerEvents();
     }

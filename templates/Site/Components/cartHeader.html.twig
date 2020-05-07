@@ -13,8 +13,8 @@
                             <p class="letter-capitalize">{{ 'cart.personal_data' | trans }}</p>
                             <span>02</span>
                         </div>
-                        <div class="sh-menu-item">
-                            <p class="letter-capitalize">{{ 'cart.order_complete' | trans }}</p>
+                        <div class="sh-menu-item {{ routeName == 'site.checkout_completed_successful' ? 'active' : '' }}">
+                            <p class="letter-capitalize">{{ 'cart.order_completed_successful' | trans }}</p>
                             <span>03</span>
                         </div>
                     </div>

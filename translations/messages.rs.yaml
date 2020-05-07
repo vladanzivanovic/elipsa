@@ -74,7 +74,7 @@ cart.total_shipping: ukupno sa poštarinom
 cart.view: pogledaj korpu
 cart.checkout: naruči
 cart.personal_data: vaši podaci
-cart.order_complete: završi narudžbinu
+cart.order_completed_successful: uspešna narudžbina
 cart.continue_shopping: nastavi kupovinu
 cart.update: osveži korpu
 cart.next_step: sledeći korak
@@ -93,6 +93,7 @@ cart.table.total: ukupno
 
 title.your_cart: Vaša korpa
 title.cart_personal_data: Vaša korpa - unos ličnih podataka
+title.checkout_completed: Uspešna narudžbina
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -105,6 +106,9 @@ checkout.payment.by_taking: pouzećem
 checkout.paymeny.credit_card: karticom
 checkout.complete_order: završi narudžbinu
 
+checkout_completed.title: uspešno ste naručili proizvode.
+checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
+
 country: država
 first_name: ime
 last_name: prezime
@@ -115,4 +119,32 @@ email: email adresa
 mobile_telephone: mobilni telefon
 create_account: napravite nalog
 password: lozinka
+
+email.order.title: Narudžbenica #%orderId%
+email.order.seller: Prodavac
+email.order.seller.name: Naziv
+email.order.seller.account: Žiro račun
+email.order.seller.address: Adresa
+email.order.seller.telephone: Telefon
+email.order.seller.mobile: Mobilni telefon
+
+email.order.buyer: Kupac
+email.order.buyer.full_name: Ime i prezime
+email.order.buyer.city: Grad
+email.order.buyer.street_number: Ulica i broj
+email.order.buyer.paymet_type: Plaćanje
+
+email.order.data.title: Podaci o narudžbenici
+email.order.table.product_name: Naziv proizvoda
+email.order.table.size: Veličina
+email.order.table.color: Boja
+email.order.table.quantity: Količina
+email.order.table.shipping: Poštarina
+email.order.table.promo_coupon: Promotivni kod
+email.order.total_shipping: Ukupno sa poštarinom
+
+
+payment_type.on_delivering: Pouzećem
+payment_type.credit_card: Platna kartica
+
 

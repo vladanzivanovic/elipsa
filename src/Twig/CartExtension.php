@@ -58,9 +58,8 @@ final class CartExtension extends AbstractExtension
     }
 
     /**
-     * @param string $locale
-     *
-     * @param int    $orderId
+     * @param string  $locale
+     * @param Session $session
      *
      * @return array
      */

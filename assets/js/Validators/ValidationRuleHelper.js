@@ -2,19 +2,19 @@ require('jquery-validation/dist/additional-methods');
 require('./CustomMethods');
 
 jQuery.extend(jQuery.validator.messages, {
-    required: Translator.trans('fields.required', null, 'validators', LOCALE),
-    remote: Translator.trans('fields.email_exists', null, 'validators', LOCALE),
-    email: Translator.trans('fields.email', null, 'validators', LOCALE),
-    url: Translator.trans('fields.invalid_url', null, 'validators', LOCALE),
-    date: Translator.trans('fields.date_not_valid', null, 'validators', LOCALE),
-    dateISO: Translator.trans('fields.date_not_valid_iso', null, 'validators', LOCALE),
-    number: Translator.trans('fields.number_is_not_valid', null, 'validators', LOCALE),
-    digits: Translator.trans('fields.digits', null, 'validators', LOCALE),
-    creditcard: Translator.trans('fields.credit_card', null, 'validators', LOCALE),
-    equalTo: Translator.trans('fields.equal_to', null, 'validators', LOCALE),
-    maxlength: Translator.trans('fields.max_length', null, 'validators', LOCALE),
-    minlength: Translator.trans('fields.min_length', null, 'validators', LOCALE),
-    alphanumeric: Translator.trans('fields.alphanumeric', null, 'validators', LOCALE),
+    required: Translator.trans('field.not_blank', null, 'validators', LOCALE),
+    remote: Translator.trans('field.email_exists', null, 'validators', LOCALE),
+    email: Translator.trans('field.email', null, 'validators', LOCALE),
+    url: Translator.trans('field.invalid_url', null, 'validators', LOCALE),
+    date: Translator.trans('field.date_not_valid', null, 'validators', LOCALE),
+    dateISO: Translator.trans('field.date_not_valid_iso', null, 'validators', LOCALE),
+    number: Translator.trans('field.number_is_not_valid', null, 'validators', LOCALE),
+    digits: Translator.trans('field.digits', null, 'validators', LOCALE),
+    creditcard: Translator.trans('field.credit_card', null, 'validators', LOCALE),
+    equalTo: Translator.trans('field.equal_to', null, 'validators', LOCALE),
+    maxlength: Translator.trans('field.max_length', null, 'validators', LOCALE),
+    minlength: $.validator.format(Translator.trans('field.min_length', {'limit': '{0}'}, 'validators', LOCALE)),
+    alphanumeric: Translator.trans('field.alphanumeric', null, 'validators', LOCALE),
 });
 
 window.helpBlock = {
@@ -41,7 +41,7 @@ window.helpBlock = {
             let name = $(element).prop('name');
             let errorElement = $(`input[name="${name}"][data-show-error-after="yes"]`);
 
-            error.insertAfter(errorElement.parent("label"));
+            error.insertAfter(errorElement.next());
         } else if (element.prop('nodeName') === 'SELECT') {
             if (nextElement.is('.bootstrap-select')) {
                 error.insertAfter(element.next());

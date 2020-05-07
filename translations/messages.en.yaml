@@ -80,7 +80,7 @@ cart.total_shipping: total with shipping
 cart.view: view cart
 cart.checkout: checkout
 cart.personal_data: Customer data
-cart.order_complete: order complete
+cart.order_completed_successful: order completed
 cart.continue_shopping: continue shopping
 cart.update: update cart
 cart.next_step: next step
@@ -99,6 +99,7 @@ cart.table.total: total
 
 title.your_cart: Your cart
 title.cart_personal_data: Your cart - personal information
+title.checkout_completed: Checkout completed
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -111,6 +112,9 @@ checkout.payment.by_taking: Pay when arrive
 checkout.paymeny.credit_card: credit card
 checkout.complete_order: complete order
 
+checkout_completed.title: your order has been successfully completed.
+checkout_completed.details: the details of the order has been sent to your email address.
+
 country: country
 first_name: first name
 last_name: last name
@@ -121,3 +125,30 @@ email: email address
 mobile_telephone: mobile phone
 create_account: create account
 password: password
+
+email.order.title: Order #%orderId%
+email.order.seller: Seller
+email.order.seller.name: Company
+email.order.seller.account: Account number
+email.order.seller.address: Address
+email.order.seller.telephone: Telephone
+email.order.seller.mobile: Mobile phone
+
+email.order.buyer: Buyer
+email.order.buyer.full_name: Name and surname
+email.order.buyer.city: City/Town
+email.order.buyer.street_number: Street and number
+email.order.buyer.paymet_type: Payment
+
+email.order.data.title: Order data
+email.order.table.product_name: Product name
+email.order.table.size: Size
+email.order.table.color: Color
+email.order.table.quantity: Quantity
+email.order.table.shipping: Shipping
+email.order.table.promo_coupon: Promotion code
+email.order.total_shipping: total with shipping
+
+
+payment_type.on_delivering: On delivering
+payment_type.credit_card: Credi card
