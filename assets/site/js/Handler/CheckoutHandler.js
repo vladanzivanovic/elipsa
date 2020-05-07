@@ -9,12 +9,6 @@ class CheckoutHandler {
 
     save() {
         const data = this.mapper.form.serializeArray();
-        const paymentType = $('input[name="payment_type"]:checked').val();
-
-        data.push({
-            name: 'payment_type',
-            value: paymentType,
-        });
 
         if (! this.mapper.form.valid()) {
             return false;
