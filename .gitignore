@@ -4,7 +4,6 @@
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -19,4 +18,3 @@
 /public/media/cache/
 ###< liip/imagine-bundle ###
 /docker/mysql-mount/
-/public/js/fos_js_routes.json
