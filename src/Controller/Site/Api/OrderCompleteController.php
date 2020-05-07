@@ -35,7 +35,7 @@ final class OrderCompleteController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/complete", name="site_api.complet_order", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/order/complete", name="site_api.complete_order", methods={"PUT"}, options={"expose": true})
      *
      * @param Request $request
      *
