@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Handler\Site;
 
+use App\Entity\OrderProduct;
 use App\Entity\PromotionCoupon;
 use App\Entity\ShopOrder;
 use App\Event\EmailEvent;
 use App\Helper\ConstantsHelper;
 use App\Helper\ValidatorHelper;
 use App\Model\EmailModel;
+use App\Repository\OrderProductRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\ShopOrderRepository;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -44,6 +47,10 @@ final class OrderHandler
      * @var EventDispatcherInterface
      */
     private $dispatcher;
+    /**
+     * @var OrderProductRepository
+     */
+    private $orderProductRepository;
 
     /**
      * @param ValidatorHelper          $validator
@@ -52,6 +59,7 @@ final class OrderHandler
      * @param TranslatorInterface      $translator
      * @param SettingsRepository       $settingsRepository
      * @param EventDispatcherInterface $dispatcher
+     * @param OrderProductRepository   $orderProductRepository
      */
     public function __construct(
         ValidatorHelper $validator,
@@ -59,7 +67,8 @@ final class OrderHandler
         SessionInterface $session,
         TranslatorInterface $translator,
         SettingsRepository $settingsRepository,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        OrderProductRepository $orderProductRepository
     ) {
         $this->orderRepository = $orderRepository;
         $this->validator = $validator;
@@ -67,6 +76,7 @@ final class OrderHandler
         $this->translator = $translator;
         $this->settingsRepository = $settingsRepository;
         $this->dispatcher = $dispatcher;
+        $this->orderProductRepository = $orderProductRepository;
     }
 
     /**
@@ -110,6 +120,33 @@ final class OrderHandler
         }
 
         return $order->getId();
+    }
+
+    /**
+     * @param OrderProduct $orderProduct
+     *
+     * @return void
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function removeProduct(OrderProduct $orderProduct): void
+    {
+        $order = $orderProduct->getOrderId();
+
+        $products = $order->getOrderProducts();
+
+        if ($products->count() > 1) {
+            $this->orderProductRepository->removeWithFlush($orderProduct);
+
+            return;
+        }
+
+        $this->orderRepository->removeWithFlush($order);
+
+        $this->session->remove('order');
+
+        return;
     }
 
     /**

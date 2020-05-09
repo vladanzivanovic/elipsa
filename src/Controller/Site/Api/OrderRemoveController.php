@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Site\Api;
 
 use App\Entity\OrderProduct;
-use App\Repository\OrderProductRepository;
+use App\Handler\Site\OrderHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,19 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 final class OrderRemoveController extends AbstractController
 {
     /**
-     * @var OrderProductRepository
+     * @var OrderHandler
      */
-    private $orderProductRepository;
+    private $orderHandler;
 
     /**
-     * OrderRemoveController constructor.
-     *
-     * @param OrderProductRepository $orderProductRepository
+     * @param OrderHandler $orderHandler
      */
     public function __construct(
-        OrderProductRepository $orderProductRepository
+        OrderHandler $orderHandler
     ) {
-        $this->orderProductRepository = $orderProductRepository;
+        $this->orderHandler = $orderHandler;
     }
 
     /**
@@ -39,7 +37,7 @@ final class OrderRemoveController extends AbstractController
      */
     public function remove(OrderProduct $orderProduct): JsonResponse
     {
-        $this->orderProductRepository->removeWithFlush($orderProduct);
+        $this->orderHandler->removeProduct($orderProduct);
 
         return $this->json([], JsonResponse::HTTP_OK);
     }

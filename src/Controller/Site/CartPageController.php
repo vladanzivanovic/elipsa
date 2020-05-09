@@ -48,7 +48,7 @@ final class CartPageController extends AbstractController
     public function index(Request $request): array
     {
         if (false === $request->getSession()->has('order')) {
-            return ['total' => 0, 'shipping' => 0];
+            return ['total' => 0, 'shipping' => 0, 'promo_price' => 0, 'free_shipping_price' => 0, 'shipping_price' => 0];
         }
 
         $orderData = $this->pageCollector->collect($request->getLocale());

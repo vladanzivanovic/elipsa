@@ -58,3 +58,8 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
+
+    App\EventListener\RequestListener:
+        class: App\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

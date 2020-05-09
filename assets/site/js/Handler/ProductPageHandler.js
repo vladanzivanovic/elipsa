@@ -30,6 +30,9 @@ class ProductPageHandler {
 
         this.validateBeforeSave(data);
 
+        $('#page-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
+
+
         $.ajax({
             type,
             url: urlRoute,
@@ -37,10 +40,12 @@ class ProductPageHandler {
             dataType: 'json',
             success: (response) => {
                 this.cartDom.addProduct(response);
+                $('#scrollUp').click();
                 $('#top_cart').click();
+                $('#page-loader').addClass('hide');
             },
             error: (error) => {
-                console.log(error);
+                $('#page-loader').addClass('hide');
             }
         })
     }
@@ -50,10 +55,10 @@ class ProductPageHandler {
             const value = formData[i].value;
             const name = formData[i].name;
 
-            if (!value) {
+            if (!value || value < 1) {
                 this.notification.show('error', Translator.trans(`product.${name}`, null, 'validators', LOCALE), true);
 
-                return ;
+                throw 'Validation failed.';
             }
         }
     }

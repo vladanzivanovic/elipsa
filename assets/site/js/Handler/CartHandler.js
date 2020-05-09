@@ -13,7 +13,7 @@ class CartHandler {
 
     update() {
         const data = [];
-        $.each(this.pageMapper.quatityInput, (index, elm) => {
+        $.each($(this.pageMapper.quatityInput), (index, elm) => {
             data.push({
                 name: $(elm).attr('name'),
                 value: $(elm).val(),
@@ -32,7 +32,7 @@ class CartHandler {
                 $('#page-loader').addClass('hide');
             },
             error: error => {
-
+                $('#page-loader').addClass('hide');
             }
         })
     }
@@ -53,11 +53,11 @@ class CartHandler {
                 if (elm) {
                     elm.remove();
                     this.updateProductsPrices();
-                    $('#page-loader').addClass('hide');
                 }
+                $('#page-loader').addClass('hide');
             },
             error: (error) => {
-                console.log(error);
+                $('#page-loader').addClass('hide');
             }
         })
     }

@@ -621,6 +621,7 @@ header {}
     text-align: center;
     top: 30%;
     width: 18px;
+    padding-left: 2px;
 }
 
 .single-mcp .mcp-pro-delete:hover {

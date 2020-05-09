@@ -53,8 +53,11 @@ final class OrderEditController extends AbstractController
      * @param ProductTranslation $productTranslation
      *
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
      */
     public function save(Request $request, ProductTranslation $productTranslation): JsonResponse
     {

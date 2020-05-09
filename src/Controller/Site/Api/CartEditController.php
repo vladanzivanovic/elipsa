@@ -44,13 +44,15 @@ final class CartEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/update-products", name="site_api.update_order_products", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/order/update-products", name="site_api.update_order_products", methods={"PUT"}, options={"expose":
+     *                                      true})
      *
      * @param Request $request
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
      */
     public function update(Request $request): JsonResponse
     {
