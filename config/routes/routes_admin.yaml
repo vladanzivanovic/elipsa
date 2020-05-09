@@ -45,3 +45,9 @@ admin.coupons:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/coupons.html.twig
+
+admin.locations:
+  path: /locations
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/locations.html.twig

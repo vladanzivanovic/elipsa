@@ -13,21 +13,25 @@ export default (() => {
         Private.dataTable = Private.tableRef.DataTable( {
             serverSide: true,
             ajax: {
-                url: Routing.generate('admin.get_promotion_coupons_list'),
+                url: Routing.generate('admin.get_location_list'),
                 type: 'POST'
             },
             columns: [
                 { data: 'id', title: 'Id' },
-                { data: 'code', title: 'Kod' },
-                { data: 'validFrom', title: 'Važi od' },
-                { data: 'validTo', title: 'Važi do' },
-                { data: 'discount', title: 'Popust', render: function (data, type){
-                    return type === 'display' ?
-                        `${data}%` :
-                        data;
+                { data: 'title', title: 'Naziv' },
+                { data: 'address', title: 'Adresa' },
+                { data: 'telephone', title: 'Telefon' },
+                { data: 'email', title: 'Email' },
+                { data: 'working_time', title: 'Radno vreme', width: '200px', render: function (data, type, row, meta) {
+                        const checkedAttr = row.is_active === true ? 'checked' : '';
+                        const text = Translator.trans(data, null, 'messages', LOCALE);
+
+                        let html = CAN_EDIT ? `<p class="status-text text-uppercase">${text}</p><input type="checkbox" class="set-active-banner" data-id="${row.id}" ${checkedAttr}/>` : `<p class="status-text">${text}</p>`;
+
+                        return type === 'display' ? html : data;
                     } },
                 { data: 'id', render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_coupon_page', {id: data})}">Izmeni</a> ` : '';
+                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_location_page', {id: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?

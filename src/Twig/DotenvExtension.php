@@ -23,6 +23,6 @@ final class DotenvExtension extends AbstractExtension
      */
     public function getEnvValue(string $name): string
     {
-        return getenv($name);
+        return $_ENV[$name];
     }
 }
