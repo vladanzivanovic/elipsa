@@ -123,6 +123,8 @@ class CartHandler {
             return true;
         }
 
+        this.pageMapper.shippingPrice.text(total >= FREE_SHIPPING ? 0 : SHIPPING);
+
         this.pageMapper.totalShipping.text(total >= FREE_SHIPPING ? total : Math.round(total + SHIPPING));
     }
 }
