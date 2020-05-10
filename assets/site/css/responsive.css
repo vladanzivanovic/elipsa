@@ -97,7 +97,7 @@ Version      : 1.0
         float: none;
     }
     .sccb-discount-subscribe-box .sccb-discount-subscribe {
-        float: none;
+        float: none !important;
         margin: 15px 0 0;
     }
     /*checkout*/
@@ -534,7 +534,7 @@ Version      : 1.0
         right: 12% !important;
     }
     .scca-head .scb-update {
-        float: none;
+        float: none !important;
         margin: 15px 0 0;
     }
     .shopping-cart-content-box {
@@ -544,7 +544,7 @@ Version      : 1.0
         width: 100%;
     }
     .sccb-discount-subscribe-box .sccb-discount-subscribe {
-        float: none;
+        float: none !important;
         margin: 15px 0 0;
     }
     /*checkout*/
@@ -819,8 +819,8 @@ Version      : 1.0
     }
     .crumb-name {
         display: block;
-        float: none;
-        font-size: 16px;
+        float: none !important;
+        font-size: 16px !important;
         margin-top: 15px;
     }
     .product-tab-content {
@@ -881,8 +881,8 @@ Version      : 1.0
         right: 12% !important;
     }
     .scca-head .scb-update {
-        float: none;
-        margin: 15px 0 0;
+        float: none !important;
+        margin: 15px 0 0 ;
     }
     .sccb-shipping-input label {
         display: block;
@@ -899,7 +899,7 @@ Version      : 1.0
         width: 100%;
     }
     .sccb-discount-subscribe-box .sccb-discount-subscribe {
-        float: none;
+        float: none !important;
         margin: 15px 0 0;
     }
     /*checkout*/

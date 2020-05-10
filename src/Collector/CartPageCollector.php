@@ -48,7 +48,7 @@ final class CartPageCollector
     public function collect(string $locale): array
     {
         if (!$this->session->has('order')) {
-            return ['products' => [], 'total' => 0];
+            return ['products' => [], 'total' => 0, 'order' => null];
         }
 
         $orderId = $this->session->get('order');

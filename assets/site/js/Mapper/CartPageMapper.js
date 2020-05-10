@@ -1,7 +1,7 @@
 class CartPageMapper {
     constructor() {
         if (!CartPageMapper.instance) {
-            this.quatityInput = $('.product-quantity-t input');
+            this.quatityInput = '.product-quantity-t input';
             this.productPrice = $('.product_price_value');
             this.productTotalPrice = $('.product_price_total');
             this.removeProduct = $('.remove-product');

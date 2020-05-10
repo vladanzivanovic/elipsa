@@ -22,8 +22,6 @@ class ProductPageController {
             e.stopPropagation();
 
             this.service.showImagesByColor($(e.currentTarget));
-
-            this.service.toggleActivationShopButton();
         });
 
         this.mapper.size.on('click touchend', e => {
@@ -31,16 +29,6 @@ class ProductPageController {
             e.stopPropagation();
 
             this.service.toggleActiveSize(e.currentTarget);
-
-            this.service.toggleActivationShopButton();
-        });
-
-        this.mapper.quantity.on('change', e => {
-            this.service.toggleActivationShopButton();
-        });
-
-        this.mapper.quantityBtn.on('click touchend', e => {
-           this.service.toggleActivationShopButton();
         });
 
         this.mapper.addBtn.on('click touchend', e => {

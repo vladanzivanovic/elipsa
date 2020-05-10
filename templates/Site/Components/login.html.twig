@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    {% set cartData = cart_list(app.request.locale, app.session) %}
+    {% set cartData = cart_list(app.request.locale) %}
     <div class="top-cart">
         <span id="top_cart" tabindex="3" class="letter-capitalize"><i class="fa fa-shopping-basket"></i><span class="letter-capitalize d-inline-block">{{ 'cart.name' | trans }}</span> <span class="cart-number">(<span class="cart-length">{{ cartData.products | length }}</span>)</span></span>
         <div class="my-cart" id="my_cart">

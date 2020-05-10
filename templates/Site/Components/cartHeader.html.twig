@@ -5,14 +5,14 @@
             <div class="col-xs-12">
                 <div class="shopping-head">
                     <div class="clerafix">
-                        <div class="sh-menu-item {{ routeName == 'site.cart_page' ? 'active': '' }}">
+                        <a href="{{ path('site.cart_page') }}" class="sh-menu-item {{ routeName == 'site.cart_page' ? 'active': '' }}">
                             <p class="letter-capitalize">{{ 'cart.name' | trans }}</p>
                             <span>01</span>
-                        </div>
-                        <div class="sh-menu-item {{ routeName == 'site.checkout_page' ? 'active' : '' }}">
+                        </a>
+                        <a href="{{ path('site.checkout_page') }}" class="sh-menu-item {{ routeName == 'site.checkout_page' ? 'active' : '' }}">
                             <p class="letter-capitalize">{{ 'cart.personal_data' | trans }}</p>
                             <span>02</span>
-                        </div>
+                        </a>
                         <div class="sh-menu-item {{ routeName == 'site.checkout_completed_successful' ? 'active' : '' }}">
                             <p class="letter-capitalize">{{ 'cart.order_completed_successful' | trans }}</p>
                             <span>03</span>
