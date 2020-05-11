@@ -1,12 +1,16 @@
-import BannerHandler from "../Handler/BannerHandler";
 import locationEditMapper from "../Mapper/LocationEditMapper";
 import MapsService from "../../../js/Services/MapsService";
+import DropZoneService from "../../../js/Services/DropZoneService";
+import LocationHandler from "../Handler/LocationHandler";
 
 class LocationEditController {
     constructor() {
         this.mapper = locationEditMapper;
 
         this.gmapApi = new MapsService();
+
+        this.dropZone = DropZoneService();
+        this.dropZone.init(this.mapper.form);
 
         this.gmapApi.load().then(() => {
             this.gmapApi.showMap();
@@ -15,6 +19,7 @@ class LocationEditController {
 
         if (IS_EDIT) {
             this.gmapApi.setCoordinates(window.coordinates[0], window.coordinates[1]);
+            this.dropZone.setFiles(IMAGES, 'location');
         }
 
         this.registerEvents();
@@ -22,9 +27,9 @@ class LocationEditController {
 
     registerEvents() {
         $(this.mapper.submitBtn).on('click touchend', e => {
-            const handler = new BannerHandler();
+            const handler = new LocationHandler();
 
-            handler.save(this.mapper);
+            handler.save();
         });
 
         $(this.mapper.city).on('keyup', () => {

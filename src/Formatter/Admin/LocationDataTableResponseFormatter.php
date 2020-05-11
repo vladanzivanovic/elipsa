@@ -40,18 +40,6 @@ final class LocationDataTableResponseFormatter
      */
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
-        $router = $this->router;
-
-        $data = array_map(function ($banner) use ($router) {
-            $statusText = ConstantsHelper::getConstantName((string)$banner['is_active'], 'STATUS', Banner::class);
-            $banner['status_text'] = $statusText;
-
-            $image = $router->generate('app.image_show', ['name' => $banner['name'], 'filter' => "admin_slider_list"]);
-            $banner['image'] = $image;
-
-            return $banner;
-        }, $data);
-
         return $this->response($tableModel, $data, $total);
 
     }

@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Api;
 
 use App\Entity\ProductTags;
 use App\Formatter\Admin\BannerDataTableResponseFormatter;
+use App\Formatter\Admin\LocationDataTableResponseFormatter;
 use App\Formatter\Admin\ProductColorDataTableResponseFormatter;
 use App\Formatter\Admin\ProductDataTableResponseFormatter;
 use App\Formatter\Admin\ProductTagDataTableResponseFormatter;
@@ -33,7 +34,7 @@ final class LocationListController extends AbstractController
     private $requestParser;
 
     /**
-     * @var BannerDataTableResponseFormatter
+     * @var LocationDataTableResponseFormatter
      */
     private $responseFormatter;
 
@@ -43,14 +44,14 @@ final class LocationListController extends AbstractController
     private $locationRepository;
 
     /**
-     * @param DataTableRequestParser           $requestParser
-     * @param LocationRepository               $locationRepository
-     * @param BannerDataTableResponseFormatter $responseFormatter
+     * @param DataTableRequestParser             $requestParser
+     * @param LocationRepository                 $locationRepository
+     * @param LocationDataTableResponseFormatter $responseFormatter
      */
     public function __construct(
         DataTableRequestParser $requestParser,
         LocationRepository $locationRepository,
-        BannerDataTableResponseFormatter $responseFormatter
+        LocationDataTableResponseFormatter $responseFormatter
     ) {
         $this->requestParser = $requestParser;
         $this->responseFormatter = $responseFormatter;

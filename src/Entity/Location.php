@@ -19,12 +19,12 @@ class Location
     private $id;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="string")
      */
     private $lat;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="string")
      */
     private $lng;
 
@@ -58,9 +58,15 @@ class Location
      */
     private $locationTranslations;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LocationHasImages", mappedBy="location", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $locationHasImages;
+
     public function __construct()
     {
         $this->locationTranslations = new ArrayCollection();
+        $this->locationHasImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,24 +74,24 @@ class Location
         return $this->id;
     }
 
-    public function getLat(): ?float
+    public function getLat(): ?string
     {
         return $this->lat;
     }
 
-    public function setLat(float $lat): self
+    public function setLat(string $lat): self
     {
         $this->lat = $lat;
 
         return $this;
     }
 
-    public function getLng(): ?float
+    public function getLng(): ?string
     {
         return $this->lng;
     }
 
-    public function setLng(float $lng): self
+    public function setLng(string $lng): self
     {
         $this->lng = $lng;
 
@@ -177,6 +183,54 @@ class Location
             // set the owning side to null (unless already changed)
             if ($locationTranslation->getLocation() === $this) {
                 $locationTranslation->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return LocationTranslation
+     */
+    public function getByLocale(string $locale): LocationTranslation
+    {
+        $trans = $this->locationTranslations;
+
+        $filteredTrans = $trans->filter(function ($locationTrans) use ($locale) {
+            /** @var LocationTranslation $locationTrans */
+            return $locationTrans->getLocale() === $locale;
+        });
+
+        return $filteredTrans->first();
+    }
+
+    /**
+     * @return Collection|LocationHasImages[]
+     */
+    public function getLocationHasImages(): Collection
+    {
+        return $this->locationHasImages;
+    }
+
+    public function addLocationHasImage(LocationHasImages $locationHasImage): self
+    {
+        if (!$this->locationHasImages->contains($locationHasImage)) {
+            $this->locationHasImages[] = $locationHasImage;
+            $locationHasImage->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocationHasImage(LocationHasImages $locationHasImage): self
+    {
+        if ($this->locationHasImages->contains($locationHasImage)) {
+            $this->locationHasImages->removeElement($locationHasImage);
+            // set the owning side to null (unless already changed)
+            if ($locationHasImage->getLocation() === $this) {
+                $locationHasImage->setLocation(null);
             }
         }
 

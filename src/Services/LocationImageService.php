@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Entity\Banner;
 use App\Entity\Image;
+use App\Entity\Location;
+use App\Entity\LocationHasImages;
 use App\Entity\Product;
 use App\Entity\Slider;
 use App\Repository\ImageRepository;
@@ -16,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Webmozart\Assert\Assert;
 
-final class BannerImageService
+final class LocationImageService
 {
     /**
      * @var ImageService
@@ -51,12 +53,12 @@ final class BannerImageService
     }
 
     /**
-     * @param Banner $banner
-     * @param array  $data
+     * @param Location $location
+     * @param array    $data
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(Banner $banner, array $data): void
+    public function setImages(Location $location, array $data): void
     {
         $rootDir = $this->bag->get('upload_dir');
         $tmpDir = $this->bag->get('upload_tmp_dir');
@@ -105,7 +107,7 @@ final class BannerImageService
 
             $newName = $slug.'.'.$file->guessExtension();
 
-            $mediaObj->setRelatedToType(Image::RELATED_TYPE_BANNER);
+            $mediaObj->setRelatedToType(Image::RELATED_TYPE_LOCATION);
             $mediaObj->setName($slug.'-'.++$index);
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
@@ -113,7 +115,11 @@ final class BannerImageService
 
             $this->imageRepository->persist($mediaObj);
 
-            $banner->setImage($mediaObj);
+            $hasImages = new LocationHasImages();
+            $hasImages->setLocation($location);
+            $hasImages->setImage($mediaObj);
+
+            $location->addLocationHasImage($hasImages);
         }
     }
 

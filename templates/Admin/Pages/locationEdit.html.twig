@@ -151,6 +151,18 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Slike</h6>
+                        <div class="row">
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'location', 'class': 'dropzone-dark w-100', 'maxFiles': 10000} %}
+                        </div><!--Row-->
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
     {{ form.button('location_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}

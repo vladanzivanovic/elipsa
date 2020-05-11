@@ -48,7 +48,7 @@ class LocationRepository extends ExtendedEntityRepository
                 'l.id',
                 'lt.title',
                 'lt.slug',
-                'CONCAT(lt.street, \',\', lt.zipCode, \' \', lt.city, \' \', lt.country) as address',
+                'CONCAT(lt.street, \',\', l.zipCode, \' \', lt.city, \' \', lt.country) as address',
                 'l.telephone',
                 'l.email',
                 'l.workingTime',
