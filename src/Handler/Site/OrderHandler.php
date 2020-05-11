@@ -211,6 +211,7 @@ final class OrderHandler
             ],
             'products'          => $products,
             'shippingPrice'     => $settings['SHIPPING_PRICE'],
+            'freeShipping'      => $settings['FREE_SHIPPING'],
             'promotion'         => $order->getCoupon()
         ]);
 
