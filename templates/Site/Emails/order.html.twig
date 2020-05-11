@@ -1099,7 +1099,7 @@ E-mail: {{ buyer.email }}<br>
                                                                         <td align="center" valign="middle">{{ price }} RSD
                                                                         </td>
                                                                         <td align="right" valign="middle">{{ productTotal }} RSD</td>
-                                                                        {% set total = total + (product.quantity * productTotal) %}
+                                                                        {% set total = total + productTotal %}
                                                                     </tr>
                                                                     {% endfor %}
                                                                     {% if promotion is not null %}
@@ -1114,6 +1114,7 @@ E-mail: {{ buyer.email }}<br>
                                                                         </tr>
                                                                         {% set total = total - (total * (promotion.discount/100)) %}
                                                                     {% endif %}
+                                                                    {% set shippingPrice = total >= freeShipping ? 0 : shippingPrice %}
                                                                     <tr>
                                                                         <td align="center" valign="middle">{{ 'email.order.table.shipping' | trans }}
                                                                         </td>
