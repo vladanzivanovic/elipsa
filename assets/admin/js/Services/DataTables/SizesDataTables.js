@@ -16,7 +16,7 @@ export default (() => {
             },
             columns: [
                 { data: 'id', title: 'Id' },
-                { data: 'size', title: 'Večina'},
+                { data: 'size', title: 'Veličina'},
                 { data: 'slug', render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_size_page', {slug: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';

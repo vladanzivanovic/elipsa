@@ -75,7 +75,7 @@ final class ProductPageCollector
             'colors'            => $this->colorRepository->getByProducts([$product->getId()], $locale),
             'sizes'             => $this->sizeRepository->getByProducts([$product->getId()]),
             'tags'              => $this->tagsRepository->getByProducts([$product->getId()], $locale),
-            'categories'        => $this->categoryRepository->getByProduct($product, $locale),
+            'productCategories' => $this->categoryRepository->getByProduct($product, $locale),
             'images'            => $this->imageRepository->getByProduct($product),
             'related_products'  => $this->relatedProducts($product, $locale),
         ];
