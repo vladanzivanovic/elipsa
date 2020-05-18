@@ -37,10 +37,6 @@ export default (() => {
             ],
             order: [[0, 'asc']],
             pageLength: 100,
-            rowReorder: {
-                dataSrc: 'id',
-                update: false,
-            }
         });
 
         Private.registerEvents();

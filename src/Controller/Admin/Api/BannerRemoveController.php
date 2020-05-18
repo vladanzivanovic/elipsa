@@ -23,26 +23,16 @@ use Symfony\Component\Routing\Annotation\Route;
 final class BannerRemoveController extends AbstractController
 {
     /**
-     * @var ProductHasTagsRepository
-     */
-    private $hasTagsRepository;
-
-    /**
      * @var BannerHandler
      */
     private $bannerHandler;
 
     /**
-     * ProductTagRemoveController constructor.
-     *
-     * @param BannerHandler            $bannerHandler
-     * @param ProductHasTagsRepository $hasTagsRepository
+     * @param BannerHandler $bannerHandler
      */
     public function __construct(
-        BannerHandler $bannerHandler,
-        ProductHasTagsRepository $hasTagsRepository
+        BannerHandler $bannerHandler
     ) {
-        $this->hasTagsRepository = $hasTagsRepository;
         $this->bannerHandler = $bannerHandler;
     }
 

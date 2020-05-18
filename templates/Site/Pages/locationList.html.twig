@@ -1,0 +1,47 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block bodyClass %}location-page{% endblock %}
+{% block title %}Lokacije - Elipsa{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Lokacije' }], 'activePage': 'Lokacije'}) }}
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="shop-grid">
+                        <div class="shop-menu clearfix">
+                            <div class="deafult-sorting">
+                                <label class="letter-capitalize">{{ 'countries' | trans }}</label>
+                                <select id="country-list" class="sort-option">
+                                    {% for country in countries %}
+                                        <option class="text-capitalize" value="{{ country.country_code }}">{{ country.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- map-area-start -->
+    <div class="map-area">
+        <div class="gmap">
+            {{ include('Moduls/googleMaps.html.twig') }}
+        </div>
+    </div>
+    <!-- map-area-end -->
+    {{ include('Site/Components/locationModal.html.twig') }}
+{% endblock %}
+
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/location.css') }}"/>
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const LOCATIONS = JSON.parse('{{ locations | json_encode | raw }}');
+        const IS_MOBILE = {{ is_mobile() ? 1 : 0 }};
+    </script>
+{% endblock %}

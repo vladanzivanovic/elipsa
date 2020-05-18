@@ -105,7 +105,7 @@ final class BannerImageService
 
             $newName = $slug.'.'.$file->guessExtension();
 
-            $mediaObj->setRelatedToType(Image::RELATED_TYPE_SLIDER);
+            $mediaObj->setRelatedToType(Image::RELATED_TYPE_BANNER);
             $mediaObj->setName($slug.'-'.++$index);
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);

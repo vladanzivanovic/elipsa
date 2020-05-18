@@ -3,6 +3,7 @@ import ShopPageController from "./ShopPageController";
 import ProductPageController from "./ProductPageController";
 import CheckoutPageController from "./CheckoutPageController";
 import CartPageController from "./CartPageController";
+import LocationPageController from "./LocationPageController";
 
 let routes = [
     {
@@ -20,6 +21,10 @@ let routes = [
     {
         name: 'site.checkout_page',
         controller: CheckoutPageController,
+    },
+    {
+        name: 'site.location_page',
+        controller: LocationPageController,
     },
 ];
 

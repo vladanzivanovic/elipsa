@@ -1,0 +1,43 @@
+@import "~flexslider/flexslider.css";
+
+@import "../colors";
+@import "../Components/flexslider";
+
+.location-page {
+  .deafult-sorting {
+    select {
+      margin-right: 0;
+    }
+  }
+  .product-tab-menu {
+    height: 460px;
+    width: 24%;
+    margin-left: 3% !important;
+
+    .flex-viewport {
+      height: 100% !important;
+
+      .product-tab > li {
+        margin: 0 !important;
+
+        img {
+          padding-bottom: 13px;
+        }
+      }
+    }
+
+    @media only screen and (max-width: 480px) and (min-width: 240px) {
+      .product-tab-menu {
+        height: auto !important;
+      }
+    }
+  }
+
+  .product-tab-content {
+    height: 460px;
+
+    .flex-viewport {
+      height: 100% !important;
+    }
+  }
+}

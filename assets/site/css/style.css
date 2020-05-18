@@ -3311,6 +3311,10 @@ footer {
     box-shadow: 2px 3.464px 6px 0px rgb( 84, 84, 84, 0.3);
 }
 
+.h3b-single-banner-3:first-of-type {
+    margin-bottom: 29px;
+}
+
 .h3b-single-banner-3 .h3b-content-banner-3 {
     top: 58%;
     left: 4%;
@@ -7205,7 +7209,7 @@ button.accordion.active {
     line-height: 26px;
 }
 
-#googleMap {
+#map_canvas {
     height: 600px;
     width: 100%
 }

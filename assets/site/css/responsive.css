@@ -626,7 +626,7 @@ Version      : 1.0
 @media only screen and (min-width: 240px) and (max-width: 480px) {
     /*modal*/
     .product-modal.modal-dialog {
-        display: none;
+        width: 95% !important;
     }
     /*home1*/
     .header-top-left {
@@ -823,8 +823,15 @@ Version      : 1.0
         font-size: 16px !important;
         margin-top: 15px;
     }
+    .product-modal button.close {
+        top: 14px !important;
+    }
+    .product-modal #mobile-title {
+        margin-bottom: 15px;
+    }
     .product-tab-content {
         width: 100% !important;
+        height: auto !important;
     }
     .product-tab-menu {
         float: left !important;
