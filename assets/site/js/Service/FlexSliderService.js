@@ -36,6 +36,10 @@ class FlexSliderService {
             direction: 'horizontal',
             prevText: '',
             nextText: '',
+            smoothHeight: true,
+            start: function(slider){
+                $('.flexslider').resize();
+            }
         };
 
         if (!IS_MOBILE) {
@@ -44,7 +48,7 @@ class FlexSliderService {
             fullImageOptions.controlNav = false;
             fullImageOptions.animationLoop = false;
             fullImageOptions.slideshow = false;
-
+            fullImageOptions.smoothHeight = false;
         }
 
         fullImageWrapper.flexslider(fullImageOptions);
