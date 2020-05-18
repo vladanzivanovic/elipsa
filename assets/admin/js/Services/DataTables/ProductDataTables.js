@@ -28,6 +28,17 @@ export default (() => {
 
                     return type === 'display' ? html : data;
                 } },
+                { data: 'show_home_page', title: 'Početna stranica', width: '200px', render: function (data, type, row, meta) {
+                    const checkedAttr = data === true ? 'checked' : '';
+
+                    let html = CAN_EDIT ? `<p class="status-text">&nbsp;</p><input type="checkbox" class="set-home-page" data-slug="${row.slug}" ${checkedAttr}/>` : '';
+
+                    if (row.status === 3) {
+                        html = `<p class="status-text">${data}</p>`;
+                    }
+
+                    return type === 'display' ? html : data;
+                } },
                 { data: 'slug', render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.edit_product_page', {slug: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';

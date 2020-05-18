@@ -14,6 +14,10 @@ class Slider
     public const STATUS_PENDING = false;
     public const STATUS_ACTIVE = true;
 
+    public const POSITION_LEFT = 1;
+    public const POSITION_CENTER = 2;
+    public const POSITION_RIGHT = 3;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

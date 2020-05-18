@@ -1,0 +1,20 @@
+{% macro childCategory(category, search_criteria) %}
+    <div class="sidebar-box child-category">
+        {% if category.children is defined %}
+            <button class="sidebar-accordion-button {{ category.slug in search_criteria ? 'active' : '' }}" data-toggle="collapse" data-target="#{{ category.id }}">{{ category.title }}</button>
+            <ul class="sidebar-list collapse in" id="{{ category.id }}">
+                {% for child in category.children %}
+                    <li>
+                        {% if child.children is defined %}
+                            {{ self.childCategory(child.children) }}
+                        {% else %}
+                            <a class="category-btn {{ child.slug in search_criteria ? 'active' : '' }}" href="#" data-search-name="categories" data-search="{{ child.slug }}">{{ child.title }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <button class="sidebar-category-button category-btn {{ category.slug in search_criteria ? 'active' : '' }}" data-search-name="categories" data-search="{{ category.slug }}">{{ category.title }}</button>
+        {% endif %}
+    </div>
+{% endmacro %}

@@ -17,10 +17,10 @@
     </label>
 {% endmacro %}
 
-{% macro checkbox(title, id, value, name, class) %}
-    <label class="radio {{ class }}" for="{{ id }}">
+{% macro checkbox(title, id, value, name, class, checkboxClass, additionalAttributes = null) %}
+    <label class="{{ class }}" for="{{ id }}">
         {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
-        {{ form.input(id, value, name, '', 'checkbox') }} {{ title }}
+        {{ form.input(id, value, name, '', 'checkbox', checkboxClass, additionalAttributes) }} {{ title }}
     </label>
 {% endmacro %}
 
@@ -32,9 +32,9 @@
 
 {% macro datePicker(title, id, value, name, placeholder = "", type = "text", additionalAttributes = null) %}
     <label for="{{ id }}">{{ title }}</label>
-    <div class="datepicker-wrap">
+    <div class="input-group date datepicker" id="datePicker_{{ id }}">
         {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
-        {{ form.input(id, value, name, placeholder, type, 'input-text full-width', additionalAttributes) }}
+        {{ form.input(id, value, name, placeholder, type, 'form-control', additionalAttributes) }}<span class="input-group-addon"><i data-feather="calendar"></i></span>
     </div>
 {% endmacro %}
 

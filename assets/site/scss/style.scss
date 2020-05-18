@@ -1,0 +1,27 @@
+// Bootstrap main SCSS
+@import '../../../node_modules/bootstrap3/dist/css/bootstrap.min.css';
+@import "~font-awesome/css/font-awesome.min.css";
+@import "~toastr/toastr";
+
+@import "../../scss/base";
+@import "../css/animate.css";
+@import "../css/meanmenu.css";
+@import "../css/responsive.css";
+@import "../css/style.css";
+@import "../css/typography.css";
+@import "./Components/toastr";
+
+// Components
+@import "./Components/welcome";
+
+div#page-loader {
+  background: #000 url("../img/loader.gif") no-repeat scroll center center;
+  opacity: 0.3;
+  height: 100%;
+  left: 0;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}

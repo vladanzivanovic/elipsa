@@ -57,6 +57,7 @@ class ProductSizeRepository extends ExtendedEntityRepository
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('ps.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->groupBy('ps.id')
         ;
 
         return $query->getQuery()->getArrayResult();
@@ -90,6 +91,27 @@ class ProductSizeRepository extends ExtendedEntityRepository
             )
             ->innerJoin(ProductHasSizes::class, 'phs', 'WITH', 'phs.size = ps AND phs.product = :product')
             ->setParameter('product', $product);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array $products
+     *
+     * @return array
+     */
+    public function getByProducts(array $products): array
+    {
+        $query = $this->createQueryBuilder('ps')
+            ->select(
+                'p.id as productId',
+                'ps.size'
+            )
+            ->innerJoin(ProductHasSizes::class, 'phs', 'WITH', 'phs.size = ps AND phs.isAvailable = :isAvailable')
+            ->innerJoin(Product::class, 'p', 'WITH', 'p = phs.product')
+            ->where('phs.product IN (:products)')
+            ->setParameter('products', $products)
+            ->setParameter('isAvailable', true);
 
         return $query->getQuery()->getArrayResult();
     }

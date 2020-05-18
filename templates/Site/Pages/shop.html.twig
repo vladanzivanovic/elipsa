@@ -1,0 +1,95 @@
+{% extends ('Site/base.html.twig') %}
+
+{% block bodyClass %}shop-page{% endblock %}
+{% block title %}Elipsa - prodavnica{% endblock %}
+
+{% set search = search_criteria is not null ? search_criteria.all : [] %}
+
+{% block content %}
+    <div id="page-loader" class="hide"></div>
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'Proizvodi'}) }}
+
+    {% set pagination = products.pagination %}
+
+    <!-- shop-left-sidebar-area-start -->
+    <div class="shop-left-sidebar-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    {% if false == is_mobile() and false == is_tablet()  %}
+                        {% include 'Site/Components/filter.html.twig' with {filterClass: ''} %}
+                    {% endif %}
+                </div>
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="shop-grid">
+                        <div class="shop-menu clearfix">
+                            {% set shopOptions = app_params('shop') %}
+                            {% set sortOptions = shopOptions['list_sort'] %}
+                            <div class="deafult-sorting">
+                                <label>Sortiraj</label>
+                                <select class="sort-option">
+                                    {% for index, option in sortOptions %}
+                                        <option class="text-capitalize" value="{{ index }}" {{ search.sort is defined and search.sort[0] == index ? 'selected="selected" : ""' }}>{{ option | trans }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="show-product">
+                                <label>Prikaži</label>
+                                {% set showedItems = shopOptions['items_per_page'] %}
+                                <select class="limit-product">
+                                    {% for showedItem in showedItems %}
+                                        <option value="{{ showedItem }}" {{ search.limit is defined and search.limit[0] == showedItem ? 'selected="selected" : ""' }}>{{ showedItem }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="shop-grid-contents">
+                            <div class="search-criteria"></div>
+                            <div class="tab-content">
+                                <div id="grid" class="tab-pane fade in active">
+                                    <div class="grid-items">
+                                        <div class="row">
+                                            {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                            {% for product in products.data %}
+                                                {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-12') }}
+                                            {% endfor %}
+                                        </div>
+                                        {{ include('Site/Components/paginate.html.twig') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if is_mobile() %}
+    <!-- shop-left-sidebar-area-end -->
+        <div id="myNav" class="overlay">
+
+            <!-- Button to close the overlay navigation -->
+            <a href="javascript:void(0)" id="filter-btn-close">&times;</a>
+
+            <!-- Overlay content -->
+            <div class="overlay-content">
+                {% include'Site/Components/filter.html.twig' with {filterClass: 'mobile-view'} %}
+            </div>
+
+        </div>
+
+        <span id="filter-btn-open" class="letter-capitalize">{{ 'filters' | trans }}</span>
+    {% endif %}
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/shop.css') }}"/>
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const IS_FIRST_PAGE = {{ app.request.attributes.get('page') == 1 ? 1 : 0 }};
+
+        const SEARCH_CRITERIA = JSON.parse('{{ search | json_encode | raw }}');
+        const PRICES = [{{ prices.lowPrice }}, {{ prices.highPrice }}];
+    </script>
+{% endblock %}

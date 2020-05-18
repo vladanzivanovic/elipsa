@@ -1,0 +1,137 @@
+@import "~jquery-ui/themes/base/slider.css";
+@import "../Components/common-product";
+@import "../Components/filter";
+
+.shop-page {
+  .home3-slider-container .nivo-directionNav > a {
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+  }
+
+  .sidebar-box {
+    margin-top: 10px;
+    .sidebar-category-button {
+      background: transparent none repeat scroll 0 0;
+      border: 0 none;
+      border-bottom: 1px solid #d9d9d9;
+      color: #222222;
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0;
+      margin: 0 0 9px;
+      padding: 0 0 2px;
+      position: relative;
+      text-align: left;
+      text-transform: uppercase;
+      width: 100%;
+    }
+    .sidebar-list {
+      a.color-box {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+
+        .color {
+          border: 1px solid #eee;
+          width: 20px;
+          height: 20px;
+        }
+      }
+      a.active {
+        color: #ed1d7f;
+        font-style: italic;
+        padding-left: 10px;
+      }
+    }
+    .child-category {
+      .sidebar-list {
+        margin-left: 15px;
+      }
+      .sidebar-accordion-button {
+        border: none;
+        text-transform: none;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .search-criteria {
+    .selected-filter-btn {
+
+      @include opacity(0.8);
+
+      margin-bottom: 5px;
+      background: #f8f8f8;
+      border: 1px solid #ecedee;
+      color: #646a7c;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 6px;
+      margin-right: 10px;
+
+      &:hover {
+        @include opacity(1);
+        background: #f8f8f8 !important;
+      }
+
+      .close {
+        @include opacity(1);
+        font-weight: inherit;
+        color: inherit;
+        font-size: inherit;
+        cursor: pointer;
+        text-align: right;
+        width: 20px;
+      }
+      .close:before {
+        content: "\f00d";
+        font-family: FontAwesome;
+      }
+    }
+  }
+
+  .shop-grid-contents {
+    margin-top: 0;
+
+    > .tab-content {
+      margin-top: 20px;
+    }
+  }
+
+  .shop-menu {
+    text-align: right;
+
+    label {
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0;
+      color: #222222;
+    }
+
+    select {
+      margin-right: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) and (min-width: 240px) {
+  .shop-left-sidebar-area {
+    padding-top: 20px;
+  }
+  .shop-menu {
+    display: flex;
+    justify-content: space-between;
+    text-align: left !important;
+
+    > div {
+      margin-right: 15px;
+
+      select {
+        padding: 0 10px;
+      }
+    }
+  }
+}

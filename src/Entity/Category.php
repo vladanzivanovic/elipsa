@@ -31,11 +31,6 @@ class Category
     private $categoryTranslations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
-     */
-    private $products;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
      */
     private $children;
@@ -44,6 +39,11 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="category")
      */
     private $productHasCategories;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $showHomePage;
 
     public function __construct()
     {
@@ -115,37 +115,6 @@ class Category
     }
 
     /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|self[]
      */
     public function getChildren(): Collection
@@ -203,6 +172,18 @@ class Category
                 $productHasCategory->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShowHomePage(): ?bool
+    {
+        return $this->showHomePage;
+    }
+
+    public function setShowHomePage(bool $showHomePage): self
+    {
+        $this->showHomePage = $showHomePage;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import ColorsDataTables from "../Services/DataTables/ColorsDataTables";
-import AppHelperService from "../../../site/js/AppHelperService";
+import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
 import ColorHandler from "../Handler/Product/ColorHandler";
 import TagsDataTables from "../Services/DataTables/TagsDataTables";

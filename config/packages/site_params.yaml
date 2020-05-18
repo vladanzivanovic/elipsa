@@ -1,4 +1,24 @@
 parameters:
+  site_info:
+    url: '%env(resolve:SITE_URL)%'
+  shop:
+    list_sort:
+      1: most_selled
+      2: from_lowest_price
+      3: from_highest_price
+      4: on_sale
+      5: first_new
+    items_per_page:
+      - 12
+      - 24
+      - 36
+      - 48
+    sort_mapping:
+      1: ['p.id', 'ASC']
+      2: ['p.price', 'ASC']
+      3: ['p.price', 'DESC']
+      4: ['p.discount', 'ASC']
+      5: ['p.createdAt', 'DESC']
   badge:
     1: new
     2: discount

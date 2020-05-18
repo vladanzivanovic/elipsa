@@ -1,0 +1,87 @@
+<div class="header-top-right">
+    <div class="htr-search">
+        <form action="#">
+            <div class="htr-search-content">
+                <input type="text" placeholder="Pretraži...">
+                <button><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="login-or-register">
+        <span id="login_register">Prijava / Registracija</span>
+        <div class="login-register-content" id="login_register_content">
+            <div class="lrc-login">
+                <h4 class="lrc-title">Prijava</h4>
+                <div class="lrc-login-form">
+                    <form action="#">
+                        <div class="account-name">
+                            <i class="fa fa-user"></i>
+                            <input type="text" placeholder="Email">
+                        </div>
+                        <div class="password">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" placeholder="Lozinka">
+                        </div>
+                        <div class="remember-help">
+                            <input type="checkbox">
+                            <label>zapamti me</label>
+                        </div>
+                        <div class="lrc-submit">
+                            <input class="hvr-bs" type="submit" value="Prijavi se">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="lrc-register">
+                <h4 class="lrc-title">Registracija</h4>
+                <div class="lrc-register-form">
+                    <form action="#">
+                        <input type="text" placeholder="Email">
+                        <input type="password" placeholder="Lozinka">
+                        <div class="lrc-register-btn">
+                            <input class="hvr-bs" type="submit" value="Registruj se">
+                        </div>
+                    </form>
+                </div>
+                <div class="or-register-to">
+                    <span>ili registruj se putem</span>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% set cartData = cart_list(app.request.locale) %}
+    <div class="top-cart">
+        <span id="top_cart" tabindex="3" class="letter-capitalize"><i class="fa fa-shopping-basket"></i><span class="letter-capitalize d-inline-block">{{ 'cart.name' | trans }}</span> <span class="cart-number">(<span class="cart-length">{{ cartData.products | length }}</span>)</span></span>
+        <div class="my-cart" id="my_cart">
+            <div class="my-cart-products">
+                {% for product in cartData.products %}
+                    <div class="single-mcp clearfix single-product" data-id="{{ product.id }}">
+                        <div class="single-mcp-img">
+                            <img src="{{ product.image_link }}" alt="">
+                        </div>
+                        <div class="single-mcp-content">
+                            <a class="mcp-product-name" href="#">{{ product.name }}</a>
+                            <span class="mcp-pro-quantity"><span class="quantity-number">{{ product.quantity }}</span> x <span class="mcp-pro-price">{{ product.discount > 0 ? product.discount : product.price }} RSD</span></span>
+                        </div>
+                        <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="my-cart-total-cost">
+                <span class="letter-capitalize">{{ 'cart.total_products' | trans }}</span>
+                <span class="cost"><span class="cost__number">{{ cartData.total }}</span> RSD</span>
+            </div>
+            <div class="viewcart-checkout">
+                <a class="viewcart letter-capitalize" href="{{ path('site.cart_page') }}">{{ 'cart.view' | trans }}</a>
+                <a class="checkout letter-capitalize" href="{{ path('site.checkout_page') }}">{{ 'cart.checkout' | trans }}</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}{{ 'title.checkout_completed' | trans }}{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
+        {'title': 'cart.checkout' | trans}
+    ], 'activePage': 'title.checkout_completed' | trans}) }}
+
+    {{ include('Site/Components/cartHeader.html.twig') }}
+
+    <!-- order-tracker-area-start -->
+    <div class="order-tracker-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="order-tracker">
+                        <h2 class="ot-title">{{ 'checkout_completed.title' | trans }}</h2>
+                        <p class="ot-text letter-capitalize">{{ 'checkout_completed.details' | trans }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- order-tracker-area-end -->
+{% endblock %}

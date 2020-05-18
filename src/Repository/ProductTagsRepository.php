@@ -133,4 +133,28 @@ class ProductTagsRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param array  $products
+     *
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getByProducts(array $products, string $locale): array
+    {
+        $query = $this->createQueryBuilder('pt')
+            ->select(
+                'p.id as productId',
+                'pt.label'
+            )
+            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = pt.mainSlug')
+            ->innerJoin(Product::class, 'p', 'WITH', 'p = pht.product')
+            ->where('pht.product IN (:products)')
+            ->andWhere('pt.locale = :locale')
+            ->setParameter('products', $products)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

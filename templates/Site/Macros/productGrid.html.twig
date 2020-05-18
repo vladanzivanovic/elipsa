@@ -1,0 +1,50 @@
+{% macro productGrid(product, tags, colors, sizes, class) %}
+    <div class="{{ class }}">
+        <div class="single-featured-item">
+            <div class="sfi-img">
+                <a href="{{ path('site.product_page', {'slug': product.slug}) }}"><img src="{{ product.image_link_list }}" alt="{{ default_alt_tag }}"></a>
+                <ul class="sfi-tag-list">
+                    {% for tag in tags[product.id] %}
+                        <li><a href="#">{{ tag }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="sfi-img-content sfi-data-content">
+                    <p class="letter-capitalize">{{ 'available_colors' | trans }}:</p>
+                    <ul class="sfi-data-color">
+                        {% for color in colors[product.id] %}
+                            <li>
+                                <a style="background-color: {{ color }}" href="#"></a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <p class="letter-capitalize">{{ 'available_sizes' | trans }}:</p>
+                    <ul>
+                        {% for productSize in sizes[product.id] %}
+                            <li>
+                                <a href="#">{{ productSize }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="sfi-content">
+                <div class="sfi-buttons">
+                    <ul class="clearfix">
+                        <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
+{#                        <li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>#}
+                        <li><a href="{{ path('site.product_page', {'slug': product.slug}) }}"><i class="fa fa-eye"></i></a></li>
+                    </ul>
+                </div>
+                <div class="sfi-name-cat">
+                    <a class="sfi-name" href="{{ path('site.product_page', {'slug': product.slug}) }}">{{ product.title }}</a>
+                </div>
+                <div class="sfi-price-rating">
+                    <p class="sfi-price text-uppercase"><span>{{ product.discount > 0 ? product.discount : product.price }} RSD</span></p>
+                    {% if product.discount > 0 %}
+                        <p class="sfi-old-price">-{{ product.price }} RSD</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

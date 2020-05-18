@@ -131,3 +131,5 @@ DirectoryIndex index.php
 #BrowserMatch ^Mozilla/4\.0[678] no-gzip
 #BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 #Header append Vary User-Agent
+
+php_value upload_max_filesize 20M

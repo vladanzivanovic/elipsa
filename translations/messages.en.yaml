@@ -16,3 +16,139 @@ error:
 
 notifications:
   please_wait: 'Please wait.'
+
+price: price
+
+navi:
+  home: Home
+  about_us: About us
+  locations: Locations
+  loyalty: Loyalty program
+  catalogue: Catalogue
+  shop: Shop
+  blog: Blog
+  ask_us: Ask us
+  contact: Contact
+  account: My account
+
+serbian: Serbian
+english: English
+
+size: size
+color: color
+categories: categories
+filters: filters
+limit: limit
+
+veličina: size
+boja: color
+kategorije: categories
+sortiranje: sort
+cena: price
+
+next_page: next
+prev_page: prev
+last_page: last
+first_page: first
+
+available_sizes: available sizes
+available_colors: available colors
+
+most_selled: most selled
+from_lowest_price: lower price first
+from_highest_price: higher price first
+on_sale: on sale
+first_new: new
+
+select.color: select color
+select.size: select size
+
+add_to_cart: add to cart
+
+tags: tags
+
+share_link: share link
+
+product.description: product description
+product.material_cleaning: material and cleaning
+
+related_products: related products
+
+cart.name: cart
+cart.total_products: total cost
+cart.total_shipping: total with shipping
+cart.view: view cart
+cart.checkout: checkout
+cart.personal_data: Customer data
+cart.order_completed_successful: order completed
+cart.continue_shopping: continue shopping
+cart.update: update cart
+cart.next_step: next step
+cart.shipping: shipping
+cart.empty: your cart is empty
+cart.total_cost: cart total
+cart.promo_coupon: Discount code
+cart.promo_coupon_text: Enter your code if you have one.
+cart.add_coupon_btn: add code
+
+cart.table.image: image
+cart.table.product_name: product
+cart.table.price: price
+cart.table.quantity: quantity
+cart.table.total: total
+
+title.your_cart: Your cart
+title.cart_personal_data: Your cart - personal information
+title.checkout_completed: Checkout completed
+
+checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
+checkout.billing_address: billing address
+checkout.order_notes: order notes
+checkout.login_text: create an account by entering the information below. If you are a returning customer please click "Login" button at the top of the page.
+checkout.your_order: your order
+checkout.product_total: product <span>total</span>
+checkout.create_account: create an account
+checkout.payment.by_taking: Pay when arrive
+checkout.paymeny.credit_card: credit card
+checkout.complete_order: complete order
+
+checkout_completed.title: your order has been successfully completed.
+checkout_completed.details: the details of the order has been sent to your email address.
+
+country: country
+first_name: first name
+last_name: last name
+address: address
+city: city
+zip_code: postal code
+email: email address
+mobile_telephone: mobile phone
+create_account: create account
+password: password
+
+email.order.title: Order #%orderId%
+email.order.seller: Seller
+email.order.seller.name: Company
+email.order.seller.account: Account number
+email.order.seller.address: Address
+email.order.seller.telephone: Telephone
+email.order.seller.mobile: Mobile phone
+
+email.order.buyer: Buyer
+email.order.buyer.full_name: Name and surname
+email.order.buyer.city: City/Town
+email.order.buyer.street_number: Street and number
+email.order.buyer.paymet_type: Payment
+
+email.order.data.title: Order data
+email.order.table.product_name: Product name
+email.order.table.size: Size
+email.order.table.color: Color
+email.order.table.quantity: Quantity
+email.order.table.shipping: Shipping
+email.order.table.promo_coupon: Promotion code
+email.order.total_shipping: total with shipping
+
+
+payment_type.on_delivering: On delivering
+payment_type.credit_card: Credi card

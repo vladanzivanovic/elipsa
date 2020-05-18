@@ -36,6 +36,14 @@ class CategoriesController {
 
                  handler.remove(slug);
              });
+
+             $(document).on('click touchend', '.set-home-page', e => {
+                 const slug = e.currentTarget.dataset.slug;
+                 const status = e.currentTarget.checked ? 1 : 0;
+                 const handler = new CategoryHandler();
+
+                 handler.toggleShowHomePage(slug, status);
+             });
          }
 
          return Private;

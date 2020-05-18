@@ -42,11 +42,6 @@ class Product
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductSize", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $productSizes;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $productTranslations;
@@ -60,11 +55,6 @@ class Product
      * @ORM\Column(type="smallint", nullable=true)
      */
     private $badge;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasColor", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $productHasColors;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -85,6 +75,11 @@ class Product
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasImages", mappedBy="product", cascade={"persist", "remove"})
      */
     private $productHasImages;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $showHomePage;
 
     public function __construct()
     {
@@ -164,37 +159,6 @@ class Product
     }
 
     /**
-     * @return Collection|ProductSize[]
-     */
-    public function getProductSizes(): Collection
-    {
-        return $this->productSizes;
-    }
-
-    public function addProductSize(ProductSize $productSize): self
-    {
-        if (!$this->productSizes->contains($productSize)) {
-            $this->productSizes[] = $productSize;
-            $productSize->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductSize(ProductSize $productSize): self
-    {
-        if ($this->productSizes->contains($productSize)) {
-            $this->productSizes->removeElement($productSize);
-            // set the owning side to null (unless already changed)
-            if ($productSize->getProduct() === $this) {
-                $productSize->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ProductTranslation[]
      */
     public function getProductTranslations(): Collection
@@ -264,37 +228,6 @@ class Product
     public function setBadge(?int $badge): self
     {
         $this->badge = $badge;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ProductHasColor[]
-     */
-    public function getProductHasColors(): Collection
-    {
-        return $this->productHasColors;
-    }
-
-    public function addProductHasColor(ProductHasColor $productHasColor): self
-    {
-        if (!$this->productHasColors->contains($productHasColor)) {
-            $this->productHasColors[] = $productHasColor;
-            $productHasColor->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductHasColor(ProductHasColor $productHasColor): self
-    {
-        if ($this->productHasColors->contains($productHasColor)) {
-            $this->productHasColors->removeElement($productHasColor);
-            // set the owning side to null (unless already changed)
-            if ($productHasColor->getProduct() === $this) {
-                $productHasColor->setProduct(null);
-            }
-        }
 
         return $this;
     }
@@ -417,5 +350,17 @@ class Product
         });
 
         return $filteredTrans->first();
+    }
+
+    public function getShowHomePage(): ?bool
+    {
+        return $this->showHomePage;
+    }
+
+    public function setShowHomePage(bool $showHomePage): self
+    {
+        $this->showHomePage = $showHomePage;
+
+        return $this;
     }
 }

@@ -1,6 +1,4 @@
 import ProductDataTables from "../Services/DataTables/ProductDataTables";
-// import ProductRemoveHandler from "../Handler/Product/ProductRemoveHandler";
-// import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 
@@ -36,12 +34,14 @@ class DashboardController {
 
                  handler.changeStatus(e.currentTarget, slug, status);
              });
-             //
-             // $(document).on('click touchend', '.remove-product', e => {
-             //     const alias = e.currentTarget.dataset.alias;
-             //
-             //     ProductRemoveHandler.remove(alias);
-             // });
+
+             $(document).on('change', '.set-home-page', e => {
+                 const slug = e.currentTarget.dataset.slug;
+                 const status = e.currentTarget.checked ? 1 : 0;
+                 const handler = new ProductEditHandler();
+
+                 handler.toggleShowHomePage(e.currentTarget, slug, status);
+             });
          }
 
          return Private;

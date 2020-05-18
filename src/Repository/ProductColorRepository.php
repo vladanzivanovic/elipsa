@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\ColorTranslation;
+use App\Entity\Product;
 use App\Entity\ProductColor;
+use App\Entity\ProductHasImages;
 use App\Entity\ProductTranslation;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -44,9 +47,7 @@ class ProductColorRepository extends ExtendedEntityRepository
     public function countData()
     {
         $query = $this->createQueryBuilder('pc')
-            ->select('COUNT(pc.id) as total')
-            ->where('pc.locale = \'rs\'')
-        ;
+            ->select('COUNT(pc.id) as total');
 
         return $query->getQuery()->getSingleScalarResult();
     }
@@ -62,16 +63,15 @@ class ProductColorRepository extends ExtendedEntityRepository
             ->select(
                 'pc.id',
                 'pc.hex',
-                'pc.name as rs_name',
-                'pc.mainSlug',
-                'pcen.name as en_name',
-                'pc.slug'
+                'ctRs.title as rs_name',
+                'ctEn.title as en_name',
             )
-            ->innerJoin(ProductColor::class, 'pcen', 'WITH', 'pcen.mainSlug = pc.mainSlug AND pcen.locale = \'en\'')
-            ->where('pc.locale = \'rs\'')
+            ->innerJoin(ColorTranslation::class, 'ctRs', 'WITH', 'ctRs.locale = \'rs\' AND ctRs.color = pc')
+            ->innerJoin(ColorTranslation::class, 'ctEn', 'WITH', 'ctEn.locale = \'en\' AND ctEn.color = pc')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('pc.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->groupBy('pc.id')
         ;
 
         return $query->getQuery()->getArrayResult();
@@ -85,47 +85,78 @@ class ProductColorRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('pc')
             ->select(
                 'pc.hex',
-                'pc.mainSlug as value'
-            )
-            ->where('pc.locale = \'rs\'')
-        ;
+                'pc.id as value'
+            );
 
         return $query->getQuery()->getArrayResult();
     }
 
     /**
-     * @param string $mainSlug
-     * @param array  $locales
+     * @param ProductColor $productColor
      *
      * @return array
      */
-    public function getByMainSlugAndLocales(string $mainSlug, array $locales): array
+    public function getByColorForAdmin(ProductColor $productColor): array
     {
         $query = $this->createQueryBuilder('pc')
             ->select(
-                'pc.name',
-                'pc.locale'
+                'pc.hex',
+                'ctRs.title as rs_title',
+                'ctEn.title as en_title',
             )
-            ->where('pc.mainSlug = :mainSlug')
-            ->andWhere('pc.locale IN (:locales)')
-            ->setParameter('mainSlug', $mainSlug)
-            ->setParameter('locales', $locales);
+            ->innerJoin(ColorTranslation::class, 'ctRs', 'WITH', 'ctRs.locale = \'rs\' AND ctRs.color = pc')
+            ->innerJoin(ColorTranslation::class, 'ctEn', 'WITH', 'ctEn.locale = \'en\' AND ctEn.color = pc')
+            ->where('pc = :productColor')
+            ->setParameter('productColor', $productColor);
 
         return $query->getQuery()->getArrayResult();
     }
 
     /**
-     * @param string $mainSlug
+     * @param string $locale
      *
-     * @return void
+     * @return array
      */
-    public function remove(string $mainSlug): void
+    public function getByLocale(string $locale): array
     {
         $query = $this->createQueryBuilder('pc')
-            ->delete()
-            ->where('pc.mainSlug = :mainSlug')
-            ->setParameter('mainSlug', $mainSlug);
+            ->select(
+                'pc.id',
+                'pc.hex',
+                'ct.title',
+                'ct.slug'
+            )
+            ->innerJoin('pc.colorTranslations', 'ct')
+            ->where('ct.locale = :locale')
+            ->setParameter('locale', $locale);
 
-        $query->getQuery()->execute();
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array  $products
+     *
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getByProducts(array $products, string $locale): array
+    {
+        $query = $this->createQueryBuilder('pc')
+            ->select(
+                'DISTINCT pc.hex',
+                'ct.slug',
+                'p.id as productId',
+                'pc.id'
+            )
+            ->innerJoin('pc.colorTranslations', 'ct')
+            ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.color = pc')
+            ->innerJoin(Product::class, 'p', 'WITH', 'p = phi.product')
+            ->where('phi.product IN (:products)')
+            ->andWhere('ct.locale = :locale')
+            ->setParameter('products', $products)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
     }
 }

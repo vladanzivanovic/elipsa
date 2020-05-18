@@ -1,0 +1,17 @@
+<div class="crumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="crumb">
+                    <ul class="crumb-list">
+                        <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
+                        {% for page in pages %}
+                            <li class="{{ loop.last ? 'active' : '' }} letter-capitalize"><a href="{{ page.link is defined ? page.link : '#' }}">{{ page['title'] }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <span class="crumb-name letter-capitalize">{{ activePage }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

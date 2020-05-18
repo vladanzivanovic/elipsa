@@ -1,5 +1,5 @@
 import NotificationService from "../../../js/NotificationService";
-import AppHelperService from "../../../site/js/AppHelperService";
+import AppHelperService from "../../../js/Helper/AppHelperService";
 import DropZoneService from "../../../js/Services/DropZoneService";
 import SizesDataTables from "../Services/DataTables/SizesDataTables";
 import SliderDataTables from "../Services/DataTables/SliderDataTables";

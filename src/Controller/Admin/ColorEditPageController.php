@@ -48,7 +48,7 @@ final class ColorEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/edit-color/{slug}", name="admin.edit_color_page", methods={"GET"})
+     * @Route("/edit-color/{id}", name="admin.edit_color_page", methods={"GET"})
      * @Template("Admin/Pages/colorEdit.html.twig")
      *
      * @param ProductColor $color
@@ -57,15 +57,8 @@ final class ColorEditPageController extends AbstractController
      */
     public function update(ProductColor $color): array
     {
-        $locales = explode('|', $this->bag->get('locales'));
-        $colorsByLocale = $this->colorRepository->getByMainSlugAndLocales($color->getMainSlug(), $locales);
+        $colors = $this->colorRepository->getByColorForAdmin($color);
 
-        $responseArray = ['hex' => $color->getHex()];
-
-        foreach ($colorsByLocale as $localeItem) {
-            $responseArray[$localeItem['locale'].'_title'] = $localeItem['name'];
-        }
-
-        return $responseArray;
+        return $colors[0];
     }
 }

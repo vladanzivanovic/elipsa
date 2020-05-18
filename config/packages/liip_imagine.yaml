@@ -20,26 +20,38 @@ liip_imagine :
             cache: ads_photos
             quality : 90
             filters :
-                thumbnail  : { size : [270, 160], mode : outbound }
-                background : { size : [270, 160], position : center, color : '#ffffff' }
+                thumbnail  : { size : [370, 551], mode : outbound }
+                background : { size : [370, 551], position : center, color : '#ffffff' }
+        product_image :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [428, 547], mode : outbound }
+                background : { size : [428, 547], position : center, color : '#ffffff' }
+        product_image_thumb :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [111, 140], mode : outbound }
+                background : { size : [111, 140], position : center, color : '#ffffff' }
         grid_thumb :
             cache: ads_photos
             quality : 90
             filters :
-                thumbnail  : { size : [250, 200], mode : outbound }
-                background : { size : [250, 200], position : center, color : '#ffffff' }
+                thumbnail  : { size : [256, 381], mode : outbound }
+                background : { size : [256, 381], position : center, color : '#ffffff' }
         index_thumb_recommended :
             cache: ads_photos
             quality : 90
             filters :
                 thumbnail  : { size : [370, 200], mode : outbound }
                 background : { size : [370, 200], position : center, color : '#ffffff' }
-        index_thumb_category :
+        cart_thumb :
             cache: ads_photos
             quality : 90
             filters :
-                thumbnail: { size: [476, 318], mode: outbound }
-                background: { size: [476, 318], position: center, color: '#ffffff' }
+                thumbnail: { size: [96, 107], mode: outbound }
+                background: { size: [96, 107], position: center, color: '#ffffff' }
         category_single:
             cache: ads_photos
             quality : 100
@@ -76,3 +88,21 @@ liip_imagine :
             filters :
                 downscale:
                     max: [ 200, 200 ]
+        site_slider :
+            cache: ads_photos
+            quality : 100
+            filters :
+                downscale:
+                    max: [ 1914, 941 ]
+        home_banner_side :
+            cache: ads_photos
+            quality : 100
+            filters :
+                downscale:
+                    max: [ 370, 480 ]
+        home_banner_center :
+            cache: ads_photos
+            quality : 100
+            filters :
+                downscale:
+                    max: [ 370, 225 ]

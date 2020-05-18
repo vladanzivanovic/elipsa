@@ -1,4 +1,4 @@
-import AppHelperService from "../../../site/js/AppHelperService";
+import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
 import CategoryDataTables from "../Services/DataTables/CategoryDataTables";
 
@@ -11,8 +11,6 @@ class CategoryHandler {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_category_api');
         let type = 'POST';
         const data = mapper.form.serializeArray();
-
-        data.push({name: 'parent_category', value: mapper.parent.val()});
 
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_category_api', {slug: SLUG});
@@ -56,6 +54,18 @@ class CategoryHandler {
                 }
 
                 this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE+'_RS'), true);
+            }
+        })
+    }
+
+    toggleShowHomePage(slug, status) {
+        $.ajax({
+            type: 'PATCH',
+            'url': AppHelperService.generateLocalizedUrl('admin.api_category_change_home_page', {slug, status}),
+            dataType: 'json',
+            success: () => {},
+            error: () => {
+                this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
             }
         })
     }

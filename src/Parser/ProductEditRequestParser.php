@@ -82,6 +82,7 @@ final class ProductEditRequestParser
         $product->setCode($bag->get('code'));
         $product->setDiscount($bag->getInt('discount'));
         $product->setPrice($bag->getInt('price'));
+        $product->setShowHomePage((boolean) $bag->get('show_home_page'));
 
         $this->setLocales($bag, $product);
         $this->setCategories($product, $bag->get('categories'));

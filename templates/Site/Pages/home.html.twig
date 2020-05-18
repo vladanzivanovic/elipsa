@@ -1,0 +1,210 @@
+{% extends ('Site/base.html.twig') %}
+
+{% block bodyClass %}home{% endblock %}
+
+{% block content %}
+    <!-- home2-slider-start -->
+    <div class="home3-slider-container">
+        <!-- Slider Image -->
+        <div id="home3_slider" class="nivoSlider slider-image">
+            {% for slider in sliders %}
+                <img src="{{ slider['image_link'] }}" alt="" title="#{{ slider['id'] }}" />
+            {% endfor %}
+        </div>
+        {% for slider in sliders %}
+            <!-- Slider Caption {{ slider['id'] }} -->
+            <div id="{{ slider['id'] }}" class="nivo-html-caption slider-caption-{{ slider['id'] }}">
+                <div class="slider-progress"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 {{ is_mobile() or is_tablet() ? 'text-center' : 'text-' ~ slider['position'] }}">
+                            {% if false == is_mobile() and false == is_tablet() %}
+                                <div class="slide3-text hidden-xs">
+                                    <div class="middle-text">
+                                        <div class="cap-dec animated bounceIn">
+                                            <h6>{{ slider['description'][0] is defined ? slider['description'][0] : '&nbsp;' }}</h6>
+                                        </div>
+                                        <div class="cap-title animated zoomIn">
+                                            <h2>{{ slider['description'][1] is defined ? slider['description'][1] | capitalize : '&nbsp;' }}</h2>
+                                        </div>
+                                        <div class="cap-title-2 animated zoomIn">
+                                            <h3>{{ slider['description'][2] is defined ? slider['description'][2] : '&nbsp;' }}</h3>
+                                        </div>
+                                        <div class="cap-text animated zoomIn">
+                                            <p>{{ slider['description'][3] is defined ? slider['description'][3] : '&nbsp;' }}</p>
+                                            <span>{{ slider['description'][4] is defined ? slider['description'][4] : '&nbsp;' }}</span>
+                                        </div>
+                                        <div class="cap-view animated bounceInUp">
+                                            <a class="hvr-bs" href="{{ slider['button_link'] }}">{{ slider['button_text'] }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="slide3-text">
+                                    <div class="middle-text">
+                                        {% if slider['description'][0] is defined %}
+                                            <div class="cap-dec animated bounceIn">
+                                                <h6>{{ slider['description'][0] }}</h6>
+                                            </div>
+                                        {% endif %}
+                                        {% if slider['description'][1] is defined %}
+                                            <div class="cap-title animated zoomIn">
+                                                <h2>{{ slider['description'][1] | capitalize }}</h2>
+                                            </div>
+                                        {% endif %}
+                                        {% if slider['description'][2] is defined %}
+                                            <div class="cap-title-2 animated zoomIn">
+                                                <h3>{{ slider['description'][2] }}</h3>
+                                            </div>
+                                        {% endif %}
+                                        <div class="cap-text animated zoomIn">
+                                            {% if slider['description'][3] is defined %}
+                                                <p>{{ slider['description'][3] }}</p>
+                                            {% endif %}
+                                            {% if slider['description'][4] is defined %}
+                                                <span>{{ slider['description'][4] }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="cap-view animated bounceInUp">
+                                            <a class="hvr-bs" href="{{ slider['button_link'] }}">{{ slider['button_text'] }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- home2-slider-end -->
+    <!-- home3-banner-area-start -->
+    <div class="home3-banner-area">
+        <div class="container">
+            <div class="row">
+                {% if banners[1] is defined %}
+                    {% set firstBanner = banners[1] %}
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="h3b-single-banner-4 h3b-single-banner">
+                            <div class="h3b-img">
+                                <img src="{{ firstBanner['image_link'] }}" alt="">
+                            </div>
+                            <div class="h3b-content-banner-4 h3b-content">
+                                <h3>{{ firstBanner['description'][0] is defined ? firstBanner['description'][0] : '&nbsp;' }}</h3>
+                                <h2>{{ firstBanner['description'][0] is defined ? firstBanner['description'][1] : '&nbsp;' }}</h2>
+                                <a href="{{ firstBanner['button_link'] }}">{{ firstBanner['button_text'] }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-md-4 hidden-sm col-xs-12 home-middle-banners">
+                    {% if banners[2] is defined %}
+                        {% set secondBanner = banners[2] %}
+                        <div class="h3b-single-banner-3 h3b-single-banner">
+                            <div class="h3b-img">
+                                <img src="{{ secondBanner['image_link'] }}" alt="">
+                            </div>
+                            <div class="h3b-content-banner-3 h3b-content">
+                                <h2>{{ secondBanner['description'][0] is defined ? secondBanner['description'][0] : '&nbsp;' }}</h2>
+                                <a href="{{ secondBanner['button_link'] }}">{{ secondBanner['button_text'] }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if banners[3] is defined %}
+                        {% set thirdBanner = banners[3] %}
+                        <div class="h3b-single-banner-3 h3b-single-banner">
+                            <div class="h3b-img">
+                                <img src="{{ thirdBanner['image_link'] }}" alt="">
+                            </div>
+                            <div class="h3b-content-banner-3 h3b-content">
+                                <h2>{{ thirdBanner['description'][0] is defined ? thirdBanner['description'][0] : '&nbsp;' }}</h2>
+                                <a href="{{ thirdBanner['button_link'] }}">{{ thirdBanner['button_text'] }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if banners[4] is defined %}
+                    {% set fourthBanner = banners[4] %}
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="h3b-single-banner-4 h3b-single-banner">
+                            <div class="h3b-img">
+                                <img src="{{ fourthBanner['image_link'] }}" alt="">
+                            </div>
+                            <div class="h3b-content-banner-4 h3b-content">
+                                <h3>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][0] : '&nbsp;' }}</h3>
+                                <h2>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][1] : '&nbsp;' }}</h2>
+                                <a href="{{ fourthBanner['button_link'] }}">{{ fourthBanner['button_text'] }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- home3-banner-area-end -->
+    <!-- featured-itema-area-start -->
+    <div class="home-2-featured-item-area">
+        <div class="container">
+            <div class="home-2-featured-item-head">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="home-2-feature-item-tab-control">
+                            <ul class="fi-tab">
+                                {% for category in home_categories %}
+                                    <li class="{{ loop.first ? 'active' : '' }}"><a data-toggle="tab" href="#{{ category.slug }}">{{ category.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-items tab-content">
+                {% for categorySlug, productCategory in products %}
+                    <div id="{{ categorySlug }}" class="tab-pane fade {{ loop.first ? 'in active' : '' }}">
+                        <div class="featured-all">
+                            <div class="fi-row">
+                                <div class="row">
+                                    <div class="feature-pro-carousel owl-carousel">
+                                        {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                        {% for product in productCategory %}
+                                            {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-xs-12') }}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- featured-itema-area-end -->
+    <!-- home3-newsletter-area-start -->
+    <div class="home3-newsletter-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="h3-newsletter-left">
+                        <h3 class="h3-nl-title">Elipsa Elite Club</h3>
+                        <p class="h3-nl-text">Posebna si uz našu karticu</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="h3-newsletter-form">
+                        <form action="#">
+                            <div class="h3-newsletter-input">
+                                <input type="text" placeholder="Enter your e-mail">
+                                <input class="hvr-bs" type="submit" value="Subscribe">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- home3-newsletter-area-end -->
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/home.css') }}"/>
+{% endblock %}

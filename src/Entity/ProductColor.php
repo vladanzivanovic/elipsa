@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductColorRepository")
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"main_slug", "locale"})})
  */
 class ProductColor
 {
@@ -26,27 +27,20 @@ class ProductColor
     private $hex;
 
     /**
-     * @ORM\Column(type="string", length=15)
-     * @Assert\NotBlank(message="field.not_blank", groups={"SetColor"})
-     * @Assert\Length(maxMessage="field.max_length", groups={"SetColor"}, max="15")
+     * @ORM\OneToMany(targetEntity="App\Entity\ColorTranslation", mappedBy="color", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $name;
+    private $colorTranslations;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="color")
      */
-    private $slug;
+    private $orderProducts;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mainSlug;
-
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $locale;
+    public function __construct()
+    {
+        $this->colorTranslations = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -65,50 +59,79 @@ class ProductColor
         return $this;
     }
 
-    public function getName(): ?string
+    /**
+     * @return Collection|ColorTranslation[]
+     */
+    public function getColorTranslations(): Collection
     {
-        return $this->name;
+        return $this->colorTranslations;
     }
 
-    public function setName(string $name): self
+    public function addColorTranslation(ColorTranslation $colorTranslation): self
     {
-        $this->name = $name;
+        if (!$this->colorTranslations->contains($colorTranslation)) {
+            $this->colorTranslations[] = $colorTranslation;
+            $colorTranslation->setColor($this);
+        }
 
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function removeColorTranslation(ColorTranslation $colorTranslation): self
     {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
+        if ($this->colorTranslations->contains($colorTranslation)) {
+            $this->colorTranslations->removeElement($colorTranslation);
+            // set the owning side to null (unless already changed)
+            if ($colorTranslation->getColor() === $this) {
+                $colorTranslation->setColor(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getMainSlug(): ?string
+    /**
+     * @param string $locale
+     *
+     * @return ColorTranslation
+     */
+    public function getByLocale(string $locale): ColorTranslation
     {
-        return $this->mainSlug;
+        $filteredTrans = $this->colorTranslations->filter(function ($trans) use ($locale) {
+            /** @var ColorTranslation $trans */
+            return $trans->getLocale() === $locale;
+        });
+
+        return $filteredTrans->first();
     }
 
-    public function setMainSlug(string $mainSlug): self
+    /**
+     * @return Collection|OrderProduct[]
+     */
+    public function getOrderProducts(): Collection
     {
-        $this->mainSlug = $mainSlug;
+        return $this->orderProducts;
+    }
+
+    public function addOrderProduct(OrderProduct $orderProduct): self
+    {
+        if (!$this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts[] = $orderProduct;
+            $orderProduct->setColor($this);
+        }
 
         return $this;
     }
 
-    public function getLocale(): ?string
+    public function removeOrderProduct(OrderProduct $orderProduct): self
     {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
+        if ($this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts->removeElement($orderProduct);
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getColor() === $this) {
+                $orderProduct->setColor(null);
+            }
+        }
 
         return $this;
     }

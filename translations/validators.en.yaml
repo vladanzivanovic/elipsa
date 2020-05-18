@@ -1,7 +1,19 @@
 field:
   not_blank: 'Required field.'
   max_length: 'Max character number is {{ limit }}.'
+  min_length: 'Min character number is {{ limit }}.'
   main_image: 'Main image is not set'
+  email: 'Email not valid'
 
 files:
   limit_reached: 'Max files numbers is reached.'
+
+product.quantity: 'Quantity is mandatory.'
+product.quantity_positive_number: 'Quantity must be greater then zero.'
+product.color: 'Color is mandatory.'
+product.size: 'Size is mandatory.'
+
+promo_coupon.not_valid_yet: Promotion code is not active yet.
+promo_coupon.expired: Promotion code is expired.
+promo_coupon.used: Promotion code is already used.
+promo_coupon.not_found: Promotion code not found.

@@ -11,10 +11,16 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // .addEntry('js/app', './assets/js/index.js')
+    .addEntry('js/site/core', './assets/site/js/index.js')
     .addEntry('js/admin/app', [
         './assets/admin/js/index.js'
     ])
-    // .addStyleEntry('css/app', './src/SiteBundle/Resources/public/sass/_index.scss')
+    .addStyleEntry('css/site/app', './assets/site/scss/style.scss')
+    .addStyleEntry('css/site/pages/home', './assets/site/scss/Pages/_home.scss')
+    .addStyleEntry('css/site/pages/shop', './assets/site/scss/Pages/_shop.scss')
+    .addStyleEntry('css/site/pages/product', './assets/site/scss/Pages/_product.scss')
+    .addStyleEntry('css/site/pages/cart', './assets/site/scss/Pages/_cart.scss')
+    .addStyleEntry('css/site/pages/checkout', './assets/site/scss/Pages/_checkout.scss')
     .addStyleEntry('css/admin/app',[
         './assets/admin/scss/style.scss',
     ])

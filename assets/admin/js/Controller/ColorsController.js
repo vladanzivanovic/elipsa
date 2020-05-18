@@ -1,6 +1,6 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import ColorsDataTables from "../Services/DataTables/ColorsDataTables";
-import AppHelperService from "../../../site/js/AppHelperService";
+import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
 import ColorHandler from "../Handler/Product/ColorHandler";
 
@@ -21,9 +21,9 @@ class ColorsController {
 
          Private.registerEvents = () => {
              $(document).on('click touchend', '.remove-item-button', e => {
-                 const slug = e.currentTarget.dataset.alias;
+                 const id = e.currentTarget.dataset.id;
                  const buttons = [
-                     {type: 'button', text: 'Obriši', 'class': 'btn btn-primary remove-product', 'data-slug': slug, 'data-dismiss': "modal"},
+                     {type: 'button', text: 'Obriši', 'class': 'btn btn-primary remove-product', 'data-id': id, 'data-dismiss': "modal"},
                  ];
                  const title = 'Da li ste sigurni da želite obrišete boju?';
                  const confirmModal = new ConfirmationModalService(title, buttons);
@@ -32,10 +32,10 @@ class ColorsController {
              });
 
              $(document).on('click touchend', '.remove-product', e => {
-                 const slug = e.currentTarget.dataset.slug;
+                 const id = e.currentTarget.dataset.id;
                  const handler = new ColorHandler();
 
-                 handler.remove(slug);
+                 handler.remove(id);
              });
          }
 

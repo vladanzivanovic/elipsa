@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Entity\Category;
+use App\Entity\ProductHasCategories;
 use App\Helper\ValidatorHelper;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
@@ -69,6 +70,20 @@ final class CategoryHandler
     public function remove(Category $category): void
     {
         $this->categoryRepository->delete($category);
+
+        $this->categoryRepository->flush();
+    }
+
+    /**
+     * @param Category $category
+     * @param bool     $status
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function toggleHomePage(Category $category, bool $status): void
+    {
+        $category->setShowHomePage($status);
 
         $this->categoryRepository->flush();
     }

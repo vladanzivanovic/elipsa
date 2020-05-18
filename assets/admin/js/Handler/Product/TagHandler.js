@@ -1,4 +1,4 @@
-import AppHelperService from "../../../../site/js/AppHelperService";
+import AppHelperService from "../../../../js/Helper/AppHelperService";
 import NotificationService from "../../../../js/NotificationService";
 import ColorsDataTables from "../../Services/DataTables/ColorsDataTables";
 import TagsDataTables from "../../Services/DataTables/TagsDataTables";

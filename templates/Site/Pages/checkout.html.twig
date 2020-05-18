@@ -1,0 +1,118 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}{{ 'title.cart_personal_data' | trans }}{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
+        {'title': 'cart.name' | trans, 'link': path('site.cart_page')},
+        {'title': 'cart.checkout' | trans}
+    ], 'activePage': 'cart.checkout' | trans}) }}
+
+    {{ include('Site/Components/cartHeader.html.twig') }}
+
+    <!-- checkout-area-start -->
+    <div class="checkout-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="checkout-top">
+                        <p>{{ 'checkout.have_account' | trans | raw }}</p>
+                    </div>
+                </div>
+            </div>
+            <form id="checkout-form" enctype="multipart/form-data" class="row">
+                <div class="col-md-8 col-sm-12 col-xs-12">
+                    <div class="billing-address">
+                        <h4 class="checkout-box-title letter-capitalize">{{ 'checkout.billing_address' | trans }}</h4>
+                        <div class="checkout-billing-adress-box">
+                            <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('order_complete') }}" />
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('country' | trans ~ ' *', 'country', '', 'country', '', 'text', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('first_name' | trans ~ ' *', 'firstName', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('last_name' | trans ~ ' *', 'lastName', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('address' | trans ~ ' *', 'address', '', 'address', '', 'text', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('city' | trans ~ ' *', 'city', '', 'city', '', 'text', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('zip_code' | trans ~ ' *', 'zipCode', '', 'zip_code', '', 'text', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                {{ form.input('mobile_telephone' | trans ~ ' *', 'mobilePhone', '', 'mobile_phone', '', 'tel', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="cbab-create-account">
+                                {{ inputs.input('createAccount', '1', 'create_account', '', 'checkbox') }}
+                                <label for="createAccount" class="letter-capitalize">{{ 'create_account' | trans }}?</label>
+                                <p class="letter-capitalize">{{ 'checkout.login_text' | trans }}</p>
+                            </div>
+                            <div class="cbab-account-password clearfix">
+                                {{ form.input('password' | trans ~ ' *', 'password', '', 'password', '', 'password', null, '', 'text-uppercase') }}
+                            </div>
+                            <div class="cbab-order-notes">
+                                <p class="text-uppercase">{{ 'checkout.order_notes' | trans }}</p>
+                                {{ inputs.input('orderNotes', '', 'order_note', '') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="your-order-box">
+                        <h4 class="checkout-box-title text-uppercase">{{ 'checkout.your_order' | trans }}</h4>
+                        <div class="yob-content">
+                            <p class="yobc-title text-uppercase">{{ 'checkout.product_total' | trans | raw }}</p>
+                            <ul>
+                                {% for product in products %}
+                                    {% set price = product.discount > 0 ? product.discount : product.price %}
+                                    <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ product.quantity * price }} RSD</span></li>
+                                {% endfor %}
+                                {% set totalWithDiscount = total %}
+                                {% set totalWithShipping = shipping + total %}
+
+                                {% if promo_price is not null %}
+                                    {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}
+                                    {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping %}
+                                    {% set totalWithShipping = shipping + totalWithDiscount %}
+                                {% endif %}
+
+                                <li class="order-total clearfix">{{ 'cart.total_products' | trans }} <span>{{ total }} RSD</span></li>
+                                <li class="order-total {{ promo_price is null ? 'hide' : '' }} clearfix">{{ 'cart.promo_coupon' | trans }} <span>{{ promo_price }} %</span></li>
+                                <li class="order-total clearfix">{{ 'cart.shipping' | trans }} <span>{{ shipping }} RSD</span></li>
+                                <li class="order-total clearfix">{{ 'cart.total_shipping' | trans }} <span>{{ totalWithShipping | round }} RSD</span></li>
+                            </ul>
+                            <div class="create-account-checkout-method">
+                                <div class="select-payment-method">
+                                    {{ inputs.input('byTaking', 1, 'payment_type', '', 'radio') }}
+                                    <label for="byTaking" class="letter-capitalize">{{ 'checkout.payment.by_taking' | trans }}</label>
+                                </div>
+                                <div class="select-payment-method">
+                                    {{ inputs.input('creditCard', 2, 'payment_type', '', 'radio', '', 'data-show-error-after=yes') }}
+                                    <label for="creditCard" class="letter-capitalize">{{ 'checkout.paymeny.credit_card' | trans }}</label>
+                                </div>
+                                <div class="place-order">
+                                    <button type="button" class="checkout-page-button hvr-bs">{{ 'cart.checkout' | trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- checkout-area-end -->
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/checkout.css') }}">
+{% endblock %}

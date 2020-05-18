@@ -1,2 +1,5 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    globals:
+        default_alt_tag: 'Elipsa - modna kuca'
+        default_title_tag: 'Elipsa - modna kuca'

@@ -1,5 +1,5 @@
 import dt from 'datatables.net-dt';
-import AppHelperService from "../../../../site/js/AppHelperService";
+import AppHelperService from "../../../../js/Helper/AppHelperService";
 
 export default (() => {
     let Public = {},
