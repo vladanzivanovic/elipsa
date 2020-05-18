@@ -42,6 +42,6 @@
 {% block pageJavascript %}
     <script>
         const LOCATIONS = JSON.parse('{{ locations | json_encode | raw }}');
-        const IS_MOBILE = {{ is_mobile() }};
+        const IS_MOBILE = {{ is_mobile() ? 1 : 0 }};
     </script>
 {% endblock %}
