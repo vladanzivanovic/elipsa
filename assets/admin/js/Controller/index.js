@@ -128,6 +128,10 @@ let routes = [
         name: 'admin.add_location_page',
         controller: LocationEditController,
     },
+    {
+        name: 'admin.edit_location_page',
+        controller: LocationEditController,
+    },
 ];
 
 $(document).ready(() => {

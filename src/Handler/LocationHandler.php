@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Entity\Banner;
 use App\Entity\Location;
+use App\Entity\LocationHasImages;
 use App\Entity\Slider;
 use App\Helper\ValidatorHelper;
 use App\Repository\BannerRepository;
@@ -89,9 +90,15 @@ final class LocationHandler
         $rootDir = $this->bag->get('upload_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
-        $image = $location->getImage();
-        $image->setFile($this->imageService->setFileObject(['file' => $rootDir.$imageDir.$image->getOriginalName(), 'fileName' => $image->getOriginalName()]));
-        $image->setIsDeleted(true);
+        $hasImages = $location->getLocationHasImages();
+
+        /** @var LocationHasImages $hasImage */
+        foreach ($hasImages as $hasImage) {
+            $image = $hasImage->getImage();
+
+            $image->setFile($this->imageService->setFileObject(['file' => $rootDir.$imageDir.$image->getOriginalName(), 'fileName' => $image->getOriginalName()]));
+            $image->setIsDeleted(true);
+        }
 
         $this->locationRepository->removeWithFlush($location);
     }

@@ -23,10 +23,7 @@ export default (() => {
                 { data: 'telephone', title: 'Telefon' },
                 { data: 'email', title: 'Email' },
                 { data: 'working_time', title: 'Radno vreme', width: '200px', render: function (data, type, row, meta) {
-                        const checkedAttr = row.is_active === true ? 'checked' : '';
-                        const text = Translator.trans(data, null, 'messages', LOCALE);
-
-                        let html = CAN_EDIT ? `<p class="status-text text-uppercase">${text}</p><input type="checkbox" class="set-active-banner" data-id="${row.id}" ${checkedAttr}/>` : `<p class="status-text">${text}</p>`;
+                        let html = `<p class="status-text">Radnim danom: ${data}</p><p>Subotom: ${row.weekend}</p>`;
 
                         return type === 'display' ? html : data;
                     } },

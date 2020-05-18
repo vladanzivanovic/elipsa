@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Image;
+use App\Entity\Location;
+use App\Entity\LocationHasImages;
 use App\Entity\Product;
 use App\Entity\ProductColor;
 use App\Entity\ProductHasImages;
@@ -39,6 +41,22 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param Location $location
+     *
+     * @return Image[]
+     */
+    public function getLocationImages(Location $location): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->innerJoin(LocationHasImages::class, 'lhi', 'WITH', 'lhi.image = i')
+            ->where('lhi.location = :location')
+            ->setParameter('location', $location);
+
+        return $query->getQuery()->getResult();
+
+    }
+
+    /**
      * @param Product $product
      *
      * @return array
@@ -56,6 +74,25 @@ class ImageRepository extends ExtendedEntityRepository
             ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')
             ->setParameter('product', $product)
             ->orderBy('pc.id');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param Location $location
+     *
+     * @return array
+     */
+    public function getByLocation(Location $location): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i.id',
+                'i.name as fileName',
+                'i.isMain',
+            )
+            ->innerJoin(LocationHasImages::class, 'lhi', 'WITH', 'lhi.image = i AND lhi.location = :location')
+            ->setParameter('location', $location);
 
         return $query->getQuery()->getArrayResult();
     }

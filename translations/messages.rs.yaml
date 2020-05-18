@@ -110,6 +110,7 @@ checkout_completed.title: uspešno ste naručili proizvode.
 checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
 
 country: država
+countries: države
 first_name: ime
 last_name: prezime
 address: adresa
@@ -143,8 +144,10 @@ email.order.table.shipping: Poštarina
 email.order.table.promo_coupon: Promotivni kod
 email.order.total_shipping: Ukupno sa poštarinom
 
-
 payment_type.on_delivering: Pouzećem
 payment_type.credit_card: Platna kartica
+
+location.modal.work_time: Radno vreme
+location.modal.work_time_weekend: Subota
 
 

@@ -9,6 +9,8 @@
     {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena lokacije' } %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+    {% import 'Admin/Macros/Inputs/input.html.twig' as inputs %}
+
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
@@ -54,7 +56,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'short_description_rs', IS_EDIT ? rs_short_description : '', 'rs_short_description', 10, '', 'form-control') }}
+                                    {{ form.textarea('Kratak opis', 'description_rs', IS_EDIT ? rs_description : '', 'rs_description', 10, '', 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -163,6 +165,14 @@
                 </div>
             </div>
         </div>
+        {{ inputs.input('country_south_lat', IS_EDIT ? country_south_lat : '', 'country_south_lat', '', 'hidden') }}
+        {{ inputs.input('country_south_lng', IS_EDIT ? country_south_lng : '', 'country_south_lng', '', 'hidden') }}
+        {{ inputs.input('country_north_lat', IS_EDIT ? country_north_lat : '', 'country_north_lat', '', 'hidden') }}
+        {{ inputs.input('country_north_lng', IS_EDIT ? country_north_lng : '', 'country_north_lng', '', 'hidden') }}
+        {{ inputs.input('country_lat', IS_EDIT ? country_lat : '', 'country_lat', '', 'hidden') }}
+        {{ inputs.input('country_lng', IS_EDIT ? country_lat : '', 'country_lng', '', 'hidden') }}
+        {{ inputs.input('country_short_code', IS_EDIT ? country_short_code : '', 'country_short_code', '', 'hidden') }}
+
     </form>
     {{ form.button('location_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
@@ -170,5 +180,12 @@
     <script>
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
+
+
+        {% if IS_EDIT %}
+        const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        const LAT = {{ lat }};
+        const LNG = {{ lng }};
+        {% endif %}
     </script>
 {% endblock %}

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Banner;
-use App\Formatter\Admin\BannerEditResponseFormatter;
+use App\Entity\Location;
+use App\Formatter\Admin\LocationEditResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class LocationEditPageController extends AbstractController
 {
     /**
-     * @var BannerEditResponseFormatter
+     * @var LocationEditResponseFormatter
      */
     private $responseFormatter;
     /**
@@ -23,11 +23,11 @@ final class LocationEditPageController extends AbstractController
     private $bag;
 
     /**
-     * @param BannerEditResponseFormatter $responseFormatter
-     * @param ParameterBagInterface       $bag
+     * @param LocationEditResponseFormatter $responseFormatter
+     * @param ParameterBagInterface         $bag
      */
     public function __construct(
-        BannerEditResponseFormatter $responseFormatter,
+        LocationEditResponseFormatter $responseFormatter,
         ParameterBagInterface $bag
     ) {
         $this->responseFormatter = $responseFormatter;
@@ -49,14 +49,12 @@ final class LocationEditPageController extends AbstractController
      * @Route("/edit-location/{id}", name="admin.edit_location_page", methods={"GET"})
      * @Template("Admin/Pages/locationEdit.html.twig")
      *
-     * @param Banner $banner
+     * @param Location $location
      *
      * @return array
      */
-    public function update(Banner $banner): array
+    public function update(Location $location): array
     {
-        $locales = explode('|', $this->bag->get('locales'));
-
-        return $this->responseFormatter->formatResponse($banner);
+        return $this->responseFormatter->formatResponse($location);
     }
 }

@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Entity\Banner;
 use App\Entity\Image;
 use App\Entity\Location;
 use App\Entity\LocationHasImages;
+use App\Entity\LocationTranslation;
 use App\Entity\Product;
-use App\Entity\Slider;
+use App\Entity\ProductHasImages;
+use App\Entity\ProductTranslation;
 use App\Repository\ImageRepository;
+use App\Repository\LocationHasImagesRepository;
+use App\Repository\ProductColorRepository;
+use App\Repository\ProductHasImagesRepository;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -36,20 +40,26 @@ final class LocationImageService
     private $bag;
 
     /**
-     * BannerImageService constructor.
-     *
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     * @param ImageRepository       $imageRepository
+     * @var LocationHasImagesRepository
+     */
+    private $hasImagesRepository;
+
+    /**
+     * @param ImageService                $imageService
+     * @param ParameterBagInterface       $bag
+     * @param ImageRepository             $imageRepository
+     * @param LocationHasImagesRepository $hasImagesRepository
      */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $bag,
-        ImageRepository $imageRepository
+        ImageRepository $imageRepository,
+        LocationHasImagesRepository $hasImagesRepository
     ) {
         $this->img = $imageService;
         $this->imageRepository = $imageRepository;
         $this->bag = $bag;
+        $this->hasImagesRepository = $hasImagesRepository;
     }
 
     /**
@@ -64,23 +74,36 @@ final class LocationImageService
         $tmpDir = $this->bag->get('upload_tmp_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
+        $locationTranslation = $location->getByLocale('rs');
+
         if(empty(array_filter($data))) {
             return;
         }
 
-        foreach ($data as $index => $image) {
-            if (!empty($image['id'])) {
-                if (isset($image['deleted']) && true === $image['deleted']) {
-                    $imageObj = $this->imageRepository->find($image['id']);
+        Assert::true($this->validateMainImage($data), 'field.main_image');
 
-                    $image['file'] = $rootDir . $imageDir . $imageObj->getOriginalName();
+        $slug = Urlizer::transliterate($locationTranslation->getTitle());
+        $exceptions = [];
+
+        foreach ($data as $index => $image) {
+            if (isset($image['id'])) {
+                $imageObj = $this->imageRepository->find($image['id']);
+                $hasImage = $this->hasImagesRepository->findOneBy(['location' => $location, 'image' => $imageObj]);
+
+                if(isset($image['deleted']) && true === $image['deleted']) {
+                    $image['file'] = $rootDir.$imageDir.$imageObj->getOriginalName();
                     $file = $this->img->setFileObject($image);
                     $imageObj->setFile($file);
                     $imageObj->setIsDeleted(true);
 
+                    $this->hasImagesRepository->delete($hasImage);
                     $this->imageRepository->delete($imageObj);
 
                     continue;
+                }
+
+                if (true === $image['isMain']) {
+                    $this->updateImage($location, $imageObj);
                 }
 
                 continue;
@@ -103,9 +126,7 @@ final class LocationImageService
                 continue;
             }
 
-            $slug = Urlizer::transliterate(md5($file->getFilename()));
-
-            $newName = $slug.'.'.$file->guessExtension();
+            $newName = md5($file->getFilename().$slug).'.'.$file->guessExtension();
 
             $mediaObj->setRelatedToType(Image::RELATED_TYPE_LOCATION);
             $mediaObj->setName($slug.'-'.++$index);
@@ -120,6 +141,10 @@ final class LocationImageService
             $hasImages->setImage($mediaObj);
 
             $location->addLocationHasImage($hasImages);
+        }
+
+        if (count($exceptions) > 0) {
+            throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
     }
 
@@ -139,5 +164,34 @@ final class LocationImageService
 
             $this->img->deleteImage($this->img->setFileObject(['file' => $rootDir.$imageDir.$imageObj->getName(), 'fileName' => $imageObj->getName()]));
         }
+    }
+
+    /**
+     * @param Location $location
+     * @param Image    $image
+     *
+     * @return void
+     */
+    private function updateImage(Location $location, Image $image): void
+    {
+        $images = $this->imageRepository->getLocationImages($location);
+
+        /** @var Image $image */
+        foreach ($images as $img) {
+            $img->setIsMain(false);
+        }
+
+        $image->setIsMain(true);
+    }
+
+    private function validateMainImage(array $data)
+    {
+        foreach ($data as $image) {
+            if (true === !!$image['isMain']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

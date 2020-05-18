@@ -4,6 +4,7 @@ import SliderHandler from "../Handler/SliderHandler";
 import HomeBannersDataTables from "../Services/DataTables/HomeBannersDataTables";
 import BannerHandler from "../Handler/BannerHandler";
 import LocationDataTables from "../Services/DataTables/LocationDataTables";
+import LocationHandler from "../Handler/LocationHandler";
 
 const Private = Symbol('private');
 
@@ -34,7 +35,7 @@ class LocationsController {
 
              $(document).on('click touchend', '.remove-location', e => {
                  const id = e.currentTarget.dataset.id;
-                 const handler = new BannerHandler();
+                 const handler = new LocationHandler();
 
                  handler.remove(id);
              });

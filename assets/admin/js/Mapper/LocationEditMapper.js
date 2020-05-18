@@ -6,6 +6,13 @@ class LocationEditMapper {
             this.street = '#street_rs';
             this.city = '#city_rs';
             this.country = '#country_rs';
+            this.countryNorthLat = '#country_north_lat';
+            this.countryNorthLng = '#country_north_lng';
+            this.countrySouthLat = '#country_south_lat';
+            this.countrySouthLng = '#country_south_lng';
+            this.countryLat = '#country_lat';
+            this.countryLng = '#country_lng';
+            this.countryShortCode = '#country_short_code';
 
             LocationEditMapper.instance = this;
         }

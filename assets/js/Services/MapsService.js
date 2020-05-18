@@ -129,19 +129,53 @@ class MapsService {
     {
         mapContainer = mapContainer ? mapContainer : this.mapper.map.get(0);
 
-        this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        if (!this.map) {
+            this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        }
+
         this.mapOptions.center = this.panoramaOptions.position = this.getLatLng();
 
-
         this.myMarker = new google.maps.Marker({
-            position:this.mapOptions.center,
-            draggable: true
+            position: this.mapOptions.center,
+            draggable: true,
+            map: this.map,
         });
 
         google.maps.event.trigger(this.map, "resize");
 
         this.map.setCenter(this.mapOptions.center);
-        this.myMarker.setMap(this.map);
+    };
+
+    showMapWitMultipleMarkersWithPopupCallback(locations, callback)
+    {
+        const mapContainer = this.mapper.map.get(0);
+
+        this.map = new google.maps.Map(mapContainer, this.mapOptions);
+
+        this.setCoordinates(locations[0].country_lat, locations[0].country_lng);
+        this.mapOptions.center = this.panoramaOptions.position = this.getLatLng();
+
+        const bounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(locations[0].country_st_lat, locations[0].country_st_lng),
+            new google.maps.LatLng(locations[0].country_nt_lat, locations[0].country_nt_lng) );
+
+        for(let i = 0; i < locations.length; i++) {
+            this.setCoordinates(locations[i].lat, locations[i].lng);
+
+            let marker = new google.maps.Marker({
+                position: this.getLatLng(),
+                draggable: false,
+                map: this.map,
+            });
+
+            marker.addListener('click', e => callback(locations[i]));
+        }
+
+        google.maps.event.trigger(this.map, "resize");
+
+        this.map.setCenter(this.mapOptions.center);
+
+        this.map.fitBounds(bounds);
     };
 
     /**
@@ -166,7 +200,7 @@ class MapsService {
                     this.mapper.latInput.val(this.coordinates[0]);
                     this.mapper.lngInput.val(this.coordinates[1]);
 
-                    resolve();
+                    resolve(results);
 
                     return;
                 }

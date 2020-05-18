@@ -3,6 +3,7 @@ import AppHelperService from "../../../js/Helper/AppHelperService";
 import DropZoneService from "../../../js/Services/DropZoneService";
 import HomeBannersDataTables from "../Services/DataTables/HomeBannersDataTables";
 import locationEditMapper from "../Mapper/LocationEditMapper";
+import LocationDataTables from "../Services/DataTables/LocationDataTables";
 
 class LocationHandler {
     constructor() {
@@ -47,10 +48,10 @@ class LocationHandler {
 
         $.ajax({
             type: 'DELETE',
-            url: AppHelperService.generateLocalizedUrl('admin.remove_banner_api', {id}),
+            url: AppHelperService.generateLocalizedUrl('admin.remove_location_api', {id}),
             dataType: 'json',
             success: () => {
-                HomeBannersDataTables().reload();
+                LocationDataTables().reload();
                 this.notification.remove();
             },
             error: jxHR => {

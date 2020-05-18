@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Location|null find($id, $lockMode = null, $lockVersion = null)
@@ -37,13 +38,80 @@ class LocationRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param string $locale
+     * @param string $countryCode
+     *
+     * @return array
+     */
+    public function getList(string $locale, string $countryCode): array
+    {
+        $query = $this->getDqlForList($locale)
+            ->addSelect(
+                'l.lat',
+                'l.lng',
+                'GROUP_CONCAT(image.name) as images',
+                'l.countryLat as country_lat',
+                'l.countryLng as country_lng',
+                'l.countrySouthLat as country_st_lat',
+                'l.countrySouthLng as country_st_lng',
+                'l.countryNorthLat as country_nt_lat',
+                'l.countryNorthLng as country_nt_lng',
+                'lt.shortDescription as short_description',
+                'lt.country',
+                'l.countryCode as country_code'
+            )
+            ->innerJoin('l.locationHasImages', 'lhi')
+            ->innerJoin('lhi.image', 'image')
+            ->andWhere('l.countryCode = :countryCode')
+            ->setParameter('countryCode', $countryCode)
+            ->groupBy('l.id');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getCountryList(string $locale): array
+    {
+        $query = $this->createQueryBuilder('l')
+            ->select(
+                'l.countryCode as country_code',
+                'lt.country as name'
+            )
+            ->innerJoin('l.locationTranslations', 'lt')
+            ->where('lt.locale = :locale')
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * @param DataTableModel $tableModel
      *
      * @return array
      */
     public function getAdminList(DataTableModel $tableModel): array
     {
-        $query = $this->createQueryBuilder('l')
+        $query = $this->getDqlForList('rs')
+            ->setFirstResult($tableModel->getOffset())
+            ->setMaxResults($tableModel->getLimit())
+            ->orderBy('l.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+        ;
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return QueryBuilder
+     */
+    private function getDqlForList(string $locale): QueryBuilder
+    {
+        return $this->createQueryBuilder('l')
             ->select(
                 'l.id',
                 'lt.title',
@@ -51,17 +119,12 @@ class LocationRepository extends ExtendedEntityRepository
                 'CONCAT(lt.street, \',\', l.zipCode, \' \', lt.city, \' \', lt.country) as address',
                 'l.telephone',
                 'l.email',
-                'l.workingTime',
-                'l.workingTimeWeekend'
+                'l.workingTime as working_time',
+                'l.workingTimeWeekend as weekend'
             )
             ->innerJoin('l.locationTranslations', 'lt')
             ->where('lt.locale = :locale')
-            ->setParameter('locale', 'rs')
-            ->setFirstResult($tableModel->getOffset())
-            ->setMaxResults($tableModel->getLimit())
-            ->orderBy('l.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->setParameter('locale', $locale)
         ;
-
-        return $query->getQuery()->getArrayResult();
     }
 }

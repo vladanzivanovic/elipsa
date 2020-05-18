@@ -116,6 +116,7 @@ checkout_completed.title: your order has been successfully completed.
 checkout_completed.details: the details of the order has been sent to your email address.
 
 country: country
+countries: countries
 first_name: first name
 last_name: last name
 address: address
@@ -149,6 +150,8 @@ email.order.table.shipping: Shipping
 email.order.table.promo_coupon: Promotion code
 email.order.total_shipping: total with shipping
 
-
 payment_type.on_delivering: On delivering
 payment_type.credit_card: Credi card
+
+location.modal.work_time: Working time
+location.modal.work_time_weekend: Saturday

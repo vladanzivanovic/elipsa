@@ -1,0 +1,50 @@
+<!-- modal-start -->
+<div class="modal fade" id="locationModal" role="dialog">
+    <div class="modal-dialog product-modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <h3 id="mobile-title" class="hide"></h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="product-tab-area">
+                        <div class="clearfix">
+                            <div id="sliders" class="product-tab-content tab-content flexslider">
+                                <ul class="slides"></ul>
+                            </div>
+                            <div id="carousel" class="product-tab-menu flexslider">
+                                <ul class="product-tab slides"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="single-product-description-area">
+                        <h2 class="spd-title"></h2>
+                        <p class="spd-text"></p>
+                        <ul class="spd-list">
+                            <li class="letter-capitalize">{{ 'address' | trans }}: <span class="address-info"></span></li>
+                            <li class="letter-capitalize">{{ 'email' | trans }}: <span class="email-info"></span></li>
+                            <li class="letter-capitalize">{{ 'email.order.seller.telephone' | trans }}: <span class="telephone-info"></span></li>
+                        </ul>
+                        <div class="spd-meta">
+                            <div class="spd-meta-cat">
+                                <span class="letter-capitalize">{{ 'location.modal.work_time' | trans }}:</span>
+                                <ul>
+                                    <li class="work-time"></li>
+                                </ul>
+                            </div>
+                            <div class="spd-meta-tags">
+                                <span class="letter-capitalize">{{ 'location.modal.work_time_weekend' | trans }}:</span>
+                                <ul>
+                                    <li class="work-time-weekend"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal-end -->

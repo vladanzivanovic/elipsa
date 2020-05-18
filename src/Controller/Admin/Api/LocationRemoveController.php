@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Entity\Banner;
+use App\Entity\Location;
 use App\Entity\ProductColor;
 use App\Entity\ProductTags;
 use App\Entity\Slider;
 use App\Handler\BannerHandler;
+use App\Handler\LocationHandler;
 use App\Handler\ProductColorHandler;
 use App\Handler\ProductTagHandler;
 use App\Handler\SliderHandler;
@@ -20,34 +22,34 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class BannerRemoveController extends AbstractController
+final class LocationRemoveController extends AbstractController
 {
     /**
-     * @var BannerHandler
+     * @var LocationHandler
      */
-    private $bannerHandler;
+    private $locationHandler;
 
     /**
-     * @param BannerHandler $bannerHandler
+     * @param LocationHandler $locationHandler
      */
     public function __construct(
-        BannerHandler $bannerHandler
+        LocationHandler $locationHandler
     ) {
-        $this->bannerHandler = $bannerHandler;
+        $this->locationHandler = $locationHandler;
     }
 
     /**
-     * @Route("/api/remove-banner/{id}", name="admin.remove_banner_api", methods={"DELETE"}, options={"expose": true})
+     * @Route("/api/remove-location/{id}", name="admin.remove_location_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Banner $banner
+     * @param Location $location
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function remove(Banner $banner): JsonResponse
+    public function remove(Location $location): JsonResponse
     {
-        $this->bannerHandler->remove($banner);
+        $this->locationHandler->remove($location);
 
         return $this->json(null);
     }
