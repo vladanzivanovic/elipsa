@@ -78,7 +78,7 @@ class LocationRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('l')
             ->select(
-                'l.countryCode as country_code',
+                'DISTINCT(l.countryCode) as country_code',
                 'lt.country as name'
             )
             ->innerJoin('l.locationTranslations', 'lt')
