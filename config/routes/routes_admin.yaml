@@ -51,3 +51,9 @@ admin.locations:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/locations.html.twig
+
+admin.blog:
+  path: /blog
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/blog.html.twig
