@@ -3,8 +3,8 @@ import SummerNote from "../Services/SummerNote";
 import BlogEditService from "../Services/BlogEditService";
 import BlogEditHandler from "../Handler/BlogEditHandler";
 import BlogEditValidator from "../Validators/BlogEditValidator";
-import DropZoneMapper from "../Mapper/DropZoneMapper";
 import DropZone from "../../../js/Services/DropZoneService";
+require ('select2/dist/js/select2.full.min');
 
 require('select2/dist/js/select2.full.min');
 
@@ -12,18 +12,19 @@ class BlogEditController {
     constructor() {
         this.mapper = new BlogEditMapper();
         this.editService = new BlogEditService();
-        this.dropZone = DropZone();
+        this.dropZone = DropZone(this.mapper.form);
         this.dropZone.init(this.mapper.form);
 
         this.summernote = new SummerNote();
 
         this.summernote.initialize(this.mapper.desc_rs, this.createCallBacksSummernote(this.mapper.desc_rs));
         this.summernote.initialize(this.mapper.desc_en, this.createCallBacksSummernote(this.mapper.desc_en));
+        $('.dropdown-toggle').dropdown();
 
-        this.setSelect2(this.mapper.blog_tags);
+        this.mapper.blog_tags.select2();
 
-        if (window.isEdit) {
-            this.dropZone.setFilesFromUrl(window.images, 'mainImages');
+        if (IS_EDIT) {
+            this.dropZone.setFiles(IMAGES, 'blog');
         }
 
         this.registerEvents();
@@ -46,40 +47,12 @@ class BlogEditController {
         }
     }
 
-    setSelect2(elm)
-    {
-        elm.select2({
-            tags: true
-        });
-    }
-
     registerEvents()
     {
         this.mapper.submitBtn.on('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+            const handler = new BlogEditHandler();
 
-            if (this.validator) {
-                this.validator.destroy();
-            }
-            this.validator = null;
-            this.validator = BlogEditValidator().validate(this.mapper.form);
-
-            let ajaxObject = {
-                type: "POST",
-                url: Routing.generate('admin.api_create_blog'),
-                dataType: 'json'
-            };
-
-            if (window.isEdit) {
-                ajaxObject.url = Routing.generate('admin.api_edit_blog', { slug: window.alias });
-            }
-
-            BlogEditHandler.save(this.mapper, ajaxObject);
-        });
-
-        DropZoneMapper().dropzone.on('click touchend', DropZoneMapper().fields.close, e => {
-            this.dropZone.deleteFile(e.currentTarget);
+            handler.save(this.mapper);
         });
     }
 }

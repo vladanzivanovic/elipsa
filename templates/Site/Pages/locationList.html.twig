@@ -1,10 +1,11 @@
 {% extends 'Site/base.html.twig' %}
 
+{% set locationTitle = 'title.location' | trans %}
 {% block bodyClass %}location-page{% endblock %}
-{% block title %}Lokacije - Elipsa{% endblock %}
+{% block title %}{{ locationTitle }} - Elipsa{% endblock %}
 
 {% block content %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Lokacije' }], 'activePage': 'Lokacije'}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': locationTitle }], 'activePage': locationTitle }) }}
 
     <div>
         <div class="container">

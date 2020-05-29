@@ -1,80 +1,73 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
-import BackendValidator from "../../../js/Validation/BackendValidator";
-import NotificationService from "../../../js/Services/NotificationService";
-import i18n from "../../../js/Translation";
+import NotificationService from "../../../js/NotificationService";
 import BlogDataTables from "../Services/DataTables/BlogDataTables";
 
 class BlogEditHandler {
-    static save(mapper, ajaxObject)
-    {
-        const data = mapper.form.serializeArray();
-        const notification = NotificationService();
-
-        if (false === mapper.form.valid()) {
-            return false;
-        }
-
-        data.push({
-            name: 'main_image',
-            value: JSON.stringify(DropZoneService().getFilesArray('mainImages'))
-        });
-
-        ajaxObject.beforeSend = () => {
-            notification.showLoadingMessage();
-        };
-        ajaxObject.data = data;
-        ajaxObject.success = response => {
-            notification.show('success', i18n.trans('data.success_send', null, 'messages'), true);
-            notification.setOptions({
-                onHidden: AppHelperService.redirect(Routing.generate('admin.blog_page'))
-            });
-
-            return true;
-        };
-        ajaxObject.error = (jqXHR, textStatus, errorThrow) => {
-            var errors = jqXHR.responseJSON.error;
-
-            if (!AppHelperService.isObject(errors)) {
-                notification.show('error', i18n.trans('generic_error', null, 'messages'));
-
-                return true;
-            }
-
-            BackendValidator().validate(mapper.form, errors);
-        };
-
-        $.ajax(ajaxObject);
+    constructor() {
+        this.notification = NotificationService();
     }
 
-    static changeStatus(checkbox, slug, status) {
-        const notification = NotificationService();
+    save(mapper)
+    {
+        let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_blog_api');
+        let type = 'POST';
+        const data = mapper.form.serializeArray();
+
+        data.push({
+            name: 'images',
+            value: JSON.stringify(DropZoneService().getFilesArray('blog')),
+        });
+
+        if (IS_EDIT) {
+            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_blog_api', {id: ID});
+            type = 'PUT';
+        }
+
+        this.notification.showLoadingMessage();
 
         $.ajax({
-            type: "PATCH",
-            url: Routing.generate('admin.api_set_status_blog', {slug, status}),
+            type,
+            url: urlRoute,
+            data,
             dataType: 'json',
-            success(response) {
-                checkbox.parentElement.firstElementChild.innerText = i18n.trans(response.text, null, 'messages');
+            success: response => {
+                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.blog'));
             },
-            error(error) {
-                notification.show('error', i18n.trans('generic_error', null, 'messages'));
+            error: error => {
+                this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
             }
         })
     }
 
-    static remove(slug) {
+    changeStatus(checkbox, id, status) {
+        const notification = NotificationService();
+
+        $.ajax({
+            type: "PATCH",
+            url: Routing.generate('admin.set_blog_status_api', {id, status}),
+            dataType: 'json',
+            success(response) {
+                checkbox.parentElement.firstElementChild.innerText = Translator.trans(response.text, null, 'messages', LOCALE);
+            },
+            error(error) {
+                notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE));
+            }
+        })
+    }
+
+    remove(id) {
         const notification = NotificationService();
 
         $.ajax({
             type: 'DELETE',
-            url: Routing.generate('admin.api_delete_blog', {slug}),
+            url: Routing.generate('admin.remove_blog_api', {id}),
             dataType: 'json',
             success() {
                 BlogDataTables().reload();
             },
             error(error) {
-                notification.show('error', i18n.trans('generic_error', null, 'messages'));
+                notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE));
             }
         })
     }

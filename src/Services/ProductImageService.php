@@ -20,6 +20,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductImageService
 {
+    use ImageServiceTrait;
+
     /**
      * @var ImageService
      */
@@ -156,24 +158,6 @@ final class ProductImageService
     }
 
     /**
-     * @param array $images
-     *
-     * @return void
-     */
-    public function deleteImages(array $images): void
-    {
-        $rootDir = $this->bag->get('upload_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
-
-        foreach ($images as $image) {
-            /** @var Image $imageObj */
-            $imageObj = $this->imageRepository->find($image['id']);
-
-            $this->img->deleteImage($this->img->setFileObject(['file' => $rootDir.$imageDir.$imageObj->getName(), 'fileName' => $imageObj->getName()]));
-        }
-    }
-
-    /**
      * @param Product $product
      * @param Image   $image
      *
@@ -189,16 +173,5 @@ final class ProductImageService
         }
 
         $image->setIsMain(true);
-    }
-
-    private function validateMainImage(array $data)
-    {
-        foreach ($data as $image) {
-            if (true === !!$image['isMain']) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

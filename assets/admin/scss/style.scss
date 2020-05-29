@@ -10,6 +10,7 @@
 // Booststrap functions and variables
 @import '../../../node_modules/bootstrap/scss/functions';
 @import '../../../node_modules/bootstrap/scss/variables';
+@import "~summernote/dist/summernote.css";
 
 // Template variables
 @import 'dark/variables';
@@ -109,6 +110,7 @@
 @import "../../scss/loader";
 @import "../../scss/google_maps";
 
+@import "common/components/summernote";
 
 // Page related
 @import "./pages/product-edit";

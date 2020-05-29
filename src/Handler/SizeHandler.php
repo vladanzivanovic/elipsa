@@ -7,7 +7,7 @@ namespace App\Handler;
 use App\Entity\ProductSize;
 use App\Helper\ValidatorHelper;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 

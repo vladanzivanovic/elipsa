@@ -7,11 +7,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductTagsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TagsRepository")
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"main_slug", "locale"})})
  */
-class ProductTags
+class Tags
 {
+    public const TYPE_PRODUCT = 1;
+    public const TYPE_BLOG = 2;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -41,6 +44,11 @@ class ProductTags
      * @ORM\Column(type="string", length=255)
      */
     private $mainSlug;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $relatedType;
 
     public function getId(): ?int
     {
@@ -91,6 +99,18 @@ class ProductTags
     public function setMainSlug(string $mainSlug): self
     {
         $this->mainSlug = $mainSlug;
+
+        return $this;
+    }
+
+    public function getRelatedType(): ?int
+    {
+        return $this->relatedType;
+    }
+
+    public function setRelatedType(int $relatedType): self
+    {
+        $this->relatedType = $relatedType;
 
         return $this;
     }

@@ -12,7 +12,7 @@ use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 
 final class ProductPageCollector
 {
@@ -25,7 +25,7 @@ final class ProductPageCollector
      */
     private $sizeRepository;
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
     /**
@@ -44,7 +44,7 @@ final class ProductPageCollector
     /**
      * @param ProductColorRepository $colorRepository
      * @param ProductSizeRepository  $sizeRepository
-     * @param ProductTagsRepository  $tagsRepository
+     * @param TagsRepository         $tagsRepository
      * @param CategoryRepository     $categoryRepository
      * @param ImageRepository        $imageRepository
      * @param ProductRepository      $productRepository
@@ -52,7 +52,7 @@ final class ProductPageCollector
     public function __construct(
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,
-        ProductTagsRepository $tagsRepository,
+        TagsRepository $tagsRepository,
         CategoryRepository $categoryRepository,
         ImageRepository $imageRepository,
         ProductRepository $productRepository

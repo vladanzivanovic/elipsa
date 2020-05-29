@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Product;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductSize;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;

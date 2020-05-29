@@ -64,7 +64,7 @@ liip_imagine :
             filters:
                 downscale:
                     max: [ 1600, 1600 ]
-        blog_images :
+        summernote_images :
             cache: ads_photos
             quality : 100
             filters:
@@ -106,3 +106,9 @@ liip_imagine :
             filters :
                 downscale:
                     max: [ 370, 225 ]
+        blog_list :
+            cache: ads_photos
+            quality : 100
+            filters :
+                downscale:
+                    max: [ 860, 351 ]

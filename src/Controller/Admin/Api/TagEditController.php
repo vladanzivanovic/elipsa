@@ -6,9 +6,9 @@ namespace App\Controller\Admin\Api;
 
 use App\Controller\ControllerTrait;
 use App\Entity\ProductColor;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Handler\ProductColorHandler;
-use App\Handler\ProductTagHandler;
+use App\Handler\TagHandler;
 use App\Parser\ColorRequestParser;
 use App\Parser\TagRequestParser;
 use Doctrine\ORM\OptimisticLockException;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ProductTagEditController extends AbstractController
+final class TagEditController extends AbstractController
 {
     use ControllerTrait;
 
@@ -30,7 +30,7 @@ final class ProductTagEditController extends AbstractController
     private $requestParser;
 
     /**
-     * @var ProductTagHandler
+     * @var TagHandler
      */
     private $tagHandler;
     /**
@@ -39,15 +39,15 @@ final class ProductTagEditController extends AbstractController
     private $translator;
 
     /**
-     * ProductTagEditController constructor.
+     * TagEditController constructor.
      *
      * @param TagRequestParser    $requestParser
-     * @param ProductTagHandler   $tagHandler
+     * @param TagHandler          $tagHandler
      * @param TranslatorInterface $translator
      */
     public function __construct(
         TagRequestParser $requestParser,
-        ProductTagHandler $tagHandler,
+        TagHandler $tagHandler,
         TranslatorInterface $translator
     ) {
         $this->requestParser = $requestParser;
@@ -56,7 +56,8 @@ final class ProductTagEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-tag", name="admin.add_tag_api", methods={"POST"}, options={"expose": true})
+     * @Route("/api/add-product-tag", name="admin.add_product_tag_api", methods={"POST"}, options={"expose": true})
+     * @Route("/api/add-blog-tag", name="admin.add_blog_tag_api", methods={"POST"}, options={"expose": true})
      *
      * @param Request $request
      *
@@ -65,9 +66,11 @@ final class ProductTagEditController extends AbstractController
      */
     public function insert(Request $request)
     {
+        $relatedType = $request->attributes->get('_route') === 'admin.add_blog_tag_api' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
+
         $slug = $this->getRsSlug($request);
 
-        $tags = $this->requestParser->parse($request->request, $slug);
+        $tags = $this->requestParser->parse($request->request, $slug, $relatedType);
 
         $this->tagHandler->save($tags);
 
@@ -77,17 +80,20 @@ final class ProductTagEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-tag/{slug}", name="admin.edit_tag_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/edit-product-tag/{slug}", name="admin.edit_product_tag_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/edit-blog-tag/{slug}", name="admin.edit_blog_tag_api", methods={"PUT"}, options={"expose": true})
      *
-     * @param Request     $request
-     * @param ProductTags $productTags
+     * @param Request $request
+     * @param Tags    $productTags
      *
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(Request $request, ProductTags $productTags)
+    public function update(Request $request, Tags $productTags)
     {
-        $tags = $this->requestParser->parse($request->request, $productTags->getMainSlug(), true);
+        $relatedType = $request->attributes->get('_route') === 'admin.edit_blog_tag_api' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
+
+        $tags = $this->requestParser->parse($request->request, $productTags->getMainSlug(), $relatedType, true);
 
         $this->tagHandler->save($tags, true);
 

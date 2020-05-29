@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Helper\ValidatorHelper;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-final class ProductTagHandler
+final class TagHandler
 {
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
     /**
@@ -21,13 +21,13 @@ final class ProductTagHandler
     private $validator;
 
     /**
-     * ProductTagHandler constructor.
+     * TagHandler constructor.
      *
-     * @param ProductTagsRepository $tagsRepository
-     * @param ValidatorHelper       $validator
+     * @param TagsRepository  $tagsRepository
+     * @param ValidatorHelper $validator
      */
     public function __construct(
-        ProductTagsRepository $tagsRepository,
+        TagsRepository $tagsRepository,
         ValidatorHelper $validator
     ) {
         $this->tagsRepository = $tagsRepository;

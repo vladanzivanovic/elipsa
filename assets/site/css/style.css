@@ -6645,8 +6645,12 @@ button.accordion.active {
     line-height: 31px;
 }
 
-.bw-cat-list li a:hover {
+.bw-cat-list li a:hover, .bw-cat-list li a.active {
     color: #a70303;
+}
+
+.bw-cat-list li a.active {
+    pointer-events: none;
 }
 
 .blog-widget-post {}
@@ -6734,7 +6738,7 @@ button.accordion.active {
 .blog-details-img img {}
 
 .blog-deatails-content {
-    margin: 35px 0 0;
+    margin: 35px 0;
 }
 
 .blog-deatails-content .bdc-title {

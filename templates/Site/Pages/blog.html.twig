@@ -1,0 +1,59 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title%}Blog{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Blog' }], 'activePage': 'Blog'}) }}
+
+    {% set selectedTag = app.request.attributes.get('tag') %}
+
+    <!-- blog-area-start -->
+    <div class="blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="blogs">
+                        {% for blog in blog_list %}
+                            <div class="single-blog">
+                                <div class="blog-img">
+                                    <a href="{{ path('site.blog_detailed_page', {'slug': blog.alias}) }}"><img src="{{ blog.image_link_list }}" alt="{{ blog.title ~ default_alt_tag }}"></a>
+                                    <div class="blog-img-content">
+                                        <span class="bc-date">{{ blog.day }}</span>
+                                        <span class="bc-month">{{ blog.month }}</span>
+                                    </div>
+                                </div>
+                                <div class="blog-content">
+                                    <a class="blog-title" href="{{ path('site.blog_detailed_page', {'slug': blog.alias}) }}">{{ blog.title }}</a>
+                                    <p class="blog-text">{{ blog.shortDescription }}</p>
+                                    <a class="blog-read-more letter-capitalize" href="{{ path('site.blog_detailed_page', {'slug': blog.alias}) }}">{{ 'read_more' | trans }}</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {{ include('Site/Components/paginate.html.twig') }}
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="blog-sidebar">
+                        <div class="blog-widget blog-widget-category">
+                            <h4 class="bw-title letter-capitalize">{{ 'tags' | trans }}</h4>
+                            <ul class="bw-cat-list">
+                                <li><a class="tag-btn {{ selectedTag is null ? 'active' : '' }} letter-capitalize" data-search="all" href="#">{{ 'all' | trans }}</a></li>
+                                {% for tag in tags %}
+                                    <li><a class="tag-btn {{ selectedTag is not null and selectedTag == tag.mainSlug ? 'active' : '' }}" data-search="{{ tag.mainSlug }}" href="#">{{ tag.label }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- blog-area-end -->
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const IS_FIRST_PAGE = {{ app.request.attributes.get('page') == 1 ? 1 : 0 }};
+
+        {#const SEARCH_CRITERIA = JSON.parse('{{ search | json_encode | raw }}');#}
+    </script>
+{% endblock %}

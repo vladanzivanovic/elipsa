@@ -1,12 +1,12 @@
 import BlogDataTables from "../Services/DataTables/BlogDataTables";
 import BlogEditHandler from "../Handler/BlogEditHandler";
 import ConfirmationModalService from "../Services/ConfirmationModalService";
-import UserEditHandler from "../Handler/UserEditHandler";
 
 const Private = Symbol('private');
 
-class BlogIndexController {
+class BlogController {
     constructor() {
+        this.handler = new BlogEditHandler();
         if (CAN_VIEW) {
             BlogDataTables().init();
         }
@@ -19,9 +19,9 @@ class BlogIndexController {
 
         Private.registerEvents = () => {
             $(document).on('click touchend', '.remove-item-button', e => {
-                const alias = e.currentTarget.dataset.alias;
+                const id = e.currentTarget.dataset.id;
                 const buttons = [
-                    {type: 'button', text: 'Obriši', 'class': 'btn btn-primary remove-blog', 'data-alias': alias, 'data-dismiss': "modal"},
+                    {type: 'button', text: 'Obriši', 'class': 'btn btn-primary remove-blog', 'data-id': id, 'data-dismiss': "modal"},
                 ];
                 const title = 'Da li ste sigurni da želite obrišete blog?';
                 const confirmModal = new ConfirmationModalService(title, buttons);
@@ -30,16 +30,16 @@ class BlogIndexController {
             });
 
             $(document).on('change', '.set-active-blog', e => {
-                const alias = e.currentTarget.dataset.alias;
+                const id = e.currentTarget.dataset.id;
                 const status = e.currentTarget.checked ? 1 : 2;
 
-                BlogEditHandler.changeStatus(e.currentTarget, alias, status);
+                this.handler.changeStatus(e.currentTarget, id, status);
             });
 
             $(document).on('click touchend', '.remove-blog', e => {
-                const alias = e.currentTarget.dataset.alias;
+                const id = e.currentTarget.dataset.id;
 
-                BlogEditHandler.remove(alias);
+                this.handler.remove(id);
             });
         };
 
@@ -47,4 +47,4 @@ class BlogIndexController {
     }
 }
 
-export default BlogIndexController;
+export default BlogController;

@@ -1,0 +1,59 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}{{ 'title.blog_detailed_page' | trans }}{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Blog' }, {'title': trans.title }], 'activePage': trans.title}) }}
+
+    <!-- blog-area-start -->
+    <div class="blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="blog-details">
+                        <div class="blog-details-img">
+                            <img src="{{ image_link }}" alt="{{ trans.title ~ default_alt_tag }}">
+                        </div>
+                        <div class="blog-deatails-content clearfix">
+                            <a class="bdc-title" href="#">{{ trans.title }}</a>
+                            <ul>
+                                <li><a href="#">Shanicia Boswell</a></li>
+                                <li><a href="#"><span class="letter-capitalize">{{ 'blog.posted' | trans }}</span> {{ blog.createdAt | date('d.m.Y') }}</a></li>
+                            </ul>
+                            <div>{{ trans.description | raw }}</div>
+                        </div>
+
+                        <div class="blog-tags-social clearfix">
+                            <ul class="blog-tags">
+                                {% for tag in blog_tags %}
+                                    <li><a href="{{ path('site.blog_list_page', {'tag': tag.mainSlug}) }}">{{ tag.label }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            <ul class="blog-social">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="blog-sidebar">
+                        <div class="blog-widget blog-widget-category">
+                            <h4 class="bw-title letter-capitalize">{{ 'tags' | trans }}</h4>
+                            <ul class="bw-cat-list">
+                                <li><a class="tag-btn letter-capitalize" href="{{ path('site.blog_list_page') }}">{{ 'all' | trans }}</a></li>
+                                {% for tag in tags %}
+                                    <li><a class="tag-btn" href="{{ path('site.blog_list_page', {'tag': tag.mainSlug}) }}">{{ tag.label }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- blog-area-end -->
+{% endblock %}

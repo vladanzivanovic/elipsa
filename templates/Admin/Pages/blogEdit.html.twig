@@ -2,7 +2,7 @@
 
 {% block title %}Dodavanje/Izmena bloga{% endblock %}
 {% block bodyClass %}blog-edit{% endblock %}
-{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_banner_page' %}
+{% set isEdit = routeName() == 'admin.edit_blog_page' %}
 {% block content %}
 
 
@@ -20,10 +20,9 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Veličine slika</h4>
+                    <h4 class="card-title">Veličine glavne slika</h4>
                     <ul>
-                        <li>Levo/Desno - 1000x1300 </li>
-                        <li>Sredina - 1000x610 </li>
+                        <li>1500 x 612</li>
                     </ul>
                 </div>
             </div>
@@ -35,9 +34,9 @@
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Slika</h6>
+                        <h6 class="card-title">Glavna slika</h6>
                         <div class="row">
-                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'blog', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
                         </div><!--Row-->
                     </div>
                 </div>
@@ -51,7 +50,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {{ form.input('Naziv *', 'blog_title_rs', isEdit ? blogRs.title : null , 'rs_title', '', 'text', null, 'form-control') }}
+                                    {{ form.input('Naziv *', 'blog_title_rs', isEdit ? rs_title : null , 'rs_title', '', 'text', null, 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -59,7 +58,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Kratak opis *', 'blog_short_description_rs', isEdit ? blogRs.shortDescription : null, 'rs_short_description', 3, '', 'form-control') }}
+                                        {{ form.textarea('Kratak opis *', 'blog_short_description_rs', isEdit ? rs_short_description : null, 'rs_short_description', 3, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -68,7 +67,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'blog_description_rs', isEdit ? blogRs.description : null , 'rs_description', 10, '', 'form-control') }}
+                                        {{ form.textarea('Detaljan opis *', 'blog_description_rs', isEdit ? rs_description : null , 'rs_description', 10, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -85,7 +84,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {{ form.input('Naziv *', 'blog_title_en', isEdit ? blogRs.title : null , 'en_title', '', 'text', null, 'form-control') }}
+                                    {{ form.input('Naziv *', 'blog_title_en', isEdit ? en_title : null , 'en_title', '', 'text', null, 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -93,7 +92,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Kratak opis *', 'blog_short_description_en', isEdit ? blogRs.shortDescription : null, 'en_short_description', 3, '', 'form-control') }}
+                                        {{ form.textarea('Kratak opis *', 'blog_short_description_en', isEdit ? en_short_description : null, 'en_short_description', 3, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -102,11 +101,27 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'blog_description_en', isEdit ? blogRs.description : null , 'en_description', 10, '', 'form-control') }}
+                                        {{ form.textarea('Detaljan opis *', 'blog_description_en', isEdit ? en_description : null , 'en_description', 10, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Dodatne informacije</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Tagovi', 'tags', 'tags[]', isEdit ? selectedTags : '', tags, '', 'w-100', true) }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,10 +131,10 @@
 {% endblock %}
 {% block pageJavascript %}
     <script>
-        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const IS_EDIT = {{ isEdit ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
 
-        {% if IS_EDIT %}
+        {% if isEdit %}
             const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
         {% endif %}
     </script>

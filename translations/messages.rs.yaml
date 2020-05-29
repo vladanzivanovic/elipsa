@@ -94,6 +94,8 @@ cart.table.total: ukupno
 title.your_cart: Vaša korpa
 title.cart_personal_data: Vaša korpa - unos ličnih podataka
 title.checkout_completed: Uspešna narudžbina
+title.location: Lokacije
+title.blog_detailed_page: Blog stranica
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -149,5 +151,11 @@ payment_type.credit_card: Platna kartica
 
 location.modal.work_time: Radno vreme
 location.modal.work_time_weekend: Subota
+
+all: sve
+
+read_more: detaljnije
+
+blog.posted: postavljeno
 
 

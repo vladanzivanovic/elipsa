@@ -18,6 +18,8 @@ import CouponsController from "./CouponsController";
 import CouponsEditController from "./CouponsEditController";
 import LocationsController from "./LocationsController";
 import LocationEditController from "./LocationEditController";
+import BlogController from "./BlogController";
+import BlogEditController from "./BlogEditController";
 
 let routes = [
     {
@@ -37,15 +39,15 @@ let routes = [
         controller: ColorEditController,
     },
     {
-        name: 'admin.tags',
+        name: 'admin.product_tags',
         controller: TagController,
     },
     {
-        name: 'admin.add_tag_page',
+        name: 'admin.add_product_tag_page',
         controller: TagEditController,
     },
     {
-        name: 'admin.edit_tag_page',
+        name: 'admin.edit_product_tag_page',
         controller: TagEditController,
     },
     {
@@ -131,6 +133,30 @@ let routes = [
     {
         name: 'admin.edit_location_page',
         controller: LocationEditController,
+    },
+    {
+        name: 'admin.blog_tags',
+        controller: TagController,
+    },
+    {
+        name: 'admin.add_blog_tag_page',
+        controller: TagEditController,
+    },
+    {
+        name: 'admin.edit_blog_tag_page',
+        controller: TagEditController,
+    },
+    {
+        name: 'admin.add_blog_page',
+        controller: BlogEditController,
+    },
+    {
+        name: 'admin.blog',
+        controller: BlogController,
+    },
+    {
+        name: 'admin.edit_blog_page',
+        controller: BlogEditController,
     },
 ];
 

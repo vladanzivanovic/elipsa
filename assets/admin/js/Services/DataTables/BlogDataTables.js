@@ -5,7 +5,7 @@ export default (() => {
     let Public = {},
         Private = {};
 
-    Private.tableRef = $('#blog-list-table');
+    Private.tableRef = $('#data-table');
 
     Public.init = () => {
         Private.tableRef.DataTable( {
@@ -21,12 +21,12 @@ export default (() => {
                 { data: 'status_text', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const checkedAttr = row.status === 1 ? 'checked' : '';
 
-                        let html = CAN_EDIT ? `<p class="status-text">${data}</p><input type="checkbox" class="set-active-blog" data-alias="${row.alias}" ${checkedAttr}/>` : `<p class="status-text">${data}</p>`;
+                        let html = CAN_EDIT ? `<p class="status-text">${Translator.trans(data, null, 'messages', LOCALE)}</p><input type="checkbox" class="set-active-blog" data-id="${row.id}" ${checkedAttr}/>` : `<p class="status-text">${Translator.trans(data, null, 'messages', LOCALE)}</p>`;
                         return type === 'display' ? html : data;
                     } },
-                { data: 'alias', render: function (data, type, row, meta) {
-                        const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.blog_edit_page', {slug: data})}">Izmeni</a> ` : '';
-                        const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';
+                { data: 'id', render: function (data, type, row, meta) {
+                        const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.edit_blog_page', {id: data})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :

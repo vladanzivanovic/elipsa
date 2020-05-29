@@ -70,7 +70,7 @@ final class LocationEditResponseFormatter
             'country_south_lat' => $location->getCountrySouthLat(),
             'country_south_lng' => $location->getCountrySouthLng(),
             'country_short_code' => $location->getCountryCode(),
-            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByLocation($location)),
+            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByLocation($location), 'location'),
         ];
     }
 }

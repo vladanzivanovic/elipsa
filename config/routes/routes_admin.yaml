@@ -10,8 +10,8 @@ admin.colors:
   defaults:
     template: Admin/Pages/colors.html.twig
 
-admin.tags:
-  path: /tags
+admin.product_tags:
+  path: /product-tags
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/tags.html.twig
@@ -57,3 +57,9 @@ admin.blog:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/blog.html.twig
+
+admin.blog_tags:
+  path: /blog-tags
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/tags.html.twig

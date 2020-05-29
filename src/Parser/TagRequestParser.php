@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Parser;
 
 use App\Entity\ProductColor;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Repository\ProductColorRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -23,7 +23,7 @@ final class TagRequestParser
     private $parameterBag;
 
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
 
@@ -31,11 +31,11 @@ final class TagRequestParser
      * TagRequestParser constructor.
      *
      * @param ParameterBagInterface $parameterBag
-     * @param ProductTagsRepository $tagsRepository
+     * @param TagsRepository        $tagsRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
-        ProductTagsRepository $tagsRepository
+        TagsRepository $tagsRepository
     ) {
         $this->parameterBag = $parameterBag;
         $this->tagsRepository = $tagsRepository;
@@ -44,18 +44,19 @@ final class TagRequestParser
     /**
      * @param ParameterBag $bag
      * @param string       $mainSlug
+     * @param int          $type
      * @param bool         $isEdit
      *
      * @return ArrayCollection
      */
-    public function parse(ParameterBag $bag, string $mainSlug, bool $isEdit = false): ArrayCollection
+    public function parse(ParameterBag $bag, string $mainSlug, int $type, bool $isEdit = false): ArrayCollection
     {
         $locales = $this->setLanguageArray($this->parameterBag, $bag);
 
         $collection = new ArrayCollection();
 
         foreach ($locales as $locale => $langBag) {
-            $item = new ProductTags();
+            $item = new Tags();
 
             if (true === $isEdit) {
                 $item = $this->tagsRepository->findOneBy(['mainSlug' => $mainSlug, 'locale' => $locale]);
@@ -64,6 +65,7 @@ final class TagRequestParser
             $item->setLabel($bag->get($locale.'_title'));
             $item->setMainSlug($mainSlug);
             $item->setLocale($locale);
+            $item->setRelatedType($type);
 
             $collection->add($item);
         }

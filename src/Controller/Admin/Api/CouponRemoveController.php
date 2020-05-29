@@ -6,13 +6,13 @@ namespace App\Controller\Admin\Api;
 
 use App\Entity\Banner;
 use App\Entity\ProductColor;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Entity\PromotionCoupon;
 use App\Entity\Slider;
 use App\Handler\BannerHandler;
 use App\Handler\CouponHandler;
 use App\Handler\ProductColorHandler;
-use App\Handler\ProductTagHandler;
+use App\Handler\TagHandler;
 use App\Handler\SliderHandler;
 use App\Repository\ProductHasColorRepository;
 use App\Repository\ProductHasTagsRepository;

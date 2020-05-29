@@ -7,7 +7,7 @@ namespace App\Collector;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use App\Services\PaginationService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -33,7 +33,7 @@ final class ShopPageCollector
      */
     private $paginationService;
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
     /**
@@ -50,7 +50,7 @@ final class ShopPageCollector
      * @param ProductSizeRepository  $sizeRepository
      * @param ProductRepository      $productRepository
      * @param PaginationService      $paginationService
-     * @param ProductTagsRepository  $tagsRepository
+     * @param TagsRepository         $tagsRepository
      * @param TranslatorInterface    $translator
      * @param ParameterBagInterface  $bag
      */
@@ -59,7 +59,7 @@ final class ShopPageCollector
         ProductSizeRepository $sizeRepository,
         ProductRepository $productRepository,
         PaginationService $paginationService,
-        ProductTagsRepository $tagsRepository,
+        TagsRepository $tagsRepository,
         TranslatorInterface $translator,
         ParameterBagInterface $bag
     ) {

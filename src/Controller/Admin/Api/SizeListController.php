@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Formatter\Admin\ProductColorDataTableResponseFormatter;
 use App\Formatter\Admin\ProductDataTableResponseFormatter;
 use App\Formatter\Admin\ProductTagDataTableResponseFormatter;
@@ -12,7 +12,7 @@ use App\Parser\DataTableRequestParser;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

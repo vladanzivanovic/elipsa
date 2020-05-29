@@ -9,7 +9,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use App\Repository\SliderRepository;
 
 final class HomePageCollector
@@ -39,7 +39,7 @@ final class HomePageCollector
      */
     private $sizeRepository;
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
 
@@ -52,7 +52,7 @@ final class HomePageCollector
      * @param ProductRepository      $productRepository
      * @param ProductColorRepository $colorRepository
      * @param ProductSizeRepository  $sizeRepository
-     * @param ProductTagsRepository  $tagsRepository
+     * @param TagsRepository         $tagsRepository
      */
     public function __construct(
         SliderRepository $sliderRepository,
@@ -61,7 +61,7 @@ final class HomePageCollector
         ProductRepository $productRepository,
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,
-        ProductTagsRepository $tagsRepository
+        TagsRepository $tagsRepository
     ) {
         $this->sliderRepository = $sliderRepository;
         $this->bannerRepository = $bannerRepository;

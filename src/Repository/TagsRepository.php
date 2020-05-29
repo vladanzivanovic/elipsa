@@ -2,39 +2,43 @@
 
 namespace App\Repository;
 
+use App\Entity\Blog;
+use App\Entity\BlogHasTags;
 use App\Entity\Product;
-use App\Entity\ProductColor;
 use App\Entity\ProductHasTags;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Model\DataTableModel;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 /**
- * @method ProductTags|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProductTags|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProductTags[]    findAll()
- * @method ProductTags[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Tags|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Tags|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Tags[]    findAll()
+ * @method Tags[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProductTagsRepository extends ExtendedEntityRepository
+class TagsRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ProductTags::class);
+        parent::__construct($registry, Tags::class);
     }
 
     /**
+     * @param int $type
+     *
      * @return mixed
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countData()
+    public function countData(int $type = Tags::TYPE_PRODUCT)
     {
         $query = $this->createQueryBuilder('pt')
             ->select('COUNT(pt.id) as total')
             ->where('pt.locale = \'rs\'')
+            ->andWhere('pt.relatedType = :relatedType')
+            ->setParameter('relatedType', $type)
         ;
 
         return $query->getQuery()->getSingleScalarResult();
@@ -42,10 +46,11 @@ class ProductTagsRepository extends ExtendedEntityRepository
 
     /**
      * @param DataTableModel $tableModel
+     * @param int            $type
      *
      * @return array
      */
-    public function getAdminList(DataTableModel $tableModel): array
+    public function getAdminList(DataTableModel $tableModel, int $type = Tags::TYPE_PRODUCT): array
     {
         $query = $this->createQueryBuilder('pt')
             ->select(
@@ -55,8 +60,10 @@ class ProductTagsRepository extends ExtendedEntityRepository
                 'pten.label as en_name',
                 'pt.slug'
             )
-            ->innerJoin(ProductTags::class, 'pten', 'WITH', 'pten.mainSlug = pt.mainSlug AND pten.locale = \'en\'')
+            ->innerJoin(Tags::class, 'pten', 'WITH', 'pten.mainSlug = pt.mainSlug AND pten.locale = \'en\'')
             ->where('pt.locale = \'rs\'')
+            ->andWhere('pt.relatedType = :relatedType')
+            ->setParameter('relatedType', $type)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('pt.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
@@ -68,10 +75,11 @@ class ProductTagsRepository extends ExtendedEntityRepository
     /**
      * @param string $mainSlug
      * @param array  $locales
+     * @param int    $type
      *
      * @return array
      */
-    public function getByMainSlugAndLocales(string $mainSlug, array $locales): array
+    public function getByMainSlugAndLocales(string $mainSlug, array $locales, int $type): array
     {
         $query = $this->createQueryBuilder('pt')
             ->select(
@@ -80,6 +88,8 @@ class ProductTagsRepository extends ExtendedEntityRepository
             )
             ->where('pt.mainSlug = :mainSlug')
             ->andWhere('pt.locale IN (:locales)')
+            ->andWhere('pt.relatedType = :relatedType')
+            ->setParameter('relatedType', $type)
             ->setParameter('mainSlug', $mainSlug)
             ->setParameter('locales', $locales);
 
@@ -102,16 +112,20 @@ class ProductTagsRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param int $type
+     *
      * @return array
      */
-    public function getForOptions(): array
+    public function getForOptions(int $type = Tags::TYPE_PRODUCT): array
     {
         $query = $this->createQueryBuilder('pt')
             ->select(
                 'pt.mainSlug as value',
                 'pt.label as title'
             )
-            ->where('pt.locale = \'rs\'');
+            ->where('pt.locale = \'rs\'')
+            ->andWhere('pt.relatedType = :relatedType')
+            ->setParameter('relatedType', $type);
 
         return $query->getQuery()->getArrayResult();
     }
@@ -135,6 +149,28 @@ class ProductTagsRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param Blog   $blog
+     *
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getByBlog(Blog $blog, string $locale = 'rs'): array
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                't.mainSlug',
+                't.label'
+            )
+            ->innerJoin(BlogHasTags::class, 'bht', 'WITH', 'bht.tag = t.mainSlug AND bht.blog = :blog')
+            ->where('t.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('blog', $blog);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * @param array  $products
      *
      * @param string $locale
@@ -153,6 +189,29 @@ class ProductTagsRepository extends ExtendedEntityRepository
             ->where('pht.product IN (:products)')
             ->andWhere('pt.locale = :locale')
             ->setParameter('products', $products)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param array  $blogList
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getByBlogList(array $blogList, string $locale): array
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                'b.id as blogId',
+                't.label'
+            )
+            ->innerJoin(BlogHasTags::class, 'bht', 'WITH', 'bht.tag = t.mainSlug')
+            ->innerJoin(Blog::class, 'b', 'WITH', 'b = bht.blog')
+            ->where('bht.blog IN (:blogList)')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('blogList', $blogList)
             ->setParameter('locale', $locale);
 
         return $query->getQuery()->getArrayResult();

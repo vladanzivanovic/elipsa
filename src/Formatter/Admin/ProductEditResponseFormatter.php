@@ -10,7 +10,7 @@ use App\Repository\CategoryTranslationRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProductHasImagesRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -24,7 +24,7 @@ final class ProductEditResponseFormatter
     private $categoryTranslationRepository;
 
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
 
@@ -52,15 +52,15 @@ final class ProductEditResponseFormatter
      * ProductEditResponseFormatter constructor.
      *
      * @param CategoryTranslationRepository $categoryTranslationRepository
-     * @param ProductTagsRepository         $tagsRepository
+     * @param TagsRepository                $tagsRepository
      * @param ProductSizeRepository         $sizeRepository
      * @param ProductHasImagesRepository    $hasImagesRepository
      * @param ImageRepository               $imageRepository
      * @param RouterInterface               $router
      */
     public function __construct(
-      CategoryTranslationRepository $categoryTranslationRepository,
-        ProductTagsRepository $tagsRepository,
+        CategoryTranslationRepository $categoryTranslationRepository,
+        TagsRepository $tagsRepository,
         ProductSizeRepository $sizeRepository,
         ProductHasImagesRepository $hasImagesRepository,
         ImageRepository $imageRepository,
@@ -97,7 +97,7 @@ final class ProductEditResponseFormatter
             'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
             'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'mainSlug'),
             'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
-            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByProduct($product)),
+            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByProduct($product), 'product'),
             'show_home_page' => $product->getShowHomePage(),
         ];
 

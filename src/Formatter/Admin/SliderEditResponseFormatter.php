@@ -45,7 +45,7 @@ final class SliderEditResponseFormatter
             'en_button' => $enTrans->getButtonText(),
             'en_link' => $enTrans->getButtonLink(),
             'position' => $slider->getTextPosition(),
-            'selectedImages' => $this->imagesFormatter($this->router, [$this->getImage($slider)]),
+            'selectedImages' => $this->imagesFormatter($this->router, [$this->getImage($slider)], 'slider'),
         ];
     }
 

@@ -100,6 +100,8 @@ cart.table.total: total
 title.your_cart: Your cart
 title.cart_personal_data: Your cart - personal information
 title.checkout_completed: Checkout completed
+title.location: Location
+title.blog_detailed_page: Blog page
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -155,3 +157,9 @@ payment_type.credit_card: Credi card
 
 location.modal.work_time: Working time
 location.modal.work_time_weekend: Saturday
+
+all: all
+
+read_more: read more
+
+blog.posted: posted

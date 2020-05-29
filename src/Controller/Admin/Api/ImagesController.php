@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
+use App\Handler\ImageUploadHandler;
 use App\Services\ImageResizer;
 use App\Services\ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,17 +17,27 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ImagesController extends AbstractController
 {
+    /**
+     * @var ImageResizer
+     */
     private $imageResizer;
+
+    /**
+     * @var ImageService
+     */
     private $imageService;
+
+    /**
+     * @var RouterInterface
+     */
     private $router;
+
     /**
      * @var ParameterBagInterface
      */
     private $parameterBag;
 
     /**
-     * ImagesController constructor.
-     *
      * @param ImageResizer          $imageResizer
      * @param ImageService          $imageService
      * @param RouterInterface       $router
@@ -55,16 +66,16 @@ final class ImagesController extends AbstractController
         try {
             /** @var UploadedFile $file */
             $file = $request->files->get('tmp_image');
-            $this->imageResizer->moveToTmpDir($file);
+
+            $this->imageService->uploadToPath($file, $this->parameterBag->get('upload_dir').$this->parameterBag->get('upload_tmp_dir'));
 
             return $this->json([
-                'file' => $this->router->generate('app.tmp_thumb_image', ['name' => $file->getClientOriginalName()]),
+                'file' => $this->router->generate('app.tmp_image_show', ['name' => $file->getClientOriginalName(), 'filter' => 'tmp_image_thumb']),
                 'fileName' => $file->getClientOriginalName(),
                 'isMain' => false,
             ]);
 
         } catch (\Throwable $throwable) {
-            dd($throwable);
             return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
         }
     }

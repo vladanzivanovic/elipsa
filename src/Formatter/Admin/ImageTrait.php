@@ -14,13 +14,14 @@ trait ImageTrait
     /**
      * @param RouterInterface $router
      * @param array           $images
+     * @param string          $entity
      *
      * @return array
      */
-    private function imagesFormatter(RouterInterface $router, array $images): array
+    private function imagesFormatter(RouterInterface $router, array $images, string $entity): array
     {
-         return array_map(function ($image) use ($router) {
-            $image['file'] = $router->generate('app.image_show', ['name' => $image['fileName'], 'filter' => 'tmp_image_thumb']);
+         return array_map(function ($image) use ($router, $entity) {
+            $image['file'] = $router->generate('app.image_show', ['entity' => $entity, 'name' => $image['fileName'], 'filter' => 'tmp_image_thumb']);
 
             return $image;
         }, $images);
