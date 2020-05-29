@@ -46,7 +46,7 @@ final class BannerDataTableResponseFormatter
             $statusText = ConstantsHelper::getConstantName((string)$banner['is_active'], 'STATUS', Banner::class);
             $banner['status_text'] = $statusText;
 
-            $image = $router->generate('app.image_show', ['name' => $banner['name'], 'filter' => "admin_slider_list"]);
+            $image = $router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['name'], 'filter' => "admin_slider_list"]);
             $banner['image'] = $image;
 
             return $banner;

@@ -42,7 +42,7 @@ final class ShopPageResponseFormatter
         $sortMapping = $this->bag->get('shop')['sort_mapping'];
 
         $data['products']['data'] = array_map(function ($product) {
-            $product['image_link_list'] = $this->router->generate('app.image_show', ['name' => $product['image'], 'filter' => 'list_thumb']);
+            $product['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $product['image'], 'filter' => 'list_thumb']);
 
             return $product;
         }, $data['products']['data']);

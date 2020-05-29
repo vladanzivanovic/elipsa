@@ -49,7 +49,7 @@ final class CartPageFormatter
                 'id'        => $orderProduct['id'],
                 'name'      => $orderProduct['title'],
                 'slug'      => $orderProduct['slug'],
-                'image_link'        => $this->router->generate('app.image_show', ['name' => $orderProduct['image_name'], 'filter' => 'cart_thumb']),
+                'image_link'        => $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $orderProduct['image_name'], 'filter' => 'cart_thumb']),
                 'price'     => $orderProduct['price'],
                 'discount'  => $orderProduct['discount'],
                 'quantity'  => $orderProduct['quantity'],

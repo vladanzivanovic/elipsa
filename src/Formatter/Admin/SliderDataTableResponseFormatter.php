@@ -45,7 +45,7 @@ final class SliderDataTableResponseFormatter
             $statusText = ConstantsHelper::getConstantName((string)$slider['is_active'], 'STATUS', Slider::class);
             $slider['status_text'] = $statusText;
 
-            $image = $router->generate('app.image_show', ['name' => $slider['name'], 'filter' => "admin_slider_list"]);
+            $image = $router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['name'], 'filter' => "admin_slider_list"]);
             $slider['image'] = $image;
 
             return $slider;

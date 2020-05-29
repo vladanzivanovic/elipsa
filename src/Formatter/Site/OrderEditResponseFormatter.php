@@ -74,7 +74,7 @@ final class OrderEditResponseFormatter
             'product_id'        => $orderProductId,
             'product_name'      => $productTranslation->getTitle(),
             'product_slug'      => $productTranslation->getSlug(),
-            'image_link'        => $this->router->generate('app.image_show', ['name' => $image->getName(), 'filter' => 'cart_thumb']),
+            'image_link'        => $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $image->getName(), 'filter' => 'cart_thumb']),
             'product_price'     => $product->getDiscount() > 0 ? $product->getDiscount() : $product->getPrice(),
             'product_quantity'  => $quantity,
         ];
