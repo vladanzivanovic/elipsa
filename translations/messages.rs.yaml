@@ -151,6 +151,8 @@ payment_type.credit_card: Platna kartica
 
 location.modal.work_time: Radno vreme
 location.modal.work_time_weekend: Subota
+location.look_btn: pogledaj
+location.map: mapa
 
 all: sve
 

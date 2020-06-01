@@ -157,6 +157,8 @@ payment_type.credit_card: Credi card
 
 location.modal.work_time: Working time
 location.modal.work_time_weekend: Saturday
+location.look_btn: view location
+location.map: map
 
 all: all
 
