@@ -30,6 +30,12 @@
                     <span class="link-title">Blog</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.loyalty' ? 'active' : '' }}">
+                <a href="{{ path('admin.loyalty') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Loyalty</span>
+                </a>
+            </li>
             <li class="nav-item nav-category">Podešavanja</li>
             <li class="nav-item">
                 <a class="nav-link {{ routeName() == 'admin.dashboard' ? 'active' : '' }}" data-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">
@@ -43,7 +49,7 @@
                             <a href="{{ path('admin.sliders') }}" class="nav-link">Slider</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('admin.banners') }}" class="nav-link">Brzi linkovi</a>
+                            <a href="{{ path('admin.home_banners') }}" class="nav-link">Brzi linkovi</a>
                         </li>
                     </ul>
                 </div>
@@ -58,6 +64,12 @@
                 <a href="{{ path('admin.coupons') }}" class="nav-link">
                     <i class="link-icon mdi mdi-format-color-fill"></i>
                     <span class="link-title">Promotivni kuponi</span>
+                </a>
+            </li>
+            <li class="nav-item {{ routeName() == 'admin.banners' ? 'active' : '' }}">
+                <a href="{{ path('admin.banners') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Baneri</span>
                 </a>
             </li>
             <li class="nav-item nav-category">šifarnik</li>

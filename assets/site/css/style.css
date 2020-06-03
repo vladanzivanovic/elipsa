@@ -7140,7 +7140,9 @@ button.accordion.active {
     margin: 0 0 14px;
 }
 
-.cfc-input-box input[type="text"] {
+.cfc-input-box input[type="text"],
+.cfc-input-box input[type="email"],
+.cfc-input-box input[type="tel"] {
     border: 2px solid #f2f2f2;
     height: 40px;
     padding: 0;

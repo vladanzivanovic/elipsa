@@ -122,6 +122,9 @@ email: email adresa
 mobile_telephone: mobilni telefon
 create_account: napravite nalog
 password: lozinka
+occupation: zanimanje
+message: poruka
+birth_date: datum rođenja
 
 email.order.title: Narudžbenica #%orderId%
 email.order.seller: Prodavac
@@ -160,4 +163,22 @@ read_more: detaljnije
 
 blog.posted: postavljeno
 
+form: forma
+submit: pošalji
 
+loyalty.rate: Ocenite brend ELIPSA ocenama od 1-5
+loyalty.message.success: Uspešno ste se registrovali u loyalty program.
+loyalty.message.user_exists: Vi ste se već prijavili u loyalty program.
+
+January: Januar
+February: Februar
+March: Mart
+April: April
+May: Maj
+June: Jun
+July: Jul
+August: Avgust
+September: Septembar
+October: Oktobar
+November: Novembar
+December: Decembar

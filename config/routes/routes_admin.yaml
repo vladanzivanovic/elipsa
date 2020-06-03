@@ -34,8 +34,8 @@ admin.sliders:
   defaults:
     template: Admin/Pages/sliders.html.twig
 
-admin.banners:
-  path: /banners
+admin.home_banners:
+  path: /home-banners
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/banners.html.twig
@@ -63,3 +63,15 @@ admin.blog_tags:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/tags.html.twig
+
+admin.loyalty:
+  path: /loyalty
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/loyalty.html.twig
+
+admin.banners:
+  path: /banners
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/banners.html.twig

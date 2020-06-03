@@ -12,6 +12,7 @@ class EmailModel
     const SCRIPT_USER_ORDERED = 'USER_ORDERED';
     const SCRIPT_USER_RESET_PASSWORD = 'USER_RESET_PASSWORD';
     const SCRIPT_CONTACT_US = 'CONTACT_US';
+    const SCRIPT_LOYALTY = 'LOYALTY';
 
     /**
      * @var string

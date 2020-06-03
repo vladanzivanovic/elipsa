@@ -24,8 +24,6 @@ final class LocationListApiController extends AbstractController
     private $responseFormatter;
 
     /**
-     * LocationPageController constructor.
-     *
      * @param LocationPageCollector         $pageCollector
      * @param LocationPageResponseFormatter $responseFormatter
      */

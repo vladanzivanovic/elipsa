@@ -38,10 +38,11 @@ class BannerRepository extends ExtendedEntityRepository
 
     /**
      * @param DataTableModel $tableModel
+     * @param array|null     $collection
      *
      * @return array
      */
-    public function getAdminList(DataTableModel $tableModel): array
+    public function getAdminList(DataTableModel $tableModel, ?array $collection): array
     {
         $query = $this->createQueryBuilder('b')
             ->select(
@@ -55,6 +56,11 @@ class BannerRepository extends ExtendedEntityRepository
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('b.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
+
+        if (null !== $collection) {
+            $query->andWhere('b.position IN (:positions)')
+                ->setParameter('positions', $collection);
+        }
 
         return $query->getQuery()->getArrayResult();
     }

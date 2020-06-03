@@ -5,6 +5,7 @@ import CheckoutPageController from "./CheckoutPageController";
 import CartPageController from "./CartPageController";
 import LocationPageController from "./LocationPageController";
 import BlogListPageController from "./BlogListPageController";
+import LoyaltyPageController from "./LoyaltyPageController";
 
 let routes = [
     {
@@ -30,6 +31,10 @@ let routes = [
     {
         name: 'site.blog_list_page',
         controller: BlogListPageController,
+    },
+    {
+        name: 'site.loyalty',
+        controller: LoyaltyPageController,
     },
 ];
 

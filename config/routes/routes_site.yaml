@@ -5,3 +5,9 @@ site.checkout_completed_successful:
     template: Site/Pages/checkoutComplete.html.twig
   options:
     expose: true
+
+site.loyalty:
+  path: /loyalty
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/loyalty.html.twig

@@ -22,6 +22,7 @@ Encore
     .addStyleEntry('css/site/pages/cart', './assets/site/scss/Pages/_cart.scss')
     .addStyleEntry('css/site/pages/checkout', './assets/site/scss/Pages/_checkout.scss')
     .addStyleEntry('css/site/pages/location', './assets/site/scss/Pages/_location.scss')
+    .addStyleEntry('css/site/pages/loyalty', './assets/site/scss/Pages/_loyalty.scss')
     .addStyleEntry('css/admin/app',[
         './assets/admin/scss/style.scss',
     ])

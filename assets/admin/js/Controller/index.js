@@ -20,6 +20,7 @@ import LocationsController from "./LocationsController";
 import LocationEditController from "./LocationEditController";
 import BlogController from "./BlogController";
 import BlogEditController from "./BlogEditController";
+import LoyaltyController from "./LoyaltyController";
 
 let routes = [
     {
@@ -95,7 +96,7 @@ let routes = [
         controller: SliderEditController,
     },
     {
-        name: 'admin.banners',
+        name: 'admin.home_banners',
         controller: HomeBannersController,
     },
     {
@@ -157,6 +158,14 @@ let routes = [
     {
         name: 'admin.edit_blog_page',
         controller: BlogEditController,
+    },
+    {
+        name: 'admin.loyalty',
+        controller: LoyaltyController,
+    },
+    {
+        name: 'admin.banners',
+        controller: HomeBannersController,
     },
 ];
 

@@ -10,7 +10,7 @@
                             <li><a href="#">{{ 'navi.about_us' | trans }}</a>
                                 <ul class="menu-dropdown">
                                     <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
-                                    <li><a href="02_Home Page.html">{{ 'navi.loyalty' | trans }}</a></li>
+                                    <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
                             <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
@@ -88,7 +88,7 @@
                             <li><a href="{{ path('site.shop_page') }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul>
                                     <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
-                                    <li><a href="02_Home Page.html">{{ 'navi.loyalty' | trans }}</a></li>
+                                    <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
                             <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
@@ -111,7 +111,7 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-                            <li><a href="#">{{ 'navi.blog' | trans }}</a></li>
+                            <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
                         </ul>

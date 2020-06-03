@@ -128,6 +128,9 @@ email: email address
 mobile_telephone: mobile phone
 create_account: create account
 password: password
+occupation: occupation
+message: message
+birth_date: birth date
 
 email.order.title: Order #%orderId%
 email.order.seller: Seller
@@ -165,3 +168,23 @@ all: all
 read_more: read more
 
 blog.posted: posted
+
+form: form
+submit: submit
+
+loyalty.rate: Rate the ELIPSA brand from 1-5
+loyalty.message.success: You are successfuly register in loyalty program.
+loyalty.message.user_exists: You are already registered in loyalty program.
+
+January: Januar
+February: Februar
+March: Mart
+April: April
+May: Maj
+June: Jun
+July: Jul
+August: Avgust
+September: Septembar
+October: Oktobar
+November: Novembar
+December: Decembar

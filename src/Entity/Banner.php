@@ -19,6 +19,15 @@ class Banner
 
     public const POSITION_HOME_RIGHT = 4;
 
+    public const POSITION_LOYALTY = 5;
+
+    public const COLLECTION_HOME_PRODUCTS = [
+        self::POSITION_HOME_LEFT,
+        self::POSITION_HOME_MIDDLE_UP,
+        self::POSITION_HOME_MIDDLE_DOWN,
+        self::POSITION_HOME_RIGHT
+    ];
+
     public const STATUS_PENDING = false;
 
     public const STATUS_ACTIVE = true;

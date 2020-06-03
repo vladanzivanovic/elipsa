@@ -1,0 +1,23 @@
+.loyalty-page {
+  .date {
+    display: flex;
+    justify-content: space-between;
+
+    .cfc-input-box {
+      width: 100%;
+      margin-right: 10px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      select {
+        border: 2px solid #f2f2f2;
+        height: 40px;
+        padding: 0;
+        width: 100%;
+        float: none;
+      }
+    }
+  }
+}

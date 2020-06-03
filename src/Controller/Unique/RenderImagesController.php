@@ -48,7 +48,7 @@ class RenderImagesController extends AbstractController
      *     methods={"GET"},
      *     name="app.image_show",
      *     requirements={
-     *          "entity": "product|blog|slider|location"
+     *          "entity": "product|blog|slider|location|banner"
      *     })
      *
      * @param string $filter

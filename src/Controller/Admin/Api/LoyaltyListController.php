@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
-use App\Entity\Banner;
 use App\Entity\Tags;
 use App\Formatter\Admin\BannerDataTableResponseFormatter;
+use App\Formatter\Admin\LocationDataTableResponseFormatter;
+use App\Formatter\Admin\LoyaltyDataTableResponseFormatter;
 use App\Formatter\Admin\ProductColorDataTableResponseFormatter;
 use App\Formatter\Admin\ProductDataTableResponseFormatter;
 use App\Formatter\Admin\ProductTagDataTableResponseFormatter;
 use App\Formatter\Admin\SliderDataTableResponseFormatter;
 use App\Parser\DataTableRequestParser;
 use App\Repository\BannerRepository;
+use App\Repository\LocationRepository;
+use App\Repository\LoyaltyRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
@@ -25,7 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class BannersListController extends AbstractController
+final class LoyaltyListController extends AbstractController
 {
     /**
      * @var DataTableRequestParser
@@ -33,35 +36,31 @@ final class BannersListController extends AbstractController
     private $requestParser;
 
     /**
-     * @var BannerDataTableResponseFormatter
+     * @var LoyaltyDataTableResponseFormatter
      */
     private $responseFormatter;
-
     /**
-     * @var BannerRepository
+     * @var LoyaltyRepository
      */
-    private $bannerRepository;
+    private $loyaltyRepository;
 
     /**
-     * BannersListController constructor.
-     *
-     * @param DataTableRequestParser           $requestParser
-     * @param BannerRepository                 $bannerRepository
-     * @param BannerDataTableResponseFormatter $responseFormatter
+     * @param DataTableRequestParser            $requestParser
+     * @param LoyaltyRepository                 $loyaltyRepository
+     * @param LoyaltyDataTableResponseFormatter $responseFormatter
      */
     public function __construct(
         DataTableRequestParser $requestParser,
-        BannerRepository $bannerRepository,
-        BannerDataTableResponseFormatter $responseFormatter
+        LoyaltyRepository $loyaltyRepository,
+        LoyaltyDataTableResponseFormatter $responseFormatter
     ) {
         $this->requestParser = $requestParser;
         $this->responseFormatter = $responseFormatter;
-        $this->bannerRepository = $bannerRepository;
+        $this->loyaltyRepository = $loyaltyRepository;
     }
 
     /**
-     * @Route("/api/get-home-collection-banner-list", name="admin.get_home_collection_banner_list", methods={"POST"}, options={"expose": true})
-     * @Route("/api/get-banner-list", name="admin.get_banner_list", methods={"POST"}, options={"expose": true})
+     * @Route("/api/get-loyalty-list", name="admin.get_loyalty_list", methods={"POST"}, options={"expose": true})
      *
      * @param Request $request
      *
@@ -71,16 +70,10 @@ final class BannersListController extends AbstractController
      */
     public function getList(Request $request)
     {
-        $collection = null;
-
-        if ($request->attributes->get('_route') === 'admin.get_home_collection_banner_list') {
-            $collection = Banner::COLLECTION_HOME_PRODUCTS;
-        }
-
         $formattedRequest = $this->requestParser->formatRequest($request);
-        $total = $this->bannerRepository->countData();
+        $total = $this->loyaltyRepository->countData();
 
-        $data = $this->bannerRepository->getAdminList($formattedRequest, $collection);
+        $data = $this->loyaltyRepository->getAdminList($formattedRequest);
 
         $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
 
