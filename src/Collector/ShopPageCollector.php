@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Collector;
 
+use App\Entity\Tags;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
@@ -72,7 +73,7 @@ final class ShopPageCollector
         $this->bag = $bag;
     }
 
-    public function collect(string $locale, int $currentPage, ?string $searchData = null)
+    public function collect(string $locale, int $currentPage, ?string $searchData = null, bool $isTrendyPage = false)
     {
         $colors = $this->colorRepository->getByLocale($locale);
         $sizes = $this->sizeRepository->getForOptions();
@@ -84,17 +85,18 @@ final class ShopPageCollector
             'prices'    => $prices[0],
         ];
 
-        return $data + $this->collectForApi($locale, $currentPage, $searchData);
+        return $data + $this->collectForApi($locale, $currentPage, $searchData, $isTrendyPage);
     }
 
     /**
      * @param string $locale
      * @param int    $currentPage
      * @param string $searchData
+     * @param bool   $isTrendyPage
      *
      * @return array
      */
-    public function collectForApi(string $locale, int $currentPage, ?string $searchData = null): array
+    public function collectForApi(string $locale, int $currentPage, ?string $searchData = null, bool $isTrendyPage = false): array
     {
         $searchCriteria = null;
 
@@ -113,13 +115,19 @@ final class ShopPageCollector
         $productSizes = $this->sizeRepository->getByProducts($productIds);
         $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
 
-        return [
+        $collection = [
             'products'          => $products,
             'product_colors'    => $productColors,
             'product_sizes'     => $productSizes,
             'product_tags'      => $productTags,
             'search_criteria'   => null !== $searchData ? $searchCriteria : null,
         ];
+
+        if (true === $isTrendyPage) {
+            $collection['tags'] = $this->tagsRepository->getForOptions(Tags::TYPE_PRODUCT, $locale);
+        }
+
+        return $collection;
     }
 
     /**

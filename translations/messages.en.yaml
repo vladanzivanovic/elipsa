@@ -30,6 +30,7 @@ navi:
   ask_us: Ask us
   contact: Contact
   account: My account
+  trends: Trends
 
 serbian: Serbian
 english: English
@@ -45,6 +46,7 @@ boja: color
 kategorije: categories
 sortiranje: sort
 cena: price
+tagovi: tags
 
 next_page: next
 prev_page: prev

@@ -71,12 +71,14 @@ final class ProductImageService
      * @param ProductTranslation $productTranslation
      * @param array              $data
      *
+     * @param bool               $fromImport
+     *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(ProductTranslation $productTranslation, array $data): void
+    public function setImages(ProductTranslation $productTranslation, array $data, bool $fromImport = false): void
     {
         $rootDir = $this->bag->get('upload_dir');
-        $tmpDir = $this->bag->get('upload_tmp_dir');
+        $tmpDir = true === $fromImport ? $this->bag->get('upload_import_dir') : $this->bag->get('upload_tmp_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
         $product = $productTranslation->getProduct();
@@ -121,6 +123,7 @@ final class ProductImageService
                 $image['file'] = $rootDir.$tmpDir.$image['fileName'];
                 $file = $this->img->setFileObject($image);
             } catch (FileNotFoundException $exception) {
+                var_dump($exception->getMessage());
                 $exceptions[] = $image['fileName'];
 
                 continue;

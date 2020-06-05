@@ -1,10 +1,9 @@
-import AppHelperService from "../../../js/Helper/AppHelperService";
-import ShopPageDom from "../Dom/ShopPageDom";
+import shopPageDom from "../Dom/ShopPageDom";
 import ShopPageMapper from "../Mapper/ShopPageMapper";
 
 class ShopPageService {
     constructor() {
-        this.dom = ShopPageDom;
+        this.dom = shopPageDom;
         this.mapper = new ShopPageMapper();
 
         let selectedPrices = [0,5000];

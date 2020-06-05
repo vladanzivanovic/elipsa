@@ -36,6 +36,10 @@ let routes = [
         name: 'site.loyalty',
         controller: LoyaltyPageController,
     },
+    {
+        name: 'site.trendy_page',
+        controller: ShopPageController,
+    },
 ];
 
 $(document).ready(() => {

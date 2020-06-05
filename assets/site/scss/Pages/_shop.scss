@@ -1,6 +1,7 @@
 @import "~jquery-ui/themes/base/slider.css";
 @import "../Components/common-product";
 @import "../Components/filter";
+@import "../colors";
 
 .shop-page {
   .home3-slider-container .nivo-directionNav > a {
@@ -39,11 +40,11 @@
           height: 20px;
         }
       }
-      a.active {
-        color: #ed1d7f;
-        font-style: italic;
-        padding-left: 10px;
-      }
+    }
+    .active {
+      color: $site-color;
+      font-style: italic;
+      padding-left: 10px;
     }
     .child-category {
       .sidebar-list {

@@ -22,8 +22,6 @@ final class ProductEditHandler
     private $productRepository;
 
     /**
-     * ProductEditHandler constructor.
-     *
      * @param ValidatorHelper   $validator
      * @param ProductRepository $productRepository
      */

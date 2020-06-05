@@ -23,8 +23,6 @@ final class HomePageController extends AbstractController
     private $responseFormatter;
 
     /**
-     * HomePageController constructor.
-     *
      * @param HomePageCollector         $pageCollectors
      * @param HomePageResponseFormatter $responseFormatter
      */

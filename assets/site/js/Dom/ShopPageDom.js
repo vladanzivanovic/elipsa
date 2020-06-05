@@ -1,4 +1,5 @@
 import ShopPageMapper from "../Mapper/ShopPageMapper";
+import AppHelperService from "../../../js/Helper/AppHelperService";
 
 class ShopPageDom {
     constructor() {
@@ -17,6 +18,7 @@ class ShopPageDom {
         for(let i in data.products.data) {
             let product = data.products.data[i];
             let oldPriceHtml = '';
+            const productLink = AppHelperService.generateLocalizedUrl('site.product_page', {'slug': product.slug});
 
             if (product.discount > 0) {
                 oldPriceHtml = `<p class="sfi-old-price">-${product.price} RSD</p>`
@@ -25,8 +27,8 @@ class ShopPageDom {
             html += `<div class="col-md-4 col-sm-6 col-xs-12">
                         <div class="single-featured-item">
                             <div class="sfi-img">
-                                <a href="single-product.html"><img src="${product.image_link_list}" alt="{{ default_alt_tag }}"></a>
-                                <ul class="sfi-tag-list">${this.listData(data.product_tags[product.id])}</ul>
+                                <a href="${productLink}"><img src="${product.image_link_list}" alt="{{ default_alt_tag }}"></a>
+                                <ul class="sfi-tag-list">${this.listData(data.product_tags[product.id], 'tags')}</ul>
                                 <div class="sfi-img-content sfi-data-content">
                                     <p class="text-capitalize">${Translator.trans('available_colors', null, 'messages', LOCALE)}:</p>
                                     <ul class="sfi-data-color">${this.productColors(data.product_colors[product.id])}</ul>
@@ -38,12 +40,11 @@ class ShopPageDom {
                                 <div class="sfi-buttons">
                                     <ul class="clearfix">
                                         <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>
-                                        <li><a href="single-product.html" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a></li>
+                                        <li><a href="${productLink}" ><i class="fa fa-eye"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="sfi-name-cat">
-                                    <a class="sfi-name" href="single-product.html">${product.title}</a>
+                                    <a class="sfi-name" href="${productLink}">${product.title}</a>
                                 </div>
                                 <div class="sfi-price-rating">
                                     <p class="sfi-price text-uppercase"><span>${product.discount > 0 ? product.discount : product.price} RSD</span></p>
@@ -57,10 +58,19 @@ class ShopPageDom {
         return html;
     };
 
-    listData(data) {
+    listData(data, type) {
         let html = '';
 
         for(let i in data) {
+            if (type === 'tags') {
+                const tagKey = Translator.trans('tags', null, 'messages', LOCALE);
+
+                const link = AppHelperService.generateLocalizedUrl('site.trendy_page', {'searchData': `${tagKey}/${data[i].slug}`})
+
+                html += `<li><a href="${link}">${data[i].label}</a></li>`;
+
+                continue;
+            }
             html += `<li><a href="#">${data[i]}</a></li>`;
         }
 
@@ -85,7 +95,7 @@ class ShopPageDom {
     }
 }
 
-const instance = new ShopPageDom();
-Object.freeze(instance);
+const shopPageDom = new ShopPageDom();
+Object.freeze(shopPageDom);
 
-export default instance;
+export default shopPageDom;

@@ -112,19 +112,22 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param int $type
+     * @param int    $type
+     * @param string $locale
      *
      * @return array
      */
-    public function getForOptions(int $type = Tags::TYPE_PRODUCT): array
+    public function getForOptions(int $type = Tags::TYPE_PRODUCT, string $locale = 'rs'): array
     {
-        $query = $this->createQueryBuilder('pt')
+        $query = $this->createQueryBuilder('t')
             ->select(
-                'pt.mainSlug as value',
-                'pt.label as title'
+                't.mainSlug as value',
+                't.slug',
+                't.label as title'
             )
-            ->where('pt.locale = \'rs\'')
-            ->andWhere('pt.relatedType = :relatedType')
+            ->where('t.locale = :locale')
+            ->andWhere('t.relatedType = :relatedType')
+            ->setParameter('locale', $locale)
             ->setParameter('relatedType', $type);
 
         return $query->getQuery()->getArrayResult();
@@ -179,15 +182,16 @@ class TagsRepository extends ExtendedEntityRepository
      */
     public function getByProducts(array $products, string $locale): array
     {
-        $query = $this->createQueryBuilder('pt')
+        $query = $this->createQueryBuilder('t')
             ->select(
                 'p.id as productId',
-                'pt.label'
+                't.slug',
+                't.label'
             )
-            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = pt.mainSlug')
+            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.mainSlug')
             ->innerJoin(Product::class, 'p', 'WITH', 'p = pht.product')
             ->where('pht.product IN (:products)')
-            ->andWhere('pt.locale = :locale')
+            ->andWhere('t.locale = :locale')
             ->setParameter('products', $products)
             ->setParameter('locale', $locale);
 

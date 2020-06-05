@@ -111,7 +111,8 @@ class ProductSizeRepository extends ExtendedEntityRepository
             ->innerJoin(Product::class, 'p', 'WITH', 'p = phs.product')
             ->where('phs.product IN (:products)')
             ->setParameter('products', $products)
-            ->setParameter('isAvailable', true);
+            ->setParameter('isAvailable', true)
+            ->orderBy('ps.size');
 
         return $query->getQuery()->getArrayResult();
     }

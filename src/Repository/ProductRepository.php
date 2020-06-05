@@ -10,8 +10,10 @@ use App\Entity\ProductColor;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasImages;
 use App\Entity\ProductHasSizes;
+use App\Entity\ProductHasTags;
 use App\Entity\ProductSize;
 use App\Entity\ProductTranslation;
+use App\Entity\Tags;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -151,6 +153,17 @@ class ProductRepository extends ExtendedEntityRepository
 
                 $query->andWhere('EXISTS ('.$categoryQuery->getDQL().')')
                     ->setParameter('categorySlugs', $searchData->get('categories'));
+            }
+            if ($searchData->has('tags')) {
+                $tagsQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasTags::class, 'pht')
+                    ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
+                    ->where('t.slug IN (:tagsSlug)')
+                    ->andWhere('pht.product = p');
+
+                $query->andWhere('EXISTS ('.$tagsQuery->getDQL().')')
+                    ->setParameter('tagsSlug', $searchData->get('tags'));
             }
 
             if ($searchData->has('color')) {

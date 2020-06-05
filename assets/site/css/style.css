@@ -3305,6 +3305,7 @@ footer {
     font-size: 14px;
     padding: 6px 20px;
     text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .h3b-single-banner-3 {
@@ -4006,7 +4007,8 @@ footer {
     line-height: 30px;
 }
 
-.sidebar-box .sidebar-list li a:hover {
+.sidebar-box .sidebar-list li a:hover,
+.sidebar-box .sidebar-list li button:hover {
     color: #a70303;
     font-style: italic;
     padding-left: 10px;

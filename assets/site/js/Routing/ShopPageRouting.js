@@ -1,17 +1,17 @@
 import AppHelperService from "../../../js/Helper/AppHelperService";
-import ShopPageDom from "../Dom/ShopPageDom";
+import shopPageDom from "../Dom/ShopPageDom";
 
 class ShopPageRouting {
     constructor() {
-        this.dom = ShopPageDom;
+        this.dom = shopPageDom;
         this.params = {};
 
         if (Object.keys(SEARCH_CRITERIA).length > 0) {
             this.params = SEARCH_CRITERIA;
         }
 
-        this.url = AppHelperService.generateLocalizedUrl('site.shop_page');
-        this.apiUrl = AppHelperService.generateLocalizedUrl('site_api.shop_page');
+        this.url = AppHelperService.generateLocalizedUrl(ROUTE_NAME);
+        this.apiUrl = AppHelperService.generateLocalizedUrl(ROUTE_NAME.replace('site', 'site_api'));
 
         if (IS_FIRST_PAGE) {
             this.url += '/1';

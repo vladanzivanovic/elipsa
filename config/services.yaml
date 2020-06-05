@@ -10,6 +10,7 @@ parameters:
     upload_dir: '%kernel.project_dir%/storage/'
     upload_tmp_dir: 'tmp/'
     upload_image_dir: 'image/'
+    upload_import_dir: 'import/images/'
 
 services:
     # default configuration for services in *this* file

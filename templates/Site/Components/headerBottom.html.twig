@@ -9,7 +9,6 @@
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.about_us' | trans }}</a>
                                 <ul class="menu-dropdown">
-                                    <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
@@ -40,7 +39,34 @@
                                     </div>
                                 </div>
                             </li>
+                            <li><a href="{{ path('site.trendy_page') }}">{{ 'navi.trends' | trans }}</a>
+                                <div class="mega-menu-area">
+                                    <div class="row">
+                                        {% for main in categories %}
+                                            <div class="col-md-4">
+                                                <div class="mega-menu-part">
+                                                    <div class="mega-menu-content">
+                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ main.slug }) }}">{{ main.title }}</a>
+                                                        {% if main.children is defined %}
+                                                            <ul>
+                                                                {% for child in main.children %}
+                                                                    <li class="sub-menu-holder"><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ child.slug }) }}">{{ child.title }}</a>
+                                                                        {% if child.children is defined %}
+                                                                           {{ childNavList.childNav(child.children) }}
+                                                                        {% endif %}
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </li>
                             <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
+                            <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
                         </ul>
@@ -87,7 +113,6 @@
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
                             <li><a href="{{ path('site.shop_page') }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul>
-                                    <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
@@ -112,6 +137,7 @@
                                 </ul>
                             </li>
                             <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
+                            <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
                         </ul>

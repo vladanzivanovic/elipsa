@@ -2,14 +2,14 @@ import 'webpack-jquery-ui';
 import ShopPageMapper from "../Mapper/ShopPageMapper";
 import ShopPageRouting from "../Routing/ShopPageRouting";
 import ShopPageService from "../Service/ShopPageService";
-import ShopPageDom from "../Dom/ShopPageDom";
+import shopPageDom from "../Dom/ShopPageDom";
 
 class ShopPageController {
     constructor() {
         this.mapper = new ShopPageMapper();
         this.router = new ShopPageRouting();
         this.shopService = new ShopPageService();
-        this.dom = ShopPageDom;
+        this.dom = shopPageDom;
 
         this.showSelectedFiltersOnLoad();
 
@@ -17,8 +17,8 @@ class ShopPageController {
     }
 
     showSelectedFiltersOnLoad() {
-        $.each($('.sidebar-widget a.active'), (i, elm) => {
-            this.dom.addCriteriaOnPage(elm.dataset.searchName, elm.dataset.search, elm.text);
+        $.each($('.sidebar-widget .active'), (i, elm) => {
+            this.dom.addCriteriaOnPage(elm.dataset.searchName, elm.dataset.search, elm.innerText);
         });
 
         if (SEARCH_CRITERIA.hasOwnProperty('price')) {
@@ -28,7 +28,7 @@ class ShopPageController {
 
     registerEvents() {
         this.mapper.category.on('click touchend', e => {
-            this.toggleFilter(e, 'categories', e.currentTarget.dataset.search, e.currentTarget.innerText, false);
+            this.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.dataset.search, e.currentTarget.innerText, false);
         });
         this.mapper.color.on('click touchend', e => {
             this.toggleFilter(e, 'color', e.currentTarget.dataset.search, e.currentTarget.innerText, false);
