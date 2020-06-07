@@ -38,7 +38,13 @@ final class CartPageController extends AbstractController
     }
 
     /**
-     * @Route("/korpa", name="site.cart_page", methods={"GET"})
+     * @Route({
+     *          "rs": "/korpa",
+     *          "en": "/cart"
+     *     },
+     *     name="site.cart_page",
+     *     methods={"GET"}
+     * )
      * @Template("Site/Pages/cart.html.twig")
      *
      * @param Request $request
@@ -57,7 +63,13 @@ final class CartPageController extends AbstractController
     }
 
     /**
-     * @Route("/korpa/unos-podataka", name="site.checkout_page", methods={"GET"})
+     * @Route({
+     *          "rs": "/korpa/unos-podataka",
+     *          "en": "/checkout"
+     *     },
+     *     name="site.checkout_page",
+     *     methods={"GET"}
+     * )
      * @Template("Site/Pages/checkout.html.twig")
      *
      * @param Request $request

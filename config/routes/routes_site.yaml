@@ -1,5 +1,7 @@
 site.checkout_completed_successful:
-  path: /korpa/uspesna-narudzbina
+  path:
+    rs: /korpa/uspesna-narudzbina
+    en: /cart/success-order
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/checkoutComplete.html.twig
@@ -7,13 +9,9 @@ site.checkout_completed_successful:
     expose: true
 
 site.loyalty:
-  path: /loyalty
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Site/Pages/loyalty.html.twig
-
-site_locale_site.loyalty:
-  path: /{_locale}/loyalty
+  path:
+    rs: /loyalty
+    en: /{_locale}/loyalty
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/loyalty.html.twig
