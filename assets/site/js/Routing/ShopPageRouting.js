@@ -10,8 +10,8 @@ class ShopPageRouting {
             this.params = SEARCH_CRITERIA;
         }
 
-        this.url = AppHelperService.generateLocalizedUrl(ROUTE_NAME);
-        this.apiUrl = AppHelperService.generateLocalizedUrl(ROUTE_NAME.replace('site', 'site_api'));
+        this.url =  Routing.generate(`${ROUTE_NAME}.${LOCALE}`);
+        this.apiUrl =  Routing.generate(ROUTE_NAME.replace('site', 'site_api'));
 
         if (IS_FIRST_PAGE) {
             this.url += '/1';

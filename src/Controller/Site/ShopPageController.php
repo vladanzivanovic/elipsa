@@ -36,7 +36,16 @@ final class ShopPageController extends AbstractController
     }
 
     /**
-     * @Route("/proizvodi/{page}/{searchData}", name="site.shop_page", methods={"GET"}, defaults={"page": 1, "searchData": null}, requirements={"searchData": ".*"}, options={"expose": true})
+     * @Route({
+     *          "rs": "/proizvodi/{page}/{searchData}",
+     *          "en": "/products/{page}/{searchData}"
+     *     },
+     *     name="site.shop_page",
+     *     methods={"GET"},
+     *     defaults={"page": 1, "searchData": null},
+     *     requirements={"searchData": ".*"},
+     *     options={"expose": true}
+     * )
      * @Template("Site/Pages/shop.html.twig")
      *
      * @param Request $request
@@ -47,8 +56,9 @@ final class ShopPageController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $searchData): array
     {
-        $data = $this->collectors->collect($request->getLocale(), $page, $searchData);
+        $locale = $request->getSession()->get('_locale');
+        $data = $this->collectors->collect($locale, $page, $searchData);
 
-        return $this->formatter->formatResponse($data);
+        return $this->formatter->formatResponse($data, $locale, $request->attributes->get('_route'));
     }
 }

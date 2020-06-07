@@ -18,43 +18,31 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class BlogListPageCollector
 {
     /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-    /**
      * @var PaginationService
      */
     private $paginationService;
+
     /**
      * @var TagsRepository
      */
     private $tagsRepository;
+
     /**
      * @var TranslatorInterface
      */
     private $translator;
+
     /**
      * @var ParameterBagInterface
      */
     private $bag;
+
     /**
      * @var BlogRepository
      */
     private $blogRepository;
 
     /**
-     * @param ProductColorRepository $colorRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param ProductRepository      $productRepository
      * @param PaginationService      $paginationService
      * @param TagsRepository         $tagsRepository
      * @param TranslatorInterface    $translator
@@ -62,18 +50,12 @@ final class BlogListPageCollector
      * @param BlogRepository         $blogRepository
      */
     public function __construct(
-        ProductColorRepository $colorRepository,
-        ProductSizeRepository $sizeRepository,
-        ProductRepository $productRepository,
         PaginationService $paginationService,
         TagsRepository $tagsRepository,
         TranslatorInterface $translator,
         ParameterBagInterface $bag,
         BlogRepository $blogRepository
     ) {
-        $this->colorRepository = $colorRepository;
-        $this->sizeRepository = $sizeRepository;
-        $this->productRepository = $productRepository;
         $this->paginationService = $paginationService;
         $this->tagsRepository = $tagsRepository;
         $this->translator = $translator;
@@ -82,16 +64,24 @@ final class BlogListPageCollector
     }
 
     /**
-     * @param string $locale
-     * @param int    $currentPage
-     * @param string $searchData
+     * @param string      $locale
+     * @param int         $currentPage
+     * @param string|null $tag
      *
      * @return array
      */
-    public function collect(string $locale, int $currentPage, ?string $searchData = null): array
+    public function collect(string $locale, int $currentPage, ?string $tag = null): array
     {
+        $tagSlug = null;
+        $localizedUrl = null;
 
-        $blogDql = $this->blogRepository->getDqlForPaginationPage($locale);
+        if (null !== $tag) {
+            $tagEntity = $this->tagsRepository->findOneBy(['slug' => $tag, 'locale' => $locale, 'relatedType' => Tags::TYPE_BLOG]);
+            $tagSlug = $tagEntity->getMainSlug();
+            $localizedUrl = $this->tagsRepository->getForLocalization($tag, $locale === 'rs' ? 'en' : 'rs');
+        }
+
+        $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tagSlug);
         $blogList = $this->paginationService->pagination($blogDql, $currentPage, 12);
 
         $blogIds = array_column($blogList['data'], 'id');
@@ -101,38 +91,7 @@ final class BlogListPageCollector
         return [
             'blog_list'         => $blogList,
             'tags'              => $tags,
-            'search_criteria'   => null !== $searchData ? $searchCriteria : null,
+            'localized_url'     => $localizedUrl,
         ];
     }
-
-//    /**
-//     * @param string $searchData
-//     *
-//     * @return ParameterBag
-//     */
-//    private function parseSearchData(string $searchData): ParameterBag
-//    {
-//        $searchArray = explode('/', $searchData);
-//        $filters = [];
-//        $criteria = [];
-//        $sortMapper = $this->bag->get('shop')['sort_mapping'];
-//
-//        for ($i = 0; $i < count($searchArray); $i++) {
-//            if ($i % 2 == 0) {
-//                $filters[] = $this->translator->trans($searchArray[$i], [], 'messages', 'en');
-//
-//                continue;
-//            }
-//
-//            $value = explode('+', $searchArray[$i]);
-//
-//            if (end($filters) === 'sort') {
-//                $value = $sortMapper[$value[0]];
-//            }
-//
-//            $criteria[] = $value;
-//        }
-//
-//        return new ParameterBag(array_combine($filters, $criteria));
-//    }
 }

@@ -163,6 +163,7 @@ class TagsRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('t')
             ->select(
                 't.mainSlug',
+                't.slug',
                 't.label'
             )
             ->innerJoin(BlogHasTags::class, 'bht', 'WITH', 'bht.tag = t.mainSlug AND bht.blog = :blog')
@@ -219,5 +220,28 @@ class TagsRepository extends ExtendedEntityRepository
             ->setParameter('locale', $locale);
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $slug
+     * @param string $locale
+     *
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getForLocalization(string $slug, string $locale)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                'tt.slug'
+            )
+            ->innerJoin(Tags::class, 'tt', 'WITH', 'tt.mainSlug = t.mainSlug')
+            ->where('t.slug = :slug')
+            ->andWhere('tt.locale = :locale')
+            ->setParameter('slug', $slug)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getSingleScalarResult();
     }
 }

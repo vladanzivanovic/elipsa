@@ -13,3 +13,9 @@ site.product_page:
   defaults: { _controller: App\Controller\Site\ProductPageController::index}
   options:
     expose: true
+
+#site_locale_site.product_page:
+#  path: /{_locale}/{slug}
+#  defaults: { _controller: App\Controller\Site\ProductPageController::index}
+#  options:
+#    expose: true

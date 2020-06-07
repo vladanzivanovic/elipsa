@@ -36,7 +36,16 @@ final class TrendyPageController extends AbstractController
     }
 
     /**
-     * @Route("/trendovi/{page}/{searchData}", name="site.trendy_page", methods={"GET"}, defaults={"page": 1, "searchData": null}, requirements={"searchData": ".*"}, options={"expose": true})
+     * @Route({
+     *          "rs": "/trendovi/{page}/{searchData}",
+     *          "en": "/trends/{page}/{searchData}"
+     *     },
+     *     name="site.trendy_page",
+     *     methods={"GET"},
+     *     defaults={"page": 1, "searchData": null},
+     *     requirements={"searchData": ".*"},
+     *     options={"expose": true}
+     * )
      * @Template("Site/Pages/trendy.html.twig")
      *
      * @param Request $request
@@ -47,8 +56,10 @@ final class TrendyPageController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $searchData): array
     {
-        $data = $this->collectors->collect($request->getLocale(), $page, $searchData, true);
+        $locale = $request->getSession()->get('_locale');
 
-        return $this->formatter->formatResponse($data);
+        $data = $this->collectors->collect($locale, $page, $searchData, true);
+
+        return $this->formatter->formatResponse($data, $locale, $request->attributes->get('_route'));
     }
 }

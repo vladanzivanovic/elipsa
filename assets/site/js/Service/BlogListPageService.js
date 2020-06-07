@@ -32,6 +32,7 @@ class BlogListPageService {
 
                 $('#scroll-to-blog-list').trigger('click');
                 $('#page-loader').addClass('hide');
+                $('#locale-dropdown li a').attr('href', response.localized_url);
             },
             error: error => {
 

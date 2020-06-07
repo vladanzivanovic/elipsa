@@ -39,7 +39,9 @@ size: size
 color: color
 categories: categories
 filters: filters
+sort: sort
 limit: limit
+show_per_page: show
 
 veličina: size
 boja: color
@@ -190,3 +192,6 @@ September: Septembar
 October: Oktobar
 November: Novembar
 December: Decembar
+
+login: login
+registration: registration

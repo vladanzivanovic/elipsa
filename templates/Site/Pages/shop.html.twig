@@ -26,7 +26,7 @@
                             {% set shopOptions = app_params('shop') %}
                             {% set sortOptions = shopOptions['list_sort'] %}
                             <div class="deafult-sorting">
-                                <label>Sortiraj</label>
+                                <label class="letter-capitalize">{{ 'sort' | trans }}</label>
                                 <select class="sort-option">
                                     {% for index, option in sortOptions %}
                                         <option class="text-capitalize" value="{{ index }}" {{ search.sort is defined and search.sort[0] == index ? 'selected="selected" : ""' }}>{{ option | trans }}</option>
@@ -34,7 +34,7 @@
                                 </select>
                             </div>
                             <div class="show-product">
-                                <label>Prikaži</label>
+                                <label class="letter-capitalize">{{ 'show_per_page' | trans }}</label>
                                 {% set showedItems = shopOptions['items_per_page'] %}
                                 <select class="limit-product">
                                     {% for showedItem in showedItems %}

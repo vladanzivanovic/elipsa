@@ -41,6 +41,7 @@ categories: kategorije
 filters: filteri
 sort: sortiranje
 limit: limit
+show_per_page: prikaži
 
 next_page: sledeća
 prev_page: prethodna
@@ -183,3 +184,6 @@ September: Septembar
 October: Oktobar
 November: Novembar
 December: Decembar
+
+login: prijava
+registration: registracija

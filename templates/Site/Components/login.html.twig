@@ -1,9 +1,9 @@
 <div class="header-top-right">
     <div class="login-or-register">
-        <span id="login_register">Prijava / Registracija</span>
+        <span id="login_register"><span class="d-inline-block letter-capitalize">{{ 'login' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration' | trans }}</span></span>
         <div class="login-register-content" id="login_register_content">
             <div class="lrc-login">
-                <h4 class="lrc-title">Prijava</h4>
+                <h4 class="lrc-title letter-capitalize">{{ 'login' | trans }}</h4>
                 <div class="lrc-login-form">
                     <form action="#">
                         <div class="account-name">
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="lrc-register">
-                <h4 class="lrc-title">Registracija</h4>
+                <h4 class="lrc-title letter-capitalize">{{ 'registration' | trans }}</h4>
                 <div class="lrc-register-form">
                     <form action="#">
                         <input type="text" placeholder="Email">

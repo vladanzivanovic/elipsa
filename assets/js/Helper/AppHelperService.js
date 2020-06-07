@@ -36,12 +36,6 @@ class AppHelperService {
     };
 
     static generateLocalizedUrl(url, data) {
-        if (LOCALE !== 'rs') {
-            data = $.extend({}, data, {_locale: LOCALE});
-
-            return Routing.generate(`site_locale_${url}`, data);
-        }
-
         return Routing.generate(url, data);
     }
 

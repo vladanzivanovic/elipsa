@@ -37,7 +37,13 @@ final class LocationPageController extends AbstractController
     }
 
     /**
-     * @Route("/lokacije", name="site.location_page", methods={"GET"})
+     * @Route({
+     *          "rs": "/lokacije-prodavnica",
+     *          "en": "/store-locations",
+     *      },
+     *     name="site.location_page",
+     *     methods={"GET"}
+     * )
      * @Template("Site/Pages/locationList.html.twig")
      *
      * @param Request $request

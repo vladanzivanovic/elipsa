@@ -47,8 +47,10 @@ final class TrendyListController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $searchData): JsonResponse
     {
-        $data = $this->collectors->collectForApi($request->getLocale(), $page, $searchData);
+        $locale = $request->getSession()->get('_locale');
 
-        return $this->json($this->formatter->formatResponse($data));
+        $data = $this->collectors->collectForApi($locale, $page, $searchData);
+
+        return $this->json($this->formatter->formatResponse($data, $locale, 'site.trendy_page'));
     }
 }

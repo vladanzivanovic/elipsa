@@ -3,10 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\CategoryTranslation;
+use App\Entity\ColorTranslation;
 use App\Entity\Product;
 use App\Entity\ProductHasCategories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * @method CategoryTranslation|null find($id, $lockMode = null, $lockVersion = null)
@@ -38,5 +41,28 @@ class CategoryTranslationRepository extends ExtendedEntityRepository
             ->setParameter('product', $product);
 
         return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $slug
+     * @param string $locale
+     *
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getForLocalization(string $slug, string $locale)
+    {
+        $query = $this->createQueryBuilder('ct')
+            ->select(
+                'ctt.slug'
+            )
+            ->innerJoin(CategoryTranslation::class, 'ctt', 'WITH', 'ctt.category = ct.category')
+            ->where('ct.slug = :slug')
+            ->andWhere('ctt.locale = :locale')
+            ->setParameter('slug', $slug)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getSingleScalarResult();
     }
 }

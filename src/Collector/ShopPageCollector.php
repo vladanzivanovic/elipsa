@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace App\Collector;
 
 use App\Entity\Tags;
+use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\TagsRepository;
 use App\Services\PaginationService;
+use App\ShopTrait;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ShopPageCollector
 {
+    use ShopTrait;
+
     /**
      * @var ProductColorRepository
      */
@@ -45,15 +49,25 @@ final class ShopPageCollector
      * @var ParameterBagInterface
      */
     private $bag;
+    /**
+     * @var ShopPageRouterFormatter
+     */
+    private $shopPageRouterFormatter;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
-     * @param ProductColorRepository $colorRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param ProductRepository      $productRepository
-     * @param PaginationService      $paginationService
-     * @param TagsRepository         $tagsRepository
-     * @param TranslatorInterface    $translator
-     * @param ParameterBagInterface  $bag
+     * @param ProductColorRepository  $colorRepository
+     * @param ProductSizeRepository   $sizeRepository
+     * @param ProductRepository       $productRepository
+     * @param PaginationService       $paginationService
+     * @param TagsRepository          $tagsRepository
+     * @param TranslatorInterface     $translator
+     * @param ParameterBagInterface   $bag
+     * @param ShopPageRouterFormatter $shopPageRouterFormatter
+     * @param SessionInterface        $session
      */
     public function __construct(
         ProductColorRepository $colorRepository,
@@ -62,7 +76,9 @@ final class ShopPageCollector
         PaginationService $paginationService,
         TagsRepository $tagsRepository,
         TranslatorInterface $translator,
-        ParameterBagInterface $bag
+        ParameterBagInterface $bag,
+        ShopPageRouterFormatter $shopPageRouterFormatter,
+        SessionInterface $session
     ) {
         $this->colorRepository = $colorRepository;
         $this->sizeRepository = $sizeRepository;
@@ -71,6 +87,8 @@ final class ShopPageCollector
         $this->tagsRepository = $tagsRepository;
         $this->translator = $translator;
         $this->bag = $bag;
+        $this->shopPageRouterFormatter = $shopPageRouterFormatter;
+        $this->session = $session;
     }
 
     public function collect(string $locale, int $currentPage, ?string $searchData = null, bool $isTrendyPage = false)
@@ -99,9 +117,11 @@ final class ShopPageCollector
     public function collectForApi(string $locale, int $currentPage, ?string $searchData = null, bool $isTrendyPage = false): array
     {
         $searchCriteria = null;
+        $localizedUrl = null;
 
         if (null !== $searchData) {
             $searchCriteria = $this->parseSearchData($searchData);
+            $localizedUrl = $this->shopPageRouterFormatter->createUrlString($searchCriteria, $locale === 'rs' ? 'en' : 'rs');
         }
 
         $limit = null !== $searchCriteria && $searchCriteria->has('limit') ? (int) $searchCriteria->get('limit')[0] : 12;
@@ -121,6 +141,7 @@ final class ShopPageCollector
             'product_sizes'     => $productSizes,
             'product_tags'      => $productTags,
             'search_criteria'   => null !== $searchData ? $searchCriteria : null,
+            'localized_url'     => $localizedUrl,
         ];
 
         if (true === $isTrendyPage) {
@@ -128,36 +149,5 @@ final class ShopPageCollector
         }
 
         return $collection;
-    }
-
-    /**
-     * @param string $searchData
-     *
-     * @return ParameterBag
-     */
-    private function parseSearchData(string $searchData): ParameterBag
-    {
-        $searchArray = explode('/', $searchData);
-        $filters = [];
-        $criteria = [];
-        $sortMapper = $this->bag->get('shop')['sort_mapping'];
-
-        for ($i = 0; $i < count($searchArray); $i++) {
-            if ($i % 2 == 0) {
-                $filters[] = $this->translator->trans($searchArray[$i], [], 'messages', 'en');
-
-                continue;
-            }
-
-            $value = explode('+', $searchArray[$i]);
-
-            if (end($filters) === 'sort') {
-                $value = $sortMapper[$value[0]];
-            }
-
-            $criteria[] = $value;
-        }
-
-        return new ParameterBag(array_combine($filters, $criteria));
     }
 }

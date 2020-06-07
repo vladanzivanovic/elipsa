@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Tags;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -59,12 +60,12 @@ class BlogRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string   $locale
-     * @param int|null $tagIndex
+     * @param string      $locale
+     * @param string|null $tagSlug
      *
      * @return QueryBuilder
      */
-    public function getDqlForPaginationPage(string $locale): QueryBuilder
+    public function getDqlForPaginationPage(string $locale, ?string $tagSlug): QueryBuilder
     {
         $query = $this->createQueryBuilder('blog')
             ->select(
@@ -87,16 +88,16 @@ class BlogRepository extends ExtendedEntityRepository
             ->orderBy('blog.createdAt', 'DESC')
             ->groupBy('blog.id');
 
-//        if (is_int($tagIndex)) {
-//            $subQuery = $this->_em->createQueryBuilder()
-//                ->from(BlogHasTags::class, 'bht1')
-//                ->select('1')
-//                ->where('bht1.tag = :tagIndex')
-//                ->andWhere('bht1.blog = blog');
-//
-//            $query->andWhere('EXISTS ('. $subQuery->getDQL() .')')
-//                ->setParameter('tagIndex', $tagIndex);
-//        }
+        if (null !== $tagSlug) {
+            $subQuery = $this->_em->createQueryBuilder()
+                ->from(BlogHasTags::class, 'bht1')
+                ->select('1')
+                ->where('bht1.tag = :tag')
+                ->andWhere('bht1.blog = blog');
+
+            $query->andWhere('EXISTS ('. $subQuery->getDQL() .')')
+                ->setParameter('tag', $tagSlug);
+        }
 
         return $query;
     }

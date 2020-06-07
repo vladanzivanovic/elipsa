@@ -49,6 +49,8 @@ class ShopPageService {
 
                 $('#scroll-to-products').trigger('click');
                 $('#page-loader').addClass('hide');
+
+                $('#locale-dropdown li a').attr('href', response.localized_url);
             },
             error: error => {
 

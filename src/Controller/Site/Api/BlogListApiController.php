@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BlogListApiController extends AbstractController
@@ -26,17 +27,24 @@ class BlogListApiController extends AbstractController
      * @var BlogPageResponseFormatter
      */
     private $pageFormatter;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
      * @param BlogListPageCollector     $pageCollector
      * @param BlogPageResponseFormatter $pageFormatter
+     * @param SessionInterface          $session
      */
     public function __construct(
         BlogListPageCollector $pageCollector,
-        BlogPageResponseFormatter $pageFormatter
+        BlogPageResponseFormatter $pageFormatter,
+        SessionInterface $session
     ) {
         $this->pageCollector = $pageCollector;
         $this->pageFormatter = $pageFormatter;
+        $this->session = $session;
     }
 
     /**
@@ -50,8 +58,10 @@ class BlogListApiController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $tag): JsonResponse
     {
-        $collection = $this->pageCollector->collect($request->getLocale(), $page);
+        $locale = $request->getSession()->get('_locale');
 
-        return $this->json($this->pageFormatter->formatResponse($collection));
+        $collection = $this->pageCollector->collect($locale, $page, $tag);
+
+        return $this->json($this->pageFormatter->formatResponse($collection, $locale));
     }
 }
