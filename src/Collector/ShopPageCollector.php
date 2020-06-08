@@ -144,6 +144,10 @@ final class ShopPageCollector
         $productSizes = $this->sizeRepository->getByProducts($productIds);
         $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
 
+        if (null !== $searchData && $searchCriteria->has('tags_localized')) {
+            $searchCriteria->remove('tags_localized');
+        }
+
         $collection = [
             'products'          => $products,
             'product_colors'    => $productColors,
