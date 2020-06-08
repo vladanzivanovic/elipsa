@@ -414,7 +414,8 @@ header {}
     text-align: center;
 }
 
-.lrc-login-form .lrc-submit input[type="submit"] {
+.lrc-login-form .lrc-submit input[type="submit"],
+.lrc-login-form .lrc-submit input[type="button"] {
     background: #a70303 none repeat scroll 0 0;
     border: 0 none;
     color: #fff;
@@ -429,7 +430,9 @@ header {}
     margin-top: 19px;
 }
 
-.lrc-register-form input[type="text"] {
+.lrc-register-form input[type="text"],
+.lrc-register-form input[type="email"],
+.lrc-register-form input[type="password"] {
     color: #474747;
     font-size: 14px;
     height: 38px;
@@ -453,7 +456,7 @@ header {}
     text-align: center;
 }
 
-.lrc-register-form input[type="submit"] {
+.lrc-register-form input[type="button"] {
     background: #a70303 none repeat scroll 0 0;
     border: 0 none;
     color: #fff;

@@ -124,6 +124,8 @@ checkout_completed.details: the details of the order has been sent to your email
 country: country
 countries: countries
 first_name: first name
+First_name: First name
+Last_name: Last name
 last_name: last name
 address: address
 city: city
@@ -132,6 +134,8 @@ email: email address
 mobile_telephone: mobile phone
 create_account: create account
 password: password
+Password: Password
+Re_password: Repeat password
 occupation: occupation
 message: message
 birth_date: birth date
@@ -194,4 +198,7 @@ November: Novembar
 December: Decembar
 
 login: login
-registration: registration
+registration.text: registration
+registration.btn: Submit registration
+registration.via: register via
+registration.error.user_exists: You are already registered

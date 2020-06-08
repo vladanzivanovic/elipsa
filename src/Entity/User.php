@@ -43,6 +43,11 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var string|null The hashed password
+     */
+    private $rePassword;
+
+    /**
      * @ORM\Column(type="smallint")
      */
     private $status;
@@ -134,6 +139,21 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRePassword(): ?string
+    {
+        return $this->rePassword;
+    }
+
+    public function setRePassword(string $rePassword): self
+    {
+        $this->rePassword = $rePassword;
 
         return $this;
     }

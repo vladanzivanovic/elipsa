@@ -116,6 +116,8 @@ checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
 country: država
 countries: države
 first_name: ime
+First_name: Ime
+Last_name: Prezime
 last_name: prezime
 address: adresa
 city: mesto
@@ -124,6 +126,8 @@ email: email adresa
 mobile_telephone: mobilni telefon
 create_account: napravite nalog
 password: lozinka
+Password: Lozinka
+Re_password: Ponovite lozinku
 occupation: zanimanje
 message: poruka
 birth_date: datum rođenja
@@ -186,4 +190,7 @@ November: Novembar
 December: Decembar
 
 login: prijava
-registration: registracija
+registration.text: registracija
+registration.btn: Registruj se
+registration.via: registracija putem
+registration.error.user_exists: Vi ste već registrovani

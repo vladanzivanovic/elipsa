@@ -1,3 +1,5 @@
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
 <div class="header-top-right">
     <div class="login-or-register">
         <span id="login_register"><span class="d-inline-block letter-capitalize">{{ 'login' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration' | trans }}</span></span>
@@ -25,18 +27,22 @@
                 </div>
             </div>
             <div class="lrc-register">
-                <h4 class="lrc-title letter-capitalize">{{ 'registration' | trans }}</h4>
+                <h4 class="lrc-title letter-capitalize">{{ 'registration.text' | trans }}</h4>
                 <div class="lrc-register-form">
                     <form action="#">
-                        <input type="text" placeholder="Email">
-                        <input type="password" placeholder="Lozinka">
+                        {{ inputs.input('_csrf_token', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
+                        {{ inputs.input('registration_first_name', '', 'registration_first_name', 'First_name' | trans, 'text', 'letter-capitalize') }}
+                        {{ inputs.input('registration_last_name', '', 'registration_last_name', 'Last_name' | trans, 'text') }}
+                        {{ inputs.input('registration_email', '', 'registration_email', 'Email', 'email') }}
+                        {{ inputs.input('registration_password', '', 'registration_password', 'Password' | trans, 'password') }}
+                        {{ inputs.input('registration_re_password', '', 'registration_re_password', 'Re_password' | trans, 'password') }}
                         <div class="lrc-register-btn">
-                            <input class="hvr-bs" type="submit" value="Registruj se">
+                            <input id="registration-btn" class="hvr-bs letter-capitalize" type="button" value="{{ 'registration.btn' | trans }}">
                         </div>
                     </form>
                 </div>
                 <div class="or-register-to">
-                    <span>ili registruj se putem</span>
+                    <span class="letter-capitalize">{{ 'registration.via' | trans }}</span>
                     <ul>
                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                         <li><a href="#"><i class="fa fa-twitter"></i></a></li>
