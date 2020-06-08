@@ -45,16 +45,25 @@ final class ShopListController extends AbstractController
     }
 
     /**
-     * @Route("/api/products/{page}/{searchData}", name="site_api.shop_page", methods={"GET"}, defaults={"page": 1, "searchData": null}, requirements={"searchData": ".*"}, options={"expose": true})
+     * @Route({
+     *          "rs": "/api/products/{page}/{searchData}",
+     *          "en": "/api/products/{page}/{searchData}"
+     *      },
+     *     name="site_api.shop_page",
+     *     methods={"GET"},
+     *     defaults={"page": 1, "searchData": null},
+     *     requirements={"searchData": ".*"},
+     *     options={"expose": true}
+     * )
      *
      * @param int          $page
      * @param string|null  $searchData
      *
      * @return JsonResponse
      */
-    public function index(int $page, ?string $searchData): JsonResponse
+    public function index(Request $request, int $page, ?string $searchData): JsonResponse
     {
-        $locale = $this->session->get('_locale');
+        $locale = $request->getLocale();
 
         $data = $this->collectors->collectForApi($locale, $page, $searchData);
 
