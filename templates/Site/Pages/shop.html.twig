@@ -1,13 +1,13 @@
 {% extends ('Site/base.html.twig') %}
 
 {% block bodyClass %}shop-page{% endblock %}
-{% block title %}Elipsa - prodavnica{% endblock %}
+{% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
 
 {% set search = search_criteria is not null ? search_criteria.all : [] %}
 
 {% block content %}
     <div id="page-loader" class="hide"></div>
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'Proizvodi'}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'title.shop_page' | trans}) }}
 
     {% set pagination = products.pagination %}
 
@@ -51,7 +51,7 @@
                                         <div class="row">
                                             {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                             {% for product in products.data %}
-                                                {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-12') }}
+                                                {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-12', locale) }}
                                             {% endfor %}
                                         </div>
                                         {{ include('Site/Components/paginate.html.twig') }}

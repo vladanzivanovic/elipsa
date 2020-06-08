@@ -23,7 +23,7 @@ navi:
   home: Početna
   about_us: O nama
   locations: Lokacije
-  loyalty: Loyalty program
+  loyalty: Loyalty
   catalogue: Katalog
   shop: Prodavnica
   blog: Blog
@@ -98,6 +98,7 @@ title.cart_personal_data: Vaša korpa - unos ličnih podataka
 title.checkout_completed: Uspešna narudžbina
 title.location: Lokacije
 title.blog_detailed_page: Blog stranica
+title.shop_page: Proizvodi
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu

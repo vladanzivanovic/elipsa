@@ -95,6 +95,11 @@ final class ShopPageRouterFormatter
                         $criteriaTrans[] = $this->categoryTranslationRepository->getForLocalization($category, $locale);
                     }
                     break;
+                case 'sort':
+                    $sortMapping = $this->bag->get('shop')['sort_mapping'];
+
+                    $criteriaTrans[] = array_search($criteria, $sortMapping);
+                    break;
                 default:
                     $criteriaTrans = $criteria;
             }
