@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Formatter\Site\Router\BlogListRouterFormatter;
+use App\Formatter\Site\Router\BlogPageRouterFormatter;
 use App\Formatter\Site\Router\ProductPageRouterFormatter;
 use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\ShopTrait;
@@ -46,6 +47,10 @@ class LocalizationUrlExtension extends AbstractExtension
      * @var ProductPageRouterFormatter
      */
     private $productPageRouterFormatter;
+    /**
+     * @var BlogPageRouterFormatter
+     */
+    private $blogPageRouterFormatter;
 
     /**
      * @param RouterInterface            $router
@@ -54,6 +59,7 @@ class LocalizationUrlExtension extends AbstractExtension
      * @param ShopPageRouterFormatter    $shopPageRouterFormatter
      * @param BlogListRouterFormatter    $blogListRouterFormatter
      * @param ProductPageRouterFormatter $productPageRouterFormatter
+     * @param BlogPageRouterFormatter    $blogPageRouterFormatter
      */
     public function __construct(
         RouterInterface $router,
@@ -61,7 +67,8 @@ class LocalizationUrlExtension extends AbstractExtension
         TranslatorInterface $translator,
         ShopPageRouterFormatter $shopPageRouterFormatter,
         BlogListRouterFormatter $blogListRouterFormatter,
-        ProductPageRouterFormatter $productPageRouterFormatter
+        ProductPageRouterFormatter $productPageRouterFormatter,
+        BlogPageRouterFormatter $blogPageRouterFormatter
     ) {
         $this->router = $router;
         $this->bag = $bag;
@@ -69,6 +76,7 @@ class LocalizationUrlExtension extends AbstractExtension
         $this->shopPageRouterFormatter = $shopPageRouterFormatter;
         $this->blogListRouterFormatter = $blogListRouterFormatter;
         $this->productPageRouterFormatter = $productPageRouterFormatter;
+        $this->blogPageRouterFormatter = $blogPageRouterFormatter;
     }
 
     /**
@@ -95,6 +103,10 @@ class LocalizationUrlExtension extends AbstractExtension
             $routeParams['slug'] = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
         }
 
+        if ($routeName === 'site.blog_detailed_page') {
+            $routeParams['slug'] = $this->blogPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+        }
+
         if ($toLocale != 'rs') {
             $routeParams['_locale'] = $toLocale;
             $routeName = $this->getRouteName($routeName, $toLocale);
@@ -105,9 +117,7 @@ class LocalizationUrlExtension extends AbstractExtension
             unset($routeParams['_locale']);
             $routeName = $this->getRouteName(str_replace('site_locale_', '', $routeName), 'rs');
         }
-//        dd($routeParams, $routeName);
-//        dump($routeParams);
-//        exit();
+
         return $this->router->generate($routeName, $routeParams);
     }
 
