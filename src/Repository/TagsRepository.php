@@ -244,4 +244,30 @@ class TagsRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * @param string $slug
+     * @param string $locale
+     *
+     * @param int    $relatedType
+     *
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getMainSlug(string $slug, string $locale, int $relatedType)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                't.mainSlug'
+            )
+            ->where('t.slug = :slug')
+            ->andWhere('t.locale = :locale')
+            ->andWhere('t.relatedType = :relatedType')
+            ->setParameter('slug', $slug)
+            ->setParameter('locale', $locale)
+            ->setParameter('relatedType', $relatedType);
+
+        return $query->getQuery()->getArrayResult();
+    }
 }
