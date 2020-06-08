@@ -246,6 +246,27 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param array  $slugs
+     * @param string $locale
+     *
+     * @return int|mixed|string
+     */
+    public function getArrayForLocalization(array $slugs, string $locale)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                'tt.mainSlug'
+            )
+            ->innerJoin(Tags::class, 'tt', 'WITH', 'tt.mainSlug = t.mainSlug')
+            ->where('t.slug IN (:slug)')
+            ->andWhere('tt.locale = :locale')
+            ->setParameter('slug', $slugs)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * @param string $slug
      * @param string $locale
      *
