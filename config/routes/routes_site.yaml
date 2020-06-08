@@ -1,7 +1,7 @@
 site.checkout_completed_successful:
   path:
     rs: /korpa/uspesna-narudzbina
-    en: /cart/success-order
+    en: /{_locale}/cart/success-order
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/checkoutComplete.html.twig

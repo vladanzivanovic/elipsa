@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Formatter\Site\Router\BlogListRouterFormatter;
+use App\Formatter\Site\Router\ProductPageRouterFormatter;
 use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\ShopTrait;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -41,26 +42,33 @@ class LocalizationUrlExtension extends AbstractExtension
      * @var BlogListRouterFormatter
      */
     private $blogListRouterFormatter;
+    /**
+     * @var ProductPageRouterFormatter
+     */
+    private $productPageRouterFormatter;
 
     /**
-     * @param RouterInterface         $router
-     * @param ParameterBagInterface   $bag
-     * @param TranslatorInterface     $translator
-     * @param ShopPageRouterFormatter $shopPageRouterFormatter
-     * @param BlogListRouterFormatter $blogListRouterFormatter
+     * @param RouterInterface            $router
+     * @param ParameterBagInterface      $bag
+     * @param TranslatorInterface        $translator
+     * @param ShopPageRouterFormatter    $shopPageRouterFormatter
+     * @param BlogListRouterFormatter    $blogListRouterFormatter
+     * @param ProductPageRouterFormatter $productPageRouterFormatter
      */
     public function __construct(
         RouterInterface $router,
         ParameterBagInterface $bag,
         TranslatorInterface $translator,
         ShopPageRouterFormatter $shopPageRouterFormatter,
-        BlogListRouterFormatter $blogListRouterFormatter
+        BlogListRouterFormatter $blogListRouterFormatter,
+        ProductPageRouterFormatter $productPageRouterFormatter
     ) {
         $this->router = $router;
         $this->bag = $bag;
         $this->translator = $translator;
         $this->shopPageRouterFormatter = $shopPageRouterFormatter;
         $this->blogListRouterFormatter = $blogListRouterFormatter;
+        $this->productPageRouterFormatter = $productPageRouterFormatter;
     }
 
     /**
@@ -81,6 +89,10 @@ class LocalizationUrlExtension extends AbstractExtension
 
         if ($routeName === 'site.blog_list_page' && isset($routeParams['tag'])) {
             $routeParams['tag'] = $this->blogListRouterFormatter->localeFormatter($routeParams['tag'], $toLocale);
+        }
+
+        if ($routeName === 'site.product_page') {
+            $routeParams['slug'] = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
         }
 
         if ($toLocale != 'rs') {

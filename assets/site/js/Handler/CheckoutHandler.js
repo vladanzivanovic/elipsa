@@ -19,11 +19,11 @@ class CheckoutHandler {
 
         $.ajax({
             type: 'PUT',
-            url: AppHelperService.generateLocalizedUrl('site_api.complete_order'),
+            url: Routing.generate('site_api.complete_order'),
             data: FormHelperService.sanitize(data),
             dataType: 'json',
             success: response => {
-                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('site.checkout_completed_successful'));
+                AppHelperService.redirect(Routing.generate(`site.checkout_completed_successful.${LOCALE}`));
 
                 loader.hide();
             },
