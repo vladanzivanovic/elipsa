@@ -123,9 +123,14 @@ final class ShopPageCollector
             $searchCriteria = $this->parseSearchData($searchData);
             $localizedUrl = $this->shopPageRouterFormatter->createUrlString($searchCriteria, $locale === 'rs' ? 'en' : 'rs');
         }
-        if ($locale !== 'rs' && (null !== $searchCriteria && $searchCriteria->has('tags'))) {
-            $tags = $this->tagsRepository->getArrayForLocalization($searchCriteria->get('tags'), $locale);
-            $searchCriteria->set('tags_localized', array_column($tags, 'mainSlug'));
+
+        if (null !== $searchCriteria && $searchCriteria->has('tags')) {
+            $searchCriteria->set('tags_localized', $searchCriteria->get('tags'));
+
+            if ($locale !== 'rs') {
+                $tags = $this->tagsRepository->getArrayForLocalization($searchCriteria->get('tags'), $locale);
+                $searchCriteria->set('tags_localized', array_column($tags, 'mainSlug'));
+            }
         }
 
         $limit = null !== $searchCriteria && $searchCriteria->has('limit') ? (int) $searchCriteria->get('limit')[0] : 12;
