@@ -72,16 +72,16 @@ final class BlogListPageCollector
      */
     public function collect(string $locale, int $currentPage, ?string $tag = null): array
     {
-        $tagSlug = null;
+        $tagMainSlug = [['mainSlug' => null]];
         $localizedUrl = null;
 
         if (null !== $tag) {
-            $tagEntity = $this->tagsRepository->findOneBy(['slug' => $tag, 'locale' => $locale, 'relatedType' => Tags::TYPE_BLOG]);
-            $tagSlug = $tagEntity->getMainSlug();
+            $tagMainSlug = $this->tagsRepository->getMainSlug($tag, $locale, Tags::TYPE_BLOG);
+
             $localizedUrl = $this->tagsRepository->getForLocalization($tag, $locale === 'rs' ? 'en' : 'rs');
         }
 
-        $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tagSlug);
+        $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tagMainSlug[0]['mainSlug']);
         $blogList = $this->paginationService->pagination($blogDql, $currentPage, 12);
 
         $blogIds = array_column($blogList['data'], 'id');

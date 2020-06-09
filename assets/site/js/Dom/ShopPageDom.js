@@ -18,7 +18,7 @@ class ShopPageDom {
         for(let i in data.products.data) {
             let product = data.products.data[i];
             let oldPriceHtml = '';
-            const productLink = AppHelperService.generateLocalizedUrl('site.product_page', {'slug': product.slug});
+            const productLink = Routing.generate(`site.product_page.${LOCALE}`, {'slug': product.slug});
 
             if (product.discount > 0) {
                 oldPriceHtml = `<p class="sfi-old-price">-${product.price} RSD</p>`

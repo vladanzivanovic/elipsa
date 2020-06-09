@@ -44,6 +44,7 @@ final class ShopPageResponseFormatter
 
     /**
      * @param array<string, array<array<string|int, mixed>>> $data
+     * @param string                                         $locale
      * @param string                                         $routeName
      *
      * @return array<string, array<array<string|int, mixed>>>

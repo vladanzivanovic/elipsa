@@ -124,6 +124,15 @@ final class ShopPageCollector
             $localizedUrl = $this->shopPageRouterFormatter->createUrlString($searchCriteria, $locale === 'rs' ? 'en' : 'rs');
         }
 
+        if (null !== $searchCriteria && $searchCriteria->has('tags')) {
+            $searchCriteria->set('tags_localized', $searchCriteria->get('tags'));
+
+            if ($locale !== 'rs') {
+                $tags = $this->tagsRepository->getArrayForLocalization($searchCriteria->get('tags'), $locale);
+                $searchCriteria->set('tags_localized', array_column($tags, 'mainSlug'));
+            }
+        }
+
         $limit = null !== $searchCriteria && $searchCriteria->has('limit') ? (int) $searchCriteria->get('limit')[0] : 12;
 
         $productDql = $this->productRepository->getDqlForPaginationPage($locale, $searchCriteria);
@@ -134,6 +143,10 @@ final class ShopPageCollector
         $productColors = $this->colorRepository->getByProducts($productIds, $locale);
         $productSizes = $this->sizeRepository->getByProducts($productIds);
         $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
+
+        if (null !== $searchData && $searchCriteria->has('tags_localized')) {
+            $searchCriteria->remove('tags_localized');
+        }
 
         $collection = [
             'products'          => $products,

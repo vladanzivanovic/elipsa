@@ -244,4 +244,51 @@ class TagsRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * @param array  $slugs
+     * @param string $locale
+     *
+     * @return int|mixed|string
+     */
+    public function getArrayForLocalization(array $slugs, string $locale)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                'tt.mainSlug'
+            )
+            ->innerJoin(Tags::class, 'tt', 'WITH', 'tt.mainSlug = t.mainSlug')
+            ->where('t.slug IN (:slug)')
+            ->andWhere('tt.locale = :locale')
+            ->setParameter('slug', $slugs)
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param string $slug
+     * @param string $locale
+     *
+     * @param int    $relatedType
+     *
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getMainSlug(string $slug, string $locale, int $relatedType)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                't.mainSlug'
+            )
+            ->where('t.slug = :slug')
+            ->andWhere('t.locale = :locale')
+            ->andWhere('t.relatedType = :relatedType')
+            ->setParameter('slug', $slug)
+            ->setParameter('locale', $locale)
+            ->setParameter('relatedType', $relatedType);
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

@@ -154,7 +154,7 @@ class ProductRepository extends ExtendedEntityRepository
                 $query->andWhere('EXISTS ('.$categoryQuery->getDQL().')')
                     ->setParameter('categorySlugs', $searchData->get('categories'));
             }
-            if ($searchData->has('tags')) {
+            if ($searchData->has('tags_localized')) {
                 $tagsQuery = $this->_em->createQueryBuilder()
                     ->select('1')
                     ->from(ProductHasTags::class, 'pht')
@@ -163,7 +163,7 @@ class ProductRepository extends ExtendedEntityRepository
                     ->andWhere('pht.product = p');
 
                 $query->andWhere('EXISTS ('.$tagsQuery->getDQL().')')
-                    ->setParameter('tagsSlug', $searchData->get('tags'));
+                    ->setParameter('tagsSlug', $searchData->get('tags_localized'));
             }
 
             if ($searchData->has('color')) {

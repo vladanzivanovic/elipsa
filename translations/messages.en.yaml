@@ -23,7 +23,7 @@ navi:
   home: Home
   about_us: About us
   locations: Locations
-  loyalty: Loyalty program
+  loyalty: Loyalty
   catalogue: Catalogue
   shop: Shop
   blog: Blog
@@ -106,6 +106,7 @@ title.cart_personal_data: Your cart - personal information
 title.checkout_completed: Checkout completed
 title.location: Location
 title.blog_detailed_page: Blog page
+title.shop_page: Shop
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address

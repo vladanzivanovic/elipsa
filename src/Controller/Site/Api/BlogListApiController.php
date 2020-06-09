@@ -58,7 +58,7 @@ class BlogListApiController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $tag): JsonResponse
     {
-        $locale = $request->getSession()->get('_locale');
+        $locale = $this->session->get('_locale');
 
         $collection = $this->pageCollector->collect($locale, $page, $tag);
 

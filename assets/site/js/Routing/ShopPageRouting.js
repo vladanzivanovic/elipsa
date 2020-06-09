@@ -11,7 +11,7 @@ class ShopPageRouting {
         }
 
         this.url =  Routing.generate(`${ROUTE_NAME}.${LOCALE}`);
-        this.apiUrl =  Routing.generate(ROUTE_NAME.replace('site', 'site_api'));
+        this.apiUrl =  Routing.generate(`${ROUTE_NAME.replace('site', 'site_api')}.${LOCALE}`);
 
         if (IS_FIRST_PAGE) {
             this.url += '/1';

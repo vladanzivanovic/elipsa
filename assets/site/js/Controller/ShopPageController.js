@@ -52,6 +52,7 @@ class ShopPageController {
             this.shopService.applyFilter(this.router.generateUrl());
 
             $(e.currentTarget).remove();
+            $(`[data-search="${value}"]`).removeClass('active');
         });
 
         this.mapper.priceRange.on('slidestop', (event, ui) => {
@@ -85,6 +86,7 @@ class ShopPageController {
         if (null !== text) {
             if (elm.hasClass('active')) {
                 elm.removeClass('active');
+                $(`[data-value="${value}"]`).remove();
             } else {
                 elm.addClass('active');
             }
