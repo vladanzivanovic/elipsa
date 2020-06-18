@@ -1,4 +1,4 @@
-{% import 'Site/Macros/navigation.html.twig' as childNavList %}
+    {% import 'Site/Macros/navigation.html.twig' as childNavList %}
 <div class="menu-area hidden-sm hidden-xs">
     <div class="container">
         <div class="row">
@@ -67,7 +67,7 @@
                             </li>
                             <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
                             <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
+                            <li><a href="{{ path('site.ask_us') }}">{{ 'navi.ask_us' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
                         </ul>
                     </nav>
@@ -76,12 +76,7 @@
             <div class="col-md-4">
                 <div class="menu-area-right">
                     <div class="my-account">
-                        <a href="#">{{ 'navi.account' | trans }}</a>
-                        <ul class="menu-right-dropdown">
-                            <li><a href="#">Your Account</a></li>
-                            <li><a href="#">His Account</a></li>
-                            <li><a href="#">Her Account</a></li>
-                        </ul>
+                        <a href="{{ path('site.account_page') }}">{{ 'navi.account' | trans }}</a>
                     </div>
 {#                    <div class="currency">#}
 {#                        <a href="#">RSD</a>#}
@@ -146,7 +141,7 @@
                             </li>
                             <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
                             <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
+                            <li><a href="{{ path('site.ask_us') }}">{{ 'navi.ask_us' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
                         </ul>
                     </nav>

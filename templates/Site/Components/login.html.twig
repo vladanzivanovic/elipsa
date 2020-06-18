@@ -2,56 +2,60 @@
 
 <div class="header-top-right">
     <div class="login-or-register">
-        <span id="login_register"><span class="d-inline-block letter-capitalize">{{ 'login' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration' | trans }}</span></span>
-        <div class="login-register-content" id="login_register_content">
-            <div class="lrc-login">
-                <h4 class="lrc-title letter-capitalize">{{ 'login' | trans }}</h4>
-                <div class="lrc-login-form">
-                    <form action="#">
-                        <div class="account-name">
-                            <i class="fa fa-user"></i>
-                            <input type="text" placeholder="Email">
-                        </div>
-                        <div class="password">
-                            <i class="fa fa-lock"></i>
-                            <input type="password" placeholder="Lozinka">
-                        </div>
-                        <div class="remember-help">
-                            <input type="checkbox">
-                            <label>zapamti me</label>
-                        </div>
-                        <div class="lrc-submit">
-                            <input class="hvr-bs" type="submit" value="Prijavi se">
-                        </div>
-                    </form>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('site.logout') }}" id="logout"><span class="d-inline-block letter-capitalize">{{ 'logout.text' | trans }}</span></a>
+        {% else %}
+            <span id="login_register"><span class="d-inline-block letter-capitalize">{{ 'login.text' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration.text' | trans }}</span></span>
+            <div class="login-register-content" id="login_register_content">
+                <div class="lrc-login">
+                    <h4 class="lrc-title letter-capitalize">{{ 'login' | trans }}</h4>
+                    <div class="lrc-login-form">
+                        <form id="login-form" enctype="multipart/form-data">
+                            <div class="account-name">
+                                <i class="fa fa-user"></i>
+                                {{ inputs.input('login_email', '', 'username', 'Email', 'email', 'letter-capitalize') }}
+                            </div>
+                            <div class="password">
+                                <i class="fa fa-lock"></i>
+                                {{ inputs.input('login_password', '', 'password', 'Password' | trans, 'password') }}
+
+                            </div>
+                            <div class="remember-help">
+                                {{ inputs.input('login_remember_me', 1, '_remember_me', '', 'checkbox') }} {{ 'login.remember_me' | trans }}
+                            </div>
+                            <div class="lrc-submit">
+                                <input id="login-btn" class="hvr-bs letter-capitalize" type="button" value="{{ 'login.btn' | trans }}">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="lrc-register">
+                    <h4 class="lrc-title letter-capitalize">{{ 'registration.text' | trans }}</h4>
+                    <div class="lrc-register-form">
+                        <form id="registration-form" enctype="multipart/form-data">
+                            {{ inputs.input('_csrf_token', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
+                            {{ inputs.input('registration_first_name', '', 'registration_first_name', 'First_name' | trans, 'text', 'letter-capitalize') }}
+                            {{ inputs.input('registration_last_name', '', 'registration_last_name', 'Last_name' | trans, 'text') }}
+                            {{ inputs.input('registration_email', '', 'registration_email', 'Email', 'email') }}
+                            {{ inputs.input('registration_password', '', 'registration_password', 'Password' | trans, 'password') }}
+                            {{ inputs.input('registration_re_password', '', 'registration_re_password', 'Re_password' | trans, 'password') }}
+                            <div class="lrc-register-btn">
+                                <input id="registration-btn" class="hvr-bs letter-capitalize" type="button" value="{{ 'registration.btn' | trans }}">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="or-register-to">
+                        <span class="letter-capitalize">{{ 'registration.via' | trans }}</span>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google"></i></a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="lrc-register">
-                <h4 class="lrc-title letter-capitalize">{{ 'registration.text' | trans }}</h4>
-                <div class="lrc-register-form">
-                    <form action="#">
-                        {{ inputs.input('_csrf_token', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
-                        {{ inputs.input('registration_first_name', '', 'registration_first_name', 'First_name' | trans, 'text', 'letter-capitalize') }}
-                        {{ inputs.input('registration_last_name', '', 'registration_last_name', 'Last_name' | trans, 'text') }}
-                        {{ inputs.input('registration_email', '', 'registration_email', 'Email', 'email') }}
-                        {{ inputs.input('registration_password', '', 'registration_password', 'Password' | trans, 'password') }}
-                        {{ inputs.input('registration_re_password', '', 'registration_re_password', 'Re_password' | trans, 'password') }}
-                        <div class="lrc-register-btn">
-                            <input id="registration-btn" class="hvr-bs letter-capitalize" type="button" value="{{ 'registration.btn' | trans }}">
-                        </div>
-                    </form>
-                </div>
-                <div class="or-register-to">
-                    <span class="letter-capitalize">{{ 'registration.via' | trans }}</span>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        {% endif %}
     </div>
 
     {% set cartData = cart_list(app.request.locale) %}

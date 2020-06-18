@@ -14,6 +14,8 @@ class BannerEditController {
         }
 
         this.registerEvents();
+
+        $('#banner-select-box').trigger('change');
     }
 
     registerEvents() {
@@ -21,6 +23,18 @@ class BannerEditController {
             const handler = new BannerHandler();
 
             handler.save(this.mapper);
+        });
+
+        $(document).on('change', '#banner-select-box', e => {
+            const type = $(e.currentTarget).val();
+
+            if (type == 2 || type == 3) {
+                $('.links').fadeOut();
+
+                return;
+            }
+
+            $('.links').fadeIn();
         });
     }
 }

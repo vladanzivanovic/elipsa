@@ -57,7 +57,7 @@ final class ShopPageController extends AbstractController
     public function index(Request $request, int $page, ?string $searchData): array
     {
         $locale = $request->getSession()->get('_locale');
-        $data = $this->collectors->collect($locale, $page, $searchData);
+        $data = $this->collectors->collect($locale, $page, $this->getUser(), $searchData);
 
         return $this->formatter->formatResponse($data, $locale, $request->attributes->get('_route'));
     }

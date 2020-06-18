@@ -43,8 +43,10 @@ final class BannerDataTableResponseFormatter
         $router = $this->router;
 
         $data = array_map(function ($banner) use ($router) {
-            $statusText = ConstantsHelper::getConstantName((string)$banner['is_active'], 'STATUS', Banner::class);
+            $statusText = ConstantsHelper::getConstantName((string) $banner['is_active'], 'STATUS', Banner::class);
             $banner['status_text'] = $statusText;
+            $banner['type'] = ConstantsHelper::getConstantName((string) $banner['type'], 'TYPE', Banner::class);
+
 
             $image = $router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['name'], 'filter' => "admin_slider_list"]);
             $banner['image'] = $image;

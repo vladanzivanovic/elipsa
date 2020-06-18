@@ -44,7 +44,7 @@ final class HomePageController extends AbstractController
      */
     public function index(Request $request): array
     {
-        $data = $this->pageCollectors->collect($request->getLocale());
+        $data = $this->pageCollectors->collect($request->getLocale(), $this->getUser());
 
         return $this->responseFormatter->formatResponse($data);
     }

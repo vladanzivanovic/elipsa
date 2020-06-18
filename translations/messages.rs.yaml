@@ -4,6 +4,8 @@ disabled: 'zaključan'
 
 new: 'novo'
 discount: 'popust'
+down: dole
+up: gore
 
 data:
   success_send: 'Podaci su uspešno poslati.'
@@ -99,6 +101,9 @@ title.checkout_completed: Uspešna narudžbina
 title.location: Lokacije
 title.blog_detailed_page: Blog stranica
 title.shop_page: Proizvodi
+title.account_activation_page: Aktivacija naloga
+title.my_account: Moj nalog
+title.ask_us: Pitajte nas
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -132,6 +137,7 @@ Re_password: Ponovite lozinku
 occupation: zanimanje
 message: poruka
 birth_date: datum rođenja
+subject: tema
 
 email.order.title: Narudžbenica #%orderId%
 email.order.seller: Prodavac
@@ -156,6 +162,10 @@ email.order.table.shipping: Poštarina
 email.order.table.promo_coupon: Promotivni kod
 email.order.total_shipping: Ukupno sa poštarinom
 
+email.registration.title: Registracija na sajtu %siteName%
+email.registration.success.text: Uspešno ste izvršili registraciju
+email.registration.message: Kako bi ste završili proces registracije neophodno je da akivirate nalog.<br>Molimo vas kliknite na link u nastavku.
+
 payment_type.on_delivering: Pouzećem
 payment_type.credit_card: Platna kartica
 
@@ -176,6 +186,7 @@ submit: pošalji
 loyalty.rate: Ocenite brend ELIPSA ocenama od 1-5
 loyalty.message.success: Uspešno ste se registrovali u loyalty program.
 loyalty.message.user_exists: Vi ste se već prijavili u loyalty program.
+loyalty.btn: Prijavi se
 
 January: Januar
 February: Februar
@@ -190,8 +201,49 @@ October: Oktobar
 November: Novembar
 December: Decembar
 
-login: prijava
+login.text: prijava
+login.btn: Prijavi se
+login.remember_me: zapamti me
+login.successful: Uspešno ste se ulogovali
+
+logout.text: odjavite se
+
 registration.text: registracija
 registration.btn: Registruj se
 registration.via: registracija putem
 registration.error.user_exists: Vi ste već registrovani
+registration.success.message: Uspešno ste se registrovali.<br/> Na vašu email adresu je poslat email za potvrdu registracije
+registration.activation.title: Vaš nalog je aktiviran
+registration.activation.message: Sada se možete ulogovati
+
+user.inactive_user: Vaša email adresa nije aktivirana.<br/> Molimo vas da pratite link iz email kako bi ste aktivirali nalog.
+
+my_account.welcome_text: dobrodošli
+my_account.personal_info.text: lični podaci
+my_account.personal_info.success.message: podaci su uspešno izmenjeni
+my_account.address_info: podaci o adresi
+my_account.wish_list: lista želja
+my_account.order_list: lista narudžbina
+my_account.order_table.image: slika
+my_account.order_table.name: proizvod
+my_account.order_table.description: opis
+my_account.order_table.price: cena
+my_account.order_table.color: boja
+my_account.order_table.size: veličina
+my_account.order_table.quantity: količina
+my_account.order_table.view_product: pogledaj proizvod
+
+wish_list.success.add.message: Proizvod je dodat na listu želja
+wish_list.success.remove.message: Proizvod je uklonjen iz liste
+
+login_required: Morate biti ulogovani
+
+'Bad credentials.': Uneti podaci nisu tačni
+
+ask_us.message.success: Uspešno ste poslali upit.
+
+newsletter.text: budite o svemu prvi obavešteni
+newsletter.notShowBtn: ne prikazuj više
+newsletter.existingUser: Vi ste se već prijavili na newsletter
+newsletter.success.add.message: Uspešno ste se prijavili na newsletter
+

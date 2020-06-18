@@ -13,7 +13,7 @@ export default (() => {
         Private.dataTable = Private.tableRef.DataTable( {
             serverSide: true,
             ajax: {
-                url: Routing.generate('admin.get_banner_list'),
+                url: Routing.generate('admin.get_home_banner_list'),
                 type: 'POST'
             },
             columns: [
@@ -35,7 +35,7 @@ export default (() => {
                         return type === 'display' ? html : data;
                     } },
                 { data: 'id', render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_banner_page', {id: data})}">Izmeni</a> ` : '';
+                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_home_banner_page', {id: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?

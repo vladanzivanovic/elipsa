@@ -48,7 +48,7 @@ class ProductPageController extends AbstractController
     {
         $locale = $request->getSession()->get('_locale');
 
-        $collection = $this->pageCollector->collect($productTranslation, $locale);
+        $collection = $this->pageCollector->collect($productTranslation, $locale, $this->getUser());
 
         return $this->pageFormatter->formatResponse($collection);
     }

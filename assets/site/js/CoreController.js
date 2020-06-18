@@ -1,11 +1,18 @@
 import BaseCoreController from "../../js/CoreController";
 import CartHandler from "./Handler/CartHandler";
 import loader from "./Dom/LoaderDom";
+import coreMapper from "./Mapper/CoreMapper";
+import UserHandler from "./Handler/UserHandler";
+import registrationValidator from "./Validators/RegistrationValidator";
+import WishListHandler from "./Handler/WishListHandler";
+import NewsLetterHandler from "./Handler/NewsLetterHandler";
 
 class CoreController {
     constructor() {
         this.baseCore = new BaseCoreController();
         this.handler = new CartHandler();
+        this.mapper = coreMapper;
+        this.registrationValidator = registrationValidator;
 
         loader;
 
@@ -27,7 +34,41 @@ class CoreController {
             const productId = $(e.currentTarget).parent('.single-product').data('id');
 
             this.handler.remove(productId);
-        })
+        });
+
+        $(document).on('click touchend', this.mapper.registrationBtn, e => {
+            const handler = new UserHandler();
+
+            this.registrationValidator.validate(this.mapper.registrationForm);
+
+            $(this.mapper.registrationForm).valid();
+
+            handler.doRegistration(this.mapper.registrationForm);
+        });
+
+        $(document).on('click touchend', this.mapper.loginBtn, e => {
+            const handler = new UserHandler();
+
+            handler.doLogin(this.mapper);
+        });
+
+        $(document).on('click touchend', this.mapper.toggleWishListBtn, e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const handler = new WishListHandler();
+
+            handler.toggle($(e.currentTarget));
+        });
+
+        $(document).on('click touchend', this.mapper.newsLetterSubmitBtn, e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const handler = new NewsLetterHandler();
+
+            handler.addUser();
+        });
     }
 }
 

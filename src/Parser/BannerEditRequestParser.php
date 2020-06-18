@@ -62,6 +62,7 @@ final class BannerEditRequestParser
         }
 
         $banner->setPosition($bag->getInt('position'));
+        $banner->setType($bag->getInt('type'));
 
         $this->setLocale($bag, $banner);
 
@@ -81,7 +82,7 @@ final class BannerEditRequestParser
                 $trans = $banner->getByLocale($locale);
             }
 
-            $trans->setDescription($lagBag->get('description'));
+            $trans->setDescription($lagBag->get('description', ''));
             $trans->setButtonText($lagBag->get('button'));
             $trans->setButtonLink($lagBag->get('link'));
             $trans->setLocale($locale);

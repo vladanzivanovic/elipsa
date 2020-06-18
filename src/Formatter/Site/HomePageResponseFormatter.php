@@ -44,7 +44,7 @@ final class HomePageResponseFormatter
         }, $data['sliders']);
 
         $data['banners'] = $this->formatBanners($data['banners']);
-        $data['products'] = $this->formatProducts($data['home_categories'], $data['products']);
+        $data['products'] = $this->formatProducts($data['products']);
 
         $data['product_colors'] = $this->formatColors($data['product_colors']);
         $data['product_sizes'] = $this->formatSizes($data['product_sizes']);
@@ -74,25 +74,18 @@ final class HomePageResponseFormatter
     }
 
     /**
-     * @param array $categories
      * @param array $products
      *
      * @return array
      */
-    private function formatProducts(array $categories, array $products): array 
+    private function formatProducts(array $products): array
     {
         $formattedProducts = [];
 
-        foreach ($categories as $category) {
-            foreach ($products as $product) {
-                $categoryArray = explode(',', $product['categories']);
+        foreach ($products as $product){
+            $product['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $product['image'], 'filter' => 'list_thumb']);
 
-                if (in_array($category['id'], $categoryArray)) {
-                    $product['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $product['image'], 'filter' => 'list_thumb']);
-
-                    $formattedProducts[$category['slug']][] = $product;
-                }
-            }
+            $formattedProducts[$product['show_home_page']][] = $product;
         }
 
         return $formattedProducts;

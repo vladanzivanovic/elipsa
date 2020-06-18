@@ -58,7 +58,7 @@ final class TrendyPageController extends AbstractController
     {
         $locale = $request->getSession()->get('_locale');
 
-        $data = $this->collectors->collect($locale, $page, $searchData, true);
+        $data = $this->collectors->collect($locale, $page, $this->getUser(), $searchData, true);
 
         return $this->formatter->formatResponse($data, $locale, $request->attributes->get('_route'));
     }

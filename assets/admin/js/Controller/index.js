@@ -21,6 +21,7 @@ import LocationEditController from "./LocationEditController";
 import BlogController from "./BlogController";
 import BlogEditController from "./BlogEditController";
 import LoyaltyController from "./LoyaltyController";
+import BannersController from "./BannersController";
 
 let routes = [
     {
@@ -100,11 +101,11 @@ let routes = [
         controller: HomeBannersController,
     },
     {
-        name: 'admin.add_banner_page',
+        name: 'admin.add_home_banner_page',
         controller: BannerEditController,
     },
     {
-        name: 'admin.edit_banner_page',
+        name: 'admin.edit_home_banner_page',
         controller: BannerEditController,
     },
     {
@@ -165,7 +166,15 @@ let routes = [
     },
     {
         name: 'admin.banners',
-        controller: HomeBannersController,
+        controller: BannersController,
+    },
+    {
+        name: 'admin.add_banner_page',
+        controller: BannerEditController,
+    },
+    {
+        name: 'admin.edit_banner_page',
+        controller: BannerEditController,
     },
 ];
 

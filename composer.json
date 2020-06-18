@@ -7,7 +7,9 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-openssl": "*",
         "beberlei/doctrineextensions": "^1.2",
+        "drewm/mailchimp-api": "^2.5",
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "gedmo/doctrine-extensions": "^2.4",
         "liip/imagine-bundle": "^2.1",
@@ -129,7 +131,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "5.0.*"
         }
     }

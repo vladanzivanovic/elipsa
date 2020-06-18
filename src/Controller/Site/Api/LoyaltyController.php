@@ -25,8 +25,6 @@ final class LoyaltyController extends AbstractController
     private $handler;
 
     /**
-     * LoyaltyController constructor.
-     *
      * @param LoyaltyRequestParser $requestParser
      * @param LoyaltyHandler       $handler
      */

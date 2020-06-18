@@ -19,6 +19,7 @@ class ShopPageDom {
             let product = data.products.data[i];
             let oldPriceHtml = '';
             const productLink = Routing.generate(`site.product_page.${LOCALE}`, {'slug': product.slug});
+            const wishListClass = product.has_wish == 1 ? 'fa-heart' : 'fa-heart-o';
 
             if (product.discount > 0) {
                 oldPriceHtml = `<p class="sfi-old-price">-${product.price} RSD</p>`
@@ -39,7 +40,7 @@ class ShopPageDom {
                             <div class="sfi-content">
                                 <div class="sfi-buttons">
                                     <ul class="clearfix">
-                                        <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
+                                        <li><a href="#" class="toggle-wish-list"><i class="fa ${wishListClass}"></i></a></li>
                                         <li><a href="${productLink}" ><i class="fa fa-eye"></i></a></li>
                                     </ul>
                                 </div>

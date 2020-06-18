@@ -350,7 +350,7 @@ header {}
     top: 10px;
 }
 
-.lrc-login-form .account-name input[type="text"] {
+.lrc-login-form .account-name input[type="email"] {
     border: 1px solid #959595;
     color: #474747;
     font-size: 14px;
@@ -783,15 +783,6 @@ ul.menu-list li .hot::after {
 .menu-area-right > div:hover > a {
     color: #a70303;
 }
-
-.menu-area-right > div > a::after {
-    content: "";
-    font-family: FontAwesome;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
 
 /*dropdown*/
 
@@ -3779,8 +3770,7 @@ footer {
 /*home3-newsletter-area*/
 
 .home3-newsletter-area {
-    background: rgba(0, 0, 0, 0) url("../img/bg/home3-newsletter.jpg") no-repeat scroll left top / cover;
-    padding: 85px 0;
+    padding: 200px 0;
     position: relative;
 }
 
@@ -3841,10 +3831,11 @@ footer {
     width: 100%;
 }
 
-.h3-newsletter-input input[type="submit"] {
+.h3-newsletter-input input[type="submit"],
+.h3-newsletter-input a {
     background: #a70303 none repeat scroll 0 0;
     border: 0 none;
-    color: #fff;
+    color: #fff !important;
     height: 60px;
     letter-spacing: 0;
     padding: 0 30px;
@@ -3852,6 +3843,8 @@ footer {
     right: 0;
     text-transform: uppercase;
     top: 0;
+    line-height: 60px;
+    font-size: inherit !important;
 }
 
 
@@ -5795,6 +5788,13 @@ p.cart_product_name a {
     letter-spacing: 0;
 }
 
+.wishlist_color .product_color_box {
+    width: 20px;
+    height: 20px;
+    border: 1px solid;
+    display: block;
+}
+
 .wishlist_availability > span {
     color: #555555;
     font-size: 14px;
@@ -5802,12 +5802,12 @@ p.cart_product_name a {
     text-transform: uppercase;
 }
 
-.wishlist_add_cart > button {
+.wishlist_add_cart > a {
     background: #f2f2f2 none repeat scroll 0 0;
     border: 0 none;
 }
 
-.wishlist_add_cart > button:hover {
+.wishlist_add_cart > a:hover {
     background: #a70303 none repeat scroll 0 0;
     color: #fff;
 }
@@ -5993,6 +5993,9 @@ p.cart_product_name a {
 }
 
 .pib-item input[type="text"],
+.pib-item input[type="email"],
+.pib-item input[type="password"],
+.pib-item input[type="tel"],
 .pib-item select {
     border: 1px solid #dddddd;
     color: #b7b7b7;
@@ -7096,7 +7099,7 @@ button.accordion.active {
 /*----------------------------------------*/
 
 .contact-area {
-    background: rgba(0, 0, 0, 0) url("../img/bg/contact.jpg") no-repeat scroll left top / cover;
+    background: #fff;
     padding: 100px 0 0;
 }
 
@@ -7761,7 +7764,7 @@ button.accordion.active {
     width: 395px;
 }
 
-#wd1_nlpopup > .popup-subscribe-box input[type="submit"] {
+#wd1_nlpopup > .popup-subscribe-box input[type="button"] {
     display: inline-block;
     background: #a70303;
     height: 50px;

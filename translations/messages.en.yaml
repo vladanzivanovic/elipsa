@@ -4,6 +4,8 @@ disabled: 'disabled'
 
 new: 'new'
 discount: 'discount'
+down: down
+up: up
 
 data:
   success_send: 'Data are successfully sent.'
@@ -107,6 +109,9 @@ title.checkout_completed: Checkout completed
 title.location: Location
 title.blog_detailed_page: Blog page
 title.shop_page: Shop
+title.account_activation_page: Account activation
+title.my_account: My account
+title.ask_us: Ask us
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -140,6 +145,7 @@ Re_password: Repeat password
 occupation: occupation
 message: message
 birth_date: birth date
+subject: subject
 
 email.order.title: Order #%orderId%
 email.order.seller: Seller
@@ -154,6 +160,10 @@ email.order.buyer.full_name: Name and surname
 email.order.buyer.city: City/Town
 email.order.buyer.street_number: Street and number
 email.order.buyer.paymet_type: Payment
+
+email.registration.title: Account registration on site %siteName%
+email.registration.success.text: Your registration was successull
+email.registration.message: In order to complet registration process you need to activate account.<br/> Click on the link below.
 
 email.order.data.title: Order data
 email.order.table.product_name: Product name
@@ -198,8 +208,48 @@ October: Oktobar
 November: Novembar
 December: Decembar
 
-login: login
+login.text: login
+login.btn: Submit login
+login.remember_me: remember me
+login.successfull: Login was successful
+
+logout.text: logout
+
 registration.text: registration
 registration.btn: Submit registration
 registration.via: register via
 registration.error.user_exists: You are already registered
+registration.success.message: Registration was successfull.<br/> We send you confirmation email
+registration.activation.title: Your account is active
+registration.activation.message: You can continue to login
+
+user.inactive_user: Your email address is not confirmed yet.<br/> Please folow the link in email in order to activate account.
+
+my_account.welcome_text: welcome
+my_account.personal_info.text: personal information
+my_account.personal_info.success.message: podaci su uspešno izmenjeni
+my_account.address_info: address information
+my_account.wish_list: wish list
+my_account.order_list: order list
+my_account.order_table.image: image
+my_account.order_table.name: product
+my_account.order_table.description: description
+my_account.order_table.price: price
+my_account.order_table.color: color
+my_account.order_table.size: size
+my_account.order_table.quantity: quantity
+my_account.order_table.view_product: product details
+
+wish_list.success.add.message: Product is added to wish list
+wish_list.success.remove.message: Product is removed from wish list
+
+login_required: You must be logged in first
+
+'Bad credentials.': Bad credentials
+
+ask_us.message.success: You are successfuly send the question.
+
+newsletter.text: Be the first informed about everything.
+newsletter.notShowBtn: don't show anymore.
+newsletter.existingUser: You already subscribed on newsletter
+newsletter.success.add.message: You are successfully subscribed on newsletter

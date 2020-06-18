@@ -43,8 +43,6 @@ final class BannersListController extends AbstractController
     private $bannerRepository;
 
     /**
-     * BannersListController constructor.
-     *
      * @param DataTableRequestParser           $requestParser
      * @param BannerRepository                 $bannerRepository
      * @param BannerDataTableResponseFormatter $responseFormatter
@@ -60,7 +58,7 @@ final class BannersListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-home-collection-banner-list", name="admin.get_home_collection_banner_list", methods={"POST"}, options={"expose": true})
+     * @Route("/api/get-home-collection-banner-list", name="admin.get_home_banner_list", methods={"POST"}, options={"expose": true})
      * @Route("/api/get-banner-list", name="admin.get_banner_list", methods={"POST"}, options={"expose": true})
      *
      * @param Request $request
@@ -71,16 +69,19 @@ final class BannersListController extends AbstractController
      */
     public function getList(Request $request)
     {
-        $collection = null;
+        $collectionType = [
+            Banner::TYPE_LOYALTY,
+            Banner::TYPE_NEWS_LETTER,
+        ];
 
-        if ($request->attributes->get('_route') === 'admin.get_home_collection_banner_list') {
-            $collection = Banner::COLLECTION_HOME_PRODUCTS;
+        if ($request->attributes->get('_route') === 'admin.get_home_banner_list') {
+            $collectionType = [Banner::TYPE_SPEED_LINKS];
         }
 
         $formattedRequest = $this->requestParser->formatRequest($request);
         $total = $this->bannerRepository->countData();
 
-        $data = $this->bannerRepository->getAdminList($formattedRequest, $collection);
+        $data = $this->bannerRepository->getAdminList($formattedRequest, $collectionType);
 
         $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
 

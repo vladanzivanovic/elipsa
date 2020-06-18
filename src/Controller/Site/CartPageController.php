@@ -24,8 +24,6 @@ final class CartPageController extends AbstractController
     private $pageFormatter;
 
     /**
-     * CartPageController constructor.
-     *
      * @param CartPageCollector $pageCollector
      * @param CartPageFormatter $pageFormatter
      */

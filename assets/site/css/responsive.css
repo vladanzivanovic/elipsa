@@ -624,6 +624,20 @@ Version      : 1.0
 /* Wide Mobile Layout: 480px. */
 
 @media only screen and (min-width: 240px) and (max-width: 480px) {
+    .logo a {
+        width: 130px;
+        display: block;
+    }
+    .logo a img {
+        width: 100%;
+    }
+    .top-cart > span {
+        font-size: 17px !important;
+    }
+
+    .top-cart > span i {
+        font-size: 17px;
+    }
     /*modal*/
     .product-modal.modal-dialog {
         width: 95% !important;

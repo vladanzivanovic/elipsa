@@ -1,13 +1,13 @@
 import loyaltyPageMapper from "../Mapper/LoyaltyPageMapper";
 import LoyaltyPageDom from "../Dom/LoyaltyPageDom";
-import checkoutValidation from "../Validators/CheckoutValidation";
 import LoyaltyPageHandler from "../Handler/LoyaltyPageHandler";
+import loyaltyPageValidation from "../Validators/LoyaltyPageValidation";
 
 class LoyaltyPageController {
     constructor() {
         this.mapper = loyaltyPageMapper;
         this.dom = new LoyaltyPageDom();
-        this.validator = checkoutValidation;
+        this.validator = loyaltyPageValidation;
         this.handler = new LoyaltyPageHandler();
 
         this.validator.validate();

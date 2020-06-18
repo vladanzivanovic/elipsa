@@ -116,7 +116,12 @@
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
-                                    {{ form.checkbox('Početna strana', 'home_page_checkbox', 1, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == true ? 'checked="checked"' : null ) }}
+                                    {{ form.radio('Početna strana gore', 'home_page_checkbox', 2, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == true ? 'checked="checked"' : null ) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-check form-check-flat form-check-primary">
+                                    {{ form.radio('Početna strana dole', 'home_page_checkbox', 1, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == true ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->

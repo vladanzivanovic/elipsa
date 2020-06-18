@@ -17,6 +17,9 @@ class Product
     const STATUS_ACTIVE = 2;
     const STATUS_ARCHIVED = 3;
 
+    const HOME_PAGE_UP = 2;
+    const HOME_PAGE_DOWN = 1;
+
     use TimestampableEntity;
 
     /**
@@ -77,7 +80,7 @@ class Product
     private $productHasImages;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
      */
     private $showHomePage;
 
@@ -352,12 +355,12 @@ class Product
         return $filteredTrans->first();
     }
 
-    public function getShowHomePage(): ?bool
+    public function getShowHomePage(): ?int
     {
         return $this->showHomePage;
     }
 
-    public function setShowHomePage(bool $showHomePage): self
+    public function setShowHomePage(int $showHomePage): self
     {
         $this->showHomePage = $showHomePage;
 

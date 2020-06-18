@@ -1,0 +1,65 @@
+{% extends 'Site/base.html.twig' %}
+{% set titleTrans = 'title.ask_us' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+{% block bodyClass %}ask-us-page{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans}) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-area">
+                        <div class="contact-form-head">
+                            <h2>{{ titleTrans }} {{ 'form' | trans }}</h2>
+                            <h1>{{ titleTrans }} {{ 'form' | trans }}</h1>
+                        </div>
+                        <div class="contact-form-content">
+                            <div class="cf-msg"></div>
+                            <form id="ask-us-form" enctype="multipart/form-data">
+                                <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('ask_us_form') }}" />
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('first_name' | trans ~ ' *', 'first_name', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="cfc-input-box">
+                                            {{ form.input('last_name' | trans ~ ' *', 'last_name', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="cfc-input-box">
+                                            {{ form.input('subject' | trans ~ ' *', 'subject', '', 'subject', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.textarea('message' | trans, 'note', '', 'note', 10, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.button('ask_us_submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/loyalty.css') }}">
+{% endblock %}

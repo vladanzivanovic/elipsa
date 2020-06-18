@@ -23,8 +23,6 @@ final class BannerEditPageController extends AbstractController
     private $bag;
 
     /**
-     * BannerEditPageController constructor.
-     *
      * @param BannerEditResponseFormatter $responseFormatter
      * @param ParameterBagInterface       $bag
      */
@@ -34,6 +32,30 @@ final class BannerEditPageController extends AbstractController
     ) {
         $this->responseFormatter = $responseFormatter;
         $this->bag = $bag;
+    }
+
+    /**
+     * @Route("/add-home-banner", name="admin.add_home_banner_page", methods={"GET"})
+     * @Template("Admin/Pages/homeBannerEdit.html.twig")
+     *
+     * @return array
+     */
+    public function insertHome(): array
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/edit-home-banner/{id}", name="admin.edit_home_banner_page", methods={"GET"})
+     * @Template("Admin/Pages/homeBannerEdit.html.twig")
+     *
+     * @param Banner $banner
+     *
+     * @return array
+     */
+    public function updateHome(Banner $banner): array
+    {
+        return $this->responseFormatter->formatResponse($banner);
     }
 
     /**
@@ -57,8 +79,6 @@ final class BannerEditPageController extends AbstractController
      */
     public function update(Banner $banner): array
     {
-        $locales = explode('|', $this->bag->get('locales'));
-
         return $this->responseFormatter->formatResponse($banner);
     }
 }

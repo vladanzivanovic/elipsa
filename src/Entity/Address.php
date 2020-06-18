@@ -51,6 +51,16 @@ class Address
      */
     private $phone;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="address", cascade={"persist", "remove"})
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $zipCode;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +146,30 @@ class Address
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(int $zipCode): self
+    {
+        $this->zipCode = $zipCode;
 
         return $this;
     }

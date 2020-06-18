@@ -309,35 +309,36 @@ require('webpack-jquery-ui');
     /*---------------------
     feature-pro-carousel
     --------------------- */
-    function feature_pro_carousel() {
-        var owl = $(".feature-pro-carousel");
-        owl.owlCarousel({
-            loop: true,
-            margin: 0,
-            responsiveClass: true,
-            navigation: true,
-            navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-            nav: true,
-            items: 3,
-            smartSpeed: 2000,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 4000,
-            center: false,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                480: {
-                    items: 1
-                },
-                760: {
-                    items: 3
-                }
-            }
-        });
-    }
-    feature_pro_carousel();
+    // function feature_pro_carousel() {
+    //     var owl = $(".feature-pro-carousel");
+    //     owl.owlCarousel({
+    //         loop: true,
+    //         margin: 0,
+    //         responsiveClass: true,
+    //         navigation: true,
+    //         navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+    //         nav: true,
+    //         items: 3,
+    //         smartSpeed: 2000,
+    //         dots: true,
+    //         autoplay: true,
+    //         autoplayTimeout: 4000,
+    //         center: false,
+    //         responsive: {
+    //             0: {
+    //                 items: 2,
+    //                 center: true,
+    //             },
+    //             480: {
+    //                 items: 2
+    //             },
+    //             760: {
+    //                 items: 3
+    //             }
+    //         }
+    //     });
+    // }
+    // feature_pro_carousel();
 
     /*------------------------------
     h3-testimonial-carousel
@@ -481,21 +482,23 @@ require('webpack-jquery-ui');
     /*-----------------------
     hide-login-register
     -----------------------*/
-    document.getElementById("login_register_content").style.display = "none";
-    $("#login_register").on('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+    if (document.getElementById("login_register_content")) {
+        document.getElementById("login_register_content").style.display = "none";
+        $("#login_register").on('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
 
-        $.each($('.open'), (index, element) => {
-            if (!$(e.currentTarget).closest($(element)).length) {
-                $(element).fadeOut("slow");
-                $(element).removeClass('open');
-            }
-        })
+            $.each($('.open'), (index, element) => {
+                if (!$(e.currentTarget).closest($(element)).length) {
+                    $(element).fadeOut("slow");
+                    $(element).removeClass('open');
+                }
+            })
 
-        $("#login_register_content").fadeIn("slow");
-        $('#login_register_content').addClass('open');
-    });
+            $("#login_register_content").fadeIn("slow");
+            $('#login_register_content').addClass('open');
+        });
+    }
 
 
     /*-----------------------

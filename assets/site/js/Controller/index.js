@@ -6,8 +6,15 @@ import CartPageController from "./CartPageController";
 import LocationPageController from "./LocationPageController";
 import BlogListPageController from "./BlogListPageController";
 import LoyaltyPageController from "./LoyaltyPageController";
+import MyAccountPageController from "./MyAccountPageController";
+import AskUsPageController from "./AskUsPageController";
+import HomePageController from "./HomePageController";
 
 let routes = [
+    {
+        name: 'site.home_page',
+        controller: HomePageController,
+    },
     {
         name: 'site.shop_page',
         controller: ShopPageController,
@@ -39,6 +46,14 @@ let routes = [
     {
         name: 'site.trendy_page',
         controller: ShopPageController,
+    },
+    {
+        name: 'site.account_page',
+        controller: MyAccountPageController,
+    },
+    {
+        name: 'site.ask_us',
+        controller: AskUsPageController,
     },
 ];
 

@@ -17,6 +17,17 @@ security:
         main:
             anonymous: lazy
             provider: app_user_provider
+            json_login:
+                check_path: site_api.login
+                success_handler: App\Handler\AuthenticationHandler
+                failure_handler: App\Handler\AuthenticationHandler
+#            remember_me:
+#                secret:   '%kernel.secret%'
+#                lifetime: 604800 # 1 week in seconds
+#                path:     /
+
+            logout:
+                path:   site.logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -27,5 +38,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/moj-nalog, roles: ROLE_USER }
+         - { path: /my-account, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_ADVANCED_USER, ROLE_USER]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]

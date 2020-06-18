@@ -7,6 +7,7 @@ namespace App\Collector;
 use App\Entity\Product;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductTranslation;
+use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
@@ -65,7 +66,7 @@ final class ProductPageCollector
         $this->productRepository = $productRepository;
     }
 
-    public function collect(ProductTranslation $productTranslation, string $locale): array
+    public function collect(ProductTranslation $productTranslation, string $locale, ?User $user): array
     {
         $product = $productTranslation->getProduct();
 
@@ -77,11 +78,11 @@ final class ProductPageCollector
             'tags'              => $this->tagsRepository->getByProducts([$product->getId()], $locale),
             'productCategories' => $this->categoryRepository->getByProduct($product, $locale),
             'images'            => $this->imageRepository->getByProduct($product),
-            'related_products'  => $this->relatedProducts($product, $locale),
+            'related_products'  => $this->relatedProducts($product, $locale, $user),
         ];
     }
 
-    private function relatedProducts(Product $product, string $locale): array
+    private function relatedProducts(Product $product, string $locale, ?User $user): array
     {
         $hasCategories = $product->getProductHasCategories();
 
@@ -93,7 +94,7 @@ final class ProductPageCollector
             $categories[] = $category->getTranslationByLocale($locale)->first()->getSlug();
         }
 
-        $products = $this->productRepository->getRelatedProducts($locale, $categories, $product);
+        $products = $this->productRepository->getRelatedProducts($locale, $categories, $product, $user);
 
         $productIds = array_column($products, 'id');
 

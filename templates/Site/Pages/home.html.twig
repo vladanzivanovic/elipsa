@@ -78,6 +78,31 @@
         {% endfor %}
     </div>
     <!-- home2-slider-end -->
+    <!-- featured-itema-area-start -->
+    {% if products[2] is defined %}
+    <div class="home-2-featured-item-area">
+        <div class="container">
+
+            <div class="featured-items">
+                <div>
+                    <div class="featured-all">
+                        <div class="fi-row">
+                            <div class="row">
+                                <div id="top_carousel" class="feature-pro-carousel owl-carousel">
+                                    {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                    {% for product in products[2] %}
+                                        {{ productGrid.productGrid(product, product_tags[product.id], product_colors, product_sizes, 'col-xs-12', locale) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- featured-itema-area-end -->
     <!-- home3-banner-area-start -->
     <div class="home3-banner-area">
         <div class="container">
@@ -145,43 +170,30 @@
     <!-- featured-itema-area-start -->
     <div class="home-2-featured-item-area">
         <div class="container">
-            <div class="home-2-featured-item-head">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="home-2-feature-item-tab-control">
-                            <ul class="fi-tab">
-                                {% for category in home_categories %}
-                                    <li class="{{ loop.first ? 'active' : '' }}"><a data-toggle="tab" href="#{{ category.slug }}">{{ category.title }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="featured-items tab-content">
-                {% for categorySlug, productCategory in products %}
-                    <div id="{{ categorySlug }}" class="tab-pane fade {{ loop.first ? 'in active' : '' }}">
-                        <div class="featured-all">
-                            <div class="fi-row">
-                                <div class="row">
-                                    <div class="feature-pro-carousel owl-carousel">
-                                        {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                        {% for product in productCategory %}
-                                            {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-xs-12', locale) }}
-                                        {% endfor %}
-                                    </div>
+            <div class="featured-items">
+                <div>
+                    <div class="featured-all">
+                        <div class="fi-row">
+                            <div class="row">
+                                <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
+                                    {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                    {% for product in products[1] %}
+                                        {{ productGrid.productGrid(product, product_tags[product.id], product_colors, product_sizes, 'col-xs-12', locale) }}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             </div>
         </div>
     </div>
     <!-- featured-itema-area-end -->
     <!-- home3-newsletter-area-start -->
-    <div class="home3-newsletter-area">
+    {% set loyaltyBanner = banner(2, 'loyalty_banner', locale) %}
+    {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ loyaltyBanner.image_link ~") no-repeat scroll left top / cover" %}
+    <div class="home3-newsletter-area" style="{{ bannerLink }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -194,8 +206,7 @@
                     <div class="h3-newsletter-form">
                         <form action="#">
                             <div class="h3-newsletter-input">
-                                <input type="text" placeholder="Enter your e-mail">
-                                <input class="hvr-bs" type="submit" value="Subscribe">
+                                <a href="{{ path('site.loyalty', {'_locale': locale}) }}" class="hvr-bs">{{ 'login.btn' | trans }}</a>
                             </div>
                         </form>
                     </div>

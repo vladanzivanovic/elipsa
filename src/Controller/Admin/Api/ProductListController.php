@@ -20,18 +20,18 @@ final class ProductListController extends AbstractController
      * @var DataTableRequestParser
      */
     private $requestParser;
+
     /**
      * @var ProductRepository
      */
     private $productRepository;
+
     /**
      * @var ProductDataTableResponseFormatter
      */
     private $responseFormatter;
 
     /**
-     * ProductListController constructor.
-     *
      * @param DataTableRequestParser            $requestParser
      * @param ProductRepository                 $productRepository
      * @param ProductDataTableResponseFormatter $responseFormatter

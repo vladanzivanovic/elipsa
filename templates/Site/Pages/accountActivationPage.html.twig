@@ -1,0 +1,24 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}{{ 'title.account_activation_page' | trans }}{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
+        {'title': 'title.account_activation_page' | trans}
+    ], 'activePage': 'title.account_activation_page' | trans}) }}
+
+    <!-- order-tracker-area-start -->
+    <div class="order-tracker-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="order-tracker">
+                        <h2 class="ot-title">{{ 'registration.activation.title' | trans }}</h2>
+                        <p class="ot-text letter-capitalize">{{ 'registration.activation.message' | trans }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- order-tracker-area-end -->
+{% endblock %}

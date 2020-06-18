@@ -26,8 +26,6 @@ final class ProductEditController extends AbstractController
     private $editHandler;
 
     /**
-     * ProductEditController constructor.
-     *
      * @param ProductEditRequestParser $requestParser
      * @param ProductEditHandler       $editHandler
      */

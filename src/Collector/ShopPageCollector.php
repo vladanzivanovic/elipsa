@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Collector;
 
 use App\Entity\Tags;
+use App\Entity\User;
 use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
@@ -91,7 +92,7 @@ final class ShopPageCollector
         $this->session = $session;
     }
 
-    public function collect(string $locale, int $currentPage, ?string $searchData = null, bool $isTrendyPage = false)
+    public function collect(string $locale, int $currentPage, ?User $user, ?string $searchData = null, bool $isTrendyPage = false)
     {
         $colors = $this->colorRepository->getByLocale($locale);
         $sizes = $this->sizeRepository->getForOptions();
@@ -103,18 +104,19 @@ final class ShopPageCollector
             'prices'    => $prices[0],
         ];
 
-        return $data + $this->collectForApi($locale, $currentPage, $searchData, $isTrendyPage);
+        return $data + $this->collectForApi($locale, $currentPage, $user, $searchData, $isTrendyPage);
     }
 
     /**
-     * @param string $locale
-     * @param int    $currentPage
-     * @param string $searchData
-     * @param bool   $isTrendyPage
+     * @param string    $locale
+     * @param int       $currentPage
+     * @param User|null $user
+     * @param string    $searchData
+     * @param bool      $isTrendyPage
      *
      * @return array
      */
-    public function collectForApi(string $locale, int $currentPage, ?string $searchData = null, bool $isTrendyPage = false): array
+    public function collectForApi(string $locale, int $currentPage, ?User $user, ?string $searchData = null, bool $isTrendyPage = false): array
     {
         $searchCriteria = null;
         $localizedUrl = null;
@@ -135,7 +137,7 @@ final class ShopPageCollector
 
         $limit = null !== $searchCriteria && $searchCriteria->has('limit') ? (int) $searchCriteria->get('limit')[0] : 12;
 
-        $productDql = $this->productRepository->getDqlForPaginationPage($locale, $searchCriteria);
+        $productDql = $this->productRepository->getDqlForPaginationPage($locale, $user, $searchCriteria);
         $products = $this->paginationService->pagination($productDql, $currentPage, $limit);
 
         $productIds = array_column($products['data'], 'id');

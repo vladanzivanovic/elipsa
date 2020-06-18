@@ -46,6 +46,7 @@ final class BannerEditResponseFormatter
             'en_link' => $enTrans->getButtonLink(),
             'position' => $banner->getPosition(),
             'selectedImages' => $this->imagesFormatter($this->router, [$this->getImage($banner)], 'banner'),
+            'type' => $banner->getType(),
         ];
     }
 

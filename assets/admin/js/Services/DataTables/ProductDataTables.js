@@ -28,15 +28,13 @@ export default (() => {
 
                     return type === 'display' ? html : data;
                 } },
-                { data: 'show_home_page', title: 'Početna stranica', width: '200px', render: function (data, type, row, meta) {
-                    const checkedAttr = data === true ? 'checked' : '';
+                { data: 'position_text', title: 'Početna stranica', width: '200px', render: function (data, type, row, meta) {
+                    let html = '';
 
-                    let html = CAN_EDIT ? `<p class="status-text">&nbsp;</p><input type="checkbox" class="set-home-page" data-slug="${row.slug}" ${checkedAttr}/>` : '';
-
-                    if (row.status === 3) {
-                        html = `<p class="status-text">${data}</p>`;
+                    if (data) {
+                        html = `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`
                     }
-
+;
                     return type === 'display' ? html : data;
                 } },
                 { data: 'slug', render: function (data, type, row, meta) {

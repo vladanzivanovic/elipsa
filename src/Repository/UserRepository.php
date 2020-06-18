@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -40,5 +39,28 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    /**
+     * @param string    $email
+     * @param User|null $user
+     *
+     * @return int
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countByEmail(string $email, User $user = null): int
+    {
+        $query = $this->createQueryBuilder('u')
+            ->select('COUNT(u.id) as total')
+            ->where('u.email = :email')
+            ->setParameter('email', $email);
+
+        if (null !== $user) {
+            $query->andWhere('u != :user')
+                ->setParameter('user', $user);
+        }
+
+        return (int) $query->getQuery()->getSingleScalarResult();
     }
 }

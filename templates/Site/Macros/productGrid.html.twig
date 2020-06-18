@@ -4,10 +4,12 @@
             <div class="sfi-img">
                 <a href="{{ path('site.product_page', {'slug': product.slug}) }}"><img src="{{ product.image_link_list }}" alt="{{ default_alt_tag }}"></a>
                 <ul class="sfi-tag-list">
-                    {% set tagKey = 'tags' | trans %}
-                    {% for tag in tags  %}
-                        <li><a href="{{ path('site.trendy_page', {'searchData': tagKey ~ '/'~ tag.slug}) }}">{{ tag.label }}</a></li>
-                    {% endfor %}
+                    {% if tags | length > 0 %}
+                        {% set tagKey = 'tags' | trans %}
+                        {% for tag in tags  %}
+                            <li><a href="{{ path('site.trendy_page', {'searchData': tagKey ~ '/'~ tag.slug}) }}">{{ tag.label }}</a></li>
+                        {% endfor %}
+                    {% endif %}
                 </ul>
                 <div class="sfi-img-content sfi-data-content">
                     <p class="letter-capitalize">{{ 'available_colors' | trans }}:</p>
@@ -31,7 +33,7 @@
             <div class="sfi-content">
                 <div class="sfi-buttons">
                     <ul class="clearfix">
-                        <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
+                        <li><a href="#" class="toggle-wish-list" data-product-id="{{ product.id }}" data-page="shop"><i class="fa {{ product.has_wish is defined and product.has_wish == 1 ? 'fa-heart' : 'fa-heart-o' }}"></i></a></li>
                         <li><a href="{{ path('site.product_page', {'slug': product.slug}) }}"><i class="fa fa-eye"></i></a></li>
                     </ul>
                 </div>

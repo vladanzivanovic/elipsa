@@ -38,29 +38,27 @@ class BannerRepository extends ExtendedEntityRepository
 
     /**
      * @param DataTableModel $tableModel
-     * @param array|null     $collection
+     * @param array          $types
      *
      * @return array
      */
-    public function getAdminList(DataTableModel $tableModel, ?array $collection): array
+    public function getAdminList(DataTableModel $tableModel, array $types): array
     {
         $query = $this->createQueryBuilder('b')
             ->select(
                 'b.id',
                 'b.position',
                 'b.isActive as is_active',
+                'b.type',
                 'image.name'
             )
             ->innerJoin('b.image', 'image')
+            ->where('b.type IN (:types)')
+            ->setParameter('types', $types)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy('b.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
-
-        if (null !== $collection) {
-            $query->andWhere('b.position IN (:positions)')
-                ->setParameter('positions', $collection);
-        }
 
         return $query->getQuery()->getArrayResult();
     }
