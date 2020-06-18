@@ -11,7 +11,7 @@ Version      : 1.0
 
 @media only screen and (min-width: 1200px) and (max-width: 1367px) {
     .coming-area {
-        background: #d8d8d8 url("../img/bg/coming.jpg") no-repeat scroll 70% 0 / cover;
+        background: #d8d8d8 url("../img/bg/coming.jpg") no-repeat scroll 70% 0 / cover !important;
     }
 }
 
@@ -20,61 +20,61 @@ Version      : 1.0
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
     .htr-search .htr-search-content input[type="text"] {
-        width: 150px;
+        width: 150px !important;
     }
     .htr-search {
-        margin-right: 10px;
+        margin-right: 10px !important;
     }
     .login-or-register {
-        margin-right: 10px;
+        margin-right: 10px !important;
     }
     .top-checkout {
-        margin-right: 10px;
+        margin-right: 10px !important;
     }
     .menu-area-right > div {
-        margin-left: 5px;
+        margin-left: 5px !important;
     }
     .menu ul.menu-list.menu-list > li a {
-        padding: 5px 0 35px;
+        padding: 5px 0 35px !important;
     }
     .menu ul.menu-list li .mega-menu-area {
-        width: 950px;
+        width: 950px !important;
     }
     .home1-slider-container .nivo-caption {
-        top: 10%;
+        top: 10% !important;
     }
     .home1-slider-container .slide1-text .cap-dec {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
     .home1-slider-container .slide1-text .cap-dec h3 {
-        font-size: 22px;
-        line-height: 24px;
+        font-size: 22px !important;
+        line-height: 24px !important;
     }
     .home1-slider-container .slide1-text .cap-title h2 {
-        font-size: 36px;
-        line-height: 40px;
+        font-size: 36px !important;
+        line-height: 40px !important;
     }
     .home1-slider-container .slide1-text .cap-details {
-        margin-bottom: 40px;
+        margin-bottom: 40px !important;
     }
     /*home-2*/
     .slide2-text .cap-dec {
-        margin-bottom: 15px;
+        margin-bottom: 15px !important;
     }
     .slide2-text .cap-dec h3 {
-        font-size: 20px;
-        line-height: 22px;
+        font-size: 20px !important;
+        line-height: 22px !important;
     }
     .slide2-text .cap-title {
-        margin-bottom: 35px;
+        margin-bottom: 35px !important;
     }
     .slide2-text .cap-title h2 {
-        font-size: 50px;
-        line-height: 54px;
+        font-size: 50px !important;
+        line-height: 54px !important;
     }
     .dwc-inner .timer-area .cdown {
-        margin-right: 5px;
-        min-width: 75px;
+        margin-right: 5px !important;
+        min-width: 75px !important;
     }
     /*cart*/
     .sh-menu-item {
@@ -89,34 +89,34 @@ Version      : 1.0
         right: 15% !important;
     }
     .sccb-shipping-input label {
-        display: block;
-        float: none;
-        margin: 5px 0 10px;
+        display: block !important;
+        float: none !important;
+        margin: 5px 0 10px !important;
     }
     .sccb-shipping-input select {
-        float: none;
+        float: none !important;
     }
     .sccb-discount-subscribe-box .sccb-discount-subscribe {
         float: none !important;
-        margin: 15px 0 0;
+        margin: 15px 0 0 !important;
     }
     /*checkout*/
     .pcb-cuppon-input input[type="text"] {
-        float: none;
-        width: 100%;
+        float: none !important;
+        width: 100% !important;
     }
     .pcb-cuppon-input button {
-        float: none;
-        margin: 15px 0 0;
-        width: auto;
+        float: none !important;
+        margin: 15px 0 0 !important;
+        width: auto !important;
     }
     /*blog-deatils*/
     .bcl-list li {
-        font-size: 12px;
-        line-height: 34px;
+        font-size: 12px !important;
+        line-height: 34px !important;
     }
     .bcl-list li i {
-        margin-right: 0;
+        margin-right: 0 !important;
     }
 }
 
@@ -126,181 +126,181 @@ Version      : 1.0
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
     /*modal*/
     .product-modal.modal-dialog {
-        width: 760px;
+        width: 760px !important;
     }
     .product-tab-content {
-        width: 62%;
+        width: 62% !important;
     }
     .product-tab-menu {
-        text-align: left;
-        width: 38%;
+        text-align: left !important;
+        width: 38% !important;
     }
     .single-product-description-area {
-        margin-top: 30px;
+        margin-top: 30px !important;
     }
     /*mdoal-end*/
     .htr-search {
-        margin-right: 5px;
+        margin-right: 5px !important;
     }
     .login-or-register {
-        margin-right: 5px;
+        margin-right: 5px !important;
     }
     .top-checkout {
-        margin-right: 5px;
+        margin-right: 5px !important;
     }
     .header-top-left .htl-title {
-        margin-top: 10px;
+        margin-top: 10px !important;
     }
     .header-top {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
     .home1-slider-container .slide1-text .cap-dec {
-        margin-bottom: 8px;
+        margin-bottom: 8px !important;
     }
     .home1-slider-container .slide1-text .cap-dec h3 {
-        font-size: 22px;
-        line-height: 24px;
+        font-size: 22px !important;
+        line-height: 24px !important;
     }
     .home1-slider-container .slide1-text .cap-title {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
     .home1-slider-container .slide1-text .cap-title h2 {
-        font-size: 40px;
-        line-height: 42px;
+        font-size: 40px !important;
+        line-height: 42px !important;
     }
     .home1-slider-container .slide1-text .cap-details {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .home1-slider-container .slide1-text .cap-outer-text {
-        top: 100px;
+        top: 100px !important;
     }
     .home1-slider-container .nivoSlider img {}
     .home1-slider-container .nivo-caption {
-        top: 8%;
+        top: 8% !important;
     }
     .single-top-banner {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .single-top-banner .stb-img a img {
-        width: 100%;
+        width: 100% !important;
     }
     .feature-item-tab-control {
-        text-align: left;
+        text-align: left !important;
     }
     .feature-item-tab-control .fi-tab li {
-        margin-left: 0;
-        margin-right: 10px;
+        margin-left: 0 !important;
+        margin-right: 10px !important;
     }
     .feature-item-tab-control .fi-tab li::after {
-        display: none;
+        display: none !important;
     }
     .single-feature-post .feature-post-content {
-        padding: 0 10px;
+        padding: 0 10px !important;
     }
     .footer-desc {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .footer-links {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .footer-copyright {
-        margin-bottom: 30px;
-        text-align: center;
+        margin-bottom: 30px !important;
+        text-align: center !important;
     }
     .footer-social {
-        text-align: left;
+        text-align: left !important;
     }
     .footer-social ul li {
-        text-align: center;
+        text-align: center !important;
     }
     /*home-2*/
     .home2-testimonial {
-        padding: 0 0 60px;
+        padding: 0 0 60px !important;
     }
     .h2-testimonial-carousel.owl-carousel .owl-nav .owl-prev {
-        left: -35px;
+        left: -35px !important;
     }
     .h2-testimonial-carousel.owl-carousel .owl-nav .owl-next {
-        right: -35px;
+        right: -35px !important;
     }
     .home2-slider-container .nivo-caption {
-        left: 5%;
+        left: 5% !important;
     }
     .slide2-text .cap-dec {
-        margin-bottom: 15px;
+        margin-bottom: 15px !important;
     }
     .slide2-text .cap-dec h3 {
-        font-size: 20px;
-        line-height: 22px;
+        font-size: 20px !important;
+        line-height: 22px !important;
     }
     .slide2-text .cap-title {
-        margin-bottom: 25px;
+        margin-bottom: 25px !important;
     }
     .slide2-text .cap-title h2 {
-        font-size: 34px;
-        line-height: 40px;
+        font-size: 34px !important;
+        line-height: 40px !important;
     }
     .h2-newsletter-left {
-        margin-bottom: 60px;
+        margin-bottom: 60px !important;
     }
     /*home-3*/
     .home3-slider-container .nivo-caption {
-        top: 22%;
+        top: 22% !important;
     }
     .slide3-text .cap-title h2 {
-        font-size: 50px;
-        line-height: 50px;
+        font-size: 50px !important;
+        line-height: 50px !important;
     }
     .slide3-text .cap-title-2 h3 {
-        font-size: 50px;
-        line-height: 50px;
+        font-size: 50px !important;
+        line-height: 50px !important;
     }
     .slide3-text .cap-text {
-        margin-bottom: 25px;
+        margin-bottom: 25px !important;
     }
     .slide3-text .cap-view a {
-        padding: 12px 20px;
+        padding: 12px 20px !important;
     }
     .h3-upcoming-form-area .h3-upcoming-form-input {
-        width: 65%;
+        width: 65% !important;
     }
     .h3-upcoming-banner {
-        background-size: contain;
-        height: 50%;
-        left: auto;
-        right: 0;
-        top: 45%;
-        width: 40%;
+        background-size: contain !important;
+        height: 50% !important;
+        left: auto !important;
+        right: 0 !important;
+        top: 45% !important;
+        width: 40% !important;
     }
     .single-h3-testimonial {
-        padding: 50px 60px 90px;
+        padding: 50px 60px 90px !important;
     }
     .single-h3-testimonial::after {
-        bottom: 80px;
+        bottom: 80px !important;
     }
     .h3-testimonial-left {
-        padding-left: 0;
-        width: 25%;
+        padding-left: 0 !important;
+        width: 25% !important;
     }
     .h3-testimonial-right {
-        padding-left: 20px;
-        width: 75%;
+        padding-left: 20px !important;
+        width: 75% !important;
     }
     .h3-newsletter-left {
-        padding-left: 65px;
+        padding-left: 65px !important;
     }
     .h3-newsletter-input input[type="text"] {
-        padding: 0 10px;
+        padding: 0 10px !important;
     }
     .h3-newsletter-input input[type="submit"] {
-        position: inherit;
+        position: inherit !important;
     }
     /*shop*/
     .single-list-item .sli-img {
-        width: 37%;
+        width: 37% !important;
     }
     .single-list-item .sli-content {
-        width: 63%;
+        width: 63% !important;
     }
     /*cart*/
     .sh-menu-item p {
@@ -311,49 +311,49 @@ Version      : 1.0
         right: 15% !important;
     }
     .sh-menu-item::before {
-        display: none;
+        display: none !important;
     }
     .shopping-cart-content-box {
-        margin: 0 0 30px;
+        margin: 0 0 30px !important;
     }
     /*checkout*/
     .billing-address {
-        margin: 0 0 30px;
+        margin: 0 0 30px !important;
     }
     /*about-us*/
     .why-our-shop {
-        margin-top: 60px;
+        margin-top: 60px !important;
     }
     /*blog*/
     .blog-sidebar {
-        margin: 60px auto auto;
-        width: 260px;
+        margin: 60px auto auto !important;
+        width: 260px !important;
     }
     /*contact*/
     .contact-form-area {
-        padding: 84px 40px 70px;
+        padding: 84px 40px 70px !important;
     }
     .single-contact-service {
-        padding: 0 0 0 20px;
+        padding: 0 0 0 20px !important;
     }
     .scs-icon {
-        padding: 25px 0;
-        width: 18%;
+        padding: 25px 0 !important;
+        width: 18% !important;
     }
     .scs-icon i {
-        font-size: 22px;
+        font-size: 22px !important;
     }
     .scs-content {
-        padding: 0 0 0 10px;
-        width: 82%;
+        padding: 0 0 0 10px !important;
+        width: 82% !important;
     }
     /*coming*/
     .coming-area {
-        background-position: 50% 0;
+        background-position: 50% 0 !important;
     }
     /*product-comparison*/
     .single-comparison {
-        margin: 0 0 60px;
+        margin: 0 0 60px !important;
     }
 }
 
@@ -362,11 +362,11 @@ Version      : 1.0
 
 @media only screen and (min-width: 992px) and (max-width: 1024px) {
     .h3-upcoming-banner {
-        background-size: contain;
-        height: 60%;
-        right: auto;
-        top: 30%;
-        width: 45%;
+        background-size: contain !important;
+        height: 60% !important;
+        right: auto !important;
+        top: 30% !important;
+        width: 45% !important;
     }
 }
 
@@ -375,18 +375,18 @@ Version      : 1.0
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     .shop-sidebar-area {
-        margin: auto auto 60px;
-        width: 260px;
+        margin: auto auto 60px !important;
+        width: 260px !important;
     }
     .shop-right-sidebar-area .shop-sidebar-area {
-        margin: 60px auto auto;
-        width: 260px;
+        margin: 60px auto auto !important;
+        width: 260px !important;
     }
     .single-review .sr-img {
-        width: 15%;
+        width: 15% !important;
     }
     .single-review .sr-content {
-        width: 85%;
+        width: 85% !important;
     }
 }
 
@@ -401,128 +401,128 @@ Version      : 1.0
 @media only screen and (min-width: 481px) and (max-width: 767px) {
     /*modal*/
     .product-modal.modal-dialog {
-        display: none;
+        display: none !important;
     }
     .header-top-left {
-        margin-bottom: 30px;
-        text-align: center;
+        margin-bottom: 30px !important;
+        text-align: center !important;
     }
     .header-top-right {
-        margin-bottom: 15px;
-        text-align: center;
+        margin-bottom: 15px !important;
+        text-align: center !important;
     }
     .single-top-banner {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .single-top-banner .stb-img a img {
-        width: 100%;
+        width: 100% !important;
     }
     .feature-item-tab-control {
-        text-align: center;
+        text-align: center !important;
     }
     .feature-item-tab-control .fi-tab li {
-        margin: 0 18px;
+        margin: 0 18px !important;
     }
     .single-featured-item .sfi-img > a img {
-        width: 100%;
+        width: 100% !important;
     }
     .single-b2-item img {
-        width: 100%;
+        width: 100% !important;
     }
     .single-feature-post {
-        margin: 0 0 30px;
+        margin: 0 0 30px !important;
     }
     .single-service {
-        margin: 0 0 30px;
+        margin: 0 0 30px !important;
     }
     .footer-desc {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     .footer-links {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     .footer-post-area {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     .footer-copyright {
-        margin-bottom: 30px;
-        text-align: center;
+        margin-bottom: 30px !important;
+        text-align: center !important;
     }
     .footer-social {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .payment-method ul {
-        text-align: center;
+        text-align: center !important;
     }
     /*home-2*/
     .home-2-feature-item-tab-control .fi-tab li.active a {
-        font-size: 12px;
+        font-size: 12px !important;
     }
     .deals-week-content {
-        top: 140px;
+        top: 140px !important;
     }
     .h2-newsletter-left {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     /*home-3*/
     .feature-pro-carousel.owl-carousel .owl-nav {
-        display: none;
+        display: none !important;
     }
     .h3-upcoming-banner {
-        display: none;
+        display: none !important;
     }
     .home3-upcoming .timer-area {
-        text-align: center;
+        text-align: center !important;
     }
     .h3-newsletter-left {
-        margin-bottom: 60px;
+        margin-bottom: 60px !important;
     }
     /*shop*/
     .shop-sidebar-area {
-        margin: auto auto 60px;
-        width: 260px;
+        margin: auto auto 60px !important;
+        width: 260px !important;
     }
     .shop-menu > div {}
     .shop-tab-option {
-        float: none;
+        float: none !important;
     }
     .deafult-sorting select,
     .show-product select {
-        margin-bottom: 30px;
-        width: 100%;
+        margin-bottom: 30px !important;
+        width: 100% !important;
     }
     .shop-pagination-area .pagination-showing {
-        float: none;
+        float: none !important;
     }
     .single-list-item .sli-img {
-        width: 100%;
+        width: 100% !important;
     }
     .single-list-item .sli-content {
-        padding: 30px 30px 30px 0;
-        width: 100%;
+        padding: 30px 30px 30px 0 !important;
+        width: 100% !important;
     }
     .sli-review-color .sli-color {
-        float: none;
+        float: none !important;
     }
     /*shop-right-sidebar*/
     .shop-right-sidebar-area .shop-sidebar-area {
-        margin: 60px auto auto;
-        width: 260px;
+        margin: 60px auto auto !important;
+        width: 260px !important;
     }
     /*single-product*/
     .related-pro-carousel .owl-nav > div {
-        display: none;
+        display: none !important;
     }
     .single-review .sr-img {
-        width: 20%;
+        width: 20% !important;
     }
     .single-review .sr-content {
-        width: 80%;
+        width: 80% !important;
     }
     /*shopping-cart*/
     .sh-menu-item {
         display: block !important;
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
         margin-left: 0 !important;
         width: 85% !important;
     }
@@ -535,88 +535,88 @@ Version      : 1.0
     }
     .scca-head .scb-update {
         float: none !important;
-        margin: 15px 0 0;
+        margin: 15px 0 0 !important;
     }
     .shopping-cart-content-box {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .sccb-discount-subscribe-box input[type="text"] {
-        width: 100%;
+        width: 100% !important;
     }
     .sccb-discount-subscribe-box .sccb-discount-subscribe {
         float: none !important;
-        margin: 15px 0 0;
+        margin: 15px 0 0 !important;
     }
     /*checkout*/
     .billing-address-input {
-        margin-bottom: 40px;
+        margin-bottom: 40px !important;
     }
     .billing-address-input label {
-        display: block;
-        float: none;
-        margin: 0 0 15px;
+        display: block !important;
+        float: none !important;
+        margin: 0 0 15px !important;
     }
     .billing-address-input select,
     .billing-address-input input[type="text"] {
-        display: block;
-        float: none;
-        width: 100%;
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
     }
     .cbab-account-password input[type="password"] {
-        float: none;
-        width: 100%;
+        float: none !important;
+        width: 100% !important;
     }
     .pcb-cuppon-input input[type="text"] {
-        margin: 0 0 20px;
-        width: 100%;
+        margin: 0 0 20px !important;
+        width: 100% !important;
     }
     .pcb-cuppon-input button {
-        float: none;
-        width: auto;
+        float: none !important;
+        width: auto !important;
     }
     /*about-us*/
     .why-our-shop {
-        margin-top: 60px;
+        margin-top: 60px !important;
     }
     /*blog*/
     .blog-sidebar {
-        margin: 60px auto auto;
-        width: 260px;
+        margin: 60px auto auto !important;
+        width: 260px !important;
     }
     /*blog-details*/
     .single-blog-comment .sbc-img {
-        width: 18%;
+        width: 18% !important;
     }
     .single-blog-comment .sbc-content {
-        width: 82%;
+        width: 82% !important;
     }
     .single-blog-comment.sbc-second {
-        margin-left: 40px;
+        margin-left: 40px !important;
     }
     /*contact*/
     .contact-form-area {
-        padding: 84px 20px 70px;
+        padding: 84px 20px 70px !important;
     }
     .contact-form-head h1 {
-        font-size: 50px;
+        font-size: 50px !important;
     }
     /*404*/
     .error-inner {
-        left: 0;
+        left: 0 !important;
     }
     .error-title {
-        font-size: 110px;
-        line-height: 100px;
+        font-size: 110px !important;
+        line-height: 100px !important;
     }
     .error-search input[type="text"] {
-        width: 290px;
+        width: 290px !important;
     }
     /*coming*/
     .coming-area {
-        background-position: 45% 0;
+        background-position: 45% 0 !important;
     }
     .coming .timer-area .cdown {
-        margin: 0 5px;
+        margin: 0 5px !important;
     }
 }
 
@@ -624,25 +624,22 @@ Version      : 1.0
 /* Wide Mobile Layout: 480px. */
 
 @media only screen and (min-width: 240px) and (max-width: 480px) {
-    .login-register-content::before {
-        left: 12%;
-    }
-    .login-register-content {
-        left: 0;
-    }
     .logo a {
-        width: 130px;
-        display: block;
+        width: 130px !important;
+        display: block !important;
     }
     .logo a img {
-        width: 100%;
+        width: 100% !important;
     }
     .top-cart > span {
         font-size: 17px !important;
     }
 
     .top-cart > span i {
-        font-size: 17px;
+        font-size: 17px !important;
+    }
+    .login-or-register > span {
+        font-size: 17px !important;
     }
     /*modal*/
     .product-modal.modal-dialog {
@@ -650,204 +647,203 @@ Version      : 1.0
     }
     /*home1*/
     .header-top-left {
-        margin-bottom: 20px;
+        margin-bottom: 20px !important;
         text-align: center !important;
     }
     .logo {
-        margin-right: 0;
+        margin-right: 0 !important;
     }
     .header-top-right {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
         text-align: center !important;
     }
     .login-or-register {
-        margin-right: 10px;
+        margin-right: 10px !important;
     }
     .top-checkout {
-        margin-right: 10px;
+        margin-right: 10px !important;
     }
     .htr-search {
-        display: none!important;
+        display: none !important;
     }
     .login-register-content {
-        left: -12px;
-        width: 290px;
+        left: -12px !important;
+        width: 290px !important;
     }
     .login-register-content::before {
-        left: 13%;
+        left: 13% !important;
     }
     .my-cart {
-        right: -13px;
-        width: 290px;
+        right: -13px !important;
+        width: 290px !important;
     }
     .home1-slider-container .nivo-directionNav a {
-        height: 30px;
-        line-height: 30px;
-        width: 30px;
+        height: 30px !important;
+        line-height: 30px !important;
+        width: 30px !important;
     }
     .single-top-banner .stb-img a img {
-        width: 100%;
+        width: 100% !important;
     }
     .single-top-banner {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .feature-item-tab-control {
-        text-align: left;
+        text-align: left !important;
     }
     .special-offer .timer-area .cdown {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .single-feature-post .feature-post-content {
-        padding: 0 10px;
+        padding: 0 10px !important;
     }
     .single-feature-post {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .single-service {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .newsletter-form input[type="email"] {
-        width: 160px;
+        width: 160px !important;
     }
     .newsletter-form input[type="submit"] {
-        padding: 0 15px;
+        padding: 0 15px !important;
     }
     .footer-desc {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     .footer-links {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     .footer-post-area {
-        margin-bottom: 50px;
+        margin-bottom: 50px !important;
     }
     .footer-copyright {
-        margin-bottom: 30px;
-        text-align: center;
+        margin-bottom: 30px !important;
+        text-align: center !important;
     }
     .footer-social {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .payment-method ul {
-        text-align: center;
+        text-align: center !important;
     }
     .single-tst .single-tst-content .tst-pro-name {
-        font-size: 12px;
-        line-height: 14px;
+        font-size: 12px !important;
+        line-height: 14px !important;
     }
     .single-tst .single-tst-content .tst-price {
-        font-size: 12px;
+        font-size: 12px !important;
     }
     .single-tst .single-tst-content .tst-price .tst-old-price {
-        font-size: 12px;
+        font-size: 12px !important;
     }
     /*home-2*/
     .home-2-feature-item-tab-control .fi-tab li.active a {
-        ;
-        font-size: 12px;
-        font-weight: 400;
+        font-size: 12px !important;
+        font-weight: 400 !important;
     }
     .deals-week-img {
-        top: -70px;
+        top: -70px !important;
     }
     .dwc-inner .timer-area .cdown {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .h2-tst-title::after {
-        display: none;
+        display: none !important;
     }
     .feature-post-carousel.owl-carousel .owl-nav {
-        display: none;
+        display: none !important;
     }
     .home-2-top-sale-trend-area {
-        padding: 223px 0 0;
+        padding: 223px 0 0 !important;
     }
     .single-feature-post .feature-post-content .fp-meta > span {
-        margin-right: 5px;
+        margin-right: 5px !important;
     }
     .h2-newsletter-left {
-        padding: 0 10px;
+        padding: 0 10px !important;
     }
     .h2-newsletter-right {
-        padding: 0 10px;
-        margin-top: 30px;
+        padding: 0 10px !important;
+        margin-top: 30px !important;
     }
     .h2-newsletter-right input[type="email"] {
-        width: 100%;
+        width: 100% !important;
     }
     /*home-3*/
     .feature-pro-carousel.owl-carousel .owl-nav > button {
-        display: none;
+        display: none !important;
     }
     .h3-upcoming-banner {
-        display: none;
+        display: none !important;
     }
     .home3-upcoming .timer-area {
-        text-align: center;
+        text-align: center !important;
     }
     .home3-upcoming .timer-area .cdown {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
     .h3-newsletter-left::before {
-        font-size: 20px;
-        line-height: 20px;
+        font-size: 20px !important;
+        line-height: 20px !important;
     }
     .h3-newsletter-left {
-        margin-bottom: 60px;
-        padding-left: 40px;
+        margin-bottom: 60px !important;
+        padding-left: 40px !important;
     }
     .h3-newsletter-input input[type="text"] {
-        padding: 0 10px;
+        padding: 0 10px !important;
     }
     .h3-newsletter-input input[type="submit"] {
-        position: inherit;
+        position: inherit !important;
     }
     /*shop*/
     .shop-sidebar-area {
-        margin-bottom: 60px;
+        margin-bottom: 60px !important;
     }
     .shop-menu > div {
-        display: block;
-        width: 100%;
+        display: block !important;
+        width: 100% !important;
     }
     .deafult-sorting select,
     .show-product select {
-        margin-bottom: 30px;
-        width: 100%;
-        float: none;
+        margin-bottom: 30px !important;
+        width: 100% !important;
+        float: none !important;
     }
     .shop-pagination-area .pagination-showing {
-        float: none;
+        float: none !important;
     }
     .single-list-item .sli-img {
-        width: 100%;
+        width: 100% !important;
     }
     .single-list-item .sli-content {
-        padding: 30px 30px 30px 0;
-        width: 100%;
+        padding: 30px 30px 30px 0 !important;
+        width: 100% !important;
     }
     .sli-review-color .sli-color {
-        float: none;
+        float: none !important;
     }
     /*shop-right-sidebar*/
     .shop-right-sidebar-area .shop-sidebar-area {
-        margin-top: 60px;
+        margin-top: 60px !important;
     }
     /*single-product*/
     .crumb-list {
-        display: block;
+        display: block !important;
     }
     .crumb-name {
-        display: block;
+        display: block !important;
         float: none !important;
         font-size: 16px !important;
-        margin-top: 15px;
+        margin-top: 15px !important;
     }
     .product-modal button.close {
         top: 14px !important;
     }
     .product-modal #mobile-title {
-        margin-bottom: 15px;
+        margin-bottom: 15px !important;
     }
     .product-tab-content {
         width: 100% !important;
@@ -860,43 +856,43 @@ Version      : 1.0
         width: 100% !important;
     }
     .product-tab-menu .product-tab li {
-        display: inline-block;
-        margin-bottom: 30px;
-        width: 30%;
+        display: inline-block !important;
+        margin-bottom: 30px !important;
+        width: 30% !important;
     }
     .spd-add-cart .quantity {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
     .spt-tab li {
-        margin-bottom: 10px;
-        width: 100%;
+        margin-bottom: 10px !important;
+        width: 100% !important;
     }
     .single-review .sr-img {
-        border-right: 0 none;
-        width: 100%;
+        border-right: 0 none !important;
+        width: 100% !important;
     }
     .single-review .sr-content {
-        padding: 0;
-        width: 100%;
+        padding: 0 !important;
+        width: 100% !important;
     }
     .related-pro-carousel .owl-nav > div {
-        display: none;
+        display: none !important;
     }
     .related-pro-title::after {
-        background: #e5e5e5 none repeat scroll 0 0;
-        content: "";
-        display: none;
-        height: 1px;
-        position: absolute;
-        right: -110%;
-        top: 15px;
-        width: 100%;
-        z-index: 0;
+        background: #e5e5e5 none repeat scroll 0 0 !important;
+        content: "" !important;
+        display: none !important;
+        height: 1px !important;
+        position: absolute !important;
+        right: -110% !important;
+        top: 15px !important;
+        width: 100% !important;
+        z-index: 0 !important;
     }
     /*shopping-cart*/
     .sh-menu-item {
         display: block !important;
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
         margin-left: 0 !important;
         width: 85% !important;
     }
@@ -909,80 +905,80 @@ Version      : 1.0
     }
     .scca-head .scb-update {
         float: none !important;
-        margin: 15px 0 0 ;
+        margin: 15px 0 0  !important;
     }
     .sccb-shipping-input label {
-        display: block;
-        float: none;
+        display: block !important;
+        float: none !important;
     }
     .sccb-shipping-input select {
-        float: none;
-        margin: 10px 0 0;
+        float: none !important;
+        margin: 10px 0 0 !important;
     }
     .shopping-cart-content-box {
-        margin-bottom: 30px;
+        margin-bottom: 30px !important;
     }
     .sccb-discount-subscribe-box input[type="text"] {
-        width: 100%;
+        width: 100% !important;
     }
     .sccb-discount-subscribe-box .sccb-discount-subscribe {
         float: none !important;
-        margin: 15px 0 0;
+        margin: 15px 0 0 !important;
     }
     /*checkout*/
     .billing-address-input {
-        margin-bottom: 40px;
+        margin-bottom: 40px !important;
     }
     .billing-address-input label {
-        display: block;
-        float: none;
-        margin: 0 0 15px;
+        display: block !important;
+        float: none !important;
+        margin: 0 0 15px !important;
     }
     .billing-address-input select,
     .billing-address-input input[type="text"] {
-        display: block;
-        float: none;
-        width: 100%;
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
     }
     .cbab-account-password input[type="password"] {
-        float: none;
-        width: 100%;
+        float: none !important;
+        width: 100% !important;
     }
     .pcb-cuppon-input input[type="text"] {
-        margin: 0 0 20px;
-        width: 100%;
+        margin: 0 0 20px !important;
+        width: 100% !important;
     }
     .pcb-cuppon-input button {
-        float: none;
-        width: auto;
+        float: none !important;
+        width: auto !important;
     }
     /*about-us*/
     .why-our-shop {
-        margin-top: 60px;
+        margin-top: 60px !important;
     }
     .single-customer-review .cr-img {
-        width: 100%;
+        width: 100% !important;
     }
     .single-customer-review .cr-content {
-        width: 100%;
+        width: 100% !important;
     }
     /*blog*/
     .blog-sidebar {
-        margin: 60px 0 0;
+        margin: 60px 0 0 !important;
     }
     /*blog-details*/
     .blog-social {
-        float: none;
+        float: none !important;
     }
     .single-blog-comment .sbc-img {
-        width: 40%;
+        width: 40% !important;
     }
     .single-blog-comment .sbc-content {
-        padding: 0;
-        width: 100%;
+        padding: 0 !important;
+        width: 100% !important;
     }
     .single-blog-comment.sbc-second {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
     /*contact*/
     .contact-form-area {
@@ -992,33 +988,33 @@ Version      : 1.0
         padding-top: 30px !important;
     }
     .contact-form-head h1 {
-        display: none;
+        display: none !important;
     }
     .contact-form-head h2 {
-        font-size: 22px;
+        font-size: 22px !important;
     }
     .single-contact-service {
-        padding: 0 15px;
+        padding: 0 15px !important;
     }
     .scs-content {
-        padding: 0 0 0 15px;
+        padding: 0 0 0 15px !important;
     }
     /*404*/
     .error-inner {
-        left: 0;
+        left: 0 !important;
     }
     .error-title {
-        font-size: 80px;
-        line-height: 70px;
+        font-size: 80px !important;
+        line-height: 70px !important;
     }
     .error-search input[type="text"] {
-        width: 230px;
+        width: 230px !important;
     }
     /*coming*/
     .comingtitle2::after {
-        display: none;
+        display: none !important;
     }
     .coming .timer-area .cdown {
-        margin: 5px;
+        margin: 5px !important;
     }
 }
