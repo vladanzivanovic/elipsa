@@ -624,6 +624,12 @@ Version      : 1.0
 /* Wide Mobile Layout: 480px. */
 
 @media only screen and (min-width: 240px) and (max-width: 480px) {
+    .login-register-content::before {
+        left: 12%;
+    }
+    .login-register-content {
+        left: 0;
+    }
     .logo a {
         width: 130px;
         display: block;
@@ -980,7 +986,10 @@ Version      : 1.0
     }
     /*contact*/
     .contact-form-area {
-        padding: 84px 10px 70px;
+        padding: 0px 10px 70px !important;
+    }
+    .contact-area {
+        padding-top: 30px !important;
     }
     .contact-form-head h1 {
         display: none;
