@@ -1,0 +1,46 @@
+{% extends ('Site/base.html.twig') %}
+
+{% block bodyClass %}catalog-page{% endblock %}
+{% block title %}{{ 'title.catalog' | trans }}{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'title.catalog' | trans }], 'activePage': 'title.catalog' | trans}) }}
+
+    <!-- shop-left-sidebar-area-start -->
+    <div class="shop-left-sidebar-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="shop-grid">
+                        <div class="shop-grid-contents">
+                            <div class="search-criteria"></div>
+                            <div class="tab-content">
+                                <div id="grid" class="tab-pane fade in active">
+                                    <div class="grid-items">
+                                        <div class="row">
+                                            {% for image in images %}
+                                                <div class="col-md-3 col-xs-6">
+                                                    <div class="single-featured-item">
+                                                        <div class="sfi-img">
+                                                            <a href="{{ image.link }}" data-fancybox="catalog">
+                                                                <img src="{{ image.link }}" alt="{{ default_alt_tag }}">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/product.css') }}"/>
+{% endblock %}

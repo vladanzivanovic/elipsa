@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
+use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductHasCategories;
 use App\Repository\CategoryTranslationRepository;
@@ -14,7 +15,7 @@ use App\Repository\TagsRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ProductEditResponseFormatter
+final class CatalogResponseFormatter
 {
     use ImageTrait;
 
@@ -73,32 +74,12 @@ final class ProductEditResponseFormatter
     }
 
     /**
-     * @param Product $product
-     *
      * @return array
      */
-    public function formatResponse(Product $product): array
+    public function formatResponse(): array
     {
-        $rsTrans = $product->getByLocale('rs');
-        $enTrans = $product->getByLocale('en');
-
-        $product = [
-            'rs_title' => $rsTrans->getTitle(),
-            'rs_short_description' => $rsTrans->getShortDescription(),
-            'rs_description' => $rsTrans->getDescription(),
-            'en_title' => $enTrans->getTitle(),
-            'en_short_description' => $enTrans->getShortDescription(),
-            'en_description' => $enTrans->getDescription(),
-            'code' => $product->getCode(),
-            'price' => $product->getPrice(),
-            'discount' => $product->getDiscount(),
-            'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
-            'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'mainSlug'),
-            'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
-            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByProduct($product), 'product'),
-            'show_home_page' => $product->getShowHomePage(),
+        return [
+            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByType(Image::RELATED_TYPE_CATALOG), 'catalog'),
         ];
-
-        return $product;
     }
 }

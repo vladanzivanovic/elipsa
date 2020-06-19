@@ -22,6 +22,7 @@ import BlogController from "./BlogController";
 import BlogEditController from "./BlogEditController";
 import LoyaltyController from "./LoyaltyController";
 import BannersController from "./BannersController";
+import CatalogController from "./CatalogController";
 
 let routes = [
     {
@@ -175,6 +176,10 @@ let routes = [
     {
         name: 'admin.edit_banner_page',
         controller: BannerEditController,
+    },
+    {
+        name: 'admin.catalog_page',
+        controller: CatalogController,
     },
 ];
 

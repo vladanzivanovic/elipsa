@@ -104,6 +104,7 @@ title.shop_page: Proizvodi
 title.account_activation_page: Aktivacija naloga
 title.my_account: Moj nalog
 title.ask_us: Pitajte nas
+title.catalog: Katalog
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu

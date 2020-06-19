@@ -624,6 +624,12 @@ Version      : 1.0
 /* Wide Mobile Layout: 480px. */
 
 @media only screen and (min-width: 240px) and (max-width: 480px) {
+    .header-top {
+        padding: 0 !important;
+    }
+    .header-top .mobile-lang-bar {
+        margin-bottom: 15px !important;
+    }
     .logo a {
         width: 130px !important;
         display: block !important;
@@ -634,7 +640,22 @@ Version      : 1.0
     .top-cart > span {
         font-size: 17px !important;
     }
-
+    .language .menu-right-dropdown {
+        left: 50px;
+        width: 80px;
+        top: 50px;
+    }
+    .language > a::after {
+        content: "" !important;
+        font-family: FontAwesome !important;
+        position: absolute !important;
+        right: 50px !important;
+        top: 0px !important;
+    }
+    .language .active-list {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
     .top-cart > span i {
         font-size: 17px !important;
     }
@@ -667,7 +688,7 @@ Version      : 1.0
         display: none !important;
     }
     .login-register-content {
-        left: -12px !important;
+        left: 42px !important;
         width: 290px !important;
     }
     .login-register-content::before {
@@ -795,8 +816,12 @@ Version      : 1.0
     .h3-newsletter-input input[type="text"] {
         padding: 0 10px !important;
     }
-    .h3-newsletter-input input[type="submit"] {
-        position: inherit !important;
+    .h3-newsletter-input input[type="submit"],
+    .h3-newsletter-input > a {
+        left: 50% !important;
+        right: 0 !important;
+        transform: translate(-55%, 0) !important;
+        text-align: center !important;
     }
     /*shop*/
     .shop-sidebar-area {

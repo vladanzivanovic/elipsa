@@ -9,6 +9,7 @@ import LoyaltyPageController from "./LoyaltyPageController";
 import MyAccountPageController from "./MyAccountPageController";
 import AskUsPageController from "./AskUsPageController";
 import HomePageController from "./HomePageController";
+import CatalogPageController from "./CatalogPageController";
 
 let routes = [
     {
@@ -54,6 +55,10 @@ let routes = [
     {
         name: 'site.ask_us',
         controller: AskUsPageController,
+    },
+    {
+        name: 'site.catalog_page',
+        controller: CatalogPageController,
     },
 ];
 

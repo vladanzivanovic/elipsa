@@ -1,5 +1,28 @@
 <div class="header-top">
     <div class="container">
+        {% if is_mobile() %}
+            <div class="row mobile-lang-bar">
+                <div class="my-account col-xs-6 text-center">
+                    <a href="{{ path('site.account_page') }}">{{ 'navi.account' | trans }}</a>
+                </div>
+                <div class="language col-xs-6 text-center">
+                    {% if locale == 'en' %}
+                        <a id="current_language" href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
+                    {% else %}
+                        <a id="current_language" href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
+                    {% endif %}
+                    <ul id="locale-dropdown" class="menu-right-dropdown">
+                        <li>
+                            {% if locale == 'en' %}
+                                <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
+                            {% else %}
+                                <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col-md-5 col-sm-4 col-xs-12">
                 <div class="header-top-left">
@@ -8,11 +31,9 @@
                     </div>
                 </div>
             </div>
-{#            {% if false == is_mobile() and false == is_tablet() %}#}
-                <div class="col-md-7 col-sm-8 col-xs-12">
-                    {{ include('Site/Components/login.html.twig') }}
-                </div>
-{#            {% endif %}#}
+            <div class="col-md-7 col-sm-8 col-xs-12">
+                {{ include('Site/Components/login.html.twig') }}
+            </div>
         </div>
     </div>
 </div>

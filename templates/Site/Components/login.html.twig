@@ -1,14 +1,14 @@
 {% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
 
 <div class="header-top-right">
-    <div class="login-or-register">
+    <div class="login-or-register {{ is_mobile() ? 'col-xs-7 row' : '' }}">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <a href="{{ path('site.logout') }}" id="logout"><span class="d-inline-block letter-capitalize">{{ 'logout.text' | trans }}</span></a>
         {% else %}
             <span id="login_register"><span class="d-inline-block letter-capitalize">{{ 'login.text' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration.text' | trans }}</span></span>
             <div class="login-register-content" id="login_register_content">
                 <div class="lrc-login">
-                    <h4 class="lrc-title letter-capitalize">{{ 'login' | trans }}</h4>
+                    <h4 class="lrc-title letter-capitalize">{{ 'login.text' | trans }}</h4>
                     <div class="lrc-login-form">
                         <form id="login-form" enctype="multipart/form-data">
                             <div class="account-name">
@@ -59,7 +59,7 @@
     </div>
 
     {% set cartData = cart_list(app.request.locale) %}
-    <div class="top-cart">
+    <div class="top-cart {{ is_mobile() ? 'col-xs-5 row' : '' }}">
         <span id="top_cart" tabindex="3" class="letter-capitalize"><i class="fa fa-shopping-basket"></i><span class="letter-capitalize d-inline-block">{{ 'cart.name' | trans }}</span> <span class="cart-number">(<span class="cart-length">{{ cartData.products | length }}</span>)</span></span>
         <div class="my-cart" id="my_cart">
             <div class="my-cart-products">

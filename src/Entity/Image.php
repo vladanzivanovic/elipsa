@@ -16,6 +16,7 @@ class Image
     public const RELATED_TYPE_BANNER = 3;
     public const RELATED_TYPE_LOCATION = 4;
     public const RELATED_TYPE_BLOG = 5;
+    public const RELATED_TYPE_CATALOG = 6;
 
     /**
      * @ORM\Id()

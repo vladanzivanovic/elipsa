@@ -36,6 +36,12 @@
                     <span class="link-title">Loyalty</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.catalog_page' ? 'active' : '' }}">
+                <a href="{{ path('admin.catalog_page') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Katalog</span>
+                </a>
+            </li>
             <li class="nav-item nav-category">Podešavanja</li>
             <li class="nav-item">
                 <a class="nav-link {{ routeName() == 'admin.dashboard' ? 'active' : '' }}" data-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">

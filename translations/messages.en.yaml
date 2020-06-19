@@ -112,6 +112,7 @@ title.shop_page: Shop
 title.account_activation_page: Account activation
 title.my_account: My account
 title.ask_us: Ask us
+title.catalog: Catalogue
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address

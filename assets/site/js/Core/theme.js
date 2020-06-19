@@ -56,6 +56,7 @@ require('webpack-jquery-ui');
 (function($) {
     "use strict";
 
+    let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
     /*---------------------
     preloader
@@ -305,41 +306,6 @@ require('webpack-jquery-ui');
     }
     h2_testimonial_carousel();
 
-
-    /*---------------------
-    feature-pro-carousel
-    --------------------- */
-    // function feature_pro_carousel() {
-    //     var owl = $(".feature-pro-carousel");
-    //     owl.owlCarousel({
-    //         loop: true,
-    //         margin: 0,
-    //         responsiveClass: true,
-    //         navigation: true,
-    //         navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-    //         nav: true,
-    //         items: 3,
-    //         smartSpeed: 2000,
-    //         dots: true,
-    //         autoplay: true,
-    //         autoplayTimeout: 4000,
-    //         center: false,
-    //         responsive: {
-    //             0: {
-    //                 items: 2,
-    //                 center: true,
-    //             },
-    //             480: {
-    //                 items: 2
-    //             },
-    //             760: {
-    //                 items: 3
-    //             }
-    //         }
-    //     });
-    // }
-    // feature_pro_carousel();
-
     /*------------------------------
     h3-testimonial-carousel
     ---------------------------- */
@@ -527,6 +493,8 @@ require('webpack-jquery-ui');
                 $(element).removeClass('open');
             }
         })
+
+        $('.active-list').removeClass('active-list');
     })
 
 

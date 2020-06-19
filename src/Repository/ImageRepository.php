@@ -81,6 +81,26 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param int $type
+     *
+     * @return array
+     */
+    public function getByType(int $type): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i.id',
+                'i.name as fileName',
+                'i.isMain',
+            )
+            ->where('i.relatedToType = :type')
+            ->setParameter('type', $type)
+            ->orderBy('i.id');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * @param Blog $blog
      *
      * @return array

@@ -69,6 +69,21 @@ class CoreController {
 
             handler.addUser();
         });
+
+        $('#current_language').on('click touchend', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const listElm = $(e.currentTarget).next();
+
+            if (!$(listElm).hasClass('active-list')) {
+                $(listElm).addClass('active-list');
+
+                return;
+            }
+
+            $(listElm).removeClass('active-list');
+        });
     }
 }
 

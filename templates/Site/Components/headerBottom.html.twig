@@ -12,7 +12,7 @@
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
+                            <li><a href="{{ path('site.catalog_page', {'_locale': locale}) }}">{{ 'navi.catalogue' | trans }}</a></li>
                             <li><a href="{{ path('site.shop_page') }}">{{ 'navi.shop' | trans }}</a>
                                 <div class="mega-menu-area">
                                     <div class="row">
@@ -119,7 +119,7 @@
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
+                            <li><a href="{{ path('site.catalog_page', {'_locale': locale}) }}">{{ 'navi.catalogue' | trans }}</a></li>
                             <li><a href="{{ path('site.shop_page') }}">{{ 'navi.shop' | trans }}</a>
                                 <ul>
                                     {% for main in categories %}
@@ -144,6 +144,7 @@
                             <li><a href="{{ path('site.ask_us') }}">{{ 'navi.ask_us' | trans }}</a></li>
                             <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
                         </ul>
+
                     </nav>
                 </div>
             </div>

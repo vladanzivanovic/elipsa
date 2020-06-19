@@ -6,7 +6,6 @@
 {% set search = search_criteria is not null ? search_criteria.all : [] %}
 
 {% block content %}
-    <div id="page-loader" class="hide"></div>
     {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'title.shop_page' | trans}) }}
 
     {% set pagination = products.pagination %}
