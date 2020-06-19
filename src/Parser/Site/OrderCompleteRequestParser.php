@@ -130,6 +130,7 @@ final class OrderCompleteRequestParser
             $address->setCity($bag->get('city'));
             $address->setAddress($bag->get('address'));
             $address->setPhone($bag->get('mobile_phone'));
+            $address->setZipCode($bag->get('zip_code'));
         }
 
         $order->setBillingAddress($address);
