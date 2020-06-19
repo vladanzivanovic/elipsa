@@ -638,7 +638,7 @@ Version      : 1.0
         width: 100% !important;
     }
     .top-cart > span {
-        font-size: 17px !important;
+        font-size: 15px !important;
     }
     .language .menu-right-dropdown {
         left: 50px;
@@ -655,12 +655,13 @@ Version      : 1.0
     .language .active-list {
         visibility: visible !important;
         opacity: 1 !important;
+        left: 35px !important;
     }
     .top-cart > span i {
-        font-size: 17px !important;
+        font-size: 15px !important;
     }
     .login-or-register > span {
-        font-size: 17px !important;
+        font-size: 15px !important;
     }
     /*modal*/
     .product-modal.modal-dialog {
