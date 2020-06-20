@@ -882,9 +882,9 @@ Version      : 1.0
         width: 100% !important;
     }
     .product-tab-menu .product-tab li {
-        display: inline-block !important;
-        margin-bottom: 30px !important;
-        width: 30% !important;
+        display: inline-block;
+        margin-bottom: 30px;
+        width: 30%;
     }
     .spd-add-cart .quantity {
         margin-bottom: 10px !important;
