@@ -7100,7 +7100,7 @@ button.accordion.active {
 
 .contact-area {
     background: #fff;
-    padding: 100px 0 0;
+    padding: 0;
 }
 
 .contact-form-area {
@@ -7181,12 +7181,19 @@ button.accordion.active {
 
 .contact-service {
     background: #fff none repeat scroll 0 0;
-    padding: 71px 0 58px;
+    padding: 0px 0 20px;
     position: relative;
-    top: 116px;
+    top: 35px;
     z-index: 9;
 }
 
+.contact-page #map_canvas.desktop {
+    overflow: visible !important;
+    margin-top: 50px;
+}
+.contact-page #map_canvas.mobile {
+    overflow-y: visible !important;
+}
 .single-contact-service {
     padding: 0 40px;
 }

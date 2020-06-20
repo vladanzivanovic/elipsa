@@ -106,6 +106,7 @@ title.my_account: Moj nalog
 title.ask_us: Pitajte nas
 title.catalog: Katalog
 title.about_us: O nama
+title.contact_us: Kontakt
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -132,6 +133,7 @@ city: mesto
 zip_code: poštanski broj
 email: email adresa
 mobile_telephone: mobilni telefon
+telephone: telefon
 create_account: napravite nalog
 password: lozinka
 Password: Lozinka
@@ -249,3 +251,5 @@ newsletter.notShowBtn: ne prikazuj više
 newsletter.existingUser: Vi ste se već prijavili na newsletter
 newsletter.success.add.message: Uspešno ste se prijavili na newsletter
 
+contact.telephone.main: Fiksni
+contact.telephone.mobile: Mobilni

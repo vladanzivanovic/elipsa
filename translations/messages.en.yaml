@@ -114,6 +114,7 @@ title.my_account: My account
 title.ask_us: Ask us
 title.catalog: Catalogue
 title.about_us: About us
+title.contact_us: Contact
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -140,6 +141,7 @@ city: city
 zip_code: postal code
 email: email address
 mobile_telephone: mobile phone
+telephone: telephone
 create_account: create account
 password: password
 Password: Password
@@ -255,3 +257,6 @@ newsletter.text: Be the first informed about everything.
 newsletter.notShowBtn: don't show anymore.
 newsletter.existingUser: You already subscribed on newsletter
 newsletter.success.add.message: You are successfully subscribed on newsletter
+
+contact.telephone.main: Main
+contact.telephone.mobile: Mibile
