@@ -1,0 +1,25 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set titleTrans = 'title.about_us' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+{% block bodyClass %}about-us-page{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans}) }}
+
+    <!-- about-us-area-start -->
+    <div class="about-us-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="some-words-content">
+                        <h2 class="about-us-title">{{ titleTrans }}</h2>
+                        {{ aboutUs | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- about-us-area-end -->
+{% endblock %}

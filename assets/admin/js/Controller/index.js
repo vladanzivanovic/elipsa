@@ -23,6 +23,7 @@ import BlogEditController from "./BlogEditController";
 import LoyaltyController from "./LoyaltyController";
 import BannersController from "./BannersController";
 import CatalogController from "./CatalogController";
+import AboutUsPageController from "./AboutUsPageController";
 
 let routes = [
     {
@@ -180,6 +181,10 @@ let routes = [
     {
         name: 'admin.catalog_page',
         controller: CatalogController,
+    },
+    {
+        name: 'admin.about_us_page',
+        controller: AboutUsPageController,
     },
 ];
 

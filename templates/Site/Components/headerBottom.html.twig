@@ -7,7 +7,7 @@
                     <nav>
                         <ul class="menu-list">
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.about_us' | trans }}</a>
+                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul class="menu-dropdown">
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
@@ -114,7 +114,7 @@
                     <nav id="mobile_menu_active">
                         <ul class="menu-list">
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
-                            <li><a href="{{ path('site.shop_page') }}">{{ 'navi.about_us' | trans }}</a>
+                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul>
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>

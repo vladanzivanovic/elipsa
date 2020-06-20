@@ -22,7 +22,7 @@ class Settings
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $value;
 
@@ -30,6 +30,11 @@ class Settings
      * @ORM\Column(type="string", length=100)
      */
     private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=2, nullable=true)
+     */
+    private $locale;
 
     public function getId(): ?int
     {
@@ -68,6 +73,18 @@ class Settings
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }

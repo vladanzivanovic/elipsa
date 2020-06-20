@@ -42,6 +42,12 @@
                     <span class="link-title">Katalog</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.about_us_page' ? 'active' : '' }}">
+                <a href="{{ path('admin.about_us_page') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">O nama</span>
+                </a>
+            </li>
             <li class="nav-item nav-category">Podešavanja</li>
             <li class="nav-item">
                 <a class="nav-link {{ routeName() == 'admin.dashboard' ? 'active' : '' }}" data-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">
