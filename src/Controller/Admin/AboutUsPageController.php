@@ -43,7 +43,7 @@ final class AboutUsPageController extends AbstractController
         foreach (explode('|', $this->getParameter('locales')) as $locale) {
             $settings = $this->settingsRepository->findOneBy(['locale' => $locale, 'slug' => 'ABOUT_US']);
 
-            $returnData[$locale.'_description'] = $settings->getValue();
+            $returnData[$locale.'_description'] = null !== $settings ? $settings->getValue() : '';
         }
         return $returnData;
     }
