@@ -18,6 +18,7 @@ class AboutUsPageController {
 
         this.summernote.initialize($(this.mapper.desc_rs), this.createCallBacksSummernote(this.mapper.desc_rs));
         this.summernote.initialize($(this.mapper.desc_en), this.createCallBacksSummernote(this.mapper.desc_en));
+        $('.dropdown-toggle').dropdown();
 
         this.registerEvents();
     }

@@ -2,11 +2,8 @@ import BlogEditMapper from "../Mapper/BlogEditMapper";
 import SummerNote from "../Services/SummerNote";
 import BlogEditService from "../Services/BlogEditService";
 import BlogEditHandler from "../Handler/BlogEditHandler";
-import BlogEditValidator from "../Validators/BlogEditValidator";
 import DropZone from "../../../js/Services/DropZoneService";
 require ('select2/dist/js/select2.full.min');
-
-require('select2/dist/js/select2.full.min');
 
 class BlogEditController {
     constructor() {
