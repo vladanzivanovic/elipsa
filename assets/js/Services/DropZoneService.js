@@ -26,10 +26,7 @@ export default (() => {
             Cache.set('adsDeletedFiles', []);
         }
 
-        for (var key in Cache.get('adsFiles')) {
-
-            this.reset(key);
-        }
+        this.reset(parentWrapper.data('files'));
 
         Private.enableDropzone();
 
@@ -45,7 +42,7 @@ export default (() => {
         if ($name) {
             Private.arrayName = $name;
         }
-        if (Cache.get('adsFiles').hasOwnProperty(Private.arrayName)) {
+        if (!Cache.get('adsFiles').hasOwnProperty(Private.arrayName)) {
             Cache.get('adsFiles')[Private.arrayName] = [];
             Cache.get('adsDeletedFiles')[Private.arrayName] = [];
             Cache.get('adsFileNames')[Private.arrayName] = [];

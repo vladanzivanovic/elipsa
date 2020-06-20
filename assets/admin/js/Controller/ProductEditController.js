@@ -16,7 +16,7 @@ class ProductEditController {
 
     initializeForm()
     {
-        this.dropZone.init(this.mapper.form, {'colors': COLORS});
+        this.dropZone.init($('[data-files="mainImages"]'), {'colors': COLORS});
         this.initializeSelect();
     }
 

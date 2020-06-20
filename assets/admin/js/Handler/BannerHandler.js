@@ -17,6 +17,10 @@ class BannerHandler {
             name: 'images',
             value: JSON.stringify(DropZoneService().getFilesArray('banner')),
         });
+        data.push({
+            name: 'images_mobile',
+            value: JSON.stringify(DropZoneService().getFilesArray('banner_mobile')),
+        });
 
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_banner_api', {id: ID});

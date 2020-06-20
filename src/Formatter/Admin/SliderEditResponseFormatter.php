@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
+use App\Entity\Image;
 use App\Entity\Slider;
+use App\Repository\ImageRepository;
 use Symfony\Component\Routing\RouterInterface;
 
 final class SliderEditResponseFormatter
@@ -15,16 +17,21 @@ final class SliderEditResponseFormatter
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var ImageRepository
+     */
+    private $imageRepository;
 
     /**
-     * SliderEditResponseFormatter constructor.
-     *
      * @param RouterInterface $router
+     * @param ImageRepository $imageRepository
      */
     public function __construct(
-        RouterInterface $router
+        RouterInterface $router,
+        ImageRepository $imageRepository
     ) {
         $this->router = $router;
+        $this->imageRepository = $imageRepository;
     }
 
     /**
@@ -37,6 +44,17 @@ final class SliderEditResponseFormatter
         $rsTrans = $slider->getByLocale('rs');
         $enTrans = $slider->getByLocale('en');
 
+        $images = $this->getImages($slider);
+
+        $desktopImage = $this->imagesFormatter($this->router, [$images['desktop']], 'slider');
+
+        $imagesArray = ['desktop' => $desktopImage];
+
+
+        if (isset($images['mobile'])) {
+            $imagesArray['mobile'] = $this->imagesFormatter($this->router, [$images['mobile']], 'slider');
+        }
+
         return [
             'rs_description' => $rsTrans->getDescription(),
             'rs_button' => $rsTrans->getButtonText(),
@@ -45,7 +63,7 @@ final class SliderEditResponseFormatter
             'en_button' => $enTrans->getButtonText(),
             'en_link' => $enTrans->getButtonLink(),
             'position' => $slider->getTextPosition(),
-            'selectedImages' => $this->imagesFormatter($this->router, [$this->getImage($slider)], 'slider'),
+            'selectedImages' => $imagesArray,
         ];
     }
 
@@ -54,14 +72,28 @@ final class SliderEditResponseFormatter
      *
      * @return array
      */
-    private function getImage(Slider $slider): array
+    private function getImages(Slider $slider): array
     {
         $image = $slider->getImage();
 
-        return [
-            'id' => $image->getId(),
-            'fileName' => $image->getName(),
-            'isMain' => $image->getIsMain(),
+        $mobileImage = $this->imageRepository->findOneBy(['parentImage' => $image->getName(), 'device' => Image::DEVICE_MOBILE]);
+
+        $images = [
+            'desktop' => [
+                'id' => $image->getId(),
+                'fileName' => $image->getName(),
+                'isMain' => $image->getIsMain(),
+            ],
         ];
+
+        if (null !== $mobileImage) {
+            $images['mobile'] = [
+                'id' => $mobileImage->getId(),
+                'fileName' => $mobileImage->getName(),
+                'isMain' => $mobileImage->getIsMain(),
+            ];
+        }
+
+        return $images;
     }
 }

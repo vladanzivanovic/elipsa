@@ -8,7 +8,7 @@ class CatalogController {
         this.handler = new CatalogHandler();
 
         this.dropZone = DropZoneService();
-        this.dropZone.init(this.mapper.form);
+        this.dropZone.init($('[data-files="catalog"]'));
 
         if (IMAGES.length > 0) {
             this.dropZone.setFiles(IMAGES, 'catalog');

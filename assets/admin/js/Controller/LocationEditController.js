@@ -10,7 +10,7 @@ class LocationEditController {
         this.gmapApi = new MapsService();
 
         this.dropZone = DropZoneService();
-        this.dropZone.init(this.mapper.form);
+        this.dropZone.init($('[data-files="location"]'));
 
         this.gmapApi.load().then(() => {
             if (IS_EDIT) {

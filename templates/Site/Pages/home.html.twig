@@ -8,7 +8,7 @@
         <!-- Slider Image -->
         <div id="home3_slider" class="nivoSlider slider-image">
             {% for slider in sliders %}
-                <img src="{{ slider['image_link'] }}" alt="" title="#{{ slider['id'] }}" />
+                <img src="{{ is_mobile() ? slider.mobile_image : slider.image_link }}" alt="" title="#{{ slider.id }}" />
             {% endfor %}
         </div>
         {% for slider in sliders %}
@@ -191,7 +191,7 @@
     </div>
     <!-- featured-itema-area-end -->
     <!-- home3-newsletter-area-start -->
-    {% set loyaltyBanner = banner(2, 'loyalty_banner', locale) %}
+    {% set loyaltyBanner = banner(2, 'loyalty_banner', locale, is_mobile()) %}
     {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ loyaltyBanner.image_link ~") no-repeat scroll left top / cover" %}
     <div class="home3-newsletter-area" style="{{ bannerLink }}">
         <div class="container">

@@ -18,6 +18,9 @@ class Image
     public const RELATED_TYPE_BLOG = 5;
     public const RELATED_TYPE_CATALOG = 6;
 
+    public const DEVICE_DESKTOP = 1;
+    public const DEVICE_MOBILE = 2;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -56,6 +59,16 @@ class Image
      * @var bool
      */
     private $isDeleted = false;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $device;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, length=255)
+     */
+    private $parentImage;
 
     public function getId(): ?int
     {
@@ -141,6 +154,30 @@ class Image
     public function setIsDeleted(bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    public function getDevice(): ?int
+    {
+        return $this->device;
+    }
+
+    public function setDevice(int $device): self
+    {
+        $this->device = $device;
+
+        return $this;
+    }
+
+    public function getParentImage(): ?string
+    {
+        return $this->parentImage;
+    }
+
+    public function setParentImage(?string $parentImage): self
+    {
+        $this->parentImage = $parentImage;
 
         return $this;
     }

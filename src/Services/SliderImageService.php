@@ -52,10 +52,11 @@ final class SliderImageService
     /**
      * @param Slider $slider
      * @param array  $data
+     * @param int    $device
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(Slider $slider, array $data): void
+    public function setImages(Slider $slider, array $data, int $device): void
     {
         $rootDir = $this->bag->get('upload_dir');
         $tmpDir = $this->bag->get('upload_tmp_dir');
@@ -113,10 +114,17 @@ final class SliderImageService
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
+            $mediaObj->setDevice($device);
+
+            if ($device === Image::DEVICE_MOBILE) {
+                $mediaObj->setParentImage($slider->getImage()->getName());
+            }
 
             $this->imageRepository->persist($mediaObj);
 
-            $slider->setImage($mediaObj);
+            if ($device === Image::DEVICE_DESKTOP) {
+                $slider->setImage($mediaObj);
+            }
         }
 
         if (count($exceptions) > 0) {

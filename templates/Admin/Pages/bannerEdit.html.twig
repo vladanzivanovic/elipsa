@@ -44,7 +44,14 @@
                     <div class="card-body">
                         <h6 class="card-title">Slika</h6>
                         <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desktop slika</label>
                             {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Mobilna slika</label>
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner_mobile', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
+                            </div>
                         </div><!--Row-->
                     </div>
                 </div>

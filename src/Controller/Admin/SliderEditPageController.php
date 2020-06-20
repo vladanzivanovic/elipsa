@@ -57,8 +57,6 @@ final class SliderEditPageController extends AbstractController
      */
     public function update(Slider $slider): array
     {
-        $locales = explode('|', $this->bag->get('locales'));
-
         return $this->responseFormatter->formatResponse($slider);
     }
 }

@@ -133,6 +133,7 @@ final class LocationImageService
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
+            $mediaObj->setDevice(Image::DEVICE_DESKTOP);
 
             $this->imageRepository->persist($mediaObj);
 

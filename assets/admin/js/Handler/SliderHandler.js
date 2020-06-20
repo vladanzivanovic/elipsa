@@ -19,6 +19,11 @@ class SliderHandler {
             value: JSON.stringify(DropZoneService().getFilesArray('slider')),
         });
 
+        data.push({
+            name: 'images_mobile',
+            value: JSON.stringify(DropZoneService().getFilesArray('slider_mobile')),
+        });
+
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_slider_api', {id: ID});
             type = 'PUT';

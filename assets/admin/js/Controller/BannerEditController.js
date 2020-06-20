@@ -6,11 +6,16 @@ class BannerEditController {
     constructor() {
         this.mapper = new BannerEditMapper();
 
-        this.dropZone = DropZoneService();
-        this.dropZone.init(this.mapper.form);
+        this.dropZoneBanner = DropZoneService();
+        this.dropZoneBannerMobile = DropZoneService();
+        this.dropZoneBanner.init($('[data-files="banner"]'));
+        this.dropZoneBannerMobile.init($('[data-files="banner_mobile"]'));
 
         if (IS_EDIT) {
-            this.dropZone.setFiles(IMAGES, 'banner');
+            this.dropZoneBanner.setFiles(IMAGES.desktop, 'banner');
+            if (IMAGES.mobile) {
+                this.dropZoneBannerMobile.setFiles(IMAGES.mobile, 'banner_mobile');
+            }
         }
 
         this.registerEvents();

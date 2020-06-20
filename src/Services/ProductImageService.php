@@ -123,7 +123,6 @@ final class ProductImageService
                 $image['file'] = $rootDir.$tmpDir.$image['fileName'];
                 $file = $this->img->setFileObject($image);
             } catch (FileNotFoundException $exception) {
-                var_dump($exception->getMessage());
                 $exceptions[] = $image['fileName'];
 
                 continue;
@@ -144,6 +143,8 @@ final class ProductImageService
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
+            $mediaObj->setDevice(Image::DEVICE_DESKTOP);
+
 
             $this->imageRepository->persist($mediaObj);
 

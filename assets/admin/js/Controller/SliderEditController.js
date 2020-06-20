@@ -7,10 +7,15 @@ class SliderEditController {
         this.mapper = new SliderEditMapper();
 
         this.dropZone = DropZoneService();
-        this.dropZone.init(this.mapper.form);
+        this.dropZoneMobile = DropZoneService();
+        this.dropZone.init($('[data-files="slider"]'));
+        this.dropZoneMobile.init($('[data-files="slider_mobile"]'));
 
         if (IS_EDIT) {
-            this.dropZone.setFiles(IMAGES, 'slider');
+            this.dropZone.setFiles(IMAGES.desktop, 'slider');
+            if (IMAGES.mobile) {
+                this.dropZoneMobile.setFiles(IMAGES.mobile, 'slider_mobile');
+            }
         }
 
         this.registerEvents();
