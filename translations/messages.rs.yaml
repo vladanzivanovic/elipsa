@@ -36,6 +36,7 @@ navi:
 
 serbian: Srpski
 english: Engleski
+serbia: Srbija
 
 size: veličina
 color: boja
@@ -253,3 +254,5 @@ newsletter.success.add.message: Uspešno ste se prijavili na newsletter
 
 contact.telephone.main: Fiksni
 contact.telephone.mobile: Mobilni
+
+links: linkovi

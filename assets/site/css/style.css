@@ -7167,7 +7167,8 @@ button.accordion.active {
     width: 100%;
 }
 
-.cfc-input-box button.submit {
+.cfc-input-box button.submit,
+#newsletter_form_footer button.submit {
     background: #a70303 none repeat scroll 0 0;
     border: 0 none;
     color: #fff;

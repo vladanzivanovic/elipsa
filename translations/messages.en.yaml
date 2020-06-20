@@ -36,6 +36,7 @@ navi:
 
 serbian: Serbian
 english: English
+serbia: Serbia
 
 size: size
 color: color
@@ -260,3 +261,5 @@ newsletter.success.add.message: You are successfully subscribed on newsletter
 
 contact.telephone.main: Main
 contact.telephone.mobile: Mibile
+
+links: links

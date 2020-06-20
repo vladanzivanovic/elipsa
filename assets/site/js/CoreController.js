@@ -67,7 +67,16 @@ class CoreController {
 
             const handler = new NewsLetterHandler();
 
-            handler.addUser();
+            handler.addUser(this.mapper.newsLetterForm, true);
+        });
+
+        $(document).on('click touchend', this.mapper.newsLetterSubmitBtnFooter, e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const handler = new NewsLetterHandler();
+
+            handler.addUser(this.mapper.newsLetterFormFooter);
         });
 
         $('#current_language').on('click touchend', e => {
