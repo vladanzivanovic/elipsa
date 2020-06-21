@@ -38,7 +38,7 @@ final class HomePageResponseFormatter
         $data['sliders'] = array_map(function ($slider) {
             $slider['description'] = explode(PHP_EOL, $slider['description']);
             $slider['image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['image'], 'filter' => 'site_slider']);
-            $slider['mobile_image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['mobile_image'], 'filter' => 'site_slider']);
+            $slider['mobile_image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['mobile_image'], 'filter' => 'site_slider_mobile']);
             $slider['position'] = ConstantsHelper::getConstantName((string) $slider['position'], 'POSITION', Slider::class);
 
             return $slider;

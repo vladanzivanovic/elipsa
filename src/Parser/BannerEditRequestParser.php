@@ -68,7 +68,9 @@ final class BannerEditRequestParser
         $this->setLocale($bag, $banner);
 
         $this->imageService->setImages($banner, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);
-        $this->imageService->setImages($banner, json_decode($bag->get('images_mobile'), true), Image::DEVICE_MOBILE);
+        if ($bag->has('images_mobile')) {
+            $this->imageService->setImages($banner, json_decode($bag->get('images_mobile'), true), Image::DEVICE_MOBILE);
+        }
 
         return $banner;
     }

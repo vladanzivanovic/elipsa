@@ -59,6 +59,7 @@ final class RegistrationRequestParser
                 ->setRePassword($bag->get('registration_re_password'))
                 ->setStatus(User::STATUS_PENDING)
                 ->setResetToken($token)
+                ->setRoles(['ROLE_USER'])
                 ->setResetRequestAt(new \DateTime());
         }
 

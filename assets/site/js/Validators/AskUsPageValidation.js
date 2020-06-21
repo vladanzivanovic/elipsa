@@ -24,9 +24,8 @@ class AskUsPageValidation {
                     required: true,
                     email   : true
                 },
-                occupation: 'required',
-                mobile_phone : 'required',
-                rate: 'required',
+                subject: 'required',
+                note : 'required',
             },
         };
         $.extend(options, window.helpBlock);

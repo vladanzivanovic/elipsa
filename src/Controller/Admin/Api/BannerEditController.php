@@ -27,8 +27,6 @@ final class BannerEditController extends AbstractController
     private $bannerHandler;
 
     /**
-     * SliderEditController constructor.
-     *
      * @param BannerEditRequestParser $requestParser
      * @param BannerHandler           $bannerHandler
      */

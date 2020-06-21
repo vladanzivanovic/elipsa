@@ -94,6 +94,12 @@ liip_imagine :
             filters :
                 downscale:
                     max: [ 1914, 941 ]
+        site_slider_mobile :
+            cache: ads_photos
+            quality : 100
+            filters :
+                downscale:
+                    max: [ 500, 439 ]
         home_banner_side :
             cache: ads_photos
             quality : 100

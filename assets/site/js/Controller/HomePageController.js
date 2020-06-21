@@ -15,7 +15,7 @@ class HomePageController {
             items: 1,
             smartSpeed: 2000,
             dots: true,
-            autoplay: false,
+            autoplay: true,
             autoplayTimeout: 4000,
             center: false,
             responsive: {

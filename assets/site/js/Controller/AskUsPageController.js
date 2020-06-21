@@ -8,6 +8,8 @@ class AskUsPageController {
         this.validator = askUsPageValidation;
         this.handler = new AskUsPageHandler();
 
+        this.validator.validate();
+
         this.registerEvents();
     }
 

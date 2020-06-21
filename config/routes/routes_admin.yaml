@@ -38,7 +38,7 @@ admin.home_banners:
   path: /home-banners
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
-    template: Admin/Pages/banners.html.twig
+    template: Admin/Pages/homeBanners.html.twig
 
 admin.coupons:
   path: /promo-coupons

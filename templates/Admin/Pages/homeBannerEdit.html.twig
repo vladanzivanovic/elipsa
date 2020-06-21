@@ -138,7 +138,7 @@
     <script>
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
-
+        const IS_SPEED_LINKS = true;
 
         {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');

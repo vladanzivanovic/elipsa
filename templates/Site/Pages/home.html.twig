@@ -8,7 +8,7 @@
         <!-- Slider Image -->
         <div id="home3_slider" class="nivoSlider slider-image">
             {% for slider in sliders %}
-                <img src="{{ is_mobile() ? slider.mobile_image : slider.image_link }}" alt="" title="#{{ slider.id }}" />
+                <img src="{{ is_mobile() ? slider.mobile_image_link : slider.image_link }}" alt="" title="#{{ slider.id }}" />
             {% endfor %}
         </div>
         {% for slider in sliders %}
@@ -17,52 +17,33 @@
                 <div class="slider-progress"></div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12 {{ is_mobile() or is_tablet() ? 'text-center' : 'text-' ~ slider['position'] }}">
-                            {% if false == is_mobile() and false == is_tablet() %}
-                                <div class="slide3-text hidden-xs">
-                                    <div class="middle-text">
-                                        <div class="cap-dec animated bounceIn">
-                                            <h6>{{ slider['description'][0] is defined ? slider['description'][0] : '&nbsp;' }}</h6>
-                                        </div>
-                                        <div class="cap-title animated zoomIn">
-                                            <h2>{{ slider['description'][1] is defined ? slider['description'][1] | capitalize : '&nbsp;' }}</h2>
-                                        </div>
-                                        <div class="cap-title-2 animated zoomIn">
-                                            <h3>{{ slider['description'][2] is defined ? slider['description'][2] : '&nbsp;' }}</h3>
-                                        </div>
-                                        <div class="cap-text animated zoomIn">
-                                            <p>{{ slider['description'][3] is defined ? slider['description'][3] : '&nbsp;' }}</p>
-                                            <span>{{ slider['description'][4] is defined ? slider['description'][4] : '&nbsp;' }}</span>
-                                        </div>
-                                        <div class="cap-view animated bounceInUp">
-                                            <a class="hvr-bs" href="{{ slider['button_link'] }}">{{ slider['button_text'] }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% else %}
+{#                        <div class="col-xs-12 {{ is_mobile() or is_tablet() ? 'text-center' : 'text-' ~ slider['position'] }}">#}
+                        <div class="col-xs-12 {{ 'text-' ~ slider['position'] }}">
+{#                            {% if false == is_mobile() and false == is_tablet() %}#}
+{#                                <div class="slide3-text hidden-xs">#}
                                 <div class="slide3-text">
                                     <div class="middle-text">
                                         {% if slider['description'][0] is defined %}
-                                            <div class="cap-dec animated bounceIn">
-                                                <h6>{{ slider['description'][0] }}</h6>
-                                            </div>
+                                        <div class="cap-dec animated bounceIn">
+                                            <h6>{{ slider['description'][0] is defined ? slider['description'][0] : '&nbsp;' }}</h6>
+                                        </div>
                                         {% endif %}
                                         {% if slider['description'][1] is defined %}
-                                            <div class="cap-title animated zoomIn">
-                                                <h2>{{ slider['description'][1] | capitalize }}</h2>
-                                            </div>
-                                        {% endif %}
+                                        <div class="cap-title animated zoomIn">
+                                            <h2>{{ slider['description'][1] is defined ? slider['description'][1] | capitalize : '&nbsp;' }}</h2>
+                                            {% endif %}
+                                        </div>
                                         {% if slider['description'][2] is defined %}
-                                            <div class="cap-title-2 animated zoomIn">
-                                                <h3>{{ slider['description'][2] }}</h3>
-                                            </div>
+                                        <div class="cap-title-2 animated zoomIn">
+                                            <h3>{{ slider['description'][2] is defined ? slider['description'][2] : '&nbsp;' }}</h3>
+                                        </div>
                                         {% endif %}
                                         <div class="cap-text animated zoomIn">
                                             {% if slider['description'][3] is defined %}
-                                                <p>{{ slider['description'][3] }}</p>
+                                            <p>{{ slider['description'][3] is defined ? slider['description'][3] : '&nbsp;' }}</p>
                                             {% endif %}
                                             {% if slider['description'][4] is defined %}
-                                                <span>{{ slider['description'][4] }}</span>
+                                            <span>{{ slider['description'][4] is defined ? slider['description'][4] : '&nbsp;' }}</span>
                                             {% endif %}
                                         </div>
                                         <div class="cap-view animated bounceInUp">
@@ -70,7 +51,38 @@
                                         </div>
                                     </div>
                                 </div>
-                            {% endif %}
+{#                            {% else %}#}
+{#                                <div class="slide3-text">#}
+{#                                    <div class="middle-text">#}
+{#                                        {% if slider['description'][0] is defined %}#}
+{#                                            <div class="cap-dec animated bounceIn">#}
+{#                                                <h6>{{ slider['description'][0] }}</h6>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                        {% if slider['description'][1] is defined %}#}
+{#                                            <div class="cap-title animated zoomIn">#}
+{#                                                <h2>{{ slider['description'][1] | capitalize }}</h2>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                        {% if slider['description'][2] is defined %}#}
+{#                                            <div class="cap-title-2 animated zoomIn">#}
+{#                                                <h3>{{ slider['description'][2] }}</h3>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                        <div class="cap-text animated zoomIn">#}
+{#                                            {% if slider['description'][3] is defined %}#}
+{#                                                <p>{{ slider['description'][3] }}</p>#}
+{#                                            {% endif %}#}
+{#                                            {% if slider['description'][4] is defined %}#}
+{#                                                <span>{{ slider['description'][4] }}</span>#}
+{#                                            {% endif %}#}
+{#                                        </div>#}
+{#                                        <div class="cap-view animated bounceInUp">#}
+{#                                            <a class="hvr-bs" href="{{ slider['button_link'] }}">{{ slider['button_text'] }}</a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endif %}#}
                         </div>
                     </div>
                 </div>
