@@ -23,6 +23,8 @@ security:
                 check_path: admin_api.login
                 success_handler: App\Handler\AuthenticationHandler
                 failure_handler: App\Handler\AuthenticationHandler
+            access_denied_handler: App\Handler\AccessDeniedHandler
+            entry_point: App\Handler\AuthenticationEntryPointHandler
             logout:
                 path:   admin.logout
 
@@ -33,6 +35,8 @@ security:
                 check_path: site_api.login
                 success_handler: App\Handler\AuthenticationHandler
                 failure_handler: App\Handler\AuthenticationHandler
+            access_denied_handler: App\Handler\AccessDeniedHandler
+            entry_point: App\Handler\AuthenticationEntryPointHandler
 
             logout:
                 path:   site.logout
