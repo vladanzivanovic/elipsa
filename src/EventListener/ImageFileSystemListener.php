@@ -42,11 +42,13 @@ final class ImageFileSystemListener
     }
 
     /**
-     * @param PreUpdateEventArgs $args
+     * @param LifecycleEventArgs $args
      */
-    public function postUpdate(Image $image, LifecycleEventArgs $args): void
+    public function postUpdate(LifecycleEventArgs $args): void
     {
-        $this->manageFile($image);
+        $entity = $args->getEntity();
+
+        $this->manageFile($entity);
     }
 
     /**
