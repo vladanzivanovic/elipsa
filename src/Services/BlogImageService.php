@@ -124,10 +124,9 @@ final class BlogImageService
             $mediaObj->setFile($file);
             $mediaObj->setDevice(Image::DEVICE_DESKTOP);
 
-
             $this->imageRepository->persist($mediaObj);
 
-           $blog->setImage($mediaObj);
+            $blog->setImage($mediaObj);
         }
 
         if (count($exceptions) > 0) {

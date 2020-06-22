@@ -145,7 +145,6 @@ final class ProductImageService
             $mediaObj->setFile($file);
             $mediaObj->setDevice(Image::DEVICE_DESKTOP);
 
-
             $this->imageRepository->persist($mediaObj);
 
             $hasImages = new ProductHasImages();
