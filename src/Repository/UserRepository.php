@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Model\DataTableModel;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -62,5 +65,42 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
         }
 
         return (int) $query->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return mixed
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countData()
+    {
+        $query = $this->createQueryBuilder('u')
+            ->select('COUNT(u.id) as total')
+        ;
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param DataTableModel $tableModel
+     *
+     * @return array
+     */
+    public function getAdminList(DataTableModel $tableModel): array
+    {
+        $query = $this->createQueryBuilder('u')
+            ->select(
+                'u.id',
+                'CONCAT(u.firstName, \' \', u.lastName) as full_name',
+                'u.email',
+                'u.status',
+                'u.roles'
+            )
+            ->setFirstResult($tableModel->getOffset())
+            ->setMaxResults($tableModel->getLimit())
+            ->orderBy('u.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+        ;
+
+        return $query->getQuery()->getArrayResult();
     }
 }

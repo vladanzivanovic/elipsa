@@ -75,3 +75,18 @@ admin.banners:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/banners.html.twig
+
+admin.login:
+  path: /login
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/login.html.twig
+
+admin.logout:
+  path: /logout
+
+admin.users:
+  path: /users
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/users.html.twig

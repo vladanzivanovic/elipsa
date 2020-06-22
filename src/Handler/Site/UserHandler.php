@@ -85,6 +85,7 @@ final class UserHandler
      * @param string $locale
      * @param string $group
      * @param bool   $shouldSendEmail
+     * @param bool   $shouldUpdatePassword
      *
      * @return void
      * @throws \Doctrine\ORM\ORMException
@@ -96,7 +97,7 @@ final class UserHandler
             $errors = $this->validator->validate($user, null, $group);
 
             if ($errors->count() > 0) {
-                throw new BadRequestHttpException($this->validator->parseErrors($errors));
+                throw new BadRequestHttpException(json_encode($this->validator->parseErrors($errors)));
             }
         }
 

@@ -61,7 +61,7 @@ $.validator.addMethod(
     'isSelectBoxEmpty',
     function (val, elm, params) {
         return (val && val != -1) || val != -1;
-    }, Translator.trans('field.required', null, 'validators', LOCALE)
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(

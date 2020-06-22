@@ -258,3 +258,7 @@ contact.telephone.mobile: Mobilni
 links: linkovi
 
 all_rights: Sva prava su zadržana.
+
+ROLE_USER: korisnik
+ROLE_ADMIN: administrator
+ROLE_SUPER_ADMIN: super admin

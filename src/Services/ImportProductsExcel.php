@@ -120,14 +120,15 @@ final class ImportProductsExcel
                 }
 
                 $product->setCode((string) $formattedProduct['šifra'])
-                    ->setDiscount($formattedProduct['popust'])
-                    ->setPrice($formattedProduct['cena'])
-                    ->setShowHomePage(false);
+                    ->setDiscount((int) $formattedProduct['popust'])
+                    ->setPrice((int) $formattedProduct['cena'])
+                    ->setShowHomePage(0);
 
+                dump($formattedProduct['šifra']);
                 $this->setLocales($formattedProduct, $product);
                 $this->setCategories($product, explode(',', $formattedProduct['kategorije']));
                 $this->setTags($product, explode(',', $formattedProduct['tagovi']));
-                $this->setSizes($product, explode(',', $formattedProduct['velicine']));
+                $this->setSizes($product, explode(',', (string) $formattedProduct['velicine']));
                 $this->imageService->setImages($product->getProductTranslations()->first(), $images,true);
 
 

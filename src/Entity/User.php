@@ -29,7 +29,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser"})
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      */
     private $email;
 
@@ -41,7 +41,7 @@ class User implements UserInterface
     /**
      * @var string|null The hashed password
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser"})
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
      */
     private $password;
@@ -58,13 +58,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser"})
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser"})
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      */
     private $lastName;
 

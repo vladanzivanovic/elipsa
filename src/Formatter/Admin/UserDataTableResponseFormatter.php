@@ -7,12 +7,13 @@ namespace App\Formatter\Admin;
 use App\Entity\Banner;
 use App\Entity\Product;
 use App\Entity\Slider;
+use App\Entity\User;
 use App\Helper\ConstantsHelper;
 use App\Model\DataTableModel;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class BannerDataTableResponseFormatter
+final class UserDataTableResponseFormatter
 {
     use DataTableResponseTrait;
     /**
@@ -40,16 +41,11 @@ final class BannerDataTableResponseFormatter
     {
         $router = $this->router;
 
-        $data = array_map(function ($banner) use ($router) {
-            $statusText = ConstantsHelper::getConstantName((string) $banner['is_active'], 'STATUS', Banner::class);
-            $banner['status_text'] = $statusText;
-            $banner['type'] = ConstantsHelper::getConstantName((string) $banner['type'], 'TYPE', Banner::class);
+        $data = array_map(function ($user) use ($router) {
+            $user['status_text'] = ConstantsHelper::getConstantName((string) $user['status'], 'STATUS', User::class);
+            $user['role'] = !empty($user['roles']) ? $user['roles'][0] : '';
 
-
-            $image = $router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['name'], 'filter' => "admin_slider_list"]);
-            $banner['image'] = $image;
-
-            return $banner;
+            return $user;
         }, $data);
 
         return $this->response($tableModel, $data, $total);

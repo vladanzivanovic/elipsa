@@ -215,7 +215,7 @@ textarea {
 header {}
 
 .header-top {
-    padding: 18px 0 0;
+    padding: 5px 0 0;
 }
 
 .header-top-left {}
@@ -241,6 +241,7 @@ header {}
 }
 
 .header-top-right {
+    padding-top: 13px;
     text-align: right;
 }
 
@@ -684,7 +685,7 @@ header {}
 /*menu-area*/
 
 .menu-area {
-    padding: 35px 0 0;
+    padding: 15px 0 0;
 }
 
 .menu {}
@@ -2317,7 +2318,9 @@ footer {
 
 .footer-desc {}
 
-.footer-desc img {}
+.footer-desc img {
+    max-width: 130px;
+}
 
 .footer-desc p {
     color: #ffffff;

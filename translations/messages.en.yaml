@@ -260,8 +260,12 @@ newsletter.existingUser: You already subscribed on newsletter
 newsletter.success.add.message: You are successfully subscribed on newsletter
 
 contact.telephone.main: Main
-contact.telephone.mobile: Mibile
+contact.telephone.mobile: Mobile
 
 links: links
 
 all_rights: All rights reserved.
+
+ROLE_USER: customer
+ROLE_ADMIN: administrator
+ROLE_SUPER_ADMIN: super admin

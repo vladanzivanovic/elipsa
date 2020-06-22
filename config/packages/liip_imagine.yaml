@@ -124,12 +124,12 @@ liip_imagine :
             filters :
                 downscale:
                     max: [ 1920, 533 ]
-        loyalty_page :
+        loyalty_banner_mobile :
             cache: ads_photos
             quality : 100
             filters :
                 downscale:
-                    max: [ 1946, 968 ]
+                    max: [ 500, 439 ]
         news_letter_banner :
             cache: ads_photos
             quality : 100

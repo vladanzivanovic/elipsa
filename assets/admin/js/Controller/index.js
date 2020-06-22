@@ -24,6 +24,9 @@ import LoyaltyController from "./LoyaltyController";
 import BannersController from "./BannersController";
 import CatalogController from "./CatalogController";
 import AboutUsPageController from "./AboutUsPageController";
+import LoginPageController from "./LoginPageController";
+import UsersController from "./UsersController";
+import UserEditController from "./UserEditController";
 
 let routes = [
     {
@@ -185,6 +188,22 @@ let routes = [
     {
         name: 'admin.about_us_page',
         controller: AboutUsPageController,
+    },
+    {
+        name: 'admin.login',
+        controller: LoginPageController,
+    },
+    {
+        name: 'admin.users',
+        controller: UsersController,
+    },
+    {
+        name: 'admin.add_user_page',
+        controller: UserEditController,
+    },
+    {
+        name: 'admin.edit_user_page',
+        controller: UserEditController,
     },
 ];
 
