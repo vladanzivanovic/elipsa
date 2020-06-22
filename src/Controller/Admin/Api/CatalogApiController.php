@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class CatalogApController extends AbstractController
+final class CatalogApiController extends AbstractController
 {
     /**
      * @var CatalogHandler

@@ -103,6 +103,7 @@ final class CatalogHandler
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
+            $mediaObj->setDevice(0);
 
             $this->imageRepository->persist($mediaObj);
         }
