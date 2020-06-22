@@ -51,7 +51,7 @@ final class CategoryRemoveController extends AbstractController
     public function remove(CategoryTranslation $categoryTranslation)
     {
         $category = $categoryTranslation->getCategory();
-        $productCount = $category->getProducts()->count();
+        $productCount = $category->getProductHasCategories()->count();
 
         if ($productCount > 0 || $category->getChildren()->count() > 0) {
             return $this->json(['message' => 'error.in_use'], JsonResponse::HTTP_BAD_REQUEST);

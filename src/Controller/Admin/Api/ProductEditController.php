@@ -90,21 +90,4 @@ final class ProductEditController extends AbstractController
 
         return $this->json(['text' => $statusText]);
     }
-
-    /**
-     * @Route("/api/product-change-home-page/{slug}/{status}", name="admin.api_product_change_home_page", methods={"PATCH"}, options={"expose": true})
-     * @param ProductTranslation $productTranslation
-     * @param int                $status
-     *
-     * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \ReflectionException
-     */
-    public function toggleHomePage(ProductTranslation $productTranslation, int $status): JsonResponse
-    {
-        $this->editHandler->toggleHomePage($productTranslation->getProduct(), (bool) $status);
-
-        return $this->json(null);
-    }
 }

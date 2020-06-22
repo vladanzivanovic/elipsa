@@ -38,7 +38,7 @@ class SizeHandler {
 
         $.ajax({
             type: 'DELETE',
-            url: AppHelperService.generateLocalizedUrl('admin.remove_size_api', {slug}),
+            url: Routing.generate('admin.remove_size_api', {slug}),
             dataType: 'json',
             success: () => {
                 SizesDataTables().reload();

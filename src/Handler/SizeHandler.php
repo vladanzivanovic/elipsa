@@ -23,8 +23,6 @@ final class SizeHandler
     private $validator;
 
     /**
-     * SizeHandler constructor.
-     *
      * @param ProductSizeRepository $sizeRepository
      * @param ValidatorHelper       $validator
      */

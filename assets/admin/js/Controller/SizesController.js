@@ -3,6 +3,7 @@ import ColorsDataTables from "../Services/DataTables/ColorsDataTables";
 import NotificationService from "../../../js/NotificationService";
 import ColorHandler from "../Handler/Product/ColorHandler";
 import SizesDataTables from "../Services/DataTables/SizesDataTables";
+import SizeHandler from "../Handler/SizeHandler";
 
 const Private = Symbol('private');
 
@@ -33,7 +34,7 @@ class SizesController {
 
              $(document).on('click touchend', '.remove-product', e => {
                  const slug = e.currentTarget.dataset.slug;
-                 const handler = new ColorHandler();
+                 const handler = new SizeHandler();
 
                  handler.remove(slug);
              });

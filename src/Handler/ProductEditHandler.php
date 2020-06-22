@@ -7,7 +7,6 @@ namespace App\Handler;
 use App\Entity\Product;
 use App\Helper\ValidatorHelper;
 use App\Repository\ProductRepository;
-use App\Services\ProductImageService;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class ProductEditHandler
@@ -73,15 +72,10 @@ final class ProductEditHandler
 
     /**
      * @param Product $product
-     * @param bool    $status
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function toggleHomePage(Product $product, bool $status): void
+    public function remove(Product $product): void
     {
-        $product->setShowHomePage($status);
-
+        $this->productRepository->delete($product);
         $this->productRepository->flush();
     }
 }
