@@ -1,10 +1,13 @@
 import shopPageDom from "../Dom/ShopPageDom";
 import ShopPageMapper from "../Mapper/ShopPageMapper";
+import paginationDom from "../Dom/PaginationDom";
 
 class ShopPageService {
     constructor() {
         this.dom = shopPageDom;
         this.mapper = new ShopPageMapper();
+        this.pagination = paginationDom;
+
 
         let selectedPrices = [0,5000];
 
@@ -49,6 +52,8 @@ class ShopPageService {
 
                 $('#scroll-to-products').trigger('click');
                 $('#page-loader').addClass('hide');
+
+                this.pagination.generate(response.products.pagination);
 
                 $('#locale-dropdown li a').attr('href', response.localized_url);
             },

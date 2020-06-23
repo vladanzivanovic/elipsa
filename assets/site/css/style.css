@@ -4289,7 +4289,8 @@ footer {
 .pagination-box ul li.active a,
 .pagination-box ul li a:hover {
     border-color: #a70303;
-    color: #a70303;
+    color: #fff;
+    background: #a70303;
 }
 
 .shop-pagination-area .pagination-showing {

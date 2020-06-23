@@ -1,4 +1,3 @@
-import AppHelperService from "../../../js/Helper/AppHelperService";
 import shopPageDom from "../Dom/ShopPageDom";
 
 class ShopPageRouting {
@@ -13,11 +12,8 @@ class ShopPageRouting {
         this.url =  Routing.generate(`${ROUTE_NAME}.${LOCALE}`);
         this.apiUrl =  Routing.generate(`${ROUTE_NAME.replace('site', 'site_api')}.${LOCALE}`);
 
-        if (IS_FIRST_PAGE) {
-            this.url += '/1';
-            this.apiUrl += '/1';
-        }
-
+        this.url += '/1';
+        this.apiUrl += '/1';
     }
 
     toggleParam(paramName, paramValue, text, onlyOne)
