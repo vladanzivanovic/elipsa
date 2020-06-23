@@ -636,6 +636,9 @@ Version      : 1.0
     .header-top .mobile-lang-bar {
         margin-bottom: 15px !important;
     }
+    .header-top .mobile-lang-bar a {
+        color: #a6a6a6;
+    }
     .logo a {
         width: 130px !important;
         display: block !important;

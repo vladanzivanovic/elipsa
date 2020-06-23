@@ -38,32 +38,8 @@
 
 <body data-spy="scroll" data-target="#scroll-menu" data-offset="100" class="{{ is_mobile() or is_tablet() ? 'mobile' : '' }} {% block bodyClass %}{% endblock %}">
     <div id="preloader"></div>
-    <!-- Load Facebook SDK for JavaScript -->
-    <div id="fb-root"></div>
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                xfbml            : true,
-                version          : 'v7.0'
-            });
-        };
 
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
-
-    <!-- Your Chat Plugin code -->
-    <div class="fb-customerchat"
-         attribution=setup_tool
-         page_id="300793716662865"
-         theme_color="#a70303">
-    </div>
-
-    {% set categories = navigation_menu(locale) %}
+    {% set navigationMenu = navigation_menu(locale) %}
 
     <!-- header-start -->
     <header>
@@ -106,5 +82,7 @@
         <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% endblock %}
     {% block pageJavascript %}{% endblock %}
+    {% import 'Site/Macros/externalServices.html.twig' as externals %}
+    {{ externals.chat() }}
 </body>
 </html>

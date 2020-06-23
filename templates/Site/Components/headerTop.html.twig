@@ -24,14 +24,43 @@
             </div>
         {% endif %}
         <div class="row">
-            <div class="col-md-5 col-sm-4 col-xs-12">
+            <div class="col-md-5 hidden-xs">
+                <div class="menu-area-left">
+                    <div class="my-account">
+                        <a href="{{ path('site.account_page') }}">{{ 'navi.account' | trans }}</a>
+                    </div>
+                    {#                    <div class="currency">#}
+                    {#                        <a href="#">RSD</a>#}
+                    {#                        <ul class="menu-right-dropdown">#}
+                    {#                            <li><a href="#">EUR</a></li>#}
+                    {#                        </ul>#}
+                    {#                    </div>#}
+                    <div class="language">
+                        {% if locale == 'en' %}
+                            <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
+                        {% else %}
+                            <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
+                        {% endif %}
+                        <ul id="locale-dropdown" class="menu-right-dropdown">
+                            <li>
+                                {% if locale == 'en' %}
+                                    <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
+                                {% else %}
+                                    <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-12">
                 <div class="header-top-left">
                     <div class="logo">
                         <a href="{{ path('site.home_page') }}"><img src="{{ asset('image/logo/logo.png') }}" alt=""></a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 col-sm-8 col-xs-12">
+            <div class="col-md-4 col-sm-8 col-xs-12">
                 {{ include('Site/Components/login.html.twig') }}
             </div>
         </div>

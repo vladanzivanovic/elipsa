@@ -766,14 +766,23 @@ ul.menu-list li .hot::after {
 .menu-area-right {
     text-align: right;
 }
+.menu-area-left {
+    text-align: left;
+    padding-top: 13px;
+}
 
-.menu-area-right > div {
+.menu-area-right > div,
+.menu-area-left > div {
     display: inline-block;
     margin-left: 28px;
     position: relative;
 }
+.menu-area-left > div:first-of-type {
+    margin-left: 0;
+}
 
-.menu-area-right > div > a {
+.menu-area-right > div > a,
+.menu-area-left > div > a {
     color: #a6a6a6;
     display: block;
     letter-spacing: 0;
@@ -781,7 +790,8 @@ ul.menu-list li .hot::after {
     position: relative;
 }
 
-.menu-area-right > div:hover > a {
+.menu-area-right > div:hover > a,
+.menu-area-left > div:hover > a {
     color: #a70303;
 }
 
@@ -856,7 +866,7 @@ ul.menu-list li .hot::after {
     box-shadow: -5.44px 4.405px 18px 0 rgba(0, 0, 0, 0.1);
     left: -120px;
     opacity: 0;
-    padding: 25px 85px 55px;
+    padding: 25px 36px 15px;
     position: absolute;
     top: 55px;
     -webkit-transform: scaleY(0);
@@ -886,11 +896,12 @@ ul.menu-list li .hot::after {
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content {
     float: left;
     width: 55%;
+    margin-bottom: 25px;
 }
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title {
     color: #2c2c2c;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     padding: 0;
     position: relative;
@@ -903,7 +914,7 @@ ul.menu-list li .hot::after {
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title::after {
     background: #333333 none repeat scroll 0 0;
-    bottom: -8px;
+    bottom: -3px;
     content: "";
     height: 2px;
     left: 0;
@@ -919,24 +930,25 @@ ul.menu-list li .hot::after {
 }
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul {
-    margin: 20px 0 0;
+    margin: 10px 0 0;
     padding: 0;
 }
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li {
     display: block;
-    margin: 0 0 20px;
+    margin: 0 0 15px 10px;
 }
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li:last-child {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li.special-collection {}
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li a {
     color: #8e8e8e;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     padding: 0;
 }
@@ -964,7 +976,7 @@ ul.menu-list li .hot::after {
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li.sub-menu-holder > a:after {
     background: #000 none repeat scroll 0 0;
-    bottom: -8px;
+    bottom: -2px;
     content: "";
     height: 2px;
     left: 0;
@@ -1035,7 +1047,8 @@ ul.menu-list li .hot::after {
     z-index: 99;
 }
 
-.menu-area-right > div:hover .menu-right-dropdown {
+.menu-area-right > div:hover .menu-right-dropdown,
+.menu-area-left > div:hover .menu-right-dropdown {
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
