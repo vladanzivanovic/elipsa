@@ -864,7 +864,7 @@ ul.menu-list li .hot::after {
     background: #fff none repeat scroll 0 0;
     border-top: 2px solid #e31c7a;
     box-shadow: -5.44px 4.405px 18px 0 rgba(0, 0, 0, 0.1);
-    left: -120px;
+    left: -250px;
     opacity: 0;
     padding: 25px 36px 15px;
     position: absolute;
@@ -881,6 +881,21 @@ ul.menu-list li .hot::after {
     width: 1110px;
     z-index: 99;
 }
+
+.trendy {
+    /*min-width: 500px;*/
+    /*max-width: 1110px;*/
+    /*width: auto;*/
+
+    left: -310px !important;
+}
+/*.trendy .row > div {*/
+/*    display: inline-block;*/
+/*    margin-right: 25px;*/
+/*}*/
+/*.trendy .row > div:last-of-type {*/
+/*    marg-right: 0;*/
+/*}*/
 
 .menu ul.menu-list li:hover .mega-menu-area {
     opacity: 1;

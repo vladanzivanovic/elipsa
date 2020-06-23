@@ -112,6 +112,29 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param string $locale
+     *
+     * @param int    $type
+     *
+     * @return array
+     */
+    public function getForNavigationMenu(string $locale, int $type = Tags::TYPE_PRODUCT): array
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select(
+                't.id',
+                't.label',
+                't.slug'
+            )
+            ->where('t.locale = :locale')
+            ->andWhere('t.relatedType = :relatedType')
+            ->setParameter('locale', $locale)
+            ->setParameter('relatedType', $type);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * @param int    $type
      * @param string $locale
      *

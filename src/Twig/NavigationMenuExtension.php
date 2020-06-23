@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Repository\CategoryRepository;
+use App\Repository\TagsRepository;
 use DateTime;
 use Exception;
 use Twig\Extension\AbstractExtension;
@@ -16,16 +17,23 @@ final class NavigationMenuExtension extends AbstractExtension
      * @var CategoryRepository
      */
     private $categoryRepository;
+    /**
+     * @var TagsRepository
+     */
+    private $tagsRepository;
 
     /**
      * NavigationMenuExtension constructor.
      *
      * @param CategoryRepository $categoryRepository
+     * @param TagsRepository     $tagsRepository
      */
     public function __construct(
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        TagsRepository $tagsRepository
     ) {
         $this->categoryRepository = $categoryRepository;
+        $this->tagsRepository = $tagsRepository;
     }
 
     /**
@@ -35,6 +43,7 @@ final class NavigationMenuExtension extends AbstractExtension
     {
         return [
             new TwigFunction('navigation_menu', [$this, 'getNavigationMenu']),
+            new TwigFunction('navigation_tags', [$this, 'getNavigationTags']),
         ];
     }
 
@@ -55,6 +64,19 @@ final class NavigationMenuExtension extends AbstractExtension
         return array_filter($categories, function ($category) {
             return null === $category['parent_id'];
         });
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getNavigationTags(string $locale): array
+    {
+        $tags = $this->tagsRepository->getForNavigationMenu($locale);
+
+        return $tags;
     }
 
     private function formatMegaMenu(array $categories, int $level, int $maxLevel)
