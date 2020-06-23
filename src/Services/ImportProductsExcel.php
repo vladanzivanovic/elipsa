@@ -11,6 +11,7 @@ use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
 use App\Entity\ProductTranslation;
 use App\Entity\Tags;
+use App\Helper\EncodingHelper;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
@@ -108,8 +109,9 @@ final class ImportProductsExcel
                 $formattedProduct = array_combine($keys, $product);
                 $product = $this->getProduct($formattedProduct);
                 $images = [];
+                $encoded = EncodingHelper::toISO8859($formattedProduct['naziv_rs']);
 
-                foreach (glob($rootDir . $imagePath . $formattedProduct['naziv_rs'] . '*') as $index => $image) {
+                foreach (glob($rootDir . $imagePath . $encoded . '*') as $index => $image) {
                     $imageInfo = pathinfo($image);
 
                     $images[] = [
@@ -136,9 +138,8 @@ final class ImportProductsExcel
                     $this->productRepository->persist($product);
                 }
 
+                $this->productRepository->flush();
             }
-
-            $this->productRepository->flush();
         } else {
             \SimpleXLSX::parseError();
         }

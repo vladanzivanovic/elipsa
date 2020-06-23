@@ -50,7 +50,7 @@
                                         <div class="row">
                                             {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                             {% for product in products.data %}
-                                                {{ productGrid.productGrid(product, product_tags[product.id], product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-12', locale) }}
+                                                {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-12', locale) }}
                                             {% endfor %}
                                         </div>
                                         {{ include('Site/Components/paginate.html.twig') }}

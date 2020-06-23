@@ -103,7 +103,7 @@
                                 <div id="top_carousel" class="feature-pro-carousel owl-carousel">
                                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                     {% for product in products[2] %}
-                                        {{ productGrid.productGrid(product, product_tags[product.id], product_colors, product_sizes, 'col-xs-12', locale) }}
+                                        {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-xs-12', locale) }}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -180,19 +180,21 @@
     </div>
     <!-- home3-banner-area-end -->
     <!-- featured-itema-area-start -->
-    <div class="home-2-featured-item-area">
-        <div class="container">
+    {% if products[1] is defined %}
+        <div class="home-2-featured-item-area">
+            <div class="container">
 
-            <div class="featured-items">
-                <div>
-                    <div class="featured-all">
-                        <div class="fi-row">
-                            <div class="row">
-                                <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
-                                    {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                    {% for product in products[1] %}
-                                        {{ productGrid.productGrid(product, product_tags[product.id], product_colors, product_sizes, 'col-xs-12', locale) }}
-                                    {% endfor %}
+                <div class="featured-items">
+                    <div>
+                        <div class="featured-all">
+                            <div class="fi-row">
+                                <div class="row">
+                                    <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
+                                        {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                        {% for product in products[1] %}
+                                            {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-xs-12', locale) }}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +202,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
     <!-- featured-itema-area-end -->
     <!-- home3-newsletter-area-start -->
     {% set loyaltyBanner = banner(2, is_mobile() ? 'loyalty_banner_mobile' : 'loyalty_banner', locale, is_mobile()) %}

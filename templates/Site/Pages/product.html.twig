@@ -236,7 +236,7 @@
                 <div class="related-pro-carousel owl-carousel">
                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                     {% for relatedProduct in related_products.products %}
-                        {{ productGrid.productGrid(relatedProduct, related_products.product_tags[relatedProduct.id], related_products.product_colors, related_products.product_sizes, 'col-xs-12') }}
+                        {{ productGrid.productGrid(relatedProduct, related_products.product_tags[relatedProduct.id] is defined ? related_products.product_tags[relatedProduct.id] : [], related_products.product_colors, related_products.product_sizes, 'col-xs-12') }}
                     {% endfor %}
                 </div>
             </div>
