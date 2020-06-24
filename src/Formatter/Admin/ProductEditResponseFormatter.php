@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Entity\ProductHasCategories;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ImageRepository;
+use App\Repository\ProductCleaningRepository;
 use App\Repository\ProductHasImagesRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\TagsRepository;
@@ -47,6 +48,10 @@ final class ProductEditResponseFormatter
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var ProductCleaningRepository
+     */
+    private $cleaningRepository;
 
     /**
      * @param CategoryTranslationRepository $categoryTranslationRepository
@@ -55,6 +60,7 @@ final class ProductEditResponseFormatter
      * @param ProductHasImagesRepository    $hasImagesRepository
      * @param ImageRepository               $imageRepository
      * @param RouterInterface               $router
+     * @param ProductCleaningRepository     $cleaningRepository
      */
     public function __construct(
         CategoryTranslationRepository $categoryTranslationRepository,
@@ -62,7 +68,8 @@ final class ProductEditResponseFormatter
         ProductSizeRepository $sizeRepository,
         ProductHasImagesRepository $hasImagesRepository,
         ImageRepository $imageRepository,
-        RouterInterface $router
+        RouterInterface $router,
+        ProductCleaningRepository $cleaningRepository
     ) {
         $this->categoryTranslationRepository = $categoryTranslationRepository;
         $this->tagsRepository = $tagsRepository;
@@ -70,6 +77,7 @@ final class ProductEditResponseFormatter
         $this->hasImagesRepository = $hasImagesRepository;
         $this->imageRepository = $imageRepository;
         $this->router = $router;
+        $this->cleaningRepository = $cleaningRepository;
     }
 
     /**
@@ -82,13 +90,16 @@ final class ProductEditResponseFormatter
         $rsTrans = $product->getByLocale('rs');
         $enTrans = $product->getByLocale('en');
 
+
         $product = [
             'rs_title' => $rsTrans->getTitle(),
             'rs_short_description' => $rsTrans->getShortDescription(),
             'rs_description' => $rsTrans->getDescription(),
+            'rs_cleaning' => $rsTrans->getCleaning(),
             'en_title' => $enTrans->getTitle(),
             'en_short_description' => $enTrans->getShortDescription(),
             'en_description' => $enTrans->getDescription(),
+            'en_cleaning' => $enTrans->getCleaning(),
             'code' => $product->getCode(),
             'price' => $product->getPrice(),
             'discount' => $product->getDiscount(),
@@ -97,6 +108,7 @@ final class ProductEditResponseFormatter
             'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
             'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByProduct($product), 'product'),
             'show_home_page' => $product->getShowHomePage(),
+            'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
         ];
 
         return $product;

@@ -6,16 +6,20 @@
   #home3_slider {
 
     .nivo-caption {
-
+      background: rgba(255 ,255, 255, 0.6);
+      overflow: visible;
+      bottom: 16%;
       .slide3-text {
         * {
-          font-size: 18px !important;
-          line-height: 14px !important;
-          margin-bottom: 2px !important;
+          font-size: 22px !important;
+          line-height: 19px !important;
+          margin-bottom: 4px !important;
         }
 
         .cap-view {
           margin-top: 20px !important;
+          position: absolute;
+          bottom: -40px;
           a {
             font-size: 15px !important;
             padding: 5px 10px;

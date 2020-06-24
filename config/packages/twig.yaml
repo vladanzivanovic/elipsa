@@ -3,3 +3,4 @@ twig:
     globals:
         default_alt_tag: 'Elipsa - modna kuca'
         default_title_tag: 'Elipsa - modna kuca'
+        cleaning: '%cleaning%'

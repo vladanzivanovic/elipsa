@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Parser;
 
 use App\Entity\Product;
+use App\Entity\ProductCleaning;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
@@ -96,6 +97,8 @@ final class ProductEditRequestParser
             $this->setSizes($product, $bag->get('sizes'));
         }
 
+        $this->setCleaning($product, $bag);
+
         $this->imageService->setImages($product->getProductTranslations()->first(), json_decode($bag->get('images'), true));
 
         return $product;
@@ -119,6 +122,7 @@ final class ProductEditRequestParser
             $trans->setTitle($bag->get($locale.'_title'));
             $trans->setDescription($bag->get($locale.'_description'));
             $trans->setShortDescription($bag->get($locale.'_short_description'));
+            $trans->setCleaning($bag->get($locale.'_cleaning'));
             $trans->setLocale($locale);
 
             $product->addProductTranslation($trans);
@@ -185,6 +189,23 @@ final class ProductEditRequestParser
             $hasSize->setIsAvailable(true);
 
             $product->addProductHasSize($hasSize);
+        }
+    }
+
+
+    private function setCleaning(Product $product, ParameterBag $bag)
+    {
+        $collection = $product->getProductCleanings();
+        $collection->clear();
+
+        if ($bag->has('cleaning')) {
+            foreach ($bag->get('cleaning') as $iconName) {
+                $cleaning = new ProductCleaning();
+                $cleaning->setIcon($iconName);
+                $cleaning->setProduct($product);
+
+                $product->addProductCleaning($cleaning);
+            }
         }
     }
 }

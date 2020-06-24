@@ -10,6 +10,7 @@ use App\Entity\ProductTranslation;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\ImageRepository;
+use App\Repository\ProductCleaningRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
@@ -41,14 +42,19 @@ final class ProductPageCollector
      * @var ProductRepository
      */
     private $productRepository;
+    /**
+     * @var ProductCleaningRepository
+     */
+    private $cleaningRepository;
 
     /**
-     * @param ProductColorRepository $colorRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param TagsRepository         $tagsRepository
-     * @param CategoryRepository     $categoryRepository
-     * @param ImageRepository        $imageRepository
-     * @param ProductRepository      $productRepository
+     * @param ProductColorRepository    $colorRepository
+     * @param ProductSizeRepository     $sizeRepository
+     * @param TagsRepository            $tagsRepository
+     * @param CategoryRepository        $categoryRepository
+     * @param ImageRepository           $imageRepository
+     * @param ProductRepository         $productRepository
+     * @param ProductCleaningRepository $cleaningRepository
      */
     public function __construct(
         ProductColorRepository $colorRepository,
@@ -56,7 +62,8 @@ final class ProductPageCollector
         TagsRepository $tagsRepository,
         CategoryRepository $categoryRepository,
         ImageRepository $imageRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        ProductCleaningRepository $cleaningRepository
     ) {
         $this->colorRepository = $colorRepository;
         $this->sizeRepository = $sizeRepository;
@@ -64,6 +71,7 @@ final class ProductPageCollector
         $this->categoryRepository = $categoryRepository;
         $this->imageRepository = $imageRepository;
         $this->productRepository = $productRepository;
+        $this->cleaningRepository = $cleaningRepository;
     }
 
     public function collect(ProductTranslation $productTranslation, string $locale, ?User $user): array
@@ -79,6 +87,7 @@ final class ProductPageCollector
             'productCategories' => $this->categoryRepository->getByProduct($product, $locale),
             'images'            => $this->imageRepository->getByProduct($product),
             'related_products'  => $this->relatedProducts($product, $locale, $user),
+            'cleaningIcons'     => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
         ];
     }
 

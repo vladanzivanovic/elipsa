@@ -1,6 +1,8 @@
 @import "~@fancyapps/fancybox/dist/jquery.fancybox.css";
 @import "~owl.carousel";
 @import "../Components/common-product";
+@import "../../../scss/laundry/pe-laundry-icons.css";
+@import "~@staaky/tipped/dist/css/tipped.css";
 
 .product-page {
   .spd-select-color {
@@ -64,5 +66,18 @@
   }
   .spt-tab li {
     width: 50%;
+  }
+
+  #cleaning {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    li {
+      margin-right: 10px;
+      margin-bottom: 20px;
+      span {
+        font-size: 40px;
+      }
+    }
   }
 }

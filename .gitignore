@@ -1,3 +1,11 @@
+.idea
+migrations
+node_modules
+
+storage/cache
+storage/import
+storage/tmp/*
+storage/image/*
 
 ###> symfony/framework-bundle ###
 /.env.local

@@ -1,5 +1,5 @@
 import ProductPageHandler from "../Handler/ProductPageHandler";
-
+import Tipped from "@staaky/tipped";
 require('@fancyapps/fancybox');
 
 import ProductPageMapper from "../Mapper/ProductPageMapper";
@@ -12,6 +12,8 @@ class ProductPageController {
         this.handler = new ProductPageHandler();
 
         this.service.showImagesByColor($('.color-btn.active'));
+
+        Tipped.create('.cleaning-icons');
 
         this.registerEvents();
     }

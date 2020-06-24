@@ -84,6 +84,11 @@ class Product
      */
     private $showHomePage;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductCleaning", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $productCleanings;
+
     public function __construct()
     {
         $this->productSizes = new ArrayCollection();
@@ -94,6 +99,7 @@ class Product
         $this->productHasSizes = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->productHasImages = new ArrayCollection();
+        $this->productCleanings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -363,6 +369,37 @@ class Product
     public function setShowHomePage(int $showHomePage): self
     {
         $this->showHomePage = $showHomePage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductCleaning[]
+     */
+    public function getProductCleanings(): Collection
+    {
+        return $this->productCleanings;
+    }
+
+    public function addProductCleaning(ProductCleaning $productCleaning): self
+    {
+        if (!$this->productCleanings->contains($productCleaning)) {
+            $this->productCleanings[] = $productCleaning;
+            $productCleaning->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCleaning(ProductCleaning $productCleaning): self
+    {
+        if ($this->productCleanings->contains($productCleaning)) {
+            $this->productCleanings->removeElement($productCleaning);
+            // set the owning side to null (unless already changed)
+            if ($productCleaning->getProduct() === $this) {
+                $productCleaning->setProduct(null);
+            }
+        }
 
         return $this;
     }
