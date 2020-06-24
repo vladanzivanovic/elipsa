@@ -85,9 +85,17 @@ final class ProductEditRequestParser
         $product->setShowHomePage((int) $bag->get('show_home_page'));
 
         $this->setLocales($bag, $product);
-        $this->setCategories($product, $bag->get('categories'));
-        $this->setTags($product, $bag->get('tags'));
-        $this->setSizes($product, $bag->get('sizes'));
+
+        if ($bag->has('categories')) {
+            $this->setCategories($product, $bag->get('categories'));
+        }
+        if ($bag->has('tags')) {
+            $this->setTags($product, $bag->get('tags'));
+        }
+        if ($bag->has('sizes')) {
+            $this->setSizes($product, $bag->get('sizes'));
+        }
+
         $this->imageService->setImages($product->getProductTranslations()->first(), json_decode($bag->get('images'), true));
 
         return $product;
