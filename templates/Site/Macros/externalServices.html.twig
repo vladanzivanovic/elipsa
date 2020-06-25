@@ -20,9 +20,9 @@
     <!-- Your Chat Plugin code -->
     <div class="fb-customerchat"
          attribution=setup_tool
-         page_id="153805558078397"
+         page_id="{{ fb_id }}"
          theme_color="#a70303"
-         logged_in_greeting="Dobrodošli. Kako vam možemo pomoći?"
-         logged_out_greeting="Dobrodošli. Kako vam možemo pomoći?">
+         logged_in_greeting="{{ 'chat.message.greeting' | trans }}"
+         logged_out_greeting="{{ 'chat.message.greeting' | trans }}">
     </div>
 {% endmacro %}

@@ -269,3 +269,5 @@ all_rights: All rights reserved.
 ROLE_USER: customer
 ROLE_ADMIN: administrator
 ROLE_SUPER_ADMIN: super admin
+
+chat.message.greeting: Hi. How can we help you?

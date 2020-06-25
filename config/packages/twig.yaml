@@ -4,3 +4,4 @@ twig:
         default_alt_tag: 'Elipsa - modna kuca'
         default_title_tag: 'Elipsa - modna kuca'
         cleaning: '%cleaning%'
+        fb_id: '%env(FB_ID)%'
