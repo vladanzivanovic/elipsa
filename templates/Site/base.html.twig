@@ -73,6 +73,7 @@
             {% endif %}
 
             window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
+            const LANG_MAPPER = {'rs': 'sr_RS', 'en': 'en_US'};
         </script>
         <script src="{{ preload(asset('build/runtime.js')) }}"></script>
         <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
