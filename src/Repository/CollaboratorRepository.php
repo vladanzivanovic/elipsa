@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Collaborator;
+use App\Model\DataTableModel;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * @method Collaborator|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,32 +21,52 @@ class CollaboratorRepository extends ExtendedEntityRepository
         parent::__construct($registry, Collaborator::class);
     }
 
-    // /**
-    //  * @return Collaborator[] Returns an array of Collaborator objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return mixed
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countData()
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $query = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id) as total')
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Collaborator
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getSingleScalarResult();
     }
-    */
+
+    /**
+     * @param DataTableModel $tableModel
+     *
+     * @return array
+     */
+    public function getAdminList(DataTableModel $tableModel): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select(
+                'c.id',
+                'c.email',
+                'CONCAT(c.firstName, \' \', c.lastName) as full_name',
+                'c.address',
+                'c.phone as phone',
+                'c.city',
+                'c.country',
+                'c.location',
+                'c.numberOfFloors as no_floors',
+                'c.shoppingMall as shopping_mall',
+                'c.spaceSize as total_size',
+                'c.store has_store',
+                'c.website',
+                'c.zipCode as zip_code',
+                'presentation.id as presentation_doc',
+                'plan.id as plan_doc'
+            )
+            ->leftJoin('c.presentation', 'presentation')
+            ->leftJoin('c.plan', 'plan')
+            ->setFirstResult($tableModel->getOffset())
+            ->setMaxResults($tableModel->getLimit())
+            ->orderBy('c.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

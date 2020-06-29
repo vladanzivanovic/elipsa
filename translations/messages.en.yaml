@@ -293,6 +293,7 @@ collaborator.form.where_open_store: Where do you plan to open franchise store?
 collaborator.form.have_space: do you have space
 collaborator.form.location: location
 collaborator.form.presentation: company presentation
+collaborator.form.plan: Images or plan
 collaborator.form.space_size: space size
 collaborator.form.number_of_floors: number of floors
 collaborator.message.already_applied: You are already applying to the collaborators program

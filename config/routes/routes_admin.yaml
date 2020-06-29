@@ -70,6 +70,18 @@ admin.loyalty:
   defaults:
     template: Admin/Pages/loyalty.html.twig
 
+admin.collaborators:
+  path: /collaborators
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/collaborators.html.twig
+
+admin.career:
+  path: /career
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/career.html.twig
+
 admin.banners:
   path: /banners
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController

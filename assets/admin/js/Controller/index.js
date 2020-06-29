@@ -29,6 +29,8 @@ import UsersController from "./UsersController";
 import UserEditController from "./UserEditController";
 import DescriptionController from "./DescriptionController";
 import DescriptionEditController from "./DescriptionEditController";
+import CollaboratorsController from "./CollaboratorsController";
+import CareerController from "./CareerController";
 
 let routes = [
     {
@@ -218,6 +220,14 @@ let routes = [
     {
         name: 'admin.edit_description_page',
         controller: DescriptionEditController,
+    },
+    {
+        name: 'admin.collaborators',
+        controller: CollaboratorsController,
+    },
+    {
+        name: 'admin.career',
+        controller: CareerController,
     },
 ];
 

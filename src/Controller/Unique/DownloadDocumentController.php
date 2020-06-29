@@ -48,7 +48,8 @@ class DownloadDocumentController extends AbstractController
     /**
      * @Route("/download-doc/{id}",
      *     methods={"GET"},
-     *     name="app.download_doc"
+     *     name="app.download_doc",
+     *     options={"expose": true}
      * )
      *
      * @param Image $image

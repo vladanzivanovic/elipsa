@@ -1,6 +1,6 @@
 {% extends 'Site/base.html.twig' %}
 
-{% set titleTrans = 'text.type.collaborators' | trans %}
+{% set titleTrans = 'text.type.collaborator' | trans %}
 
 {% block title %}{{ titleTrans }}{% endblock %}
 
@@ -79,7 +79,7 @@
                                                 <label for="rate1" class="letter-capitalize">{{ 'yes' | trans }}</label>
                                             </div>
                                             <div class="select-payment-method col-xs-6">
-                                                {{ inputs.input('spacen_no', constant('App\\Entity\\Collaborator::SPACE_YES'), 'space', '', 'radio') }}
+                                                {{ inputs.input('spacen_no', constant('App\\Entity\\Collaborator::SPACE_NO'), 'space', '', 'radio') }}
                                                 <label for="rate2" class="letter-capitalize">{{ 'no' | trans }}</label>
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="cfc-input-box">
-                                            <label for="plan" class="text-uppercase">{{ 'collaborator.form.presentation' | trans }}</label>
+                                            <label for="plan" class="text-uppercase">{{ 'collaborator.form.plan' | trans }}</label>
                                             <input type="file" id="plan" name="plan" class="" placeholder="" value="" accept="image/*, application/zip, application/pdf">
                                         </div>
                                     </div>

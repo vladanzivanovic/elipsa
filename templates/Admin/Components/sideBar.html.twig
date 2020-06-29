@@ -30,12 +30,6 @@
                     <span class="link-title">Blog</span>
                 </a>
             </li>
-            <li class="nav-item {{ routeName() == 'admin.loyalty' ? 'active' : '' }}">
-                <a href="{{ path('admin.loyalty') }}" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">Loyalty</span>
-                </a>
-            </li>
             <li class="nav-item {{ routeName() == 'admin.catalog_page' ? 'active' : '' }}">
                 <a href="{{ path('admin.catalog_page') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
@@ -46,6 +40,25 @@
                 <a href="{{ path('admin.about_us_page') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">O nama</span>
+                </a>
+            </li>
+            <li class="nav-item nav-category">Prijave</li>
+            <li class="nav-item {{ routeName() == 'admin.loyalty' ? 'active' : '' }}">
+                <a href="{{ path('admin.loyalty') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Loyalty</span>
+                </a>
+            </li>
+            <li class="nav-item {{ routeName() == 'admin.collaborators' ? 'active' : '' }}">
+                <a href="{{ path('admin.collaborators') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Saradnici</span>
+                </a>
+            </li>
+            <li class="nav-item {{ routeName() == 'admin.career' ? 'active' : '' }}">
+                <a href="{{ path('admin.career') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Zaposlenje</span>
                 </a>
             </li>
             <li class="nav-item nav-category">Podešavanja</li>
