@@ -33,6 +33,10 @@ navi:
   contact: Contact
   account: My account
   trends: Trends
+  collaborators: Collaborators
+  career: Career
+  policy_and_privacy: Privacy policy
+  use_conditions: Use conditions
 
 serbian: Serbian
 english: English
@@ -116,6 +120,7 @@ title.ask_us: Ask us
 title.catalog: Catalogue
 title.about_us: About us
 title.contact_us: Contact
+title.privacy_policy: Privacy policy
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -151,6 +156,8 @@ occupation: occupation
 message: message
 birth_date: birth date
 subject: subject
+website: website
+position: position
 
 email.order.title: Order #%orderId%
 email.order.seller: Seller
@@ -264,6 +271,9 @@ contact.telephone.mobile: Mobile
 
 links: links
 
+yes: yes
+no: no
+
 all_rights: All rights reserved.
 
 ROLE_USER: customer
@@ -271,3 +281,26 @@ ROLE_ADMIN: administrator
 ROLE_SUPER_ADMIN: super admin
 
 chat.message.greeting: Hi. How can we help you?
+
+text.type.loyalty: Loyalty
+text.type.policy_and_privacy: Policy and Privacy
+text.type.use_conditions: Use conditions
+text.type.collaborators: Collaborators
+text.type.career: Career
+
+collaborator.form.basic_data: basic data
+collaborator.form.where_open_store: Where do you plan to open franchise store?
+collaborator.form.have_space: do you have space
+collaborator.form.location: location
+collaborator.form.presentation: company presentation
+collaborator.form.space_size: space size
+collaborator.form.number_of_floors: number of floors
+collaborator.message.already_applied: You are already applying to the collaborators program
+collaborator.message.success: You are successfully sent the application.
+
+career.form.accompanying_letter: accompaning letter
+career.message.already_applied: You are already sent application
+career.message.success: You are successfully sent the application.
+
+main_street: main street
+shopping_mall: shopping mall

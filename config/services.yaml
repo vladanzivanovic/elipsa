@@ -11,6 +11,7 @@ parameters:
     upload_tmp_dir: 'tmp/'
     upload_image_dir: 'image/'
     upload_import_dir: 'import/images/'
+    upload_document_dir: 'documents/'
 
 services:
     # default configuration for services in *this* file

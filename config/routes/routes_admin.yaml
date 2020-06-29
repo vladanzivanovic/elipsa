@@ -90,3 +90,9 @@ admin.users:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/users.html.twig
+
+admin.descriptions:
+  path: /description
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/descriptions.html.twig

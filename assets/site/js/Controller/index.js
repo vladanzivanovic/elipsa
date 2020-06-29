@@ -11,6 +11,8 @@ import AskUsPageController from "./AskUsPageController";
 import HomePageController from "./HomePageController";
 import CatalogPageController from "./CatalogPageController";
 import ContactPageController from "./ContactPageController";
+import CollaboratorPageController from "./CollaboratorPageController";
+import CareerPageController from "./CareerPageController";
 
 let routes = [
     {
@@ -64,6 +66,14 @@ let routes = [
     {
         name: 'site.contact_page',
         controller: ContactPageController,
+    },
+    {
+        name: 'site.collaborator',
+        controller: CollaboratorPageController,
+    },
+    {
+        name: 'site.career_page',
+        controller: CareerPageController,
     },
 ];
 

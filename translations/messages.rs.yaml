@@ -24,7 +24,7 @@ price: cena
 navi:
   home: Početna
   about_us: O nama
-  locations: Lokacije
+  locations: Prodajna mesta
   loyalty: Loyalty
   catalogue: Katalog
   shop: Prodavnica
@@ -33,6 +33,11 @@ navi:
   contact: Kontakt
   account: Moj nalog
   trends: Trendovi
+  collaborators: Saradnici
+  career: Zaposlenje
+  policy_and_privacy: Politika privatnosti
+  use_conditions: Uslovi korišćenja
+
 
 serbian: Srpski
 english: Engleski
@@ -108,6 +113,7 @@ title.ask_us: Pitajte nas
 title.catalog: Katalog
 title.about_us: O nama
 title.contact_us: Kontakt
+title.privacy_policy: Politika privatnosti
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -143,6 +149,8 @@ occupation: zanimanje
 message: poruka
 birth_date: datum rođenja
 subject: tema
+website: websajt
+position: pozicija
 
 email.order.title: Narudžbenica #%orderId%
 email.order.seller: Prodavac
@@ -257,6 +265,9 @@ contact.telephone.mobile: Mobilni
 
 links: linkovi
 
+yes: da
+no: ne
+
 all_rights: Sva prava su zadržana.
 
 ROLE_USER: korisnik
@@ -264,3 +275,27 @@ ROLE_ADMIN: administrator
 ROLE_SUPER_ADMIN: super admin
 
 chat.message.greeting: Dobrodošli. Kako vam možemo pomoći?
+
+text.type.loyalty: Loyalty
+text.type.policy_and_privacy: Politika privatnosti
+text.type.use_conditions: Uslovi korišćenja
+text.type.collaborator: Saradnici
+text.type.career: Zaposlenje
+
+collaborator.form.basic_data: osnovni podaci
+collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?
+collaborator.form.have_space: imate prostor
+collaborator.form.location: lokacija
+collaborator.form.presentation: prezentacija kompanije
+collaborator.form.space_size: ukupna kvadratura
+collaborator.form.number_of_floors: ukupna spratova
+collaborator.message.already_applied: Vi ste se već prijavili u program za saradnju.
+collaborator.message.success: Uspešno ste poslali prijavu za saradnju.
+
+career.form.accompanying_letter: propratno pismo
+career.message.already_applied: Vi ste se već prijavili.
+career.message.success: Uspešno ste poslali prijavu.
+
+
+main_street: glavna ulica
+shopping_mall: tržni centar

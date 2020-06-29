@@ -27,6 +27,8 @@ import AboutUsPageController from "./AboutUsPageController";
 import LoginPageController from "./LoginPageController";
 import UsersController from "./UsersController";
 import UserEditController from "./UserEditController";
+import DescriptionController from "./DescriptionController";
+import DescriptionEditController from "./DescriptionEditController";
 
 let routes = [
     {
@@ -204,6 +206,18 @@ let routes = [
     {
         name: 'admin.edit_user_page',
         controller: UserEditController,
+    },
+    {
+        name: 'admin.descriptions',
+        controller: DescriptionController,
+    },
+    {
+        name: 'admin.add_description_page',
+        controller: DescriptionEditController,
+    },
+    {
+        name: 'admin.edit_description_page',
+        controller: DescriptionEditController,
     },
 ];
 

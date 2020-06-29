@@ -14,6 +14,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
+                    <div class="contact-form-pre-text">{{ description(constant('App\\Entity\\Description::TYPE_LOYALTY')) | raw }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
                     <div class="contact-form-area">
                         <div class="contact-form-head">
                             <h2>Loyalty {{ 'form' | trans }}</h2>

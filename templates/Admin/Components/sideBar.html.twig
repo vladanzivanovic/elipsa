@@ -90,6 +90,12 @@
                     <span class="link-title">Korisnici</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.descriptions' ? 'active' : '' }}">
+                <a href="{{ path('admin.descriptions') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Tekstovi</span>
+                </a>
+            </li>
             <li class="nav-item nav-category">šifarnik</li>
             <li class="nav-item {{ routeName() == 'admin.colors' ? 'active' : '' }}">
                 <a href="{{ path('admin.colors') }}" class="nav-link">

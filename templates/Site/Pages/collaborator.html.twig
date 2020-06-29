@@ -1,0 +1,167 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set titleTrans = 'text.type.collaborators' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+
+{% block bodyClass %}loyalty-page{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans }) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-pre-text">{{ description(constant('App\\Entity\\Description::TYPE_COLLABORATOR')) | raw }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-area">
+                        <div class="contact-form-head">
+                            <h2>{{ titleTrans}} {{ 'form' | trans }}</h2>
+                            <h1>{{ titleTrans}} {{ 'form' | trans }}</h1>
+                        </div>
+                        <div class="contact-form-content">
+                            <div class="cf-msg"></div>
+                            <form id="collaborator_form" enctype="multipart/form-data">
+                                <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('collaborator_form') }}" />
+                                <h5 class="letter-capitalize">{{ 'collaborator.form.basic_data' | trans }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('first_name' | trans ~ ' *', 'first_name', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('last_name' | trans ~ ' *', 'last_name', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('telephone' | trans, 'telephone', '', 'telephone', '', 'tel', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('website' | trans, 'website', '', 'website', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+
+                                            <label for="plan" class="text-uppercase">{{ 'collaborator.form.presentation' | trans }}</label>
+                                            <input type="file" id="presentation" name="presentation" class="" placeholder="" value="" accept="image/*, application/zip, application/pdf">
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="letter-capitalize">{{ 'collaborator.form.where_open_store' | trans }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 cfc-input-box">
+                                        <label class="text-uppercase">{{ 'collaborator.form.have_space' | trans }}</label>
+                                        <div class="cfc-input-box">
+                                            <div class="select-payment-method col-xs-6">
+                                                {{ inputs.input('space_yes', constant('App\\Entity\\Collaborator::SPACE_YES'), 'space', '', 'radio') }}
+                                                <label for="rate1" class="letter-capitalize">{{ 'yes' | trans }}</label>
+                                            </div>
+                                            <div class="select-payment-method col-xs-6">
+                                                {{ inputs.input('spacen_no', constant('App\\Entity\\Collaborator::SPACE_YES'), 'space', '', 'radio') }}
+                                                <label for="rate2" class="letter-capitalize">{{ 'no' | trans }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 cfc-input-box">
+                                        <label class="text-uppercase">{{ 'collaborator.form.location' | trans }}</label>
+                                        <div class="cfc-input-box">
+                                            <div class="select-payment-method col-xs-6">
+                                                {{ inputs.input('location', constant('App\\Entity\\Collaborator::LOCATION_MAIN_STREET'), 'location', '', 'radio') }}
+                                                <label for="rate1" class="letter-capitalize">{{ 'main_street' | trans }}</label>
+                                            </div>
+                                            <div class="select-payment-method col-xs-6">
+                                                {{ inputs.input('location', constant('App\\Entity\\Collaborator::LOCATION_SHOPPING_MALL'), 'location', '', 'radio') }}
+                                                <label for="rate2" class="letter-capitalize">{{ 'shopping_mall' | trans }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('shopping_mall' | trans, 'shopping_mall', '', 'shopping_mall', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('collaborator.form.space_size' | trans, 'space_size', '', 'space_size', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('collaborator.form.number_of_floors' | trans, 'no_floors', '', 'no_floors', '', 'number', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('address' | trans, 'address', '', 'address', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('city' | trans, 'city', '', 'city', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('zip_code' | trans, 'zip_code', '', 'zip_code', '', 'number', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('country' | trans, 'country', '', 'country', '', 'tel', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            <label for="plan" class="text-uppercase">{{ 'collaborator.form.presentation' | trans }}</label>
+                                            <input type="file" id="plan" name="plan" class="" placeholder="" value="" accept="image/*, application/zip, application/pdf">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.button('collaborator_submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/loyalty.css') }}">
+{% endblock %}
