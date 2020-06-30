@@ -107,8 +107,6 @@
             "php bin/console cache:clear --no-warmup -e prod --ansi",
             "php bin/console cache:warmup -e prod",
             "php bin/console assets:install --symlink public/js",
-            "php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json",
-            "php bin/console bazinga:js-translation:dump public/js --format json --merge-domains",
             "npm install",
             "npm run build",
             "php bin/console presta:sitemaps:dump web --gzip"
