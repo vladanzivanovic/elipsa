@@ -42,7 +42,13 @@
                     <span class="link-title">O nama</span>
                 </a>
             </li>
-            <li class="nav-item nav-category">Prijave</li>
+            <li class="nav-item nav-category">Pregled</li>
+            <li class="nav-item {{ routeName() == 'admin.orders' ? 'active' : '' }}">
+                <a href="{{ path('admin.orders') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Narudžbine</span>
+                </a>
+            </li>
             <li class="nav-item {{ routeName() == 'admin.loyalty' ? 'active' : '' }}">
                 <a href="{{ path('admin.loyalty') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
@@ -107,6 +113,12 @@
                 <a href="{{ path('admin.descriptions') }}" class="nav-link">
                     <i class="link-icon mdi mdi-format-color-fill"></i>
                     <span class="link-title">Tekstovi</span>
+                </a>
+            </li>
+            <li class="nav-item {{ routeName() == 'admin.slider_text' ? 'active' : '' }}">
+                <a href="{{ path('admin.slider_text') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Slider tekst</span>
                 </a>
             </li>
             <li class="nav-item nav-category">šifarnik</li>

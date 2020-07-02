@@ -6,6 +6,7 @@
 imports:
     - { resource: "../vendor/beberlei/doctrineextensions/config/mysql.yml" }
 parameters:
+    # rs must be first language
     locales: rs|en
     upload_dir: '%kernel.project_dir%/storage/'
     upload_tmp_dir: 'tmp/'

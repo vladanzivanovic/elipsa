@@ -4,17 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
-use App\Entity\Tags;
-use App\Formatter\Admin\ProductColorDataTableResponseFormatter;
-use App\Formatter\Admin\ProductDataTableResponseFormatter;
-use App\Formatter\Admin\ProductTagDataTableResponseFormatter;
-use App\Formatter\Admin\SliderDataTableResponseFormatter;
+use App\Formatter\Admin\SliderTextDataTableResponseFormatter;
 use App\Parser\DataTableRequestParser;
-use App\Repository\ProductColorRepository;
-use App\Repository\ProductRepository;
-use App\Repository\ProductSizeRepository;
-use App\Repository\TagsRepository;
-use App\Repository\SliderRepository;
+use App\Repository\SliderTextRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class SliderListController extends AbstractController
+final class SliderTextListController extends AbstractController
 {
     /**
      * @var DataTableRequestParser
@@ -30,32 +22,32 @@ final class SliderListController extends AbstractController
     private $requestParser;
 
     /**
-     * @var SliderDataTableResponseFormatter
+     * @var SliderTextDataTableResponseFormatter
      */
     private $responseFormatter;
 
     /**
-     * @var SliderRepository
+     * @var SliderTextRepository
      */
-    private $sliderRepository;
+    private $repository;
 
     /**
      * @param DataTableRequestParser               $requestParser
-     * @param SliderRepository                     $sliderRepository
-     * @param SliderDataTableResponseFormatter     $responseFormatter
+     * @param SliderTextRepository                 $repository
+     * @param SliderTextDataTableResponseFormatter $responseFormatter
      */
     public function __construct(
         DataTableRequestParser $requestParser,
-        SliderRepository $sliderRepository,
-        SliderDataTableResponseFormatter $responseFormatter
+        SliderTextRepository $repository,
+        SliderTextDataTableResponseFormatter $responseFormatter
     ) {
         $this->requestParser = $requestParser;
         $this->responseFormatter = $responseFormatter;
-        $this->sliderRepository = $sliderRepository;
+        $this->repository = $repository;
     }
 
     /**
-     * @Route("/api/get-slider-list", name="admin.get_slider_list", methods={"POST"}, options={"expose": true})
+     * @Route("/api/get-slider-text-list", name="admin.get_slider_text_list", methods={"POST"}, options={"expose": true})
      *
      * @param Request $request
      *
@@ -63,12 +55,12 @@ final class SliderListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
-        $total = $this->sliderRepository->countData();
+        $total = $this->repository->countData();
 
-        $data = $this->sliderRepository->getAdminList($formattedRequest);
+        $data = $this->repository->getAdminList($formattedRequest);
 
         $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
 

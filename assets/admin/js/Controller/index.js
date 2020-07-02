@@ -31,6 +31,9 @@ import DescriptionController from "./DescriptionController";
 import DescriptionEditController from "./DescriptionEditController";
 import CollaboratorsController from "./CollaboratorsController";
 import CareerController from "./CareerController";
+import SliderTextController from "./SliderTextController";
+import SliderTextEditController from "./SliderTextEditController";
+import OrdersController from "./OrdersController";
 
 let routes = [
     {
@@ -228,6 +231,22 @@ let routes = [
     {
         name: 'admin.career',
         controller: CareerController,
+    },
+    {
+        name: 'admin.slider_text',
+        controller: SliderTextController,
+    },
+    {
+        name: 'admin.add_slider_text_page',
+        controller: SliderTextEditController,
+    },
+    {
+        name: 'admin.edit_slider_text_page',
+        controller: SliderTextEditController,
+    },
+    {
+        name: 'admin.orders',
+        controller: OrdersController,
     },
 ];
 

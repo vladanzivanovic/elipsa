@@ -15,6 +15,9 @@ class UserEditController {
 
     registerEvents() {
         $(this.mapper.submitBtn).on('click touchend', e => {
+            e.stopPropagation();
+            e.preventDefault();
+
             this.handler.save();
         });
     }

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 final class SliderEditRequestParser
 {
     use ParserTrait;
+
     /**
      * @var ParameterBagInterface
      */

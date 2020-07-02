@@ -1,0 +1,98 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Admin\Api;
+
+use App\Entity\Slider;
+use App\Entity\SliderText;
+use App\Handler\SliderHandler;
+use App\Handler\SliderTextHandler;
+use App\Helper\ConstantsHelper;
+use App\Parser\SliderEditRequestParser;
+use App\Parser\SliderTextEditRequestParser;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+final class SliderTextEditController extends AbstractController
+{
+    /**
+     * @var SliderTextEditRequestParser
+     */
+    private $requestParser;
+
+    /**
+     * @var SliderTextHandler
+     */
+    private $handler;
+
+    /**
+     * @param SliderTextEditRequestParser $requestParser
+     * @param SliderTextHandler           $handler
+     */
+    public function __construct(
+        SliderTextEditRequestParser $requestParser,
+        SliderTextHandler $handler
+    ) {
+        $this->requestParser = $requestParser;
+        $this->handler = $handler;
+    }
+
+    /**
+     * @Route("/api/app-slider-text", name="admin.add_slider_text_api", methods={"POST"}, options={"expose": true})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function insert(Request $request): JsonResponse
+    {
+        $sliderText = $this->requestParser->parse($request->request);
+
+        $this->handler->save($sliderText);
+
+        return $this->json(null, JsonResponse::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/api/edit-slider-text/{id}", name="admin.edit_slider_text_api", methods={"PUT"}, options={"expose": true})
+     * @param Request    $request
+     * @param SliderText $sliderText
+     *
+     * @return JsonResponse
+     */
+    public function update(Request $request, SliderText $sliderText): JsonResponse
+    {
+        $sliderText = $this->requestParser->parse($request->request, $sliderText);
+
+        $this->handler->save($sliderText);
+
+        return $this->json(null, JsonResponse::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/api/toggle-slider-text-status/{id}/{status}", name="admin.api_toggle_slider_text_status", methods={"PATCH"},
+     *                                                   options={"expose": true})
+     *
+     * @param SliderText $sliderText
+     * @param int        $status
+     *
+     * @return JsonResponse
+     *
+     * @throws \ReflectionException
+     */
+    public function toggleActivation(SliderText $sliderText, int $status): JsonResponse
+    {
+        $sliderText->setIsActive((bool) $status);
+
+        $this->handler->save($sliderText);
+
+        $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', Slider::class);
+
+        return $this->json(['text' => $statusText]);
+    }
+}
