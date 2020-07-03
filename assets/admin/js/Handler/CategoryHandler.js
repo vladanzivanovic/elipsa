@@ -65,6 +65,14 @@ class CategoryHandler {
             dataType: 'json',
             success: () => {},
             error: () => {
+                const errors = error.responseJSON;
+
+                if (errors.hasOwnProperty('message')) {
+                    this.notification.show('error', errors.message, true);
+
+                    return;
+                }
+
                 this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
             }
         })

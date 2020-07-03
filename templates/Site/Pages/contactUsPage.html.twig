@@ -68,6 +68,9 @@
         {{ include('Moduls/googleMaps.html.twig') }}
     </div>
 {% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/contact.css') }}"/>
+{% endblock %}
 {% block pageJavascript %}
     <script>
         const ADDRESS = ['{{ STREET }}', '{{ CITY }}', 'Srbija'];

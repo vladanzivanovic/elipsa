@@ -6,24 +6,6 @@ class LocationPageService {
     constructor() {
         this.mapper = locationPageMapper;
     }
-    
-    getList(countryCode) {
-        let waitResponse = $.Deferred();
-
-        $.ajax({
-            type: "GET",
-            url: AppHelperService.generateLocalizedUrl('site_api.location_list', {countryCode}),
-            dataType: 'json',
-            success: response => {
-                waitResponse.resolve(response);
-            },
-            error: error => {
-                waitResponse.reject(error);
-            }
-        })
-
-        return waitResponse;
-    }
 
     showLocationDetails(location, gmapApi) {
         const fullImageWrapper = `${this.mapper.fullImageWrapper} ${this.mapper.sliders}`;

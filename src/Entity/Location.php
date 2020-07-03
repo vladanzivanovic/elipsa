@@ -63,41 +63,6 @@ class Location
      */
     private $locationHasImages;
 
-    /**
-     * @ORM\Column(type="string", length=3)
-     */
-    private $countryCode;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $countryLat;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $countryLng;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $countryNorthLat;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $countryNorthLng;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $countrySouthLat;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $countrySouthLng;
-
     public function __construct()
     {
         $this->locationTranslations = new ArrayCollection();
@@ -268,90 +233,6 @@ class Location
                 $locationHasImage->setLocation(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCountryCode(): ?string
-    {
-        return $this->countryCode;
-    }
-
-    public function setCountryCode(string $countryCode): self
-    {
-        $this->countryCode = $countryCode;
-
-        return $this;
-    }
-
-    public function getCountryLat(): ?string
-    {
-        return $this->countryLat;
-    }
-
-    public function setCountryLat(string $countryLat): self
-    {
-        $this->countryLat = $countryLat;
-
-        return $this;
-    }
-
-    public function getCountryLng(): ?string
-    {
-        return $this->countryLng;
-    }
-
-    public function setCountryLng(string $countryLng): self
-    {
-        $this->countryLng = $countryLng;
-
-        return $this;
-    }
-
-    public function getCountryNorthLat(): ?string
-    {
-        return $this->countryNorthLat;
-    }
-
-    public function setCountryNorthLat(string $countryNorthLat): self
-    {
-        $this->countryNorthLat = $countryNorthLat;
-
-        return $this;
-    }
-
-    public function getCountryNorthLng(): ?string
-    {
-        return $this->countryNorthLng;
-    }
-
-    public function setCountryNorthLng(string $countryNorthLng): self
-    {
-        $this->countryNorthLng = $countryNorthLng;
-
-        return $this;
-    }
-
-    public function getCountrySouthLat(): ?string
-    {
-        return $this->countrySouthLat;
-    }
-
-    public function setCountrySouthLat(string $countrySouthLat): self
-    {
-        $this->countrySouthLat = $countrySouthLat;
-
-        return $this;
-    }
-
-    public function getCountrySouthLng(): ?string
-    {
-        return $this->countrySouthLng;
-    }
-
-    public function setCountrySouthLng(string $countrySouthLng): self
-    {
-        $this->countrySouthLng = $countrySouthLng;
 
         return $this;
     }

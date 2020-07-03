@@ -78,8 +78,10 @@ class BannerRepository extends ExtendedEntityRepository
             ->innerJoin('b.image', 'i')
             ->where('b.isActive = :isActive')
             ->andWhere('bt.locale = :locale')
+            ->andWhere('b.type = :speedLinks')
             ->setParameter('isActive', true)
             ->setParameter('locale', $locale)
+            ->setParameter('speedLinks', Banner::TYPE_SPEED_LINKS)
             ->orderBy('b.position');
 
         return $query->getQuery()->getArrayResult();

@@ -63,13 +63,6 @@ final class LocationEditResponseFormatter
             'telephone' => $location->getTelephone(),
             'lat' => $location->getLat(),
             'lng' => $location->getLng(),
-            'country_lat' => $location->getCountryLat(),
-            'country_lng' => $location->getCountryLng(),
-            'country_north_lat' => $location->getCountryNorthLat(),
-            'country_north_lng' => $location->getCountryNorthLng(),
-            'country_south_lat' => $location->getCountrySouthLat(),
-            'country_south_lng' => $location->getCountrySouthLng(),
-            'country_short_code' => $location->getCountryCode(),
             'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByLocation($location), 'location'),
         ];
     }

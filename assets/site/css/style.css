@@ -3801,8 +3801,10 @@ footer {
 /*home3-newsletter-area*/
 
 .home3-newsletter-area {
-    padding: 200px 0;
     position: relative;
+    height: calc(100vw/3.6);
+    display: flex;
+    align-items: center;
 }
 
 .home3-newsletter-area::before {

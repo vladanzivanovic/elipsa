@@ -29,11 +29,11 @@ class DashboardController {
              });
 
              $(document).on('change', '.set-active-product', e => {
-                 const alias = e.currentTarget.dataset.alias;
+                 const slug = e.currentTarget.dataset.slug;
                  const status = e.currentTarget.checked ? 2 : 1;
                  const handler = new ProductEditHandler();
 
-                 handler.changeStatus(e.currentTarget, alias, status);
+                 handler.changeStatus(e.currentTarget, slug, status);
              });
 
              $(document).on('click touchend', '.remove-product', e => {

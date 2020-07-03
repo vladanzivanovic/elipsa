@@ -19,16 +19,6 @@ class LocationPageController {
     }
 
     registerEvents() {
-        $(this.mapper.countryOptions).on('change', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.service.getList($(e.currentTarget).val())
-                .then(locations => {
-                    this.gmapApi.showMapWitMultipleMarkersWithPopupCallback(locations, this.showLocationPopup);
-                });
-        });
-
         $(this.mapper.locationBtn).on('click touchend', e => {
             const index = e.currentTarget.dataset.index;
 

@@ -67,7 +67,6 @@ final class LocationEditController extends AbstractController
     {
         $location = $this->requestParser->parse($request->request, $location);
 
-//        throw new BadRequestHttpException('test');
         $this->locationHandler->save($location);
 
         return $this->json(null, JsonResponse::HTTP_CREATED);

@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductRemoveController extends AbstractController
 {
@@ -44,6 +45,10 @@ final class ProductRemoveController extends AbstractController
      * @var OrderProductRepository
      */
     private $orderProductRepository;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * ProductRemoveController constructor.
@@ -52,17 +57,20 @@ final class ProductRemoveController extends AbstractController
      * @param ProductRepository      $productRepository
      * @param ProductEditHandler     $handler
      * @param OrderProductRepository $orderProductRepository
+     * @param TranslatorInterface    $translator
      */
     public function __construct(
         CategoryHandler $categoryHandler,
         ProductRepository $productRepository,
         ProductEditHandler $handler,
-        OrderProductRepository $orderProductRepository
+        OrderProductRepository $orderProductRepository,
+        TranslatorInterface $translator
     ) {
         $this->categoryHandler = $categoryHandler;
         $this->productRepository = $productRepository;
         $this->handler = $handler;
         $this->orderProductRepository = $orderProductRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -80,7 +88,7 @@ final class ProductRemoveController extends AbstractController
         $productCount = $this->orderProductRepository->count(['product' => $product]);
 
         if ($productCount > 0) {
-            return $this->json(['message' => 'error.in_use'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->translator->trans('error.in_use', ['%item%' => 'Proizvod'])], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $this->handler->remove($product);

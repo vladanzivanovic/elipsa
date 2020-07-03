@@ -39,31 +39,21 @@ class LocationRepository extends ExtendedEntityRepository
 
     /**
      * @param string $locale
-     * @param string $countryCode
      *
      * @return array
      */
-    public function getList(string $locale, string $countryCode): array
+    public function getList(string $locale): array
     {
         $query = $this->getDqlForList($locale)
             ->addSelect(
                 'l.lat',
                 'l.lng',
                 'GROUP_CONCAT(image.name) as images',
-                'l.countryLat as country_lat',
-                'l.countryLng as country_lng',
-                'l.countrySouthLat as country_st_lat',
-                'l.countrySouthLng as country_st_lng',
-                'l.countryNorthLat as country_nt_lat',
-                'l.countryNorthLng as country_nt_lng',
                 'lt.shortDescription as short_description',
-                'lt.country',
-                'l.countryCode as country_code'
+                'lt.country'
             )
             ->innerJoin('l.locationHasImages', 'lhi')
             ->innerJoin('lhi.image', 'image')
-            ->andWhere('l.countryCode = :countryCode')
-            ->setParameter('countryCode', $countryCode)
             ->groupBy('l.id');
 
         return $query->getQuery()->getArrayResult();

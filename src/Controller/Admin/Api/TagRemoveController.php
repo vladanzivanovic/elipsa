@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TagRemoveController extends AbstractController
 {
@@ -31,20 +32,27 @@ final class TagRemoveController extends AbstractController
      * @var BlogHasTagsRepository
      */
     private $blogHasTagsRepository;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * @param TagHandler               $tagHandler
      * @param ProductHasTagsRepository $hasTagsRepository
      * @param BlogHasTagsRepository    $blogHasTagsRepository
+     * @param TranslatorInterface      $translator
      */
     public function __construct(
         TagHandler $tagHandler,
         ProductHasTagsRepository $hasTagsRepository,
-        BlogHasTagsRepository $blogHasTagsRepository
+        BlogHasTagsRepository $blogHasTagsRepository,
+        TranslatorInterface $translator
     ) {
         $this->tagHandler = $tagHandler;
         $this->hasTagsRepository = $hasTagsRepository;
         $this->blogHasTagsRepository = $blogHasTagsRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -83,7 +91,7 @@ final class TagRemoveController extends AbstractController
         $blogCount = $this->blogHasTagsRepository->count(['tag' => $mainSlug]);
 
         if ($blogCount > 0) {
-            throw new BadRequestHttpException(json_encode(['message' => 'error.in_use']));
+            return $this->json(['message' => $this->translator->trans('error.in_use', ['%item%' => 'Tag'])], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $this->tagHandler->remove($mainSlug);

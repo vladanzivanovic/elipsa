@@ -32,24 +32,7 @@ class LocationEditController {
         $(this.mapper.submitBtn).on('click touchend', e => {
             const handler = new LocationHandler();
 
-            this.gmapApi.getMapsDataByAddress([$(this.mapper.country).val()])
-                .then(response => {
-                    const viewport = response[0].geometry.viewport;
-
-                    $(this.mapper.countryNorthLat).val(viewport.Ya.j);
-                    $(this.mapper.countryNorthLng).val(viewport.Ua.j);
-                    $(this.mapper.countrySouthLat).val(viewport.Ya.i);
-                    $(this.mapper.countrySouthLng).val(viewport.Ua.i);
-                    $(this.mapper.countryLat).val(response[0].geometry.location.lat);
-                    $(this.mapper.countryLng).val(response[0].geometry.location.lng);
-                    $(this.mapper.countryShortCode).val(response[0].address_components[0].short_name);
-
-                    handler.save();
-
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            handler.save();
         });
 
         $(this.mapper.city).on('keyup', () => {

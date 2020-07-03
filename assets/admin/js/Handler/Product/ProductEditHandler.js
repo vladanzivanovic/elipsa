@@ -72,10 +72,11 @@ class ProductEditHandler {
                 const errors = error.responseJSON;
 
                 if (errors.hasOwnProperty('message')) {
-                    this.notification.show('error', Translator.trans(errors.message, {item: 'Proizvod'}, 'messages', LOCALE), true);
+                    this.notification.show('error', errors.message, true);
 
                     return;
                 }
+
                 this.notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
             }
         })
