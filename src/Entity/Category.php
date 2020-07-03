@@ -40,15 +40,9 @@ class Category
      */
     private $productHasCategories;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $showHomePage;
-
     public function __construct()
     {
         $this->categoryTranslations = new ArrayCollection();
-        $this->products = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->productHasCategories = new ArrayCollection();
     }
@@ -172,18 +166,6 @@ class Category
                 $productHasCategory->setCategory(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getShowHomePage(): ?bool
-    {
-        return $this->showHomePage;
-    }
-
-    public function setShowHomePage(bool $showHomePage): self
-    {
-        $this->showHomePage = $showHomePage;
 
         return $this;
     }

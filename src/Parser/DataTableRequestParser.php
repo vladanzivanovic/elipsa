@@ -20,7 +20,8 @@ final class DataTableRequestParser
             $bag->getInt('length'),
             $bag->get('columns'),
             (int)$order[0]['column'],
-            $order[0]['dir']
+            $order[0]['dir'],
+            $bag->get('search')['value']
         );
     }
 }

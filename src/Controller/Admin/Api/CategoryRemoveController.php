@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Entity\CategoryTranslation;
-use App\Entity\ProductColor;
 use App\Handler\CategoryHandler;
-use App\Handler\ProductColorHandler;
-use App\Repository\ProductHasColorRepository;
 use App\Repository\ProductRepository;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,8 +28,6 @@ final class CategoryRemoveController extends AbstractController
     private $translator;
 
     /**
-     * CategoryRemoveController constructor.
-     *
      * @param CategoryHandler     $categoryHandler
      * @param ProductRepository   $productRepository
      * @param TranslatorInterface $translator

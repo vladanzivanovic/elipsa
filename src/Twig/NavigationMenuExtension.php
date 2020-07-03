@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Repository\CategoryRepository;
+use App\Repository\SliderTextRepository;
 use App\Repository\TagsRepository;
 use DateTime;
 use Exception;
@@ -17,23 +18,30 @@ final class NavigationMenuExtension extends AbstractExtension
      * @var CategoryRepository
      */
     private $categoryRepository;
+
     /**
      * @var TagsRepository
      */
     private $tagsRepository;
 
     /**
-     * NavigationMenuExtension constructor.
-     *
-     * @param CategoryRepository $categoryRepository
-     * @param TagsRepository     $tagsRepository
+     * @var SliderTextRepository
+     */
+    private $sliderTextRepository;
+
+    /**
+     * @param CategoryRepository   $categoryRepository
+     * @param TagsRepository       $tagsRepository
+     * @param SliderTextRepository $sliderTextRepository
      */
     public function __construct(
         CategoryRepository $categoryRepository,
-        TagsRepository $tagsRepository
+        TagsRepository $tagsRepository,
+        SliderTextRepository $sliderTextRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->tagsRepository = $tagsRepository;
+        $this->sliderTextRepository = $sliderTextRepository;
     }
 
     /**
@@ -44,6 +52,7 @@ final class NavigationMenuExtension extends AbstractExtension
         return [
             new TwigFunction('navigation_menu', [$this, 'getNavigationMenu']),
             new TwigFunction('navigation_tags', [$this, 'getNavigationTags']),
+            new TwigFunction('slider_text', [$this, 'getSliderText']),
         ];
     }
 
@@ -77,6 +86,16 @@ final class NavigationMenuExtension extends AbstractExtension
         $tags = $this->tagsRepository->getForNavigationMenu($locale);
 
         return $tags;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getSliderText(string $locale): array
+    {
+        return $this->sliderTextRepository->getList($locale);
     }
 
     private function formatMegaMenu(array $categories, int $level, int $maxLevel)

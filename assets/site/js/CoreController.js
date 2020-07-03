@@ -16,6 +16,8 @@ class CoreController {
 
         loader;
 
+        this.sliderText();
+
         this.registerEvents();
     }
 
@@ -23,6 +25,36 @@ class CoreController {
         $('nav#mobile_menu_active').meanmenu({
             meanScreenWidth: "991",
             meanMenuContainer: '.mobile-menu-area .container',
+        });
+    }
+
+    sliderText() {
+        $('#slider_text_carousel').owlCarousel({
+            loop: true,
+            margin: 0,
+            responsiveClass: true,
+            navigation: false,
+            navText: false,
+            nav: false,
+            items: 1,
+            smartSpeed: 2000,
+            dots: false,
+            autoplay: false,
+            autoplayTimeout: 4000,
+            center: false,
+            responsive: {
+                0: {
+                    items: 1,
+                    autoplay: true,
+                },
+                480: {
+                    items: 1,
+                    autoplay: true,
+                },
+                760: {
+                    items: 3
+                }
+            }
         });
     }
 

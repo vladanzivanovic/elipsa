@@ -2,6 +2,7 @@
 @import '../../../node_modules/bootstrap3/dist/css/bootstrap.min.css';
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~toastr/toastr";
+@import "~owl.carousel";
 
 @import "../../scss/base";
 @import "colors";
@@ -41,4 +42,25 @@ div#page-loader {
 
 .logo img {
   max-width: 130px;
+}
+
+.slider-text-area {
+  padding: 0;
+  border-bottom: 1px solid $site-color;
+  border-top: 1px solid $site-color;
+  line-height: 40px;
+  height: 40px;
+
+  .owl-item {
+    text-align: center;
+
+    > a {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+
+  .owl-nav {
+    display: none;
+  }
 }

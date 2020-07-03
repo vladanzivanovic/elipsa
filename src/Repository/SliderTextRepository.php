@@ -58,4 +58,26 @@ class SliderTextRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getList(string $locale): array
+    {
+        $query = $this->createQueryBuilder('st')
+            ->select(
+                'stt.description',
+                'stt.link'
+            )
+            ->innerJoin('st.sliderTextTranslations', 'stt')
+            ->where('stt.locale = :locale')
+            ->andWhere('st.isActive = :activeSlider')
+            ->setParameter('locale', $locale)
+            ->setParameter('activeSlider', SliderText::STATUS_ACTIVE)
+        ;
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

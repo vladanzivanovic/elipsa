@@ -74,7 +74,7 @@ class ProductRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select(
-                'p.id',
+                'p.code',
                 'p.price',
                 'p.status',
                 'pt.title',
@@ -88,6 +88,14 @@ class ProductRepository extends ExtendedEntityRepository
             ->groupBy('pt.slug')
             ->orderBy('p.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
+
+//        if (!empty($tableModel->getSearch())) {
+//            $query->andWhere('
+//                pt.title LIKE :search or
+//                p.code LIKE :search
+//            ')
+//                ->setParameter('search', '%'.$tableModel->getSearch().'%');
+//        }
 
         return $query->getQuery()->getArrayResult();
     }

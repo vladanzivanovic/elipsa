@@ -116,3 +116,26 @@
     </div>
 </div>
 <!-- mobile-menu-end -->
+    {% set sliderTexts = slider_text(locale) %}
+
+    {% if sliderTexts | length > 0 %}
+        <div class="slider-text-area">
+            <div class="container">
+                <div class="featured-items">
+                    <div>
+                        <div class="featured-all">
+                            <div class="fi-row">
+                                <div class="row">
+                                    <div id="slider_text_carousel" class="feature-pro-carousel owl-carousel">
+                                        {% for sliderText in sliderTexts %}
+                                            <a href="{{ sliderText.link }}">{{ sliderText.description }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}

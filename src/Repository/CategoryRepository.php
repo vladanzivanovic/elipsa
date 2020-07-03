@@ -50,8 +50,7 @@ class CategoryRepository extends ExtendedEntityRepository
                 'GROUP_CONCAT(ct.title) as titles',
                 'GROUP_CONCAT(ct.locale) as locales',
                 'IFELSE(ct.locale = \'rs\', ct.slug, NULL) slug',
-                'ctparent.title as parent',
-                'c.showHomePage as show_home_page'
+                'ctparent.title as parent'
             )
             ->innerJoin(CategoryTranslation::class, 'ct', 'WITH', 'ct.category = c')
             ->leftJoin(CategoryTranslation::class, 'ctparent', 'WITH', 'ctparent.category = c.parent AND ctparent.locale = \'rs\'')
@@ -82,38 +81,6 @@ class CategoryRepository extends ExtendedEntityRepository
             $query->where('c != :category')
                 ->setParameter('category', $category);
         }
-
-        return $query->getQuery()->getArrayResult();
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
-    public function getHomePageCategories(string $locale): array
-    {
-        $subQuery = $this->_em->createQueryBuilder()
-            ->select('1')
-            ->from(Product::class, 'p')
-            ->innerJoin('p.productHasCategories', 'phc')
-            ->where('p.showHomePage = :showHomePage')
-            ->andWhere('p.status = :activeStatus')
-            ->andWhere('phc.category = c');
-
-        $query = $this->createQueryBuilder('c')
-            ->select(
-                'c.id',
-                'ct.title',
-                'ct.slug'
-            )
-            ->innerJoin('c.categoryTranslations', 'ct')
-            ->where('ct.locale = :locale')
-            ->andWhere('c.showHomePage = :showHomePage')
-            ->andWhere('EXISTS ('.$subQuery->getDQL().')')
-            ->setParameter('locale', $locale)
-            ->setParameter('showHomePage', true)
-            ->setParameter('activeStatus', Product::STATUS_ACTIVE);
 
         return $query->getQuery()->getArrayResult();
     }

@@ -14,7 +14,7 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
+                { data: 'code', title: 'Šifra' },
                 { data: 'title', title: 'Naziv' },
                 { data: 'price', title: 'Cena od', type: "num" },
                 { data: 'status_text', title: 'Status', width: '200px', render: function (data, type, row, meta) {

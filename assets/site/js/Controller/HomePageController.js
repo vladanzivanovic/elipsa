@@ -11,7 +11,7 @@ class HomePageController {
             responsiveClass: true,
             navigation: true,
             navText: ["<i class='fa fa-long-arrow-left'></i>", "<i class='fa fa-long-arrow-right'></i>"],
-            nav: false,
+            nav: true,
             items: 1,
             smartSpeed: 2000,
             dots: false,
