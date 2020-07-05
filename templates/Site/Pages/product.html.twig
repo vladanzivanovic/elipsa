@@ -125,7 +125,7 @@
                             <ul class="spt-tab clearfix">
                                 <li class="active"><a data-toggle="tab" href="#pdesc" class="letter-capitalize">{{ 'product.description' | trans }}</a></li>
                                 <li><a data-toggle="tab" href="#ainfo" class="letter-capitalize">{{ 'product.material_cleaning' | trans }}</a></li>
-{#                                <li class="active"><a data-toggle="tab" href="#creview">Customer Reviews (02)</a></li>#}
+                                <li><a data-toggle="tab" href="#size_table" class="letter-capitalize">{{ 'product.size_table' | trans }}</a></li>
                             </ul>
                         </div>
                         <div class="spt-content">
@@ -143,6 +143,9 @@
                                     </ul>
 
                                     <p>{{ translation.cleaning }}</p>
+                                </div>
+                                <div id="size_table" class="tab-pane fade in active">
+                                    <img src="{{ asset('image/size_table.jpg') }}">
                                 </div>
                             </div>
                         </div>

@@ -1521,9 +1521,12 @@ ul.menu-list li .hot::after {
 }
 
 .single-featured-item .sfi-content .sfi-price-rating .sfi-price span {
-    color: #a70303;
+    color: #000000;
     font-size: 16px;
     font-weight: 700;
+}
+.single-featured-item .sfi-content .sfi-price-rating .sfi-price span.discount-price {
+    color: #a70303;
 }
 
 .single-featured-item .sfi-content .sfi-price-rating .sfi-old-price {

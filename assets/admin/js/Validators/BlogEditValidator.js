@@ -21,7 +21,7 @@ class BlogEditValidator {
                 en_title: 'required',
                 en_short_description: 'required',
                 en_description: 'setErrorIfSummernoteIsEmpty',
-                'tags[]': isMultiSelectBoxEmpty,
+                'tags[]': 'isMultiSelectBoxEmpty',
                 main_images: {
                     dropZoneHasImage: true,
                     dropZoneHasMainImage: true,

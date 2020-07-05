@@ -638,6 +638,7 @@ Version      : 1.0
     }
     .header-top .mobile-lang-bar a {
         color: #a6a6a6;
+        width: 100% !important;
     }
     .logo a {
         width: 130px !important;
@@ -645,6 +646,7 @@ Version      : 1.0
     }
     .logo a img {
         width: 100% !important;
+        max-width: 100% !important;
     }
     .top-cart > span {
         font-size: 15px !important;
@@ -658,13 +660,13 @@ Version      : 1.0
         content: "" !important;
         font-family: FontAwesome !important;
         position: absolute !important;
-        right: 50px !important;
+        right: 10px !important;
         top: 0px !important;
     }
     .language .active-list {
         visibility: visible !important;
         opacity: 1 !important;
-        left: 35px !important;
+        left: -27px !important;
     }
     .top-cart > span i {
         font-size: 15px !important;
