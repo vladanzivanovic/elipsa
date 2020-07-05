@@ -54,11 +54,11 @@ class TagsRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('pt')
             ->select(
-                'pt.id',
+                'pt.id as id',
                 'pt.label as rs_name',
-                'pt.mainSlug',
+                'pt.mainSlug as minSLug',
                 'pten.label as en_name',
-                'pt.slug'
+                'pt.slug as slug'
             )
             ->innerJoin(Tags::class, 'pten', 'WITH', 'pten.mainSlug = pt.mainSlug AND pten.locale = \'en\'')
             ->where('pt.locale = \'rs\'')
@@ -66,7 +66,7 @@ class TagsRepository extends ExtendedEntityRepository
             ->setParameter('relatedType', $type)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('pt.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();

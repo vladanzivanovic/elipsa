@@ -14,6 +14,10 @@ class SliderHandler {
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         data.push({
             name: 'images',
             value: JSON.stringify(DropZoneService().getFilesArray('slider')),

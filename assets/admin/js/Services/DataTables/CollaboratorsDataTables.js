@@ -17,24 +17,24 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'full_name', title: 'Ime i prezime' },
-                { data: 'email', title: 'Email' },
-                { data: 'phone', title: 'Telefon' },
-                { data: 'website', title: 'Websajt' },
-                { data: 'has_store', title: 'Poseduje prodavnicu' },
-                { data: 'location', title: 'Loakcija' },
-                { data: 'shopping_mall', title: 'Tržni centar' },
-                { data: 'total_size', title: 'Kvadratura' },
-                { data: 'no_floors', title: 'Broj spratova' },
-                { data: 'address', title: 'Adresa' },
-                { data: 'city', title: 'Mesto' },
-                { data: 'zip_code', title: 'Poštanski broj' },
-                { data: 'country', title: 'Država' },
-                { data: 'presentation_doc', title: 'Prezentacija', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id',  title: 'Id' },
+                { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
+                { data: 'email', name: 'email', title: 'Email' },
+                { data: 'phone', name: 'phone', title: 'Telefon' },
+                { data: 'website', name: 'website', title: 'Websajt' },
+                { data: 'has_store', name: 'has_store', title: 'Poseduje prodavnicu' },
+                { data: 'location', name: 'location', title: 'Loakcija' },
+                { data: 'shopping_mall', name: 'shopping_mall', title: 'Tržni centar' },
+                { data: 'total_size', name: 'total_size', title: 'Kvadratura' },
+                { data: 'no_floors', name: 'no_floors', title: 'Broj spratova' },
+                { data: 'address', name: 'address', title: 'Adresa' },
+                { data: 'city', name: 'city', title: 'Mesto' },
+                { data: 'zip_code', name: 'zip_code', title: 'Poštanski broj' },
+                { data: 'country', name: 'country', title: 'Država' },
+                { data: 'presentation_doc', orderable: false, title: 'Prezentacija', render: function (data, type, row, meta) {
                     return type === 'display' && null != data ? `<a href="${data}">Prezentacija</a>` : '';
                     }},
-                { data: 'plan_doc', title: 'Plan', render: function (data, type, row, meta) {
+                { data: 'plan_doc', orderable: false, title: 'Plan', render: function (data, type, row, meta) {
                         return type === 'display' && null != data ? `<a href="${data}">Plan</a>` : '';
                     }},
             ],

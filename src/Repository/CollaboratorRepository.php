@@ -44,19 +44,19 @@ class CollaboratorRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->select(
-                'c.id',
-                'c.email',
+                'c.id as id',
+                'c.email as email',
                 'CONCAT(c.firstName, \' \', c.lastName) as full_name',
-                'c.address',
+                'c.address as address',
                 'c.phone as phone',
-                'c.city',
-                'c.country',
-                'c.location',
+                'c.city as city',
+                'c.country as country',
+                'c.location as location',
                 'c.numberOfFloors as no_floors',
                 'c.shoppingMall as shopping_mall',
                 'c.spaceSize as total_size',
                 'c.store has_store',
-                'c.website',
+                'c.website as website',
                 'c.zipCode as zip_code',
                 'presentation.id as presentation_doc',
                 'plan.id as plan_doc'
@@ -65,7 +65,7 @@ class CollaboratorRepository extends ExtendedEntityRepository
             ->leftJoin('c.plan', 'plan')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('c.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         return $query->getQuery()->getArrayResult();
     }

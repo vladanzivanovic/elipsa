@@ -1,10 +1,18 @@
 require ('../../../js/Validators/ValidationRuleHelper');
 
-export default (() => {
-    let Public = {};
+class BlogEditValidator {
+    constructor() {
+        if (!BlogEditValidator.instance) {
+            BlogEditValidator.instance = this;
+        }
 
-    Public.validate = (form) => {
-        var options = {
+        return BlogEditValidator.instance;
+    }
+
+    validate(form) {
+        let options;
+
+        options = {
             ignore: '',
             rules: {
                 rs_title: 'required',
@@ -13,16 +21,22 @@ export default (() => {
                 en_title: 'required',
                 en_short_description: 'required',
                 en_description: 'setErrorIfSummernoteIsEmpty',
+                'tags[]': isMultiSelectBoxEmpty,
                 main_images: {
                     dropZoneHasImage: true,
                     dropZoneHasMainImage: true,
                 }
             },
         };
+
         $.extend(options, window.helpBlock);
 
         return form.validate(options);
-    };
+    }
+}
 
-    return Public;
-});
+const blogEditValidator = new BlogEditValidator();
+
+Object.freeze(blogEditValidator);
+
+export default blogEditValidator;

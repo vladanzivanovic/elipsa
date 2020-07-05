@@ -1,5 +1,4 @@
 import NotificationService from "../../../js/NotificationService";
-import LoyaltyDataTables from "../Services/DataTables/LoyaltyDataTables";
 import CollaboratorsDataTables from "../Services/DataTables/CollaboratorsDataTables";
 
 const Private = Symbol('private');

@@ -1,6 +1,5 @@
 import dt from 'datatables.net-dt';
 import AppHelperService from "../../../../js/Helper/AppHelperService";
-import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
 export default (() => {
     let Public = {},
@@ -17,13 +16,13 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'full_name', title: 'Ime i prezime' },
-                { data: 'email', title: 'Email' },
-                { data: 'role', title: 'Tip', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
+                { data: 'email', name: 'email', title: 'Email' },
+                { data: 'role', name: 'role', title: 'Tip', render: function (data, type, row, meta) {
                         return type === 'display' ? Translator.trans(data, null, 'messages', LOCALE) : data;
                     } },
-                { data: 'status_text', title: 'Status', width: '200px', render: function (data, type, row, meta) {
+                { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const checkedAttr = row.status === 2 ? 'checked' : '';
                         const text = Translator.trans(data, null, 'messages', LOCALE);
 
@@ -31,7 +30,7 @@ export default (() => {
 
                         return type === 'display' ? html : data;
                     } },
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'id', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_user_page', {id: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Onemogući</button>` : '';
 
@@ -42,45 +41,13 @@ export default (() => {
             ],
             order: [[2, 'asc']],
             pageLength: 100,
-            rowReorder: {
-                dataSrc: 'id',
-                update: false,
-            }
         });
-
-        Private.registerEvents();
     };
 
     Public.reload = () => {
         Private.tableRef.DataTable().ajax.reload(null, false);
     };
 
-    Private.registerEvents = () => {
-        Private.dataTable.on('row-reorder', (e, diff, edit) => {
-            let data = {};
-            for(let i = 0; i < diff.length; i++) {
-                let rowData = Private.dataTable.row( diff[i].node ).data();
-
-                data[rowData.id] = {
-                    'id': rowData.id,
-                    'position': diff[i].newPosition + 1,
-                };
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: AppHelperService.generateLocalizedUrl('admin.set_sliders_position'),
-                data: {'rows': JSON.stringify(data)},
-                dataType: 'json',
-                success: response => {
-                    Public.reload();
-                },
-                error: error => {
-
-                },
-            })
-        })
-    };
 
     return Public;
 });

@@ -16,6 +16,10 @@ class AboutUsHandler {
         let type = 'POST';
         const data = $(this.mapper.form).serializeArray();
 
+        if (! $(this.mapper.form).valid()) {
+            return false;
+        }
+
         this.notification.showLoadingMessage();
 
         $.ajax({

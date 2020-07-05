@@ -52,15 +52,28 @@ class ProductRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param DataTableModel $tableModel
+     *
      * @return mixed
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countData()
+    public function countData(DataTableModel $tableModel)
     {
-        $query = $this->createQueryBuilder('product')
-            ->select('COUNT(product.id) as total')
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id) as total')
         ;
+
+        if (!empty($tableModel->getSearch())) {
+            $query
+                ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
+                ->andWhere('
+                pt.title LIKE :search or
+                p.code LIKE :search
+            ')
+                ->setParameter('search', '%'.$tableModel->getSearch().'%')
+                ->setParameter('locale', 'rs');
+        }
 
         return $query->getQuery()->getSingleScalarResult();
     }
@@ -74,10 +87,10 @@ class ProductRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select(
-                'p.code',
-                'p.price',
-                'p.status',
-                'pt.title',
+                'p.code as code',
+                'p.price as price',
+                'p.status as status',
+                'pt.title as title',
                 'pt.slug',
                 'p.showHomePage as show_home_page'
             )
@@ -86,16 +99,16 @@ class ProductRepository extends ExtendedEntityRepository
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->groupBy('pt.slug')
-            ->orderBy('p.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
-//        if (!empty($tableModel->getSearch())) {
-//            $query->andWhere('
-//                pt.title LIKE :search or
-//                p.code LIKE :search
-//            ')
-//                ->setParameter('search', '%'.$tableModel->getSearch().'%');
-//        }
+        if (!empty($tableModel->getSearch())) {
+            $query->andWhere('
+                pt.title LIKE :search or
+                p.code LIKE :search
+            ')
+                ->setParameter('search', '%'.$tableModel->getSearch().'%');
+        }
 
         return $query->getQuery()->getArrayResult();
     }

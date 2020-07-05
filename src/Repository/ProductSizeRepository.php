@@ -48,15 +48,15 @@ class ProductSizeRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('ps')
             ->select(
-                'ps.id',
-                'ps.size',
-                'ps.slug',
+                'ps.id as id',
+                'ps.size as size',
+                'ps.slug as slug',
                 'COUNT(phs.id) as total_used'
             )
             ->leftJoin('ps.productHasSizes', 'phs')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('ps.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
             ->groupBy('ps.id')
         ;
 

@@ -123,7 +123,7 @@
                             </div><!-- Col -->
                             <div class="col-sm-3">
                                 <div class="form-check form-check-inline">
-                                    {{ form.radio('Desno', 'position_4', 4, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 4 ? 'checked=checked' : null) }}
+                                    {{ form.radio('Desno', 'position_4', 4, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 4 ? 'data-show-error-after=yes checked=checked' : 'data-show-error-after=yes') }}
                                 </div>
                             </div><!-- Col -->
                         </div>

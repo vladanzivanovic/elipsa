@@ -90,15 +90,15 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
     {
         $query = $this->createQueryBuilder('u')
             ->select(
-                'u.id',
+                'u.id as id',
                 'CONCAT(u.firstName, \' \', u.lastName) as full_name',
-                'u.email',
-                'u.status',
-                'u.roles'
+                'u.email as email',
+                'u.status as status',
+                'u.roles as roles'
             )
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('u.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();

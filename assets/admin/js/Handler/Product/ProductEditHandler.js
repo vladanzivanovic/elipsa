@@ -24,6 +24,10 @@ class ProductEditHandler {
             type = 'PUT';
         }
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         this.notification.showLoadingMessage();
 
         $.ajax({

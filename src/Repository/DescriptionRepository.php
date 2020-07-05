@@ -43,9 +43,9 @@ class DescriptionRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('d')
             ->select(
-                'd.id',
-                'd.description',
-                'd.type'
+                'd.id as id',
+                'd.description as description',
+                'd.type as type'
             )
             ->where('d.locale = \'rs\'')
             ->setFirstResult($tableModel->getOffset())

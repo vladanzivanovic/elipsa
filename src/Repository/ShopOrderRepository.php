@@ -47,8 +47,8 @@ class ShopOrderRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('o')
             ->addSelect(
-                'o.id',
-                'ba.email',
+                'o.id as id',
+                'ba.email as email',
                 'CONCAT(ba.firstName, \' \', ba.lastName) as full_name',
                 'o.paymentType as payment_type'
             )
@@ -57,7 +57,7 @@ class ShopOrderRepository extends ExtendedEntityRepository
             ->setParameter('statusCompleted', ShopOrder::STATUS_COMPLETED)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('o.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         return $query->getQuery()->getArrayResult();
     }

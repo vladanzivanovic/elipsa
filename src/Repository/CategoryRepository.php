@@ -46,7 +46,7 @@ class CategoryRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->select(
-                'c.id',
+                'c.id as id',
                 'GROUP_CONCAT(ct.title) as titles',
                 'GROUP_CONCAT(ct.locale) as locales',
                 'IFELSE(ct.locale = \'rs\', ct.slug, NULL) slug',
@@ -56,7 +56,7 @@ class CategoryRepository extends ExtendedEntityRepository
             ->leftJoin(CategoryTranslation::class, 'ctparent', 'WITH', 'ctparent.category = c.parent AND ctparent.locale = \'rs\'')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('c.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
             ->groupBy('c.id')
         ;
 

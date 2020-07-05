@@ -58,7 +58,7 @@ final class ProductListController extends AbstractController
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
-        $total = $this->productRepository->countData();
+        $total = $this->productRepository->countData($formattedRequest);
 
         $data = $this->productRepository->getAdminList($formattedRequest);
 

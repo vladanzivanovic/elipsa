@@ -15,10 +15,10 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'rs_name', title: 'Naziv - srpski' },
-                { data: 'en_name', title: 'Naziv - engleski' },
-                { data: 'slug', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'rs_name', name: 'rs_name', title: 'Naziv - srpski' },
+                { data: 'en_name', name: 'en_name', title: 'Naziv - engleski' },
+                { data: 'slug', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_page`, {slug: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}">Ukloni</button>` : '';
 

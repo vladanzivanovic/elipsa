@@ -15,9 +15,9 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'description', title: 'Tekst' },
-                { data: 'status_text', title: 'Status', width: '200px', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'description', name: 'description', title: 'Tekst' },
+                { data: 'status_text', name: 'is_active', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const checkedAttr = row.is_active === true ? 'checked' : '';
                         const text = Translator.trans(data, null, 'messages', LOCALE);
 
@@ -25,7 +25,7 @@ export default (() => {
 
                         return type === 'display' ? html : data;
                     } },
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'id', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.edit_slider_text_page', {id: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 

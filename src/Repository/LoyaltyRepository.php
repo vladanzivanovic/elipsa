@@ -45,18 +45,18 @@ class LoyaltyRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('l')
             ->addSelect(
-                'l.id',
+                'l.id as id',
                 'DATE_FORMAT(l.birthDate, \'%d.%m.%Y\') as birth_date',
-                'l.email',
+                'l.email as email',
                 'CONCAT(l.firstName, \' \', l.lastName) as full_name',
-                'l.occupation',
+                'l.occupation as occupation',
                 'l.mobilePhone as mobile_phone',
-                'l.note',
-                'l.rate'
+                'l.note as note',
+                'l.rate as rate'
             )
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('l.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         return $query->getQuery()->getArrayResult();
     }

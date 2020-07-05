@@ -3,12 +3,14 @@ import SummerNote from "../Services/SummerNote";
 import BlogEditService from "../Services/BlogEditService";
 import BlogEditHandler from "../Handler/BlogEditHandler";
 import DropZone from "../../../js/Services/DropZoneService";
+import blogEditValidator from "../Validators/BlogEditValidator";
 require ('select2/dist/js/select2.full.min');
 
 class BlogEditController {
     constructor() {
         this.mapper = new BlogEditMapper();
         this.editService = new BlogEditService();
+        this.validator = blogEditValidator;
         this.dropZone = DropZone(this.mapper.form);
         this.dropZone.init(this.mapper.form);
 
@@ -23,6 +25,8 @@ class BlogEditController {
         if (IS_EDIT) {
             this.dropZone.setFiles(IMAGES, 'blog');
         }
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

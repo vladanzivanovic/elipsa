@@ -27,6 +27,10 @@ class LocationHandler {
             type = 'PUT';
         }
 
+        if (! $(this.mapper.form).valid()) {
+            return false;
+        }
+
         this.notification.showLoadingMessage();
 
         $.ajax({

@@ -1,10 +1,12 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
 import SliderEditMapper from "../Mapper/SliderEditMapper";
 import SliderHandler from "../Handler/SliderHandler";
+import sliderEditValidator from "../Validators/SliderEditValidator";
 
 class SliderEditController {
     constructor() {
         this.mapper = new SliderEditMapper();
+        this.validator = sliderEditValidator;
 
         this.dropZone = DropZoneService();
         this.dropZoneMobile = DropZoneService();
@@ -17,6 +19,8 @@ class SliderEditController {
                 this.dropZoneMobile.setFiles(IMAGES.mobile, 'slider_mobile');
             }
         }
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

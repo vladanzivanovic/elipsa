@@ -1,10 +1,12 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
 import BannerEditMapper from "../Mapper/BannerEditMapper";
 import BannerHandler from "../Handler/BannerHandler";
+import bannerEditValidator from "../Validators/BannerEditValidator";
 
 class BannerEditController {
     constructor() {
         this.mapper = new BannerEditMapper();
+        this.validator = bannerEditValidator;
 
         this.dropZoneBanner = DropZoneService();
         this.dropZoneBannerMobile = DropZoneService();
@@ -17,6 +19,8 @@ class BannerEditController {
                 this.dropZoneBannerMobile.setFiles(IMAGES.mobile, 'banner_mobile');
             }
         }
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
 

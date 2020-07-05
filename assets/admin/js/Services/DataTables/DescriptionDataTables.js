@@ -1,6 +1,4 @@
 import dt from 'datatables.net-dt';
-import AppHelperService from "../../../../js/Helper/AppHelperService";
-import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
 export default (() => {
     let Public = {},
@@ -17,11 +15,11 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'type_text', title: 'Stranica', render: function (type_text, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'type_text', name: 'type', title: 'Stranica', render: function (type_text, type, row, meta) {
                     return type === 'display' ? Translator.trans(`text.type.${type_text}`, null, 'messages', LOCALE) : type_text;
                     } },
-                { data: 'type', render: function (data, type, row, meta) {
+                { data: 'type', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.edit_description_page', {type: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-type="${data}">Ukloni</button>` : '';
 
@@ -30,46 +28,13 @@ export default (() => {
                             data;
                     } },
             ],
-            order: [[2, 'asc']],
+            order: [[1, 'asc']],
             pageLength: 100,
-            rowReorder: {
-                dataSrc: 'id',
-                update: false,
-            }
         });
-
-        Private.registerEvents();
     };
 
     Public.reload = () => {
         Private.tableRef.DataTable().ajax.reload(null, false);
-    };
-
-    Private.registerEvents = () => {
-        Private.dataTable.on('row-reorder', (e, diff, edit) => {
-            let data = {};
-            for(let i = 0; i < diff.length; i++) {
-                let rowData = Private.dataTable.row( diff[i].node ).data();
-
-                data[rowData.id] = {
-                    'id': rowData.id,
-                    'position': diff[i].newPosition + 1,
-                };
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: AppHelperService.generateLocalizedUrl('admin.set_sliders_position'),
-                data: {'rows': JSON.stringify(data)},
-                dataType: 'json',
-                success: response => {
-                    Public.reload();
-                },
-                error: error => {
-
-                },
-            })
-        })
     };
 
     return Public;

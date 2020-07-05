@@ -45,15 +45,15 @@ class PromotionCouponRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('pc')
             ->select(
-                'pc.id',
-                'pc.code',
-                'pc.validFrom',
-                'pc.validTo',
-                'pc.discount'
+                'pc.id as id',
+                'pc.code as code',
+                'pc.validFrom as validFrom',
+                'pc.validTo as validTo',
+                'pc.discount as discount'
             )
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('pc.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();

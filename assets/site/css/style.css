@@ -4898,6 +4898,7 @@ footer {
 }
 
 .spt-content {
+    display: flex;
     padding: 30px 35px;
 }
 

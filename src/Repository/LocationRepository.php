@@ -88,7 +88,7 @@ class LocationRepository extends ExtendedEntityRepository
         $query = $this->getDqlForList('rs')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('l.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();
@@ -103,12 +103,12 @@ class LocationRepository extends ExtendedEntityRepository
     {
         return $this->createQueryBuilder('l')
             ->select(
-                'l.id',
-                'lt.title',
+                'l.id as id',
+                'lt.title as title',
                 'lt.slug',
                 'CONCAT(lt.street, \',\', l.zipCode, \' \', lt.city, \' \', lt.country) as address',
-                'l.telephone',
-                'l.email',
+                'l.telephone as telephone',
+                'l.email as email',
                 'l.workingTime as working_time',
                 'l.workingTimeWeekend as weekend'
             )

@@ -46,15 +46,15 @@ class SliderRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->select(
-                's.id',
-                's.position',
+                's.id as id',
+                's.position as position',
                 's.isActive as is_active',
                 'image.name'
             )
             ->innerJoin('s.image', 'image')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('s.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();

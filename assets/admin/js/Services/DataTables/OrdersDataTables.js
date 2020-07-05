@@ -17,10 +17,10 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'full_name', title: 'Ime i prezime' },
-                { data: 'email', title: 'Email' },
-                { data: 'payment_type', title: 'Tip plaćanja', render: function (payment_type, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
+                { data: 'email', name: 'email', title: 'Email' },
+                { data: 'payment_type', name: 'payment_type', title: 'Tip plaćanja', render: function (payment_type, type, row, meta) {
                     return Translator.trans(payment_type, null, 'messages', LOCALE);
                     } },
                 { data: 'id', render: function (id, type, row, meta) {

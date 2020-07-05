@@ -46,10 +46,10 @@ class BannerRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('b')
             ->select(
-                'b.id',
-                'b.position',
+                'b.id as id',
+                'b.position as position',
                 'b.isActive as is_active',
-                'b.type',
+                'b.type as type',
                 'image.name'
             )
             ->innerJoin('b.image', 'image')
@@ -57,7 +57,7 @@ class BannerRepository extends ExtendedEntityRepository
             ->setParameter('types', $types)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('b.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();

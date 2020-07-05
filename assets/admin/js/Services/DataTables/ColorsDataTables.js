@@ -15,15 +15,15 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'hex', title: 'Boja', render: function(data, type) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'hex', name: 'hex', title: 'Boja', render: function(data, type) {
                     return type === 'display' ?
                         `<span style="display: block; width: 20px; height: 20px; background-color: ${data}"></span>` :
                         data;
                     } },
-                { data: 'rs_name', title: 'Naziv - srpski' },
-                { data: 'en_name', title: 'Naziv - engleski' },
-                { data: 'id', render: function (id, type, row, meta) {
+                { data: 'rs_name', name: 'rs_name', title: 'Naziv - srpski' },
+                { data: 'en_name', name: 'en_name', title: 'Naziv - engleski' },
+                { data: 'id', orderable: false, render: function (id, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_color_page', {id})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${id}">Ukloni</button>` : '';
 

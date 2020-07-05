@@ -65,6 +65,13 @@ $.validator.addMethod(
 );
 
 $.validator.addMethod(
+    'isMultiSelectBoxEmpty',
+    function (val, elm, params) {
+        return val && val.length > 0;
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
+);
+
+$.validator.addMethod(
     'checkPhoneInText',
     function (val, elm, params) {
         var regEx = new RegExp(/(\+)?(\d{1,3})([ ]|[\/._-])(\d{1,3})[-._-\s]?(\d{2,4})[-._-\s](\d{2,4})/g);
@@ -157,5 +164,13 @@ $.validator.addMethod(
             return !!val;
         }
         return true;
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
+);
+
+$.validator.addMethod(
+    'setErrorIfSummernoteIsEmpty',
+    function (val, elm, params) {
+
+        return (val !== "<p><br></p>" && val !== "<p></p>" && val !== '')
     }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
 );

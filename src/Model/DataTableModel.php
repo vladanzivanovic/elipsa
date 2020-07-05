@@ -94,7 +94,7 @@ class DataTableModel
         /** @var DataTableColumnModel $dataTableColumn */
         $dataTableColumn = $this->columns->get($orderColumn);
 
-        $this->orderColumn = $dataTableColumn->getData();
+        $this->orderColumn = $dataTableColumn->getName();
     }
 
     /**

@@ -44,16 +44,16 @@ class SliderTextRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('st')
             ->select(
-                'st.id',
-                'stt.description',
+                'st.id as id',
+                'stt.description as description',
                 'st.isActive as is_active',
-                'stt.link'
+                'stt.link as link'
             )
             ->innerJoin('st.sliderTextTranslations', 'stt')
             ->where('stt.locale = \'rs\'')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('st.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();

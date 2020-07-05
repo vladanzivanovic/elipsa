@@ -45,16 +45,16 @@ class BlogRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('blog')
             ->select(
-                'blog.id',
-                'blog.status',
-                'bt.title',
+                'blog.id as id',
+                'blog.status as status',
+                'bt.title as title',
                 'bt.alias'
             )
             ->innerJoin(BlogTranslation::class, 'bt', 'WITH', 'bt.blog = blog AND bt.locale = :locale')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->setParameter('locale', 'rs')
-            ->orderBy('blog.'.$tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         return $query->getQuery()->getArrayResult();
     }

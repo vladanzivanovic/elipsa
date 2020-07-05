@@ -2,10 +2,13 @@ import locationEditMapper from "../Mapper/LocationEditMapper";
 import MapsService from "../../../js/Services/MapsService";
 import DropZoneService from "../../../js/Services/DropZoneService";
 import LocationHandler from "../Handler/LocationHandler";
+import productEditValidator from "../Validators/ProductEditValidator";
+import locationEditValidator from "../Validators/LocationEditValidator";
 
 class LocationEditController {
     constructor() {
         this.mapper = locationEditMapper;
+        this.validator = locationEditValidator;
 
         this.gmapApi = new MapsService();
 
@@ -24,6 +27,8 @@ class LocationEditController {
         if (IS_EDIT) {
             this.dropZone.setFiles(IMAGES, 'location');
         }
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

@@ -17,12 +17,12 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'full_name', title: 'Ime i prezime' },
-                { data: 'email', title: 'Email' },
-                { data: 'position', title: 'Pozicija' },
-                { data: 'accompanying_letter', title: 'Propratno pismo' },
-                { data: 'cv_doc', title: 'CV', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
+                { data: 'email', name: 'email', title: 'Email' },
+                { data: 'position', name: 'position', title: 'Pozicija' },
+                { data: 'accompanying_letter', orderable: false, title: 'Propratno pismo' },
+                { data: 'cv_doc', orderable: false, title: 'CV', render: function (data, type, row, meta) {
                     return type === 'display' && null != data ? `<a href="${data}">CV</a>` : '';
                     }},
             ],

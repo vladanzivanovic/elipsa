@@ -16,15 +16,15 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'title', title: 'Naslov' },
-                { data: 'status_text', title: 'Status', width: '200px', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'title', name: 'title', title: 'Naslov' },
+                { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const checkedAttr = row.status === 1 ? 'checked' : '';
 
                         let html = CAN_EDIT ? `<p class="status-text">${Translator.trans(data, null, 'messages', LOCALE)}</p><input type="checkbox" class="set-active-blog" data-id="${row.id}" ${checkedAttr}/>` : `<p class="status-text">${Translator.trans(data, null, 'messages', LOCALE)}</p>`;
                         return type === 'display' ? html : data;
                     } },
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'id', orderable: false, render: function (data, type, row, meta) {
                         const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.edit_blog_page', {id: data})}">Izmeni</a> ` : '';
                         const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 

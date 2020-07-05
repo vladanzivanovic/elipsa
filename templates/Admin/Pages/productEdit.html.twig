@@ -147,13 +147,18 @@
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Materijali i održavanje</h6>
+                        <h6 id="card_title" class="card-title">Materijali i održavanje</h6>
                         <div class="row">
-                            {% for icon in cleaning|keys %}
+                            {% set additionalAttributes = 'data-error-after=\'#card_title\' ' %}
+                            {% for icon in cleaning %}
+                                {% if IS_EDIT and icon in cleaning_box %}
+                                    {% set additionalAttributes = additionalAttributes ~ 'checked="checked"' %}
+                                {% endif %}
+
                                 <div class="col-4 col-sm-1">
                                     <div class="form-check form-check-flat form-check-primary">
-                                        <span class="{{ icon }}" style="font-size: 40px;width: 100%;display: block;margin-left: 1.3rem;"></span>
-                                        {{ form.checkbox('', 'cleaning_'~icon, icon, 'cleaning[]', 'form-check-label position-relative', 'form-check-input', IS_EDIT and icon in cleaning_box ? 'checked="checked"' : null ) }}
+                                        <span class="cleaning-icons {{ icon }}" style="font-size: 40px;width: 100%;display: block;margin-left: 1.3rem;" title="{{ icon | trans }}"></span>
+                                        {{ form.checkbox('', 'cleaning_'~icon, icon, 'cleaning[]', 'form-check-label position-relative', 'form-check-input', additionalAttributes) }}
                                     </div>
                                 </div><!-- Col -->
                             {% endfor %}
