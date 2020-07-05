@@ -6583,6 +6583,7 @@ button.accordion.active {
     color: #555555;
     line-height: 24px;
     margin-bottom: 27px;
+    word-break: break-word;
 }
 
 .single-blog .blog-content .blog-read-more {

@@ -1017,6 +1017,9 @@ Version      : 1.0
         margin-left: 0 !important;
     }
     /*contact*/
+    .contact-form-pre-text {
+        padding: 0 !important;
+    }
     .contact-form-area {
         padding: 0px 10px 70px !important;
     }
