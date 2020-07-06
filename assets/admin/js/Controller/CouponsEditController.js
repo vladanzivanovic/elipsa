@@ -1,14 +1,18 @@
 import datePicker from 'bootstrap-datepicker';
 import couponsEditMapper from "../Mapper/CouponsEditMapper";
 import CouponHandler from "../Handler/CouponHandler";
+import couponsEditValidator from "../Validators/CouponsEditValidator";
 
 class CouponsEditController {
     constructor() {
         this.mapper = couponsEditMapper;
         this.handler = new CouponHandler();
+        this.validator = couponsEditValidator;
 
         this.setDatePickerElm(this.mapper.validFrom);
         this.setDatePickerElm(this.mapper.validTo);
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

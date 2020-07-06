@@ -12,6 +12,10 @@ class SizeHandler {
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_size_api', {slug: SLUG});
             type = 'PUT';

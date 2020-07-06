@@ -1,13 +1,17 @@
 import ColorEditMapper from "../Mapper/ColorEditMapper";
 import ColorHandler from "../Handler/Product/ColorHandler";
+import colorEditValidator from "../Validators/ColorEditValidator";
 import('bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css');
 require('bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min');
 
 class ColorEditController {
     constructor() {
         this.mapper = new ColorEditMapper();
+        this.validator = colorEditValidator;
 
         this.mapper.color.colorpicker();
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

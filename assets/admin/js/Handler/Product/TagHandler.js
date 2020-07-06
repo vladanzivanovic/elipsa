@@ -13,6 +13,10 @@ class TagHandler {
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_api`, {slug: SLUG});
             type = 'PUT';
