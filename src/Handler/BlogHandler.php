@@ -91,15 +91,10 @@ final class BlogHandler
         $rootDir = $this->bag->get('upload_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
-        $hasImages = $blog->getBlogHasImages();
+        $image = $blog->getImage();
 
-        /** @var BlogHasImages $hasImage */
-        foreach ($hasImages->getIterator() as $hasImage) {
-            $image = $hasImage->getImage();
-
-            $image->setFile($this->imageService->setFileObject(['file' => $rootDir.$imageDir.$image->getOriginalName(), 'fileName' => $image->getOriginalName()]));
-            $image->setIsDeleted(true);
-        }
+        $image->setFile($this->imageService->setFileObject(['file' => $rootDir.$imageDir.$image->getOriginalName(), 'fileName' => $image->getOriginalName()]));
+        $image->setIsDeleted(true);
 
         $this->blogRepository->delete($blog);
 

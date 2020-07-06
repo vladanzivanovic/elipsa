@@ -32,7 +32,14 @@ class NewsLetterHandler {
                 loader.hide();
             },
             error: (error) => {
+                const errors = error.responseJSON;
                 loader.hide();
+
+                if (errors.hasOwnProperty('message')) {
+                    this.notification.show('error', errors.message, true);
+
+                    return;
+                }
             }
         })
     }

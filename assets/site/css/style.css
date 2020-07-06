@@ -4582,6 +4582,7 @@ footer {
     color: #646a7c;
     line-height: 24px;
     margin-bottom: 6px;
+    word-break: break-word;
 }
 
 .spd-list {
@@ -6842,6 +6843,7 @@ button.accordion.active {
     color: #555555;
     line-height: 24px;
     margin: 0 0 18px;
+    word-break: break-word;
 }
 
 .blog-best-collection {}
@@ -7145,6 +7147,7 @@ button.accordion.active {
 .contact-form-pre-text {
     background: #fff none repeat scroll 0 0;
     padding: 10px 125px;
+    word-break: break-word;
 }
 
 .contact-form-area {

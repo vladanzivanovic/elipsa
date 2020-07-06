@@ -1038,6 +1038,9 @@ Version      : 1.0
     .scs-content {
         padding: 0 0 0 15px !important;
     }
+    .home3-newsletter-area {
+        height: calc(100vw/1.13) !important;
+    }
     /*404*/
     .error-inner {
         left: 0 !important;

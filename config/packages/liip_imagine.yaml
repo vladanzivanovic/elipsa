@@ -122,14 +122,14 @@ liip_imagine :
             cache: ads_photos
             quality : 100
             filters :
-                downscale:
-                    max: [ 1920, 533 ]
+                thumbnail: { size: [1920, 533], mode: outbound }
+                background: { size: [1920, 533], position: center, color: '#ffffff' }
         loyalty_banner_mobile :
             cache: ads_photos
             quality : 100
             filters :
-                downscale:
-                    max: [ 500, 439 ]
+                thumbnail: { size: [500, 439], mode: outbound }
+                background: { size: [500, 439], position: center, color: '#ffffff' }
         news_letter_banner :
             cache: ads_photos
             quality : 100
