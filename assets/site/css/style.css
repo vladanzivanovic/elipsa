@@ -331,7 +331,7 @@ header {}
 }
 
 .lrc-login {
-    margin-bottom: 36px;
+    margin-bottom: 10px;
 }
 
 .lrc-login-form {
@@ -386,13 +386,13 @@ header {}
     width: 100%;
 }
 
-.lrc-login-form .remember-help {
+.remember-help {
     margin-bottom: 21px;
 }
 
-.lrc-login-form .remember-help input[type="checkbox"] {}
+.remember-help input[type="checkbox"] {}
 
-.lrc-login-form .remember-help label {
+.remember-help label {
     color: #000000;
     font-size: 14px;
     font-weight: 400;
@@ -401,7 +401,7 @@ header {}
     margin: 0;
 }
 
-.lrc-login-form .remember-help a {
+.remember-help a {
     color: #000000;
     float: right;
     font-size: 14px;
@@ -422,6 +422,19 @@ header {}
     color: #fff;
     padding: 8px 45px;
     transition: all 0.3s ease 0s;
+}
+
+#reset_password,
+#login_register_show {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+#reset_password > a,
+#login_register_show > a {
+    font-size: 15px;
+    font-weight: bold;
+    color: #565656;
 }
 
 .lrc-register {}
@@ -7198,7 +7211,8 @@ button.accordion.active {
 .cfc-input-box input[type="text"],
 .cfc-input-box input[type="email"],
 .cfc-input-box input[type="tel"],
-.cfc-input-box input[type="number"] {
+.cfc-input-box input[type="number"],
+.cfc-input-box input[type="password"] {
     border: 2px solid #f2f2f2;
     height: 40px;
     padding: 0;

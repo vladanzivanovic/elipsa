@@ -6,6 +6,7 @@ import UserHandler from "./Handler/UserHandler";
 import registrationValidator from "./Validators/RegistrationValidator";
 import WishListHandler from "./Handler/WishListHandler";
 import NewsLetterHandler from "./Handler/NewsLetterHandler";
+import resetPasswordValidator from "./Validators/ResetPasswordValidator";
 
 class CoreController {
     constructor() {
@@ -13,6 +14,7 @@ class CoreController {
         this.handler = new CartHandler();
         this.mapper = coreMapper;
         this.registrationValidator = registrationValidator;
+        this.resetPasswordValidator = resetPasswordValidator;
 
         loader;
 
@@ -124,6 +126,40 @@ class CoreController {
             }
 
             $(listElm).removeClass('active-list');
+        });
+
+        $('#reset_password_btn').on('click touchend', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $('.lrc-login').fadeOut();
+            $('.lrc-register').fadeOut();
+            $('#reset_password').fadeOut();
+
+            $('#reset_password_form_wrapper').fadeIn();
+            $('#login_register_show').fadeIn();
+        });
+
+        $('#login_register_show_btn').on('click touchend', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $('.lrc-login').fadeIn();
+            $('.lrc-register').fadeIn();
+            $('#reset_password').fadeIn();
+
+            $('#reset_password_form_wrapper').fadeOut();
+            $('#login_register_show').fadeOut();
+        });
+
+        $(document).on('click touchend', this.mapper.resetPasswordBtn, e => {
+            const handler = new UserHandler();
+
+            this.resetPasswordValidator.validate(this.mapper.resetForm);
+
+            $(this.mapper.resetForm).valid();
+
+            handler.doResetPassword(this.mapper);
         });
     }
 }

@@ -24,10 +24,31 @@
                                 {{ inputs.input('login_remember_me', 1, '_remember_me', '', 'checkbox') }} {{ 'login.remember_me' | trans }}
                             </div>
                             <div class="lrc-submit">
-                                <input id="login-btn" class="hvr-bs letter-capitalize" type="button" value="{{ 'login.btn' | trans }}">
+                                <input id="login-btn" class="hvr-bs" type="button" value="{{ 'login.btn' | trans }}">
                             </div>
                         </form>
                     </div>
+                </div>
+                <div id="reset_password" class="remember-help">
+                    <a href="#" id="reset_password_btn" class="letter-capitalize">{{ 'reset_password.text' | trans }}</a>
+                </div>
+                <div id="reset_password_form_wrapper" class="lrc-login" style="display: none">
+                    <h4 class="lrc-title letter-capitalize">{{ 'reset_password.label' | trans }}</h4>
+                    <div class="lrc-login-form">
+                        <form id="reset_form" enctype="multipart/form-data">
+                            {{ inputs.input('_csrf_token', csrf_token('reset_password'), '_csrf_token', '', 'hidden') }}
+                            <div class="account-name">
+                                <i class="fa fa-user"></i>
+                                {{ inputs.input('reset_email', '', 'reset_email', 'Email', 'email', 'letter-capitalize') }}
+                            </div>
+                            <div class="lrc-submit">
+                                <input id="reset_btn" class="hvr-bs" type="button" value="{{ 'submit' | trans }}">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="login_register_show" class="remember-help" style="display: none">
+                    <a href="#" id="login_register_show_btn"><span class="d-inline-block letter-capitalize">{{ 'login.text' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration.text' | trans }}</span></a>
                 </div>
                 <div class="lrc-register">
                     <h4 class="lrc-title letter-capitalize">{{ 'registration.text' | trans }}</h4>
@@ -40,19 +61,19 @@
                             {{ inputs.input('registration_password', '', 'registration_password', 'Password' | trans, 'password') }}
                             {{ inputs.input('registration_re_password', '', 'registration_re_password', 'Re_password' | trans, 'password') }}
                             <div class="lrc-register-btn">
-                                <input id="registration-btn" class="hvr-bs letter-capitalize" type="button" value="{{ 'registration.btn' | trans }}">
+                                <input id="registration-btn" class="hvr-bs" type="button" value="{{ 'registration.btn' | trans }}">
                             </div>
                         </form>
                     </div>
-                    <div class="or-register-to">
-                        <span class="letter-capitalize">{{ 'registration.via' | trans }}</span>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google"></i></a></li>
-                        </ul>
-                    </div>
+{#                    <div class="or-register-to">#}
+{#                        <span class="letter-capitalize">{{ 'registration.via' | trans }}</span>#}
+{#                        <ul>#}
+{#                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>#}
+{#                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>#}
+{#                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>#}
+{#                            <li><a href="#"><i class="fa fa-google"></i></a></li>#}
+{#                        </ul>#}
+{#                    </div>#}
                 </div>
             </div>
         {% endif %}

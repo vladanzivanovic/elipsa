@@ -4,45 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
-use App\Collector\CartPageCollector;
 use App\Entity\User;
-use App\Formatter\Site\CartPageFormatter;
 use App\Handler\Site\UserHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class UserRegistrationController extends AbstractController
 {
     /**
-     * @var CartPageCollector
-     */
-    private $pageCollector;
-    /**
-     * @var CartPageFormatter
-     */
-    private $pageFormatter;
-    /**
      * @var UserHandler
      */
     private $handler;
 
     /**
-     * CartPageController constructor.
-     *
-     * @param CartPageCollector $pageCollector
-     * @param CartPageFormatter $pageFormatter
      * @param UserHandler       $handler
      */
     public function __construct(
-        CartPageCollector $pageCollector,
-        CartPageFormatter $pageFormatter,
         UserHandler $handler
     ) {
-        $this->pageCollector = $pageCollector;
-        $this->pageFormatter = $pageFormatter;
         $this->handler = $handler;
     }
 

@@ -13,6 +13,8 @@ class CoreMapper {
             this.newsLetterSubmitBtn = '#news_letter_btn';
             this.newsLetterSubmitBtnFooter = '#newsletter_submit';
             this.newsLetterCloseBtn = '#wd1_nlpopup_close';
+            this.resetPasswordBtn = '#reset_btn';
+            this.resetForm = '#reset_form';
 
             CoreMapper.instance = this;
         }

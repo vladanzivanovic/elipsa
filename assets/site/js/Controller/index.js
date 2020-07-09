@@ -13,6 +13,7 @@ import CatalogPageController from "./CatalogPageController";
 import ContactPageController from "./ContactPageController";
 import CollaboratorPageController from "./CollaboratorPageController";
 import CareerPageController from "./CareerPageController";
+import ResetPasswordPageController from "./ResetPasswordPageController";
 
 let routes = [
     {
@@ -74,6 +75,10 @@ let routes = [
     {
         name: 'site.career_page',
         controller: CareerPageController,
+    },
+    {
+        name: 'site.reset_password_page',
+        controller: ResetPasswordPageController,
     },
 ];
 

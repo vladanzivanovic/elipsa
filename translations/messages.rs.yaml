@@ -115,6 +115,8 @@ title.catalog: Katalog
 title.about_us: O nama
 title.contact_us: Kontakt
 title.privacy_policy: Politika privatnosti
+title.reset_password: Promena lozinke
+title.not_exits_page: Nepostojeća stranica
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -178,7 +180,11 @@ email.order.total_shipping: Ukupno sa poštarinom
 
 email.registration.title: Registracija na sajtu %siteName%
 email.registration.success.text: Uspešno ste izvršili registraciju
-email.registration.message: Kako bi ste završili proces registracije neophodno je da akivirate nalog.<br>Molimo vas kliknite na link u nastavku.
+email.registration.message: Kako bi ste završili proces registracije neophodno je da akivirate nalog,<br>molimo vas kliknite na link u nastavku.
+
+email.reset_password.title: Reset lozinke na sajtu %siteName%
+email.reset_password.headline.text: Zahtev za promenu lozinke
+email.reset_password.message: Kako bi ste završili proces promene lozinke molimo vas da kliknete na link ispod.
 
 payment_type.on_delivering: Pouzećem
 payment_type.credit_card: Platna kartica
@@ -195,7 +201,7 @@ read_more: detaljnije
 blog.posted: postavljeno
 
 form: forma
-submit: pošalji
+submit: Pošalji
 
 loyalty.rate: Ocenite brend ELIPSA ocenama od 1-5
 loyalty.message.success: Uspešno ste se registrovali u loyalty program.
@@ -219,6 +225,14 @@ login.text: prijava
 login.btn: Prijavi se
 login.remember_me: zapamti me
 login.successful: Uspešno ste se ulogovali
+
+reset_password.text: zaboravili ste lozinku?
+reset_password.label: resetovanje lozinke
+reset_password.successful:  Na vašu email adresu je poslat link za promenu lozinke
+reset_password.user_not_exists: Nepostojeći korisnik.
+reset_password.page.text: Unesite novu lozinku.
+reset_password.page.error.expired_token: Zahtev za promenu lozinke je istekao. Molimo vas zatražite novi.
+reset_password.page.success: Uspešno ste promenili lozinku.
 
 logout.text: odjavite se
 
@@ -298,6 +312,7 @@ career.form.accompanying_letter: propratno pismo
 career.message.already_applied: Vi ste se već prijavili.
 career.message.success: Uspešno ste poslali prijavu.
 
+not_exists_page.description: Žao nam je, ali stranica koju tražite ne postoji.
 
 main_street: glavna ulica
 shopping_mall: tržni centar

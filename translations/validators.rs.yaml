@@ -4,6 +4,7 @@ field:
   min_length: 'Minimalan broj karaktera je %limit%.'
   main_image: 'Glavna slika nije postavljena'
   email: 'Email nije validan'
+  equal_to: 'Polja nisu ista.'
 
 files:
   limit_reached: 'Maksimalni broj slika je dostignut.'

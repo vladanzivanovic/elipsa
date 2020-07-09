@@ -58,3 +58,12 @@ site.ask_us:
 
 site.logout:
   path: /logout
+
+site.not_exists_page:
+  path:
+    rs: /nepostojeca-stranica
+    en: /en/not-exits-page
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/404Page.html.twig
+

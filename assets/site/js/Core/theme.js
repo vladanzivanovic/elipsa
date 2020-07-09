@@ -491,6 +491,15 @@ require('webpack-jquery-ui');
             if (!$(e.target).closest($(element)).length) {
                 $(element).fadeOut("slow");
                 $(element).removeClass('open');
+
+                if ($('.lrc-register').is(':hidden')) {
+                    $('.lrc-login').fadeIn();
+                    $('.lrc-register').fadeIn();
+                    $('#reset_password').fadeIn();
+
+                    $('#reset_password_form_wrapper').fadeOut();
+                    $('#login_register_show').fadeOut();
+                }
             }
         })
 

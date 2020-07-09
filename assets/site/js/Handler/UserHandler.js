@@ -64,6 +64,32 @@ class UserHandler {
         })
     }
 
+    doResetPassword(mapper) {
+        const urlRoute = Routing.generate(`site_api.user_ask_for_reset_password`);
+        const type = 'PATCH';
+        const data = $(mapper.resetForm).serializeArray();
+
+        if (! $(mapper.resetForm).valid()) {
+            return false;
+        }
+
+        loader.show();
+
+        $.ajax({
+            type,
+            url: urlRoute,
+            data,
+            dataType: 'json',
+            success: (response) => {
+                AppHelperService.redirect('reload');
+            },
+            error: (error) => {
+                this.notification.show('error', Translator.trans(error.responseJSON.message, null, 'messages', LOCALE), true);
+                loader.hide();
+            }
+        })
+    }
+
     doUpdate(form) {
         let urlRoute = Routing.generate(`site_api.user_update.${LOCALE}`, {id: USER_ID});
         let type = 'PUT';

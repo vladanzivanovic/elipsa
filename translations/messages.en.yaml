@@ -122,6 +122,8 @@ title.catalog: Catalogue
 title.about_us: About us
 title.contact_us: Contact
 title.privacy_policy: Privacy policy
+title.reset_password: Reset password
+title.not_exits_page: Page doesn't exists
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -176,7 +178,11 @@ email.order.buyer.paymet_type: Payment
 
 email.registration.title: Account registration on site %siteName%
 email.registration.success.text: Your registration was successull
-email.registration.message: In order to complet registration process you need to activate account.<br/> Click on the link below.
+email.registration.message: In order to complete registration process you need to activate account.<br/> Click on the link below.
+
+email.reset_password.title: Reset password on site %siteName%
+email.reset_password.headline.text: Change password request
+email.reset_password.message: In order to change password please follow the link below.
 
 email.order.data.title: Order data
 email.order.table.product_name: Product name
@@ -202,7 +208,7 @@ read_more: read more
 blog.posted: posted
 
 form: form
-submit: submit
+submit: Submit
 
 loyalty.rate: Rate the ELIPSA brand from 1-5
 loyalty.message.success: You are successfuly register in loyalty program.
@@ -225,6 +231,14 @@ login.text: login
 login.btn: Submit login
 login.remember_me: remember me
 login.successfull: Login was successful
+
+reset_password.text: Did you forgot password?
+reset_password.label: Reset pssword
+reset_password.successful:  You will receive email with link to change pssword
+reset_password.user_not_exists: User not exits.
+reset_password.page.text: Enter new pssword.
+reset_password.page.error.expired_token: Your request to change password has expired. Please request new one.
+reset_password.page.success: You are successfuly changed password.
 
 logout.text: logout
 
@@ -299,6 +313,8 @@ collaborator.form.space_size: space size
 collaborator.form.number_of_floors: number of floors
 collaborator.message.already_applied: You are already applying to the collaborators program
 collaborator.message.success: You are successfully sent the application.
+
+not_exists_page.description: We are so sorry, but the page you requested is not available.
 
 career.form.accompanying_letter: accompaning letter
 career.message.already_applied: You are already sent application

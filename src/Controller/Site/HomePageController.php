@@ -35,7 +35,7 @@ final class HomePageController extends AbstractController
     }
 
     /**
-     * @Route("/", name="site.home_page", methods={"GET"})
+     * @Route("/", name="site.home_page", methods={"GET"}, options={"expose": true})
      * @Template("Site/Pages/home.html.twig")
      *
      * @param Request $request
