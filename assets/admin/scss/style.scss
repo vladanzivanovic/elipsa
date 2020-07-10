@@ -15,7 +15,7 @@
 @import "~@staaky/tipped/dist/css/tipped.css";
 
 // Template variables
-@import 'dark/variables';
+@import 'light/variables';
 @import 'variables';
 
 // SCSS compass funtions
@@ -51,10 +51,10 @@
 @import 'common/demo';
 @import 'common/typography';
 
-@import 'vertical-wrapper';
-@import 'navbar';
-@import 'sidebar';
-@import 'layouts';
+@import 'demo_1/vertical-wrapper';
+@import 'demo_1/navbar';
+@import 'demo_1/sidebar';
+@import 'demo_1/layouts';
 
 // components
 @import "common/components/accordions";
@@ -88,27 +88,27 @@
 
 
 // Plugin overrides
-@import "dark/components/plugin-overrides/ace";
-@import "dark/components/plugin-overrides/apex-charts";
-@import "dark/components/plugin-overrides/bootstrap-datepicker";
-@import "dark/components/plugin-overrides/data-tables";
-@import "dark/components/plugin-overrides/dropify";
-@import "dark/components/plugin-overrides/dropzone";
-@import "dark/components/plugin-overrides/full-calendar";
-@import "dark/components/plugin-overrides/jquery-flot";
-@import "dark/components/plugin-overrides/peity";
-@import "dark/components/plugin-overrides/perfect-scrollbar";
-@import "dark/components/plugin-overrides/sweet-alert";
-@import "dark/components/plugin-overrides/select2";
-@import "dark/components/plugin-overrides/simplemde";
-@import "dark/components/plugin-overrides/tags-input";
-@import "dark/components/plugin-overrides/tempusdominus-bootstrap-4";
-@import "dark/components/plugin-overrides/tinymce";
-@import "dark/components/plugin-overrides/typeahead";
-@import "dark/components/plugin-overrides/wizard";
+@import "light/components/plugin-overrides/ace";
+@import "light/components/plugin-overrides/apex-charts";
+@import "light/components/plugin-overrides/bootstrap-datepicker";
+@import "light/components/plugin-overrides/data-tables";
+@import "light/components/plugin-overrides/dropify";
+@import "light/components/plugin-overrides/dropzone";
+@import "light/components/plugin-overrides/full-calendar";
+@import "light/components/plugin-overrides/jquery-flot";
+@import "light/components/plugin-overrides/peity";
+@import "light/components/plugin-overrides/perfect-scrollbar";
+@import "light/components/plugin-overrides/sweet-alert";
+@import "light/components/plugin-overrides/select2";
+@import "light/components/plugin-overrides/simplemde";
+@import "light/components/plugin-overrides/tags-input";
+@import "light/components/plugin-overrides/tempusdominus-bootstrap-4";
+@import "light/components/plugin-overrides/tinymce";
+@import "light/components/plugin-overrides/typeahead";
+@import "light/components/plugin-overrides/wizard";
 @import "toastr";
 @import "../../scss/dropzone";
-@import "dark/dropzone";
+@import "light/dropzone";
 @import "../../scss/loader";
 @import "../../scss/google_maps";
 

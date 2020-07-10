@@ -130,12 +130,15 @@
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
-                                    {{ form.radio('Početna strana gore', 'home_page_checkbox', 2, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == 2 ? 'checked="checked"' : null ) }}
+                                    {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}
+                                    {{ form.radio('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == upValue ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
-                                    {{ form.radio('Početna strana dole', 'home_page_checkbox', 1, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == 1 ? 'checked="checked"' : null ) }}
+                                    {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}
+
+                                    {{ form.radio('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == downValue ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -149,8 +152,8 @@
                     <div class="card-body">
                         <h6 id="card_title" class="card-title">Materijali i održavanje</h6>
                         <div class="row">
-                            {% set additionalAttributes = 'data-error-after=\'#card_title\' ' %}
                             {% for icon in cleaning %}
+                                {% set additionalAttributes = 'data-error-after=\'#card_title\' ' %}
                                 {% if IS_EDIT and icon in cleaning_box %}
                                     {% set additionalAttributes = additionalAttributes ~ 'checked="checked"' %}
                                 {% endif %}
