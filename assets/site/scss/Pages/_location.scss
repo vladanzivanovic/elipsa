@@ -4,13 +4,44 @@
 @import "../Components/flexslider";
 
 .location-page {
-  .deafult-sorting {
-    select {
-      margin-right: 0;
+  .sidebar-box {
+    margin-top: 15px;
+
+    &:first-of-type {
+      margin-top: 25px;
+    }
+
+    .sidebar-location-button {
+      background: transparent none repeat scroll 0 0;
+      border: 0 none;
+      border-bottom: 1px solid #d9d9d9;
+      color: #222222;
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0;
+      margin: 0 0 9px;
+      padding: 0 0 2px;
+      position: relative;
+      text-align: left;
+      text-transform: uppercase;
+      width: 100%;
+    }
+
+    .location-btn {
+      .location-title {
+        font-weight: 600;
+      }
+      .location-address {
+        text-transform: none;
+      }
+      &.active {
+        pointer-events: none;
+        color: $site-color;
+      }
     }
   }
   .product-tab-menu {
-    height: 460px;
+    height: 424px;
     width: 24%;
     margin-left: 3% !important;
 
@@ -34,10 +65,23 @@
   }
 
   .product-tab-content {
-    height: 460px;
+    height: 424px;
 
     .flex-viewport {
       height: 100% !important;
     }
+  }
+
+  .flexslider {
+    margin-bottom: 20px;
+
+    @media only screen and (max-width: 480px) and (min-width: 240px) {
+      margin-bottom: 40px;
+    }
+  }
+
+  .sidebar-widget-body {
+    max-height: 500px;
+    overflow-y: scroll;
   }
 }

@@ -16,6 +16,10 @@ class CouponHandler {
         let type = 'POST';
         const data = this.mapper.form.serializeArray();
 
+        if (! this.mapper.form.valid()) {
+            return false;
+        }
+
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_coupon_api', {id: ID});
             type = 'PUT';

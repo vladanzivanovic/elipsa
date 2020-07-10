@@ -11,15 +11,15 @@ export default (() => {
         Private.tableRef.DataTable( {
             serverSide: true,
             ajax: {
-                url: Routing.generate('admin.get_product_tags_list'),
+                url: Routing.generate(`admin.get_${ROUTE_SUB_NAME}_tags_list`),
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'rs_name', title: 'Naziv - srpski' },
-                { data: 'en_name', title: 'Naziv - engleski' },
-                { data: 'slug', render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_tag_page', {slug: data})}">Izmeni</a> ` : '';
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'rs_name', name: 'rs_name', title: 'Naziv - srpski' },
+                { data: 'en_name', name: 'en_name', title: 'Naziv - engleski' },
+                { data: 'slug', orderable: false, render: function (data, type, row, meta) {
+                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_page`, {slug: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?

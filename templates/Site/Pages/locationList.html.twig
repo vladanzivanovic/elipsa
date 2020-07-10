@@ -1,24 +1,93 @@
 {% extends 'Site/base.html.twig' %}
 
+{% set locationTitle = 'title.location' | trans %}
 {% block bodyClass %}location-page{% endblock %}
-{% block title %}Lokacije - Elipsa{% endblock %}
+{% block title %}{{ locationTitle }} - Elipsa{% endblock %}
 
 {% block content %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Lokacije' }], 'activePage': 'Lokacije'}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': locationTitle }], 'activePage': locationTitle }) }}
 
-    <div>
+    <div class="shop-left-sidebar-area">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="shop-grid">
-                        <div class="shop-menu clearfix">
-                            <div class="deafult-sorting">
-                                <label class="letter-capitalize">{{ 'countries' | trans }}</label>
-                                <select id="country-list" class="sort-option">
-                                    {% for country in countries %}
-                                        <option class="text-capitalize" value="{{ country.country_code }}">{{ country.name }}</option>
+                {% if false == is_mobile() and false == is_tablet() %}
+                    <div class="col-md-2 col-sm-12 col-xs-12">
+                        <div class="shop-sidebar-area">
+                            <div class="sidebar-widget widget-categories">
+                                <h4 class="sidebar-title">{{ 'title.location' | trans }}</h4>
+                                <div class="sidebar-widget-body">
+                                    {% for location in locations %}
+                                        <div class="sidebar-box">
+                                            <button class="sidebar-location-button location-btn {{ loop.first ? 'active' : '' }}" data-index="{{ loop.index - 1 }}">
+                                                <span class="location-title">{{ location.title }}</span>
+                                                <p class="location-address">{{ location.address }}</p>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-md-10 col-sm-12 col-xs-12">
+                    <div class="row">
+                        {% if is_mobile() or is_tablet() %}
+                            <div class="deafult-sorting col-xs-12">
+                                <label>{{ 'title.location' | trans }}</label>
+                                <select class="sort-option location-drop-down">
+                                    {% for location in locations %}
+                                        <option class="text-capitalize" value="{{ loop.index - 1 }}" >{{ location.title ~ ' - ' ~ location.address }}</option>
                                     {% endfor %}
                                 </select>
+                            </div>
+                        {% endif %}
+                        <div class="col-md-6 col-sm-12 col-xs-12 hide images-wrapper">
+                            <div class="product-tab-area">
+                                <div class="clearfix">
+                                    <div id="sliders" class="product-tab-content tab-content flexslider">
+                                        <ul class="slides"></ul>
+                                    </div>
+                                    <div id="carousel" class="product-tab-menu flexslider">
+                                        <ul class="product-tab slides"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="single-product-description-area">
+                                <h2 class="spd-title"></h2>
+                                <p class="spd-text"></p>
+                                <ul class="spd-list">
+                                    <li class="letter-capitalize">{{ 'address' | trans }}: <span class="address-info"></span></li>
+                                    <li class="letter-capitalize">{{ 'email' | trans }}: <span class="email-info"></span></li>
+                                    <li class="letter-capitalize">{{ 'email.order.seller.telephone' | trans }}: <span class="telephone-info"></span></li>
+                                </ul>
+                                <div class="spd-meta">
+                                    <div class="spd-meta-cat">
+                                        <span class="letter-capitalize">{{ 'location.modal.work_time' | trans }}:</span>
+                                        <ul>
+                                            <li class="work-time"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="spd-meta-tags">
+                                        <span class="letter-capitalize">{{ 'location.modal.work_time_weekend' | trans }}:</span>
+                                        <ul>
+                                            <li class="work-time-weekend"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="related-product-area">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="related-product-head">
+                                    <h2 class="related-pro-title letter-capitalize">{{ 'location.map' | trans }}</h2>
+                                </div>
+                                <div class="related-product-body">
+                                    {{ include('Moduls/googleMaps.html.twig') }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -29,19 +98,15 @@
     <!-- map-area-start -->
     <div class="map-area">
         <div class="gmap">
-            {{ include('Moduls/googleMaps.html.twig') }}
         </div>
     </div>
     <!-- map-area-end -->
-    {{ include('Site/Components/locationModal.html.twig') }}
 {% endblock %}
-
 {% block pageStyleSheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/location.css') }}"/>
 {% endblock %}
 {% block pageJavascript %}
     <script>
         const LOCATIONS = JSON.parse('{{ locations | json_encode | raw }}');
-        const IS_MOBILE = {{ is_mobile() ? 1 : 0 }};
     </script>
 {% endblock %}

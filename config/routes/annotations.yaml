@@ -1,6 +1,9 @@
 controllers_site:
     resource: ../../src/Controller/Site/
     type: annotation
+    prefix:
+        rs: ''
+        en: '/en'
 
 controllers_unique:
     resource: ../../src/Controller/Unique/

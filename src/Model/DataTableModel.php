@@ -38,13 +38,28 @@ class DataTableModel
      */
     private $orderDirection;
 
+    /**
+     * @var string|null
+     */
+    private $search;
+
+    /**
+     * @param int         $draw
+     * @param int         $offset
+     * @param int         $limit
+     * @param array       $columns
+     * @param int         $orderColumn
+     * @param string      $orderDirection
+     * @param string|null $search
+     */
     public function __construct(
         int $draw,
         int $offset,
         int $limit,
         array $columns,
         int $orderColumn,
-        string $orderDirection
+        string $orderDirection,
+        string $search = null
     ) {
         $this->draw = $draw;
         $this->limit = $limit;
@@ -52,6 +67,7 @@ class DataTableModel
         $this->setColumns($columns);
         $this->setOrderColumn($orderColumn);
         $this->orderDirection = $orderDirection;
+        $this->search = $search;
     }
 
     /**
@@ -78,7 +94,7 @@ class DataTableModel
         /** @var DataTableColumnModel $dataTableColumn */
         $dataTableColumn = $this->columns->get($orderColumn);
 
-        $this->orderColumn = $dataTableColumn->getData();
+        $this->orderColumn = $dataTableColumn->getName();
     }
 
     /**
@@ -127,5 +143,13 @@ class DataTableModel
     public function getOrderDirection(): string
     {
         return $this->orderDirection;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSearch(): ?string
+    {
+        return $this->search;
     }
 }

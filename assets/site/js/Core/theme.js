@@ -56,6 +56,7 @@ require('webpack-jquery-ui');
 (function($) {
     "use strict";
 
+    let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
     /*---------------------
     preloader
@@ -305,40 +306,6 @@ require('webpack-jquery-ui');
     }
     h2_testimonial_carousel();
 
-
-    /*---------------------
-    feature-pro-carousel
-    --------------------- */
-    function feature_pro_carousel() {
-        var owl = $(".feature-pro-carousel");
-        owl.owlCarousel({
-            loop: true,
-            margin: 0,
-            responsiveClass: true,
-            navigation: true,
-            navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-            nav: true,
-            items: 3,
-            smartSpeed: 2000,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 4000,
-            center: false,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                480: {
-                    items: 1
-                },
-                760: {
-                    items: 3
-                }
-            }
-        });
-    }
-    feature_pro_carousel();
-
     /*------------------------------
     h3-testimonial-carousel
     ---------------------------- */
@@ -481,21 +448,23 @@ require('webpack-jquery-ui');
     /*-----------------------
     hide-login-register
     -----------------------*/
-    document.getElementById("login_register_content").style.display = "none";
-    $("#login_register").on('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+    if (document.getElementById("login_register_content")) {
+        document.getElementById("login_register_content").style.display = "none";
+        $("#login_register").on('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
 
-        $.each($('.open'), (index, element) => {
-            if (!$(e.currentTarget).closest($(element)).length) {
-                $(element).fadeOut("slow");
-                $(element).removeClass('open');
-            }
-        })
+            $.each($('.open'), (index, element) => {
+                if (!$(e.currentTarget).closest($(element)).length) {
+                    $(element).fadeOut("slow");
+                    $(element).removeClass('open');
+                }
+            })
 
-        $("#login_register_content").fadeIn("slow");
-        $('#login_register_content').addClass('open');
-    });
+            $("#login_register_content").fadeIn("slow");
+            $('#login_register_content').addClass('open');
+        });
+    }
 
 
     /*-----------------------
@@ -522,8 +491,19 @@ require('webpack-jquery-ui');
             if (!$(e.target).closest($(element)).length) {
                 $(element).fadeOut("slow");
                 $(element).removeClass('open');
+
+                if ($('.lrc-register').is(':hidden')) {
+                    $('.lrc-login').fadeIn();
+                    $('.lrc-register').fadeIn();
+                    $('#reset_password').fadeIn();
+
+                    $('#reset_password_form_wrapper').fadeOut();
+                    $('#login_register_show').fadeOut();
+                }
             }
         })
+
+        $('.active-list').removeClass('active-list');
     })
 
 

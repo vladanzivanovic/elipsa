@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\ColorTranslation;
+use App\Entity\Tags;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * @method ColorTranslation|null find($id, $lockMode = null, $lockVersion = null)
@@ -12,39 +15,33 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method ColorTranslation[]    findAll()
  * @method ColorTranslation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ColorTranslationRepository extends ServiceEntityRepository
+class ColorTranslationRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ColorTranslation::class);
     }
 
-    // /**
-    //  * @return ColorTranslation[] Returns an array of ColorTranslation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param string $slug
+     * @param string $locale
+     *
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getForLocalization(string $slug, string $locale)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('ct')
+            ->select(
+                'ctt.slug'
+            )
+            ->innerJoin(ColorTranslation::class, 'ctt', 'WITH', 'ctt.color = ct.color')
+            ->where('ct.slug = :slug')
+            ->andWhere('ctt.locale = :locale')
+            ->setParameter('slug', $slug)
+            ->setParameter('locale', $locale);
 
-    /*
-    public function findOneBySomeField($value): ?ColorTranslation
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getSingleScalarResult();
     }
-    */
 }

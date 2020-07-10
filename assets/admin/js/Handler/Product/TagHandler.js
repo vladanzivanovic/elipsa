@@ -9,12 +9,16 @@ class TagHandler {
     }
 
     save(mapper) {
-        let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_tag_api');
+        let urlRoute = AppHelperService.generateLocalizedUrl(`admin.add_${ROUTE_SUB_NAME}_tag_api`);
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         if (IS_EDIT) {
-            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_tag_api', {slug: SLUG});
+            urlRoute = AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_api`, {slug: SLUG});
             type = 'PUT';
         }
 
@@ -26,7 +30,7 @@ class TagHandler {
             data,
             dataType: 'json',
             success: response => {
-                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.tags'));
+                AppHelperService.redirect(AppHelperService.generateLocalizedUrl(`admin.${ROUTE_SUB_NAME}_tags`));
             },
             error: error => {
                 this.notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
@@ -39,12 +43,20 @@ class TagHandler {
 
         $.ajax({
             type: 'DELETE',
-            url: AppHelperService.generateLocalizedUrl('admin.remove_tag_api', {slug}),
+            url: AppHelperService.generateLocalizedUrl(`admin.remove_${ROUTE_SUB_NAME}_tag_api`, {slug}),
             success: () => {
                 TagsDataTables().reload();
                 this.notification.remove();
             },
             error: (error) => {
+                const errors = error.responseJSON;
+
+                if (errors.hasOwnProperty('message')) {
+                    this.notification.show('error', errors.message, true);
+
+                    return;
+                }
+
                 this.notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
             }
         })

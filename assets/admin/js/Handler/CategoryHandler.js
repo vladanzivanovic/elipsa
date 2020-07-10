@@ -12,6 +12,10 @@ class CategoryHandler {
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_category_api', {slug: SLUG});
             type = 'PUT';
@@ -65,6 +69,14 @@ class CategoryHandler {
             dataType: 'json',
             success: () => {},
             error: () => {
+                const errors = error.responseJSON;
+
+                if (errors.hasOwnProperty('message')) {
+                    this.notification.show('error', errors.message, true);
+
+                    return;
+                }
+
                 this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
             }
         })

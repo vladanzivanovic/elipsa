@@ -14,7 +14,7 @@
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Lokacija</h4>
+            <h4 class="mb-3 mb-md-0">Lokacija - 1060x1580</h4>
         </div>
     </div>
 
@@ -165,13 +165,6 @@
                 </div>
             </div>
         </div>
-        {{ inputs.input('country_south_lat', IS_EDIT ? country_south_lat : '', 'country_south_lat', '', 'hidden') }}
-        {{ inputs.input('country_south_lng', IS_EDIT ? country_south_lng : '', 'country_south_lng', '', 'hidden') }}
-        {{ inputs.input('country_north_lat', IS_EDIT ? country_north_lat : '', 'country_north_lat', '', 'hidden') }}
-        {{ inputs.input('country_north_lng', IS_EDIT ? country_north_lng : '', 'country_north_lng', '', 'hidden') }}
-        {{ inputs.input('country_lat', IS_EDIT ? country_lat : '', 'country_lat', '', 'hidden') }}
-        {{ inputs.input('country_lng', IS_EDIT ? country_lat : '', 'country_lng', '', 'hidden') }}
-        {{ inputs.input('country_short_code', IS_EDIT ? country_short_code : '', 'country_short_code', '', 'hidden') }}
 
     </form>
     {{ form.button('location_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}

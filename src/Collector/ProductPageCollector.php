@@ -7,12 +7,14 @@ namespace App\Collector;
 use App\Entity\Product;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductTranslation;
+use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\ImageRepository;
+use App\Repository\ProductCleaningRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 
 final class ProductPageCollector
 {
@@ -25,7 +27,7 @@ final class ProductPageCollector
      */
     private $sizeRepository;
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
     /**
@@ -40,22 +42,28 @@ final class ProductPageCollector
      * @var ProductRepository
      */
     private $productRepository;
+    /**
+     * @var ProductCleaningRepository
+     */
+    private $cleaningRepository;
 
     /**
-     * @param ProductColorRepository $colorRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param ProductTagsRepository  $tagsRepository
-     * @param CategoryRepository     $categoryRepository
-     * @param ImageRepository        $imageRepository
-     * @param ProductRepository      $productRepository
+     * @param ProductColorRepository    $colorRepository
+     * @param ProductSizeRepository     $sizeRepository
+     * @param TagsRepository            $tagsRepository
+     * @param CategoryRepository        $categoryRepository
+     * @param ImageRepository           $imageRepository
+     * @param ProductRepository         $productRepository
+     * @param ProductCleaningRepository $cleaningRepository
      */
     public function __construct(
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,
-        ProductTagsRepository $tagsRepository,
+        TagsRepository $tagsRepository,
         CategoryRepository $categoryRepository,
         ImageRepository $imageRepository,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        ProductCleaningRepository $cleaningRepository
     ) {
         $this->colorRepository = $colorRepository;
         $this->sizeRepository = $sizeRepository;
@@ -63,9 +71,10 @@ final class ProductPageCollector
         $this->categoryRepository = $categoryRepository;
         $this->imageRepository = $imageRepository;
         $this->productRepository = $productRepository;
+        $this->cleaningRepository = $cleaningRepository;
     }
 
-    public function collect(ProductTranslation $productTranslation, string $locale): array
+    public function collect(ProductTranslation $productTranslation, string $locale, ?User $user): array
     {
         $product = $productTranslation->getProduct();
 
@@ -77,11 +86,12 @@ final class ProductPageCollector
             'tags'              => $this->tagsRepository->getByProducts([$product->getId()], $locale),
             'productCategories' => $this->categoryRepository->getByProduct($product, $locale),
             'images'            => $this->imageRepository->getByProduct($product),
-            'related_products'  => $this->relatedProducts($product, $locale),
+            'related_products'  => $this->relatedProducts($product, $locale, $user),
+            'cleaningIcons'     => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
         ];
     }
 
-    private function relatedProducts(Product $product, string $locale): array
+    private function relatedProducts(Product $product, string $locale, ?User $user): array
     {
         $hasCategories = $product->getProductHasCategories();
 
@@ -93,7 +103,7 @@ final class ProductPageCollector
             $categories[] = $category->getTranslationByLocale($locale)->first()->getSlug();
         }
 
-        $products = $this->productRepository->getRelatedProducts($locale, $categories, $product);
+        $products = $this->productRepository->getRelatedProducts($locale, $categories, $product, $user);
 
         $productIds = array_column($products, 'id');
 

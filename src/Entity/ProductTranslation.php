@@ -49,6 +49,11 @@ class ProductTranslation
      */
     private $shortDescription;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $cleaning;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +127,18 @@ class ProductTranslation
     public function setShortDescription(string $shortDescription): self
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    public function getCleaning(): ?string
+    {
+        return $this->cleaning;
+    }
+
+    public function setCleaning(?string $cleaning): self
+    {
+        $this->cleaning = $cleaning;
 
         return $this;
     }

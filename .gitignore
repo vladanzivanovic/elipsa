@@ -1,11 +1,21 @@
+.idea
+migrations
+node_modules
+
+storage/cache
+storage/import
+storage/tmp/*
+storage/image/*
 
 ###> symfony/framework-bundle ###
+/.env
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /var/
 /vendor/
+/public/build/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

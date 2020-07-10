@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Image;
 use App\Entity\Slider;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -45,15 +46,15 @@ class SliderRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->select(
-                's.id',
-                's.position',
+                's.id as id',
+                's.position as position',
                 's.isActive as is_active',
                 'image.name'
             )
             ->innerJoin('s.image', 'image')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('s.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();
@@ -92,10 +93,11 @@ class SliderRepository extends ExtendedEntityRepository
 
     /**
      * @param string $locale
+     * @param int    $device
      *
      * @return array
      */
-    public function getActiveOrderByPosition(string $locale): array
+    public function getActiveSliderByPosition(string $locale): array
     {
         $query = $this->createQueryBuilder('s')
             ->select(
@@ -104,10 +106,12 @@ class SliderRepository extends ExtendedEntityRepository
                 'st.description',
                 'st.buttonText as button_text',
                 'st.buttonLink as button_link',
-                'i.name as image'
+                'i.name as image',
+                'mi.name as mobile_image'
             )
             ->innerJoin('s.sliderTranslations', 'st')
             ->innerJoin('s.image', 'i')
+            ->innerJoin(Image::class, 'mi', 'WITH', 'mi.parentImage = i.name')
             ->where('s.isActive = :isActive')
             ->andWhere('st.locale = :locale')
             ->setParameter('isActive', true)

@@ -12,6 +12,10 @@ class SizeHandler {
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_size_api', {slug: SLUG});
             type = 'PUT';
@@ -38,7 +42,7 @@ class SizeHandler {
 
         $.ajax({
             type: 'DELETE',
-            url: AppHelperService.generateLocalizedUrl('admin.remove_size_api', {slug}),
+            url: Routing.generate('admin.remove_size_api', {slug}),
             dataType: 'json',
             success: () => {
                 SizesDataTables().reload();

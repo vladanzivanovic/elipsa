@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Collector;
 
+use App\Entity\User;
 use App\Repository\BannerRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use App\Repository\SliderRepository;
 
 final class HomePageCollector
@@ -39,7 +40,7 @@ final class HomePageCollector
      */
     private $sizeRepository;
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
 
@@ -52,20 +53,18 @@ final class HomePageCollector
      * @param ProductRepository      $productRepository
      * @param ProductColorRepository $colorRepository
      * @param ProductSizeRepository  $sizeRepository
-     * @param ProductTagsRepository  $tagsRepository
+     * @param TagsRepository         $tagsRepository
      */
     public function __construct(
         SliderRepository $sliderRepository,
         BannerRepository $bannerRepository,
-        CategoryRepository $categoryRepository,
         ProductRepository $productRepository,
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,
-        ProductTagsRepository $tagsRepository
+        TagsRepository $tagsRepository
     ) {
         $this->sliderRepository = $sliderRepository;
         $this->bannerRepository = $bannerRepository;
-        $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
         $this->colorRepository = $colorRepository;
         $this->sizeRepository = $sizeRepository;
@@ -77,12 +76,11 @@ final class HomePageCollector
      *
      * @return array
      */
-    public function collect(string $locale): array
+    public function collect(string $locale, ?User $user): array
     {
-        $sliders = $this->sliderRepository->getActiveOrderByPosition($locale);
+        $sliders = $this->sliderRepository->getActiveSliderByPosition($locale);
         $banners = $this->bannerRepository->getActiveOrderByPosition($locale);
-        $categories = $this->categoryRepository->getHomePageCategories($locale);
-        $products = $this->productRepository->getForHomePage(array_column($categories, 'id'), $locale);
+        $products = $this->productRepository->getForHomePage($locale, $user);
 
         $productIds = array_column($products, 'id');
 
@@ -93,7 +91,6 @@ final class HomePageCollector
         return [
             'sliders'           => $sliders,
             'banners'           => $banners,
-            'home_categories'   => $categories,
             'products'          => $products,
             'product_colors'    => $productColors,
             'product_sizes'     => $productSizes,

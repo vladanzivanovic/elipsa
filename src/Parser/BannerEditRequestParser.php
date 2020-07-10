@@ -6,6 +6,7 @@ namespace App\Parser;
 
 use App\Entity\Banner;
 use App\Entity\BannerTranslation;
+use App\Entity\Image;
 use App\Repository\BannerRepository;
 use App\Services\BannerImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -62,10 +63,14 @@ final class BannerEditRequestParser
         }
 
         $banner->setPosition($bag->getInt('position'));
+        $banner->setType($bag->getInt('type'));
 
         $this->setLocale($bag, $banner);
 
-        $this->imageService->setImages($banner, json_decode($bag->get('images'), true));
+        $this->imageService->setImages($banner, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);
+        if ($bag->has('images_mobile')) {
+            $this->imageService->setImages($banner, json_decode($bag->get('images_mobile'), true), Image::DEVICE_MOBILE);
+        }
 
         return $banner;
     }
@@ -81,7 +86,7 @@ final class BannerEditRequestParser
                 $trans = $banner->getByLocale($locale);
             }
 
-            $trans->setDescription($lagBag->get('description'));
+            $trans->setDescription($lagBag->get('description', ''));
             $trans->setButtonText($lagBag->get('button'));
             $trans->setButtonLink($lagBag->get('link'));
             $trans->setLocale($locale);

@@ -6,10 +6,10 @@ namespace App\Parser;
 
 use App\Entity\ProductColor;
 use App\Entity\ProductSize;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;

@@ -1,99 +1,62 @@
+{% set siteSettings = settings() %}
 <div class="footer-top-area">
     <div class="container">
         <div class="footer-top">
             <div class="row">
-                <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="footer-desc">
-                        <img src="logo/logo.png" alt="">
-                        <p>Integer posuere orci sit amet feugiat pellent que. Suspendisse vel tempor justo, sit amet posuere orci dapibus auctor</p>
+                        <div class="logo-footer text-center">
+                        <img src="{{ asset('image/logo/logo.png') }}" alt="{{ default_alt_tag }}">
+                        </div>
                         <div class="footer-desc-contact">
-                            <h6>contact us: </h6>
+                            <h6>{{ 'title.contact_us' | trans }}</h6>
                             <ul>
-                                <li><i class="fa fa-mobile"></i>+3 (523) 555 123 8745</li>
-                                <li><i class="fa fa-envelope-o"></i><span>email: </span> office@DANDY.com</li>
-                                <li><i class="fa fa-map-marker"></i><span>address: </span>1st, new york, usa</li>
+                                <li><i class="fa fa-mobile"></i>{{ siteSettings.TELEPHONE }}</li>
+                                <li><i class="fa fa-envelope-o"></i><span>{{ 'email' | trans }}: </span> {{ siteSettings.MAIN_EMAIL }}</li>
+                                <li><i class="fa fa-map-marker"></i><span>{{ 'address' | trans }}: </span>{{ siteSettings.STREET }}, {{ siteSettings.ZIP_CODE }} {{ siteSettings.CITY }} {{ 'serbia' | trans }}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="footer-links">
-                        <h4 class="footer-title">queck links</h4>
+                        <h4 class="footer-title">{{ 'links' | trans }}</h4>
                         <ul class="clearfix">
-                            <li><a href="#">home</a></li>
-                            <li><a href="#">privacy policy</a></li>
-                            <li><a href="#">about us</a></li>
-                            <li><a href="#">warranty</a></li>
-                            <li><a href="#">products</a></li>
-                            <li><a href="#">login</a></li>
-                            <li><a href="#">services</a></li>
-                            <li><a href="#">registration</a></li>
-                            <li><a href="#">blog</a></li>
-                            <li><a href="#">delivery</a></li>
-                            <li><a href="#">gallery</a></li>
-                            <li><a href="#">pages</a></li>
-                            <li><a href="#">contact</a></li>
-                            <li><a href="#">our stores</a></li>
+                            <li><a href="{{ path('site.home_page', {'_locale': locale}) }}">{{ 'navi.home' | trans }}</a></li>
+                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a></li>
+                            <li><a href="{{ path('site.catalog_page', {'_locale': locale}) }}">{{ 'navi.catalogue' | trans }}</a></li>
+                            <li><a href="{{ path('site.shop_page', {'_locale': locale}) }}">{{ 'navi.shop' | trans }}</a></li>
+                            <li><a href="{{ path('site.trendy_page', {'_locale': locale}) }}">{{ 'navi.trends' | trans }}</a></li>
+                            <li><a href="{{ path('site.blog_list_page', {'_locale': locale}) }}">{{ 'navi.blog' | trans }}</a></li>
+                            <li><a href="{{ path('site.location_page', {'_locale': locale}) }}">{{ 'navi.locations' | trans }}</a></li>
+                            <li><a href="{{ path('site.ask_us', {'_locale': locale}) }}">{{ 'navi.ask_us' | trans }}</a></li>
+                            <li><a href="{{ path('site.contact_page', {'_locale': locale}) }}">{{ 'navi.contact' | trans }}</a></li>
+                            <li><a href="{{ path('site.collaborator', {'_locale': locale}) }}">{{ 'navi.collaborators' | trans }}</a></li>
+                            <li><a href="{{ path('site.career_page', {'_locale': locale}) }}">{{ 'navi.career' | trans }}</a></li>
+                            <li><a href="{{ path('site.policy_page', {'_locale': locale}) }}">{{ 'navi.policy_and_privacy' | trans }}</a></li>
+                            <li><a href="{{ path('site.use_conditions', {'_locale': locale}) }}">{{ 'navi.use_conditions' | trans }}</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="footer-post-area">
-                        <h4 class="footer-title">some posts</h4>
-                        <div class="footer-posts">
-                            <div class="single-footer-post">
-                                <div class="clearfix">
-                                    <div class="footer-post-img">
-                                        <a href="#"><img src="img/footer-post/fpost1.jpg" alt=""></a>
-                                    </div>
-                                    <div class="footer-post-content">
-                                        <span class="fpc-date">apr 07 / 17</span>
-                                        <a class="fpc-title" href="#">Fusce tincidunt accumsan pretium sit amet</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single-footer-post">
-                                <div class="clearfix">
-                                    <div class="footer-post-img">
-                                        <a href="#"><img src="img/footer-post/fpost2.jpg" alt=""></a>
-                                    </div>
-                                    <div class="footer-post-content">
-                                        <span class="fpc-date">apr 07 / 17</span>
-                                        <a class="fpc-title" href="#">Fusce tincidunt accumsan pretium sit amet</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single-footer-post">
-                                <div class="clearfix">
-                                    <div class="footer-post-img">
-                                        <a href="#"><img src="img/footer-post/fpost3.jpg" alt=""></a>
-                                    </div>
-                                    <div class="footer-post-content">
-                                        <span class="fpc-date">apr 07 / 17</span>
-                                        <a class="fpc-title" href="#">Fusce tincidunt accumsan pretium sit amet</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="popular-tag">
-                        <h4 class="footer-title">popular tags</h4>
-                        <ul class="footer-tags">
-                            <li><a href="#">headphoness</a></li>
-                            <li><a href="#">accessories</a></li>
-                            <li><a href="#">new</a></li>
-                            <li><a href="#">wireless</a></li>
-                            <li><a href="#">cabels</a></li>
-                            <li><a href="#">devices</a></li>
-                            <li><a href="#">gadgets</a></li>
-                            <li><a href="#">brands</a></li>
-                            <li><a href="#">replacements</a></li>
-                            <li><a href="#">cases</a></li>
-                            <li><a href="#">cables</a></li>
-                            <li><a href="#">professional</a></li>
-                        </ul>
+                        <h4 class="footer-title">newsletter</h4>
+                        <form id="newsletter_form_footer">
+                            {% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="cfc-input-box">
+                                        {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12 pull-right">
+                                    <button id="newsletter_submit" class="submit hvr-bs" data-animation-type="bounce" data-animation-duration="1" style="animation-duration: 1s; visibility: visible;" type="button">{{ 'submit' | trans }}</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

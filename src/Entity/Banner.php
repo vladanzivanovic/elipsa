@@ -12,12 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Banner
 {
     public const POSITION_HOME_LEFT = 1;
-
     public const POSITION_HOME_MIDDLE_UP = 2;
-
     public const POSITION_HOME_MIDDLE_DOWN = 3;
-
     public const POSITION_HOME_RIGHT = 4;
+
+    public const TYPE_SPEED_LINKS = 1;
+    public const TYPE_LOYALTY = 2;
+    public const TYPE_NEWS_LETTER = 3;
 
     public const STATUS_PENDING = false;
 
@@ -50,6 +51,11 @@ class Banner
      * @ORM\OneToMany(targetEntity="App\Entity\BannerTranslation", mappedBy="banner", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $bannerTranslations;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $type;
 
     public function __construct()
     {
@@ -143,5 +149,17 @@ class Banner
         });
 
         return $filteredTrans->first();
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): self
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }

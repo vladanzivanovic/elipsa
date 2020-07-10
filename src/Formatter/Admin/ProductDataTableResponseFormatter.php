@@ -39,8 +39,13 @@ final class ProductDataTableResponseFormatter
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         $data = array_map(function ($product) {
-            $statusText = ConstantsHelper::getConstantName((string)$product['status'], 'STATUS', Product::class);
+            $statusText = ConstantsHelper::getConstantName((string) $product['status'], 'STATUS', Product::class);
             $product['status_text'] = $this->translator->trans($statusText);
+            $product['position_text'] = null;
+
+            if ($product['show_home_page'] > 0) {
+                $product['position_text'] = ConstantsHelper::getConstantName((string)$product['show_home_page'], 'HOME_PAGE', Product::class);
+            }
 
             return $product;
         }, $data);

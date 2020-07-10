@@ -6,10 +6,13 @@
 imports:
     - { resource: "../vendor/beberlei/doctrineextensions/config/mysql.yml" }
 parameters:
+    # rs must be first language
     locales: rs|en
     upload_dir: '%kernel.project_dir%/storage/'
     upload_tmp_dir: 'tmp/'
     upload_image_dir: 'image/'
+    upload_import_dir: 'import/images/'
+    upload_document_dir: 'documents/'
 
 services:
     # default configuration for services in *this* file
@@ -56,8 +59,8 @@ services:
     App\EventListener\ImageFileSystemListener:
         class: App\EventListener\ImageFileSystemListener
         tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
 
     App\EventListener\RequestListener:
         class: App\EventListener\RequestListener

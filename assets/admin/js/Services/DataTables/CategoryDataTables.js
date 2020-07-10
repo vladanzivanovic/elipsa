@@ -15,22 +15,11 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'rs_name', title: 'Naziv - srpski' },
-                { data: 'en_name', title: 'Naziv - engleski' },
-                { data: 'parent', title: 'Glavna kategorija' },
-                { data: 'show_home_page', title: 'Početna stranica', width: '200px', render: function (data, type, row, meta) {
-                        const checkedAttr = data === true ? 'checked' : '';
-
-                        let html = CAN_EDIT ? `<p class="status-text">&nbsp;</p><input type="checkbox" class="set-home-page" data-slug="${row.slug}" ${checkedAttr}/>` : '';
-
-                        if (row.status === 3) {
-                            html = `<p class="status-text">${data}</p>`;
-                        }
-
-                        return type === 'display' ? html : data;
-                    } },
-                { data: 'slug', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'rs_name', name: 'titles', title: 'Naziv - srpski' },
+                { data: 'en_name', name: 'titles', title: 'Naziv - engleski' },
+                { data: 'parent', name: 'parent', title: 'Glavna kategorija' },
+                { data: 'slug', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_category_page', {slug: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}">Ukloni</button>` : '';
 

@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -125,23 +126,6 @@ class ImageService
     }
 
     /**
-     * @param UploadedFile $file
-     * @param string       $filter
-     *
-     * @return BinaryFileResponse
-     */
-    public function resizeOnFly(UploadedFile $file, string $filter)
-    {
-//        $url = $this->filterService->getUrlOfFilteredImage($file->getPathname(), $filter);
-
-        $binary = $this->dataManager->find($filter, 'tmp/fler_b_01.jpg');
-
-        $image = $this->filterManager->applyFilter($binary, $filter);
-
-        return new BinaryFileResponse($file->getPathname());
-    }
-
-    /**
      * @param array $images
      *
      * @return void
@@ -155,6 +139,28 @@ class ImageService
         foreach ($images as $image) {
             $this->deleteImage($this->setFileObject(['file' => $rootDir.$imageDir.$image->getName(), 'fileName' => $image->getName()]));
         }
+    }
+
+    /**
+     * @param        $file
+     * @param string $path
+     *
+     * @return File
+     */
+    public function uploadToPath($file, string $path): File
+    {
+        if (!$file instanceof UploadedFile) {
+
+        }
+
+        try {
+            /** @var File $movedFile */
+            $movedFile = $file->move($path, $file->getClientOriginalName());
+        } catch (\Throwable $throwable) {
+            dd($throwable);
+        }
+
+        return $movedFile;
     }
 
     private function deleteTmpImage($file):void

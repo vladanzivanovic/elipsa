@@ -10,8 +10,12 @@ use App\Entity\ProductColor;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasImages;
 use App\Entity\ProductHasSizes;
+use App\Entity\ProductHasTags;
 use App\Entity\ProductSize;
 use App\Entity\ProductTranslation;
+use App\Entity\Tags;
+use App\Entity\User;
+use App\Entity\UserWishes;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -48,15 +52,28 @@ class ProductRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @param DataTableModel $tableModel
+     *
      * @return mixed
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countData()
+    public function countData(DataTableModel $tableModel)
     {
-        $query = $this->createQueryBuilder('product')
-            ->select('COUNT(product.id) as total')
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id) as total')
         ;
+
+        if (!empty($tableModel->getSearch())) {
+            $query
+                ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
+                ->andWhere('
+                pt.title LIKE :search or
+                p.code LIKE :search
+            ')
+                ->setParameter('search', '%'.$tableModel->getSearch().'%')
+                ->setParameter('locale', 'rs');
+        }
 
         return $query->getQuery()->getSingleScalarResult();
     }
@@ -70,10 +87,10 @@ class ProductRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select(
-                'p.id',
-                'p.price',
-                'p.status',
-                'pt.title',
+                'p.code as code',
+                'p.price as price',
+                'p.status as status',
+                'pt.title as title',
                 'pt.slug',
                 'p.showHomePage as show_home_page'
             )
@@ -82,8 +99,16 @@ class ProductRepository extends ExtendedEntityRepository
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->groupBy('pt.slug')
-            ->orderBy('p.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
+
+        if (!empty($tableModel->getSearch())) {
+            $query->andWhere('
+                pt.title LIKE :search or
+                p.code LIKE :search
+            ')
+                ->setParameter('search', '%'.$tableModel->getSearch().'%');
+        }
 
         return $query->getQuery()->getArrayResult();
     }
@@ -106,11 +131,12 @@ class ProductRepository extends ExtendedEntityRepository
 
     /**
      * @param string       $locale
+     * @param User|null    $user
      * @param ParameterBag $searchData
      *
      * @return QueryBuilder
      */
-    public function getDqlForPaginationPage(string $locale, ?ParameterBag $searchData): QueryBuilder
+    public function getDqlForPaginationPage(string $locale, ?User $user, ?ParameterBag $searchData): QueryBuilder
     {
         $query = $this->createQueryBuilder('p')
             ->select(
@@ -152,6 +178,17 @@ class ProductRepository extends ExtendedEntityRepository
                 $query->andWhere('EXISTS ('.$categoryQuery->getDQL().')')
                     ->setParameter('categorySlugs', $searchData->get('categories'));
             }
+            if ($searchData->has('tags_localized')) {
+                $tagsQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasTags::class, 'pht')
+                    ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
+                    ->where('t.slug IN (:tagsSlug)')
+                    ->andWhere('pht.product = p');
+
+                $query->andWhere('EXISTS ('.$tagsQuery->getDQL().')')
+                    ->setParameter('tagsSlug', $searchData->get('tags_localized'));
+            }
 
             if ($searchData->has('color')) {
                 $colorQuery = $this->_em->createQueryBuilder()
@@ -187,6 +224,19 @@ class ProductRepository extends ExtendedEntityRepository
             }
         }
 
+        if ($user !== null) {
+            $wishQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(UserWishes::class, 'uw')
+                ->where('uw.user = :user')
+                ->andWhere('uw.product = p');
+
+            $query->addSelect(
+                'IFELSE(EXISTS ('.$wishQuery->getDQL().'), 1, 0) as has_wish'
+            )
+                ->setParameter('user', $user);
+        }
+
         return $query;
     }
 
@@ -197,11 +247,11 @@ class ProductRepository extends ExtendedEntityRepository
      *
      * @return array
      */
-    public function getRelatedProducts(string $locale, array $categories, Product $product): array
+    public function getRelatedProducts(string $locale, array $categories, Product $product, ?User $user): array
     {
         $searchParams = new ParameterBag(['categories' => $categories]);
 
-        $query = $this->getDqlForPaginationPage($locale, $searchParams)
+        $query = $this->getDqlForPaginationPage($locale, $user, $searchParams)
             ->andWhere('p <> :product')
             ->setParameter('product', $product)
             ->setMaxResults(6);
@@ -210,12 +260,12 @@ class ProductRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param array  $categories
-     * @param string $locale
+     * @param string    $locale
+     * @param User|null $user
      *
      * @return array
      */
-    public function getForHomePage(array $categories, string $locale): array
+    public function getForHomePage(string $locale, ?User $user): array
     {
         $query = $this->createQueryBuilder('p')
             ->select(
@@ -225,23 +275,32 @@ class ProductRepository extends ExtendedEntityRepository
                 'p.price',
                 'p.discount',
                 'i.name as image',
-                'GROUP_CONCAT(IDENTITY(phc.category)) as categories'
+                'p.showHomePage as show_home_page'
             )
             ->innerJoin('p.productTranslations', 'pt')
-            ->innerJoin('p.productHasCategories', 'phc')
             ->innerJoin('p.productHasImages', 'phi')
             ->innerJoin('phi.image', 'i')
-            ->where('p.showHomePage = :showHomePage')
+            ->where('p.showHomePage > 0')
             ->andWhere('pt.locale = :locale')
-            ->andWhere('phc.category IN (:categories)')
             ->andWhere('i.isMain = :isMain')
             ->andWhere('p.status = :activeStatus')
-            ->setParameter('showHomePage', true)
             ->setParameter('locale', $locale)
-            ->setParameter('categories', $categories)
             ->setParameter('isMain', true)
             ->setParameter('activeStatus', Product::STATUS_ACTIVE)
             ->groupBy('p.id');
+
+        if ($user !== null) {
+            $wishQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(UserWishes::class, 'uw')
+                ->where('uw.user = :user')
+                ->andWhere('uw.product = p');
+
+            $query->addSelect(
+                'IFELSE(EXISTS ('.$wishQuery->getDQL().'), 1, 0) as has_wish'
+            )
+                ->setParameter('user', $user);
+        }
 
         return $query->getQuery()->getArrayResult();
     }

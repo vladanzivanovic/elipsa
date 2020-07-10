@@ -4,6 +4,7 @@ field:
   min_length: 'Min character number is {{ limit }}.'
   main_image: 'Main image is not set'
   email: 'Email not valid'
+  equal_to: 'Fields are not the same'
 
 files:
   limit_reached: 'Max files numbers is reached.'

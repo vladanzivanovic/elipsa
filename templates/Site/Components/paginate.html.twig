@@ -1,4 +1,5 @@
 {# src/SiteBundle/Resources/views/Site/paginate.html..twig #}
+
 {% if pagination['totalPages'] > 1 %}
     <div class="shop-pagination-area clearfix">
         <div class="pagination-box">
@@ -18,15 +19,15 @@
 
                 {% for prev in pagination['currentPage'] - 3..pagination['currentPage'] - 1 %}
                     {% if prev > 0 %}
-                        <li><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': prev} ) ) }}">{{ prev }}</a></li>
+                        <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': prev} ) ) }}">{{ prev }}</a></li>
                     {% endif %}
                 {% endfor %}
 
-                <li class="active"><a href="#">{{ pagination['currentPage'] }}</a></li>
+                <li class="pages active"><a href="#">{{ pagination['currentPage'] }}</a></li>
 
                 {% for next in pagination['currentPage'] + 1..pagination['currentPage'] + 3 %}
                     {% if next <= pagination['totalPages'] %}
-                        <li><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': next} ) ) }}">{{ next }}</a></li>
+                        <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': next} ) ) }}">{{ next }}</a></li>
                     {% endif %}
                 {% endfor %}
 
@@ -38,6 +39,5 @@
                 <li class="last {{ classLast }}"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['totalPages']} ) ) }}">{{ 'last_page' | trans }} <i class="fa fa-angle-double-right"></i></a></li>
             </ul>
         </div>
-        <p class="pagination-showing">Showing 1–20 of {{ pagination.totalRows }} results</p>
     </div>
 {% endif %}

@@ -1,0 +1,96 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Narudžbenica #{{ id }}{% endblock %}
+{% block bodyClass %}about-us-edit{% endblock %}
+{% block content %}
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Narudžbenica #'~id    } %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container-fluid d-flex justify-content-between">
+                            <div class="col-lg-3 pl-0">
+                                <a href="#" class="noble-ui-logo logo-light d-block mt-3">{{ fullName }}</a>
+                                <p>{{ email }},<br> {{ phone }}.</p>
+                                <h5 class="mt-5 mb-2 text-muted">Adresa naručioca :</h5>
+                                <p>{{ address }},<br> {{ zipCode }} {{ city }},<br> {{ country }}.</p>
+                            </div>
+                            <div class="col-lg-3 pr-0">
+                                <h4 class="font-weight-medium text-uppercase text-right mt-4 mb-2">narudžbenica</h4>
+                                <h6 class="text-right mb-5 pb-4"># {{ id }}</h6>
+                                <p class="text-right mb-1">Ukupno</p>
+                                <h4 class="text-right font-weight-normal">{{ total }} RSD</h4>
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ orderDate }}</h6>
+{#                                <h6 class="text-right font-weight-normal"><span class="text-muted">Due Date :</span> 12th Jul 2019</h6>#}
+                            </div>
+                        </div>
+                        <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+                            <div class="table-responsive w-100">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Proizvod</th>
+                                        <th class="text-right">Količina</th>
+                                        <th class="text-right">Cena</th>
+                                        <th class="text-right">Ukupno</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for product in products %}
+                                        <tr class="text-right">
+                                            <td class="text-left">{{ product.id }}</td>
+                                            <td class="text-left">{{ product.name }}</td>
+                                            <td>{{ product.quantity }}</td>
+                                            <td>{{ product.price }} RSD</td>
+                                            <td>{{ product.priceWithQuantity }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="container-fluid mt-5 w-100">
+                            <div class="row">
+                                <div class="col-md-6 ml-auto">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td>Cena proizvoda</td>
+                                                <td class="text-right">{{ productPrices }}</td>
+                                            </tr>
+                                            {% if promoCode is not null %}
+                                                <tr>
+                                                    <td>Promo kod ({{ promoCode.code }})</td>
+                                                    <td class="text-right">{{ promoCode.discount }} %</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ukupno sa popustom</td>
+                                                    <td class="text-right">{{ priceWithDiscount }} RSD</td>
+                                                </tr>
+                                            {% endif %}
+                                            <tr>
+                                                <td>Poštarina</td>
+                                                <td class="text-right">{{ shippingPrice }} RSD</td>
+                                            </tr>
+                                            <tr class="bg-dark">
+                                                <td class="text-bold-800">Ukupno</td>
+                                                <td class="text-bold-800 text-right">{{ total }} RSD</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid w-100">
+                            <a href="#" class="btn btn-primary float-right mt-4 ml-2"><i data-feather="send" class="mr-3 icon-md"></i>Send Invoice</a>
+                            <a href="#" class="btn btn-outline-primary float-right mt-4"><i data-feather="printer" class="mr-2 icon-md"></i>Print</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

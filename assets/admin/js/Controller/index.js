@@ -18,6 +18,22 @@ import CouponsController from "./CouponsController";
 import CouponsEditController from "./CouponsEditController";
 import LocationsController from "./LocationsController";
 import LocationEditController from "./LocationEditController";
+import BlogController from "./BlogController";
+import BlogEditController from "./BlogEditController";
+import LoyaltyController from "./LoyaltyController";
+import BannersController from "./BannersController";
+import CatalogController from "./CatalogController";
+import AboutUsPageController from "./AboutUsPageController";
+import LoginPageController from "./LoginPageController";
+import UsersController from "./UsersController";
+import UserEditController from "./UserEditController";
+import DescriptionController from "./DescriptionController";
+import DescriptionEditController from "./DescriptionEditController";
+import CollaboratorsController from "./CollaboratorsController";
+import CareerController from "./CareerController";
+import SliderTextController from "./SliderTextController";
+import SliderTextEditController from "./SliderTextEditController";
+import OrdersController from "./OrdersController";
 
 let routes = [
     {
@@ -37,15 +53,15 @@ let routes = [
         controller: ColorEditController,
     },
     {
-        name: 'admin.tags',
+        name: 'admin.product_tags',
         controller: TagController,
     },
     {
-        name: 'admin.add_tag_page',
+        name: 'admin.add_product_tag_page',
         controller: TagEditController,
     },
     {
-        name: 'admin.edit_tag_page',
+        name: 'admin.edit_product_tag_page',
         controller: TagEditController,
     },
     {
@@ -93,15 +109,15 @@ let routes = [
         controller: SliderEditController,
     },
     {
-        name: 'admin.banners',
+        name: 'admin.home_banners',
         controller: HomeBannersController,
     },
     {
-        name: 'admin.add_banner_page',
+        name: 'admin.add_home_banner_page',
         controller: BannerEditController,
     },
     {
-        name: 'admin.edit_banner_page',
+        name: 'admin.edit_home_banner_page',
         controller: BannerEditController,
     },
     {
@@ -131,6 +147,106 @@ let routes = [
     {
         name: 'admin.edit_location_page',
         controller: LocationEditController,
+    },
+    {
+        name: 'admin.blog_tags',
+        controller: TagController,
+    },
+    {
+        name: 'admin.add_blog_tag_page',
+        controller: TagEditController,
+    },
+    {
+        name: 'admin.edit_blog_tag_page',
+        controller: TagEditController,
+    },
+    {
+        name: 'admin.add_blog_page',
+        controller: BlogEditController,
+    },
+    {
+        name: 'admin.blog',
+        controller: BlogController,
+    },
+    {
+        name: 'admin.edit_blog_page',
+        controller: BlogEditController,
+    },
+    {
+        name: 'admin.loyalty',
+        controller: LoyaltyController,
+    },
+    {
+        name: 'admin.banners',
+        controller: BannersController,
+    },
+    {
+        name: 'admin.add_banner_page',
+        controller: BannerEditController,
+    },
+    {
+        name: 'admin.edit_banner_page',
+        controller: BannerEditController,
+    },
+    {
+        name: 'admin.catalog_page',
+        controller: CatalogController,
+    },
+    {
+        name: 'admin.about_us_page',
+        controller: AboutUsPageController,
+    },
+    {
+        name: 'admin.login',
+        controller: LoginPageController,
+    },
+    {
+        name: 'admin.users',
+        controller: UsersController,
+    },
+    {
+        name: 'admin.add_user_page',
+        controller: UserEditController,
+    },
+    {
+        name: 'admin.edit_user_page',
+        controller: UserEditController,
+    },
+    {
+        name: 'admin.descriptions',
+        controller: DescriptionController,
+    },
+    {
+        name: 'admin.add_description_page',
+        controller: DescriptionEditController,
+    },
+    {
+        name: 'admin.edit_description_page',
+        controller: DescriptionEditController,
+    },
+    {
+        name: 'admin.collaborators',
+        controller: CollaboratorsController,
+    },
+    {
+        name: 'admin.career',
+        controller: CareerController,
+    },
+    {
+        name: 'admin.slider_text',
+        controller: SliderTextController,
+    },
+    {
+        name: 'admin.add_slider_text_page',
+        controller: SliderTextEditController,
+    },
+    {
+        name: 'admin.edit_slider_text_page',
+        controller: SliderTextEditController,
+    },
+    {
+        name: 'admin.orders',
+        controller: OrdersController,
     },
 ];
 

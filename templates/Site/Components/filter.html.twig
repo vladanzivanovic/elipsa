@@ -3,7 +3,7 @@
 <div class="shop-sidebar-area {{ filterClass }}">
     <div class="sidebar-widget widget-categories">
         <h4 class="sidebar-title">{{ 'categories' | trans }}</h4>
-        {% for main in categories %}
+        {% for main in navigationMenu %}
             <div class="sidebar-box">
                 {% if main.children is defined %}
                     <button class="sidebar-accordion-button" data-toggle="collapse" data-target="#{{ main.id }}">{{ main.title }}</button>

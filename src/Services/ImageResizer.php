@@ -48,12 +48,14 @@ final class ImageResizer
     /**
      * @param UploadedFile $file
      *
+     * @param string       $folder
+     *
      * @return void
      */
-    public function moveToTmpDir(UploadedFile $file): void
+    public function moveToFolder(UploadedFile $file, string $folder): void
     {
         /** @var File $movedFile */
-        $movedFile = $file->move($this->rootDir.$this->tmpDir, $file->getClientOriginalName());
+        $movedFile = $file->move($this->rootDir.$folder, $file->getClientOriginalName());
 
         $path = $this->tmpDir.$movedFile->getFilename();
 

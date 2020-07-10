@@ -45,8 +45,8 @@ final class LocationPageResponseFormatter
             $location['images'] = [];
 
             foreach ($images as $image) {
-                $tmp['image_link'] = $this->router->generate('app.image_show', ['name' => $image, 'filter' => 'product_image']);
-                $tmp['image_link_thumb'] = $this->router->generate('app.image_show', ['name' => $image, 'filter' => 'product_image_thumb']);
+                $tmp['image_link'] = $this->router->generate('app.image_show', ['entity' => 'location', 'name' => $image, 'filter' => 'product_image']);
+                $tmp['image_link_thumb'] = $this->router->generate('app.image_show', ['entity' => 'location', 'name' => $image, 'filter' => 'product_image_thumb']);
                 $tmp['name'] = $image;
 
                 $location['images'][] = $tmp;

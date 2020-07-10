@@ -64,14 +64,7 @@ final class LocationEditRequestParser
             ->setLat($bag->get('lat'))
             ->setLng($bag->get('lng'))
             ->setWorkingTime($bag->get('working_hours'))
-            ->setWorkingTimeWeekend($bag->get('working_hours_weekend'))
-            ->setCountryCode($bag->get('country_short_code'))
-            ->setCountryLat($bag->get('country_lat'))
-            ->setCountryLng($bag->get('country_lng'))
-            ->setCountryNorthLat($bag->get('country_north_lat'))
-            ->setCountryNorthLng($bag->get('country_north_lng'))
-            ->setCountrySouthLat($bag->get('country_south_lat'))
-            ->setCountrySouthLng($bag->get('country_south_lng'));
+            ->setWorkingTimeWeekend($bag->get('working_hours_weekend'));
 
         $this->setLocale($bag, $location);
 

@@ -1,23 +1,24 @@
 @import "~nivo-slider/nivo-slider.css";
-@import "~owl.carousel";
 @import "../Components/common-product";
 
 .mobile.home {
   #home3_slider {
-    overflow: visible;
 
     .nivo-caption {
-      position: relative;
-
+      background: rgba(255 ,255, 255, 0.6);
+      overflow: visible;
+      bottom: 16%;
       .slide3-text {
         * {
-          font-size: 14px !important;
-          line-height: 14px !important;
-          margin-bottom: 2px !important;
+          font-size: 22px !important;
+          line-height: 19px !important;
+          margin-bottom: 4px !important;
         }
 
         .cap-view {
           margin-top: 20px !important;
+          position: absolute;
+          bottom: -40px;
           a {
             font-size: 15px !important;
             padding: 5px 10px;
@@ -39,6 +40,23 @@
 
     .home-middle-banners {
       margin: 10px 0;
+    }
+  }
+
+  @media only screen and (max-width: 480px) and (min-width: 240px) {
+    .owl-item {
+      > div {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+  }
+}
+
+.home {
+  .featured-items {
+    .single-featured-item {
+      margin-bottom: 0 !important;
     }
   }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Blog;
+use App\Entity\BlogHasImages;
 use App\Entity\Image;
 use App\Entity\Location;
 use App\Entity\LocationHasImages;
@@ -74,6 +76,45 @@ class ImageRepository extends ExtendedEntityRepository
             ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')
             ->setParameter('product', $product)
             ->orderBy('pc.id');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param int $type
+     *
+     * @return array
+     */
+    public function getByType(int $type): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i.id',
+                'i.name as fileName',
+                'i.isMain',
+            )
+            ->where('i.relatedToType = :type')
+            ->setParameter('type', $type)
+            ->orderBy('i.id');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param Blog $blog
+     *
+     * @return array
+     */
+    public function getByBlog(Blog $blog): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i.id',
+                'i.name as fileName',
+                'i.isMain'
+            )
+            ->innerJoin(Blog::class, 'b', 'WITH', 'b.image = i AND b.blog = :blog')
+            ->setParameter('blog', $blog);
 
         return $query->getQuery()->getArrayResult();
     }

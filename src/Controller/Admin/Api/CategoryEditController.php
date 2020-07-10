@@ -35,8 +35,6 @@ final class CategoryEditController extends AbstractController
     private $translator;
 
     /**
-     * CategoryEditController constructor.
-     *
      * @param CategoryRequestParser $requestParser
      * @param CategoryHandler       $categoryHandler
      * @param TranslatorInterface   $translator

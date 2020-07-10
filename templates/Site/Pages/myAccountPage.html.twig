@@ -1,0 +1,197 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set title = 'title.my_account' | trans %}
+{% block title%}{{ title }}{% endblock %}
+{% block bodyClass %}my-account-page{% endblock %}
+
+{% set user = app.user %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': title }], 'activePage': title }) }}
+
+    {% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    {% set address = user.address %}
+
+    <!-- my-account-area-start -->
+    <div class="my-account-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="my-account-welcome">
+                        <h4 class="my-account-title letter-capitalize">{{ 'my_account.welcome_text' | trans }}</h4>
+                        <ul>
+                            <li><a href="#personal-info" id="personal-info-tab" aria-controls="personal-info" role="tab" data-toggle="tab" class="d-block letter-capitalize active">{{ 'my_account.personal_info.text' | trans }}</a></li>
+                            <li><a href="#order-list" id="order-list-tab" aria-controls="order-list" role="tab" data-toggle="tab" class="d-block letter-capitalize">{{ 'my_account.order_list' | trans }}</a></li>
+                            <li><a href="#wish-list" id="wish-list-tab" aria-controls="wish-list" role="tab" data-toggle="tab" class="d-block letter-capitalize">{{ 'my_account.wish_list' | trans }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9 tab-content">
+                    <div role="tabpanel" id="personal-info" class="tab-pane fade in active personal-information">
+                        <h4 class="my-account-title">{{ 'my_account.personal_info.text' | trans }}</h4>
+                        <form id="personal-form" class="personal-information-box">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <input type="hidden" id="_csrf_token" name="_csrf_token" value="{{ csrf_token('user_update') }}">
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('first_name' | trans ~ ' *', 'first_name', user.firstName, 'registration_first_name', '', 'text', null, '', 'text-uppercase') }}
+                                    </div>
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('last_name' | trans ~ ' *', 'last_name', user.lastName, 'registration_last_name', '', 'text', null, '', 'text-uppercase') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('email' | trans ~ ' *', 'email', user.email, 'registration_email', '', 'email', null, '', 'text-uppercase') }}
+                                    </div>
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('mobile_telephone' | trans ~ ' *', 'phone', address is not null ? address.phone : '', 'phone', '', 'tel', null, '', 'text-uppercase') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('address' | trans ~ ' *', 'address', address is not null ? address.address : '', 'address', '', 'text', null, '', 'text-uppercase') }}
+                                    </div>
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('city' | trans ~ ' *', 'city', address is not null ? address.city : '', 'city', '', 'text', null, '', 'text-uppercase') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('country' | trans ~ ' *', 'country', address is not null ? address.country : '', 'country', '', 'text', null, '', 'text-uppercase') }}
+                                    </div>
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('zip_code' | trans ~ ' *', 'zipCode', address is not null ? address.zipCode : '', 'zipCode', '', 'text', null, '', 'text-uppercase') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="pib-item col-md-6 col-xs-12">
+                                        {{ form.input('password' | trans ~ ' *', 'registration_password', '', 'password', '', 'password', null, '', 'text-uppercase') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="pib-save-change col-xs-12">
+                                        {{ form.button('personal-btn', '', 'submit' | trans, 'button') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" id="order-list" class="tab-pane fade wishlist-table-area">
+                        <div class="col-xs-12">
+                            <div id="order-table" class="wishlist-table shopping-cart-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="wishlist-img-title">{{ 'my_account.order_table.image' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.name' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.quantity' | trans }}</th>
+                                        <th class="wishlist-pro-price">{{ 'my_account.order_table.price' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.color' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.size' | trans }}</th>
+                                        <th class="wishlist-pro-remove"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in orders %}
+                                            {% set price = order.discount > 0 ? order.discount : order.price %}
+                                            <tr class="table-row1">
+                                                <td class="cart_product_image_value">
+                                                    <div class="wishlist_img">
+                                                        <img src="{{ order.image_link }}" alt="{{ order.title }}" />
+                                                    </div>
+                                                </td>
+                                                <td class="cart_product_name_value">
+                                                    <p class="wishlist_product_name">
+                                                        <a href="#">{{ order.title }}</a>
+                                                    </p>
+                                                </td>
+                                                <td class="wishlist_description">
+                                                    <span class="wishlist-desc">{{ order.quantity }}</span>
+                                                </td>
+                                                <td class="wishlist_price">
+                                                    <span class="product_price">{{ price }} RSD</span>
+                                                </td>
+                                                <td class="wishlist_color">
+                                                    <span class="product_color_box" style="background: {{ order.hex }};"></span>
+                                                </td>
+                                                <td class="wishlist_price">
+                                                    <span class="product_price">{{ order.size }}</span>
+                                                </td>
+                                                <td class="wishlist_remove">
+                                                    <a href="#">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- wishlist-table-area-end -->
+                    </div>
+                    <div role="tabpanel" id="wish-list" class="tab-pane fade wishlist-table-area">
+                        <div class="col-xs-12">
+                            <div id="wish-table" class="wishlist-table shopping-cart-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="wishlist-img-title">{{ 'my_account.order_table.image' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.name' | trans }}</th>
+                                        <th class="wishlist-pro-desc">{{ 'my_account.order_table.description' | trans }}</th>
+                                        <th class="wishlist-pro-add-to">{{ 'my_account.order_table.price' | trans }}</th>
+                                        <th class="wishlist-pro-add-to">{{ 'my_account.order_table.view_product' | trans }}</th>
+                                        <th class="wishlist-pro-remove"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for wish in wishes %}
+                                        {% set price = wish.discount > 0 ? wish.discount : wish.price %}
+                                        <tr class="table-row-{{ wish.id }}">
+                                            <td class="cart_product_image_value">
+                                                <div class="wishlist_img">
+                                                    <img src="{{ wish.image_link }}" alt="{{ wish.title }}" />
+                                                </div>
+                                            </td>
+                                            <td class="cart_product_name_value">
+                                                <p class="wishlist_product_name">
+                                                    <a href="#">{{ wish.title }}</a>
+                                                </p>
+                                            </td>
+                                            <td class="wishlist_description">
+                                                <span class="wishlist-desc">{{ wish.short_description }}</span>
+                                            </td>
+                                            <td class="wishlist_price">
+                                                <span class="product_price">{{ price }} RSD</span>
+                                            </td>
+                                            <td class="wishlist_add_cart">
+                                                <a href="{{ path('site.product_page', {'_locale': locale, 'slug': wish.slug }) }}" class="btn"><i class="fa fa-eye"></i></a>
+                                            </td>
+                                            <td class="wishlist_remove">
+                                                <a href="#" class="toggle-wish-list" data-product-id="{{ wish.id }}" data-page="account">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- wishlist-table-area-end -->
+                    </div>
+                    <div role="tabpanel" id="wish-list" class="tab-pane fade personal-information">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- my-account-area-end -->
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const USER_ID = {{ user.id }};
+    </script>
+{% endblock %}

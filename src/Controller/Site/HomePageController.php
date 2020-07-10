@@ -23,8 +23,6 @@ final class HomePageController extends AbstractController
     private $responseFormatter;
 
     /**
-     * HomePageController constructor.
-     *
      * @param HomePageCollector         $pageCollectors
      * @param HomePageResponseFormatter $responseFormatter
      */
@@ -37,7 +35,7 @@ final class HomePageController extends AbstractController
     }
 
     /**
-     * @Route("/", name="site.home_page", methods={"GET"})
+     * @Route("/", name="site.home_page", methods={"GET"}, options={"expose": true})
      * @Template("Site/Pages/home.html.twig")
      *
      * @param Request $request
@@ -46,7 +44,7 @@ final class HomePageController extends AbstractController
      */
     public function index(Request $request): array
     {
-        $data = $this->pageCollectors->collect($request->getLocale());
+        $data = $this->pageCollectors->collect($request->getLocale(), $this->getUser());
 
         return $this->responseFormatter->formatResponse($data);
     }

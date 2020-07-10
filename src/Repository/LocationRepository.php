@@ -39,31 +39,21 @@ class LocationRepository extends ExtendedEntityRepository
 
     /**
      * @param string $locale
-     * @param string $countryCode
      *
      * @return array
      */
-    public function getList(string $locale, string $countryCode): array
+    public function getList(string $locale): array
     {
         $query = $this->getDqlForList($locale)
             ->addSelect(
                 'l.lat',
                 'l.lng',
                 'GROUP_CONCAT(image.name) as images',
-                'l.countryLat as country_lat',
-                'l.countryLng as country_lng',
-                'l.countrySouthLat as country_st_lat',
-                'l.countrySouthLng as country_st_lng',
-                'l.countryNorthLat as country_nt_lat',
-                'l.countryNorthLng as country_nt_lng',
                 'lt.shortDescription as short_description',
-                'lt.country',
-                'l.countryCode as country_code'
+                'lt.country'
             )
             ->innerJoin('l.locationHasImages', 'lhi')
             ->innerJoin('lhi.image', 'image')
-            ->andWhere('l.countryCode = :countryCode')
-            ->setParameter('countryCode', $countryCode)
             ->groupBy('l.id');
 
         return $query->getQuery()->getArrayResult();
@@ -98,7 +88,7 @@ class LocationRepository extends ExtendedEntityRepository
         $query = $this->getDqlForList('rs')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('l.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();
@@ -113,12 +103,12 @@ class LocationRepository extends ExtendedEntityRepository
     {
         return $this->createQueryBuilder('l')
             ->select(
-                'l.id',
-                'lt.title',
+                'l.id as id',
+                'lt.title as title',
                 'lt.slug',
                 'CONCAT(lt.street, \',\', l.zipCode, \' \', lt.city, \' \', lt.country) as address',
-                'l.telephone',
-                'l.email',
+                'l.telephone as telephone',
+                'l.email as email',
                 'l.workingTime as working_time',
                 'l.workingTimeWeekend as weekend'
             )

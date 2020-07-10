@@ -1,14 +1,17 @@
 {% extends('Admin/base.html.twig') %}
 
+{% set relatedName = routeName() == 'admin.blog_tags' ? 'Blog - tagovi' : 'Proizvodi - tagovi' %}
+{% set routeSubName = routeName() == 'admin.blog_tags' ? 'blog' : 'product' %}
+
 {% block content %}
     {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Šifarnik tagova' } %}
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Tagovi</h4>
+            <h4 class="mb-3 mb-md-0">{{ relatedName }}</h4>
         </div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <a href="{{ path('admin.add_tag_page') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+            <a href="{{ path('admin.add_' ~ routeSubName ~ '_tag_page') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                 Dodaj tag
             </a>
@@ -32,5 +35,6 @@
     <script>
         const CAN_EDIT = true;
         const CAN_REMOVE = true;
+        const ROUTE_SUB_NAME = '{{ routeSubName }}';
     </script>
 {% endblock %}

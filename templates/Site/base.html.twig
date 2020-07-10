@@ -1,6 +1,9 @@
+{% set locale = app.request.locale %}
+{% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
+{% set routeParams = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
 <!DOCTYPE html>
-<html lang="{{ app.request.locale|split('_')[0] }}">
+<html lang="{{ locale|split('_')[0] }}">
 
 <head>
     <!--- Basic Page Needs  -->
@@ -35,7 +38,9 @@
 
 <body data-spy="scroll" data-target="#scroll-menu" data-offset="100" class="{{ is_mobile() or is_tablet() ? 'mobile' : '' }} {% block bodyClass %}{% endblock %}">
     <div id="preloader"></div>
-    {% set categories = navigation_menu(app.request.locale) %}
+
+    {% set navigationMenu = navigation_menu(locale) %}
+    {% set navigationTags = navigation_tags(locale) %}
 
     <!-- header-start -->
     <header>
@@ -56,9 +61,19 @@
     <!-- footer-end -->
     {% block javascripts %}
         <script>
-            const LOCALE = 'rs';
+            const LOCALE = '{{ locale }}';
             const ROUTE_NAME = '{{ routeName }}';
+            const IS_MOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
+            window.USER = null;
+
+            {% if user is not null %}
+                window.USER = {
+                    id: {{ user.id }},
+                };
+            {% endif %}
+
             window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
+            const LANG_MAPPER = {'rs': 'sr_RS', 'en': 'en_US'};
         </script>
         <script src="{{ preload(asset('build/runtime.js')) }}"></script>
         <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
@@ -69,5 +84,7 @@
         <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% endblock %}
     {% block pageJavascript %}{% endblock %}
+    {% import 'Site/Macros/externalServices.html.twig' as externals %}
+    {{ externals.chat() }}
 </body>
 </html>

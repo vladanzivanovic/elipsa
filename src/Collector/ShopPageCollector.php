@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace App\Collector;
 
+use App\Entity\Tags;
+use App\Entity\User;
+use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use App\Services\PaginationService;
+use App\ShopTrait;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ShopPageCollector
 {
+    use ShopTrait;
+
     /**
      * @var ProductColorRepository
      */
@@ -33,7 +39,7 @@ final class ShopPageCollector
      */
     private $paginationService;
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
     /**
@@ -44,24 +50,36 @@ final class ShopPageCollector
      * @var ParameterBagInterface
      */
     private $bag;
+    /**
+     * @var ShopPageRouterFormatter
+     */
+    private $shopPageRouterFormatter;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
-     * @param ProductColorRepository $colorRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param ProductRepository      $productRepository
-     * @param PaginationService      $paginationService
-     * @param ProductTagsRepository  $tagsRepository
-     * @param TranslatorInterface    $translator
-     * @param ParameterBagInterface  $bag
+     * @param ProductColorRepository  $colorRepository
+     * @param ProductSizeRepository   $sizeRepository
+     * @param ProductRepository       $productRepository
+     * @param PaginationService       $paginationService
+     * @param TagsRepository          $tagsRepository
+     * @param TranslatorInterface     $translator
+     * @param ParameterBagInterface   $bag
+     * @param ShopPageRouterFormatter $shopPageRouterFormatter
+     * @param SessionInterface        $session
      */
     public function __construct(
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,
         ProductRepository $productRepository,
         PaginationService $paginationService,
-        ProductTagsRepository $tagsRepository,
+        TagsRepository $tagsRepository,
         TranslatorInterface $translator,
-        ParameterBagInterface $bag
+        ParameterBagInterface $bag,
+        ShopPageRouterFormatter $shopPageRouterFormatter,
+        SessionInterface $session
     ) {
         $this->colorRepository = $colorRepository;
         $this->sizeRepository = $sizeRepository;
@@ -70,9 +88,11 @@ final class ShopPageCollector
         $this->tagsRepository = $tagsRepository;
         $this->translator = $translator;
         $this->bag = $bag;
+        $this->shopPageRouterFormatter = $shopPageRouterFormatter;
+        $this->session = $session;
     }
 
-    public function collect(string $locale, int $currentPage, ?string $searchData = null)
+    public function collect(string $locale, int $currentPage, ?User $user, ?string $searchData = null, bool $isTrendyPage = false)
     {
         $colors = $this->colorRepository->getByLocale($locale);
         $sizes = $this->sizeRepository->getForOptions();
@@ -84,27 +104,40 @@ final class ShopPageCollector
             'prices'    => $prices[0],
         ];
 
-        return $data + $this->collectForApi($locale, $currentPage, $searchData);
+        return $data + $this->collectForApi($locale, $currentPage, $user, $searchData, $isTrendyPage);
     }
 
     /**
-     * @param string $locale
-     * @param int    $currentPage
-     * @param string $searchData
+     * @param string    $locale
+     * @param int       $currentPage
+     * @param User|null $user
+     * @param string    $searchData
+     * @param bool      $isTrendyPage
      *
      * @return array
      */
-    public function collectForApi(string $locale, int $currentPage, ?string $searchData = null): array
+    public function collectForApi(string $locale, int $currentPage, ?User $user, ?string $searchData = null, bool $isTrendyPage = false): array
     {
         $searchCriteria = null;
+        $localizedUrl = null;
 
         if (null !== $searchData) {
             $searchCriteria = $this->parseSearchData($searchData);
+            $localizedUrl = $this->shopPageRouterFormatter->createUrlString($searchCriteria, $locale === 'rs' ? 'en' : 'rs');
+        }
+
+        if (null !== $searchCriteria && $searchCriteria->has('tags')) {
+            $searchCriteria->set('tags_localized', $searchCriteria->get('tags'));
+
+            if ($locale !== 'rs') {
+                $tags = $this->tagsRepository->getArrayForLocalization($searchCriteria->get('tags'), $locale);
+                $searchCriteria->set('tags_localized', array_column($tags, 'mainSlug'));
+            }
         }
 
         $limit = null !== $searchCriteria && $searchCriteria->has('limit') ? (int) $searchCriteria->get('limit')[0] : 12;
 
-        $productDql = $this->productRepository->getDqlForPaginationPage($locale, $searchCriteria);
+        $productDql = $this->productRepository->getDqlForPaginationPage($locale, $user, $searchCriteria);
         $products = $this->paginationService->pagination($productDql, $currentPage, $limit);
 
         $productIds = array_column($products['data'], 'id');
@@ -113,43 +146,23 @@ final class ShopPageCollector
         $productSizes = $this->sizeRepository->getByProducts($productIds);
         $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
 
-        return [
+        if (null !== $searchData && $searchCriteria->has('tags_localized')) {
+            $searchCriteria->remove('tags_localized');
+        }
+
+        $collection = [
             'products'          => $products,
             'product_colors'    => $productColors,
             'product_sizes'     => $productSizes,
             'product_tags'      => $productTags,
             'search_criteria'   => null !== $searchData ? $searchCriteria : null,
+            'localized_url'     => $localizedUrl,
         ];
-    }
 
-    /**
-     * @param string $searchData
-     *
-     * @return ParameterBag
-     */
-    private function parseSearchData(string $searchData): ParameterBag
-    {
-        $searchArray = explode('/', $searchData);
-        $filters = [];
-        $criteria = [];
-        $sortMapper = $this->bag->get('shop')['sort_mapping'];
-
-        for ($i = 0; $i < count($searchArray); $i++) {
-            if ($i % 2 == 0) {
-                $filters[] = $this->translator->trans($searchArray[$i], [], 'messages', 'en');
-
-                continue;
-            }
-
-            $value = explode('+', $searchArray[$i]);
-
-            if (end($filters) === 'sort') {
-                $value = $sortMapper[$value[0]];
-            }
-
-            $criteria[] = $value;
+        if (true === $isTrendyPage) {
+            $collection['tags'] = $this->tagsRepository->getForOptions(Tags::TYPE_PRODUCT, $locale);
         }
 
-        return new ParameterBag(array_combine($filters, $criteria));
+        return $collection;
     }
 }

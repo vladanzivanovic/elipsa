@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\OrderProduct;
+use App\Entity\OrderProductTranslation;
 use App\Entity\Product;
 use App\Entity\ProductColor;
 use App\Entity\ShopOrder;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -49,6 +51,43 @@ class OrderProductRepository extends ExtendedEntityRepository
             ->andWhere('op.color = phi.color')
             ->setParameter('order', $order)
             ->setParameter('locale', $locale)
+            ->groupBy('op.id');
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param User   $user
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getByUser(User $user, string $locale): array
+    {
+        $query = $this->createQueryBuilder('op')
+            ->select(
+                'op.id',
+                'op.price',
+                'op.discount',
+                'op.quantity',
+                'op.size',
+                'opt.title',
+                'opt.slug',
+                'image.name as image_name',
+                'op.quantity',
+                'color.hex'
+            )
+            ->innerJoin('op.orderId', 'o')
+            ->innerJoin(OrderProductTranslation::class, 'opt', 'WITH', 'opt.orderProduct = op')
+            ->innerJoin('op.image', 'image')
+            ->innerJoin('op.color', 'color')
+            ->where('o.user = :user')
+            ->andWhere('opt.locale = :locale')
+            ->andWhere('o.status = :completedStatus')
+            ->setParameter('user', $user)
+            ->setParameter('locale', $locale)
+            ->setParameter('completedStatus', ShopOrder::STATUS_COMPLETED)
+            ->orderBy('o.completedAt', 'DESC')
             ->groupBy('op.id');
 
         return $query->getQuery()->getArrayResult();

@@ -1,2 +1,2 @@
-FROM mariadb:10
+FROM mariadb:latest
 ADD dump.sql /docker-entrypoint-initdb.d

@@ -1,0 +1,127 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}Loyalty{% endblock %}
+{% block bodyClass %}loyalty-page{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Loyalty' }], 'activePage': 'Loyalty'}) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-pre-text">{{ description(constant('App\\Entity\\Description::TYPE_LOYALTY')) | raw }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-area">
+                        <div class="contact-form-head">
+                            <h2>Loyalty {{ 'form' | trans }}</h2>
+                            <h1>Loyalty {{ 'form' | trans }}</h1>
+                        </div>
+                        <div class="contact-form-content">
+                            <div class="cf-msg"></div>
+                            <form id="loyalty-form" enctype="multipart/form-data">
+                                <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('loyalty_form') }}" />
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('first_name' | trans ~ ' *', 'first_name', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="cfc-input-box">
+                                            {{ form.input('last_name' | trans ~ ' *', 'last_name', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="cfc-input-box">
+                                            {{ form.input('mobile_telephone' | trans ~ ' *', 'mobile_phone', '', 'mobile_phone', '', 'tel', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 date">
+                                        <div class="cfc-input-box">
+                                            <label class="text-uppercase">{{ 'birth_date' | trans }} *</label>
+                                            <select class="bd-month">
+                                                <option value="1">{{ 'January' | trans }}</option>
+                                                <option value="2">{{ 'February' | trans }}</option>
+                                                <option value="3">{{ 'March' | trans }}</option>
+                                                <option value="4">{{ 'April' | trans }}</option>
+                                                <option value="5">{{ 'May' | trans }}</option>
+                                                <option value="6">{{ 'June' | trans }}</option>
+                                                <option value="7">{{ 'July' | trans }}</option>
+                                                <option value="8">{{ 'August' | trans }}</option>
+                                                <option value="9">{{ 'September' | trans }}</option>
+                                                <option value="10">{{ 'October' | trans }}</option>
+                                                <option value="11">{{ 'November' | trans }}</option>
+                                                <option value="12">{{ 'December' | trans }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="cfc-input-box">
+                                            <label>&nbsp;</label>
+                                            <select class="bd-date"></select>
+                                        </div>
+                                        <div class="cfc-input-box">
+                                            <label>&nbsp;</label>
+                                            <select class="bd-year"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('occupation' | trans ~ ' *', 'occupation', '', 'occupation', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.textarea('message' | trans, 'note', '', 'note', 10, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 cfc-input-box">
+                                        <label class="text-uppercase">{{ 'loyalty.rate' | trans }}</label>
+                                        <div class="cfc-input-box">
+                                            <div class="select-payment-method col-md-2">
+                                                {{ inputs.input('rate1', 1, 'rate', '', 'radio') }}
+                                                <label for="rate1" class="letter-capitalize">{{ 1 }}</label>
+                                            </div>
+                                            <div class="select-payment-method col-md-2">
+                                                {{ inputs.input('rate2', 2, 'rate', '', 'radio') }}
+                                                <label for="rate2" class="letter-capitalize">{{ 2 }}</label>
+                                            </div>
+                                            <div class="select-payment-method col-md-2">
+                                                {{ inputs.input('rate3', 3, 'rate', '', 'radio') }}
+                                                <label for="rate3" class="letter-capitalize">{{ 3 }}</label>
+                                            </div>
+                                            <div class="select-payment-method col-md-2">
+                                                {{ inputs.input('rate4', 4, 'rate', '', 'radio') }}
+                                                <label for="rate4" class="letter-capitalize">{{ 4 }}</label>
+                                            </div>
+                                            <div class="select-payment-method col-md-2">
+                                                {{ inputs.input('rate5', 5, 'rate', '', 'radio') }}
+                                                <label for="rate5" class="letter-capitalize">{{ 5 }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.button('loyalty_submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/loyalty.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/text.css') }}">
+{% endblock %}

@@ -72,6 +72,7 @@ final class OrderCompleteRequestParser
         $order->setStatus(ShopOrder::STATUS_COMPLETED);
         $order->setPaymentType((int) $bag->get('payment_type'));
         $order->setNote($bag->get('order_note'));
+        $order->setCompletedAt(new \DateTime());
 
         $this->setUser($bag, $order);
         $this->setAddress($bag, $order);
@@ -120,14 +121,17 @@ final class OrderCompleteRequestParser
      */
     private function setAddress(ParameterBag $bag, ShopOrder $order): void
     {
-        $address = new Address();
-        $address->setFirstName($bag->get('first_name'));
-        $address->setLastName($bag->get('last_name'));
-        $address->setEmail($bag->get('email'));
-        $address->setCountry($bag->get('country'));
-        $address->setCity($bag->get('city'));
-        $address->setAddress($bag->get('address'));
-        $address->setPhone($bag->get('mobile_phone'));
+        if(null === $address = $order->getUser()->getAddress()) {
+            $address = new Address();
+            $address->setFirstName($bag->get('first_name'));
+            $address->setLastName($bag->get('last_name'));
+            $address->setEmail($bag->get('email'));
+            $address->setCountry($bag->get('country'));
+            $address->setCity($bag->get('city'));
+            $address->setAddress($bag->get('address'));
+            $address->setPhone($bag->get('mobile_phone'));
+            $address->setZipCode((int) $bag->get('zip_code'));
+        }
 
         $order->setBillingAddress($address);
         $order->setShippingAddress($address);

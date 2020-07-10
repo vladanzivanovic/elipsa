@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
+use App\Entity\Image;
 use App\Entity\Slider;
 use App\Entity\SliderTranslation;
 use App\Repository\SliderRepository;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 final class SliderEditRequestParser
 {
     use ParserTrait;
+
     /**
      * @var ParameterBagInterface
      */
@@ -68,7 +70,8 @@ final class SliderEditRequestParser
 
         $this->setLocale($bag, $slider);
 
-        $this->imageService->setImages($slider, json_decode($bag->get('images'), true));
+        $this->imageService->setImages($slider, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);
+        $this->imageService->setImages($slider, json_decode($bag->get('images_mobile'), true), Image::DEVICE_MOBILE);
 
         return $slider;
     }

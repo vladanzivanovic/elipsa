@@ -1,0 +1,27 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set titleTrans = 'text.type.use_conditions' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+
+{% block bodyClass %}text-page{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans }) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-pre-text">{{ description(constant('App\\Entity\\Description::TYPE_USE_CONDITIONS')) | raw }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/text.css') }}">
+{% endblock %}

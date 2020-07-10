@@ -13,10 +13,21 @@ class BannerHandler {
         let type = 'POST';
         const data = mapper.form.serializeArray();
 
+        if (! mapper.form.valid()) {
+            return false;
+        }
+
         data.push({
             name: 'images',
             value: JSON.stringify(DropZoneService().getFilesArray('banner')),
         });
+
+        if ($('[data-files="banner_mobile"]').length > 0) {
+            data.push({
+                name : 'images_mobile',
+                value: JSON.stringify(DropZoneService().getFilesArray('banner_mobile')),
+            });
+        }
 
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_banner_api', {id: ID});
@@ -31,7 +42,7 @@ class BannerHandler {
             data,
             dataType: 'json',
             success: response => {
-                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.banners'));
+                AppHelperService.redirect(AppHelperService.generateLocalizedUrl(IS_SPEED_LINKS ? 'admin.home_banners' : 'admin.banners'));
             },
             error: error => {
                 this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);

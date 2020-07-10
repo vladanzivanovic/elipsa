@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ShopListController extends AbstractController
@@ -23,23 +24,38 @@ final class ShopListController extends AbstractController
      * @var ShopPageResponseFormatter
      */
     private $formatter;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
      * @param ShopPageCollector         $collectors
      * @param ShopPageResponseFormatter $formatter
+     * @param SessionInterface          $session
      */
     public function __construct(
         ShopPageCollector $collectors,
-        ShopPageResponseFormatter $formatter
+        ShopPageResponseFormatter $formatter,
+        SessionInterface $session
     ) {
         $this->collectors = $collectors;
         $this->formatter = $formatter;
+        $this->session = $session;
     }
 
     /**
-     * @Route("/api/products/{page}/{searchData}", name="site_api.shop_page", methods={"GET"}, defaults={"page": 1, "searchData": null}, requirements={"searchData": ".*"}, options={"expose": true})
+     * @Route({
+     *          "rs": "/api/products/{page}/{searchData}",
+     *          "en": "/api/products/{page}/{searchData}"
+     *      },
+     *     name="site_api.shop_page",
+     *     methods={"GET"},
+     *     defaults={"page": 1, "searchData": null},
+     *     requirements={"searchData": ".*"},
+     *     options={"expose": true}
+     * )
      *
-     * @param Request      $request
      * @param int          $page
      * @param string|null  $searchData
      *
@@ -47,8 +63,10 @@ final class ShopListController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $searchData): JsonResponse
     {
-        $data = $this->collectors->collectForApi($request->getLocale(), $page, $searchData);
+        $locale = $request->getLocale();
 
-        return $this->json($this->formatter->formatResponse($data));
+        $data = $this->collectors->collectForApi($locale, $page, $this->getUser(), $searchData);
+
+        return $this->json($this->formatter->formatResponse($data, $locale, 'site.shop_page'));
     }
 }

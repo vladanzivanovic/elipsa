@@ -61,7 +61,14 @@ $.validator.addMethod(
     'isSelectBoxEmpty',
     function (val, elm, params) {
         return (val && val != -1) || val != -1;
-    }, Translator.trans('field.required', null, 'validators', LOCALE)
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
+);
+
+$.validator.addMethod(
+    'isMultiSelectBoxEmpty',
+    function (val, elm, params) {
+        return val && val.length > 0;
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
 );
 
 $.validator.addMethod(
@@ -157,5 +164,13 @@ $.validator.addMethod(
             return !!val;
         }
         return true;
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
+);
+
+$.validator.addMethod(
+    'setErrorIfSummernoteIsEmpty',
+    function (val, elm, params) {
+
+        return (val !== "<p><br></p>" && val !== "<p></p>" && val !== '')
     }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
 );

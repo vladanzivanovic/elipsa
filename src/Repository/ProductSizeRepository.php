@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Product;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductSize;
-use App\Entity\ProductTags;
+use App\Entity\Tags;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -48,15 +48,15 @@ class ProductSizeRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('ps')
             ->select(
-                'ps.id',
-                'ps.size',
-                'ps.slug',
+                'ps.id as id',
+                'ps.size as size',
+                'ps.slug as slug',
                 'COUNT(phs.id) as total_used'
             )
             ->leftJoin('ps.productHasSizes', 'phs')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('ps.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
             ->groupBy('ps.id')
         ;
 
@@ -111,7 +111,8 @@ class ProductSizeRepository extends ExtendedEntityRepository
             ->innerJoin(Product::class, 'p', 'WITH', 'p = phs.product')
             ->where('phs.product IN (:products)')
             ->setParameter('products', $products)
-            ->setParameter('isAvailable', true);
+            ->setParameter('isAvailable', true)
+            ->orderBy('ps.size');
 
         return $query->getQuery()->getArrayResult();
     }

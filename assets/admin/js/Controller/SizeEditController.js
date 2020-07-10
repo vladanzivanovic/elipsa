@@ -1,12 +1,13 @@
-import ColorHandler from "../Handler/Product/ColorHandler";
-import TagEditMapper from "../Mapper/TagEditMapper";
-import TagHandler from "../Handler/Product/TagHandler";
 import SizeEditMapper from "../Mapper/SizeEditMapper";
 import SizeHandler from "../Handler/SizeHandler";
+import sizeEditValidator from "../Validators/SizeEditValidator";
 
 class SizeEditController {
     constructor() {
         this.mapper = new SizeEditMapper();
+        this.validator = sizeEditValidator;
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

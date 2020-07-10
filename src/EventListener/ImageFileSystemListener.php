@@ -34,7 +34,7 @@ final class ImageFileSystemListener
     /**
      * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args): void
+    public function postPersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
 
@@ -42,9 +42,9 @@ final class ImageFileSystemListener
     }
 
     /**
-     * @param PreUpdateEventArgs $args
+     * @param LifecycleEventArgs $args
      */
-    public function preUpdate(PreUpdateEventArgs $args): void
+    public function postUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
 

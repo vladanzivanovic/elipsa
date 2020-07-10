@@ -1,7 +1,69 @@
 site.checkout_completed_successful:
-  path: /korpa/uspesna-narudzbina
+  path:
+    rs: /korpa/uspesna-narudzbina
+    en: /en/cart/success-order
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/checkoutComplete.html.twig
   options:
     expose: true
+
+site.loyalty:
+  path:
+    rs: /loyalty
+    en: /en/loyalty
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/loyalty.html.twig
+
+site.collaborator:
+  path:
+    rs: /saradnici
+    en: /en/collaborators
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/collaborator.html.twig
+
+site.career_page:
+  path:
+    rs: /zaposlnje
+    en: /en/career
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/career.html.twig
+
+site.policy_page:
+  path:
+    rs: /politika-privatnosti
+    en: /en/privacy-policy
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/privacy_policy.html.twig
+
+site.use_conditions:
+  path:
+    rs: /uslovi-koriscenja
+    en: /en/use-conditions
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/use_condition.html.twig
+
+site.ask_us:
+  path:
+    rs: /pitajte-nas
+    en: /en/ask-us
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/askUsPage.html.twig
+
+site.logout:
+  path: /logout
+
+site.not_exists_page:
+  path:
+    rs: /nepostojeca-stranica
+    en: /en/not-exits-page
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/404Page.html.twig
+

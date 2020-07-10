@@ -40,7 +40,14 @@
                                 <div class="form-group">
                                     {{ form.textarea('Opis', 'description_rs', IS_EDIT ? rs_description : '', 'rs_description', 10, '', 'form-control') }}
                                 </div>
-                            </div><!-- Row -->
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.textarea('Materijali i održavanje', 'cleaning_rs', IS_EDIT ? rs_cleaning : '', 'rs_cleaning', 10, '', 'form-control') }}
+                                </div>
+                            </div><!-- Col -->
                         </div>
                     </div>
                 </div>
@@ -69,6 +76,13 @@
                                     {{ form.textarea('Opis', 'description_en', IS_EDIT ? en_description : '', 'en_description', 10, '', 'form-control') }}
                                 </div>
                             </div><!-- Row -->
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.textarea('Materijali i održavanje', 'cleaning_en', IS_EDIT ? en_cleaning : '', 'en_cleaning', 10, '', 'form-control') }}
+                                </div>
+                            </div><!-- Col -->
                         </div>
                     </div>
                 </div>
@@ -116,9 +130,41 @@
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
-                                    {{ form.checkbox('Početna strana', 'home_page_checkbox', 1, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == true ? 'checked="checked"' : null ) }}
+                                    {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}
+                                    {{ form.radio('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == upValue ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-check form-check-flat form-check-primary">
+                                    {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}
+
+                                    {{ form.radio('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == downValue ? 'checked="checked"' : null ) }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 id="card_title" class="card-title">Materijali i održavanje</h6>
+                        <div class="row">
+                            {% for icon in cleaning %}
+                                {% set additionalAttributes = 'data-error-after=\'#card_title\' ' %}
+                                {% if IS_EDIT and icon in cleaning_box %}
+                                    {% set additionalAttributes = additionalAttributes ~ 'checked="checked"' %}
+                                {% endif %}
+
+                                <div class="col-4 col-sm-1">
+                                    <div class="form-check form-check-flat form-check-primary">
+                                        <span class="cleaning-icons {{ icon }}" style="font-size: 40px;width: 100%;display: block;margin-left: 1.3rem;" title="{{ icon | trans }}"></span>
+                                        {{ form.checkbox('', 'cleaning_'~icon, icon, 'cleaning[]', 'form-check-label position-relative', 'form-check-input', additionalAttributes) }}
+                                    </div>
+                                </div><!-- Col -->
+                            {% endfor %}
                         </div><!-- Row -->
                     </div>
                 </div>

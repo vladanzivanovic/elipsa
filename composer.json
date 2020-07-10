@@ -7,13 +7,16 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-openssl": "*",
         "beberlei/doctrineextensions": "^1.2",
+        "drewm/mailchimp-api": "^2.5",
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "gedmo/doctrine-extensions": "^2.4",
         "liip/imagine-bundle": "^2.1",
         "mobiledetect/mobiledetectlib": "^2.8",
         "presta/sitemap-bundle": "^2.0",
         "sensio/framework-extra-bundle": "^5.1",
+        "shuchkin/simplexlsx": "^0.8.15",
         "symfony/asset": "5.0.*",
         "symfony/console": "5.0.*",
         "symfony/dotenv": "5.0.*",
@@ -104,8 +107,6 @@
             "php bin/console cache:clear --no-warmup -e prod --ansi",
             "php bin/console cache:warmup -e prod",
             "php bin/console assets:install --symlink public/js",
-            "php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json",
-            "php bin/console bazinga:js-translation:dump public/js --format json --merge-domains",
             "npm install",
             "npm run build",
             "php bin/console presta:sitemaps:dump web --gzip"
@@ -128,7 +129,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "5.0.*"
         }
     }

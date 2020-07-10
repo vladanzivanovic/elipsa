@@ -32,11 +32,9 @@ window.helpBlock = {
 
             if (wrapperId) {
                 error.insertAfter($(wrapperId));
-
-                return;
+            } else {
+                error.insertAfter(element.parent("label"));
             }
-
-            error.insertAfter(element.parent("label"));
         } else if (element.prop("type") === "radio") {
             let name = $(element).prop('name');
             let errorElement = $(`input[name="${name}"][data-show-error-after="yes"]`);

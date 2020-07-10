@@ -2,12 +2,16 @@ import DropZoneService from "../../../js/Services/DropZoneService";
 import ProductEditMapper from "../Mapper/ProductEditMapper";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 import ProductDropZoneService from "../../../js/Services/ProductDropZoneService";
+import productEditValidator from "../Validators/ProductEditValidator";
+import Tipped from "@staaky/tipped";
 require ('select2/dist/js/select2.full.min');
+
 
 class ProductEditController {
     constructor() {
         this.mapper = new ProductEditMapper();
         this.dropZone = new ProductDropZoneService(DropZoneService());
+        this.validator = productEditValidator;
 
         this.initializeForm();
 
@@ -16,8 +20,12 @@ class ProductEditController {
 
     initializeForm()
     {
-        this.dropZone.init(this.mapper.form, {'colors': COLORS});
+        this.dropZone.init($('[data-files="mainImages"]'), {'colors': COLORS});
         this.initializeSelect();
+
+        Tipped.create('.cleaning-icons');
+
+        this.validator.validate(this.mapper.form);
     }
 
     initializeSelect() {

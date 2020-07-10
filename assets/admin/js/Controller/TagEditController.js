@@ -1,10 +1,13 @@
-import ColorHandler from "../Handler/Product/ColorHandler";
 import TagEditMapper from "../Mapper/TagEditMapper";
 import TagHandler from "../Handler/Product/TagHandler";
+import tagEditValidator from "../Validators/TagEditValidator";
 
 class TagEditController {
     constructor() {
         this.mapper = new TagEditMapper();
+        this.validator = tagEditValidator;
+
+        this.validator.validate(this.mapper.form);
 
         this.registerEvents();
     }

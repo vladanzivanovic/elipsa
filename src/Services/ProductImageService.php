@@ -20,6 +20,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductImageService
 {
+    use ImageServiceTrait;
+
     /**
      * @var ImageService
      */
@@ -69,12 +71,14 @@ final class ProductImageService
      * @param ProductTranslation $productTranslation
      * @param array              $data
      *
+     * @param bool               $fromImport
+     *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(ProductTranslation $productTranslation, array $data): void
+    public function setImages(ProductTranslation $productTranslation, array $data, bool $fromImport = false): void
     {
         $rootDir = $this->bag->get('upload_dir');
-        $tmpDir = $this->bag->get('upload_tmp_dir');
+        $tmpDir = true === $fromImport ? $this->bag->get('upload_import_dir') : $this->bag->get('upload_tmp_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
         $product = $productTranslation->getProduct();
@@ -139,6 +143,7 @@ final class ProductImageService
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
+            $mediaObj->setDevice(Image::DEVICE_DESKTOP);
 
             $this->imageRepository->persist($mediaObj);
 
@@ -152,24 +157,6 @@ final class ProductImageService
 
         if (count($exceptions) > 0) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
-        }
-    }
-
-    /**
-     * @param array $images
-     *
-     * @return void
-     */
-    public function deleteImages(array $images): void
-    {
-        $rootDir = $this->bag->get('upload_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
-
-        foreach ($images as $image) {
-            /** @var Image $imageObj */
-            $imageObj = $this->imageRepository->find($image['id']);
-
-            $this->img->deleteImage($this->img->setFileObject(['file' => $rootDir.$imageDir.$imageObj->getName(), 'fileName' => $imageObj->getName()]));
         }
     }
 
@@ -189,16 +176,5 @@ final class ProductImageService
         }
 
         $image->setIsMain(true);
-    }
-
-    private function validateMainImage(array $data)
-    {
-        foreach ($data as $image) {
-            if (true === !!$image['isMain']) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

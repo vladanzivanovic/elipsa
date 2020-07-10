@@ -9,7 +9,7 @@ use App\Formatter\Admin\ProductEditResponseFormatter;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductSizeRepository;
-use App\Repository\ProductTagsRepository;
+use App\Repository\TagsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ProductEditPageController extends AbstractController
 {
     /**
-     * @var ProductTagsRepository
+     * @var TagsRepository
      */
     private $tagsRepository;
     /**
@@ -40,14 +40,14 @@ final class ProductEditPageController extends AbstractController
     /**
      * ProductEditPageController constructor.
      *
-     * @param ProductTagsRepository        $tagsRepository
+     * @param TagsRepository               $tagsRepository
      * @param CategoryRepository           $categoryRepository
      * @param ProductSizeRepository        $sizeRepository
      * @param ProductColorRepository       $colorRepository
      * @param ProductEditResponseFormatter $responseFormatter
      */
     public function __construct(
-        ProductTagsRepository $tagsRepository,
+        TagsRepository $tagsRepository,
         CategoryRepository $categoryRepository,
         ProductSizeRepository $sizeRepository,
         ProductColorRepository $colorRepository,

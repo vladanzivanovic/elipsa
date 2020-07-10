@@ -46,7 +46,7 @@ trait FormatterTrait
         $formattedProduct = [];
 
         foreach ($productTags as $productTag) {
-            $formattedProduct[$productTag['productId']][] = $productTag['label'];
+            $formattedProduct[$productTag['productId']][] = $productTag;
         }
 
         return $formattedProduct;

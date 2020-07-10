@@ -38,22 +38,26 @@ class BannerRepository extends ExtendedEntityRepository
 
     /**
      * @param DataTableModel $tableModel
+     * @param array          $types
      *
      * @return array
      */
-    public function getAdminList(DataTableModel $tableModel): array
+    public function getAdminList(DataTableModel $tableModel, array $types): array
     {
         $query = $this->createQueryBuilder('b')
             ->select(
-                'b.id',
-                'b.position',
+                'b.id as id',
+                'b.position as position',
                 'b.isActive as is_active',
+                'b.type as type',
                 'image.name'
             )
             ->innerJoin('b.image', 'image')
+            ->where('b.type IN (:types)')
+            ->setParameter('types', $types)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('b.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
         return $query->getQuery()->getArrayResult();
@@ -74,8 +78,10 @@ class BannerRepository extends ExtendedEntityRepository
             ->innerJoin('b.image', 'i')
             ->where('b.isActive = :isActive')
             ->andWhere('bt.locale = :locale')
+            ->andWhere('b.type = :speedLinks')
             ->setParameter('isActive', true)
             ->setParameter('locale', $locale)
+            ->setParameter('speedLinks', Banner::TYPE_SPEED_LINKS)
             ->orderBy('b.position');
 
         return $query->getQuery()->getArrayResult();

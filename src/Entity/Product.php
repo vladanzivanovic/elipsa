@@ -17,6 +17,9 @@ class Product
     const STATUS_ACTIVE = 2;
     const STATUS_ARCHIVED = 3;
 
+    const HOME_PAGE_UP = 2;
+    const HOME_PAGE_DOWN = 1;
+
     use TimestampableEntity;
 
     /**
@@ -77,9 +80,14 @@ class Product
     private $productHasImages;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
      */
     private $showHomePage;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductCleaning", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $productCleanings;
 
     public function __construct()
     {
@@ -91,6 +99,7 @@ class Product
         $this->productHasSizes = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->productHasImages = new ArrayCollection();
+        $this->productCleanings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -352,14 +361,45 @@ class Product
         return $filteredTrans->first();
     }
 
-    public function getShowHomePage(): ?bool
+    public function getShowHomePage(): ?int
     {
         return $this->showHomePage;
     }
 
-    public function setShowHomePage(bool $showHomePage): self
+    public function setShowHomePage(int $showHomePage): self
     {
         $this->showHomePage = $showHomePage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductCleaning[]
+     */
+    public function getProductCleanings(): Collection
+    {
+        return $this->productCleanings;
+    }
+
+    public function addProductCleaning(ProductCleaning $productCleaning): self
+    {
+        if (!$this->productCleanings->contains($productCleaning)) {
+            $this->productCleanings[] = $productCleaning;
+            $productCleaning->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCleaning(ProductCleaning $productCleaning): self
+    {
+        if ($this->productCleanings->contains($productCleaning)) {
+            $this->productCleanings->removeElement($productCleaning);
+            // set the owning side to null (unless already changed)
+            if ($productCleaning->getProduct() === $this) {
+                $productCleaning->setProduct(null);
+            }
+        }
 
         return $this;
     }

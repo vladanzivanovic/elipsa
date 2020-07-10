@@ -61,8 +61,8 @@ class ProductColorRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('pc')
             ->select(
-                'pc.id',
-                'pc.hex',
+                'pc.id as id',
+                'pc.hex as hex',
                 'ctRs.title as rs_name',
                 'ctEn.title as en_name',
             )
@@ -70,7 +70,7 @@ class ProductColorRepository extends ExtendedEntityRepository
             ->innerJoin(ColorTranslation::class, 'ctEn', 'WITH', 'ctEn.locale = \'en\' AND ctEn.color = pc')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('pc.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
             ->groupBy('pc.id')
         ;
 

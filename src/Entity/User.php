@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -28,6 +29,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      */
     private $email;
 
@@ -39,8 +41,15 @@ class User implements UserInterface
     /**
      * @var string|null The hashed password
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
+     * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
      */
     private $password;
+
+    /**
+     * @var string|null The hashed password
+     */
+    private $rePassword;
 
     /**
      * @ORM\Column(type="smallint")
@@ -49,11 +58,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
      */
     private $lastName;
 
@@ -72,9 +83,26 @@ class User implements UserInterface
      */
     private $shopOrders;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Address", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $address;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserWishes", mappedBy="user", orphanRemoval=true)
+     */
+    private $userWishes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\NewsLetter", mappedBy="user")
+     */
+    private $newsLetters;
+
     public function __construct()
     {
         $this->shopOrders = new ArrayCollection();
+        $this->userWishes = new ArrayCollection();
+        $this->newsLetters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +162,21 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRePassword(): ?string
+    {
+        return $this->rePassword;
+    }
+
+    public function setRePassword(string $rePassword): self
+    {
+        $this->rePassword = $rePassword;
 
         return $this;
     }
@@ -240,6 +283,86 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($shopOrder->getUser() === $this) {
                 $shopOrder->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = null === $address ? null : $this;
+        if ($address->getUser() !== $newUser) {
+            $address->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserWishes[]
+     */
+    public function getUserWishes(): Collection
+    {
+        return $this->userWishes;
+    }
+
+    public function addUserWish(UserWishes $userWish): self
+    {
+        if (!$this->userWishes->contains($userWish)) {
+            $this->userWishes[] = $userWish;
+            $userWish->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserWish(UserWishes $userWish): self
+    {
+        if ($this->userWishes->contains($userWish)) {
+            $this->userWishes->removeElement($userWish);
+            // set the owning side to null (unless already changed)
+            if ($userWish->getUser() === $this) {
+                $userWish->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NewsLetter[]
+     */
+    public function getNewsLetters(): Collection
+    {
+        return $this->newsLetters;
+    }
+
+    public function addNewsLetter(NewsLetter $newsLetter): self
+    {
+        if (!$this->newsLetters->contains($newsLetter)) {
+            $this->newsLetters[] = $newsLetter;
+            $newsLetter->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNewsLetter(NewsLetter $newsLetter): self
+    {
+        if ($this->newsLetters->contains($newsLetter)) {
+            $this->newsLetters->removeElement($newsLetter);
+            // set the owning side to null (unless already changed)
+            if ($newsLetter->getUser() === $this) {
+                $newsLetter->setUser(null);
             }
         }
 

@@ -1,4 +1,4 @@
-{% import 'Site/Macros/navigation.html.twig' as childNavList %}
+    {% import 'Site/Macros/navigation.html.twig' as childNavList %}
 <div class="menu-area hidden-sm hidden-xs">
     <div class="container">
         <div class="row">
@@ -7,32 +7,50 @@
                     <nav>
                         <ul class="menu-list">
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.about_us' | trans }}</a>
+                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul class="menu-dropdown">
-                                    <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
-                                    <li><a href="02_Home Page.html">{{ 'navi.loyalty' | trans }}</a></li>
+                                    <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
+                            <li><a href="{{ path('site.catalog_page', {'_locale': locale}) }}">{{ 'navi.catalogue' | trans }}</a></li>
                             <li><a href="{{ path('site.shop_page') }}">{{ 'navi.shop' | trans }}</a>
                                 <div class="mega-menu-area">
+                                    {% for categories in navigationMenu|batch(2) %}
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                {% for main in categories %}
+                                                    <div class="col-md-12">
+                                                        <div class="mega-menu-part">
+                                                            <div class="mega-menu-content">
+                                                                <a class="mega-menu-title" href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ main.slug }) }}">{{ main.title }}</a>
+                                                                {% if main.children is defined %}
+                                                                    <ul>
+                                                                        {% for child in main.children %}
+                                                                            <li class="sub-menu-holder"><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ child.slug }) }}">{{ child.title }}</a>
+                                                                                {% if child.children is defined %}
+                                                                                   {{ childNavList.childNav(child.children) }}
+                                                                                {% endif %}
+                                                                            </li>
+                                                                        {% endfor %}
+                                                                    </ul>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                            <li><a href="{{ path('site.trendy_page') }}">{{ 'navi.trends' | trans }}</a>
+                                <div class="mega-menu-area trendy">
                                     <div class="row">
-                                        {% for main in categories %}
-                                            <div class="col-md-4">
+                                        {% for tag in navigationTags %}
+                                            <div class="col-md-3">
                                                 <div class="mega-menu-part">
                                                     <div class="mega-menu-content">
-                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ main.slug }) }}">{{ main.title }}</a>
-                                                        {% if main.children is defined %}
-                                                            <ul>
-                                                                {% for child in main.children %}
-                                                                    <li class="sub-menu-holder"><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ child.slug }) }}">{{ child.title }}</a>
-                                                                        {% if child.children is defined %}
-                                                                           {{ childNavList.childNav(child.children) }}
-                                                                        {% endif %}
-                                                                    </li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        {% endif %}
+                                                        <a class="mega-menu-title" href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag.slug }) }}">{{ tag.label }}</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -40,37 +58,12 @@
                                     </div>
                                 </div>
                             </li>
-                            <li><a href="#">{{ 'navi.blog' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
+                            <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
+                            <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
+                            <li><a href="{{ path('site.ask_us') }}">{{ 'navi.ask_us' | trans }}</a></li>
+                            <li><a href="{{ path('site.contact_page', {'_locale': locale}) }}">{{ 'navi.contact' | trans }}</a></li>
                         </ul>
                     </nav>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="menu-area-right">
-                    <div class="my-account">
-                        <a href="#">{{ 'navi.account' | trans }}</a>
-                        <ul class="menu-right-dropdown">
-                            <li><a href="#">Your Account</a></li>
-                            <li><a href="#">His Account</a></li>
-                            <li><a href="#">Her Account</a></li>
-                        </ul>
-                    </div>
-{#                    <div class="currency">#}
-{#                        <a href="#">RSD</a>#}
-{#                        <ul class="menu-right-dropdown">#}
-{#                            <li><a href="#">EUR</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-                    <div class="language">
-                        <a href="#"><img src="img/flag/english.png" alt="">Srpski</a>
-                        <ul class="menu-right-dropdown">
-                            <li>
-                                <a href="#"><img src="img/flag/english.png" alt="">Engleski</a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -85,16 +78,15 @@
                     <nav id="mobile_menu_active">
                         <ul class="menu-list">
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
-                            <li><a href="{{ path('site.shop_page') }}">{{ 'navi.about_us' | trans }}</a>
+                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul>
-                                    <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
-                                    <li><a href="02_Home Page.html">{{ 'navi.loyalty' | trans }}</a></li>
+                                    <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">{{ 'navi.catalogue' | trans }}</a></li>
+                            <li><a href="{{ path('site.catalog_page', {'_locale': locale}) }}">{{ 'navi.catalogue' | trans }}</a></li>
                             <li><a href="{{ path('site.shop_page') }}">{{ 'navi.shop' | trans }}</a>
                                 <ul>
-                                    {% for main in categories %}
+                                    {% for main in navigationMenu %}
                                         <li><a href="{{ path('site.shop_page', {'searchData': 'categories' | trans ~ '/' ~ main.slug }) }}">{{ main.title }}</a>
                                             {% if main.children is defined %}
                                                 <ul>
@@ -111,10 +103,12 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-                            <li><a href="#">{{ 'navi.blog' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.ask_us' | trans }}</a></li>
-                            <li><a href="#">{{ 'navi.contact' | trans }}</a></li>
+                            <li><a href="{{ path('site.blog_list_page') }}">{{ 'navi.blog' | trans }}</a></li>
+                            <li><a href="{{ path('site.location_page') }}">{{ 'navi.locations' | trans }}</a></li>
+                            <li><a href="{{ path('site.ask_us') }}">{{ 'navi.ask_us' | trans }}</a></li>
+                            <li><a href="{{ path('site.contact_page', {'_locale': locale}) }}">{{ 'navi.contact' | trans }}</a></li>
                         </ul>
+
                     </nav>
                 </div>
             </div>
@@ -122,3 +116,26 @@
     </div>
 </div>
 <!-- mobile-menu-end -->
+    {% set sliderTexts = slider_text(locale) %}
+
+    {% if sliderTexts | length > 0 %}
+        <div class="slider-text-area">
+            <div class="container">
+                <div class="featured-items">
+                    <div>
+                        <div class="featured-all">
+                            <div class="fi-row">
+                                <div class="row">
+                                    <div id="slider_text_carousel" class="feature-pro-carousel owl-carousel">
+                                        {% for sliderText in sliderTexts %}
+                                            <a href="{{ sliderText.link }}">{{ sliderText.description }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}

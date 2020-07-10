@@ -125,7 +125,7 @@
                             <ul class="spt-tab clearfix">
                                 <li class="active"><a data-toggle="tab" href="#pdesc" class="letter-capitalize">{{ 'product.description' | trans }}</a></li>
                                 <li><a data-toggle="tab" href="#ainfo" class="letter-capitalize">{{ 'product.material_cleaning' | trans }}</a></li>
-{#                                <li class="active"><a data-toggle="tab" href="#creview">Customer Reviews (02)</a></li>#}
+                                <li><a data-toggle="tab" href="#size_table" class="letter-capitalize">{{ 'product.size_table' | trans }}</a></li>
                             </ul>
                         </div>
                         <div class="spt-content">
@@ -134,85 +134,18 @@
                                     <p>{{ translation.description }}</p>
                                 </div>
                                 <div id="ainfo" class="tab-pane fade">
-                                    <div class="reviews">
-                                        <div class="single-review">
-                                            <div class="clearfix">
-                                                <div class="sr-img">
-                                                    <img src="img/single-product/review-author1.png" alt="">
-                                                    <div class="rating clearfix">
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-half"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="sr-content">
-                                                    <span class="sr-date">27 Aug 2017</span>
-                                                    <a class="sr-title" href="#">Brandon Kelley</a>
-                                                    <p class="sr-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="single-review">
-                                            <div class="clearfix">
-                                                <div class="sr-img">
-                                                    <img src="img/single-product/review-author2.png" alt="">
-                                                    <div class="rating clearfix">
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-on"></div>
-                                                        <div class="star star-half"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="sr-content">
-                                                    <span class="sr-date">27 Aug 2017</span>
-                                                    <a class="sr-title" href="#">Brandon Kelley</a>
-                                                    <p class="sr-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="add-review">
-                                        <h4 class="add-review-title">Add Review</h4>
-                                        <form class="add-review-form" action="#">
-                                            <div class="row">
-                                                <div class="col-md-6 col-xs-12">
-                                                    <div class="add-review-input-name">
-                                                        <input type="text" placeholder="Name*" required="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-xs-12">
-                                                    <div class="add-review-input-email">
-                                                        <input type="text" placeholder="Email*" required="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="add-review-rating">
-                                                        <h4 class="ar-review-title">Your Rating:</h4>
-                                                        <div class="rating clearfix">
-                                                            <div class="star star-on"></div>
-                                                            <div class="star star-on"></div>
-                                                            <div class="star star-on"></div>
-                                                            <div class="star star-on"></div>
-                                                            <div class="star star-half"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="add-riview-review">
-                                                        <textarea placeholder="Your Review"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <div class="add-review-comment">
-                                                        <input class="hvr-bs" type="submit" value="comment">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    <ul id="cleaning" class="col-xs-12">
+                                        {% for icon in cleaningIcons %}
+                                            <li class="col-md-1 col-xs-2">
+                                                <span class="cleaning-icons {{ icon }}" title="{{ icon | trans }}"></span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+
+                                    <p>{{ translation.cleaning }}</p>
+                                </div>
+                                <div id="size_table" class="tab-pane fade">
+                                    <img src="{{ asset('image/size_table.jpg') }}">
                                 </div>
                             </div>
                         </div>
@@ -236,7 +169,7 @@
                 <div class="related-pro-carousel owl-carousel">
                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                     {% for relatedProduct in related_products.products %}
-                        {{ productGrid.productGrid(relatedProduct, related_products.product_tags, related_products.product_colors, related_products.product_sizes, 'col-xs-12') }}
+                        {{ productGrid.productGrid(relatedProduct, related_products.product_tags[relatedProduct.id] is defined ? related_products.product_tags[relatedProduct.id] : [], related_products.product_colors, related_products.product_sizes, 'col-xs-12') }}
                     {% endfor %}
                 </div>
             </div>

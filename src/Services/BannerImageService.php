@@ -53,16 +53,17 @@ final class BannerImageService
     /**
      * @param Banner $banner
      * @param array  $data
+     * @param int    $device
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(Banner $banner, array $data): void
+    public function setImages(Banner $banner, array $data, int $device): void
     {
         $rootDir = $this->bag->get('upload_dir');
         $tmpDir = $this->bag->get('upload_tmp_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
-        if(empty(array_filter($data))) {
+        if (empty(array_filter($data))) {
             return;
         }
 
@@ -77,8 +78,6 @@ final class BannerImageService
                     $imageObj->setIsDeleted(true);
 
                     $this->imageRepository->delete($imageObj);
-
-                    continue;
                 }
 
                 continue;
@@ -110,10 +109,17 @@ final class BannerImageService
             $mediaObj->setIsmain($image['isMain']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
+            $mediaObj->setDevice($device);
+
+            if ($device === Image::DEVICE_MOBILE) {
+                $mediaObj->setParentImage($banner->getImage()->getName());
+            }
 
             $this->imageRepository->persist($mediaObj);
 
-            $banner->setImage($mediaObj);
+            if ($device === Image::DEVICE_DESKTOP) {
+                $banner->setImage($mediaObj);
+            }
         }
     }
 

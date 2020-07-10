@@ -20,18 +20,18 @@ final class ProductListController extends AbstractController
      * @var DataTableRequestParser
      */
     private $requestParser;
+
     /**
      * @var ProductRepository
      */
     private $productRepository;
+
     /**
      * @var ProductDataTableResponseFormatter
      */
     private $responseFormatter;
 
     /**
-     * ProductListController constructor.
-     *
      * @param DataTableRequestParser            $requestParser
      * @param ProductRepository                 $productRepository
      * @param ProductDataTableResponseFormatter $responseFormatter
@@ -58,7 +58,7 @@ final class ProductListController extends AbstractController
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
-        $total = $this->productRepository->countData();
+        $total = $this->productRepository->countData($formattedRequest);
 
         $data = $this->productRepository->getAdminList($formattedRequest);
 

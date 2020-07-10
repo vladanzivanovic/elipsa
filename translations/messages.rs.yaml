@@ -4,6 +4,8 @@ disabled: 'zaključan'
 
 new: 'novo'
 discount: 'popust'
+down: dole
+up: gore
 
 data:
   success_send: 'Podaci su uspešno poslati.'
@@ -22,17 +24,24 @@ price: cena
 navi:
   home: Početna
   about_us: O nama
-  locations: Lokacije
-  loyalty: Loyalty program
+  locations: Prodajna mesta
+  loyalty: Loyalty
   catalogue: Katalog
   shop: Prodavnica
   blog: Blog
   ask_us: Pitajte nas
-  contact: Kontant
+  contact: Kontakt
   account: Moj nalog
+  trends: Trendovi
+  collaborators: Saradnici
+  career: Zaposlenje
+  policy_and_privacy: Politika privatnosti
+  use_conditions: Uslovi korišćenja
+
 
 serbian: Srpski
 english: Engleski
+serbia: Srbija
 
 size: veličina
 color: boja
@@ -40,6 +49,7 @@ categories: kategorije
 filters: filteri
 sort: sortiranje
 limit: limit
+show_per_page: prikaži
 
 next_page: sledeća
 prev_page: prethodna
@@ -51,7 +61,7 @@ available_colors: dostupne boje
 
 most_selled: najprodavanije
 from_lowest_price: najjeftinije prvo
-from_highest_price: njaskuplje prvo
+from_highest_price: najskuplje prvo
 on_sale: na rasprodaji
 first_new: najnoviji
 
@@ -65,6 +75,7 @@ share_link: Link za deljenje
 
 product.description: opis proizvoda
 product.material_cleaning: materijali i održavanje
+product.size_table: tabela veličina
 
 related_products: slični proizvodi
 
@@ -94,6 +105,18 @@ cart.table.total: ukupno
 title.your_cart: Vaša korpa
 title.cart_personal_data: Vaša korpa - unos ličnih podataka
 title.checkout_completed: Uspešna narudžbina
+title.location: Lokacije
+title.blog_detailed_page: Blog stranica
+title.shop_page: Proizvodi
+title.account_activation_page: Aktivacija naloga
+title.my_account: Moj nalog
+title.ask_us: Pitajte nas
+title.catalog: Katalog
+title.about_us: O nama
+title.contact_us: Kontakt
+title.privacy_policy: Politika privatnosti
+title.reset_password: Promena lozinke
+title.not_exits_page: Nepostojeća stranica
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -112,14 +135,25 @@ checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
 country: država
 countries: države
 first_name: ime
+First_name: Ime
+Last_name: Prezime
 last_name: prezime
 address: adresa
 city: mesto
 zip_code: poštanski broj
 email: email adresa
 mobile_telephone: mobilni telefon
+telephone: telefon
 create_account: napravite nalog
 password: lozinka
+Password: Lozinka
+Re_password: Ponovite lozinku
+occupation: zanimanje
+message: poruka
+birth_date: datum rođenja
+subject: tema
+website: websajt
+position: pozicija
 
 email.order.title: Narudžbenica #%orderId%
 email.order.seller: Prodavac
@@ -144,10 +178,219 @@ email.order.table.shipping: Poštarina
 email.order.table.promo_coupon: Promotivni kod
 email.order.total_shipping: Ukupno sa poštarinom
 
+email.registration.title: Registracija na sajtu %siteName%
+email.registration.success.text: Uspešno ste izvršili registraciju
+email.registration.message: Kako bi ste završili proces registracije neophodno je da akivirate nalog,<br>molimo vas kliknite na link u nastavku.
+
+email.reset_password.title: Reset lozinke na sajtu %siteName%
+email.reset_password.headline.text: Zahtev za promenu lozinke
+email.reset_password.message: Kako bi ste završili proces promene lozinke molimo vas da kliknete na link ispod.
+
 payment_type.on_delivering: Pouzećem
 payment_type.credit_card: Platna kartica
 
 location.modal.work_time: Radno vreme
 location.modal.work_time_weekend: Subota
+location.look_btn: pogledaj
+location.map: mapa
 
+all: sve
 
+read_more: detaljnije
+
+blog.posted: postavljeno
+
+form: forma
+submit: Pošalji
+
+loyalty.rate: Ocenite brend ELIPSA ocenama od 1-5
+loyalty.message.success: Uspešno ste se registrovali u loyalty program.
+loyalty.message.user_exists: Vi ste se već prijavili u loyalty program.
+loyalty.btn: Prijavi se
+
+January: Januar
+February: Februar
+March: Mart
+April: April
+May: Maj
+June: Jun
+July: Jul
+August: Avgust
+September: Septembar
+October: Oktobar
+November: Novembar
+December: Decembar
+
+login.text: prijava
+login.btn: Prijavi se
+login.remember_me: zapamti me
+login.successful: Uspešno ste se ulogovali
+
+reset_password.text: zaboravili ste lozinku?
+reset_password.label: resetovanje lozinke
+reset_password.successful:  Na vašu email adresu je poslat link za promenu lozinke
+reset_password.user_not_exists: Nepostojeći korisnik.
+reset_password.page.text: Unesite novu lozinku.
+reset_password.page.error.expired_token: Zahtev za promenu lozinke je istekao. Molimo vas zatražite novi.
+reset_password.page.success: Uspešno ste promenili lozinku.
+
+logout.text: odjavite se
+
+registration.text: registracija
+registration.btn: Registruj se
+registration.via: registracija putem
+registration.error.user_exists: Vi ste već registrovani
+registration.success.message: Uspešno ste se registrovali.<br/> Na vašu email adresu je poslat email za potvrdu registracije
+registration.activation.title: Vaš nalog je aktiviran
+registration.activation.message: Sada se možete ulogovati
+
+user.inactive_user: Vaša email adresa nije aktivirana.<br/> Molimo vas da pratite link iz email kako bi ste aktivirali nalog.
+
+my_account.welcome_text: dobrodošli
+my_account.personal_info.text: lični podaci
+my_account.personal_info.success.message: podaci su uspešno izmenjeni
+my_account.address_info: podaci o adresi
+my_account.wish_list: lista želja
+my_account.order_list: lista narudžbina
+my_account.order_table.image: slika
+my_account.order_table.name: proizvod
+my_account.order_table.description: opis
+my_account.order_table.price: cena
+my_account.order_table.color: boja
+my_account.order_table.size: veličina
+my_account.order_table.quantity: količina
+my_account.order_table.view_product: pogledaj proizvod
+
+wish_list.success.add.message: Proizvod je dodat na listu želja
+wish_list.success.remove.message: Proizvod je uklonjen iz liste
+
+login_required: Morate biti ulogovani
+
+'Bad credentials.': Uneti podaci nisu tačni
+
+ask_us.message.success: Uspešno ste poslali upit.
+
+newsletter.text: budite o svemu prvi obavešteni
+newsletter.notShowBtn: ne prikazuj više
+newsletter.existingUser: Vi ste se već prijavili na newsletter
+newsletter.success.add.message: Uspešno ste se prijavili na newsletter
+
+contact.telephone.main: Fiksni
+contact.telephone.mobile: Mobilni
+
+links: linkovi
+
+yes: da
+no: ne
+
+all_rights: Sva prava su zadržana.
+
+ROLE_USER: korisnik
+ROLE_ADMIN: administrator
+ROLE_SUPER_ADMIN: super admin
+
+chat.message.greeting: Dobrodošli. Kako vam možemo pomoći?
+
+text.type.loyalty: Loyalty
+text.type.policy_and_privacy: Politika privatnosti
+text.type.use_conditions: Uslovi korišćenja
+text.type.collaborator: Saradnici
+text.type.career: Zaposlenje
+
+collaborator.form.basic_data: osnovni podaci
+collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?
+collaborator.form.have_space: imate prostor
+collaborator.form.location: lokacija
+collaborator.form.presentation: prezentacija kompanije
+collaborator.form.plan: Fotografije ili plan
+collaborator.form.space_size: ukupna kvadratura
+collaborator.form.number_of_floors: ukupna spratova
+collaborator.message.already_applied: Vi ste se već prijavili u program za saradnju.
+collaborator.message.success: Uspešno ste poslali prijavu za saradnju.
+
+career.form.accompanying_letter: propratno pismo
+career.message.already_applied: Vi ste se već prijavili.
+career.message.success: Uspešno ste poslali prijavu.
+
+not_exists_page.description: Žao nam je, ali stranica koju tražite ne postoji.
+
+main_street: glavna ulica
+shopping_mall: tržni centar
+
+pe-ly-bleach-non-chlorine: 'Dozvoljeni izbeljivači bez hlora (sa kiseonikom) ukoliko je potrebno.'
+pe-ly-bleach: 'Dozvoljeni izbeljivači sa hlorom ili bez hlora.'
+pe-ly-dry-clean-any-delicate: 'Hemijsko čišćenje sintetičkih proizvoda sa bilo kojom vrsta rastvarača.'
+pe-ly-dry-clean-any-low-h: 'Može se koristiti bilo koja vrsta rastvarača prilikom hemijskog čišćenja na niskoj temperaturi.'
+pe-ly-dry-clean-any-low-m: 'Može se koristiti bilo koja vrsta rastvarača prilikom hemijskog čišćenja sa smanjenom vlagom.'
+pe-ly-dry-clean-any-no-steam: 'Može se koristiti bilo koja vrsta rastvarača prilikom hemijskog čišćenja bez pare.'
+pe-ly-dry-clean-any-resistant: 'Hemijsko čišćenje svile ili vune sa bilo kojom vrstom rastvarača.'
+pe-ly-dry-clean-any-short: 'Može se koristiti bilo koja vrsta rastvarača prilikom hemijskog čišćenja. Kratak ciklus.'
+pe-ly-dry-clean-any-solvent: 'Može se koristiti bilo koja vrsta rastvarača prilikom hemijskog čišćenja.'
+pe-ly-dry-clean-low-heat: 'Dozvoljeno je bilo kakvo hemijsko čišćenje na niskoj temperaturi.'
+pe-ly-dry-clean-low-moisture: 'Dozvoljeno je bilo kakvo hemijsko čišćenje sa smanjenom vlagom.'
+pe-ly-dry-clean-no-steam: 'Dozvoljeno je bilo kakvo hemijsko čišćenje bez pare.'
+pe-ly-dry-clean-not-trichlo-delicate: 'Hemijsko čišćenje sintetičkih proizvoda sa bilo kojim rastvaračem osim trihloridetilenskog.'
+pe-ly-dry-clean-not-trichlo-resistant: 'Hemijsko čišćenje svile ili vune sa bilo kojom vrstom rastvarača osim trihloridetilenskog.'
+pe-ly-dry-clean-not-trichlo: 'Bilo koji rastvarač osim trihloridetilenskog se može upotrebljavati.'
+pe-ly-dry-clean-petro-delicate: 'Prilikom hemkijskog čišćenja sintetičkih proizvoda koristiti se samo naftni rastvarač.'
+pe-ly-dry-clean-petro-resistant: 'Prilikom hemkijskog čišćenja svile ili vune koristiti se samo naftni rastvarač.'
+pe-ly-dry-clean-petro: 'Prilikom hemkijskog čišćenja može se koristiti samo naftni rastvarač.'
+pe-ly-dry-clean-short-cycle: 'Dozvoljeno je bilo kakvo hemijsko čišćenje. Kratak ciklus.'
+pe-ly-dry-clean: 'Dozvoljeno je bilo kakvo hemijsko čišćenje.'
+pe-ly-dry-drip-shade: 'Prirodno sušenje u hladovini, uspravno kapljanjem.'
+pe-ly-dry-drip: 'Prirodno sušenje uspravno kapljanjem, bez dodatnog ceđenja.'
+pe-ly-dry-flat-shade: 'Prirodno sušenje u hladovini, na ravnoj površini.'
+pe-ly-dry-flat: 'Prirodno sušenje na ravnom u horizontalnom položaju.'
+pe-ly-dry-line-shade: 'Prirodno sušenje u hladovini, na žici.'
+pe-ly-dry-line: 'Prirodno sušenje na žici, unutra ili napolju.'
+pe-ly-hand-wash: 'Ručno pranje do 40°C.'
+pe-ly-iron-high-not-steam: 'Peglanje na visokoj temperaturi do 200°C, bez pare.'
+pe-ly-iron-high: 'Peglanje na visokoj temperaturi do 200°C, sa ili bez pare.'
+pe-ly-iron-low-not-steam: 'Peglanje na niskoj temperaturi do 110°C, bez pare.'
+pe-ly-iron-low: 'Peglanje na niskoj temperaturi do 110°C, sa ili bez pare.'
+pe-ly-iron-med-not-steam: 'Peglanje na srednjoj temperaturi do 150°C, bez pare.'
+pe-ly-iron-medium: 'Peglanje na srednjoj temperaturi do 150°C, sa ili bez pare.'
+pe-ly-iron-not-steam: 'Peglanje na bilo kojoj temperaturi, bez pare.'
+pe-ly-iron-steam: 'Peglanje na bilo kojoj temperaturi, sa parom.'
+pe-ly-iron: 'Peglanje na bilo kojoj temperaturi, sa ili bez pare.'
+pe-ly-machine-30: 'Mašinsko pranje na temperaturi do 30°C.'
+pe-ly-machine-40: 'Mašinsko pranje na temperaturi do 40°C.'
+pe-ly-machine-50: 'Mašinsko pranje na temperaturi do 50°C.'
+pe-ly-machine-60: 'Mašinsko pranje na temperaturi do 60°C.'
+pe-ly-machine-70: 'Mašinsko pranje na temperaturi do 70°C.'
+pe-ly-machine-95: 'Mašinsko pranje na temperaturi do 95°C.'
+pe-ly-machine-delicate-30: 'Pranje svilenih ili vunenih proizvoda na temperaturi do 30°C.'
+pe-ly-machine-delicate-40: 'Pranje svilenih ili vunenih proizvoda na temperaturi do 40°C.'
+pe-ly-machine-delicate-50: 'Pranje svilenih ili vunenih proizvoda na temperaturi do 50°C.'
+pe-ly-machine-delicate-60: 'Pranje svilenih ili vunenih proizvoda na temperaturi do 60°C.'
+pe-ly-machine-delicate-70: 'Pranje svilenih ili vunenih proizvoda na temperaturi do 70°C.'
+pe-ly-machine-delicate-95: 'Pranje svilenih ili vunenih proizvoda na temperaturi do 95°C.'
+pe-ly-machine-resistant-30: 'Pranje sintetičkih proizvoda na temperaturi do 30°C.'
+pe-ly-machine-resistant-40: 'Pranje sintetičkih proizvoda na temperaturi do 40°C.'
+pe-ly-machine-resistant-50: 'Pranje sintetičkih proizvoda na temperaturi do 50°C.'
+pe-ly-machine-resistant-60: 'Pranje sintetičkih proizvoda na temperaturi do 60°C.'
+pe-ly-machine-resistant-70: 'Pranje sintetičkih proizvoda na temperaturi do 70°C.'
+pe-ly-machine-resistant-95: 'Pranje sintetičkih proizvoda na temperaturi do 95°C.'
+pe-ly-machine-wash: 'Standardno mašinsko pranje bez posebnog tretmana.'
+pe-ly-not-bleach-1: 'Zabranjeno korišćenje izbeljivača. Dozvoljeno pranje deterdžentom za veš u boji ili drugim blagim deterdžentom.'
+pe-ly-not-dry-clean-1: 'Odevni predmet ne sme se nositi na hemijsko čišćenje.'
+pe-ly-not-iron: 'Nije dozvoljeno peglanje.'
+pe-ly-not-tumble-dry: 'Nije dozvoljeno mašinsko sušenje'
+pe-ly-not-wash: 'Dozvoljeno samo hemijsko čišćenje.'
+pe-ly-not-wring: 'Odeća se nikako ne sme cediti uvrtanjem.'
+pe-ly-tumble-dry-delicate: 'Blago mašinsko sušenje na bilo kojoj temperaturi.'
+pe-ly-tumble-dry-high-delicate: 'Blago mašinsko sušenje na visokoj temperaturi.'
+pe-ly-tumble-dry-high-resistant: 'Mašinsko sušenje na visokoj temperaturi pod stalnim pritiskom.'
+pe-ly-tumble-dry-high: 'Mašinsko sušenje na visokoj temperaturi.'
+pe-ly-tumble-dry-low-delicate: 'Blago mašinsko sušenje na niskoj temperaturi.'
+pe-ly-tumble-dry-low-resistant: 'Mašinsko sušenje na niskoj temperaturi pod stalnim pritiskom.'
+pe-ly-tumble-dry-low: 'Mašinsko sušenje na niskoj temperaturi.'
+pe-ly-tumble-dry-med-delicate: 'Blago mašinsko sušenje na srednjoj temperaturi.'
+pe-ly-tumble-dry-med-resistant: 'Mašinsko sušenje na srednjoj temperaturi pod stalnim pritiskom.'
+pe-ly-tumble-dry-medium: 'Mašinsko sušenje na srednjoj temperaturi.'
+pe-ly-tumble-dry-no-heat-delicate: 'Mašinsko sušenje bez toplote pod stalnim pritiskom.'
+pe-ly-tumble-dry-no-heat-resistant: 'Blago mašinsko sušenje bez toplote.'
+pe-ly-tumble-dry-no-heat: 'Mašinsko sušenje bez toplote.'
+pe-ly-tumble-dry-resistant: 'Mašinsko sušenje na bilo kojoj temperaturi pod stalnim pritiskom.'
+pe-ly-tumble-dry: 'Mašinsko sušenje na bilo kojoj temperaturi.'
+pe-ly-wring: 'Odeća se sme cediti uvrtanjem.'

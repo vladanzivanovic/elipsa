@@ -25,15 +25,13 @@ final class LocationPageCollector
 
     /**
      * @param string $locale
-     * @param string $countryCode
      *
      * @return array
      */
-    public function collect(string $locale, string $countryCode = 'RS'): array
+    public function collect(string $locale): array
     {
         return [
-            'locations' => $this->locationRepository->getList($locale, $countryCode),
-            'countries' => $this->locationRepository->getCountryList($locale),
+            'locations' => $this->locationRepository->getList($locale),
         ];
     }
 }

@@ -21,8 +21,6 @@ final class BannerDataTableResponseFormatter
     private $router;
 
     /**
-     * BannerDataTableResponseFormatter constructor.
-     *
      * @param RouterInterface $router
      */
     public function __construct(
@@ -43,10 +41,12 @@ final class BannerDataTableResponseFormatter
         $router = $this->router;
 
         $data = array_map(function ($banner) use ($router) {
-            $statusText = ConstantsHelper::getConstantName((string)$banner['is_active'], 'STATUS', Banner::class);
+            $statusText = ConstantsHelper::getConstantName((string) $banner['is_active'], 'STATUS', Banner::class);
             $banner['status_text'] = $statusText;
+            $banner['type'] = ConstantsHelper::getConstantName((string) $banner['type'], 'TYPE', Banner::class);
 
-            $image = $router->generate('app.image_show', ['name' => $banner['name'], 'filter' => "admin_slider_list"]);
+
+            $image = $router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['name'], 'filter' => "admin_slider_list"]);
             $banner['image'] = $image;
 
             return $banner;

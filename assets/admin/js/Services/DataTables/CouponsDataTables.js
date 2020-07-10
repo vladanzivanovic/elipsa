@@ -17,16 +17,16 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'code', title: 'Kod' },
-                { data: 'validFrom', title: 'Važi od' },
-                { data: 'validTo', title: 'Važi do' },
-                { data: 'discount', title: 'Popust', render: function (data, type){
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'code', name: 'code', title: 'Kod' },
+                { data: 'validFrom', name: 'validFrom', title: 'Važi od' },
+                { data: 'validTo', name: 'validTo', title: 'Važi do' },
+                { data: 'discount', name: 'discount', title: 'Popust', render: function (data, type){
                     return type === 'display' ?
                         `${data}%` :
                         data;
                     } },
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'id', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_coupon_page', {id: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 
@@ -38,39 +38,10 @@ export default (() => {
             order: [[0, 'asc']],
             pageLength: 100,
         });
-
-        Private.registerEvents();
     };
 
     Public.reload = () => {
         Private.tableRef.DataTable().ajax.reload(null, false);
-    };
-
-    Private.registerEvents = () => {
-        Private.dataTable.on('row-reorder', (e, diff, edit) => {
-            let data = {};
-            for(let i = 0; i < diff.length; i++) {
-                let rowData = Private.dataTable.row( diff[i].node ).data();
-
-                data[rowData.id] = {
-                    'id': rowData.id,
-                    'position': diff[i].newPosition + 1,
-                };
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: AppHelperService.generateLocalizedUrl('admin.set_sliders_position'),
-                data: {'rows': JSON.stringify(data)},
-                dataType: 'json',
-                success: response => {
-                    Public.reload();
-                },
-                error: error => {
-
-                },
-            })
-        })
     };
 
     return Public;

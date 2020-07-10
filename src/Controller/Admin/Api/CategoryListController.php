@@ -35,8 +35,6 @@ final class CategoryListController extends AbstractController
     private $categoryRepository;
 
     /**
-     * CategoryListController constructor.
-     *
      * @param DataTableRequestParser             $requestParser
      * @param CategoryRepository                 $categoryRepository
      * @param CategoryDataTableResponseFormatter $responseFormatter

@@ -10,8 +10,8 @@ admin.colors:
   defaults:
     template: Admin/Pages/colors.html.twig
 
-admin.tags:
-  path: /tags
+admin.product_tags:
+  path: /product-tags
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/tags.html.twig
@@ -34,11 +34,11 @@ admin.sliders:
   defaults:
     template: Admin/Pages/sliders.html.twig
 
-admin.banners:
-  path: /banners
+admin.home_banners:
+  path: /home-banners
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
-    template: Admin/Pages/banners.html.twig
+    template: Admin/Pages/homeBanners.html.twig
 
 admin.coupons:
   path: /promo-coupons
@@ -51,3 +51,72 @@ admin.locations:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/locations.html.twig
+
+admin.blog:
+  path: /blog
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/blog.html.twig
+
+admin.blog_tags:
+  path: /blog-tags
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/tags.html.twig
+
+admin.loyalty:
+  path: /loyalty
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/loyalty.html.twig
+
+admin.collaborators:
+  path: /collaborators
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/collaborators.html.twig
+
+admin.career:
+  path: /career
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/career.html.twig
+
+admin.slider_text:
+  path: /slider-text
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/sliderText.html.twig
+
+admin.orders:
+  path: /orders
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/orders.html.twig
+
+admin.banners:
+  path: /banners
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/banners.html.twig
+
+admin.login:
+  path: /login
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/login.html.twig
+
+admin.logout:
+  path: /logout
+
+admin.users:
+  path: /users
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/users.html.twig
+
+admin.descriptions:
+  path: /description
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/descriptions.html.twig

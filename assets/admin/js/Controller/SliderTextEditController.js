@@ -1,0 +1,26 @@
+import SliderTextHandler from "../Handler/SliderTextHandler";
+import sliderTextEditMapper from "../Mapper/SliderTextEditMapper";
+import sliderTextEditValidator from "../Validators/SliderTextEditValidator";
+
+class SliderTextEditController {
+    constructor() {
+        this.mapper = sliderTextEditMapper;
+        this.handler = new SliderTextHandler();
+        this.validator = sliderTextEditValidator;
+
+        this.validator.validate(this.mapper.form);
+
+        this.registerEvents();
+    }
+
+    registerEvents() {
+        $(this.mapper.submitBtn).on('click touchend', e => {
+            e.stopPropagation();
+            e.preventDefault();
+
+            this.handler.save();
+        });
+    }
+}
+
+export default SliderTextEditController;

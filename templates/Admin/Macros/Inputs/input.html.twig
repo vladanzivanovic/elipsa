@@ -1,5 +1,5 @@
 {% macro input(id, value, name, placeholder = "", type = "text", class = "", additionalAttributes = null) %}
-    <input type="{{ type }}" id="{{ id }}" name="{{ name }}" class="{{ class }}" placeholder="{{ placeholder }}" value="{{ value }}" {{ additionalAttributes }}>
+    <input type="{{ type }}" id="{{ id }}" name="{{ name }}" class="{{ class }}" placeholder="{{ placeholder }}" value="{{ value }}" {{ additionalAttributes | raw }}>
 {% endmacro %}
 
 {% macro textarea(id, value, name, rows = "10", placeholder = "", class = "") %}
@@ -9,7 +9,7 @@
 {% macro selectbox(id, name, selected, options, placeholder = "", class = "", multiple = false) %}
     <select id="{{ id }}" name="{{ name }}" class="{{ class }}" {{ true == multiple ? 'multiple="multiple"' }}>
         {% if multiple == false %}
-            <option>Izaberite...</option>
+            <option value="-1">Izaberite...</option>
         {% endif %}
         {% for option in options %}
             {% set isSelected = multiple == true ? option.value in selected : option.value == selected %}

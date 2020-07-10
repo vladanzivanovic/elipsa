@@ -1,0 +1,78 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set titleTrans = 'title.contact_us' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+{% block bodyClass %}contact-page{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans}) }}
+
+    <!-- contact-area-start -->
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-service">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="single-contact-service">
+                                    <div class="clearfix">
+                                        <div class="scs-icon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <div class="scs-content">
+                                            <h6 class="letter-capitalize">{{ 'address' | trans }}</h6>
+                                            <p>{{ ZIP_CODE ~ ' ' ~ CITY }}
+                                                <br> {{ STREET }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="single-contact-service">
+                                    <div class="clearfix">
+                                        <div class="scs-icon">
+                                            <i class="fa fa-mobile"></i>
+                                        </div>
+                                        <div class="scs-content">
+                                            <h6>{{ 'telephone' | trans }}</h6>
+                                            <p><span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ MOBILE_PHONE }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ TELEPHONE }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="single-contact-service">
+                                    <div class="clearfix">
+                                        <div class="scs-icon">
+                                            <i class="fa fa-envelope-o"></i>
+                                        </div>
+                                        <div class="scs-content">
+                                            <h6>{{ 'email' | trans }}</h6>
+                                            <p>{{ MAIN_EMAIL }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- contact-area-end -->
+    <!-- map-area-start -->
+    <div class="map-area">
+        {{ include('Moduls/googleMaps.html.twig') }}
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/contact.css') }}"/>
+{% endblock %}
+{% block pageJavascript %}
+    <script>
+        const ADDRESS = ['{{ STREET }}', '{{ CITY }}', 'Srbija'];
+    </script>
+{% endblock %}

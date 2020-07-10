@@ -92,3 +92,12 @@
     }
   }
 }
+
+@media only screen and (min-width: 240px) and (max-width: 480px) {
+  .single-featured-item {
+    .sfi-content .sfi-buttons {
+      visibility: visible !important;
+      @include opacity(1, true);
+    }
+  }
+}

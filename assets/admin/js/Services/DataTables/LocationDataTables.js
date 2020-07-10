@@ -17,17 +17,17 @@ export default (() => {
                 type: 'POST'
             },
             columns: [
-                { data: 'id', title: 'Id' },
-                { data: 'title', title: 'Naziv' },
-                { data: 'address', title: 'Adresa' },
-                { data: 'telephone', title: 'Telefon' },
-                { data: 'email', title: 'Email' },
-                { data: 'working_time', title: 'Radno vreme', width: '200px', render: function (data, type, row, meta) {
+                { data: 'id', name: 'id', title: 'Id' },
+                { data: 'title', name: 'title', title: 'Naziv' },
+                { data: 'address', name: 'address', title: 'Adresa' },
+                { data: 'telephone', name: 'telephone', title: 'Telefon' },
+                { data: 'email', name: 'email', title: 'Email' },
+                { data: 'working_time', name: 'working_time', title: 'Radno vreme', width: '200px', render: function (data, type, row, meta) {
                         let html = `<p class="status-text">Radnim danom: ${data}</p><p>Subotom: ${row.weekend}</p>`;
 
                         return type === 'display' ? html : data;
                     } },
-                { data: 'id', render: function (data, type, row, meta) {
+                { data: 'id', orderable: false, render: function (data, type, row, meta) {
                     const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_location_page', {id: data})}">Izmeni</a> ` : '';
                     const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 

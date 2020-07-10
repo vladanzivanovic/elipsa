@@ -1,13 +1,12 @@
 {% extends ('Site/base.html.twig') %}
 
 {% block bodyClass %}shop-page{% endblock %}
-{% block title %}Elipsa - prodavnica{% endblock %}
+{% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
 
 {% set search = search_criteria is not null ? search_criteria.all : [] %}
 
 {% block content %}
-    <div id="page-loader" class="hide"></div>
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'Proizvodi'}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'title.shop_page' | trans}) }}
 
     {% set pagination = products.pagination %}
 
@@ -26,7 +25,7 @@
                             {% set shopOptions = app_params('shop') %}
                             {% set sortOptions = shopOptions['list_sort'] %}
                             <div class="deafult-sorting">
-                                <label>Sortiraj</label>
+                                <label class="letter-capitalize">{{ 'sort' | trans }}</label>
                                 <select class="sort-option">
                                     {% for index, option in sortOptions %}
                                         <option class="text-capitalize" value="{{ index }}" {{ search.sort is defined and search.sort[0] == index ? 'selected="selected" : ""' }}>{{ option | trans }}</option>
@@ -34,7 +33,7 @@
                                 </select>
                             </div>
                             <div class="show-product">
-                                <label>Prikaži</label>
+                                <label class="letter-capitalize">{{ 'show_per_page' | trans }}</label>
                                 {% set showedItems = shopOptions['items_per_page'] %}
                                 <select class="limit-product">
                                     {% for showedItem in showedItems %}
@@ -51,7 +50,7 @@
                                         <div class="row">
                                             {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                             {% for product in products.data %}
-                                                {{ productGrid.productGrid(product, product_tags, product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-12') }}
+                                                {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-6', locale) }}
                                             {% endfor %}
                                         </div>
                                         {{ include('Site/Components/paginate.html.twig') }}

@@ -1,19 +1,30 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
 import BannerEditMapper from "../Mapper/BannerEditMapper";
 import BannerHandler from "../Handler/BannerHandler";
+import bannerEditValidator from "../Validators/BannerEditValidator";
 
 class BannerEditController {
     constructor() {
         this.mapper = new BannerEditMapper();
+        this.validator = bannerEditValidator;
 
-        this.dropZone = DropZoneService();
-        this.dropZone.init(this.mapper.form);
+        this.dropZoneBanner = DropZoneService();
+        this.dropZoneBannerMobile = DropZoneService();
+        this.dropZoneBanner.init($('[data-files="banner"]'));
+        this.dropZoneBannerMobile.init($('[data-files="banner_mobile"]'));
 
         if (IS_EDIT) {
-            this.dropZone.setFiles(IMAGES, 'banner');
+            this.dropZoneBanner.setFiles(IMAGES.desktop, 'banner');
+            if (IMAGES.mobile) {
+                this.dropZoneBannerMobile.setFiles(IMAGES.mobile, 'banner_mobile');
+            }
         }
 
+        this.validator.validate(this.mapper.form);
+
         this.registerEvents();
+
+        $('#banner-select-box').trigger('change');
     }
 
     registerEvents() {
@@ -21,6 +32,18 @@ class BannerEditController {
             const handler = new BannerHandler();
 
             handler.save(this.mapper);
+        });
+
+        $(document).on('change', '#banner-select-box', e => {
+            const type = $(e.currentTarget).val();
+
+            if (type == 2 || type == 3) {
+                $('.links').fadeOut();
+
+                return;
+            }
+
+            $('.links').fadeIn();
         });
     }
 }

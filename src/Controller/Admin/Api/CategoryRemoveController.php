@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Entity\CategoryTranslation;
-use App\Entity\ProductColor;
 use App\Handler\CategoryHandler;
-use App\Handler\ProductColorHandler;
-use App\Repository\ProductHasColorRepository;
 use App\Repository\ProductRepository;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CategoryRemoveController extends AbstractController
 {
@@ -26,19 +22,24 @@ final class CategoryRemoveController extends AbstractController
      * @var ProductRepository
      */
     private $productRepository;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
-     * CategoryRemoveController constructor.
-     *
-     * @param CategoryHandler   $categoryHandler
-     * @param ProductRepository $productRepository
+     * @param CategoryHandler     $categoryHandler
+     * @param ProductRepository   $productRepository
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         CategoryHandler $categoryHandler,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        TranslatorInterface $translator
     ) {
         $this->categoryHandler = $categoryHandler;
         $this->productRepository = $productRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -51,10 +52,10 @@ final class CategoryRemoveController extends AbstractController
     public function remove(CategoryTranslation $categoryTranslation)
     {
         $category = $categoryTranslation->getCategory();
-        $productCount = $category->getProducts()->count();
+        $productCount = $category->getProductHasCategories()->count();
 
         if ($productCount > 0 || $category->getChildren()->count() > 0) {
-            return $this->json(['message' => 'error.in_use'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $this->translator->trans('error.in_use', ['%item%' => 'Kategorija'])], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $this->categoryHandler->remove($category);
