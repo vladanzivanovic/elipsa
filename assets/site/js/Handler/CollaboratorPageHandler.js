@@ -32,7 +32,7 @@ class CollaboratorPageHandler {
                 loader.hide();
             },
             error: (error) => {
-                this.notification.error('success', Translator.trans(`collaborator.message.already_applied`, null, 'messages', LOCALE), true);
+                this.notification.show('error', Translator.trans(`collaborator.message.already_applied`, null, 'messages', LOCALE), true);
                 loader.hide();
             }
         })

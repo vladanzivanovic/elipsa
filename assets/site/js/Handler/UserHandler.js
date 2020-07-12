@@ -55,7 +55,7 @@ class UserHandler {
             data: JSON.stringify(data),
             dataType: 'json',
             success: (response) => {
-                AppHelperService.redirect('reload');
+                AppHelperService.redirect(Routing.generate('site.home_page'));
             },
             error: (error) => {
                 this.notification.show('error', Translator.trans(error.responseJSON.message, null, 'messages', LOCALE), true);

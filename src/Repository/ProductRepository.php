@@ -158,6 +158,7 @@ class ProductRepository extends ExtendedEntityRepository
             ->setParameter('locale', $locale, ParameterType::STRING)
             ->setParameter('isMain', true, ParameterType::BOOLEAN)
             ->groupBy('p.id')
+            ->orderBy('p.id', 'DESC')
         ;
 
         if (null !== $searchData && $searchData->has('sort')) {

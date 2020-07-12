@@ -71,3 +71,13 @@ services:
         class: App\EventListener\ResponseListener
         tags:
             - { name: kernel.event_listener, event: kernel.response }
+
+    app.sitemap_ads_listener:
+        class: App\EventListener\SiteMapProductsSubscriber
+        tags:
+            - { name: "kernel.event_subscriber", priority: 100 }
+
+    app.sitemap_blog_listener:
+        class: App\EventListener\SiteMapBlogSubscriber
+        tags:
+            - { name: "kernel.event_subscriber", priority: 100 }

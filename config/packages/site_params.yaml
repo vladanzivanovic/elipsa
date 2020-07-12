@@ -14,7 +14,7 @@ parameters:
       - 36
       - 48
     sort_mapping:
-      1: ['p.id', 'ASC']
+      1: ['p.id', 'DESC']
       2: ['p.price', 'ASC']
       3: ['p.price', 'DESC']
       4: ['p.discount', 'ASC']
