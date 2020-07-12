@@ -94,6 +94,7 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
     public function registerProductMenuPage(SitemapPopulateEvent $event)
     {
         $categories = $this->categoryRepository->findAll();
+        $baseUrl = $this->parameterBag->get('url');
 
         foreach ($categories as $category) {
             $transCollection = $category->getCategoryTranslations();
@@ -102,10 +103,10 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
             foreach ($transCollection->getIterator() as $trans) {
                 $filter = $this->translator->trans('categories', [], null, $trans->getLocale());
                 $url = new UrlConcrete(
-                    $this->urlGenerator->generate(
+                    $baseUrl.$this->urlGenerator->generate(
                         'site.shop_page.'.$trans->getLocale(),
                         ['_locale' => $trans->getLocale(), 'page' => 1, 'searchData' => $filter.'/'.$trans->getSlug()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
+                        UrlGeneratorInterface::RELATIVE_PATH
                     ),
                     new DateTime(),
                     UrlConcrete::CHANGEFREQ_DAILY
@@ -126,6 +127,7 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
     public function registerSingleProductPage(SitemapPopulateEvent $event): void
     {
         $products = $this->productRepository->findBy(['status' => Product::STATUS_ACTIVE]);
+        $baseUrl = $this->parameterBag->get('url');
 
         foreach ($products as $product) {
             $transCollection = $product->getProductTranslations();
@@ -134,10 +136,10 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
             foreach ($transCollection->getIterator() as $trans) {
                 $hasImages = $product->getProductHasImages();
                 $url = new UrlConcrete(
-                    $this->urlGenerator->generate(
+                    $baseUrl.$this->urlGenerator->generate(
                         'site.product_page',
                         ['_locale' => $trans->getLocale(), 'slug' => $trans->getSlug()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
+                        UrlGeneratorInterface::RELATIVE_PATH
                     ),
                     new DateTime(),
                     UrlConcrete::CHANGEFREQ_DAILY
@@ -149,10 +151,11 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
                 foreach ($hasImages->getIterator() as $hasImage) {
                     $image = $hasImage->getImage();
 
-                    $imageDecoratedUrl->addImage(new GoogleImage($this->urlGenerator->generate(
+                    $imageDecoratedUrl->addImage(new GoogleImage(
+                        $baseUrl.$this->urlGenerator->generate(
                         'app.image_show',
                         ['entity' => 'product', 'name' => $image->getName(), 'filter' => 'list_thumb'],
-                        UrlGeneratorInterface::ABSOLUTE_URL
+                        UrlGeneratorInterface::RELATIVE_PATH
                     )));
                 }
 
@@ -167,25 +170,26 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
     private function _registerStaticUrl(SitemapPopulateEvent $event, string $routeName, $changeFreq, $priority)
     {
         $locales = explode('|', $this->parameterBag->get('locales'));
+        $baseUrl = $this->parameterBag->get('url');
 
         foreach ($locales as $locale) {
             if ($locale === 'rs') {
                 continue;
             }
-            $url = new UrlConcrete($this->urlGenerator->generate(
+            $url = new UrlConcrete($baseUrl.$this->urlGenerator->generate(
                 $routeName,
                 [],
-                UrlGeneratorInterface::ABSOLUTE_URL
+                UrlGeneratorInterface::RELATIVE_PATH
             ),
                 new DateTime(),
                 $changeFreq,
                 $priority
             );
             $decoratedUrl = new GoogleMultilangUrlDecorator($url);
-            $decoratedUrl->addLink($this->urlGenerator->generate(
+            $decoratedUrl->addLink($baseUrl.$this->urlGenerator->generate(
                 $routeName,
                 ['_locale' => $locale],
-                UrlGeneratorInterface::ABSOLUTE_URL
+                UrlGeneratorInterface::RELATIVE_PATH
             ), $locale);
 
             $event->getUrlContainer()->addUrl($decoratedUrl, 'default');

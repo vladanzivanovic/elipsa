@@ -12,7 +12,6 @@ use Exception;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Sitemap\Url\GoogleImage;
 use Presta\SitemapBundle\Sitemap\Url\GoogleImageUrlDecorator;
-use Presta\SitemapBundle\Sitemap\Url\GoogleNewsUrlDecorator;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -86,6 +85,7 @@ class SiteMapBlogSubscriber implements EventSubscriberInterface
     public function registerSingleBlogUrl(SitemapPopulateEvent $event)
     {
         $blogs = $this->blogRepository->findBy(['status' => Blog::STATUS_ACTIVE]);
+        $baseUrl = $this->parameterBag->get('url');
 
         foreach ($blogs as $blog) {
             $transCollection = $blog->getBlogTranslations();
@@ -93,10 +93,10 @@ class SiteMapBlogSubscriber implements EventSubscriberInterface
             /** @var BlogTranslation $trans */
             foreach ($transCollection->getIterator() as $trans) {
                 $url = new UrlConcrete(
-                    $this->urlGenerator->generate(
+                    $baseUrl.$this->urlGenerator->generate(
                         'site.blog_detailed_page',
                         ['_locale' => $trans->getLocale(), 'slug' => $trans->getAlias()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
+                        UrlGeneratorInterface::RELATIVE_PATH
                     ),
                     new DateTime(),
                     UrlConcrete::CHANGEFREQ_DAILY
@@ -106,10 +106,11 @@ class SiteMapBlogSubscriber implements EventSubscriberInterface
                 $image = $blog->getImage();
 
                 $imageDecoratedUrl = new GoogleImageUrlDecorator($url);
-                $imageDecoratedUrl->addImage(new GoogleImage($this->urlGenerator->generate(
+                $imageDecoratedUrl->addImage(new GoogleImage(
+                    $baseUrl.$this->urlGenerator->generate(
                     'app.image_show',
                     ['entity' => 'blog', 'name' => $image->getName(), 'filter' => 'blog_list'],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::RELATIVE_PATH
                 )));
                 $event->getUrlContainer()->addUrl($imageDecoratedUrl,'blog_images_'.$trans->getLocale());
             }
