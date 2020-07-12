@@ -110,7 +110,7 @@
             "php bin/console assets:install --symlink public/js",
             "npm install",
             "npm run build",
-            "php bin/console presta:sitemaps:dump web --gzip"
+            "php bin/console presta:sitemaps:dump --gzip"
         ],
         "cache:clear": [
             "php bin/console cache:clear --no-warmup --ansi",
