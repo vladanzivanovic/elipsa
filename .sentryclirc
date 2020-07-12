@@ -1,0 +1,7 @@
+[defaults]
+url = https://sentry.io/
+org = elipsa
+project = javascript
+
+[auth]
+token=3241205876b242158d365989831aecc97af17bd5aba540b1b52a8b84a4f5b1a3
