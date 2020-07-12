@@ -1,5 +1,6 @@
 var Encore = require('@symfony/webpack-encore');
 
+
 Encore
     // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
@@ -62,5 +63,10 @@ config.resolve.alias = {
     'waypoints': __dirname + '/node_modules/jquery-waypoints/waypoints.js',
     'router': __dirname + '/assets/js/router.js'
 };
+config.devtool = 'source-map';
+
+if (!Encore.isProduction()) {
+    config.devtool = 'eval-source-map';
+}
 
 module.exports = config;
