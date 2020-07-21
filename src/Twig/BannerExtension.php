@@ -80,11 +80,13 @@ final class BannerExtension extends AbstractExtension
     public function getBanner(int $type, string $filter, string $locale, bool $isMobile = false): ?array
     {
         $banner = $this->bannerRepository->findOneBy(['type' => $type, 'isActive' => true]);
-        $imageName = $banner->getImage()->getOriginalName();
 
         if (null === $banner) {
             return null;
         }
+
+        $imageName = $banner->getImage()->getOriginalName();
+
         $trans = $banner->getByLocale($locale);
 
         if (true === $isMobile) {

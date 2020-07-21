@@ -39,11 +39,23 @@ class BannerEditController {
 
             if (type == 2 || type == 3) {
                 $('.links').fadeOut();
+                $('.links').addClass('hide');
+
+                return;
+            }
+
+            if (type == 4) {
+                $('.btn-text').fadeOut();
+                $('.btn-text').addClass('hide');
 
                 return;
             }
 
             $('.links').fadeIn();
+            $('.links').removeClass('hide');
+
+            $('.btn-text').fadeIn();
+            $('.btn-text').removeClass('hide');
         });
     }
 }

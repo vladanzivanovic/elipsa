@@ -1,8 +1,9 @@
 {% extends 'Admin/base.html.twig' %}
 
 {% set bannerList = [
-    {'title': 'Loyalty - 1920x533', 'value': '2'},
-    {'title': 'Newsletter - 1500x735', 'value': '3'},
+    {'title': 'Loyalty - 1920x533', 'value': constant('App\\Entity\\Banner::TYPE_LOYALTY')},
+    {'title': 'Newsletter - 1500x735 (mobilna - 600x800)', 'value': constant('App\\Entity\\Banner::TYPE_NEWS_LETTER')},
+    {'title': 'PopUp - 1500x735 (mobilna - 600x800)', 'value': constant('App\\Entity\\Banner::TYPE_POP_UP')},
 ] %}
 
 {% block title %}Dodavanje/Izmena banera{% endblock %}
@@ -17,7 +18,7 @@
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Baner</h4>
+            <h4 class="mb-3 mb-md-0">Banner</h4>
         </div>
     </div>
 
@@ -26,7 +27,7 @@
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Baner</h6>
+                        <h6 class="card-title">Banner</h6>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -63,7 +64,7 @@
                     <div class="card-body">
                         <h6 class="card-title">Srpski</h6>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 btn-text">
                                 <div class="form-group">
                                     {{ form.input('Teks dugmeta', 'button_rs', IS_EDIT ? rs_button : '', 'rs_button') }}
                                 </div>
@@ -84,7 +85,7 @@
                     <div class="card-body">
                         <h6 class="card-title">Engleski</h6>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 btn-text">
                                 <div class="form-group">
                                     {{ form.input('Teks dugmeta', 'button_en', IS_EDIT ? en_button : '', 'en_button') }}
                                 </div>

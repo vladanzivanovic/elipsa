@@ -14,6 +14,7 @@
         "gedmo/doctrine-extensions": "^2.4",
         "liip/imagine-bundle": "^2.1",
         "mobiledetect/mobiledetectlib": "^2.8",
+        "nelmio/security-bundle": "^2.10",
         "presta/sitemap-bundle": "^2.0",
         "sensio/framework-extra-bundle": "^5.1",
         "sentry/sentry-symfony": "^3.5",

@@ -57,7 +57,11 @@
         {{ include('Site/Components/footerBottom.html.twig') }}
     </footer>
 
-    {{ include('Site/Components/newsletterPopup.html.twig') }}
+    {% import 'Site/Macros/newsletterPopup.html.twig' as popup %}
+
+    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_NEWS_LETTER'), 'newsLetter', locale, true, 30) }}
+
+    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'popUpBanner', locale, false, 1) }}
     <!-- footer-end -->
     {% block javascripts %}
         <script>

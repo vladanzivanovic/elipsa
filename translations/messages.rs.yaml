@@ -394,3 +394,7 @@ pe-ly-tumble-dry-no-heat: 'Mašinsko sušenje bez toplote.'
 pe-ly-tumble-dry-resistant: 'Mašinsko sušenje na bilo kojoj temperaturi pod stalnim pritiskom.'
 pe-ly-tumble-dry: 'Mašinsko sušenje na bilo kojoj temperaturi.'
 pe-ly-wring: 'Odeća se sme cediti uvrtanjem.'
+
+banner.loyalty: loyalty
+banner.news_letter: newsletter
+banner.pop_up: Običan popup

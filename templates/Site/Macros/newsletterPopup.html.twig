@@ -1,0 +1,31 @@
+{% macro popup_banner(type, cookieName, locale, is_news_letter = false, expires = 30) %}
+    {% set bannerFilter = is_mobile() ? 'news_letter_banner_mobile' : 'news_letter_banner' %}
+{% set bannerArray = banner(type, bannerFilter, locale, is_mobile()) %}
+    {% if bannerArray is not null %}
+        {% set bannerNewsLink = "background: rgba(0, 0, 0, 0) url("~ bannerArray.image_link ~") no-repeat scroll left top / cover" %}
+
+        <!-- newsletter-popup-start -->
+        <div class="wd1-nlpopup-overlay"></div>
+        {% if true == is_news_letter %}
+            <form id="{{ cookieName }}" class="wd1-nlpopup" data-expires="{{ expires }}" data-delay="10" data-cookie-name="{{ cookieName }}" style="{{ bannerNewsLink }}">
+                <a href="#closepopup" id="wd1_nlpopup_close" class="wd1-nlpopup-close">x</a>
+                <h2>newsletter</h2>
+                <p class="text-uppercase">{{ 'newsletter.text' | trans }}</p>
+                <div class="popup-subscribe-box">
+                    <input type="email" name="email" value="">
+                    <input id="news_letter_btn" type="button" value="{{ 'submit' | trans }}">
+                </div>
+                <div class="pupup-dont-show">
+                    <input type="checkbox">
+                    <span class="d-inline-block letter-capitalize">{{ 'newsletter.notShowBtn' | trans }}</span>
+                </div>
+            </form>
+        {% else %}
+            <div id="{{ cookieName }}" class="wd1-nlpopup" data-expires="{{ expires }}" data-delay="10" data-cookie-name="{{ cookieName }}" style="{{ bannerNewsLink }}">
+                <a href="#closepopup" class="wd1-nlpopup-close banner-close">x</a>
+                <a href="{{ bannerArray.link }}" class="wd1-nlpopup-link"></a>
+            </div>
+        {% endif %}
+
+    {% endif %}
+{% endmacro %}

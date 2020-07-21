@@ -13,7 +13,6 @@ class BannerEditValidator {
         let options;
 
         options = {
-            ignore: '',
             rules: {
                 rs_button: 'required',
                 rs_link: 'required',

@@ -7746,7 +7746,7 @@ button.accordion.active {
 
 /*----------------------------------------*/
 
-#wd1_nlpopup_overlay {
+.wd1-nlpopup-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -7758,7 +7758,7 @@ button.accordion.active {
     z-index: 9999;
 }
 
-#wd1_nlpopup {
+.wd1-nlpopup {
     background: #f4f4f4 url("../img/banner/newsletter.png") no-repeat scroll right top / cover;
     border-radius: 3px;
     box-shadow: 0 0 20px #000;
@@ -7770,14 +7770,14 @@ button.accordion.active {
     transition: all 0.5s ease 0s;
     width: 80%;
     z-index: 9999;
+    height: calc(80vw/2.04);
 }
-
 
 /*
 #wd1_nlpopup_overlay * {-webkit-transition:all .1s linear;-moz-transition:all .1s linear; -o-transition:all .1s linear;-ms-transition:all .1s linear;transition:all .1s linear;}
 */
 
-#wd1_nlpopup_close {
+.wd1-nlpopup-close {
     border-radius: 3px;
     color: #666;
     cursor: pointer;
@@ -7794,8 +7794,14 @@ button.accordion.active {
     top: 13px;
     width: 22px;
 }
+.banner-close {
+    width: 40px;
+    height: 40px;
+    right: 3px;
+    z-index: 1000;
+}
 
-#wd1_nlpopup > h2 {
+.wd1-nlpopup > h2 {
     color: #363738;
     font-size: 50px;
     letter-spacing: 3px;
@@ -7804,7 +7810,7 @@ button.accordion.active {
     margin: 0 0 26px;
 }
 
-#wd1_nlpopup > p {
+.wd1-nlpopup > p {
     color: #363738;
     font-size: 16px;
     line-height: 26px;
@@ -7812,7 +7818,7 @@ button.accordion.active {
     margin: 0 0 16px;
 }
 
-#wd1_nlpopup > p::after {
+.wd1-nlpopup > p::after {
     background: #a70303 none repeat scroll 0 0;
     bottom: -16px;
     content: "";
@@ -7823,18 +7829,26 @@ button.accordion.active {
     z-index: 1;
 }
 
-#wd1_nlpopup > .popup-subscribe-box {
+.wd1-nlpopup .wd1-nlpopup-link {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.wd1-nlpopup > .popup-subscribe-box {
     margin: 50px 0 30px;
 }
 
-#wd1_nlpopup > .popup-subscribe-box input[type="email"] {
+.wd1-nlpopup > .popup-subscribe-box input[type="email"] {
     background: #fff none repeat scroll 0 0;
     border: 2px solid #e7e7e7;
     height: 50px;
     width: 395px;
 }
 
-#wd1_nlpopup > .popup-subscribe-box input[type="button"] {
+.wd1-nlpopup > .popup-subscribe-box input[type="button"] {
     display: inline-block;
     background: #a70303;
     height: 50px;
@@ -7846,11 +7860,11 @@ button.accordion.active {
     margin-left: -7px;
 }
 
-#wd1_nlpopup .pupup-dont-show {}
+.wd1-nlpopup .pupup-dont-show {}
 
-#wd1_nlpopup .pupup-dont-show input[type="checkbox"] {}
+.wd1-nlpopup .pupup-dont-show input[type="checkbox"] {}
 
-#wd1_nlpopup .pupup-dont-show span {
+.wd1-nlpopup .pupup-dont-show span {
     color: #363738;
     font-size: 14px;
     letter-spacing: 0;
@@ -7859,7 +7873,7 @@ button.accordion.active {
 @media only screen and (max-width: 1400px) {}
 
 @media only screen and (max-width: 1280px) {
-    #wd1_nlpopup {
+    .wd1-nlpopup {
         margin-left: 0;
         width: 80%;
     }
@@ -7868,7 +7882,7 @@ button.accordion.active {
 @media only screen and (max-width: 1080px) {}
 
 @media only screen and (max-width: 1024px) {
-    #wd1_nlpopup {
+    .wd1-nlpopup {
         margin-left: 0;
         width: 80%;
         padding: 30px;
@@ -7880,19 +7894,20 @@ button.accordion.active {
 @media only screen and (max-width: 800px) {}
 
 @media only screen and (max-width: 780px) {
-    #wd1_nlpopup {
+    .wd1-nlpopup {
         margin-left: 0;
         top: 75px;
         width: 80%;
         padding: 20px;
+        height: calc(80vw/0.75);
     }
-    #wd1_nlpopup > .popup-subscribe-box input[type="email"] {
+    .wd1-nlpopup > .popup-subscribe-box input[type="email"] {
         width: 295px;
     }
 }
 
 @media only screen and (max-width: 704px) {
-    #wd1_nlpopup .spaceforbook {
+    .wd1-nlpopup .spaceforbook {
         width: 365px;
     }
 }
@@ -7900,17 +7915,17 @@ button.accordion.active {
 @media only screen and (max-width: 675px) {}
 
 @media only screen and (max-width: 600px) {
-    #wd1_nlpopup {
+    .wd1-nlpopup {
         top: 50px;
     }
 }
 
 @media only screen and (max-width: 500px) {
-    #wd1_nlpopup {
+    .wd1-nlpopup {
         margin-left: 0;
         padding: 15px;
     }
-    #wd1_nlpopup > h2 {
+    .wd1-nlpopup > h2 {
         font-size: 24px;
         letter-spacing: 0;
         line-height: 28px;
@@ -7918,13 +7933,14 @@ button.accordion.active {
 }
 
 @media only screen and (max-width: 425px) {
-    #wd1_nlpopup_close {
+    .wd1-nlpopup-close {
         right: 8px;
+        height: calc(80vw/0.75);
     }
-    #wd1_nlpopup > .popup-subscribe-box input[type="email"] {
+    .wd1-nlpopup > .popup-subscribe-box input[type="email"] {
         width: 100%;
     }
-    #wd1_nlpopup > .popup-subscribe-box input[type="submit"] {
+    .wd1-nlpopup > .popup-subscribe-box input[type="submit"] {
         margin-left: 0;
     }
 }

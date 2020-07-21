@@ -19,6 +19,7 @@ class Banner
     public const TYPE_SPEED_LINKS = 1;
     public const TYPE_LOYALTY = 2;
     public const TYPE_NEWS_LETTER = 3;
+    public const TYPE_POP_UP = 4;
 
     public const STATUS_PENDING = false;
 

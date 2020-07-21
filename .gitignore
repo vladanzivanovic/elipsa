@@ -44,3 +44,4 @@ storage/image/*
 /public/sitemap.products_mobile_rs.xml.gz
 /public/sitemap.products_rs.xml.gz
 /public/sitemap.xml
+.env

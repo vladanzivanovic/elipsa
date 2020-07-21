@@ -25,7 +25,9 @@ export default (() => {
                             image :
                             data;
                     } },
-                { data: 'type', name: 'type', title: 'Tip' },
+                { data: 'type', name: 'type', title: 'Tip', render: function (data, type, row, meta) {
+                    return type === 'display' ? `<p class="text-uppercase">${data}</p>` : data;
+                    } },
                 { data: 'status_text', name: 'is_active', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const checkedAttr = row.is_active === true ? 'checked' : '';
                         const text = Translator.trans(data, null, 'messages', LOCALE);

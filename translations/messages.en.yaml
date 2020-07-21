@@ -400,3 +400,7 @@ pe-ly-tumble-dry-no-heat: 'Machine drying without heat.'
 pe-ly-tumble-dry-resistant: 'Machine drying at any temperature under constant pressure.'
 pe-ly-tumble-dry: 'Machine drying at any temperature.'
 pe-ly-wring: 'Clothes may be strained by twisting.'
+
+banner.loyalty: loyalty
+banner.news_letter: newsletter
+banner.pop_up: Basic popup

@@ -72,6 +72,7 @@ final class BannersListController extends AbstractController
         $collectionType = [
             Banner::TYPE_LOYALTY,
             Banner::TYPE_NEWS_LETTER,
+            Banner::TYPE_POP_UP,
         ];
 
         if ($request->attributes->get('_route') === 'admin.get_home_banner_list') {

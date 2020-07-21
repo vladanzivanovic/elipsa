@@ -560,23 +560,33 @@ require('webpack-jquery-ui');
     newsletter-popup
     --------------------- */
     jQuery(document).ready(function($) {
-        var wd1_nlpopup_expires = $("#wd1_nlpopup").data("expires");
-        var wd1_nlpopup_delay = $("#wd1_nlpopup").data("delay") * 1000;
+        $.each($('.wd1-nlpopup'), function (i, elm) {
+            var wd1_nlpopup_expires = $(elm).data("expires");
+            const wd1_nlpopup_cookie_name = $(elm).data('cookieName');
+            var wd1_nlpopup_delay = $(elm).data("delay") * 1000;
 
-        $('#wd1_nlpopup_close').on('click', function(e) {
-            $.cookie('wd1_nlpopup', 'closed', { expires: wd1_nlpopup_expires, path: '/' });
-            $('#wd1_nlpopup,#wd1_nlpopup_overlay').fadeOut(200);
-            e.preventDefault();
-        });
+            $('.wd1-nlpopup-close', $(elm)).on('click', function(e) {
+                $.cookie(wd1_nlpopup_cookie_name, 'closed', { expires: wd1_nlpopup_expires, path: '/' });
+                $(elm).fadeOut(200);
+                $('.wd1_nlpopup_overlay', elm).fadeOut(200);
+                e.preventDefault();
+            });
 
-        if ($.cookie('wd1_nlpopup') != 'closed') {
-            setTimeout(wd1_open_nlpopup, wd1_nlpopup_delay);
-        }
+            $('.wd1-nlpopup-link', $(elm)).on('click', function(e) {
+                $.cookie(wd1_nlpopup_cookie_name, 'closed', { expires: wd1_nlpopup_expires, path: '/' });
+            });
 
-        function wd1_open_nlpopup() {
+            if ($.cookie(wd1_nlpopup_cookie_name) != 'closed') {
+                setTimeout(function () {
+                    wd1_open_nlpopup(elm)
+                }, wd1_nlpopup_delay);
+            }
+        })
+
+        function wd1_open_nlpopup(elm) {
             var topoffset = $(document).scrollTop(),
                 viewportHeight = $(window).height(),
-                $popup = $('#wd1_nlpopup');
+                $popup = $(elm);
             var calculatedOffset = (topoffset + (Math.round(viewportHeight / 2))) - (Math.round($popup.outerHeight() / 2));
 
             if (calculatedOffset <= 40) {
@@ -584,9 +594,9 @@ require('webpack-jquery-ui');
             }
 
             $popup.css('top', calculatedOffset);
-            $('#wd1_nlpopup,#wd1_nlpopup_overlay').fadeIn(500);
+            $(elm).fadeIn(200);
+            $('.wd1_nlpopup_overlay', $(elm)).fadeIn(500);
         }
-
     });
 
 
