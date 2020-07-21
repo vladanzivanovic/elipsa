@@ -1,9 +1,6 @@
 nelmio_security:
     forced_ssl: ~
 
-    session:
-        cookie_secure: true
-
     # prevents framing of the entire site
     clickjacking:
         paths:
