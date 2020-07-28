@@ -42,6 +42,12 @@
                     <span class="link-title">O nama</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.jobs' ? 'active' : '' }}">
+                <a href="{{ path('admin.jobs') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Radna mesta</span>
+                </a>
+            </li>
             <li class="nav-item nav-category">Pregled</li>
             <li class="nav-item {{ routeName() == 'admin.orders' ? 'active' : '' }}">
                 <a href="{{ path('admin.orders') }}" class="nav-link">

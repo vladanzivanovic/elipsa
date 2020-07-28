@@ -1,7 +1,7 @@
 import loyaltyPageMapper from "../Mapper/LoyaltyPageMapper";
 
-class LoyaltyPageDom {
-    constructor() {
+class DateTimeDom {
+    constructor(mapper) {
         this.mapper = loyaltyPageMapper;
 
     }
@@ -10,6 +10,7 @@ class LoyaltyPageDom {
         const month = $(this.mapper.monthField).val();
         const year = $(this.mapper.yearField).val();
         const dayNumbers = new Date(year, month, 0).getDate();
+        const currentDay = $(this.mapper.dayField).val();
 
         $(this.mapper.dayField).empty();
 
@@ -17,6 +18,10 @@ class LoyaltyPageDom {
             $(this.mapper.dayField).append(
                 `<option value="${i}">${i}</option>`
             );
+        }
+
+        if (currentDay <= dayNumbers) {
+            $(this.mapper.dayField).val(currentDay);
         }
     }
 
@@ -37,4 +42,4 @@ class LoyaltyPageDom {
     }
 }
 
-export default LoyaltyPageDom;
+export default DateTimeDom;

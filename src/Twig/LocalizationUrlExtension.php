@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use App\Formatter\Site\Router\BlogListRouterFormatter;
 use App\Formatter\Site\Router\BlogPageRouterFormatter;
+use App\Formatter\Site\Router\JobPageRouterFormatter;
 use App\Formatter\Site\Router\ProductPageRouterFormatter;
 use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\ShopTrait;
@@ -51,6 +52,10 @@ class LocalizationUrlExtension extends AbstractExtension
      * @var BlogPageRouterFormatter
      */
     private $blogPageRouterFormatter;
+    /**
+     * @var JobPageRouterFormatter
+     */
+    private $jobPageRouterFormatter;
 
     /**
      * @param RouterInterface            $router
@@ -60,6 +65,7 @@ class LocalizationUrlExtension extends AbstractExtension
      * @param BlogListRouterFormatter    $blogListRouterFormatter
      * @param ProductPageRouterFormatter $productPageRouterFormatter
      * @param BlogPageRouterFormatter    $blogPageRouterFormatter
+     * @param JobPageRouterFormatter     $jobPageRouterFormatter
      */
     public function __construct(
         RouterInterface $router,
@@ -68,7 +74,8 @@ class LocalizationUrlExtension extends AbstractExtension
         ShopPageRouterFormatter $shopPageRouterFormatter,
         BlogListRouterFormatter $blogListRouterFormatter,
         ProductPageRouterFormatter $productPageRouterFormatter,
-        BlogPageRouterFormatter $blogPageRouterFormatter
+        BlogPageRouterFormatter $blogPageRouterFormatter,
+        JobPageRouterFormatter $jobPageRouterFormatter
     ) {
         $this->router = $router;
         $this->bag = $bag;
@@ -77,6 +84,7 @@ class LocalizationUrlExtension extends AbstractExtension
         $this->blogListRouterFormatter = $blogListRouterFormatter;
         $this->productPageRouterFormatter = $productPageRouterFormatter;
         $this->blogPageRouterFormatter = $blogPageRouterFormatter;
+        $this->jobPageRouterFormatter = $jobPageRouterFormatter;
     }
 
     /**
@@ -105,6 +113,10 @@ class LocalizationUrlExtension extends AbstractExtension
 
         if ($routeName === 'site.blog_detailed_page') {
             $routeParams['slug'] = $this->blogPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+        }
+
+        if ($routeName === 'site.jobs_detail_page') {
+            $routeParams['slug'] = $this->jobPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
         }
 
         if ($toLocale != 'rs') {

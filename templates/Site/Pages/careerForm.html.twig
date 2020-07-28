@@ -1,0 +1,139 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set titleTrans = 'text.type.career_form' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+
+{% block bodyClass %}loyalty-page{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans }) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-pre-text">{{ description(constant('App\\Entity\\Description::TYPE_CAREER')) | raw }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-area">
+                        <div class="contact-form-head">
+                            <h2>{{ titleTrans }}</h2>
+                            <h1>{{ titleTrans }}</h1>
+                        </div>
+                        <div class="contact-form-content">
+                            <div class="cf-msg"></div>
+                            <form id="career_form" enctype="multipart/form-data">
+                                <input id="career_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('career_form') }}" />
+                                <h5 class="letter-capitalize">{{ 'job.form.personal_data' | trans }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('first_name' | trans ~ ' *', 'first_name', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('last_name' | trans ~ ' *', 'last_name', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    {% include 'Site/Components/dateTime.html.twig' %}
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('mobile_telephone' | trans ~ ' *', 'mobile_phone', '', 'mobile_phone', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('address' | trans ~ ' *', 'address', '', 'address', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('city' | trans, 'city', '', 'city', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="letter-capitalize">{{ 'job.form.education' | trans }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('job.form.school' | trans ~ ' *', 'school', '', 'school', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('job.form.school_level' | trans ~ ' *', 'school_level', '', 'school_level', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('job.form.school_title' | trans ~ ' *', 'school_title', '', 'school_title', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="letter-capitalize">{{ 'job.form.job_place_apply' | trans }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.select('job.form.position' | trans ~ ' *', 'position', 'position', '', jobs, '', 'w-100 text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            <label for="cv" class="text-uppercase">Curiculum Vitae *</label>
+                                            <input type="file" id="cv" name="cv" class="" placeholder="" value="" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.textarea('career.form.accompanying_letter' | trans, 'accompanying_letter', '', 'accompanying_letter', 10, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.checkbox('job.form.policy_accept' | trans ~ ' *', 'policy', 1, 'policy', 'form-check-label position-relative', 'form-check-input') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.button('career_submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/loyalty.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/text.css') }}">
+{% endblock %}

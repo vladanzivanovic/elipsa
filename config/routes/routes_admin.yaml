@@ -80,7 +80,7 @@ admin.career:
   path: /career
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
-    template: Admin/Pages/career.html.twig
+    template: Admin/Pages/careerApplicationView.html.twig
 
 admin.slider_text:
   path: /slider-text
@@ -120,3 +120,9 @@ admin.descriptions:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Admin/Pages/descriptions.html.twig
+
+admin.jobs:
+  path: /jobs
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/jobs.html.twig

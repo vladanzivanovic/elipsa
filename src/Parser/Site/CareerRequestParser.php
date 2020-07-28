@@ -8,6 +8,7 @@ use App\Entity\Career;
 use App\Entity\Collaborator;
 use App\Entity\Image;
 use App\Entity\Loyalty;
+use App\Repository\CareerDescriptionRepository;
 use App\Repository\CareerRepository;
 use App\Repository\CollaboratorRepository;
 use App\Repository\LoyaltyRepository;
@@ -33,23 +34,27 @@ final class CareerRequestParser
      * @var ParameterBagInterface
      */
     private $parameterBag;
+    /**
+     * @var CareerDescriptionRepository
+     */
+    private $descriptionRepository;
 
     /**
-     * @param LoyaltyRepository     $loyaltyRepository
-     * @param CareerRepository      $repository
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $parameterBag
+     * @param CareerRepository            $repository
+     * @param ImageService                $imageService
+     * @param ParameterBagInterface       $parameterBag
+     * @param CareerDescriptionRepository $descriptionRepository
      */
     public function __construct(
-        LoyaltyRepository $loyaltyRepository,
         CareerRepository $repository,
         ImageService $imageService,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        CareerDescriptionRepository $descriptionRepository
     ) {
-        $this->loyaltyRepository = $loyaltyRepository;
         $this->repository = $repository;
         $this->imageService = $imageService;
         $this->parameterBag = $parameterBag;
+        $this->descriptionRepository = $descriptionRepository;
     }
 
     /**
@@ -60,22 +65,21 @@ final class CareerRequestParser
      */
     public function parse(ParameterBag $bag, ParameterBag $files): Career
     {
-        $countByUser = $this->repository->count([
-            'firstName' => $bag->get('first_name'),
-            'lastName' => $bag->get('last_name'),
-            'email' => $bag->get('email'),
-        ]);
-
-        if ($countByUser > 0) {
-            throw new BadRequestHttpException('career.message.already_applied');
-        }
+        $position = $this->descriptionRepository->find($bag->get('position'));
 
         $career = new Career();
         $career->setFirstName($bag->get('first_name'))
             ->setLastName($bag->get('last_name'))
             ->setEmail($bag->get('email'))
-            ->setPosition($bag->get('position'))
-            ->setAccompanyingLetter($bag->get('accompanying_letter'));
+            ->setAccompanyingLetter($bag->get('accompanying_letter'))
+            ->setPosition($position)
+            ->setCity($bag->get('city'))
+            ->setAddress($bag->get('address'))
+            ->setMobilePhone($bag->get('mobile_phone'))
+            ->setBirthDate(new \DateTime($bag->get('birth_date')))
+            ->setSchool($bag->get('school'))
+            ->setSchoolLevel($bag->get('school_level'))
+            ->setSchoolTitle($bag->get('school_title'));
         
         if ($files->has('cv')) {
             /** @var UploadedFile $file */

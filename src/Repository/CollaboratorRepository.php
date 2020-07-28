@@ -47,22 +47,9 @@ class CollaboratorRepository extends ExtendedEntityRepository
                 'c.id as id',
                 'c.email as email',
                 'CONCAT(c.firstName, \' \', c.lastName) as full_name',
-                'c.address as address',
-                'c.phone as phone',
-                'c.city as city',
-                'c.country as country',
-                'c.location as location',
-                'c.numberOfFloors as no_floors',
-                'c.shoppingMall as shopping_mall',
-                'c.spaceSize as total_size',
-                'c.store has_store',
                 'c.website as website',
-                'c.zipCode as zip_code',
-                'presentation.id as presentation_doc',
-                'plan.id as plan_doc'
+                'DATE_FORMAT(c.createdAt, \'%d.%m.%Y\') as applying_date'
             )
-            ->leftJoin('c.presentation', 'presentation')
-            ->leftJoin('c.plan', 'plan')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());

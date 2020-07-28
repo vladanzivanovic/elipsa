@@ -46,13 +46,6 @@ final class CareerDataTableResponseFormatter
      */
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
-        $data = array_map(function ($item) {
-            if (null !== $item['cv_doc']) {
-                $item['cv_doc'] = $this->router->generate('app.download_doc', ['id' => $item['cv_doc']], RouterInterface::ABSOLUTE_URL);
-            }
-
-            return $item;
-        }, $data);
         return $this->response($tableModel, $data, $total);
 
     }

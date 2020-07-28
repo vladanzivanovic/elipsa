@@ -35,11 +35,6 @@ class Career
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
-    private $position;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $cv;
@@ -48,6 +43,47 @@ class Career
      * @ORM\Column(type="text", nullable=true)
      */
     private $accompanyingLetter;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $birthDate;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $mobilePhone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $school;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $schoolLevel;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $schoolTitle;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CareerDescription", inversedBy="careers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $position;
 
     public function getId(): ?int
     {
@@ -90,18 +126,6 @@ class Career
         return $this;
     }
 
-    public function getPosition(): ?string
-    {
-        return $this->position;
-    }
-
-    public function setPosition(?string $position): self
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
     public function getCv(): ?Image
     {
         return $this->cv;
@@ -122,6 +146,102 @@ class Career
     public function setAccompanyingLetter(?string $accompanyingLetter): self
     {
         $this->accompanyingLetter = $accompanyingLetter;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getMobilePhone(): ?string
+    {
+        return $this->mobilePhone;
+    }
+
+    public function setMobilePhone(string $mobilePhone): self
+    {
+        $this->mobilePhone = $mobilePhone;
+
+        return $this;
+    }
+
+    public function getSchool(): ?string
+    {
+        return $this->school;
+    }
+
+    public function setSchool(string $school): self
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    public function getSchoolLevel(): ?string
+    {
+        return $this->schoolLevel;
+    }
+
+    public function setSchoolLevel(string $schoolLevel): self
+    {
+        $this->schoolLevel = $schoolLevel;
+
+        return $this;
+    }
+
+    public function getSchoolTitle(): ?string
+    {
+        return $this->schoolTitle;
+    }
+
+    public function setSchoolTitle(string $schoolTitle): self
+    {
+        $this->schoolTitle = $schoolTitle;
+
+        return $this;
+    }
+
+    public function getPosition(): ?CareerDescription
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?CareerDescription $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }

@@ -1,0 +1,67 @@
+@import "../colors";
+@import "../../../scss/mixin";
+
+.job-detail-page {
+  .blog-area {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    .blog-deatails-content {
+      margin-top: 20px;
+
+      .bdc-title {
+        font-size: 30px;
+        font-weight: 600;
+        position: relative;
+        margin-bottom: 40px;
+
+        &:after {
+          background: $site-color none repeat scroll 0 0;
+          bottom: -22px;
+          content: "";
+          height: 1px;
+          left: 0;
+          position: absolute;
+          width: 70px;
+          z-index: 2;
+        }
+      }
+    }
+  }
+
+  .home3-newsletter-area {
+    height: 150px;
+
+    ::before {
+      @include opacity(0.1);
+    }
+
+    .h3-newsletter-left {
+      height: 60px;
+      display: flex;
+      align-items: center;
+    }
+
+    .h3-newsletter-input {
+      > a {
+        right: 150px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 480px) and (min-width: 240px) {
+    .home3-newsletter-area {
+      height: 150px !important;
+
+      .h3-newsletter-left {
+        margin-bottom: 0 !important;
+        margin-top: -25%;
+      }
+
+      .h3-newsletter-input > a {
+        width: 100%;
+        @include transform(translate(-50%, 0) !important);
+      }
+    }
+  }
+}

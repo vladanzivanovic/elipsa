@@ -9,10 +9,14 @@ class CareerPageHandler {
         this.notification = NotificationService();
     }
 
-    save() {
+    save(dateTimeService) {
         let urlRoute = Routing.generate('site_api.add_career');
         let type = 'POST';
         const data = new FormData($(this.mapper.form)[0]);
+
+        data.set('birth_date',
+            dateTimeService.getDateTimeString('/')
+        );
 
         if (! $(this.mapper.form).valid()) {
             return false;

@@ -104,6 +104,8 @@ final class CareerHandler
     {
         $settings = $this->getSettings();
 
+        $position = $career->getPosition()->getTranslationByLocale('rs')->getTitle();
+
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_CAREER);
         $model->setTemplate('career');
@@ -118,7 +120,7 @@ final class CareerHandler
             'firstName' => $career->getFirstName(),
             'lastName' => $career->getLastName(),
             'careerEmail' => $career->getEmail(),
-            'position' => $career->getPosition(),
+            'position' => $position,
             'accompanyingLetter' => $career->getAccompanyingLetter(),
             'cv' => null !== $career->getCv() ? $this->router->generate('app.download_doc', ['id' => $career->getCv()->getId()], RouterInterface::ABSOLUTE_URL) : '',
         ]);

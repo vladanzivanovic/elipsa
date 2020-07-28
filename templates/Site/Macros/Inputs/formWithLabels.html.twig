@@ -4,9 +4,9 @@
     {{ form.input(id, value, name, placeholder, type, class, additionalAttributes | raw) }}
 {% endmacro %}
 
-{% macro select(title, id, name, selected, options, placeholder = "", class = "", multiple = false) %}
-    <label for="{{ id }}">{{ title }}</label>
-    {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
+{% macro select(title, id, name, selected, options, placeholder = "", labelClass = "", multiple = false, class = "") %}
+    <label for="{{ id }}" class="{{ labelClass }}">{{ title }}</label>
+    {% import 'Site/Macros/Inputs/input.html.twig' as form %}
     {{ form.selectbox(id, name, selected, options, placeholder, class, multiple) }}
 {% endmacro %}
 
@@ -24,8 +24,8 @@
     </label>
 {% endmacro %}
 
-{% macro textarea(title, id, value, name, rows = "10", placeholder = "", class = "") %}
-    <label class="{{ class }}" for="{{ id }}">{{ title }}</label>
+{% macro textarea(title, id, value, name, rows = "10", placeholder = "", labelClass = "", class = "") %}
+    <label class="{{ labelClass }}" for="{{ id }}">{{ title }}</label>
     {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
     {{ form.textarea(id, value, name, rows, placeholder, class) }}
 {% endmacro %}

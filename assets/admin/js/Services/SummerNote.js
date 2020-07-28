@@ -47,11 +47,11 @@ class SummerNote {
         })
     }
 
-    createCallBacksSummernote(el)
+    createCallBacksSummernote(el, entity)
     {
         return {
             onImageUpload: files => {
-                this.summernote.sendSummernoteFile(el, files[0])
+                this.sendSummernoteFile(el, files[0], entity)
                     .then(response => {
                         el.summernote('insertImage', response.file_url, function ($image) {
                             $image.attr('data-filename', response.file_name);
@@ -59,7 +59,7 @@ class SummerNote {
                     })
             },
             onMediaDelete: target => {
-                this.summernote.removeSummernoteImage(target[0].dataset.filename);
+                this.removeSummernoteImage(target[0].dataset.filename);
             }
         }
     }

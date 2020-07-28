@@ -7,6 +7,8 @@ discount: 'popust'
 down: dole
 up: gore
 
+choose: Izberite
+
 data:
   success_send: 'Podaci su uspešno poslati.'
   success_deleted: 'Podaci su uspešno obrisani.'
@@ -34,9 +36,10 @@ navi:
   account: Moj nalog
   trends: Trendovi
   collaborators: Saradnici
-  career: Zaposlenje
+  career_form: Zaposlenje forma
   policy_and_privacy: Politika privatnosti
   use_conditions: Uslovi korišćenja
+  career: Radna mesta
 
 
 serbian: Srpski
@@ -295,7 +298,8 @@ text.type.loyalty: Loyalty
 text.type.policy_and_privacy: Politika privatnosti
 text.type.use_conditions: Uslovi korišćenja
 text.type.collaborator: Saradnici
-text.type.career: Zaposlenje
+text.type.career_form: Zaposlenje Forma
+text.type.career: Radna mesta
 
 collaborator.form.basic_data: osnovni podaci
 collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?
@@ -304,7 +308,7 @@ collaborator.form.location: lokacija
 collaborator.form.presentation: prezentacija kompanije
 collaborator.form.plan: Fotografije ili plan
 collaborator.form.space_size: ukupna kvadratura
-collaborator.form.number_of_floors: ukupna spratova
+collaborator.form.number_of_floors: ukupno spratova
 collaborator.message.already_applied: Vi ste se već prijavili u program za saradnju.
 collaborator.message.success: Uspešno ste poslali prijavu za saradnju.
 
@@ -398,3 +402,14 @@ pe-ly-wring: 'Odeća se sme cediti uvrtanjem.'
 banner.loyalty: loyalty
 banner.news_letter: newsletter
 banner.pop_up: Običan popup
+
+job.applied_for_form: Postani i ti deo našeg tima
+job.application_form: Popunite prijavu
+job.form.personal_data: lični podaci
+job.form.education: obrazovanje
+job.form.job_place_apply: radno mesto za koje se prijavljujete
+job.form.school: naziv završene škole/fakulteta
+job.form.school_level: stručna sprema
+job.form.school_title: stečeno zvanje
+job.form.position: pozicija
+job.form.policy_accept: Prihvatam navedene uslove i način konkurisanja i pristajem da se moji podaci koriste u svrhe selekcije i zapošljavanja

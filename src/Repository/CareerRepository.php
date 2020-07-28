@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Career;
+use App\Entity\CareerDescriptionTranslation;
 use App\Model\DataTableModel;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
@@ -44,17 +45,17 @@ class CareerRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->select(
-                'c.id',
-                'c.email',
+                'c.id as id',
+                'c.email as email',
                 'CONCAT(c.firstName, \' \', c.lastName) as full_name',
-                'c.position',
-                'cv.id as cv_doc',
-                'c.accompanyingLetter as accompanying_letter'
+                'cdt.title as position',
+                'DATE_FORMAT(c.createdAt, \'%d.%m.%Y\') as applying_date'
             )
             ->leftJoin('c.cv', 'cv')
+            ->innerJoin(CareerDescriptionTranslation::class, 'cdt', 'WITH', 'cdt.careerDescription = c.position AND cdt.locale = \'rs\'')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->orderBy('c.' . $tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+            ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         return $query->getQuery()->getArrayResult();
     }

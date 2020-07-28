@@ -45,33 +45,7 @@
                                             {{ form.input('mobile_telephone' | trans ~ ' *', 'mobile_phone', '', 'mobile_phone', '', 'tel', null, '', 'text-uppercase') }}
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12 date">
-                                        <div class="cfc-input-box">
-                                            <label class="text-uppercase">{{ 'birth_date' | trans }} *</label>
-                                            <select class="bd-month">
-                                                <option value="1">{{ 'January' | trans }}</option>
-                                                <option value="2">{{ 'February' | trans }}</option>
-                                                <option value="3">{{ 'March' | trans }}</option>
-                                                <option value="4">{{ 'April' | trans }}</option>
-                                                <option value="5">{{ 'May' | trans }}</option>
-                                                <option value="6">{{ 'June' | trans }}</option>
-                                                <option value="7">{{ 'July' | trans }}</option>
-                                                <option value="8">{{ 'August' | trans }}</option>
-                                                <option value="9">{{ 'September' | trans }}</option>
-                                                <option value="10">{{ 'October' | trans }}</option>
-                                                <option value="11">{{ 'November' | trans }}</option>
-                                                <option value="12">{{ 'December' | trans }}</option>
-                                            </select>
-                                        </div>
-                                        <div class="cfc-input-box">
-                                            <label>&nbsp;</label>
-                                            <select class="bd-date"></select>
-                                        </div>
-                                        <div class="cfc-input-box">
-                                            <label>&nbsp;</label>
-                                            <select class="bd-year"></select>
-                                        </div>
-                                    </div>
+                                    {% include 'Site/Components/dateTime.html.twig' %}
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="cfc-input-box">
                                             {{ form.input('occupation' | trans ~ ' *', 'occupation', '', 'occupation', '', 'text', null, '', 'text-uppercase') }}

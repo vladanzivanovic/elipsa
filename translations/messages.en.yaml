@@ -7,6 +7,8 @@ discount: 'discount'
 down: down
 up: up
 
+choose: Choose
+
 data:
   success_send: 'Data are successfully sent.'
   success_deleted: 'Data are successfully deleted.'
@@ -34,9 +36,10 @@ navi:
   account: My account
   trends: Trends
   collaborators: Collaborators
-  career: Career
+  career_form: Career Form
   policy_and_privacy: Privacy policy
   use_conditions: Use conditions
+  career: Careers
 
 serbian: Serbian
 english: English
@@ -301,7 +304,8 @@ text.type.loyalty: Loyalty
 text.type.policy_and_privacy: Policy and Privacy
 text.type.use_conditions: Use conditions
 text.type.collaborators: Collaborators
-text.type.career: Career
+text.type.career_form: Career Form
+text.type.career: Careers
 
 collaborator.form.basic_data: basic data
 collaborator.form.where_open_store: Where do you plan to open franchise store?
@@ -404,3 +408,14 @@ pe-ly-wring: 'Clothes may be strained by twisting.'
 banner.loyalty: loyalty
 banner.news_letter: newsletter
 banner.pop_up: Basic popup
+
+job.applied_for_form: Join our team
+job.application_form: Apply for position
+job.form.personal_data: personal data
+job.form.education: education
+job.form.job_place_apply: job for which you are applying
+job.form.school: name of finished school/faculty
+job.form.school_level: professinal qualification level
+job.form.school_title: acquired title
+job.form.position: position
+job.form.policy_accept: I'm accepting specified conditions and accepting that my personal data could be used in the purpose of selection and employment

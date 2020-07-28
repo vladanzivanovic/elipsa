@@ -870,10 +870,7 @@ Version      : 1.0
         display: block !important;
     }
     .crumb-name {
-        display: block !important;
-        float: none !important;
-        font-size: 16px !important;
-        margin-top: 15px !important;
+        display: none !important;
     }
     .product-modal button.close {
         top: 14px !important;

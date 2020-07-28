@@ -1,0 +1,55 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}{{ trans.title }}{% endblock %}
+
+{% block bodyClass %}job-detail-page{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
+        {'title': 'navi.career' | trans, 'link': path('site.jobs_list_page') },
+        {'title': trans.title }
+    ], 'activePage': trans.title }) }}
+
+    <!-- blog-area-start -->
+    <div class="blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-details">
+                        <div class="blog-deatails-content clearfix">
+                            <a class="bdc-title" href="#">{{ trans.title }}</a>
+                            <ul>
+                                <li><a href="#"><span class="letter-capitalize d-inline-block">{{ 'blog.posted' | trans }}</span> {{ job.activationDate | date('d.m.Y') }}</a></li>
+                            </ul>
+                            <div>{{ trans.description | raw }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- blog-area-end -->
+    <div class="home3-newsletter-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                    <div class="h3-newsletter-left">
+                        <h3 class="h3-nl-title">{{ 'job.applied_for_form' | trans }}</h3>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-5 col-xs-12">
+                    <div class="h3-newsletter-form">
+                        <form action="#">
+                            <div class="h3-newsletter-input">
+                                <a href="{{ path('site.career_page', {'_locale': locale}) }}" class="hvr-bs">{{ 'job.application_form' | trans }}</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/jobDetail.css') }}"/>
+{% endblock %}

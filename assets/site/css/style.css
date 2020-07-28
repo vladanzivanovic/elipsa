@@ -7194,6 +7194,23 @@ button.accordion.active {
 }
 
 .contact-form-content {}
+.contact-form-content form > h5 {
+    font-size: 20px;
+    text-transform: uppercase;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.contact-form-content form > h5:after {
+    background: #a70303 none repeat scroll 0 0;
+    bottom: -10px;
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 70px;
+    z-index: 2;
+}
 
 .cfc-input-box {
     margin: 0 0 20px;

@@ -1,0 +1,24 @@
+.jobs-page {
+  .sfi-img-content {
+    opacity: 1 !important;
+    -webkit-transform: translateY(0) !important;
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0) !important;
+    visibility: visible !important;
+    bottom: 120px !important;
+    text-align: center;
+    font-size: 25px;
+    height: 100px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7) none repeat scroll 0 0 !important;
+    color: #222;
+
+    > p {
+      font-size: 25px;
+      font-weight: 600;
+    }
+  }
+}

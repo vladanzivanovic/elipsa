@@ -19,12 +19,16 @@ export default (() => {
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
-                { data: 'email', name: 'email', title: 'Email' },
                 { data: 'position', name: 'position', title: 'Pozicija' },
-                { data: 'accompanying_letter', orderable: false, title: 'Propratno pismo' },
-                { data: 'cv_doc', orderable: false, title: 'CV', render: function (data, type, row, meta) {
-                    return type === 'display' && null != data ? `<a href="${data}">CV</a>` : '';
-                    }},
+                { data: 'applying_date', name: 'applying_date', title: 'Datum prijave' },
+                { data: 'id', orderable: false, render: function (data, type, row, meta) {
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.view_career_details', {id: data})}">Pregled</a> ` : '';
+
+
+                        return type === 'display' ?
+                            editLink :
+                            data;
+                    } },
             ],
             order: [[0, 'asc']],
             pageLength: 100,

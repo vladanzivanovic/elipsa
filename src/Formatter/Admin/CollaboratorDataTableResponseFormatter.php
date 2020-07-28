@@ -46,20 +46,6 @@ final class CollaboratorDataTableResponseFormatter
      */
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
-        $data = array_map(function ($item) {
-            if (null !== $item['presentation_doc']) {
-                $item['presentation_doc'] = $this->router->generate('app.download_doc', ['id' => $item['presentation_doc']], RouterInterface::ABSOLUTE_URL);
-            }
-
-            if ($item['plan_doc']) {
-                $item['plan_doc'] = $this->router->generate('app.download_doc', ['id' => $item['plan_doc']], RouterInterface::ABSOLUTE_URL);
-            }
-
-            $item['has_store'] =  $this->translator->trans(ConstantsHelper::getConstantName((string) $item['has_store'], 'SPACE', Collaborator::class));
-            $item['location'] =  $this->translator->trans(ConstantsHelper::getConstantName((string) $item['location'], 'LOCATION', Collaborator::class));
-
-            return $item;
-        }, $data);
         return $this->response($tableModel, $data, $total);
 
     }

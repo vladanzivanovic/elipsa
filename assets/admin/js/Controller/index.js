@@ -34,6 +34,8 @@ import CareerController from "./CareerController";
 import SliderTextController from "./SliderTextController";
 import SliderTextEditController from "./SliderTextEditController";
 import OrdersController from "./OrdersController";
+import JobsController from "./JobsController";
+import JobEditController from "./JobEditController";
 
 let routes = [
     {
@@ -247,6 +249,18 @@ let routes = [
     {
         name: 'admin.orders',
         controller: OrdersController,
+    },
+    {
+        name: 'admin.jobs',
+        controller: JobsController,
+    },
+    {
+        name: 'admin.add_job',
+        controller: JobEditController,
+    },
+    {
+        name: 'admin.edit_job',
+        controller: JobEditController,
     },
 ];
 

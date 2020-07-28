@@ -13,8 +13,8 @@ class DescriptionEditController {
         this.summernote = new SummerNote();
         this.handler = new DescriptionHandler();
 
-        this.summernote.initialize($(this.mapper.desc_rs), this.summernote.createCallBacksSummernote($(this.mapper.desc_rs)));
-        this.summernote.initialize($(this.mapper.desc_en), this.summernote.createCallBacksSummernote($(this.mapper.desc_en)));
+        this.summernote.initialize($(this.mapper.desc_rs), this.summernote.createCallBacksSummernote($(this.mapper.desc_rs), 'description'));
+        this.summernote.initialize($(this.mapper.desc_en), this.summernote.createCallBacksSummernote($(this.mapper.desc_en), 'description'));
         $('.dropdown-toggle').dropdown();
 
         this.registerEvents();
