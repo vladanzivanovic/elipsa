@@ -45,6 +45,8 @@ window.helpBlock = {
                 error.insertAfter(element.next());
             } else if (element.hasClass('custom-select')) {
                 error.insertAfter(element);
+            } else if (element.data('showErrorElm')) {
+                    $(element.data('showErrorElm')).append(error);
             } else {
                 error.insertAfter(parent);
             }

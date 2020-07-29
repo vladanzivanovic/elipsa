@@ -26,6 +26,8 @@ Encore
     .addStyleEntry('css/site/pages/loyalty', './assets/site/scss/Pages/_loyalty.scss')
     .addStyleEntry('css/site/pages/text', './assets/site/scss/Pages/_text.scss')
     .addStyleEntry('css/site/pages/contact', './assets/site/scss/Pages/_contact.scss')
+    .addStyleEntry('css/site/pages/jobs', './assets/site/scss/Pages/_jobs.scss')
+    .addStyleEntry('css/site/pages/jobDetail', './assets/site/scss/Pages/_jobDetail.scss')
     .addStyleEntry('css/admin/app',[
         './assets/admin/scss/style.scss',
     ])
@@ -63,10 +65,10 @@ config.resolve.alias = {
     'waypoints': __dirname + '/node_modules/jquery-waypoints/waypoints.js',
     'router': __dirname + '/assets/js/router.js'
 };
-config.devtool = 'source-map';
-
-if (!Encore.isProduction()) {
-    config.devtool = 'eval-source-map';
-}
+// config.devtool = 'source-map';
+//
+// if (!Encore.isProduction()) {
+//     config.devtool = 'eval-source-map';
+// }
 
 module.exports = config;

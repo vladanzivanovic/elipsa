@@ -150,6 +150,10 @@ div#preloader {
     text-align: right;
 }
 
+.error {
+    color: #a70303;
+}
+
 *,
 *:before,
 *:after {

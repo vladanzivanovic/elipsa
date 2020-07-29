@@ -45,3 +45,6 @@ storage/image/*
 /public/sitemap.products_rs.xml.gz
 /public/sitemap.xml
 .env
+/public/js/translations/en.json
+/public/js/translations/rs.json
+/public/js/translations/config.json

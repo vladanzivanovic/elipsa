@@ -22,9 +22,22 @@ class CareerPageValidation {
                 last_name    : 'required',
                 email       : {
                     required: true,
-                    email   : true
+                    email   : true,
                 },
-                cv: 'required'
+                cv: 'required',
+                mobile_phone: 'required',
+                address: 'required',
+                city: 'required',
+                school: 'required',
+                school_level: 'required',
+                school_title: 'required',
+                position: 'isSelectBoxEmpty',
+                policy: 'required',
+                date: {
+                    fieldsGroupValidation: {
+                        group: 'date',
+                    }
+                }
             },
         };
         $.extend(options, window.helpBlock);

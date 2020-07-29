@@ -39,7 +39,7 @@ navi:
   career_form: Zaposlenje forma
   policy_and_privacy: Politika privatnosti
   use_conditions: Uslovi korišćenja
-  career: Radna mesta
+  career: Zaposlenje
 
 
 serbian: Srpski
@@ -120,6 +120,7 @@ title.contact_us: Kontakt
 title.privacy_policy: Politika privatnosti
 title.reset_password: Promena lozinke
 title.not_exits_page: Nepostojeća stranica
+title.career: Radna mesta
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu

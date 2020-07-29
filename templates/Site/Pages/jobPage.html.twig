@@ -6,7 +6,7 @@
 
 {% block content %}
     {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
-        {'title': 'navi.career' | trans, 'link': path('site.jobs_list_page') },
+        {'title': 'title.career' | trans, 'link': path('site.jobs_list_page') },
         {'title': trans.title }
     ], 'activePage': trans.title }) }}
 

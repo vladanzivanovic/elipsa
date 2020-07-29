@@ -174,3 +174,21 @@ $.validator.addMethod(
         return (val !== "<p><br></p>" && val !== "<p></p>" && val !== '')
     }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
 );
+
+$.validator.addMethod(
+    'fieldsGroupValidation',
+    function (val, elm, params) {
+        let isValid = false;
+
+        $.each($(`[data-group="${params.group}"]`), function (i, elm) {
+            if ($(elm).val() && $(elm).val().length > 0) {
+                isValid = true;
+                return;
+            }
+
+            isValid = false;
+        })
+
+        return isValid;
+    }, Translator.trans('field.not_blank', null, 'validators', LOCALE)
+);
