@@ -40,6 +40,7 @@ navi:
   policy_and_privacy: Privacy policy
   use_conditions: Use conditions
   career: Careers
+  cookie_policy: Cookie policy
 
 serbian: Serbian
 english: English
@@ -307,6 +308,7 @@ text.type.use_conditions: Use conditions
 text.type.collaborators: Collaborators
 text.type.career_form: Career Form
 text.type.career: Careers
+text.type.cookie_policy: Cookie policy
 
 collaborator.form.basic_data: basic data
 collaborator.form.where_open_store: Where do you plan to open franchise store?
@@ -420,3 +422,8 @@ job.form.school_level: professinal qualification level
 job.form.school_title: acquired title
 job.form.position: position
 job.form.policy_accept: I'm accepting specified conditions and accepting that my personal data could be used in the purpose of selection and employment
+
+eu.cookies.accept.title: This website using cookies.
+eu.cookies.accept.text: We use cookies to improve your usability. By using elisa.rs you agree to the use of cookies.
+eu.cookies.accept.btn: Accept
+eu.cookies.learn_more.btn: Learn more

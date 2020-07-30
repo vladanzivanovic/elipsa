@@ -8,6 +8,8 @@ import WishListHandler from "./Handler/WishListHandler";
 import NewsLetterHandler from "./Handler/NewsLetterHandler";
 import resetPasswordValidator from "./Validators/ResetPasswordValidator";
 
+require('jquery-eu-cookie-law-popup/js/jquery-eu-cookie-law-popup');
+
 class CoreController {
     constructor() {
         this.baseCore = new BaseCoreController();
@@ -160,6 +162,18 @@ class CoreController {
             $(this.mapper.resetForm).valid();
 
             handler.doResetPassword(this.mapper);
+        });
+
+        $(document).euCookieLawPopup().init({
+            cookiePolicyUrl : Routing.generate(`site.cookie_policy.${LOCALE}`),
+            popupTitle : Translator.trans('eu.cookies.accept.title', null, 'messages', LOCALE),
+            popupText : Translator.trans('eu.cookies.accept.text', null, 'messages', LOCALE),
+            buttonContinueTitle : Translator.trans('eu.cookies.accept.btn', null, 'messages', LOCALE),
+            buttonLearnmoreTitle : Translator.trans('eu.cookies.learn_more.btn', null, 'messages', LOCALE),
+            buttonLearnmoreOpenInNewWindow : true,
+            agreementExpiresInDays : 30,
+            autoAcceptCookiePolicy : false,
+            htmlMarkup : null
         });
     }
 }

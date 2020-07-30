@@ -1,11 +1,12 @@
 {% extends 'Admin/base.html.twig' %}
 
 {% set textTypes = [
-    {'title': 'Loyalty', 'value': '1'},
-    {'title': 'Politika privatnosti', 'value': '2'},
-    {'title': 'Uslovi korišćenja', 'value': '3'},
-    {'title': 'Saradnici', 'value': '4'},
-    {'title': 'Zaposlenje', 'value': '5'},
+    {'title': 'Loyalty', 'value': constant('App\\Entity\\Description::TYPE_LOYALTY')},
+    {'title': 'Politika privatnosti', 'value': constant('App\\Entity\\Description::TYPE_POLICY_AND_PRIVACY')},
+    {'title': 'Uslovi korišćenja', 'value': constant('App\\Entity\\Description::TYPE_USE_CONDITIONS')},
+    {'title': 'Saradnici', 'value': constant('App\\Entity\\Description::TYPE_COLLABORATOR')},
+    {'title': 'Zaposlenje', 'value': constant('App\\Entity\\Description::TYPE_CAREER')},
+    {'title': 'Politika kolačića', 'value': constant('App\\Entity\\Description::TYPE_COOKIE_POLICY')},
 ] %}
 
 {% block title %}Dodavanje/Izmena tekstova{% endblock %}

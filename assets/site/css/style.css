@@ -154,6 +154,13 @@ div#preloader {
     color: #a70303;
 }
 
+.eupopup-button_1, .eupopup-button_2 {
+    color: #f6a21d !important;
+}
+.eupopup-button_1:visited, .eupopup-button_2:visited {
+    color: #f6a21d !important;
+}
+
 *,
 *:before,
 *:after {

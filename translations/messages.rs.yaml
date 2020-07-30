@@ -40,6 +40,7 @@ navi:
   policy_and_privacy: Politika privatnosti
   use_conditions: Uslovi korišćenja
   career: Zaposlenje
+  cookie_policy: Polika kolačića
 
 
 serbian: Srpski
@@ -301,6 +302,7 @@ text.type.use_conditions: Uslovi korišćenja
 text.type.collaborator: Saradnici
 text.type.career_form: Zaposlenje Forma
 text.type.career: Radna mesta
+text.type.cookie_policy: Politika kolačića
 
 collaborator.form.basic_data: osnovni podaci
 collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?
@@ -414,3 +416,8 @@ job.form.school_level: stručna sprema
 job.form.school_title: stečeno zvanje
 job.form.position: pozicija
 job.form.policy_accept: Prihvatam navedene uslove i način konkurisanja i pristajem da se moji podaci koriste u svrhe selekcije i zapošljavanja
+
+eu.cookies.accept.title: Ovaj website koristi kolačiće.
+eu.cookies.accept.text: Da bi omogućili korisnicima lakše i bolje korišćenje našeg sajta koristimo kolačiće (Cookies). Koristeći sajt elipsa.rs pristaješ na upotrebu kolačića.
+eu.cookies.accept.btn: Pristajem
+eu.cookies.learn_more.btn: Detaljnije

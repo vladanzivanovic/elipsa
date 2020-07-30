@@ -32,6 +32,16 @@ site.policy_page:
   defaults:
     template: Site/Pages/privacy_policy.html.twig
 
+site.cookie_policy:
+  path:
+    rs: /politika-kolacica
+    en: /en/cookie-policy
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/cookie_policy.html.twig
+  options:
+    expose: true
+
 site.use_conditions:
   path:
     rs: /uslovi-koriscenja

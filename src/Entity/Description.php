@@ -19,6 +19,8 @@ class Description
 
     public const TYPE_CAREER = 5;
 
+    public const TYPE_COOKIE_POLICY = 6;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
