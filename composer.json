@@ -20,6 +20,7 @@
         "sentry/sentry-symfony": "^3.5",
         "shuchkin/simplexlsx": "^0.8.15",
         "symfony/asset": "5.0.*",
+        "symfony/cache": "5.0.*",
         "symfony/console": "5.0.*",
         "symfony/dotenv": "5.0.*",
         "symfony/expression-language": "5.0.*",
