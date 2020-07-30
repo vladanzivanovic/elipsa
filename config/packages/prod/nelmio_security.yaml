@@ -43,6 +43,7 @@ nelmio_security:
             frame-src:
                 - 'https://www.youtube.com'
                 - 'https://www.facebook.com'
+                - 'https://web.facebook.com/'
             script-src:
                 - 'self'
                 - 'unsafe-inline'

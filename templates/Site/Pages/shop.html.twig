@@ -85,7 +85,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/shop.css') }}"/>
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IS_FIRST_PAGE = {{ app.request.attributes.get('page') == 1 ? 1 : 0 }};
 
         const SEARCH_CRITERIA = JSON.parse('{{ search | json_encode | raw }}');
