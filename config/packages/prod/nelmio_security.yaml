@@ -1,5 +1,5 @@
 nelmio_security:
-    #forced_ssl: ~
+    forced_ssl: ~
 
     # prevents framing of the entire site
     clickjacking:
