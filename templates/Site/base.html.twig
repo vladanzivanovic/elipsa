@@ -64,7 +64,7 @@
     {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'popUpBanner', locale, false, 1) }}
     <!-- footer-end -->
     {% block javascripts %}
-        <script>
+        <script nonce="{{ csp_nonce('script') }}">
             const LOCALE = '{{ locale }}';
             const ROUTE_NAME = '{{ routeName }}';
             const IS_MOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
