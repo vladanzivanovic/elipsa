@@ -191,7 +191,7 @@
     <!-- my-account-area-end -->
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const USER_ID = {{ user.id }};
     </script>
 {% endblock %}

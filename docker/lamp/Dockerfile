@@ -36,7 +36,6 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 RUN apt-get update
 RUN apt-get install -y nodejs
-#RUN apt-get install -y npm
 RUN apt-get install -y net-tools
 RUN apt-get install -y git
 

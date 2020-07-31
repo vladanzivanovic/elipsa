@@ -104,7 +104,7 @@
     {{ form.button('banner_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
         const IS_SPEED_LINKS = false;

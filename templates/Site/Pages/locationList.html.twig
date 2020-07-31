@@ -106,7 +106,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/location.css') }}"/>
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const LOCATIONS = JSON.parse('{{ locations | json_encode | raw }}');
     </script>
 {% endblock %}

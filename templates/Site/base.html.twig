@@ -64,7 +64,6 @@
     {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'popUpBanner', locale, false, 1) }}
     <!-- footer-end -->
     {% block javascripts %}
-        {% cspscript %}
         <script>
             const LOCALE = '{{ locale }}';
             const ROUTE_NAME = '{{ routeName }}';
@@ -80,7 +79,6 @@
             window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
             const LANG_MAPPER = {'rs': 'sr_RS', 'en': 'en_US'};
         </script>
-        {% endcspscript %}
         <script src="{{ preload(asset('build/runtime.js')) }}"></script>
         <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
         <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': 'rs,en' }) }}"></script>

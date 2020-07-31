@@ -27,7 +27,7 @@
     {{ include('Admin/Components/confirmationModal.html.twig') }}
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const CAN_VIEW = true;
         const CAN_EDIT = true;
         const CAN_REMOVE = true;

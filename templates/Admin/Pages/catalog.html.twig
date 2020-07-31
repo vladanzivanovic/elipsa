@@ -30,7 +30,7 @@
     {{ form.button('catalog_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
     </script>
 {% endblock %}

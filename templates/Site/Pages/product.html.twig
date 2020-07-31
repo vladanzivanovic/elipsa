@@ -182,7 +182,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/product.css') }}"/>
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const SLUG = '{{ app.request.attributes.get('slug') }}';
     </script>
 {% endblock %}

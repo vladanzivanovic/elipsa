@@ -51,7 +51,7 @@
     </div>
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = {{ IS_EDIT ? app.request.attributes.get('id') : 0 }};
     </script>

@@ -48,7 +48,7 @@
     </div>
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
         const SLUG = '{{ app.request.attributes.get('slug') }}';
     </script>

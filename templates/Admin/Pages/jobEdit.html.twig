@@ -96,7 +96,7 @@
     {{ form.button('job_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ isEdit ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
 

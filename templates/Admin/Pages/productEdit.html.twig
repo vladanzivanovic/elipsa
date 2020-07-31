@@ -186,7 +186,7 @@
     {{ form.button('product_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const COLORS = JSON.parse('{{ colors|json_encode|raw }}');

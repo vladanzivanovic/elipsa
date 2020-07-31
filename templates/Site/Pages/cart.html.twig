@@ -120,7 +120,7 @@
 {% endblock %}
 
 {% block pageJavascript %}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         const TOTAL = {{ total }};
         const FREE_SHIPPING = {{ free_shipping_price }};
         const SHIPPING = {{ shipping_price }};
