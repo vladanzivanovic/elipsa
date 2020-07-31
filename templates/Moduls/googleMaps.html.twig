@@ -2,6 +2,6 @@
 <input type="hidden" value="" id="lat" name="lat">
 <input type="hidden" value="" id="lng" name="lng">
 
-<script>
+<script nonce="{{ csp_nonce('script') }}">
     window.mapsApiKey = '{{ 'GOOGLE_MAPS_API' | getenv }}';
 </script>

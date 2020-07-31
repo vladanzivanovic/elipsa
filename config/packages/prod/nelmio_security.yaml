@@ -48,6 +48,7 @@ nelmio_security:
                 - 'self'
                 - 'unsafe-inline'
                 - 'connect.facebook.net'
+                - 'https://maps.googleapis.com/'
             style-src:
                 - 'self'
                 - 'fonts.googleapis.com/css'
