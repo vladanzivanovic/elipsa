@@ -60,6 +60,9 @@ nelmio_security:
                 - 'self'
                 - facebook.com
                 - flickr.com
+                - 'https://maps.gstatic.com/'
+                - 'https://maps.googleapis.com/'
+                -  'data:'
             connect-src:
                 - 'https://o419240.ingest.sentry.io'
             block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
