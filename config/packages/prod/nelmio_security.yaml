@@ -64,6 +64,7 @@ nelmio_security:
                 - 'https://maps.googleapis.com/'
                 -  'data:'
             connect-src:
+                - 'self'
                 - 'https://o419240.ingest.sentry.io'
             block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
             # upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport
