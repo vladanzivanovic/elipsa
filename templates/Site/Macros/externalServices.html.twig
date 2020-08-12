@@ -3,7 +3,7 @@
     <div id="fb-root"></div>
     {% cspscript %}
 
-        <script>
+        <script nonce="{{ csp_nonce('script') }}" crossorigin="anonymous">
             window.fbAsyncInit = function() {
                 FB.init({
                     xfbml            : true,
