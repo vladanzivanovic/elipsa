@@ -128,7 +128,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/checkout.css') }}">
 {% endblock %}
 {% block pageJavascript %}
-    <script nonce="{{ csp_nonce() }}">
+    <script nonce="{{ csp_nonce('script') }}">
         const PAYMENT_TYPE_ON_DELIVERING = {{ constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') }};
         const PAYMENT_TYPE_CREDIT_CARD = {{ constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') }};
         const INTESA_GATEWAY = '{{ intesa_gateway }}';
