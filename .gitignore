@@ -8,14 +8,13 @@ storage/tmp/*
 storage/image/*
 
 ###> symfony/framework-bundle ###
-/.env
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
 /var/
 /vendor/
-/public/build/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -48,3 +47,5 @@ storage/image/*
 /public/js/translations/en.json
 /public/js/translations/rs.json
 /public/js/translations/config.json
+/public/build/css/
+/public/build/

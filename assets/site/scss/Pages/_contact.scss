@@ -2,4 +2,17 @@
   .footer-top-area {
     padding-top: 95px;
   }
+  .contact-service {
+    .single-contact-service {
+      padding: 0 0 0 20px;
+
+      .scs-icon {
+        width: 10%;
+      }
+
+      .scs-content {
+        width: 90%;
+      }
+    }
+  }
 }

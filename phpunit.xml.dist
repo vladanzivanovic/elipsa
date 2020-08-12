@@ -17,6 +17,13 @@
         <!-- ###+ sentry/sentry-symfony ### -->
         <env name="SENTRY_DSN" value=""/>
         <!-- ###- sentry/sentry-symfony ### -->
+
+        <!-- ###+ symfony/framework-bundle ### -->
+        <env name="APP_ENV" value="dev"/>
+        <env name="APP_SECRET" value="671524d84b6f08bda9b01557cc70b3f3"/>
+        <!-- env name="TRUSTED_PROXIES" value="127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16" -->
+        <!-- env name="TRUSTED_HOSTS" value="'^(localhost|example\.com)$'" -->
+        <!-- ###- symfony/framework-bundle ### -->
     </php>
 
     <testsuites>

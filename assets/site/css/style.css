@@ -761,7 +761,7 @@ ul.menu-list li .hot {
 }
 
 ul.menu-list li .hot::after {
-    background: rgba(0, 0, 0, 0) url("../img/banner/top-hot.png") repeat scroll 0 0;
+    /*background: rgba(0, 0, 0, 0) url("../img/banner/top-hot.png") repeat scroll 0 0;*/
     bottom: -6px;
     content: "";
     height: 7px;
@@ -2536,7 +2536,9 @@ footer {
 
 .footer-bottom {}
 
-.footer-copyright {}
+.footer-copyright {
+    padding-top: 30px;
+}
 
 .footer-copyright p {
     color: #ffffff;
@@ -2586,12 +2588,18 @@ footer {
 .payment-method ul {
     list-style: outside none none;
     padding: 0;
-    text-align: right;
 }
 
 .payment-method ul li {
     display: inline-block;
-    margin-left: 8px;
+    padding: 10px;
+}
+.payment-method ul li:first-of-type {
+    padding-left: 0;
+}
+
+.payment-method ul li img {
+    height: 35px;
 }
 
 #scrollUp {
@@ -2814,7 +2822,7 @@ footer {
 }
 
 .deals-week-img {
-    background-image: url("../img/banner/deals-week.png");
+    /*background-image: url("../img/banner/deals-week.png");*/
     background-position: left top;
     background-repeat: no-repeat;
     background-size: contain;
@@ -3516,7 +3524,7 @@ footer {
 
 .h3-upcoming-banner {
     background-attachment: scroll;
-    background-image: url("../img/banner/home3-upcoming-girl.png");
+    /*background-image: url("../img/banner/home3-upcoming-girl.png");*/
     background-repeat: no-repeat;
     height: 100%;
     left: 0;
@@ -3524,6 +3532,7 @@ footer {
     top: 0;
     width: 65%;
 }
+
 
 .home3-upcoming {}
 
@@ -4033,18 +4042,25 @@ footer {
     width: 100%;
 }
 
-.sidebar-box .sidebar-accordion-button::after {
+.sidebar-box .sidebar-accordion-button > button {
+    background: transparent none repeat scroll 0 0;
+    border: 0 none;
+    letter-spacing: 0;
+}
+.sidebar-box .sidebar-accordion-button > button::after {
     content: "";
     font-family: FontAwesome;
     position: absolute;
     right: 0;
+    top: 2px;
 }
 
-.sidebar-box .sidebar-accordion-button.collapsed::after {
+.sidebar-box .sidebar-accordion-button > button.collapsed::after {
     content: "\f067";
     font-family: FontAwesome;
     position: absolute;
     right: 0;
+    top: 2px;
 }
 
 .sidebar-box .sidebar-list {
@@ -7470,7 +7486,7 @@ button.accordion.active {
 }
 
 .comingtitle2::after {
-    background-image: url("../img/icon/coming.png");
+    /*background-image: url("../img/icon/coming.png");*/
     background-repeat: no-repeat;
     background-size: cover;
     bottom: -42px;
@@ -7787,7 +7803,7 @@ button.accordion.active {
 }
 
 .wd1-nlpopup {
-    background: #f4f4f4 url("../img/banner/newsletter.png") no-repeat scroll right top / cover;
+    /*background: #f4f4f4 url("../img/banner/newsletter.png") no-repeat scroll right top / cover;*/
     border-radius: 3px;
     box-shadow: 0 0 20px #000;
     display: none;

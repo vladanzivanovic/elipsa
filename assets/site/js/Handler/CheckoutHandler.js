@@ -2,6 +2,9 @@ import checkoutPageMapper from "../Mapper/CheckoutPageMapper";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import FormHelperService from "../../../js/Helper/FormHelperService";
 import loader from "../Dom/LoaderDom";
+import {sha512} from "js-sha512";
+
+require('jquery.redirect');
 
 class CheckoutHandler {
     constructor() {
@@ -23,14 +26,27 @@ class CheckoutHandler {
             data: FormHelperService.sanitize(data),
             dataType: 'json',
             success: response => {
-                AppHelperService.redirect(Routing.generate(`site.checkout_completed_successful.${LOCALE}`));
+                if ($(`${this.mapper.paymentType}:checked`).val() == PAYMENT_TYPE_ON_DELIVERING) {
+                    AppHelperService.redirect(Routing.generate(`site.checkout_completed_successful.${LOCALE}`));
+                    loader.hide();
 
-                loader.hide();
+                    return;
+                }
+
+                this.redirectToIntesaPayment(response);
             },
             error: error => {
                 loader.hide();
             }
         })
+    }
+
+    redirectToIntesaPayment(response) {
+
+        $.redirect(
+            INTESA_GATEWAY,
+            response
+        )
     }
 }
 

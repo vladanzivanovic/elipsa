@@ -6,7 +6,11 @@
         {% for main in navigationMenu %}
             <div class="sidebar-box">
                 {% if main.children is defined %}
-                    <button class="sidebar-accordion-button" data-toggle="collapse" data-target="#{{ main.id }}">{{ main.title }}</button>
+                    <div class="sidebar-accordion-button">
+                        <a class="category-btn {{ search.categories is defined and main.slug in search.categories ? 'active' : '' }}" href="#" data-search-name="categories" data-search="{{ main.slug }}"> {{ main.title }}</a>
+                        <button data-toggle="collapse" data-target="#{{ main.id }}"></button>
+                    </div>
+
                     <ul class="sidebar-list sidebar-list__categories collapse in" id="{{ main.id}}">
                         {% for child in main.children %}
                             <li>

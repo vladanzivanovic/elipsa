@@ -28,7 +28,8 @@ Encore
     .addStyleEntry('css/site/pages/contact', './assets/site/scss/Pages/_contact.scss')
     .addStyleEntry('css/site/pages/jobs', './assets/site/scss/Pages/_jobs.scss')
     .addStyleEntry('css/site/pages/jobDetail', './assets/site/scss/Pages/_jobDetail.scss')
-    .addStyleEntry('css/admin/app',[
+    .addStyleEntry('css/site/pages/orderFinish', './assets/site/scss/Pages/_orderFinish.scss')
+    .addStyleEntry('css/admin/app', [
         './assets/admin/scss/style.scss',
     ])
     // uncomment if you use Sass/SCSS files
@@ -37,33 +38,47 @@ Encore
     // uncomment for legacy applications that require $/jQuery as a global variable
     // .autoProvidejQuery()
     .autoProvideVariables({
-        $: 'jquery',
-        tjq: 'jquery',
-        jQuery: 'jquery',
+        $              : 'jquery',
+        tjq            : 'jquery',
+        jQuery         : 'jquery',
         'window.jQuery': 'jquery',
-        'window.$': 'jquery',
+        'window.$'     : 'jquery',
     })
     .addLoader({
         test: /\.(htc)$/,
-        use: [{
-            loader: 'url-loader',
-            options: {
-                limit: 10000, // Convert images < 8kb to base64 strings
-                name: '/[name].[hash].[ext]',
+        use : [
+            {
+                loader : 'url-loader',
+                options: {
+                    limit: 10000, // Convert images < 8kb to base64 strings
+                    name : '/[name].[hash].[ext]',
+                }
             }
-        }]
+        ]
     })
     .enableBuildNotifications(true, function (options) {
         options.alwaysNotify = true;
         options.title = 'DONE';
     })
     .enableSingleRuntimeChunk()
+    .copyFiles({
+        from: './assets/site/img',
+
+        // optional target path, relative to the output dir
+        //to: 'images/[path][name].[ext]',
+
+        // if versioning is enabled, add the file hash too
+        to: 'site/images/[path][name].[hash:8].[ext]',
+
+        // only copy files matching this pattern
+        //pattern: /\.(png|jpg|jpeg)$/
+    })
 ;
 
 let config = Encore.getWebpackConfig();
 config.resolve.alias = {
     'waypoints': __dirname + '/node_modules/jquery-waypoints/waypoints.js',
-    'router': __dirname + '/assets/js/router.js'
+    'router'   : __dirname + '/assets/js/router.js'
 };
 // config.devtool = 'source-map';
 //

@@ -15,6 +15,9 @@ parameters:
     upload_document_dir: 'documents/'
     url: '%env(URL)%'
 
+    intesa_merchant_id: '%env(resolve:MERCHANT_ID)%'
+    intesa_store_key: '%env(resolve:STORE_KEY)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -38,6 +38,22 @@ class SettingsRepository extends ExtendedEntityRepository
     /**
      * @return array
      */
+    public function getSettingsForContactPage(): array
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select(
+                's.slug',
+                's.value'
+            )
+            ->where('s.slug IN (:settingsSlug)')
+            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID']);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @return array
+     */
     public function getSettingsForUserRegistrationEmail(): array
     {
         $query = $this->createQueryBuilder('s')

@@ -90,7 +90,7 @@ class ShopPageDom {
 
     addCriteriaOnPage(name, value, text) {
 
-        const criteria = `<a class="btn selected-filter-btn" data-name="${name}" data-value="${value}">${text}<span class="close"></span></a>`;
+        const criteria = `<a class="btn selected-filter-btn letter-capitalize" data-name="${name}" data-value="${value}">${text}<span class="close"></span></a>`;
 
         this.mapper.searchView.append(criteria);
     }

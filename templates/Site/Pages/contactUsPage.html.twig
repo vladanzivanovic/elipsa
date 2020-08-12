@@ -15,47 +15,68 @@
                 <div class="col-xs-12">
                     <div class="contact-service">
                         <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="single-contact-service">
                                     <div class="clearfix">
                                         <div class="scs-icon">
                                             <i class="fa fa-map-marker"></i>
                                         </div>
                                         <div class="scs-content">
-                                            <h6 class="letter-capitalize">{{ 'address' | trans }}</h6>
-                                            <p>{{ ZIP_CODE ~ ' ' ~ CITY }}
-                                                <br> {{ STREET }}</p>
+                                            <h6 class="letter-capitalize">{{ 'about_company' | trans }}</h6>
+                                            <p>{{ FULL_COMPANY_NAME }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_activity' | trans }}:</span> {{ COMPANY_CODE ~' '~ COMPANY_ACTIVITY }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_id' | trans }}: </span> {{ COMPANY_ID }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.tax_id' | trans }}: </span> {{ PIB }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="single-contact-service">
                                     <div class="clearfix">
                                         <div class="scs-icon">
-                                            <i class="fa fa-mobile"></i>
+                                            <i class="fa fa-map-marker"></i>
                                         </div>
                                         <div class="scs-content">
-                                            <h6>{{ 'telephone' | trans }}</h6>
-                                            <p><span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ MOBILE_PHONE }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ TELEPHONE }}</p>
+                                            <h6 class="letter-capitalize">{{ 'navi.contact' | trans }}</h6>
+                                            <p>
+                                                <span class="d-inline-block letter-capitalize">{{ 'address' | trans }}:</span> {{ STREET ~', '~ ZIP_CODE ~ ' ' ~ CITY }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ MOBILE_PHONE }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ TELEPHONE }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'email' | trans }}</span>: {{ MAIN_EMAIL }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="single-contact-service">
-                                    <div class="clearfix">
-                                        <div class="scs-icon">
-                                            <i class="fa fa-envelope-o"></i>
-                                        </div>
-                                        <div class="scs-content">
-                                            <h6>{{ 'email' | trans }}</h6>
-                                            <p>{{ MAIN_EMAIL }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+{#                            <div class="col-md-3 col-sm-3 col-xs-12">#}
+{#                                <div class="single-contact-service">#}
+{#                                    <div class="clearfix">#}
+{#                                        <div class="scs-icon">#}
+{#                                            <i class="fa fa-mobile"></i>#}
+{#                                        </div>#}
+{#                                        <div class="scs-content">#}
+{#                                            <h6>{{ 'telephone' | trans }}</h6>#}
+{#                                            <p><span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ MOBILE_PHONE }}#}
+{#                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ TELEPHONE }}</p>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="col-md-3 col-sm-3 col-xs-12">#}
+{#                                <div class="single-contact-service">#}
+{#                                    <div class="clearfix">#}
+{#                                        <div class="scs-icon">#}
+{#                                            <i class="fa fa-envelope-o"></i>#}
+{#                                        </div>#}
+{#                                        <div class="scs-content">#}
+{#                                            <h6>{{ 'email' | trans }}</h6>#}
+{#                                            <p>{{ MAIN_EMAIL }}</p>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
                         </div>
                     </div>
                 </div>

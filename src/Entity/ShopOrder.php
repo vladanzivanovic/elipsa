@@ -14,6 +14,7 @@ class ShopOrder
 {
     public const STATUS_NEW = 1;
     public const STATUS_COMPLETED = 2;
+    public const STATUS_FAILED = 3;
 
     public const PAYMENT_TYPE_ON_DELIVERING = 1;
     public const PAYMENT_TYPE_CREDIT_CARD = 2;
@@ -72,6 +73,11 @@ class ShopOrder
      * @ORM\ManyToOne(targetEntity="App\Entity\PromotionCoupon", inversedBy="shopOrders")
      */
     private $coupon;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $transactionData = [];
 
     public function __construct()
     {
@@ -222,6 +228,18 @@ class ShopOrder
     public function setCoupon(?PromotionCoupon $coupon): self
     {
         $this->coupon = $coupon;
+
+        return $this;
+    }
+
+    public function getTransactionData(): ?array
+    {
+        return $this->transactionData;
+    }
+
+    public function setTransactionData(?array $transactionData): self
+    {
+        $this->transactionData = $transactionData;
 
         return $this;
     }

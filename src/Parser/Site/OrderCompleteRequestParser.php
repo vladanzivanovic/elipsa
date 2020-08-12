@@ -64,13 +64,13 @@ final class OrderCompleteRequestParser
      *
      * @return ShopOrder
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Exception
      */
     public function parse(ParameterBag $bag, int $orderId): ShopOrder
     {
         $order = $this->orderRepository->find($orderId);
 
-        $order->setStatus(ShopOrder::STATUS_COMPLETED);
-        $order->setPaymentType((int) $bag->get('payment_type'));
+        $order->setPaymentType($bag->getInt('payment_type'));
         $order->setNote($bag->get('order_note'));
         $order->setCompletedAt(new \DateTime());
 
@@ -102,9 +102,11 @@ final class OrderCompleteRequestParser
         $user->setFirstName($bag->get('first_name'));
         $user->setLastName($bag->get('last_name'));
 
-        if ($bag->get('create_account') && null === $user->getPassword()) {
+        if ($bag->get('create_account')) {
             $encodedPwd = $this->passwordEncoder->encodePassword($user, $bag->get('password'));
             $user->setPassword($encodedPwd);
+            $user->setResetToken(bin2hex(openssl_random_pseudo_bytes(10)));
+            $user->setResetRequestAt(new \DateTimeImmutable());
             $user->setRoles(['ROLE_USER']);
         }
 

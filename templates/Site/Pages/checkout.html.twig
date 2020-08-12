@@ -7,6 +7,7 @@
 
 {% set user = app.user %}
 {% set address = user is not null ? user.address : null %}
+{% set totalWithShipping = 0 %}
 
 {% block content %}
     {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
@@ -59,10 +60,11 @@
                             <div class="cbab-create-account">
                                 {{ inputs.input('createAccount', '1', 'create_account', '', 'checkbox', '', user is not null ? 'disabled="disabled"' : null) }}
                                 <label for="createAccount" class="letter-capitalize">{{ 'create_account' | trans }}?</label>
+                                <em id="createAccountError" class="error"></em>
                                 <p class="letter-capitalize">{{ 'checkout.login_text' | trans }}</p>
                             </div>
                             <div class="cbab-account-password clearfix">
-                                {{ form.input('password' | trans ~ ' *', 'password', '', 'password', '', 'password', user is not null ? 'disabled="disabled"' : null, 'text-uppercase', 'text-uppercase') }}
+                                {{ form.input('password' | trans ~ ' *', 'checkoutPassword', '', 'password', '', 'password','disabled="disabled"', 'text-uppercase', 'text-uppercase') }}
                             </div>
                             <div class="cbab-order-notes">
                                 <p class="text-uppercase">{{ 'checkout.order_notes' | trans }}</p>
@@ -93,7 +95,11 @@
                                 <li class="order-total clearfix">{{ 'cart.total_products' | trans }} <span>{{ total }} RSD</span></li>
                                 <li class="order-total {{ promo_price is null ? 'hide' : '' }} clearfix">{{ 'cart.promo_coupon' | trans }} <span>{{ promo_price }} %</span></li>
                                 <li class="order-total clearfix">{{ 'cart.shipping' | trans }} <span>{{ shipping }} RSD</span></li>
-                                <li class="order-total clearfix">{{ 'cart.total_shipping' | trans }} <span>{{ totalWithShipping | round }} RSD</span></li>
+                                <li class="order-total clearfix">
+                                    {{ 'cart.total_shipping' | trans }}
+                                    <span>{{ totalWithShipping | round }} RSD</span>
+                                    <input type="hidden" name="total_amount" value="{{ totalWithShipping | round }}">
+                                </li>
                             </ul>
                             <div class="create-account-checkout-method">
                                 <div class="select-payment-method">
@@ -115,7 +121,16 @@
         </div>
     </div>
     <!-- checkout-area-end -->
+
+{#    {{ include('Site/Components/intesaPaymentForm.html.twig') }}#}
 {% endblock %}
 {% block pageStyleSheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/checkout.css') }}">
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce() }}">
+        const PAYMENT_TYPE_ON_DELIVERING = {{ constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') }};
+        const PAYMENT_TYPE_CREDIT_CARD = {{ constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') }};
+        const INTESA_GATEWAY = '{{ intesa_gateway }}';
+    </script>
 {% endblock %}

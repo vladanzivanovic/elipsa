@@ -42,7 +42,7 @@ final class ContactPageController extends AbstractController
      */
     public function renderPage(Request $request): array
     {
-        $settings = $this->settingsRepository->getSettingsForOrderEmail();
+        $settings = $this->settingsRepository->getSettingsForContactPage();
         $formatted = [];
 
         foreach ($settings as $setting) {

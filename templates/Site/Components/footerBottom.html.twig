@@ -2,28 +2,29 @@
     <div class="container">
         <div class="footer-bottom">
             <div class="row">
-                <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div class="footer-copyright">
-                        <p>© {{ 'now' | date('Y') }} {{ 'all_rights' | trans }}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="footer-social">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="payment-method">
                         <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a></li>
+                            <li><img src="{{ asset('build/site/images/intesa/VisaB.gif') }}" alt="Visa card logo"></li>
+                            <li><img src="{{ asset('build/site/images/intesa/Maestro.gif') }}" alt="Maestro card logo"></li>
+                            <li><img src="{{ asset('build/site/images/intesa/mc.gif') }}" alt="Master card logo"></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12 text-right">
                     <div class="payment-method">
-{#                        <ul>#}
-{#                            <li><img src="img/payment-method/skrill.png" alt=""></li>#}
-{#                            <li><img src="img/payment-method/bitcoin.png" alt=""></li>#}
-{#                            <li><img src="img/payment-method/american.png" alt=""></li>#}
-{#                            <li><img src="img/payment-method/paypal.png" alt=""></li>#}
-{#                            <li><img src="img/payment-method/mastercard.png" alt=""></li>#}
-{#                            <li><img src="img/payment-method/visa.png" alt=""></li>#}
-{#                        </ul>#}
+                        <ul>
+                            <li><a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank"><img src="{{ asset('build/site/images/intesa/mc_secure_code.gif') }}" alt="Master card secure code logo"></a></li>
+                            <li><a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html" target="_blank"><img src="{{ asset('build/site/images/intesa/visa_verified.gif') }}" alt="Verified by visa logo"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="footer-copyright">
+                        <p>© {{ 'now' | date('Y') }} {{ 'all_rights' | trans }}</p>
                     </div>
                 </div>
             </div>

@@ -16,6 +16,8 @@ use App\Repository\SettingsRepository;
 use App\Repository\ShopOrderRepository;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -81,14 +83,13 @@ final class OrderHandler
 
     /**
      * @param ShopOrder $order
-     * @param bool      $shouldSendEmail
      *
      * @return int
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
-    public function save(ShopOrder $order, bool $shouldSendEmail = false): int
+    public function save(ShopOrder $order): int
     {
         $errors = $this->validator->validate($order, null, "SetOrder");
 
@@ -101,23 +102,6 @@ final class OrderHandler
         }
 
         $this->orderRepository->flush();
-
-        if (true === $shouldSendEmail) {
-            $emailModelCustomer = $this->prepareEmail($order);
-            $event = new EmailEvent($emailModelCustomer);
-            $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
-
-            $emailModelAdmin = $emailModelCustomer;
-            $emailModelAdmin->setTo($emailModelCustomer->getFrom());
-            $emailModelAdmin->setToName($emailModelCustomer->getFromName());
-
-            $event = new EmailEvent($emailModelAdmin);
-            $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
-
-            $user = $order->getUser();
-
-//            if ($user->)
-        }
 
         return $order->getId();
     }
@@ -145,8 +129,6 @@ final class OrderHandler
         $this->orderRepository->removeWithFlush($order);
 
         $this->session->remove('order');
-
-        return;
     }
 
     /**
@@ -166,31 +148,96 @@ final class OrderHandler
     }
 
     /**
+     * @param int      $orderId
+     * @param string   $locale
+     *
+     * @param InputBag $bag
+     *
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    public function completeCheckoutOnSuccess(int $orderId, string $locale, ParameterBag $bag): array
+    {
+        $order = $this->orderRepository->find($orderId);
+
+        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
+            $order->setTransactionData($bag->all());
+            $order->setStatus(ShopOrder::STATUS_COMPLETED);
+
+            $this->orderRepository->flush();
+        }
+
+        $settings = $this->getSettings();
+
+        $isAccountCreated = $order->getUser()->getResetToken() !== null;
+
+        $emailModelCustomer = $this->prepareEmail($order, $settings, $isAccountCreated, $locale);
+        $event = new EmailEvent($emailModelCustomer);
+        $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+
+        $emailModelAdmin = $emailModelCustomer;
+        $emailModelAdmin->setTo($emailModelCustomer->getFrom());
+        $emailModelAdmin->setToName($emailModelCustomer->getFromName());
+
+        $templateData = $emailModelAdmin->getTemplateData();
+        $templateData['accountCreated'] = false;
+        $emailModelAdmin->setTemplateData($templateData);
+
+        $event = new EmailEvent($emailModelAdmin);
+        $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+
+        return ['order' => $order, 'settings' => $settings];
+    }
+
+    /**
+     * @param int      $orderId
+     * @param string   $locale
+     *
+     * @param InputBag $bag
+     *
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    public function completeCheckoutOnFail(int $orderId, string $locale, ParameterBag $bag): array
+    {
+        $order = $this->orderRepository->find($orderId);
+
+        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
+            $order->setTransactionData($bag->all());
+            $order->setStatus(ShopOrder::STATUS_FAILED);
+        }
+
+        $settings = $this->getSettings();
+
+        $user = $order->getUser();
+        $user->setResetToken(null);
+        $user->setResetRequestAt(null);
+
+        $this->orderRepository->flush();
+
+        return ['order' => $order, 'settings' => $settings];
+    }
+
+    /**
      * @param ShopOrder $order
+     * @param array     $settings
+     * @param bool      $isAccountCreated
+     * @param string    $locale
      *
      * @return EmailModel
      * @throws \ReflectionException
      */
-    private function prepareEmail(ShopOrder $order): EmailModel
+    private function prepareEmail(ShopOrder $order, array $settings, bool $isAccountCreated, string $locale = 'rs'): EmailModel
     {
         $user = $order->getUser();
         $address = $order->getShippingAddress();
-        $settings = $this->getSettings();
         $products = $order->getOrderProducts();
 
         $paymentType = ConstantsHelper::getConstantName((string) $order->getPaymentType(), 'PAYMENT_TYPE', ShopOrder::class);
 
-        $model = new EmailModel();
-        $model->setScript(EmailModel::SCRIPT_USER_ORDERED);
-        $model->setTemplate('order');
-        $model->setTo($user->getEmail());
-        $model->setToName($user->getFirstName().' '.$user->getLastName());
-        $model->setSubject($this->translator->trans('email.order.data.title', ['orderId' => $order->getId()]));
-        $model->setFrom($settings['MAIN_EMAIL']);
-        $model->setFromName($settings['SITE_NAME']);
-        $model->setReplyTo($settings['MAIN_EMAIL']);
-        $model->setReplyToName($settings['SITE_NAME']);
-        $model->setTemplateData([
+        $templateData = [
             'seller' => [
                 'name'      => $settings['SITE_NAME'],
                 'pib'       => $settings['PIB'],
@@ -212,8 +259,26 @@ final class OrderHandler
             'products'          => $products,
             'shippingPrice'     => $settings['SHIPPING_PRICE'],
             'freeShipping'      => $settings['FREE_SHIPPING'],
-            'promotion'         => $order->getCoupon()
-        ]);
+            'promotion'         => $order->getCoupon(),
+            'accountCreated'    => $isAccountCreated,
+        ];
+
+        if (true === $isAccountCreated) {
+            $templateData['registrationToken'] = $user->getResetToken();
+            $templateData['locale'] = $locale;
+        }
+
+        $model = new EmailModel();
+        $model->setScript(EmailModel::SCRIPT_USER_ORDERED);
+        $model->setTemplate('order');
+        $model->setTo($user->getEmail());
+        $model->setToName($user->getFirstName().' '.$user->getLastName());
+        $model->setSubject($this->translator->trans('email.order.data.title', ['orderId' => $order->getId()]));
+        $model->setFrom($settings['MAIN_EMAIL']);
+        $model->setFromName($settings['SITE_NAME']);
+        $model->setReplyTo($settings['MAIN_EMAIL']);
+        $model->setReplyToName($settings['SITE_NAME']);
+        $model->setTemplateData($templateData);
 
         return $model;
     }

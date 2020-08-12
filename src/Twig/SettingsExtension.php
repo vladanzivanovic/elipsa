@@ -46,7 +46,7 @@ final class SettingsExtension extends AbstractExtension
      */
     public function getSettings(): ?array
     {
-        $settings = $this->settingsRepository->getSettingsForOrderEmail();
+        $settings = $this->settingsRepository->getSettingsForContactPage();
 
         $formatted = [];
 

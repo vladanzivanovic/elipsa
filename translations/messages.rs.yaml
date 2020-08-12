@@ -108,7 +108,8 @@ cart.table.total: ukupno
 
 title.your_cart: Vaša korpa
 title.cart_personal_data: Vaša korpa - unos ličnih podataka
-title.checkout_completed: Uspešna narudžbina
+title.checkout_completed_successful: Uspešna narudžbina
+title.checkout_completed_unsuccessful: Neuspešna narudžbina
 title.location: Lokacije
 title.blog_detailed_page: Blog stranica
 title.shop_page: Proizvodi
@@ -133,9 +134,20 @@ checkout.create_account: kreirajte nalog
 checkout.payment.by_taking: pouzećem
 checkout.paymeny.credit_card: karticom
 checkout.complete_order: završi narudžbinu
+checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
+checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
+checkout.finish.transaction_detail: podaci o transakciji
+checkout.finish.transaction_status_label: status transakcije
+checkout.finish.transaction_status_success: uspešno – račun platne kartice je zadužen
+checkout.finish.transaction_status_failed: neuspešno – račun platne kartice nije zadužen
+checkout.finish.transaction_date_time: datum i vreme transakcije
+checkout.finish.transaction_id: broj transakcije
+checkout.finish.payment_id: broj plaćanja
+checkout.finish.credit_card_no: broj platne kartice
 
 checkout_completed.title: uspešno ste naručili proizvode.
 checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
+checkout_fail.title: Neuspešna narudžbina.
 
 country: država
 countries: države
@@ -159,6 +171,7 @@ birth_date: datum rođenja
 subject: tema
 website: websajt
 position: pozicija
+about_company: podaci o kampaniji
 
 email.order.title: Narudžbenica #%orderId%
 email.order.seller: Prodavac
@@ -282,6 +295,9 @@ newsletter.success.add.message: Uspešno ste se prijavili na newsletter
 
 contact.telephone.main: Fiksni
 contact.telephone.mobile: Mobilni
+contact.company_activity: Delatnost
+contact.company_id: Matični broj
+contact.tax_id: PIB
 
 links: linkovi
 

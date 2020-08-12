@@ -115,7 +115,8 @@ cart.table.total: total
 
 title.your_cart: Your cart
 title.cart_personal_data: Your cart - personal information
-title.checkout_completed: Checkout completed
+title.checkout_completed_successful: Checkout completed
+title.checkout_completed_unsuccessful: Unsuccessful order
 title.location: Location
 title.blog_detailed_page: Blog page
 title.shop_page: Shop
@@ -140,9 +141,20 @@ checkout.create_account: create an account
 checkout.payment.by_taking: Pay when arrive
 checkout.paymeny.credit_card: credit card
 checkout.complete_order: complete order
+checkout.account_exists: Account with email address %email% is already registered.
+checkout.account_deactivated: Account with email address %email% is deactivated.
+checkout.finish.transaction_detail: transaction details
+checkout.finish.transaction_status_label: transaction status
+checkout.finish.transaction_status_success: successful – your account is in charge
+checkout.finish.transaction_status_failed: neuspešno – your account is not charged
+checkout.finish.transaction_date_time: transaction date and time
+checkout.finish.transaction_id: transaction id
+checkout.finish.payment_id: payment id
+checkout.finish.credit_card_no: credit card no
 
 checkout_completed.title: your order has been successfully completed.
 checkout_completed.details: the details of the order has been sent to your email address.
+checkout_fail.title: Neuspešna narudžbina.
 
 country: country
 countries: countries
@@ -166,6 +178,7 @@ birth_date: birth date
 subject: subject
 website: website
 position: position
+about_company: about company
 
 email.order.title: Order #%orderId%
 email.order.seller: Seller
@@ -288,6 +301,9 @@ newsletter.success.add.message: You are successfully subscribed on newsletter
 
 contact.telephone.main: Main
 contact.telephone.mobile: Mobile
+contact.company_activity: Company activity
+contact.company_id: Company ID
+contact.tax_id: Tax ID
 
 links: links
 

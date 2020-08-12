@@ -103,4 +103,19 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param string $email
+     *
+     * @return User|null
+     * @throws NonUniqueResultException
+     */
+    public function getByEmail(string $email): ?User
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

@@ -1,0 +1,48 @@
+{% set locale = app.request.locale %}
+
+<form id="intesa_form" method="post" action="{{ intesa_gateway }}">
+    <input type="hidden" name="currency" value="941" />
+    <input type="hidden" name="trantype" value="Auth" />
+    <input type="hidden" name="okUrl" value="{{ absolute_url(path('site.checkout_completed_successful', {'_locale': locale})) }}"/>
+    <input type="hidden" name="failUrl" value="{{ absolute_url(path('site.checkout_failed', {'_locale': locale})) }}" />
+    <input type="hidden" name="amount" value="6000.00" />
+    <input type="hidden" name="oid" value="" />
+    <input type="hidden" name="clientid" value="{{ intesa_merchant_id }}"/>
+    <input type="hidden" name="storetype" value="3d_pay_hosting" />
+    <input type="hidden" name="lang" value="{{ locale }}" />
+    <input type="hidden" name="hashAlgorithm" value="ver2" />
+    <input type="hidden" name="rnd" value="N2855INH5EM5T7VYL9LA" />
+    <input type="hidden" name="encoding" value="utf-8" />
+    <input type="hidden" name="hash" value="" />
+    <input type='hidden' name='shopurl' value='{{ absolute_url(path('site.checkout_failed', {'_locale': locale})) }}' />
+
+{#    <input type="hidden" name="tel" value="123456789" />#}
+{#    <input type="hidden" name="email" value="ecomm_podska@bancaintesa.rs" />#}
+{#    <input type="hidden" name="ShipToName" value="Intesa Beta" />#}
+{#    <input type="hidden" name="ShipToStreet1" value="Oml brig 92" />#}
+{#    <input type="hidden" name="ShipToStreet2" value="" />#}
+{#    <input type="hidden" name="ShipToCity" value="Beograd" />#}
+{#    <input type="hidden" name="ShipToStateProv" value="" />#}
+{#    <input type="hidden" name="ShipToPostalCode" value="11070" />#}
+{#    <input type="hidden" name="ItemNumber1" value="1" />#}
+{#    <input type="hidden" name="ProductCode1" value="JF02378793" />#}
+{#    <input type="hidden" name="Qty1" value="1" />#}
+{#    <input type="hidden" name="Desc1" value=" Materijal: nerđajući čelik, koža, pamuk \nDimenzije: 180 + 15 mm \n" />#}
+{#    <input type="hidden" name="Id1" value="JF02378793" /><input type="hidden" name="Price1" value="5990,0000" />#}
+{#    <input type="hidden" name="Total1" value="5990,0000" />#}
+</form>
+
+{#<form id="intesa_form" method="POST" action="https://testsecurepay.eway2pay.com/fim/est3Dgate">#}
+{#    <input type="hidden" name="currency" value="949">#}
+{#    <input type="hidden" name="trantype" value="Auth">#}
+{#    <input type="hidden" name="okUrl" value="http://localhost:9091/korpa/uspesna-narudzbina">#}
+{#    <input type="hidden" name="failUrl" value="http://localhost:9091/korpa/neuspesna-narudzbina">#}
+{#    <input type="hidden" name="amount" value="0">#}
+{#    <input type="hidden" name="clientid" value="13IN000896">#}
+{#    <input type="hidden" name="storetype" value="3d_pay_hosting">#}
+{#    <input type="hidden" name="lang" value="rs">#}
+{#    <input type="hidden" name="hashAlgorithm" value="ver2">#}
+{#    <input type="hidden" name="rnd" value="7">#}
+{#    <input type="hidden" name="encoding" value="utf-8">#}
+{#    <input type="hidden" name="hash" value="MGJjNmE3MjdmM2NkYzNlZDNiZWRhYjJmOWJjZDMzMTZlOWMzNGZmNTY4OWNiNDIxYjUxMTQxODhiMTlmZWZmYWU3MzBhN2MwM2NmOTEyMjBhNjUyYTRjOGM1ZmUyM2Q4YjgxZGMzZTMzNzY4NzI4ZWUzMzI3OTYxMzExNTJjNTA=">#}
+{#    <input type="hidden" name="shopurl" value="http://localhost:9091/korpa/neuspesna-narudzbina"></form>#}

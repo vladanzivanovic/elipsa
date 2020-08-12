@@ -1,0 +1,202 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set isSuccessOrder = order.status == constant('App\\Entity\\ShopOrder::STATUS_COMPLETED') %}
+
+{% block title %}{{ isSuccessOrder ? 'title.checkout_completed_successful' | trans : 'title.checkout_completed_unsuccessful' | trans }}{% endblock %}
+{% block bodyClass %}order-finish-page{% endblock %}
+
+
+
+{% block content %}
+    {% set title =  isSuccessOrder ? 'title.checkout_completed_successful' | trans : 'title.checkout_completed_unsuccessful' | trans %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [
+        {'title': 'cart.checkout' | trans}
+    ], 'activePage': title ~' #'~ order.id}) }}
+
+    {{ include('Site/Components/cartHeader.html.twig') }}
+
+    <!-- order-tracker-area-start -->
+    <div class="order-tracker-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="order-tracker">
+                        <h2 class="ot-title">{{ isSuccessOrder ? 'checkout_completed.title' | trans : 'checkout_fail.title' | trans }}</h2>
+                        {% if isSuccessOrder %}
+                            <p class="ot-text letter-capitalize">{{ 'checkout_completed.details' | trans }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="shopping-cart-table table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="cart-pro-name letter-capitalize">{{ 'cart.table.product_name' | trans }}</th>
+                                <th class="cart-pro-price letter-capitalize">{{ 'cart.table.price' | trans }}</th>
+                                <th class="cart-pro-quantity letter-capitalize">{{ 'cart.table.quantity' | trans }}</th>
+                                <th class="cart-pro-total-price letter-capitalize">{{ 'cart.table.total' | trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in products %}
+                                {% set price = product.discount > 0 ? product.discount : product.price %}
+
+                                <tr class="table-row1">
+                                    <td class="cart_product_name_value">
+                                        <p class="cart_product_name">
+                                            <a href="#">{{ product.name }}</a>
+                                        </p>
+                                    </td>
+                                    <td class="cart_product_price_value">
+                                        <span class="product_price"><span class="product_price_value">{{ price }}</span> RSD</span>
+                                    </td>
+                                    <td class="cart_product_quantity_value">
+                                        <span class="product-quantity-t">{{ product.quantity }}</span>
+                                    </td>
+                                    <td class="cart_product_total_value">
+                                        <span class="product_price"><span class="product_price_total">{{ product.quantity * price }}</span> RSD</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% set totalWithDiscount = total %}
+                            {% set totalWithShipping = shipping + total %}
+
+                            {% if promo_price is not null %}
+                                {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}
+                                {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping %}
+                                {% set totalWithShipping = shipping + totalWithDiscount %}
+                            {% endif %}
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td class="letter-capitalize">{{ 'cart.total_products' | trans }}</td>
+                                    <td><span>{{ total }}</span> RSD</td>
+                                </tr>
+                                <tr class="{{ promo_price is null ? 'hide' : '' }}">
+                                    <td colspan="2"></td>
+                                    <td class="letter-capitalize">{{ 'cart.promo_coupon' | trans }}</td>
+                                    <td><span>{{ promo_price }}</span>%</td>
+                                </tr>
+                                <tr >
+                                    <td colspan="2"></td>
+                                    <td class="letter-capitalize">{{ 'cart.shipping' | trans }}</td>
+                                    <td><span>{{ shipping }}</span> RSD</td>
+                                </tr>
+                                <tr >
+                                    <td colspan="2"></td>
+                                    <td class="letter-capitalize">{{ 'cart.total_shipping' | trans }}</td>
+                                    <td><span>{{ totalWithShipping | round }}</span> RSD</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="billing-address">
+                        <h4 class="checkout-box-title">{{ 'email.order.seller' | trans }}</h4>
+                        <div class="checkout-billing-adress-box">
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'email.order.seller.name' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.SITE_NAME }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'contact.tax_id' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.PIB }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="col-md-4">{{ 'email.order.seller.account' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.ACCOUNT_NUMBER }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'email.order.seller.address' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.STREET ~' '~ settings.ZIP_CODE ~' '~ settings.CITY }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">E-mail</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.MAIN_EMAIL }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'email.order.seller.telephone' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.TELEPHONE }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'email.order.seller.mobile' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ settings.MOBILE_PHONE }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="billing-address">
+                        <h4 class="checkout-box-title">{{ 'email.order.buyer' | trans }}</h4>
+                        <div class="checkout-billing-adress-box">
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'country' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ order.billingAddress.country }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="col-md-4">{{ 'email.order.buyer.full_name' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ order.user.firstName ~' '~ order.user.lastName }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'address' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ order.billingAddress.address ~', '~ order.billingAddress.zipCode ~' '~ order.billingAddress.city }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'email' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ order.user.email }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-4">{{ 'mobile_telephone' | trans }}:</label>
+                                <span class="col-md-8 col-xs-12">{{ order.billingAddress.phone }}</span>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label class="letter-capitalize col-md-12">{{ 'checkout.order_notes' | trans }}:</label>
+                                <span class="col-md-12">{{ order.note }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if order.paymentType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="billing-address">
+                            <h4 class="checkout-box-title letter-capitalize">{{ 'checkout.finish.transaction_detail' | trans }}</h4>
+                            <div class="checkout-billing-adress-box">
+                                <div class="billing-address-input clearfix">
+                                    <label class="letter-capitalize col-md-4 letter-capitalize">{{ 'checkout.finish.transaction_status_label' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12 letter-capitalize">{{ isSuccessOrder ? 'checkout.finish.transaction_status_success' | trans : 'checkout.finish.transaction_status_failed' | trans }}</span>
+                                </div>
+                                <div class="billing-address-input clearfix">
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.transaction_date_time' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ transaction_date_time | date('d.m.Y H:i:s') }}</span>
+                                </div>
+                                <div class="billing-address-input clearfix">
+                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.transaction_id' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ transaction_id }}</span>
+                                </div>
+                                <div class="billing-address-input clearfix">
+                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.payment_id' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ payment_id }}</span>
+                                </div>
+                                <div class="billing-address-input clearfix">
+                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.credit_card_no' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ masked_credit_card }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- order-tracker-area-end -->
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/orderFinish.css') }}">
+{% endblock %}
