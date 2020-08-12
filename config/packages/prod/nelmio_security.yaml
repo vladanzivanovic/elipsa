@@ -52,7 +52,6 @@ nelmio_security:
             style-src:
                 - 'self'
                 - 'fonts.googleapis.com/css'
-                - 'unsafe-inline'
             font-src:
                 - 'self'
                 - 'fonts.gstatic.com'
