@@ -103,7 +103,7 @@ final class OrderCompleteController extends AbstractController
         $rnd = strtoupper(str_replace("|", "\\|", str_replace("\\", "\\\\", bin2hex(openssl_random_pseudo_bytes(10)))));
 
         $currency = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgCurrency));
-        $storeKey = str_replace("|", "\\|", str_replace("\\", "\\\\", "Sava1234"));
+        $storeKey = str_replace("|", "\\|", str_replace("\\", "\\\\", $this->parameterBag->get('intesa_store_key')));
 
         $plainText = $clientId . "|" . $oid . "|" . $amount . "|" . $okUrl . "|" . $failUrl . "|" . $transactionType . "||" . $rnd . "||||" . $currency . "|" . $storeKey;
 
