@@ -47,5 +47,4 @@ storage/image/*
 /public/js/translations/en.json
 /public/js/translations/rs.json
 /public/js/translations/config.json
-/public/build/css/
 /public/build/
