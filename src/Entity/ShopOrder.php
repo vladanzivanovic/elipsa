@@ -14,10 +14,24 @@ class ShopOrder
 {
     public const STATUS_NEW = 1;
     public const STATUS_COMPLETED = 2;
+    public const STATUS_AWAITING_AUTHORIZATION = 4;
+    public const STATUS_REFUND = 5;
+    public const STATUS_VOID = 6;
     public const STATUS_FAILED = 3;
 
     public const PAYMENT_TYPE_ON_DELIVERING = 1;
     public const PAYMENT_TYPE_CREDIT_CARD = 2;
+
+    public const CARD_TYPE_PRE_AUTH = 'PreAuth';
+    public const CARD_TYPE_POST_AUTH = 'PostAuth';
+    public const CARD_TYPE_REFUND = 'Credit';
+    public const CARD_TYPE_VOID = 'Void';
+
+    public const CARD_STATUS_MAPPER = [
+        self::CARD_TYPE_POST_AUTH => self::STATUS_COMPLETED,
+        self::CARD_TYPE_REFUND => self::STATUS_REFUND,
+        self::CARD_TYPE_VOID => self::STATUS_VOID,
+    ];
 
     use TimestampableEntity;
 

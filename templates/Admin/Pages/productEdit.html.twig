@@ -131,14 +131,14 @@
                             <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
                                     {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}
-                                    {{ form.radio('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == upValue ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == upValue ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
                                     {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}
 
-                                    {{ form.radio('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == downValue ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == downValue ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->

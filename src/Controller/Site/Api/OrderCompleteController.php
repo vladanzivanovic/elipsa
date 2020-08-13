@@ -92,7 +92,7 @@ final class OrderCompleteController extends AbstractController
         $orgOkUrl = $this->router->generate('site.checkout_completed_successful', [], RouterInterface::ABSOLUTE_URL);
         $orgFailUrl = $this->router->generate('site.checkout_failed', [], RouterInterface::ABSOLUTE_URL);
         $cancelUrl = $this->router->generate('site.checkout_page', [], RouterInterface::ABSOLUTE_URL);
-        $orgTransactionType = "Auth";
+        $orgTransactionType = "PreAuth";
         $orgCurrency = "941";
 
         $clientId = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgClientId));

@@ -1,6 +1,9 @@
 {% extends 'Site/base.html.twig' %}
 
-{% set isSuccessOrder = order.status == constant('App\\Entity\\ShopOrder::STATUS_COMPLETED') %}
+{% set isSuccessOrder = order.status ==
+    constant('App\\Entity\\ShopOrder::STATUS_COMPLETED') or
+    constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION')
+%}
 
 {% block title %}{{ isSuccessOrder ? 'title.checkout_completed_successful' | trans : 'title.checkout_completed_unsuccessful' | trans }}{% endblock %}
 {% block bodyClass %}order-finish-page{% endblock %}

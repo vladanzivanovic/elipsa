@@ -50,11 +50,10 @@ class ShopOrderRepository extends ExtendedEntityRepository
                 'o.id as id',
                 'ba.email as email',
                 'CONCAT(ba.firstName, \' \', ba.lastName) as full_name',
-                'o.paymentType as payment_type'
+                'o.paymentType as payment_type',
+                'o.status as status'
             )
             ->innerJoin('o.billingAddress', 'ba')
-            ->where('o.status = :statusCompleted')
-            ->setParameter('statusCompleted', ShopOrder::STATUS_COMPLETED)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());

@@ -9,6 +9,7 @@ use App\Entity\Location;
 use App\Entity\OrderProduct;
 use App\Entity\PromotionCoupon;
 use App\Entity\ShopOrder;
+use App\Helper\ConstantsHelper;
 use App\Repository\ImageRepository;
 use App\Repository\SettingsRepository;
 use Symfony\Component\Routing\RouterInterface;
@@ -87,7 +88,8 @@ final class OrderSingleResponseFormatter
             $priceWithDiscount = $productPrices - ($productPrices * ($promoCode->getDiscount() / 100));
             $total = $freeShippingPrice->getValue() <= $priceWithDiscount ? $priceWithDiscount + $shippingPrice->getValue() : $priceWithDiscount;
         }
-        return [
+
+        $data = [
             'id' => $order->getId(),
             'products' => $products,
             'productPrices' => $productPrices,
@@ -103,6 +105,32 @@ final class OrderSingleResponseFormatter
             'zipCode' => $address->getZipCode(),
             'city' => $address->getCity(),
             'country' => $address->getCountry(),
+            'status' => $order->getStatus(),
+            'statusText' => 'order.status.'.ConstantsHelper::getConstantName((string) $order->getStatus(), 'STATUS', ShopOrder::class),
+            'orderType' => $order->getPaymentType(),
+            'orderTypeText' => 'order.type.'.ConstantsHelper::getConstantName((string) $order->getPaymentType(), 'PAYMENT_TYPE', ShopOrder::class),
         ];
+
+        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
+            $cardData = $order->getTransactionData();
+
+            $data['preAuthorizedDate'] = new \DateTime($cardData[ShopOrder::CARD_TYPE_PRE_AUTH]['EXTRA_TRXDATE']);
+            $data['transactionId'] = $cardData[ShopOrder::CARD_TYPE_PRE_AUTH]['TransId'];
+            $data['cardNumber'] = $cardData[ShopOrder::CARD_TYPE_PRE_AUTH]['maskedCreditCard'];
+
+            if (isset($cardData[ShopOrder::CARD_TYPE_POST_AUTH])) {
+                $data['postAuthorizedDate'] = new \DateTime($cardData[ShopOrder::CARD_TYPE_POST_AUTH]['Extra']['TRXDATE']);
+            }
+
+            if (isset($cardData[ShopOrder::CARD_TYPE_REFUND])) {
+                $data['refundedDate'] = new \DateTime($cardData[ShopOrder::CARD_TYPE_REFUND]['Extra']['TRXDATE']);
+            }
+
+            if (isset($cardData[ShopOrder::CARD_TYPE_VOID])) {
+                $data['voidDate'] = new \DateTime($cardData[ShopOrder::CARD_TYPE_VOID]['Extra']['TRXDATE']);
+            }
+        }
+
+        return $data;
     }
 }

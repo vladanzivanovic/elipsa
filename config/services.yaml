@@ -17,6 +17,9 @@ parameters:
 
     intesa_merchant_id: '%env(resolve:MERCHANT_ID)%'
     intesa_store_key: '%env(resolve:STORE_KEY)%'
+    intesa_user_name: '%env(resolve:USERNAME)%'
+    intesa_password: '%env(resolve:PASSWORD)%'
+    intesa_api_gateway: '%env(resolve:API_GATEWAY)%'
 
 services:
     # default configuration for services in *this* file

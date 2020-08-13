@@ -3,14 +3,18 @@
     <div class="container">
         <div class="footer-top">
             <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="footer-desc">
                         <div class="logo-footer text-center">
-                        <img src="{{ asset('image/logo/logo.png') }}" alt="{{ default_alt_tag }}">
+                        <img src="{{ asset('build/site/images/logo/logo_bottom.png') }}" alt="{{ default_alt_tag }}">
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="footer-desc">
                         <div class="footer-desc-contact">
-                            <h6>{{ 'title.contact_us' | trans }}</h6>
-                            <ul>
+                            <h4 class="footer-title">{{ 'title.contact_us' | trans }}</h4>
+                            <ul class="clearfix">
                                 <li><i class="fa fa-mobile"></i>{{ siteSettings.TELEPHONE }}</li>
                                 <li><i class="fa fa-envelope-o"></i><span>{{ 'email' | trans }}: </span> {{ siteSettings.MAIN_EMAIL }}</li>
                                 <li><i class="fa fa-map-marker"></i><span>{{ 'address' | trans }}: </span>{{ siteSettings.STREET }}, {{ siteSettings.ZIP_CODE }} {{ siteSettings.CITY }} {{ 'serbia' | trans }}</li>

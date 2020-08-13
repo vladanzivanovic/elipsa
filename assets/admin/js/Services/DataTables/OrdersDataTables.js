@@ -23,6 +23,9 @@ export default (() => {
                 { data: 'payment_type', name: 'payment_type', title: 'Tip plaćanja', render: function (payment_type, type, row, meta) {
                     return Translator.trans(payment_type, null, 'messages', LOCALE);
                     } },
+                { data: 'status', name: 'status', title: 'Status', render: function (status, type, row, meta) {
+                        return Translator.trans(status, null, 'messages', LOCALE);
+                    } },
                 { data: 'id', render: function (id, type, row, meta) {
                         const viewLink = CAN_VIEW ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.view_single_order', {id})}">Pregled</a> ` : '';
 

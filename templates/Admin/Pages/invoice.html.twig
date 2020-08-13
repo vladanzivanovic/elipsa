@@ -22,9 +22,33 @@
                                 <p class="text-right mb-1">Ukupno</p>
                                 <h4 class="text-right font-weight-normal">{{ total }} RSD</h4>
                                 <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ orderDate }}</h6>
-{#                                <h6 class="text-right font-weight-normal"><span class="text-muted">Due Date :</span> 12th Jul 2019</h6>#}
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Tip naplate:</span> {{ orderTypeText | trans }}</h6>
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Status plaćanja:</span> {{ statusText | trans }}</h6>
                             </div>
                         </div>
+                        {% if orderType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                            <div class="container-fluid d-flex justify-content-between">
+                                <div class="col-lg-12 pl-0">
+                                    <h5 class="mt-5 mb-2 text-muted">Podaci o naplati:</h5>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Zaduženo dana:</span> {{ preAuthorizedDate | date('d.m.Y H:i:s') }}</h6>
+
+                                    {% if postAuthorizedDate is defined %}
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Realizovano dana:</span> {{ postAuthorizedDate | date('d.m.Y H:i:s') }}</h6>
+                                    {% endif %}
+
+                                    {% if refundedDate is defined %}
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ refundedDate | date('d.m.Y H:i:s') }}</h6>
+                                    {% endif %}
+
+                                    {% if voidDate is defined %}
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ voidDate | date('d.m.Y H:i:s') }}</h6>
+                                    {% endif %}
+
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Broj transakcije:</span> {{ transactionId }}</h6>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Broj kartice:</span> {{ cardNumber }}</h6>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="container-fluid mt-5 d-flex justify-content-center w-100">
                             <div class="table-responsive w-100">
                                 <table class="table table-bordered">
@@ -85,8 +109,30 @@
                                 </div>
                             </div>
                         </div>
+                        {% if orderType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                            <div class="container-fluid w-100">
+                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+                                    <a href="#" id="void_btn" class="btn btn-outline-primary float-right mt-4 ml-2 ">Otkazi</a>
+                                {% endif %}
+
+                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') or
+                                    status == constant('App\\Entity\\ShopOrder::STATUS_COMPLETED')
+                                %}
+                                    <a href="#" id="refund_btn" class="btn btn-outline-primary float-right mt-4 ml-2">Refundiraj</a>
+                                {% endif %}
+
+                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+                                    <a href="#" id="post_auth_btn" class="btn btn-primary float-right mt-4 ml-2">Naplati</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const ID = '{{ app.request.attributes.get('id') }}';
+    </script>
 {% endblock %}

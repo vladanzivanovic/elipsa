@@ -43,7 +43,8 @@
         "symfony/validator": "5.0.*",
         "symfony/web-link": "5.0.*",
         "symfony/yaml": "5.0.*",
-        "willdurand/js-translation-bundle": "^3.0"
+        "willdurand/js-translation-bundle": "^3.0",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

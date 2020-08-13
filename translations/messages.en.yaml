@@ -443,3 +443,17 @@ eu.cookies.accept.title: This website using cookies.
 eu.cookies.accept.text: We use cookies to improve your usability. By using elisa.rs you agree to the use of cookies.
 eu.cookies.accept.btn: Accept
 eu.cookies.learn_more.btn: Learn more
+
+intesa.already_payed: Transaction is already payed.
+intesa.already_refunded: Transaction is already refudirana.
+intesa.already_void: Transaction is already canceled.
+
+order.status.new: New order
+order.status.awaiting_authorization: Fuds reserved
+order.status.post_auth: Payed
+order.status.completed: Payed
+order.status.refund: Funds returned
+order.status.void: Order canceled
+order.status.failed: Greška prilikom naručivanja
+order.type.on_delivering: pouzećem
+order.type.credit_card: platna kartica

@@ -36,6 +36,7 @@ import SliderTextEditController from "./SliderTextEditController";
 import OrdersController from "./OrdersController";
 import JobsController from "./JobsController";
 import JobEditController from "./JobEditController";
+import OrderSinglePageController from "./OrderSinglePageController";
 
 let routes = [
     {
@@ -261,6 +262,10 @@ let routes = [
     {
         name: 'admin.edit_job',
         controller: JobEditController,
+    },
+    {
+        name: 'admin.view_single_order',
+        controller: OrderSinglePageController,
     },
 ];
 

@@ -2360,7 +2360,11 @@ footer {
 
 .footer-top {
     border-bottom: 1px solid #282828;
-    padding: 51px 0 53px;
+    padding: 20px 0 53px;
+}
+
+.footer-top .logo-footer {
+    margin-bottom: 20px;
 }
 
 .footer-title {

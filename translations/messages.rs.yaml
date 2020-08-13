@@ -437,3 +437,17 @@ eu.cookies.accept.title: Ovaj website koristi kolačiće.
 eu.cookies.accept.text: Da bi omogućili korisnicima lakše i bolje korišćenje našeg sajta koristimo kolačiće (Cookies). Koristeći sajt elipsa.rs pristaješ na upotrebu kolačića.
 eu.cookies.accept.btn: Pristajem
 eu.cookies.learn_more.btn: Detaljnije
+
+intesa.already_payed: Transakcija je već naplaćena.
+intesa.already_refunded: Transakcija je već refudirana.
+intesa.already_void: Transakcija je već otkazana.
+
+order.status.new: Nova narudžbina
+order.status.awaiting_authorization: Račun zadužen
+order.status.post_auth: Naplaćeno
+order.status.completed: Naplaćeno
+order.status.refund: Sredstva su vraćena
+order.status.void: Narudžbina je otkazana
+order.status.failed: Greška prilikom naručivanja
+order.type.on_delivering: pouzećem
+order.type.credit_card: platna kartica

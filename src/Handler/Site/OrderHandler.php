@@ -160,13 +160,15 @@ final class OrderHandler
     public function completeCheckoutOnSuccess(int $orderId, string $locale, ParameterBag $bag): array
     {
         $order = $this->orderRepository->find($orderId);
+        $order->setStatus(ShopOrder::STATUS_COMPLETED);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $order->setTransactionData($bag->all());
-            $order->setStatus(ShopOrder::STATUS_COMPLETED);
-
-            $this->orderRepository->flush();
+            $order->setTransactionData([ShopOrder::CARD_TYPE_PRE_AUTH => $bag->all()]);
+            $order->setStatus(ShopOrder::STATUS_AWAITING_AUTHORIZATION);
         }
+
+
+        $this->orderRepository->flush();
 
         $settings = $this->getSettings();
 
@@ -206,8 +208,9 @@ final class OrderHandler
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
             $order->setTransactionData($bag->all());
-            $order->setStatus(ShopOrder::STATUS_FAILED);
         }
+
+        $order->setStatus(ShopOrder::STATUS_FAILED);
 
         $settings = $this->getSettings();
 
