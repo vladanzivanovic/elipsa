@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "893fdca726f141e09064a848209da358",
+    "content-hash": "5685b09972f68f8951c2040e77988634",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -225,21 +225,21 @@
         },
         {
             "name": "composer/package-versions-deprecated",
-            "version": "1.10.99",
+            "version": "1.10.99.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f"
+                "reference": "68c9b502036e820c33445ff4d174327f6bb87486"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/dd51b4443d58b34b6d9344cf4c288e621c9a826f",
-                "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/68c9b502036e820c33445ff4d174327f6bb87486",
+                "reference": "68c9b502036e820c33445ff4d174327f6bb87486",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1.0 || ^2.0",
-                "php": "^7"
+                "php": "^7 || ^8"
             },
             "replace": {
                 "ocramius/package-versions": "1.10.99"
@@ -290,20 +290,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-15T08:39:18+00:00"
+            "time": "2020-08-13T12:55:41+00:00"
         },
         {
             "name": "doctrine/annotations",
-            "version": "1.10.3",
+            "version": "1.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d"
+                "reference": "bfe91e31984e2ba76df1c1339681770401ec262f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/5db60a4969eba0e0c197a19c077780aadbc43c5d",
-                "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/bfe91e31984e2ba76df1c1339681770401ec262f",
+                "reference": "bfe91e31984e2ba76df1c1339681770401ec262f",
                 "shasum": ""
             },
             "require": {
@@ -313,7 +313,8 @@
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^7.5"
+                "phpstan/phpstan": "^0.12.20",
+                "phpunit/phpunit": "^7.5 || ^9.1.5"
             },
             "type": "library",
             "extra": {
@@ -359,7 +360,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2020-05-25T17:24:27+00:00"
+            "time": "2020-08-10T19:35:50+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -3131,16 +3132,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.0",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "3170448f5769fe19f456173d833734e0ff1b84df"
+                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/3170448f5769fe19f456173d833734e0ff1b84df",
-                "reference": "3170448f5769fe19f456173d833734e0ff1b84df",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d870572532cd70bc3fab58f2e23ad423c8404c44",
+                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44",
                 "shasum": ""
             },
             "require": {
@@ -3179,7 +3180,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-07-20T20:05:34+00:00"
+            "time": "2020-08-15T11:14:08+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3827,16 +3828,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "2.4.2",
+            "version": "2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "b3b4f4a08b184c3f22b208f357e8720ef42938b0"
+                "reference": "89fd1f91657b33ec9139f33f8a201eb086276103"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/b3b4f4a08b184c3f22b208f357e8720ef42938b0",
-                "reference": "b3b4f4a08b184c3f22b208f357e8720ef42938b0",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/89fd1f91657b33ec9139f33f8a201eb086276103",
+                "reference": "89fd1f91657b33ec9139f33f8a201eb086276103",
                 "shasum": ""
             },
             "require": {
@@ -3920,7 +3921,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-07-24T07:02:19+00:00"
+            "time": "2020-08-13T10:54:32+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
@@ -9563,16 +9564,16 @@
     "packages-dev": [
         {
             "name": "nikic/php-parser",
-            "version": "v4.8.0",
+            "version": "v4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "8c58eb4cd4f3883f82611abeac2efbc3dbed787e"
+                "reference": "aaee038b912e567780949787d5fe1977be11a778"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8c58eb4cd4f3883f82611abeac2efbc3dbed787e",
-                "reference": "8c58eb4cd4f3883f82611abeac2efbc3dbed787e",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/aaee038b912e567780949787d5fe1977be11a778",
+                "reference": "aaee038b912e567780949787d5fe1977be11a778",
                 "shasum": ""
             },
             "require": {
@@ -9580,7 +9581,7 @@
                 "php": ">=7.0"
             },
             "require-dev": {
-                "ircmaxell/php-yacc": "^0.0.6",
+                "ircmaxell/php-yacc": "^0.0.7",
                 "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0 || ^9.0"
             },
             "bin": [
@@ -9589,7 +9590,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.8-dev"
+                    "dev-master": "4.9-dev"
                 }
             },
             "autoload": {
@@ -9611,7 +9612,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-08-09T10:23:20+00:00"
+            "time": "2020-08-18T19:48:01+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -10116,20 +10117,19 @@
         },
         {
             "name": "symfony/profiler-pack",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/profiler-pack.git",
-                "reference": "99c4370632c2a59bb0444852f92140074ef02209"
+                "reference": "29ec66471082b4eb068db11eb4f0a48c277653f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/profiler-pack/zipball/99c4370632c2a59bb0444852f92140074ef02209",
-                "reference": "99c4370632c2a59bb0444852f92140074ef02209",
+                "url": "https://api.github.com/repos/symfony/profiler-pack/zipball/29ec66471082b4eb068db11eb4f0a48c277653f7",
+                "reference": "29ec66471082b4eb068db11eb4f0a48c277653f7",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
                 "symfony/stopwatch": "*",
                 "symfony/twig-bundle": "*",
                 "symfony/web-profiler-bundle": "*"
@@ -10140,7 +10140,21 @@
                 "MIT"
             ],
             "description": "A pack for the Symfony web profiler",
-            "time": "2018-12-10T12:11:44+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-08-12T06:50:46+00:00"
         },
         {
             "name": "symfony/test-pack",
