@@ -56,11 +56,13 @@ final class OrderSingleResponseFormatter
         $productPrices = 0;
         $products = [];
         $total = 0;
+        $hasShippingPrice = false;
+
         /** @var PromotionCoupon $promoCode */
         $promoCode = $order->getCoupon();
 
-        $freeShippingPrice = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING']);
-        $shippingPrice = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE']);
+        $freeShippingPrice = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING'])->getValue();
+        $shippingPrice = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE'])->getValue();
         $address = $order->getBillingAddress();
 
         /** @var OrderProduct $product */
@@ -81,12 +83,22 @@ final class OrderSingleResponseFormatter
             $productPrices += $priceWithQuantity;
         }
 
-        $total = $freeShippingPrice->getValue() <= $productPrices ? $productPrices + $shippingPrice->getValue() : $productPrices;
+        $total = $freeShippingPrice > $productPrices ? $productPrices + $shippingPrice : $productPrices;
+
+        if ($freeShippingPrice > $productPrices) {
+            $total = $productPrices + $shippingPrice;
+            $hasShippingPrice = true;
+        }
         $priceWithDiscount = null;
 
         if (null !== $promoCode) {
             $priceWithDiscount = $productPrices - ($productPrices * ($promoCode->getDiscount() / 100));
-            $total = $freeShippingPrice->getValue() <= $priceWithDiscount ? $priceWithDiscount + $shippingPrice->getValue() : $priceWithDiscount;
+            $total = $freeShippingPrice > $priceWithDiscount ? $priceWithDiscount + $shippingPrice : $priceWithDiscount;
+
+            if ($freeShippingPrice > $priceWithDiscount) {
+                $total = $priceWithDiscount + $shippingPrice;
+                $hasShippingPrice = true;
+            }
         }
 
         $data = [
@@ -95,7 +107,7 @@ final class OrderSingleResponseFormatter
             'productPrices' => $productPrices,
             'promoCode' => $promoCode,
             'priceWithDiscount' => $priceWithDiscount,
-            'shippingPrice' => $shippingPrice->getValue(),
+            'shippingPrice' => true === $hasShippingPrice ? $shippingPrice : 0,
             'total' => $total,
             'orderDate' => null !== $order->getCompletedAt() ? $order->getCompletedAt()->format('d.m.Y') : null,
             'fullName' => $address->getFirstName().' '.$address->getLastName(),

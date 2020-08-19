@@ -28,7 +28,6 @@ class CheckoutHandler {
             success: response => {
                 if ($(`${this.mapper.paymentType}:checked`).val() == PAYMENT_TYPE_ON_DELIVERING) {
                     AppHelperService.redirect(Routing.generate(`site.checkout_completed_successful.${LOCALE}`));
-                    loader.hide();
 
                     return;
                 }
