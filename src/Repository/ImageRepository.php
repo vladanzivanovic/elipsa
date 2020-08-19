@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Blog;
 use App\Entity\BlogHasImages;
+use App\Entity\Catalogue;
+use App\Entity\CatalogueHasImages;
 use App\Entity\Image;
 use App\Entity\Location;
 use App\Entity\LocationHasImages;
@@ -37,6 +39,22 @@ class ImageRepository extends ExtendedEntityRepository
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i')
             ->where('phi.product = :product')
             ->setParameter('product', $product);
+
+        return $query->getQuery()->getResult();
+
+    }
+
+    /**
+     * @param Catalogue $catalogue
+     *
+     * @return Image[]
+     */
+    public function getCatalogImages(Catalogue $catalogue): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->innerJoin(CatalogueHasImages::class, 'chi', 'WITH', 'chi.image = i')
+            ->where('chi.catalogue = :catalogue')
+            ->setParameter('catalogue', $catalogue);
 
         return $query->getQuery()->getResult();
 
@@ -134,6 +152,25 @@ class ImageRepository extends ExtendedEntityRepository
             )
             ->innerJoin(LocationHasImages::class, 'lhi', 'WITH', 'lhi.image = i AND lhi.location = :location')
             ->setParameter('location', $location);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param Catalogue $catalogue
+     *
+     * @return array
+     */
+    public function getByCatalog(Catalogue $catalogue): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select(
+                'i.id',
+                'i.name as fileName',
+                'i.isMain',
+            )
+            ->innerJoin(CatalogueHasImages::class, 'chi', 'WITH', 'chi.image = i AND chi.catalogue = :catalog')
+            ->setParameter('catalog', $catalogue);
 
         return $query->getQuery()->getArrayResult();
     }

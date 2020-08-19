@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Banner;
+use App\Entity\Catalogue;
 use App\Formatter\Admin\BannerEditResponseFormatter;
 use App\Formatter\Admin\CatalogResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -18,6 +19,7 @@ final class CatalogPageController extends AbstractController
      * @var CatalogResponseFormatter
      */
     private $responseFormatter;
+
     /**
      * @var ParameterBagInterface
      */
@@ -36,13 +38,26 @@ final class CatalogPageController extends AbstractController
     }
 
     /**
-     * @Route("/catalog", name="admin.catalog_page", methods={"GET"})
-     * @Template("Admin/Pages/catalog.html.twig")
+     * @Route("/add-catalog", name="admin.add_catalog_page", methods={"GET"})
+     * @Template("Admin/Pages/catalogEdit.html.twig")
      *
      * @return array
      */
     public function set(): array
     {
-        return $this->responseFormatter->formatResponse();
+        return [];
+    }
+
+    /**
+     * @Route("/edit-catalog/{id}", name="admin.edit_catalog_page", methods={"GET"})
+     * @Template("Admin/Pages/catalogEdit.html.twig")
+     *
+     * @param Catalogue $catalogue
+     *
+     * @return array
+     */
+    public function update(Catalogue $catalogue): array
+    {
+        return $this->responseFormatter->formatResponse($catalogue);
     }
 }

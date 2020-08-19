@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Entity\Image;
-use App\Repository\ImageRepository;
+use App\Entity\Catalogue;
+use App\Helper\ValidatorHelper;
+use App\Repository\CatalogueRepository;
 use App\Services\ImageService;
-use Gedmo\Sluggable\Util\Urlizer;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class CatalogHandler
 {
@@ -20,94 +18,72 @@ final class CatalogHandler
     protected $img;
 
     /**
-     * @var ImageRepository
+     * @var ValidatorHelper
      */
-    private $imageRepository;
+    private $validator;
 
     /**
-     * @var ParameterBagInterface
+     * @var CatalogueRepository
      */
-    private $bag;
+    private $catalogueRepository;
 
     /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     * @param ImageRepository       $imageRepository
+     * @param ValidatorHelper     $validator
+     * @param CatalogueRepository $catalogueRepository
      */
     public function __construct(
-        ImageService $imageService,
-        ParameterBagInterface $bag,
-        ImageRepository $imageRepository
+        ValidatorHelper $validator,
+        CatalogueRepository $catalogueRepository
     ) {
-        $this->img = $imageService;
-        $this->imageRepository = $imageRepository;
-        $this->bag = $bag;
+        $this->validator = $validator;
+        $this->catalogueRepository = $catalogueRepository;
     }
 
     /**
-     * @param array  $data
+     * @param Catalogue $catalogue
+     *
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Catalogue $catalogue): void
+    {
+        $errors = $this->validator->validate($catalogue, null, "SetCatalog");
+
+        if ($errors->count() > 0) {
+            throw new UnprocessableEntityHttpException(json_encode($this->validator->parseErrors($errors)));
+        }
+
+        if (is_null($catalogue->getId())) {
+            $this->catalogueRepository->persist($catalogue);
+        }
+
+        $this->catalogueRepository->flush();
+    }
+
+    /**
+     * @param Catalogue $catalogue
+     * @param int       $status
      *
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function setImages(array $data): void
+    public function changeStatus(Catalogue $catalogue, int $status): void
     {
-        $rootDir = $this->bag->get('upload_dir');
-        $tmpDir = $this->bag->get('upload_tmp_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
+        $catalogue->setStatus($status);
 
-        if(empty(array_filter($data))) {
-            return;
-        }
+        $this->catalogueRepository->flush();
+    }
 
-        foreach ($data as $index => $image) {
-            if (!empty($image['id'])) {
-                if (isset($image['deleted']) && true === $image['deleted']) {
-                    $imageObj = $this->imageRepository->find($image['id']);
-
-                    $image['file'] = $rootDir . $imageDir . $imageObj->getOriginalName();
-                    $file = $this->img->setFileObject($image);
-                    $imageObj->setFile($file);
-                    $imageObj->setIsDeleted(true);
-
-                    $this->imageRepository->delete($imageObj);
-
-                    continue;
-                }
-
-                continue;
-            }
-
-            try {
-                $image['file'] = $rootDir.$tmpDir.$image['fileName'];
-                $file = $this->img->setFileObject($image);
-            } catch (FileNotFoundException $exception) {
-                $exceptions[] = $image['fileName'];
-
-                continue;
-            }
-
-            $mediaObj = new Image();
-
-            $image['file'] = $rootDir.$tmpDir.$image['fileName'];
-
-            if (!($file instanceof UploadedFile)) {
-                continue;
-            }
-
-            $slug = Urlizer::transliterate(md5($file->getFilename()));
-
-            $newName = $slug.'.'.$file->guessExtension();
-
-            $mediaObj->setRelatedToType(Image::RELATED_TYPE_CATALOG);
-            $mediaObj->setName($slug.'-'.++$index);
-            $mediaObj->setIsmain($image['isMain']);
-            $mediaObj->setOriginalName($newName);
-            $mediaObj->setFile($file);
-            $mediaObj->setDevice(0);
-
-            $this->imageRepository->persist($mediaObj);
-        }
-
-        $this->imageRepository->flush();
+    /**
+     * @param Catalogue $catalogue
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(Catalogue $catalogue): void
+    {
+        $this->catalogueRepository->delete($catalogue);
+        $this->catalogueRepository->flush();
     }
 }

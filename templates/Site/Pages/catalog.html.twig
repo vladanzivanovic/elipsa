@@ -4,7 +4,7 @@
 {% block title %}{{ 'title.catalog' | trans }}{% endblock %}
 
 {% block content %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'title.catalog' | trans }], 'activePage': 'title.catalog' | trans}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'title.catalog' | trans }], 'activePage': 'title.catalog' | trans ~' - '~ title }) }}
 
     <!-- shop-left-sidebar-area-start -->
     <div class="shop-left-sidebar-area">
@@ -22,8 +22,8 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <div class="single-featured-item">
                                                         <div class="sfi-img">
-                                                            <a href="{{ image.link }}" data-fancybox="catalog">
-                                                                <img src="{{ image.link }}" alt="{{ default_alt_tag }}">
+                                                            <a href="{{ image.file }}" data-fancybox="catalog">
+                                                                <img src="{{ image.file }}" alt="{{ default_alt_tag }}">
                                                             </a>
                                                         </div>
                                                     </div>

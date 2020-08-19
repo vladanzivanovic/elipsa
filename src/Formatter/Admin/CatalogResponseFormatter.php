@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
+use App\Entity\Catalogue;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductHasCategories;
@@ -74,12 +75,19 @@ final class CatalogResponseFormatter
     }
 
     /**
+     * @param Catalogue $catalogue
+     *
      * @return array
      */
-    public function formatResponse(): array
+    public function formatResponse(Catalogue $catalogue): array
     {
+        $transRs = $catalogue->getByLocale('rs');
+        $transEn = $catalogue->getByLocale('en');
+
         return [
-            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByType(Image::RELATED_TYPE_CATALOG), 'catalog'),
+            'rs_title' => $transRs->getTitle(),
+            'en_title' => $transEn->getTitle(),
+            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByCatalog($catalogue), 'catalog'),
         ];
     }
 }

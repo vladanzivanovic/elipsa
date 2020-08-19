@@ -42,7 +42,6 @@ final class ProductEditHandler
      */
     public function save(Product $product): void
     {
-
         $errors = $this->validator->validate($product, null, "SetProduct");
 
         if ($errors->count() > 0) {

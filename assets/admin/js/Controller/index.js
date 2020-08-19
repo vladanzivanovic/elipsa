@@ -22,7 +22,6 @@ import BlogController from "./BlogController";
 import BlogEditController from "./BlogEditController";
 import LoyaltyController from "./LoyaltyController";
 import BannersController from "./BannersController";
-import CatalogController from "./CatalogController";
 import AboutUsPageController from "./AboutUsPageController";
 import LoginPageController from "./LoginPageController";
 import UsersController from "./UsersController";
@@ -37,6 +36,8 @@ import OrdersController from "./OrdersController";
 import JobsController from "./JobsController";
 import JobEditController from "./JobEditController";
 import OrderSinglePageController from "./OrderSinglePageController";
+import CatalogController from "./CatalogController";
+import CatalogEditController from "./CatalogEditController";
 
 let routes = [
     {
@@ -194,6 +195,14 @@ let routes = [
     {
         name: 'admin.catalog_page',
         controller: CatalogController,
+    },
+    {
+        name: 'admin.add_catalog_page',
+        controller: CatalogEditController,
+    },
+    {
+        name: 'admin.edit_catalog_page',
+        controller: CatalogEditController,
     },
     {
         name: 'admin.about_us_page',
