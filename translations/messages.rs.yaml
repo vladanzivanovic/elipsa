@@ -136,14 +136,14 @@ checkout.paymeny.credit_card: karticom
 checkout.complete_order: završi narudžbinu
 checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
-checkout.finish.transaction_detail: podaci o transakciji
-checkout.finish.transaction_status_label: status transakcije
-checkout.finish.transaction_status_success: uspešno – račun platne kartice je zadužen
-checkout.finish.transaction_status_failed: neuspešno – račun platne kartice nije zadužen
-checkout.finish.transaction_date_time: datum i vreme transakcije
-checkout.finish.transaction_id: broj transakcije
-checkout.finish.payment_id: broj plaćanja
-checkout.finish.credit_card_no: broj platne kartice
+checkout.finish.transaction_detail: Podaci o transakciji
+checkout.finish.transaction_status_label: Status transakcije
+checkout.finish.transaction_status_success: Uspešno – račun platne kartice je zadužen
+checkout.finish.transaction_status_failed: Neuspešno – račun platne kartice nije zadužen
+checkout.finish.transaction_date_time: Datum i vreme transakcije
+checkout.finish.transaction_id: Broj transakcije
+checkout.finish.payment_id: Broj plaćanja
+checkout.finish.credit_card_no: Broj platne kartice
 
 checkout_completed.title: uspešno ste naručili proizvode.
 checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
@@ -187,7 +187,7 @@ email.order.buyer.city: Grad
 email.order.buyer.street_number: Ulica i broj
 email.order.buyer.paymet_type: Plaćanje
 
-email.order.data.title: Podaci o narudžbenici
+email.order.data.title: Podaci o porudžbini
 email.order.table.product_name: Naziv proizvoda
 email.order.table.size: Veličina
 email.order.table.color: Boja

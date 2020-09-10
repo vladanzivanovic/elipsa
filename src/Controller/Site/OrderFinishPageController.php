@@ -64,6 +64,7 @@ final class OrderFinishPageController extends AbstractController
 
         return $this->pageFormatter->formatResponse($data, $locale, $request->request);
     }
+
     /**
      * @Route({
      *          "rs": "/korpa/neuspesna-narudzbina",
@@ -78,6 +79,7 @@ final class OrderFinishPageController extends AbstractController
      * @param Request $request
      *
      * @return array
+     * @throws \ReflectionException
      */
     public function unsuccessfulPage(Request  $request): array
     {

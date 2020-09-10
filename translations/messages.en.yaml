@@ -143,14 +143,14 @@ checkout.paymeny.credit_card: credit card
 checkout.complete_order: complete order
 checkout.account_exists: Account with email address %email% is already registered.
 checkout.account_deactivated: Account with email address %email% is deactivated.
-checkout.finish.transaction_detail: transaction details
-checkout.finish.transaction_status_label: transaction status
-checkout.finish.transaction_status_success: successful – your account is in charge
-checkout.finish.transaction_status_failed: neuspešno – your account is not charged
-checkout.finish.transaction_date_time: transaction date and time
-checkout.finish.transaction_id: transaction id
-checkout.finish.payment_id: payment id
-checkout.finish.credit_card_no: credit card no
+checkout.finish.transaction_detail: Transaction details
+checkout.finish.transaction_status_label: Transaction status
+checkout.finish.transaction_status_success: Successful – your account is in charge
+checkout.finish.transaction_status_failed: Unsuccessfull – your account is not charged
+checkout.finish.transaction_date_time: Transaction date and time
+checkout.finish.transaction_id: Transaction id
+checkout.finish.payment_id: Payment id
+checkout.finish.credit_card_no: Credit card no
 
 checkout_completed.title: your order has been successfully completed.
 checkout_completed.details: the details of the order has been sent to your email address.

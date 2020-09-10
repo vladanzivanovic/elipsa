@@ -167,14 +167,13 @@ final class OrderHandler
             $order->setStatus(ShopOrder::STATUS_AWAITING_AUTHORIZATION);
         }
 
-
         $this->orderRepository->flush();
 
         $settings = $this->getSettings();
 
         $isAccountCreated = $order->getUser()->getResetToken() !== null;
 
-        $emailModelCustomer = $this->prepareEmail($order, $settings, $isAccountCreated, $locale);
+        $emailModelCustomer = $this->prepareEmail($order, $settings, $isAccountCreated, $locale, $bag);
         $event = new EmailEvent($emailModelCustomer);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
 
@@ -224,15 +223,16 @@ final class OrderHandler
     }
 
     /**
-     * @param ShopOrder $order
-     * @param array     $settings
-     * @param bool      $isAccountCreated
-     * @param string    $locale
+     * @param ShopOrder    $order
+     * @param array        $settings
+     * @param bool         $isAccountCreated
+     * @param string       $locale
+     * @param ParameterBag $parameterBag
      *
      * @return EmailModel
      * @throws \ReflectionException
      */
-    private function prepareEmail(ShopOrder $order, array $settings, bool $isAccountCreated, string $locale = 'rs'): EmailModel
+    private function prepareEmail(ShopOrder $order, array $settings, bool $isAccountCreated, string $locale, ParameterBag $parameterBag): EmailModel
     {
         $user = $order->getUser();
         $address = $order->getShippingAddress();
@@ -264,11 +264,19 @@ final class OrderHandler
             'freeShipping'      => $settings['FREE_SHIPPING'],
             'promotion'         => $order->getCoupon(),
             'accountCreated'    => $isAccountCreated,
+            'paymentType'       => $order->getPaymentType(),
         ];
 
         if (true === $isAccountCreated) {
             $templateData['registrationToken'] = $user->getResetToken();
             $templateData['locale'] = $locale;
+        }
+
+        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
+            $templateData['transaction_date_time'] = new \DateTime($parameterBag->get('EXTRA_TRXDATE'));
+            $templateData['transaction_id'] = $parameterBag->get('TRANID');
+            $templateData['payment_id'] = null;
+            $templateData['masked_credit_card'] = $parameterBag->get('maskedCreditCard');
         }
 
         $model = new EmailModel();

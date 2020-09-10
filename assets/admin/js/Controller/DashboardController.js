@@ -1,7 +1,6 @@
 import ProductDataTables from "../Services/DataTables/ProductDataTables";
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
-import ColorHandler from "../Handler/Product/ColorHandler";
 
 const Private = Symbol('private');
 
