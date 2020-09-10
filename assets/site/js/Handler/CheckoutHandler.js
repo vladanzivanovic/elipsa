@@ -22,7 +22,7 @@ class CheckoutHandler {
 
         $.ajax({
             type: 'PUT',
-            url: Routing.generate('site_api.complete_order'),
+            url: Routing.generate(`site_api.complete_order.${LOCALE}`),
             data: FormHelperService.sanitize(data),
             dataType: 'json',
             success: response => {

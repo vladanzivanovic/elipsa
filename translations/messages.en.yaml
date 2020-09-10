@@ -145,7 +145,7 @@ checkout.account_exists: Account with email address %email% is already registere
 checkout.account_deactivated: Account with email address %email% is deactivated.
 checkout.finish.transaction_detail: Transaction details
 checkout.finish.transaction_status_label: Transaction status
-checkout.finish.transaction_status_success: Successful – your account is in charge
+checkout.finish.transaction_status_success: Successful – your account is in charged
 checkout.finish.transaction_status_failed: Unsuccessfull – your account is not charged
 checkout.finish.transaction_date_time: Transaction date and time
 checkout.finish.transaction_id: Transaction id

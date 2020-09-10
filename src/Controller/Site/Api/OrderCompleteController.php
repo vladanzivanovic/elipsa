@@ -53,7 +53,14 @@ final class OrderCompleteController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/complete", name="site_api.complete_order", methods={"PUT"}, options={"expose": true})
+     * @Route({
+     *          "rs": "/api/order/complete",
+     *          "en": "/api/order/complete"
+     *      },
+     *     name="site_api.complete_order",
+     *     methods={"PUT"},
+     *     options={"expose": true}
+     * )
      *
      * @param Request $request
      *
@@ -65,7 +72,7 @@ final class OrderCompleteController extends AbstractController
     public function completeOrder(Request $request): JsonResponse
     {
         $csrf = $request->request->get('_csrf_token');
-        $locale = $request->getSession()->get('_locale');
+        $locale = $request->getLocale();
 
         if (false === $this->isCsrfTokenValid('order_complete', $csrf)) {
             $this->createAccessDeniedException();
