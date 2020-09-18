@@ -2,6 +2,7 @@ import checkoutPageMapper from "../Mapper/CheckoutPageMapper";
 import CheckoutHandler from "../Handler/CheckoutHandler";
 import checkoutValidation from "../Validators/CheckoutValidation";
 import UserService from "../Service/UserService";
+import RecaptchaLoader from "../../../js/Services/RecaptchaLoader";
 
 class CheckoutPageController {
     constructor() {
@@ -10,15 +11,23 @@ class CheckoutPageController {
         this.validator = checkoutValidation;
         this.userService = new UserService();
 
+        RecaptchaLoader.loadRecaptcha();
+
         this.validator.validate();
 
         this.registerEvents();
     }
 
     registerEvents() {
-        this.mapper.btn.on('click touchend', e => {
+        this.mapper.form.on('submit', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
             this.handler.save();
         });
+        // this.mapper.btn.on('click touchend', e => {
+        //     this.handler.save();
+        // });
 
         $('.open-login').on('click touchend', e => {
             e.preventDefault();

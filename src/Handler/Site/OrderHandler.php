@@ -265,6 +265,7 @@ final class OrderHandler
             'promotion'         => $order->getCoupon(),
             'accountCreated'    => $isAccountCreated,
             'paymentType'       => $order->getPaymentType(),
+            'orderId'           => $order->getId(),
         ];
 
         if (true === $isAccountCreated) {
@@ -274,9 +275,11 @@ final class OrderHandler
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
             $templateData['transaction_date_time'] = new \DateTime($parameterBag->get('EXTRA_TRXDATE'));
-            $templateData['transaction_id'] = $parameterBag->get('TRANID');
-            $templateData['payment_id'] = null;
-            $templateData['masked_credit_card'] = $parameterBag->get('maskedCreditCard');
+            $templateData['transaction_id'] = $parameterBag->get('TransId');
+            $templateData['auth_code'] = $parameterBag->get('AuthCode');
+            $templateData['payment_response'] = $parameterBag->get('Response');
+            $templateData['proc_return_code'] = $parameterBag->get('ProcReturnCode');
+            $templateData['md_status'] = $parameterBag->get('mdStatus');
         }
 
         $model = new EmailModel();

@@ -62,9 +62,11 @@ final class OrderFinishPageFormatter
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
             $data['transaction_date_time'] = new \DateTime($parameterBag->get('EXTRA_TRXDATE'));
-            $data['transaction_id'] = $parameterBag->get('TRANID');
-            $data['payment_id'] = null;
-            $data['masked_credit_card'] = $parameterBag->get('maskedCreditCard');
+            $data['transaction_id'] = $parameterBag->get('TransId');
+            $data['auth_code'] = $parameterBag->get('AuthCode');
+            $data['payment_response'] = $parameterBag->get('Response');
+            $data['proc_return_code'] = $parameterBag->get('ProcReturnCode');
+            $data['md_status'] = $parameterBag->get('mdStatus');
         }
 
         return array_merge($data, [

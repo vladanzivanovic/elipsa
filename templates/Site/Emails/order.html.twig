@@ -1270,11 +1270,17 @@ E-mail: {{ buyer.email }}<br>
                                                                     style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
 
                                                                     {{ 'checkout.finish.transaction_status_label' | trans }}:<span style="font-size:14px">&nbsp;{{ 'checkout.finish.transaction_status_success' | trans }}</span><br>
-                                                                    {{ 'checkout.finish.transaction_date_time' | trans }}:&nbsp;<span
-                                                                            style="font-size:14px">{{ transaction_date_time | date('d.m.Y H:i:s') }}</span><br>
+                                                                    {{ 'checkout.finish.order_id' | trans }}:&nbsp;<span
+                                                                            style="font-size:14px">{{ orderId }}</span><br>
+                                                                    {{ 'checkout.finish.auth_code' | trans }}:&nbsp;<span
+                                                                            style="font-size:14px">{{ auth_code }}</span><br>
+                                                                    {{ 'checkout.finish.response' | trans }}:&nbsp;<span
+                                                                            style="font-size:14px">{{ payment_response | trans }}</span><br>
+                                                                    {{ 'checkout.finish.proc_return_code' | trans }}:&nbsp;<span
+                                                                            style="font-size:14px">{{ proc_return_code }}</span><br>
                                                                     {{ 'checkout.finish.transaction_id' | trans }}:&nbsp;<span>{{ transaction_id }}</span><br>
-                                                                    {{ 'checkout.finish.payment_id' | trans }}:&nbsp;<span>{{ payment_id }}</span><br>
-                                                                    {{ 'checkout.finish.credit_card_no' | trans }}:&nbsp;<span>{{ masked_credit_card }}</span>
+                                                                    {{ 'checkout.finish.transaction_date_time' | trans }}:&nbsp;<span style="font-size:14px">{{ transaction_date_time | date('d.m.Y H:i:s') }}</span><br>
+                                                                    {{ 'checkout.finish.md_status' | trans }}:&nbsp;<span>{{ md_status }}</span><br>
                                                                 </td>
                                                             </tr>
                                                             </tbody>

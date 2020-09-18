@@ -36,7 +36,7 @@
                     <h4 class="lrc-title letter-capitalize">{{ 'reset_password.label' | trans }}</h4>
                     <div class="lrc-login-form">
                         <form id="reset_form" enctype="multipart/form-data">
-                            {{ inputs.input('_csrf_token', csrf_token('reset_password'), '_csrf_token', '', 'hidden') }}
+                            {{ inputs.input('_csrf_token_reset_password', csrf_token('reset_password'), '_csrf_token', '', 'hidden') }}
                             <div class="account-name">
                                 <i class="fa fa-user"></i>
                                 {{ inputs.input('reset_email', '', 'reset_email', 'Email', 'email', 'letter-capitalize') }}
@@ -54,7 +54,7 @@
                     <h4 class="lrc-title letter-capitalize">{{ 'registration.text' | trans }}</h4>
                     <div class="lrc-register-form">
                         <form id="registration-form" enctype="multipart/form-data">
-                            {{ inputs.input('_csrf_token', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
+                            {{ inputs.input('_csrf_token_registration', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
                             {{ inputs.input('registration_first_name', '', 'registration_first_name', 'First_name' | trans, 'text', 'letter-capitalize') }}
                             {{ inputs.input('registration_last_name', '', 'registration_last_name', 'Last_name' | trans, 'text') }}
                             {{ inputs.input('registration_email', '', 'registration_email', 'Email', 'email') }}

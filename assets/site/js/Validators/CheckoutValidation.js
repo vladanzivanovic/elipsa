@@ -41,6 +41,7 @@ class CheckoutValidation {
                     }
                 },
                 payment_type: 'required',
+                terms_and_conditions: 'required',
             },
         };
         $.extend(options, window.helpBlock);

@@ -2438,8 +2438,8 @@ footer {
 }
 
 .footer-links ul li {
-    float: left;
-    width: 50%;
+    /*float: left;*/
+    /*width: 50%;*/
 }
 
 .footer-links ul li a {
@@ -2603,7 +2603,7 @@ footer {
 }
 
 .payment-method ul li img {
-    height: 35px;
+    height: 30px;
 }
 
 #scrollUp {

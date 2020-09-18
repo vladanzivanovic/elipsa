@@ -21,6 +21,8 @@ parameters:
     intesa_password: '%env(resolve:PASSWORD)%'
     intesa_api_gateway: '%env(resolve:API_GATEWAY)%'
 
+    google_recaptcha_secret: '%env(resolve:GOOGLE_RECAPTCHA_KEY_SECRET)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

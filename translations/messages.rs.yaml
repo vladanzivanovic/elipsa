@@ -138,16 +138,25 @@ checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
 checkout.finish.transaction_detail: Podaci o transakciji
 checkout.finish.transaction_status_label: Status transakcije
-checkout.finish.transaction_status_success: Uspešno – račun platne kartice je zadužen
-checkout.finish.transaction_status_failed: Neuspešno – račun platne kartice nije zadužen
-checkout.finish.transaction_date_time: Datum i vreme transakcije
+checkout.finish.transaction_status_success: Uspešno ste izvršili plaćanje – račun Vaše platne kartice je zadužen.
+checkout.finish.transaction_status_failed: Plaćanje nije uspešno, vaš račun nije zadužen, najčešći uzrok je pogrešno unet broj kartice, datum isteka ili sigurnosni kod, pokušaje ponovo, u slučaju uzastopnih greški pozovite vašu banku
+checkout.finish.transaction_date_time: Datum transakcije
+checkout.finish.auth_code: Autorizacioni kod
+checkout.finish.order_id: Broj narudžbine
+checkout.finish.response: Status transakcije
+checkout.finish.proc_return_code: Kod statusa transakcije
 checkout.finish.transaction_id: Broj transakcije
+checkout.finish.md_status: Statusni kod 3D transakcije
 checkout.finish.payment_id: Broj plaćanja
 checkout.finish.credit_card_no: Broj platne kartice
+checkout.checkbox.terms_and_conditions: Klikom na dugme prihvatate naše <a href="%link%">Opšte uslove korišćenja i prodaje.</a>
 
 checkout_completed.title: uspešno ste naručili proizvode.
 checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
 checkout_fail.title: Neuspešna narudžbina.
+
+Approved: Odobreno
+Declined: Odbijeno
 
 country: država
 countries: države
@@ -300,6 +309,8 @@ contact.company_id: Matični broj
 contact.tax_id: PIB
 
 links: linkovi
+store: prodavnica
+info: informacije
 
 yes: da
 no: ne

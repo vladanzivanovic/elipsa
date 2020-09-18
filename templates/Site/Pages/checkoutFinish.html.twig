@@ -26,6 +26,10 @@
                         {% if isSuccessOrder %}
                             <p class="ot-text letter-capitalize">{{ 'checkout_completed.details' | trans }}</p>
                         {% endif %}
+                        {% if order.paymentType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                            <p class="ot-text letter-capitalize">{{ isSuccessOrder ? 'checkout.finish.transaction_status_success' | trans : 'checkout.finish.transaction_status_failed' | trans }}</p>
+
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -170,25 +174,41 @@
                             <h4 class="checkout-box-title">{{ 'checkout.finish.transaction_detail' | trans }}</h4>
                             <div class="checkout-billing-adress-box">
                                 <div class="billing-address-input clearfix">
-                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.transaction_status_label' | trans }}:</label>
-                                    <span class="col-md-8 col-xs-12 letter-capitalize">{{ isSuccessOrder ? 'checkout.finish.transaction_status_success' | trans : 'checkout.finish.transaction_status_failed' | trans }}</span>
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.order_id' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ order.id }}</span>
                                 </div>
                                 <div class="billing-address-input clearfix">
-                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.transaction_date_time' | trans }}:</label>
-                                    <span class="col-md-8 col-xs-12">{{ transaction_date_time | date('d.m.Y H:i:s') }}</span>
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.auth_code' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ auth_code }}</span>
+                                </div>
+                                <div class="billing-address-input clearfix">
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.response' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ payment_response | trans }}</span>
+                                </div>
+                                <div class="billing-address-input clearfix">
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.proc_return_code' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ proc_return_code }}</span>
                                 </div>
                                 <div class="billing-address-input clearfix">
                                     <label class="letter-capitalize col-md-4">{{ 'checkout.finish.transaction_id' | trans }}:</label>
                                     <span class="col-md-8 col-xs-12">{{ transaction_id }}</span>
                                 </div>
                                 <div class="billing-address-input clearfix">
-                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.payment_id' | trans }}:</label>
-                                    <span class="col-md-8 col-xs-12">{{ payment_id }}</span>
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.transaction_date_time' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ transaction_date_time | date('d.m.Y H:i:s') }}</span>
                                 </div>
                                 <div class="billing-address-input clearfix">
-                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.credit_card_no' | trans }}:</label>
-                                    <span class="col-md-8 col-xs-12">{{ masked_credit_card }}</span>
+                                    <label class="col-md-4 letter-capitalize">{{ 'checkout.finish.md_status' | trans }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ md_status }}</span>
                                 </div>
+{#                                <div class="billing-address-input clearfix">#}
+{#                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.payment_id' | trans }}:</label>#}
+{#                                    <span class="col-md-8 col-xs-12">{{ payment_id }}</span>#}
+{#                                </div>#}
+{#                                <div class="billing-address-input clearfix">#}
+{#                                    <label class="letter-capitalize col-md-4">{{ 'checkout.finish.credit_card_no' | trans }}:</label>#}
+{#                                    <span class="col-md-8 col-xs-12">{{ masked_credit_card }}</span>#}
+{#                                </div>#}
                             </div>
                         </div>
                     </div>

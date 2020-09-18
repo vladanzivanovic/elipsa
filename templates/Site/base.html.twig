@@ -68,6 +68,7 @@
             const LOCALE = '{{ locale }}';
             const ROUTE_NAME = '{{ routeName }}';
             const IS_MOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
+            const GOOGLE_RECAPTCHA_KEY_SITE  = '{{ 'GOOGLE_RECAPTCHA_KEY_SITE' | getenv }}';
             window.USER = null;
 
             {% if user is not null %}

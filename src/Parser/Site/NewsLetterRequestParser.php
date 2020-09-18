@@ -48,7 +48,7 @@ final class NewsLetterRequestParser
      */
     public function parse(ParameterBag $bag): NewsLetter
     {
-        $email = $bag->get('email');
+        $email = $bag->get('newsletter_email');
 
         $existing = $this->letterRepository->findOneBy(['email' => $email]);
         $user = $this->userRepository->findOneBy(['email' => $email]);

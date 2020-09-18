@@ -1,5 +1,6 @@
 {% extends 'Site/base.html.twig' %}
 
+{% block bodyClass %}checkout-page{% endblock %}
 {% block title %}{{ 'title.cart_personal_data' | trans }}{% endblock %}
 
 {% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
@@ -32,7 +33,7 @@
                     <div class="billing-address">
                         <h4 class="checkout-box-title letter-capitalize">{{ 'checkout.billing_address' | trans }}</h4>
                         <div class="checkout-billing-adress-box">
-                            <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('order_complete') }}" />
+                            <input id="_csrf_token_checkout" type="hidden" name="_csrf_token" value="{{ csrf_token('order_complete') }}" />
                             <div class="billing-address-input clearfix">
                                 {{ form.input('country' | trans ~ ' *', 'country', address is not null ? address.country : '', 'country', '', 'text', null, '', 'text-uppercase') }}
                             </div>
@@ -97,7 +98,7 @@
                                 <li class="order-total clearfix">{{ 'cart.shipping' | trans }} <span>{{ shipping }} RSD</span></li>
                                 <li class="order-total clearfix">
                                     {{ 'cart.total_shipping' | trans }}
-                                    <span>{{ totalWithShipping | round }} RSD</span>
+                                    <span>{{ totalWithShipping | round | number_format(2, '.', '') }} RSD</span>
                                     <input type="hidden" name="total_amount" value="{{ totalWithShipping | round }}">
                                 </li>
                             </ul>
@@ -110,8 +111,12 @@
                                     {{ inputs.input('creditCard', 2, 'payment_type', '', 'radio', '', 'data-show-error-after=yes') }}
                                     <label for="creditCard" class="letter-capitalize">{{ 'checkout.paymeny.credit_card' | trans }}</label>
                                 </div>
+                                <div class="select-payment-method terms-and-conditions">
+                                    {{ inputs.input('termsAndConditions', 1, 'terms_and_conditions', '', 'checkbox', '', 'data-error-after=".terms-and-conditions"') }}
+                                    <label for="termsAndConditions" id="termsAndConditionLabel" class="letter-capitalize">{{ 'checkout.checkbox.terms_and_conditions' | trans({'%link%': path('site.use_conditions')}) | raw }}</label>
+                                </div>
                                 <div class="place-order">
-                                    <button type="button" class="checkout-page-button hvr-bs">{{ 'cart.checkout' | trans }}</button>
+                                    <button type="submit" class="checkout-page-button hvr-bs">{{ 'cart.checkout' | trans }}</button>
                                 </div>
                             </div>
                         </div>

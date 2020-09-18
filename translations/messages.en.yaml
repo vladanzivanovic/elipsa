@@ -145,16 +145,25 @@ checkout.account_exists: Account with email address %email% is already registere
 checkout.account_deactivated: Account with email address %email% is deactivated.
 checkout.finish.transaction_detail: Transaction details
 checkout.finish.transaction_status_label: Transaction status
-checkout.finish.transaction_status_success: Successful – your account is in charged
-checkout.finish.transaction_status_failed: Unsuccessfull – your account is not charged
-checkout.finish.transaction_date_time: Transaction date and time
+checkout.finish.transaction_status_success_detail_text: You order has been successfully paid - your accout is in charge.
+checkout.finish.transaction_status_failed: Payment failed, your account is not charged, maybe your card number is not right, expiration date or securty code. Please, try again and in case of consecutive fails call your bank.
+checkout.finish.transaction_date_time: Transaction date
+checkout.finish.auth_code: Authorization Code
+checkout.finish.order_id: Order ID
+checkout.finish.response: Payment Status
+checkout.finish.proc_return_code: Transaction Status Code
 checkout.finish.transaction_id: Transaction id
+checkout.finish.md_status: Status code for the 3D transaction
 checkout.finish.payment_id: Payment id
 checkout.finish.credit_card_no: Credit card no
+checkout.checkbox.terms_and_conditions: By clicking on checkbox you will accept ours <a href="%link%">Terms and conditions.</a>
 
 checkout_completed.title: your order has been successfully completed.
 checkout_completed.details: the details of the order has been sent to your email address.
-checkout_fail.title: Neuspešna narudžbina.
+checkout_fail.title: Unsuccessful order.
+
+Approved: Approved
+Declined: Declined
 
 country: country
 countries: countries
@@ -306,6 +315,8 @@ contact.company_id: Company ID
 contact.tax_id: Tax ID
 
 links: links
+store: store
+info: information
 
 yes: yes
 no: no

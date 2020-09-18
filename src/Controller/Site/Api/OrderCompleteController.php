@@ -10,10 +10,13 @@ use App\Handler\Site\OrderHandler;
 use App\Parser\Site\OrderCompleteRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class OrderCompleteController extends AbstractController
 {
@@ -33,23 +36,30 @@ final class OrderCompleteController extends AbstractController
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var HttpClient
+     */
+    private $client;
 
     /**
      * @param OrderCompleteRequestParser $requestParser
      * @param OrderHandler               $orderHandler
      * @param ParameterBagInterface      $parameterBag
      * @param RouterInterface            $router
+     * @param HttpClientInterface        $client
      */
     public function __construct(
         OrderCompleteRequestParser $requestParser,
         OrderHandler $orderHandler,
         ParameterBagInterface  $parameterBag,
-        RouterInterface  $router
+        RouterInterface  $router,
+        HttpClientInterface $client
     ) {
         $this->requestParser = $requestParser;
         $this->orderHandler = $orderHandler;
         $this->parameterBag = $parameterBag;
         $this->router = $router;
+        $this->client = $client;
     }
 
     /**
@@ -68,15 +78,16 @@ final class OrderCompleteController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     public function completeOrder(Request $request): JsonResponse
     {
-        $csrf = $request->request->get('_csrf_token');
         $locale = $request->getLocale();
 
-        if (false === $this->isCsrfTokenValid('order_complete', $csrf)) {
-            $this->createAccessDeniedException();
-        }
+        $this->validateHuman($request->request);
 
         $order = $this->requestParser->parse($request->request, $request->getSession()->get('order'));
 
@@ -103,7 +114,7 @@ final class OrderCompleteController extends AbstractController
         $orgCurrency = "941";
 
         $clientId = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgClientId));
-        $amount = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgAmount));
+        $amount = str_replace("|", "\\|", str_replace("\\", "\\\\", number_format((float)$orgAmount, 2, '.', '')));
         $okUrl = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgOkUrl));
         $failUrl = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgFailUrl));
         $transactionType = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgTransactionType));
@@ -161,5 +172,34 @@ final class OrderCompleteController extends AbstractController
         }
 
         return $data;
+    }
+
+    /**
+     * @param ParameterBag $parameterBag
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    private function validateHuman(ParameterBag $parameterBag): void
+    {
+        $response = $this->client->request('POST', 'https://www.google.com/recaptcha/api/siteverify', [
+            'body' => [
+                'secret' => $this->parameterBag->get('google_recaptcha_secret'),
+                'response' => $parameterBag->get('recaptcha_response'),
+            ]
+        ]);
+
+        $captchaResponse = json_decode($response->getContent(), true);
+
+        if (
+            true === $this->isCsrfTokenValid('order_complete', $parameterBag->get('_csrf_token')) &&
+            true === $captchaResponse['success'] && $captchaResponse['score'] > 0.4 && $captchaResponse['action'] === 'complete_order'
+        ) {
+           return;
+        }
+
+        $this->createAccessDeniedException();
     }
 }
