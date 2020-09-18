@@ -44,6 +44,7 @@ nelmio_security:
                 - 'https://www.youtube.com'
                 - 'https://www.facebook.com'
                 - 'https://web.facebook.com/'
+                - 'https://www.google.com/'
             script-src:
                 - 'self'
                 - 'unsafe-inline'
