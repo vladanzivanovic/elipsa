@@ -40,7 +40,7 @@
                                             </p>
                                         </td>
                                         <td class="cart_product_price_value">
-                                            <span class="product_price"><span class="product_price_value">{{ price }}</span> RSD</span>
+                                            <span class="product_price"><span class="product_price_value" data-price="{{ price }}">{{ price | number_format(2) }}</span> RSD</span>
                                         </td>
                                         <td class="cart_product_quantity_value">
                                             <div class="product-quantity-t">
@@ -48,10 +48,11 @@
                                             </div>
                                         </td>
                                         <td class="cart_product_total_value">
-                                            <span class="product_price"><span class="product_price_total">{{ product.quantity * price }}</span> RSD</span>
+                                            {% set productTotal = product.quantity * price %}
+                                            <span class="product_price"><span class="product_price_total">{{ productTotal | number_format(2) }}</span> RSD</span>
                                         </td>
                                         <td class="cart_product_name">
-                                            <a href="#" class="remove-product" data-id="{{ product.id }}" data-price="{{ product.quantity * price }}">
+                                            <a href="#" class="remove-product" data-id="{{ product.id }}" data-price="{{ productTotal }}">
                                                 <i class="fa fa-times"></i>
                                             </a>
                                         </td>
@@ -100,13 +101,13 @@
 
                             {% if promo_price is not null %}
                                 {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}
-                                {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping %}
+                                {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping_price %}
                                 {% set totalWithShipping = shipping + totalWithDiscount %}
                             {% endif %}
-                            <h6 class="text-uppercase">{{ 'cart.total_products' | trans }}: <span><span class="total-price">{{ total }}</span> RSD</span></h6>
+                            <h6 class="text-uppercase">{{ 'cart.total_products' | trans }}: <span><span class="total-price" data-total-price="{{ total }}">{{ total | number_format(2) }}</span> RSD</span></h6>
                             <h6 class="text-uppercase {{ promo_price is null ? 'hide' : '' }} promo-coupon-holder">{{ 'cart.promo_coupon' | trans }}: <span><span class="promo-coupon-discount">{{ promo_price }}</span> %</span></h6>
-                            <h6 class="text-uppercase">{{ 'cart.shipping' | trans }}: <span><span class="shipping-price">{{ shipping }}</span> RSD</span></h6>
-                            <h6 class="text-uppercase">{{ 'cart.total_shipping' | trans }}: <span><span class="total-price-shipping">{{ totalWithShipping | round }}</span> RSD</span></h6>
+                            <h6 class="text-uppercase">{{ 'cart.shipping' | trans }}: <span><span class="shipping-price">{{ shipping | number_format(2) }}</span> RSD</span></h6>
+                            <h6 class="text-uppercase">{{ 'cart.total_shipping' | trans }}: <span><span class="total-price-shipping" data-total-with-shipping="{{ totalWithShipping }}">{{ totalWithShipping | round | number_format(2) }}</span> RSD</span></h6>
                         </div>
                         <div class="sccb-cart-button">
                             <a class="shopping-cart-button hvr-bs text-uppercase {{ products is not defined ? 'disabled' : '' }}" href="{{ path('site.checkout_page') }}">{{ 'cart.next_step' | trans }}</a>

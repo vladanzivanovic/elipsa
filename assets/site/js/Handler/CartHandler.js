@@ -71,19 +71,25 @@ class CartHandler {
             url: AppHelperService.generateLocalizedUrl('site_api.set_order_coupon', {code: this.pageMapper.promoCouponInput.val()}),
             dataType: 'json',
             success: response => {
-                let total = parseInt(this.pageMapper.total.text());
+                let total = parseInt(this.pageMapper.total.data('totalPrice'));
+                let shippingPrice = 0;
+                let totalWithShipping = Math.round(total);
+
                 window.DISCOUNT = response.discount;
                 const totalWithDiscount = total - (total * (window.DISCOUNT/100));
 
                 this.pageMapper.promoCouponPrice.text(response.discount);
                 this.pageMapper.promoCouponPrice.closest('.promo-coupon-holder').removeClass('hide');
 
-                const totalWithShipping = totalWithDiscount >= FREE_SHIPPING ?
-                    totalWithDiscount :
-                    totalWithDiscount + SHIPPING;
+                if (totalWithDiscount < FREE_SHIPPING) {
+                    shippingPrice = SHIPPING;
+                    totalWithShipping = totalWithDiscount + SHIPPING;
+                }
 
-                this.pageMapper.shippingPrice.text(totalWithDiscount >= FREE_SHIPPING ? 0 : SHIPPING);
-                this.pageMapper.totalShipping.text(Math.round(totalWithShipping));
+                this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));
+
+                this.pageMapper.totalShipping.data('totalWithShipping', totalWithShipping);
+                this.pageMapper.totalShipping.text(AppHelperService.formatPrice(Math.round(totalWithShipping)));
 
                 loader.hide();
             },
@@ -107,25 +113,44 @@ class CartHandler {
             const tr = $(elm).closest('tr');
             const quantity = tr.find('input').val();
             const productTotalPrice = tr.find('.product_price_total');
+            let productTotal = quantity * parseInt($(elm).data('price'));
 
-            productTotalPrice.text(quantity * parseInt(elm.innerText));
+            productTotalPrice.text(AppHelperService.formatPrice(productTotal));
 
-            total += parseInt(productTotalPrice.text());
+            total += parseInt(productTotal);
         });
 
-        this.pageMapper.total.text(total);
+        this.pageMapper.total.text(AppHelperService.formatPrice(total));
+
+        let shippingPrice = 0;
+        let totalWithShipping = Math.round(total);
 
         if (window.DISCOUNT > 0) {
             totalWithDiscount = total - (total * (window.DISCOUNT/100));
-            this.pageMapper.shippingPrice.text(totalWithDiscount >= FREE_SHIPPING ? 0 : SHIPPING);
-            this.pageMapper.totalShipping.text(totalWithDiscount >= FREE_SHIPPING ? Math.round(totalWithDiscount) : Math.round(totalWithDiscount + SHIPPING));
+            totalWithShipping = Math.round(totalWithDiscount);
+
+            if (totalWithDiscount < FREE_SHIPPING) {
+                shippingPrice = SHIPPING;
+                totalWithShipping = Math.round(totalWithDiscount + SHIPPING);
+            }
+
+            this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));
+
+            this.pageMapper.totalShipping.data('totalWithShipping', totalWithShipping);
+            this.pageMapper.totalShipping.text(AppHelperService.formatPrice(totalWithShipping));
 
             return true;
         }
 
-        this.pageMapper.shippingPrice.text(total >= FREE_SHIPPING ? 0 : SHIPPING);
+        if (total < FREE_SHIPPING) {
+            shippingPrice = SHIPPING;
+            totalWithShipping = Math.round(total + SHIPPING);
+        }
 
-        this.pageMapper.totalShipping.text(total >= FREE_SHIPPING ? total : Math.round(total + SHIPPING));
+        this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));
+
+        this.pageMapper.totalShipping.data('totalWithShipping', totalWithShipping);
+        this.pageMapper.totalShipping.text(AppHelperService.formatPrice(totalWithShipping));
     }
 }
 

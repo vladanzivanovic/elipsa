@@ -39,10 +39,10 @@
                 <div class="col-md-6 col-xs-12">
                     <div class="single-product-description-area">
                         <h2 class="spd-title">{{ translation.title }}</h2>
-                        <p class="spd-price">{{ product.discount > 0 ? product.discount : product.price }} RSD
+                        <p class="spd-price">{{ product.discount > 0 ? product.discount | number_format(2) : product.price | number_format(2) }} RSD
 
                             {% if product.discount > 0 %}
-                                <span class="spd-old-price">{{ product.price }} RSD</span>
+                                <span class="spd-old-price">{{ product.price | number_format(2) }} RSD</span>
                             {% endif %}
                         </p>
                         <p class="spd-text">{{ translation.shortDescription }}</p>

@@ -1,4 +1,5 @@
 import CartMapper from "../Mapper/CartDropDownMapper";
+import AppHelperService from "../../../js/Helper/AppHelperService";
 
 class CartDropDownDom {
     constructor() {
@@ -13,9 +14,11 @@ class CartDropDownDom {
 
     addProduct(product) {
         let productDom = this.template();
-        let total = parseInt(this.mapper.total.text());
+        let total = parseInt(this.mapper.total.data('cartTotal'));
 
-        productDom = productDom.replace(/image_link|product_id|product_name|product_quantity|product_price/gi, search => {
+        product.product_price_text = AppHelperService.formatPrice(product.product_price);
+
+        productDom = productDom.replace(/image_link|product_id|product_name|product_quantity|product_price_text|product_price/gi, search => {
             return product[search];
         });
 
@@ -24,7 +27,7 @@ class CartDropDownDom {
         if (existingProduct.length > 0) {
             existingProduct.replaceWith(productDom);
 
-            const oldPrice = parseInt($('.quantity-number', existingProduct).text()) * parseInt($('.mcp-pro-price', existingProduct).text());
+            const oldPrice = parseInt($('.quantity-number', existingProduct).data('cartQuantity')) * parseInt($('.mcp-pro-price', existingProduct).data('cartPrice'));
 
             total -= oldPrice;
         }
@@ -37,19 +40,21 @@ class CartDropDownDom {
 
         const price = product.product_price * product.product_quantity;
         total += price;
-        this.mapper.total.text(total);
+        this.mapper.total.data('cartTotal', total);
+        this.mapper.total.text(AppHelperService.formatPrice(total));
     }
 
     removeProduct(id) {
-        let total = parseInt(this.mapper.total.text());
+        let total = parseInt(this.mapper.total.data('cartTotal'));
         const product = $(`.single-product[data-id="${id}"]`);
-        const oldPrice = parseInt($('.quantity-number', product).text()) * parseInt($('.mcp-pro-price', product).text());
+        const oldPrice = parseInt($('.quantity-number', product).data('cartQuantity')) * parseInt($('.mcp-pro-price', product).data('cartPrice'));
 
         product.remove();
 
         total -= oldPrice;
 
-        this.mapper.total.text(total);
+        this.mapper.total.data('cartTotal', total);
+        this.mapper.total.text(AppHelperService.formatPrice(total));
         this.mapper.productLength.text(parseInt(this.mapper.productLength.text()) - 1);
     }
 
@@ -60,7 +65,7 @@ class CartDropDownDom {
                     </div>
                     <div class="single-mcp-content">
                         <a class="mcp-product-name" href="#">product_name</a>
-                        <span class="mcp-pro-quantity"><span class="quantity-number">product_quantity</span> x <span class="mcp-pro-price">product_price RSD</span></span>
+                        <span class="mcp-pro-quantity"><span class="quantity-number" data-cart-quantity="product_quantity">product_quantity</span> x <span class="mcp-pro-price" data-cart-price="product_price">product_price_text RSD</span></span>
                     </div>
                     <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>
                 </div>`;

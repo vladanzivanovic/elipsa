@@ -1096,9 +1096,9 @@ E-mail: {{ buyer.email }}<br>
                                                                         <td align="center" valign="middle">{{ product.size }}</td>
                                                                         <td align="center" valign="middle">{{ color.title }}</td>
                                                                         <td align="center" valign="middle">{{ product.quantity }}</td>
-                                                                        <td align="center" valign="middle">{{ price }} RSD
+                                                                        <td align="center" valign="middle">{{ price | number_format(2) }} RSD
                                                                         </td>
-                                                                        <td align="right" valign="middle">{{ productTotal }} RSD</td>
+                                                                        <td align="right" valign="middle">{{ productTotal | number_format(2) }} RSD</td>
                                                                         {% set total = total + productTotal %}
                                                                     </tr>
                                                                     {% endfor %}
@@ -1121,9 +1121,9 @@ E-mail: {{ buyer.email }}<br>
                                                                         <td align="center" valign="middle">&nbsp;</td>
                                                                         <td align="center" valign="middle">&nbsp;</td>
                                                                         <td align="center" valign="middle">&nbsp;</td>
-                                                                        <td align="center" valign="middle">{{ shippingPrice }} RSD
+                                                                        <td align="center" valign="middle">{{ shippingPrice | number_format(2) }} RSD
                                                                         </td>
-                                                                        <td align="right" valign="middle">{{ shippingPrice }} RSD</td>
+                                                                        <td align="right" valign="middle">{{ shippingPrice | number_format(2) }} RSD</td>
                                                                     </tr>
                                                                     </tbody>
                                                                     <tfoot>
@@ -1132,7 +1132,8 @@ E-mail: {{ buyer.email }}<br>
                                                                         <td align="center" height="35"><span
                                                                                     style="font-size:18px"><strong>{{ 'email.order.total_shipping' | trans }}</strong></span>:
                                                                         </td>
-                                                                        <td align="right" valign="middle">{{ total + shippingPrice | round }} RSD</td>
+                                                                        {% set totalWithShipping = total + shippingPrice %}
+                                                                        <td align="right" valign="middle">{{ totalWithShipping | round | number_format(2) }} RSD</td>
                                                                     </tr>
                                                                     </tfoot>
                                                                     <tfoot>

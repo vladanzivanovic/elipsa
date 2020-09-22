@@ -111,7 +111,7 @@
                                                     <span class="wishlist-desc">{{ order.quantity }}</span>
                                                 </td>
                                                 <td class="wishlist_price">
-                                                    <span class="product_price">{{ price }} RSD</span>
+                                                    <span class="product_price">{{ price | number_format(2) }} RSD</span>
                                                 </td>
                                                 <td class="wishlist_color">
                                                     <span class="product_color_box" style="background: {{ order.hex }};"></span>

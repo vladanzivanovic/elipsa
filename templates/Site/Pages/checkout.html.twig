@@ -82,23 +82,24 @@
                             <ul>
                                 {% for product in products %}
                                     {% set price = product.discount > 0 ? product.discount : product.price %}
-                                    <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ product.quantity * price }} RSD</span></li>
+                                    {% set productTotal = product.quantity * price %}
+                                    <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ productTotal | number_format(2)  }} RSD</span></li>
                                 {% endfor %}
                                 {% set totalWithDiscount = total %}
                                 {% set totalWithShipping = shipping + total %}
 
                                 {% if promo_price is not null %}
                                     {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}
-                                    {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping %}
+                                    {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping_price %}
                                     {% set totalWithShipping = shipping + totalWithDiscount %}
                                 {% endif %}
 
-                                <li class="order-total clearfix">{{ 'cart.total_products' | trans }} <span>{{ total }} RSD</span></li>
+                                <li class="order-total clearfix">{{ 'cart.total_products' | trans }} <span>{{ total | number_format(2) }} RSD</span></li>
                                 <li class="order-total {{ promo_price is null ? 'hide' : '' }} clearfix">{{ 'cart.promo_coupon' | trans }} <span>{{ promo_price }} %</span></li>
-                                <li class="order-total clearfix">{{ 'cart.shipping' | trans }} <span>{{ shipping }} RSD</span></li>
+                                <li class="order-total clearfix">{{ 'cart.shipping' | trans }} <span>{{ shipping | number_format(2) }} RSD</span></li>
                                 <li class="order-total clearfix">
                                     {{ 'cart.total_shipping' | trans }}
-                                    <span>{{ totalWithShipping | round | number_format(2, '.', '') }} RSD</span>
+                                    <span>{{ totalWithShipping | round | number_format(2) }} RSD</span>
                                     <input type="hidden" name="total_amount" value="{{ totalWithShipping | round }}">
                                 </li>
                             </ul>

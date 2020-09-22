@@ -20,7 +20,7 @@
                                 <h4 class="font-weight-medium text-uppercase text-right mt-4 mb-2">narudžbenica</h4>
                                 <h6 class="text-right mb-5 pb-4"># {{ id }}</h6>
                                 <p class="text-right mb-1">Ukupno</p>
-                                <h4 class="text-right font-weight-normal">{{ total }} RSD</h4>
+                                <h4 class="text-right font-weight-normal">{{ total | number_format(2) }} RSD</h4>
                                 <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ orderDate }}</h6>
                                 <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Tip naplate:</span> {{ orderTypeText | trans }}</h6>
                                 <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Status plaćanja:</span> {{ statusText | trans }}</h6>
@@ -67,8 +67,8 @@
                                             <td class="text-left">{{ product.id }}</td>
                                             <td class="text-left">{{ product.name }}</td>
                                             <td>{{ product.quantity }}</td>
-                                            <td>{{ product.price }} RSD</td>
-                                            <td>{{ product.priceWithQuantity }}</td>
+                                            <td>{{ product.price | number_format(2) }} RSD</td>
+                                            <td>{{ product.priceWithQuantity | number_format(2) }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -92,16 +92,16 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Ukupno sa popustom</td>
-                                                    <td class="text-right">{{ priceWithDiscount }} RSD</td>
+                                                    <td class="text-right">{{ priceWithDiscount | number_format(2) }} RSD</td>
                                                 </tr>
                                             {% endif %}
                                             <tr>
                                                 <td>Poštarina</td>
-                                                <td class="text-right">{{ shippingPrice }} RSD</td>
+                                                <td class="text-right">{{ shippingPrice | number_format(2) }} RSD</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-bold-800">Ukupno</td>
-                                                <td class="text-bold-800 text-right">{{ total }} RSD</td>
+                                                <td class="text-bold-800 text-right">{{ total | number_format(2) }} RSD</td>
                                             </tr>
                                             </tbody>
                                         </table>

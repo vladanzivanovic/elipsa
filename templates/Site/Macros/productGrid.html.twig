@@ -41,9 +41,9 @@
                     <a class="sfi-name" href="{{ path('site.product_page', {'slug': product.slug}) }}">{{ product.title }}</a>
                 </div>
                 <div class="sfi-price-rating">
-                    <p class="sfi-price text-uppercase"><span class="{{  product.discount > 0 ? 'discount-price' : '' }}">{{ product.discount > 0 ? product.discount : product.price }} RSD</span></p>
+                    <p class="sfi-price text-uppercase"><span class="{{  product.discount > 0 ? 'discount-price' : '' }}">{{ product.discount > 0 ? product.discount | number_format(2) : product.price | number_format(2) }} RSD</span></p>
                     {% if product.discount > 0 %}
-                        <p class="sfi-old-price">-{{ product.price }} RSD</p>
+                        <p class="sfi-old-price">-{{ product.price | number_format(2) }} RSD</p>
                     {% endif %}
                 </div>
             </div>

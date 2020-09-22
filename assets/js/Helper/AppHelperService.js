@@ -39,6 +39,9 @@ class AppHelperService {
         return Routing.generate(url, data);
     }
 
+    static formatPrice(price) {
+        return price.toLocaleString(LOCALE, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
 };
 
 export default AppHelperService;
