@@ -79,8 +79,6 @@ final class CollaboratorRequestParser
             ->setPhone($bag->get('telephone'))
             ->setWebsite($bag->get('website'));
 
-        $docPath = $this->parameterBag->get('upload_dir').$this->parameterBag->get('upload_document_dir');
-
         if ($files->has('presentation')) {
             /** @var UploadedFile $file */
             $file = $files->get('presentation');

@@ -16,7 +16,6 @@ class LoginHandler {
             password: $(this.mapper.loginPassword).val(),
         };
 
-        this.notification.remove();
         this.notification.showLoadingMessage();
 
         $.ajax({

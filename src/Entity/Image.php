@@ -18,6 +18,8 @@ class Image
     public const RELATED_TYPE_BLOG = 5;
     public const RELATED_TYPE_CATALOG = 6;
     public const RELATED_TYPE_COLLABORATOR = 7;
+    public const RELATED_TYPE_DESCRIPTION = 8;
+    public const RELATED_TYPE_CAREER = 9;
 
     public const DEVICE_DESKTOP = 1;
     public const DEVICE_MOBILE = 2;

@@ -71,8 +71,8 @@ final class ImageFileSystemListener
         }
 
         $rootDir = $this->bag->get('upload_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
+        $uploadDir = $this->bag->get('upload_image_dir');
 
-        $this->imageService->moveImageToFinalPath($entity->getFile(), $rootDir.$imageDir, $entity->getOriginalName());
+        $this->imageService->moveImageToFinalPath($entity->getFile(), $rootDir.$uploadDir, $entity->getOriginalName());
     }
 }

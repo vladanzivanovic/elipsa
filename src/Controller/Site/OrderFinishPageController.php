@@ -85,11 +85,12 @@ final class OrderFinishPageController extends AbstractController
     {
         $locale = $request->getSession()->get('_locale');
         $orderId = $request->getMethod() === Request::METHOD_POST ?
-            $request->request->getInt('ReturnOid') : $request->getSession()->get('order');
+            $request->request->getInt('oid') : $request->getSession()->get('order');
 
-        $data = $this->handler->completeCheckoutOnFail($orderId, $locale, $request->request);
+        $data = $this->handler->completeCheckoutOnFail($orderId, $request->request);
 
         $request->getSession()->set('order', $orderId);
 
-        return $this->pageFormatter->formatResponse($data, $locale, $request->request);    }
+        return $this->pageFormatter->formatResponse($data, $locale, $request->request);
+    }
 }

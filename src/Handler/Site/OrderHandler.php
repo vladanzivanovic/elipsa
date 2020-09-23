@@ -201,7 +201,7 @@ final class OrderHandler
      *
      * @throws \ReflectionException
      */
-    public function completeCheckoutOnFail(int $orderId, string $locale, ParameterBag $bag): array
+    public function completeCheckoutOnFail(int $orderId, ParameterBag $bag): array
     {
         $order = $this->orderRepository->find($orderId);
 

@@ -64,8 +64,8 @@ final class CollaboratorDetailResponseFormatter
             'noFloors' => $collaborator->getNumberOfFloors(),
             'hasStore' => $this->translator->trans(ConstantsHelper::getConstantName((string) $collaborator->getStore(), 'SPACE', Collaborator::class)),
             'location' => $this->translator->trans(ConstantsHelper::getConstantName((string) $collaborator->getLocation(), 'LOCATION', Collaborator::class)),
-            'plan_doc' => null !== $plan ? $this->router->generate('app.download_doc', ['id' => $plan->getName()], RouterInterface::ABSOLUTE_URL) : null,
-            'presentation_doc' => null !== $presentation ? $this->router->generate('app.download_doc', ['id' => $presentation->getName()], RouterInterface::ABSOLUTE_URL) : null,
+            'plan_doc' => null !== $plan ? $this->router->generate('app.download_doc', ['id' => $plan->getId()], RouterInterface::ABSOLUTE_URL) : null,
+            'presentation_doc' => null !== $presentation ? $this->router->generate('app.download_doc', ['id' => $presentation->getId()], RouterInterface::ABSOLUTE_URL) : null,
         ];
     }
 }

@@ -150,11 +150,10 @@ class ImageService
     public function uploadToPath($file, string $path): File
     {
         if (!$file instanceof UploadedFile) {
-
+            // TODO set instance for UploadedFile
         }
 
         try {
-            /** @var File $movedFile */
             $movedFile = $file->move($path, $file->getClientOriginalName());
         } catch (\Throwable $throwable) {
             dd($throwable);

@@ -1,8 +1,12 @@
 import 'summernote/dist/summernote';
+import 'summernote-file';
+import SummerNoteHandler from "../Handler/SummerNoteHandler";
 
 class SummerNote {
     constructor()
     {
+        this.handler = new SummerNoteHandler();
+
         this.toolbar = [
             ['style', ['bold', 'italic', 'underline', 'clear']],
             ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -10,7 +14,7 @@ class SummerNote {
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
-            ['insert', ['link', 'picture', 'video']],
+            ['insert', ['link', 'picture', 'video', 'file']],
         ];
     }
 
@@ -25,33 +29,11 @@ class SummerNote {
         el.summernote(options);
     }
 
-    sendSummernoteFile(el, file, entity) {
-        let data = new FormData();
-        data.set('tmp_image', file);
-        data.set('entity', entity);
-
-        return $.ajax({
-            type: 'POST',
-            url: Routing.generate('admin.summernote_image_resize'),
-            data: data,
-            contentType: false,
-            processData: false,
-        });
-    }
-
-    removeSummernoteImage(filename) {
-        return $.ajax({
-            type: 'DELETE',
-            url: Routing.generate('admin.remove_summernote_image', {filename}),
-            dataType: 'json'
-        })
-    }
-
     createCallBacksSummernote(el, entity)
     {
         return {
             onImageUpload: files => {
-                this.sendSummernoteFile(el, files[0], entity)
+                this.handler.sendSummernoteImage(el, files[0], entity)
                     .then(response => {
                         el.summernote('insertImage', response.file_url, function ($image) {
                             $image.attr('data-filename', response.file_name);
@@ -59,7 +41,19 @@ class SummerNote {
                     })
             },
             onMediaDelete: target => {
-                this.removeSummernoteImage(target[0].dataset.filename);
+                this.handler.removeSummernoteImage(target[0].dataset.filename);
+            },
+            onFileUpload: files => {
+                this.handler.sendSummernoteFile(el, files[0])
+                    .then(response => {
+                        const file = files[0];
+                        let elem = document.createElement("a");
+                        let linkText = document.createTextNode(file.name);
+                        elem.appendChild(linkText);
+                        elem.title = file.name;
+                        elem.href = response.file_url;
+                        el.summernote('editor.insertNode', elem);
+                    });
             }
         }
     }

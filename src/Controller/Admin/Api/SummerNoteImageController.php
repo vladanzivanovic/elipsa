@@ -37,8 +37,6 @@ class SummerNoteImageController extends AbstractController
     private $bag;
 
     /**
-     * SummerNoteImageController constructor.
-     *
      * @param ImageResizer          $imageResizer
      * @param RouterInterface       $router
      * @param ImageService          $imageService
@@ -78,7 +76,6 @@ class SummerNoteImageController extends AbstractController
             ]);
 
         } catch (\Throwable $throwable) {
-            dd($throwable->getMessage());
             return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
         }
     }

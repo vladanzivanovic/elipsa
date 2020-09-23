@@ -90,7 +90,7 @@ final class CareerRequestParser
             $doc->setOriginalName($file->getClientOriginalName());
             $doc->setFile($file);
             $doc->setDevice(0);
-            $doc->setRelatedToType(Image::RELATED_TYPE_COLLABORATOR);
+            $doc->setRelatedToType(Image::RELATED_TYPE_CAREER);
             $doc->setIsMain(true);
 
             $career->setCv($doc);
