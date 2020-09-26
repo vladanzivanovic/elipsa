@@ -44,7 +44,7 @@ class RenderImagesController extends AbstractController
     }
 
     /**
-     * @Route("/{entity}-image/{filter}/{name}.jpg",
+     * @Route("/{entity}-image/{filter}/{name}.jpeg",
      *     methods={"GET"},
      *     name="app.image_show",
      *     requirements={
