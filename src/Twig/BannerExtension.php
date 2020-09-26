@@ -93,7 +93,7 @@ final class BannerExtension extends AbstractExtension
             $mobileImage = $this->imageRepository->findOneBy(['parentImage' => $banner->getImage()->getName(), 'device' => Image::DEVICE_MOBILE]);
 
             if (null !== $mobileImage) {
-                $imageName = $mobileImage->getOriginalName();
+                $imageName = $mobileImage->getName();
             }
         }
 
