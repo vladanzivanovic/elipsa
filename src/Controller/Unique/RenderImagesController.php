@@ -71,7 +71,7 @@ class RenderImagesController extends AbstractController
         } catch (NotLoadableException $notLoadableException) {
             $image = $this->imageRepository->findOneBy(['name' => $name]);
 
-            $response = $this->imageResizer->renderImageWithFilter($uploadDir.$image->getName(), $filter);
+            $response = $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), $filter);
             $date = new \DateTime();
             $date->modify('+864000 seconds');
 
