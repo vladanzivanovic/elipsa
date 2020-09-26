@@ -100,7 +100,7 @@
         }
 
         .templateContainer {
-            max-width: 800px !important;
+            max-width: 600px !important;
         }
 
         a.mcnButton {
@@ -477,7 +477,7 @@
 
         @media only screen and (min-width: 768px) {
             .templateContainer {
-                width: 800px !important;
+                width: 600px !important;
             }
 
         }
@@ -493,13 +493,6 @@
             body {
                 width: 100% !important;
                 min-width: 100% !important;
-            }
-
-        }
-
-        @media only screen and (max-width: 480px) {
-            #bodyCell {
-                padding-top: 10px !important;
             }
 
         }
@@ -761,14 +754,35 @@
         <tr>
             <td align="center" valign="top" id="bodyCell">
                 <!-- BEGIN TEMPLATE // -->
-                <table border="0" cellpadding="0" cellspacing="0" width="800px">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td align="center" valign="top" id="templatePreheader">
+                            <!--[if (gte mso 9)|(IE)]>
+                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600"
+                                   style="width:600px;">
+                                <tr>
+                                    <td align="center" valign="top" width="600" style="width:600px;">
+                            <![endif]-->
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
+                                   class="templateContainer">
+                                <tr>
+                                    <td valign="top" class="preheaderContainer"></td>
+                                </tr>
+                            </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                        </td>
+                    </tr>
                     <tr>
                         <td align="center" valign="top" id="templateHeader">
                             <!--[if (gte mso 9)|(IE)]>
-                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="800"
-                                   style="width:800px;">
+                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600"
+                                   style="width:600px;">
                                 <tr>
-                                    <td align="center" valign="top" width="800" style="width:800px;">
+                                    <td align="center" valign="top" width="600" style="width:600px;">
                             <![endif]-->
                             <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
                                    class="templateContainer">
@@ -815,18 +829,19 @@
                                                     <![endif]-->
 
                                                     <!--[if mso]>
-                                                    <td valign="top" width="400" style="width:300px;">
+                                                    <td valign="top" width="600" style="width:600px;">
                                                     <![endif]-->
                                                     <table align="left" border="0" cellpadding="0" cellspacing="0"
-                                                           style="max-width:400px;" width="100%"
+                                                           style="max-width:100%; min-width:100%;" width="100%"
                                                            class="mcnTextContentContainer">
                                                         <tbody>
                                                         <tr>
 
                                                             <td valign="top" class="mcnTextContent"
-                                                                style="padding: 0px 18px 9px; font-size: 18px; text-align: left;">
+                                                                style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
 
-                                                                <span style="font-size:18px"><strong>{{ 'email.order.seller' | trans }}:</strong></span>
+                                                                <div style="text-align: center;">{{ 'email.order.failed.message' | trans | raw }}</div>
+
                                                             </td>
                                                         </tr>
                                                         </tbody>
@@ -836,10 +851,50 @@
                                                     <![endif]-->
 
                                                     <!--[if mso]>
-                                                    <td valign="top" width="400" style="width:300px;">
+                                                    </tr>
+                                                    </table>
+                                                    <![endif]-->
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                               class="mcnTextBlock" style="min-width:100%;">
+                                            <tbody class="mcnTextBlockOuter">
+                                            <tr>
+                                                <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+                                                    <!--[if mso]>
+                                                    <table align="left" border="0" cellspacing="0" cellpadding="0"
+                                                           width="100%" style="width:100%;">
+                                                        <tr>
+                                                    <![endif]-->
+
+                                                    <!--[if mso]>
+                                                    <td valign="top" width="300" style="width:300px;">
                                                     <![endif]-->
                                                     <table align="left" border="0" cellpadding="0" cellspacing="0"
-                                                           style="max-width:400px;" width="100%"
+                                                           style="max-width:300px;" width="100%"
+                                                           class="mcnTextContentContainer">
+                                                        <tbody>
+                                                        <tr>
+
+                                                            <td valign="top" class="mcnTextContent"
+                                                                style="padding: 0px 18px 9px; font-size: 18px; text-align: left;">
+
+                                                                <span style="font-size:18px"><strong>{{ 'email.order.seller' | trans }}</strong></span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <!--[if mso]>
+                                                    </td>
+                                                    <![endif]-->
+
+                                                    <!--[if mso]>
+                                                    <td valign="top" width="300" style="width:300px;">
+                                                    <![endif]-->
+                                                    <table align="left" border="0" cellpadding="0" cellspacing="0"
+                                                           style="max-width:300px;" width="100%"
                                                            class="mcnTextContentContainer">
                                                         <tbody>
                                                         <tr>
@@ -902,10 +957,10 @@
                     <tr>
                         <td align="center" valign="top" id="templateBody">
                             <!--[if (gte mso 9)|(IE)]>
-                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="800"
-                                   style="width:800px;">
+                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600"
+                                   style="width:600px;">
                                 <tr>
-                                    <td align="center" valign="top" width="800" style="width:800px;">
+                                    <td align="center" valign="top" width="600" style="width:600px;">
                             <![endif]-->
                             <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
                                    class="templateContainer">
@@ -923,10 +978,10 @@
                                                     <![endif]-->
 
                                                     <!--[if mso]>
-                                                    <td valign="top" width="400" style="width:400px;">
+                                                    <td valign="top" width="300" style="width:300px;">
                                                     <![endif]-->
                                                     <table align="left" border="0" cellpadding="0" cellspacing="0"
-                                                           style="max-width:400px;" width="100%"
+                                                           style="max-width:300px;" width="100%"
                                                            class="mcnTextContentContainer">
                                                         <tbody>
                                                         <tr>
@@ -950,10 +1005,10 @@ E-mail: {{ seller.email }}<br>
                                                     <![endif]-->
 
                                                     <!--[if mso]>
-                                                    <td valign="top" width="400" style="width:400px;">
+                                                    <td valign="top" width="300" style="width:300px;">
                                                     <![endif]-->
                                                     <table align="left" border="0" cellpadding="0" cellspacing="0"
-                                                           style="max-width:400px;" width="100%"
+                                                           style="max-width:300px;" width="100%"
                                                            class="mcnTextContentContainer">
                                                         <tbody>
                                                         <tr>
@@ -995,7 +1050,7 @@ E-mail: {{ buyer.email }}<br>
                                                     <![endif]-->
 
                                                     <!--[if mso]>
-                                                    <td valign="top" width="800" style="width:800px;">
+                                                    <td valign="top" width="600" style="width:600px;">
                                                     <![endif]-->
                                                     <table align="left" border="0" cellpadding="0" cellspacing="0"
                                                            style="max-width:100%; min-width:100%;" width="100%"
@@ -1060,7 +1115,7 @@ E-mail: {{ buyer.email }}<br>
                                                     <![endif]-->
 
                                                     <!--[if mso]>
-                                                    <td valign="top" width="800" style="width:800px;">
+                                                    <td valign="top" width="600" style="width:600px;">
                                                     <![endif]-->
                                                     <table align="left" border="0" cellpadding="0" cellspacing="0"
                                                            style="max-width:100%; min-width:100%;" width="100%"
@@ -1089,18 +1144,18 @@ E-mail: {{ buyer.email }}<br>
                                                                         {% set color = product.color.getByLocale('rs') %}
                                                                         {% set price = product.discount > 0 ? product.discount : product.price %}
                                                                         {% set productTotal = product.quantity * price %}
-                                                                    <tr>
-                                                                        <td align="center" valign="middle">
-                                                                            {{ trans.title }}&nbsp;
-                                                                        </td>
-                                                                        <td align="center" valign="middle">{{ product.size }}</td>
-                                                                        <td align="center" valign="middle">{{ color.title }}</td>
-                                                                        <td align="center" valign="middle">{{ product.quantity }}</td>
-                                                                        <td align="center" valign="middle">{{ price | number_format(2) }} RSD
-                                                                        </td>
-                                                                        <td align="right" valign="middle">{{ productTotal | number_format(2) }} RSD</td>
-                                                                        {% set total = total + productTotal %}
-                                                                    </tr>
+                                                                        <tr>
+                                                                            <td align="center" valign="middle">
+                                                                                {{ trans.title }}&nbsp;
+                                                                            </td>
+                                                                            <td align="center" valign="middle">{{ product.size }}</td>
+                                                                            <td align="center" valign="middle">{{ color.title }}</td>
+                                                                            <td align="center" valign="middle">{{ product.quantity }}</td>
+                                                                            <td align="center" valign="middle">{{ price | number_format(2) }} RSD
+                                                                            </td>
+                                                                            <td align="right" valign="middle">{{ productTotal | number_format(2) }} RSD</td>
+                                                                            {% set total = total + productTotal %}
+                                                                        </tr>
                                                                     {% endfor %}
                                                                     {% if promotion is not null %}
                                                                         <tr>
@@ -1156,8 +1211,8 @@ E-mail: {{ buyer.email }}<br>
                                             </tr>
                                             </tbody>
                                         </table>
-
                                         {% if paymentType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                                    class="mcnDividerBlock" style="min-width:100%;">
                                                 <tbody class="mcnDividerBlockOuter">
@@ -1270,7 +1325,7 @@ E-mail: {{ buyer.email }}<br>
                                                                 <td valign="top" class="mcnTextContent"
                                                                     style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
 
-                                                                    {{ 'checkout.finish.transaction_status_label' | trans }}:<span style="font-size:14px">&nbsp;{{ 'checkout.finish.transaction_status_success' | trans }}</span><br>
+                                                                    {{ 'checkout.finish.transaction_status_label' | trans }}:<span style="font-size:14px">&nbsp;{{ 'checkout.finish.transaction_status_failed' | trans }}</span><br>
                                                                     {{ 'checkout.finish.order_id' | trans }}:&nbsp;<span
                                                                             style="font-size:14px">{{ orderId }}</span><br>
                                                                     {{ 'checkout.finish.auth_code' | trans }}:&nbsp;<span
@@ -1323,32 +1378,8 @@ E-mail: {{ buyer.email }}<br>
                                                 </tbody>
                                             </table>
                                         {% endif %}
-
                                         {% if accountCreated == true %}
-                                            <table border="0" cellpadding="0" cellspacing="0" width="100%"
-                                                   class="mcnDividerBlock" style="min-width:100%;">
-                                                <tbody class="mcnDividerBlockOuter">
-                                                <tr>
-                                                    <td class="mcnDividerBlockInner" style="min-width:100%; padding:18px;">
-                                                        <table class="mcnDividerContent" border="0" cellpadding="0"
-                                                               cellspacing="0" width="100%"
-                                                               style="min-width: 100%;border-top: 2px solid #EAEAEA;">
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <span></span>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <!--
-                                                                        <td class="mcnDividerBlockInner" style="padding: 18px;">
-                                                                        <hr class="mcnDividerContent" style="border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;" />
-                                                        -->
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                                    class="mcnTextBlock" style="min-width:100%;">
                                                 <tbody class="mcnTextBlockOuter">
@@ -1405,10 +1436,10 @@ E-mail: {{ buyer.email }}<br>
                     <tr>
                         <td align="center" valign="top" id="templateFooter">
                             <!--[if (gte mso 9)|(IE)]>
-                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="800"
-                                   style="width:800px;">
+                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600"
+                                   style="width:600px;">
                                 <tr>
-                                    <td align="center" valign="top" width="800" style="width:800px;">
+                                    <td align="center" valign="top" width="600" style="width:600px;">
                             <![endif]-->
                             <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
                                    class="templateContainer">

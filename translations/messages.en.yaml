@@ -146,7 +146,7 @@ checkout.account_deactivated: Account with email address %email% is deactivated.
 checkout.finish.transaction_detail: Transaction details
 checkout.finish.transaction_status_label: Transaction status
 checkout.finish.transaction_status_success_detail_text: You order has been successfully paid - your accout is in charge.
-checkout.finish.transaction_status_failed: Payment failed, your account is not charged, maybe your card number is not right, expiration date or securty code. Please, try again and in case of consecutive fails call your bank.
+checkout.finish.transaction_status_failed: Payment failed, your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
 checkout.finish.transaction_date_time: Transaction date
 checkout.finish.auth_code: Authorization Code
 checkout.finish.order_id: Order ID
@@ -196,12 +196,14 @@ email.order.seller.account: Account number
 email.order.seller.address: Address
 email.order.seller.telephone: Telephone
 email.order.seller.mobile: Mobile phone
+email.order.failed.message: Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
+
 
 email.order.buyer: Buyer
 email.order.buyer.full_name: Name and surname
 email.order.buyer.city: City/Town
 email.order.buyer.street_number: Street and number
-email.order.buyer.paymet_type: Payment
+email.order.buyer.payment_type: Payment
 
 email.registration.title: Account registration on site %siteName%
 email.registration.success.text: Your registration was successull

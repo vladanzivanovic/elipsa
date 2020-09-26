@@ -55,6 +55,11 @@ final class OrderHandler
     private $orderProductRepository;
 
     /**
+     * @var bool
+     */
+    private $isSuccessfulTransaction = false;
+
+    /**
      * @param ValidatorHelper          $validator
      * @param ShopOrderRepository      $orderRepository
      * @param SessionInterface         $session
@@ -159,6 +164,8 @@ final class OrderHandler
      */
     public function completeCheckoutOnSuccess(int $orderId, string $locale, ParameterBag $bag): array
     {
+        $this->isSuccessfulTransaction = true;
+
         $order = $this->orderRepository->find($orderId);
         $order->setStatus(ShopOrder::STATUS_COMPLETED);
 
@@ -169,24 +176,7 @@ final class OrderHandler
 
         $this->orderRepository->flush();
 
-        $settings = $this->getSettings();
-
-        $isAccountCreated = $order->getUser()->getResetToken() !== null;
-
-        $emailModelCustomer = $this->prepareEmail($order, $settings, $isAccountCreated, $locale, $bag);
-        $event = new EmailEvent($emailModelCustomer);
-        $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
-
-        $emailModelAdmin = $emailModelCustomer;
-        $emailModelAdmin->setTo($emailModelCustomer->getFrom());
-        $emailModelAdmin->setToName($emailModelCustomer->getFromName());
-
-        $templateData = $emailModelAdmin->getTemplateData();
-        $templateData['accountCreated'] = false;
-        $emailModelAdmin->setTemplateData($templateData);
-
-        $event = new EmailEvent($emailModelAdmin);
-        $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+        $this->sendEmail($order, $locale, $bag);
 
         return ['order' => $order, 'settings' => $settings];
     }
@@ -194,15 +184,16 @@ final class OrderHandler
     /**
      * @param int      $orderId
      * @param string   $locale
-     *
      * @param InputBag $bag
      *
      * @return array
      *
      * @throws \ReflectionException
      */
-    public function completeCheckoutOnFail(int $orderId, ParameterBag $bag): array
+    public function completeCheckoutOnFail(int $orderId, string $locale, ParameterBag $bag): array
     {
+        $this->isSuccessfulTransaction = false;
+
         $order = $this->orderRepository->find($orderId);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
@@ -219,6 +210,8 @@ final class OrderHandler
 
         $this->orderRepository->flush();
 
+        $this->sendEmail($order, $locale, $bag);
+
         return ['order' => $order, 'settings' => $settings];
     }
 
@@ -232,8 +225,13 @@ final class OrderHandler
      * @return EmailModel
      * @throws \ReflectionException
      */
-    private function prepareEmail(ShopOrder $order, array $settings, bool $isAccountCreated, string $locale, ParameterBag $parameterBag): EmailModel
-    {
+    private function prepareEmail(
+        ShopOrder $order,
+        array $settings,
+        bool $isAccountCreated,
+        string $locale,
+        ParameterBag $parameterBag
+    ): EmailModel {
         $user = $order->getUser();
         $address = $order->getShippingAddress();
         $products = $order->getOrderProducts();
@@ -266,6 +264,7 @@ final class OrderHandler
             'accountCreated'    => $isAccountCreated,
             'paymentType'       => $order->getPaymentType(),
             'orderId'           => $order->getId(),
+            'isSuccessfulTransaction' => $this->isSuccessfulTransaction
         ];
 
         if (true === $isAccountCreated) {
@@ -274,7 +273,7 @@ final class OrderHandler
         }
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $templateData['transaction_date_time'] = new \DateTime($parameterBag->get('EXTRA_TRXDATE'));
+            $templateData['transaction_date_time'] = $parameterBag->has('EXTRA_TRXDATE') ? new \DateTime($parameterBag->get('EXTRA_TRXDATE')) : null;
             $templateData['transaction_id'] = $parameterBag->get('TransId');
             $templateData['auth_code'] = $parameterBag->get('AuthCode');
             $templateData['payment_response'] = $parameterBag->get('Response');
@@ -284,7 +283,7 @@ final class OrderHandler
 
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_USER_ORDERED);
-        $model->setTemplate('order');
+        $model->setTemplate(true === $this->isSuccessfulTransaction ? 'order' : 'failedOrder');
         $model->setTo($user->getEmail());
         $model->setToName($user->getFirstName().' '.$user->getLastName());
         $model->setSubject($this->translator->trans('email.order.data.title', ['orderId' => $order->getId()]));
@@ -295,6 +294,37 @@ final class OrderHandler
         $model->setTemplateData($templateData);
 
         return $model;
+    }
+
+    /**
+     * @param ShopOrder    $order
+     * @param string       $locale
+     * @param ParameterBag $bag
+     *
+     * @throws \ReflectionException
+     */
+    private function sendEmail(ShopOrder $order, string $locale, ParameterBag $bag): void
+    {
+        $settings = $this->getSettings();
+
+        $isAccountCreated = $order->getUser()->getResetToken() !== null;
+
+        $emailModelCustomer = $this->prepareEmail($order, $settings, $isAccountCreated, $locale, $bag);
+        $event = new EmailEvent($emailModelCustomer);
+        $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+
+        if (true === $this->isSuccessfulTransaction) {
+            $emailModelAdmin = $emailModelCustomer;
+            $emailModelAdmin->setTo($emailModelCustomer->getFrom());
+            $emailModelAdmin->setToName($emailModelCustomer->getFromName());
+
+            $templateData = $emailModelAdmin->getTemplateData();
+            $templateData['accountCreated'] = false;
+            $emailModelAdmin->setTemplateData($templateData);
+
+            $event = new EmailEvent($emailModelAdmin);
+            $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+        }
     }
 
     /**

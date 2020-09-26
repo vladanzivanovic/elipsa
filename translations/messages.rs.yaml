@@ -189,12 +189,13 @@ email.order.seller.account: Žiro račun
 email.order.seller.address: Adresa
 email.order.seller.telephone: Telefon
 email.order.seller.mobile: Mobilni telefon
+email.order.failed.message: Plaćanje nije uspešno.<br> Vas racun nije zaduze, najcesci uzrok je pogresano unet brtoj kartice, datum isteka ili sigurnosni kod. Pokusajte ponovo, u slucaju uzastopnih gresaka pozovite vasu banku.
 
 email.order.buyer: Kupac
 email.order.buyer.full_name: Ime i prezime
 email.order.buyer.city: Grad
 email.order.buyer.street_number: Ulica i broj
-email.order.buyer.paymet_type: Plaćanje
+email.order.buyer.payment_type: Plaćanje
 
 email.order.data.title: Podaci o porudžbini
 email.order.table.product_name: Naziv proizvoda

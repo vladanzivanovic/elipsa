@@ -87,7 +87,7 @@ final class OrderFinishPageController extends AbstractController
         $orderId = $request->getMethod() === Request::METHOD_POST ?
             $request->request->getInt('oid') : $request->getSession()->get('order');
 
-        $data = $this->handler->completeCheckoutOnFail($orderId, $request->request);
+        $data = $this->handler->completeCheckoutOnFail($orderId, $locale, $request->request);
 
         $request->getSession()->set('order', $orderId);
 
