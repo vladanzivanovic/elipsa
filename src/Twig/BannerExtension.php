@@ -85,7 +85,7 @@ final class BannerExtension extends AbstractExtension
             return null;
         }
 
-        $imageName = $banner->getImage()->getOriginalName();
+        $imageName = $banner->getImage()->getName();
 
         $trans = $banner->getByLocale($locale);
 
