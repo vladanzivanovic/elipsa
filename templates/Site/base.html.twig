@@ -22,7 +22,8 @@
     <!-- CSS -->
 
     {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/app.css') }}"/>
+        {{ encore_entry_link_tags('css/site/app') }}
+{#        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/app.css') }}"/>#}
     {% endblock %}
     {% block pageStyleSheets %}{% endblock %}
 
@@ -80,11 +81,12 @@
             window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
             const LANG_MAPPER = {'rs': 'sr_RS', 'en': 'en_US'};
         </script>
-        <script type="text/javascript" src="{{ preload(asset('build/runtime.js')) }}"></script>
+{#        <script type="text/javascript" src="{{ preload(asset('build/runtime.js')) }}"></script>#}
         <script type="text/javascript" src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
         <script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': 'rs,en' }) }}"></script>
         <script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': 'rs,en' }) }}"></script>
-        <script type="text/javascript" src="{{ asset('build/js/site/core.js') }}"></script>
+        {{ encore_entry_script_tags('js/site/core') }}
+        {#        <script type="text/javascript" src="{{ asset('build/js/site/core.js') }}"></script>#}
         <script type="text/javascript" src="{{ asset('js/router.min.js') }}"></script>
         <script type="text/javascript" src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% endblock %}
