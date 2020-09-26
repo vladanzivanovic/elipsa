@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 final class ImageResizer
 {
@@ -66,25 +64,16 @@ final class ImageResizer
 
     /**
      * @param string $path
-     * @param string $fileName
      * @param string $filter
      *
      * @return BinaryFileResponse
      */
-    public function renderImageWithFilter(string $path, string $fileName, string $filter): BinaryFileResponse
+    public function renderImageWithFilter(string $path, string $filter): BinaryFileResponse
     {
         $url = $this->filterService->getUrlOfFilteredImage($path, $filter);
 
         $path = parse_url($url, PHP_URL_PATH);
 
-        return new BinaryFileResponse($this->rootDir.$path, 200, array(
-            'Content-Type' => 'image/jpeg', // Guessing probably all jpegs.
-            'Content-Transfer-Encoding' => 'binary',
-            'Content-Disposition' => 'inline; filename="' . $fileName . '"',
-            'Content-Length' => filesize($path . $fileName),
-            'Expires' => date(DATE_RFC822, strtotime("+2 days")),
-            'Cache-Control' => 'public, max-age=10800, pre-check=10800',
-            'Pragma' => 'public',
-        ), true, ResponseHeaderBag::DISPOSITION_INLINE);
+        return new BinaryFileResponse($this->rootDir.$path);
     }
 }
