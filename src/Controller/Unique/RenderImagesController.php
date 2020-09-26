@@ -63,7 +63,7 @@ class RenderImagesController extends AbstractController
         try {
             $response = $this->imageResizer->renderImageWithFilter($uploadDir . $name, $filter);
             $response->setPublic();
-            $response->setExpires(new \DateTime("+10days"));
+            $response->setMaxAge(864000);
 
             return $response;
         } catch (NotLoadableException $notLoadableException) {
@@ -71,7 +71,7 @@ class RenderImagesController extends AbstractController
 
             $response = $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), $filter);
             $response->setPublic();
-            $response->setExpires(new \DateTime("+10days"));
+            $response->setMaxAge(864000);
 
             return $response;
 
