@@ -80,7 +80,6 @@
             window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
             const LANG_MAPPER = {'rs': 'sr_RS', 'en': 'en_US'};
         </script>
-{#        <script type="text/javascript" src="{{ preload(asset('build/runtime.js')) }}"></script>#}
         <script type="text/javascript" src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
         <script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': 'rs,en' }) }}"></script>
         <script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': 'rs,en' }) }}"></script>
