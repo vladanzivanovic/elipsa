@@ -61,24 +61,11 @@ class RenderImagesController extends AbstractController
         $uploadDir = $this->parameterBag->get('upload_image_dir');
 
         try {
-            $response = $this->imageResizer->renderImageWithFilter($uploadDir . $name, $filter);
-//            $date = new \DateTime();
-//            $date->modify('+864000 seconds');
-//
-//            $response->setExpires($date);
-
-            return $response;
+            return $this->imageResizer->renderImageWithFilter($uploadDir . $name, $filter);
         } catch (NotLoadableException $notLoadableException) {
             $image = $this->imageRepository->findOneBy(['name' => $name]);
 
-            $response = $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), $filter);
-//            $date = new \DateTime();
-//            $date->modify('+864000 seconds');
-
-//            $response->setExpires($date);
-
-            return $response;
-
+            return $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), $filter);
         }
     }
 }

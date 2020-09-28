@@ -105,9 +105,6 @@
     "friendsofsymfony/http-cache": {
         "version": "2.9.2"
     },
-    "friendsofsymfony/http-cache-bundle": {
-        "version": "2.9.0"
-    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {

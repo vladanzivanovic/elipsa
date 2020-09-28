@@ -47,6 +47,7 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && rm -f /tmp/composer-setup.*
 
 RUN a2enmod headers
+RUN a2enmod expires
 
 COPY 000-default.conf /etc/apache2/sites-available
 
