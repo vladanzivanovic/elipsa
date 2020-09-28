@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ShopOrderRepository")
@@ -92,6 +93,11 @@ class ShopOrder
      * @ORM\Column(type="json", nullable=true)
      */
     private $transactionData = [];
+
+    /**
+     * @ORM\Column(type="uuid", unique=true)
+     */
+    private $token;
 
     public function __construct()
     {
@@ -254,6 +260,18 @@ class ShopOrder
     public function setTransactionData(?array $transactionData): self
     {
         $this->transactionData = $transactionData;
+
+        return $this;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function setToken(): self
+    {
+        $this->token = Uuid::uuid4()->toString();
 
         return $this;
     }

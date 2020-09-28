@@ -56,8 +56,9 @@ final class ShopListController extends AbstractController
      *     options={"expose": true}
      * )
      *
-     * @param int          $page
-     * @param string|null  $searchData
+     * @param Request     $request
+     * @param int         $page
+     * @param string|null $searchData
      *
      * @return JsonResponse
      */

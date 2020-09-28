@@ -65,7 +65,7 @@ final class OrderEditController extends AbstractController
 
         $this->orderHandler->save($order);
 
-        $request->getSession()->set('order', $order->getId());
+        $request->getSession()->set('order', $order->getToken());
 
         return $this->json($this->responseFormatter->formatResponse(
             $productTranslation,

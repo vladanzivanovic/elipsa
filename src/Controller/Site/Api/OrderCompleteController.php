@@ -105,7 +105,7 @@ final class OrderCompleteController extends AbstractController
         $localeIntesa = $locale === 'rs' ? 'sr' : $locale;
 
         $orgClientId = $this->parameterBag->get('intesa_merchant_id');
-        $oid = $order->getId();
+        $oid = $order->getToken();
         $orgAmount = $total.'.00';
         $orgOkUrl = $this->router->generate('site.checkout_completed_successful', [], RouterInterface::ABSOLUTE_URL);
         $orgFailUrl = $this->router->generate('site.checkout_failed', [], RouterInterface::ABSOLUTE_URL);

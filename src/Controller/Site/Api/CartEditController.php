@@ -74,7 +74,7 @@ final class CartEditController extends AbstractController
      */
     public function setPromoCoupon(PromotionCoupon $coupon, Request $request): JsonResponse
     {
-        $order = $this->orderRepository->find($request->getSession()->get('order'));
+        $order = $this->orderRepository->getByToken($request->getSession()->get('order'));
 
         if (null !== $order->getCoupon()) {
             return $this->json(['message' => 'promo_coupon.used'], JsonResponse::HTTP_NOT_ACCEPTABLE);

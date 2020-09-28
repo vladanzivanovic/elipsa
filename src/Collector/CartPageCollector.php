@@ -51,8 +51,8 @@ final class CartPageCollector
             return ['products' => [], 'total' => 0, 'order' => null];
         }
 
-        $orderId = $this->session->get('order');
-        $order = $this->orderRepository->find($orderId);
+        $orderToken = $this->session->get('order');
+        $order = $this->orderRepository->getByToken($orderToken);
 
         $products = $this->orderProductRepository->getByOrder($order, $locale);
 

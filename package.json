@@ -96,6 +96,7 @@
     "summernote-file": "0.0.3",
     "sweetalert2": "^8.19.0",
     "tempusdominus-bootstrap-4": "^5.1.2",
+    "tempusdominus-core": "^5.0.3",
     "tinymce": "^5.0.7",
     "toaster-js": "^2.2.0",
     "toastr": "^2.1.4",

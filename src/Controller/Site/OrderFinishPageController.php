@@ -7,6 +7,7 @@ namespace App\Controller\Site;
 use App\Formatter\Site\OrderFinishPageFormatter;
 use App\Handler\Site\OrderHandler;
 use App\Repository\ShopOrderRepository;
+use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,10 +57,10 @@ final class OrderFinishPageController extends AbstractController
     public function successPage(Request $request): array
     {
         $locale = $request->getSession()->get('_locale');
-        $orderId = $request->getMethod() === Request::METHOD_POST ?
-            $request->request->getInt('ReturnOid') : $request->getSession()->get('order');
+        $orderToken = $request->getMethod() === Request::METHOD_POST ?
+            $request->request->get('oid') : $request->getSession()->get('order');
 
-        $data = $this->handler->completeCheckoutOnSuccess($orderId, $locale, $request->request);
+        $data = $this->handler->completeCheckoutOnSuccess($orderToken, $locale, $request->request);
         $request->getSession()->remove('order');
 
         return $this->pageFormatter->formatResponse($data, $locale, $request->request);
@@ -84,12 +85,16 @@ final class OrderFinishPageController extends AbstractController
     public function unsuccessfulPage(Request  $request): array
     {
         $locale = $request->getSession()->get('_locale');
-        $orderId = $request->getMethod() === Request::METHOD_POST ?
-            $request->request->getInt('oid') : $request->getSession()->get('order');
+        $orderToken = $request->getMethod() === Request::METHOD_POST ?
+            $request->request->get('oid') : $request->getSession()->get('order');
 
-        $data = $this->handler->completeCheckoutOnFail($orderId, $locale, $request->request);
+        $data = $this->handler->completeCheckoutOnFail($orderToken, $locale, $request->request);
 
-        $request->getSession()->set('order', $orderId);
+        $data['order']->setToken();
+
+        $this->handler->save($data['order']);
+
+        $request->getSession()->set('order', $data['order']->getToken());
 
         return $this->pageFormatter->formatResponse($data, $locale, $request->request);
     }

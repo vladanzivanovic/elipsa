@@ -54,7 +54,7 @@ final class CartEditRequestParser
     public function parse(Request $request): ShopOrder
     {
         $session = $request->getSession();
-        $order = $this->orderRepository->find($session->get('order'));
+        $order = $this->orderRepository->getByToken($session->get('order'));
 
         foreach ($request->request->all() as $id => $quantity) {
             $product = $this->productRepository->find($id);

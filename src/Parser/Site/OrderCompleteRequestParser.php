@@ -60,15 +60,14 @@ final class OrderCompleteRequestParser
 
     /**
      * @param ParameterBag $bag
-     * @param int          $orderId
+     * @param string       $orderToken
      *
      * @return ShopOrder
      * @throws \Doctrine\ORM\ORMException
-     * @throws \Exception
      */
-    public function parse(ParameterBag $bag, int $orderId): ShopOrder
+    public function parse(ParameterBag $bag, string $orderToken): ShopOrder
     {
-        $order = $this->orderRepository->find($orderId);
+        $order = $this->orderRepository->getByToken($orderToken);
 
         $order->setPaymentType($bag->getInt('payment_type'));
         $order->setNote($bag->get('order_note'));

@@ -60,4 +60,19 @@ class ShopOrderRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    /**
+     * @param string $token
+     *
+     * @return ShopOrder
+     * @throws NonUniqueResultException
+     */
+    public function getByToken(string $token): ShopOrder
+    {
+        $query = $this->createQueryBuilder('o')
+            ->where('o.token = :token')
+            ->setParameter('token', $token);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

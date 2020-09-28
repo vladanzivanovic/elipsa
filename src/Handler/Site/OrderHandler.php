@@ -146,27 +146,30 @@ final class OrderHandler
      */
     public function setCoupon(PromotionCoupon $coupon): void
     {
-        $order = $this->orderRepository->find($this->session->get('order'));
+        $order = $this->orderRepository->getByToken($this->session->get('order'));
         $order->setCoupon($coupon);
 
         $this->orderRepository->flush();
     }
 
     /**
-     * @param int      $orderId
-     * @param string   $locale
+     * @param string       $orderToken
+     * @param string       $locale
      *
-     * @param InputBag $bag
+     * @param ParameterBag $bag
      *
      * @return array
      *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
-    public function completeCheckoutOnSuccess(int $orderId, string $locale, ParameterBag $bag): array
+    public function completeCheckoutOnSuccess(string $orderToken, string $locale, ParameterBag $bag): array
     {
         $this->isSuccessfulTransaction = true;
 
-        $order = $this->orderRepository->find($orderId);
+        $order = $this->orderRepository->getByToken($orderToken);
         $order->setStatus(ShopOrder::STATUS_COMPLETED);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
@@ -176,25 +179,30 @@ final class OrderHandler
 
         $this->orderRepository->flush();
 
+        $settings = $this->getSettings();
+
         $this->sendEmail($order, $locale, $bag);
 
         return ['order' => $order, 'settings' => $settings];
     }
 
     /**
-     * @param int      $orderId
-     * @param string   $locale
-     * @param InputBag $bag
+     * @param string       $orderToken
+     * @param string       $locale
+     * @param ParameterBag $bag
      *
      * @return array
      *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
-    public function completeCheckoutOnFail(int $orderId, string $locale, ParameterBag $bag): array
+    public function completeCheckoutOnFail(string $orderToken, string $locale, ParameterBag $bag): array
     {
         $this->isSuccessfulTransaction = false;
 
-        $order = $this->orderRepository->find($orderId);
+        $order = $this->orderRepository->getByToken($orderToken);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
             $order->setTransactionData($bag->all());

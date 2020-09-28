@@ -69,6 +69,7 @@ final class OrderEditRequestParser
      * @param Product $product
      *
      * @return ShopOrder
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function parse(Request $request, Product $product): ShopOrder
     {
@@ -76,12 +77,13 @@ final class OrderEditRequestParser
         $order = null;
 
         if (true === $session->isStarted() && $session->has('order')) {
-            $order = $this->orderRepository->find($session->get('order'));
+            $order = $this->orderRepository->getByToken($session->get('order'));
         }
 
         if (!$order instanceof ShopOrder) {
             $order = new ShopOrder();
             $order->setStatus(ShopOrder::STATUS_NEW);
+            $order->setToken();
         }
 
         $this->setProduct($request->request, $product, $order);
