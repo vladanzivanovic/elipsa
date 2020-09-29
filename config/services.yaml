@@ -6,6 +6,7 @@
 imports:
     - { resource: "../vendor/beberlei/doctrineextensions/config/mysql.yml" }
 parameters:
+    container.dumper.inline_factories: true
     # rs must be first language
     locales: rs|en
     upload_dir: '%kernel.project_dir%/storage/'
