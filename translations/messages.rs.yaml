@@ -198,6 +198,7 @@ email.order.buyer.street_number: Ulica i broj
 email.order.buyer.payment_type: Plaćanje
 
 email.order.data.title: Podaci o porudžbini
+email.order.data.title_unsucessfull: Neuspešna porudžbina
 email.order.table.product_name: Naziv proizvoda
 email.order.table.size: Veličina
 email.order.table.color: Boja

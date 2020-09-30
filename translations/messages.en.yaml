@@ -214,6 +214,7 @@ email.reset_password.headline.text: Change password request
 email.reset_password.message: In order to change password please follow the link below.
 
 email.order.data.title: Order data
+email.order.data.title_unsucessfull: Unsucessfull order
 email.order.table.product_name: Product name
 email.order.table.size: Size
 email.order.table.color: Color

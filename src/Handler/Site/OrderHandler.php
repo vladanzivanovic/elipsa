@@ -289,12 +289,14 @@ final class OrderHandler
             $templateData['md_status'] = $parameterBag->get('mdStatus');
         }
 
+        $subject = true === $this->isSuccessfulTransaction ? $this->translator->trans('email.order.data.title', ['orderId' => $order->getId()]) : $this->translator->trans('email.order.data.title_unsucessfull', ['orderId' => $order->getId()]);
+
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_USER_ORDERED);
         $model->setTemplate(true === $this->isSuccessfulTransaction ? 'order' : 'failedOrder');
         $model->setTo($user->getEmail());
         $model->setToName($user->getFirstName().' '.$user->getLastName());
-        $model->setSubject($this->translator->trans('email.order.data.title', ['orderId' => $order->getId()]));
+        $model->setSubject($subject);
         $model->setFrom($settings['MAIN_EMAIL']);
         $model->setFromName($settings['SITE_NAME']);
         $model->setReplyTo($settings['MAIN_EMAIL']);
