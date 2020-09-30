@@ -60,7 +60,9 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
     },
     "autoload": {
         "psr-4": {
@@ -106,9 +108,7 @@
             "npm run dev"
         ],
         "deploy": [
-            "composer dump-autoload --classmap-authoritative --ansi",
             "composer install",
-            "composer dump-autoload --classmap-authoritative --ansi",
             "php bin/console doctrine:schema:update --force -e prod",
             "php bin/console doctrine:migration:migrate --no-interaction -e prod",
             "php bin/console cache:clear --no-warmup -e prod --ansi",

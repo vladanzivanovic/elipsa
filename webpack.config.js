@@ -73,6 +73,11 @@ Encore
         // only copy files matching this pattern
         //pattern: /\.(png|jpg|jpeg)$/
     })
+    .configureTerserPlugin((options) => {
+        options.cache = true;
+        options.extractComments = 'all';
+        options.sourceMap = true;
+    })
 ;
 
 let config = Encore.getWebpackConfig();
