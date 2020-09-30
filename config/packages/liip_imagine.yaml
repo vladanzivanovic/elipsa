@@ -90,13 +90,13 @@ liip_imagine :
                     max: [ 200, 200 ]
         site_slider :
             cache: ads_photos
-            quality : 100
+            quality : 80
             filters :
                 downscale:
                     max: [ 1914, 941 ]
         site_slider_mobile :
             cache: ads_photos
-            quality : 100
+            quality : 80
             filters :
                 downscale:
                     max: [ 500, 439 ]
