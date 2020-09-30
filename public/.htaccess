@@ -127,10 +127,10 @@ DirectoryIndex index.php
         Header set Cache-Control "public, maxage=3600, must-revalidate"
     </filesMatch>
     <filesMatch "\.(css)$">
-        Header set Cache-Control "public"
+        Header set Cache-Control "public, maxage=3600, must-revalidate"
     </filesMatch>
     <filesMatch "\.(js)$">
-        Header set Cache-Control "private"
+        Header set Cache-Control "public, maxage=3600, must-revalidate"
     </filesMatch>
     <filesMatch "\.(x?html)$">
         Header set Cache-Control "private, must-revalidate"
