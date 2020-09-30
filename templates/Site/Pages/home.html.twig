@@ -17,10 +17,7 @@
                 <div class="slider-progress"></div>
                 <div class="container">
                     <div class="row">
-{#                        <div class="col-xs-12 {{ is_mobile() or is_tablet() ? 'text-center' : 'text-' ~ slider['position'] }}">#}
                         <div class="col-xs-12 {{ 'text-' ~ slider['position'] }}">
-{#                            {% if false == is_mobile() and false == is_tablet() %}#}
-{#                                <div class="slide3-text hidden-xs">#}
                                 <div class="slide3-text">
                                     <div class="middle-text">
                                         {% if slider['description'][0] is defined %}

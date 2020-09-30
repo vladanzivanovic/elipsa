@@ -1,0 +1,15 @@
+# Crawlers Setup
+User-agent: *
+
+# Directories
+Disallow: /build/
+Disallow: /bundles/
+Disallow: /js/
+Disallow: /*?search=
+Disallow: /*?iframeView=1$
+
+# General Paths
+Disallow: /*.php$
+Disallow: /*?SID=
+
+Sitemap: {{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}/sitemap.xml

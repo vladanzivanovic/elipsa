@@ -59,3 +59,9 @@ site.not_exists_page:
   defaults:
     template: Site/Pages/404Page.html.twig
 
+site.robots:
+  path: /robots.txt
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/robots.txt.twig
+
