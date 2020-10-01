@@ -23,9 +23,7 @@
                 <div class="col-sm-12 col-xs-12">
                     <div class="order-tracker">
                         <h2 class="ot-title">{{ isSuccessOrder ? 'checkout_completed.title' | trans : 'checkout_fail.title' | trans }}</h2>
-                        {% if isSuccessOrder %}
-                            <p class="ot-text letter-capitalize">{{ 'checkout_completed.details' | trans }}</p>
-                        {% endif %}
+                        <p class="ot-text letter-capitalize">{{ 'checkout_completed.details' | trans }}</p>
                         {% if order.paymentType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
                             <p class="ot-text letter-capitalize">{{ isSuccessOrder ? 'checkout.finish.transaction_status_success' | trans : 'checkout.finish.transaction_status_failed' | trans }}</p>
 
