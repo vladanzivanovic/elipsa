@@ -154,6 +154,7 @@ DirectoryIndex index.php
     </filesMatch>
 
     Header set Connection keep-alive
+    Header edit Set-Cookie ^(.*)$ "$1; Secure; SameSite=None"
 </ifModule>
 ## END Cache-Control Headers
 
