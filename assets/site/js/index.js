@@ -4,6 +4,7 @@ import { RewriteFrames } from '@sentry/integrations';
 
 Sentry.init({
     dsn: SENTRY_DSN,
+    environment: APP_ENV,
     integrations: [new RewriteFrames()]
 });
 require('../../js/Routing');

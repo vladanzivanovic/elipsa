@@ -75,6 +75,7 @@
             const ROUTE_NAME = '{{ routeName }}';
             const IS_MOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
             const GOOGLE_RECAPTCHA_KEY_SITE  = '{{ 'GOOGLE_RECAPTCHA_KEY_SITE' | getenv }}';
+            const APP_ENV = '{{ 'APP_ENV' | getenv }}';
             const SENTRY_DSN = '{{ 'SENTRY_JAVASCRIPT_DSN' | getenv }}';
             window.USER = null;
 
