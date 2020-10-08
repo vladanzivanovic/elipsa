@@ -8,10 +8,10 @@
 <head>
     <!--- Basic Page Needs  -->
     <meta charset="utf-8">
-    <title>{% block title %}Online prodaja ženske odeće | Modna kuća Elipsa{% endblock %}</title>
-    <meta name="description" content="Jedinstven dizaj, savršeni krojevi i mnogo ljubavi utkane u kvaltetne i pažljivo birane materijale je ono sto opisuje Elipsu. Ključ elegancije za sve savremene, poslovne žene. - ELIPSA">
+    <title>{% block title %}{{ 'default_title' | trans }}{% endblock %}</title>
+    <meta name="description" content="Jedinstven dizajn, savršeni krojevi i mnogo ljubavi utkane u kvaltetne i pažljivo birane materijale je ono sto opisuje Elipsu. Ključ elegancije za sve savremene, poslovne žene. - ELIPSA">
     <meta name="author" content="Vladan Zivanovic">
-    <meta name="keywords" content="moda fashion clothing elipsa modna kuća žena elegancija">
+    <meta name="keywords" content="moda fashion clothing elipsa modna kuća žena elegancija woman elegance">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Mobile Specific Meta  -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -75,6 +75,7 @@
             const ROUTE_NAME = '{{ routeName }}';
             const IS_MOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
             const GOOGLE_RECAPTCHA_KEY_SITE  = '{{ 'GOOGLE_RECAPTCHA_KEY_SITE' | getenv }}';
+            const SENTRY_DSN = {{ 'SENTRY_JAVASCRIPT_DSN' | getenv }}
             window.USER = null;
 
             {% if user is not null %}
