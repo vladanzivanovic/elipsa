@@ -64,7 +64,7 @@ final class CatalogPageController extends AbstractController
     public function getImages(Request $request): array
     {
         $catalog = $this->catalogueRepository->findOneBy(['status' => Catalogue::STATUS_ACTIVE]);
-        $trans = $catalog->getByLocale($request->getSession()->get('_locale'));
+        $trans = $catalog->getByLocale($request->getLocale());
 
         return [
             'title' => $trans->getTitle(),
