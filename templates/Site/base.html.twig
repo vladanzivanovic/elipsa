@@ -2,6 +2,9 @@
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set routeParams = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+
+{% import 'Site/Macros/externalServices.html.twig' as externals %}
+
 <!DOCTYPE html>
 <html lang="{{ locale|split('_')[0] }}">
 
@@ -40,6 +43,10 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    {% if app.environment == 'prod' %}
+        {{ externals.googleAnalytics() }}
+    {% endif %}
 </head>
 
 <body data-spy="scroll" data-target="#scroll-menu" data-offset="100" class="{{ is_mobile() or is_tablet() ? 'mobile' : '' }} {% block bodyClass %}{% endblock %} eupopup eupopup-bottom">
@@ -96,7 +103,6 @@
         <script type="text/javascript" src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% endblock %}
     {% block pageJavascript %}{% endblock %}
-    {% import 'Site/Macros/externalServices.html.twig' as externals %}
     {{ externals.chat() }}
 </body>
 </html>
