@@ -65,13 +65,38 @@ class ProductRepository extends ExtendedEntityRepository
         ;
 
         if (!empty($tableModel->getSearch())) {
+            $colorQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(ProductHasImages::class, 'phiColor')
+                ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color AND colort.locale = :locale')
+                ->where('REGEXP(colort.slug, :regex) = true')
+                ->andWhere('phiColor.product = p');
+
+            $tagsQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(ProductHasTags::class, 'pht')
+                ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
+                ->where('REGEXP(t.slug, :regex) = true')
+                ->andWhere('pht.product = p');
+
+            $categoryQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(ProductHasCategories::class, 'phc')
+                ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category AND ct.locale = :locale')
+                ->where('REGEXP(ct.slug, :regex) = true')
+                ->andWhere('phc.product = p');
+
             $query
                 ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
                 ->andWhere('
                 pt.title LIKE :search or
-                p.code LIKE :search
+                p.code LIKE :search or
+                EXISTS ('.$colorQuery->getDQL().') or
+                EXISTS ('.$tagsQuery->getDQL().') or 
+                EXISTS ('.$categoryQuery->getDQL().')
             ')
                 ->setParameter('search', '%'.$tableModel->getSearch().'%')
+                ->setParameter('regex', $tableModel->getSearch())
                 ->setParameter('locale', 'rs');
         }
 
@@ -87,8 +112,10 @@ class ProductRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select(
+                'p.id',
                 'p.code as code',
                 'p.price as price',
+                'p.discount as discount',
                 'p.status as status',
                 'pt.title as title',
                 'pt.slug',
@@ -103,11 +130,36 @@ class ProductRepository extends ExtendedEntityRepository
         ;
 
         if (!empty($tableModel->getSearch())) {
+            $colorQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(ProductHasImages::class, 'phiColor')
+                ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color AND colort.locale = :locale')
+                ->where('REGEXP(colort.slug, :regex) = true')
+                ->andWhere('phiColor.product = p');
+
+            $tagsQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(ProductHasTags::class, 'pht')
+                ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
+                ->where('REGEXP(t.slug, :regex) = true')
+                ->andWhere('pht.product = p');
+
+            $categoryQuery = $this->_em->createQueryBuilder()
+                ->select('1')
+                ->from(ProductHasCategories::class, 'phc')
+                ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category AND ct.locale = :locale')
+                ->where('REGEXP(ct.slug, :regex) = true')
+                ->andWhere('phc.product = p');
+
             $query->andWhere('
                 pt.title LIKE :search or
-                p.code LIKE :search
+                p.code LIKE :search or
+                EXISTS ('.$colorQuery->getDQL().') or 
+                EXISTS ('.$tagsQuery->getDQL().') or 
+                EXISTS ('.$categoryQuery->getDQL().')
             ')
-                ->setParameter('search', '%'.$tableModel->getSearch().'%');
+                ->setParameter('search', '%'.$tableModel->getSearch().'%')
+                ->setParameter('regex', $tableModel->getSearch());
         }
 
         return $query->getQuery()->getArrayResult();

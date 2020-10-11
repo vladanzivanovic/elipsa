@@ -15,6 +15,7 @@ use App\Services\PaginationService;
 use App\ShopTrait;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ShopPageCollector
@@ -92,14 +93,21 @@ final class ShopPageCollector
         $this->session = $session;
     }
 
-    public function collect(string $locale, int $currentPage, ?User $user, ?string $searchData = null, bool $isTrendyPage = false)
+    /**
+     * @param string             $locale
+     * @param int                $currentPage
+     * @param UserInterface|null $user
+     * @param string|null        $searchData
+     * @param bool               $isTrendyPage
+     *
+     * @return array
+     */
+    public function collect(string $locale, int $currentPage, ?UserInterface $user, ?string $searchData = null, bool $isTrendyPage = false)
     {
-        $colors = $this->colorRepository->getByLocale($locale);
         $sizes = $this->sizeRepository->getForOptions();
         $prices = $this->productRepository->getLowestAndHighestPrice();
 
         $data = [
-            'colors'    => $colors,
             'sizes'     => $sizes,
             'prices'    => $prices[0],
         ];
@@ -108,11 +116,11 @@ final class ShopPageCollector
     }
 
     /**
-     * @param string    $locale
-     * @param int       $currentPage
-     * @param User|null $user
-     * @param string    $searchData
-     * @param bool      $isTrendyPage
+     * @param string      $locale
+     * @param int         $currentPage
+     * @param User|null   $user
+     * @param string|null $searchData
+     * @param bool        $isTrendyPage
      *
      * @return array
      */

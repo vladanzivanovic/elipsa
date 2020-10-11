@@ -19,7 +19,8 @@ export default (() => {
             columns: [
                 { data: 'code', name: 'code', title: 'Šifra' },
                 { data: 'title', name: 'title', title: 'Naziv' },
-                { data: 'price', name: 'price', title: 'Cena od', type: "num" },
+                { data: 'price', name: 'price', title: 'Cena', type: "num" },
+                { data: 'discount', name: 'discount', title: 'Popust', type: "num" },
                 { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                     const checkedAttr = row.status === 2 ? 'checked' : '';
 

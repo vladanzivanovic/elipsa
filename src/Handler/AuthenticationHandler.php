@@ -55,6 +55,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         if ( $request->isXmlHttpRequest() ) {
+
             /** @var User $user */
             $user = $token->getUser();
 

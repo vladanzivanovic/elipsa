@@ -33,7 +33,7 @@ export default (() => {
                             viewLink : id;
                     } },
             ],
-            order: [[0, 'asc']],
+            order: [[0, 'DESC']],
             pageLength: 100,
         });
     };

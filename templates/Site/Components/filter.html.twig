@@ -40,14 +40,6 @@
             </div>
         </div>
         <div class="sidebar-box">
-            <span class="sidebar-box-title">{{ 'color' | trans }}</span>
-            <ul class="sidebar-list">
-                {% for color in colors %}
-                    <li><a class="color-box color-btn {{ search.color is defined and color.slug in search.color ? 'active' : '' }}" href="#" data-search-name="color" data-search="{{ color.slug }}"><span class="color" style="background-color: {{ color.hex }}"></span> {{ color.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="sidebar-box">
             <span class="sidebar-box-title">{{ 'size' | trans }}</span>
             <ul class="sidebar-list">
                 {% for size in sizes %}
@@ -56,17 +48,4 @@
             </ul>
         </div>
     </div>
-{#    <div class="sidebar-widget widget-banner">#}
-{#        <div class="sidebar-banner-box">#}
-{#            <div class="sbb-img">#}
-{#                <img src="img/banner/sidebar.jpg" alt="">#}
-{#            </div>#}
-{#            <div class="sbb-content">#}
-{#                <h5>Hot promotion</h5>#}
-{#                <h2>Save up to <span>35%</span> off</h2>#}
-{#                <p>Lorem Ipsum has been the industry's.</p>#}
-{#                <a href="#">-View more-</a>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
 </div>

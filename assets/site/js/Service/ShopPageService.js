@@ -9,7 +9,7 @@ class ShopPageService {
         this.pagination = paginationDom;
 
 
-        let selectedPrices = [0,5000];
+        let selectedPrices = [0, PRICES[1]];
 
         if (SEARCH_CRITERIA.hasOwnProperty('price')) {
             selectedPrices = SEARCH_CRITERIA.price[0].split('-');

@@ -25,7 +25,7 @@ class ShopPageDom {
                 oldPriceHtml = `<p class="sfi-old-price">-${product.price} RSD</p>`
             }
 
-            html += `<div class="col-md-4 col-sm-6 col-xs-12">
+            html += `<div class="col-md-4 col-sm-6 col-xs-6">
                         <div class="single-featured-item">
                             <div class="sfi-img">
                                 <a href="${productLink}"><img src="${product.image_link_list}" alt="{{ default_alt_tag }}"></a>
