@@ -7,6 +7,7 @@ RUN apt-get install -y apt-utils
 RUN apt-get install -y vim
 RUN apt-get install -y curl
 RUN apt-get install -y apache2
+RUN apt-get install -y zip unzip
 RUN a2enmod rewrite
 
 RUN apt-get install -y software-properties-common
