@@ -10,6 +10,8 @@ RUN apt-get install -y apache2
 RUN apt-get install -y zip unzip
 RUN a2enmod rewrite
 
+RUN apt-get update
+
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 
