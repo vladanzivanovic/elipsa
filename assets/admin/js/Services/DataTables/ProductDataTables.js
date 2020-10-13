@@ -21,6 +21,7 @@ export default (() => {
                 { data: 'title', name: 'title', title: 'Naziv' },
                 { data: 'price', name: 'price', title: 'Cena', type: "num" },
                 { data: 'discount', name: 'discount', title: 'Popust', type: "num" },
+                { data: 'sizes', name: 'sizes', title: 'Veličine' },
                 { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                     const checkedAttr = row.status === 2 ? 'checked' : '';
 
