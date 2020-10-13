@@ -7,6 +7,7 @@ namespace App\Formatter\Admin;
 use App\Entity\Product;
 use App\Helper\ConstantsHelper;
 use App\Model\DataTableModel;
+use App\Repository\ProductSizeRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductDataTableResponseFormatter
@@ -17,16 +18,21 @@ final class ProductDataTableResponseFormatter
      * @var TranslatorInterface
      */
     private $translator;
+    /**
+     * @var ProductSizeRepository
+     */
+    private $sizeRepository;
 
     /**
-     * AdsDataTableResponseFormatter constructor.
-     *
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface   $translator
+     * @param ProductSizeRepository $sizeRepository
      */
     public function __construct(
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ProductSizeRepository $sizeRepository
     ) {
         $this->translator = $translator;
+        $this->sizeRepository = $sizeRepository;
     }
 
     /**
