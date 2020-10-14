@@ -1,0 +1,29 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set titleTrans = 'title.not_exits_page' | trans %}
+
+{% block title %}{{ titleTrans }}{% endblock %}
+{% block bodyClass %}404-page{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans}) }}
+
+    <!-- error-area-start -->
+    <div class="error-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="error-outer">
+                        <h2 class="eo-title">{{ titleTrans }}</h2>
+                        <div class="error-inner">
+                            <h1 class="error-title">404</h1>
+                            <p class="error-text">{{ 'not_exists_page.description' | trans }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- error-area-end -->
+
+{% endblock %}

@@ -1,7 +1,17 @@
 {% set locale = app.request.locale %}
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
-{% set routeParams = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+
+{% if routeName is null %}
+    {% set routeName = 'site.home_page' %}
+{% endif %}
+
+{% set routeParams = {'_locale': 'rs'} %}
+
+{% if app.request.attributes.get('_route_params') is not null or app.request.query.all is not empty %}
+    {% set routeParams = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+{% endif %}
+
 
 {% import 'Site/Macros/externalServices.html.twig' as externals %}
 
@@ -102,7 +112,7 @@
             window.USER = null;
 
             {% if user is not null %}
-                window.USER = {
+                window.USER = }
                     id: {{ user.id }},
                 };
             {% endif %}
