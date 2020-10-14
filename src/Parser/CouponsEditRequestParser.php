@@ -58,8 +58,8 @@ final class CouponsEditRequestParser
         }
 
         $coupon->setCode($bag->get('code'));
-        $coupon->setValidFrom(new \DateTime($bag->get('valid_from')));
-        $coupon->setValidTo(new \DateTime($bag->get('valid_to')));
+        $coupon->setValidFrom(new \DateTime($bag->get('valid_from'). '00:00:00'));
+        $coupon->setValidTo(new \DateTime($bag->get('valid_to'). '23:59:59'));
         $coupon->setDiscount((int) $bag->get('discount'));
 
         return $coupon;
