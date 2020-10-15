@@ -122,6 +122,7 @@
         ],
         "zip-prod": [
             "Composer\\Config::disableProcessTimeout",
+            "rm public/sitemap.*",
             "rm prod.zip",
             "zip -r prod.zip ./vendor ./config/ ./src ./public ./templates ./translations ./node_modules ./package.json ./package-lock.json ./composer.json ./composer.lock ./symfony.lock ./bin ./.env.dist"
         ],

@@ -14,7 +14,7 @@ parameters:
     upload_image_dir: 'image/'
     upload_import_dir: 'import/images/'
     upload_document_dir: 'documents/'
-    url: '%env(URL)%'
+    url: '%env(resolve:SITE_SCHEME)%://%env(resolve:URL)%/'
 
     intesa_merchant_id: '%env(resolve:MERCHANT_ID)%'
     intesa_store_key: '%env(resolve:STORE_KEY)%'
@@ -23,6 +23,9 @@ parameters:
     intesa_api_gateway: '%env(resolve:API_GATEWAY)%'
 
     google_recaptcha_secret: '%env(resolve:GOOGLE_RECAPTCHA_KEY_SECRET)%'
+
+    router.request_context.host: '%env(resolve:SITE_URL)%'
+    router.request_context.scheme: '%env(resolve:SITE_SCHEME)%'
 
 services:
     # default configuration for services in *this* file
