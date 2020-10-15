@@ -80,13 +80,13 @@ final class CartEditController extends AbstractController
             return $this->json(['message' => 'promo_coupon.used'], JsonResponse::HTTP_NOT_ACCEPTABLE);
         }
 
-        $now = new \DateTime();
+        $now = (new \DateTime())->getTimestamp();
 
-        if ($now < $coupon->getValidFrom()) {
+        if ($now < $coupon->getValidFrom()->getTimestamp()) {
             return $this->json(['message' => 'promo_coupon.not_active_yet'], JsonResponse::HTTP_NOT_ACCEPTABLE);
         }
 
-        if ($now > $coupon->getValidTo()) {
+        if ($now > $coupon->getValidTo()->getTimestamp()) {
             return $this->json(['message' => 'promo_coupon.expired'], JsonResponse::HTTP_NOT_ACCEPTABLE);
         }
 
