@@ -3,7 +3,7 @@
 {% block title %}{{ 'title.blog_detailed_page' | trans }}{% endblock %}
 
 {% block content %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Blog' }, {'title': trans.title }], 'activePage': trans.title}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'Blog', 'link': path('site.blog_list_page') }, {'title': trans.title }], 'activePage': trans.title}) }}
 
     <!-- blog-area-start -->
     <div class="blog-area">

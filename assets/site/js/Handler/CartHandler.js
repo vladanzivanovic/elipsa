@@ -84,6 +84,8 @@ class CartHandler {
                 if (totalWithDiscount < FREE_SHIPPING) {
                     shippingPrice = SHIPPING;
                     totalWithShipping = totalWithDiscount + SHIPPING;
+                } else {
+                    totalWithShipping = totalWithDiscount;
                 }
 
                 this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));

@@ -2,6 +2,8 @@ pending: 'pending'
 active: 'active'
 disabled: 'disabled'
 
+view: 'view'
+
 default_title: Selling online woman clothes and accessories | Fashion house Elipsa
 
 new: 'new'
@@ -132,6 +134,7 @@ title.privacy_policy: Privacy policy
 title.reset_password: Reset password
 title.not_exits_page: Page doesn't exists
 title.career: Creers
+title.trends: Trends
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address

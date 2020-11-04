@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Parser\Site;
 
 use App\Entity\Loyalty;
+use App\Entity\NewsLetter;
 use App\Repository\LoyaltyRepository;
+use App\Repository\NewsLetterRepository;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -18,12 +20,20 @@ final class LoyaltyRequestParser
     private $loyaltyRepository;
 
     /**
-     * @param LoyaltyRepository $loyaltyRepository
+     * @var NewsLetterRepository
+     */
+    private $newsLetterRepository;
+
+    /**
+     * @param LoyaltyRepository    $loyaltyRepository
+     * @param NewsLetterRepository $newsLetterRepository
      */
     public function __construct(
-        LoyaltyRepository $loyaltyRepository
+        LoyaltyRepository $loyaltyRepository,
+        NewsLetterRepository $newsLetterRepository
     ) {
         $this->loyaltyRepository = $loyaltyRepository;
+        $this->newsLetterRepository = $newsLetterRepository;
     }
 
     /**
@@ -57,5 +67,22 @@ final class LoyaltyRequestParser
             ->setRate((int) $bag->get('rate'));
 
         return $loyalty;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return NewsLetter
+     */
+    public function parseNewsLetter(string $email): NewsLetter
+    {
+        $newsLetter = $this->newsLetterRepository->findOneBy(['email' => $email]);
+
+        if (null === $newsLetter) {
+            $newsLetter = new NewsLetter();
+            $newsLetter->setEmail($email);
+        }
+
+        return $newsLetter;
     }
 }

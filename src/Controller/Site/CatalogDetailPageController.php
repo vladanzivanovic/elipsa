@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Site;
 
 use App\Entity\Catalogue;
+use App\Entity\CatalogueTranslation;
 use App\Entity\Image;
 use App\Formatter\Admin\ImageTrait;
-use App\Formatter\Site\CatalogueResponseFormatter;
 use App\Repository\CatalogueRepository;
 use App\Repository\ImageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
-final class CatalogPageController extends AbstractController
+final class CatalogDetailPageController extends AbstractController
 {
     use ImageTrait;
 
@@ -32,47 +32,45 @@ final class CatalogPageController extends AbstractController
      * @var CatalogueRepository
      */
     private $catalogueRepository;
-    /**
-     * @var CatalogueResponseFormatter
-     */
-    private $responseFormatter;
 
     /**
-     * @param ImageRepository            $imageRepository
-     * @param RouterInterface            $router
-     * @param CatalogueRepository        $catalogueRepository
-     * @param CatalogueResponseFormatter $responseFormatter
+     * @param ImageRepository     $imageRepository
+     * @param RouterInterface     $router
+     * @param CatalogueRepository $catalogueRepository
      */
     public function __construct(
         ImageRepository $imageRepository,
         RouterInterface $router,
-        CatalogueRepository $catalogueRepository,
-        CatalogueResponseFormatter $responseFormatter
+        CatalogueRepository $catalogueRepository
     ) {
         $this->imageRepository = $imageRepository;
         $this->router = $router;
         $this->catalogueRepository = $catalogueRepository;
-        $this->responseFormatter = $responseFormatter;
     }
 
     /**
      * @Route({
-     *          "rs": "/katalog",
-     *          "en": "/catalogue"
+     *          "rs": "/katalog/{slug}",
+     *          "en": "/catalogue/{slug}"
      *     },
-     *     name="site.catalog_page",
+     *     name="site.catalog_detail_page",
      *     methods={"GET"}
      * )
-     * @Template("Site/Pages/catalog.html.twig")
+     * @Template("Site/Pages/catalogDetail.html.twig")
      *
-     * @param Request $request
+     * @param CatalogueTranslation $catalogueTranslation
      *
      * @return array
      */
-    public function getCatalogues(Request $request): array
+    public function getCatalog(CatalogueTranslation $catalogueTranslation): array
     {
-        $catalogues = $this->catalogueRepository->getCatalogPage($request->getLocale());
-
-        return ['catalogues' => $this->responseFormatter->formatResponse($catalogues)];
+        return [
+            'title' => $catalogueTranslation->getTitle(),
+            'images' => $this->imagesFormatter(
+            $this->router,
+            $this->imageRepository->getByCatalog($catalogueTranslation->getCatalogue()),
+            'catalog',
+            'list_thumb'
+        )];
     }
 }

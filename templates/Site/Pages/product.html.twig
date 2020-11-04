@@ -5,7 +5,9 @@
 
 {% block content %}
     {% set product = translation.product %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': translation.title }], 'activePage': translation.title}) }}
+    {% set prevPage = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? path('site.trendy_page') : path('site.shop_page') %}
+    {% set prevPageTitle = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? 'title.trends' | trans : 'title.shop_page' | trans %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title' : 'title.shop_page' | trans, 'link': prevPage}, {'title': translation.title }], 'activePage': translation.title}) }}
 
     <!-- single-product-area-start -->
     <div class="single-product-area">

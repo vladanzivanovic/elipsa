@@ -2,6 +2,8 @@ pending: 'na čekanju'
 active: 'aktivan'
 disabled: 'zaključan'
 
+view: 'pogledaj'
+
 default_title: Online prodaja ženske odeće | Modna kuća Elipsa
 
 new: 'novo'
@@ -125,6 +127,7 @@ title.privacy_policy: Politika privatnosti
 title.reset_password: Promena lozinke
 title.not_exits_page: Nepostojeća stranica
 title.career: Radna mesta
+title.trends: Trendovi
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu

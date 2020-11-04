@@ -55,11 +55,11 @@ final class NewsLetterApiController extends AbstractController
     {
         try {
             $newsLetter = $this->requestParser->parse($request->request);
-            $this->handler->save($newsLetter);
+            $hasLoyalty = $this->handler->save($newsLetter);
         } catch (BadRequestHttpException $exception) {
             return $this->json(['message' => $exception->getMessage()], $exception->getStatusCode());
         }
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(['hasLoyalty' => $hasLoyalty], JsonResponse::HTTP_CREATED);
     }
 }

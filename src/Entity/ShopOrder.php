@@ -266,6 +266,10 @@ class ShopOrder
 
     public function getToken()
     {
+        if (!is_string($this->token)) {
+            return $this->token->__toString();
+        }
+
         return $this->token;
     }
 

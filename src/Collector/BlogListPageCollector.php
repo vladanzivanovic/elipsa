@@ -84,8 +84,6 @@ final class BlogListPageCollector
         $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tagMainSlug[0]['mainSlug']);
         $blogList = $this->paginationService->pagination($blogDql, $currentPage, 12);
 
-        $blogIds = array_column($blogList['data'], 'id');
-
         $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG, 'locale' => $locale]);
 
         return [

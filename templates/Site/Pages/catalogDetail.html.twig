@@ -4,7 +4,7 @@
 {% block title %}{{ 'title.catalog' | trans }}{% endblock %}
 
 {% block content %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'title.catalog' | trans }], 'activePage': 'title.catalog' | trans }) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'title.catalog' | trans, 'link' : path('site.catalog_page') }, {'title': 'title.catalog' | trans ~' - '~ title}], 'activePage': 'title.catalog' | trans ~' - '~ title }) }}
 
     <!-- shop-left-sidebar-area-start -->
     <div class="shop-left-sidebar-area">
@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
                     <div class="order-tracker">
-                        <h2 class="ot-title">{{ 'title.catalog' | trans }}</h2>
+                        <h2 class="ot-title">{{ title }}</h2>
                     </div>
                 </div>
             </div>
@@ -25,16 +25,13 @@
                                 <div id="grid" class="tab-pane fade in active">
                                     <div class="grid-items">
                                         <div class="row">
-                                            {% for catalog in catalogues %}
-                                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                                    <div class="h3b-single-banner-4 h3b-single-banner">
-                                                        <div class="h3b-img">
-                                                            <img src="{{ catalog.image_link }}" alt="{{ default_alt_tag }}">
-                                                        </div>
-                                                        <div class="h3b-content-banner-4 h3b-content">
-                                                            <h3>Katalog</h3>
-                                                            <h2>{{ catalog.title }}</h2>
-                                                            <a href="{{ path('site.catalog_detail_page', {'_locale' : locale, 'slug': catalog.slug}) }}">{{ 'view' | trans }}</a>
+                                            {% for image in images %}
+                                                <div class="col-md-3 col-xs-6">
+                                                    <div class="single-featured-item">
+                                                        <div class="sfi-img">
+                                                            <a href="{{ image.file }}" data-fancybox="catalog">
+                                                                <img src="{{ image.file }}" alt="{{ default_alt_tag }}">
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>

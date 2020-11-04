@@ -2,21 +2,12 @@
 
 namespace App\EventListener;
 
-use App\Entity\Email;
-use App\Event\EmailEvent;
 use App\Event\NewsLetterEvent;
-use App\Helper\RandomCodeGenerator;
-use App\Model\EmailModel;
-use App\Repository\EmailRepository;
 use App\Repository\NewsLetterRepository;
-use App\Repository\SettingsRepository;
 use DrewM\MailChimp\MailChimp;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 
 final class NewsLetterSubscriber implements EventSubscriberInterface
 {
@@ -30,6 +21,16 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
     private $newsLetterRepository;
 
     /**
+     * @var string
+     */
+    private $apiKey;
+
+    /**
+     * @var string
+     */
+    private $listId;
+
+    /**
      * @param ParameterBagInterface $parameterBag
      * @param NewsLetterRepository  $newsLetterRepository
      */
@@ -39,6 +40,9 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
     ) {
         $this->parameterBag = $parameterBag;
         $this->newsLetterRepository = $newsLetterRepository;
+
+        $this->apiKey = $this->parameterBag->get('api_key');
+        $this->listId = $this->parameterBag->get('list_id');
     }
 
     /**
@@ -48,25 +52,44 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
     {
        return [
            NewsLetterEvent::ADD_USER => [
-               ['addToNewsLetter', 0],
+               ['addUserToNewsLetter', 0],
+           ],
+           NewsLetterEvent::UPDATE_USER => [
+               ['updateUserMailChimpData', 0],
            ],
        ];
     }
 
     /**
      * @param NewsLetterEvent $event
+     *
+     * @throws \Exception
      */
-    public function addToNewsLetter(NewsLetterEvent $event): void
+    public function addUserToNewsLetter(NewsLetterEvent $event): void
     {
         $newsLetter = $event->getNewsLetter();
-        $apiKey = $this->parameterBag->get('api_key');
-        $listId = $this->parameterBag->get('list_id');
+        $loyalty = $event->getLoyalty();
 
-        $mailChimp = new MailChimp($apiKey);
-        $result = $mailChimp->post('/lists/'.$listId.'/members', [
+        $userRequestInfo = [];
+
+        $mailChimp = new MailChimp($this->apiKey);
+
+        $request = [
             'email_address' => $newsLetter->getEmail(),
             'status' => 'subscribed',
-        ]);
+        ];
+
+        if (null !== $loyalty) {
+            $userRequestInfo = [
+                'merge_fields' => [
+                    'FNAME' => $loyalty->getFirstName(),
+                    'LNAME' => $loyalty->getLastName(),
+                    'PHONE' => $loyalty->getMobilePhone(),
+                ],
+            ];
+        }
+
+        $result = $mailChimp->post('/lists/'.$this->listId.'/members', $request + $userRequestInfo);
 
         if (false === $mailChimp->success()) {
             $newsLetter->setLastError($mailChimp->getLastError());
@@ -80,5 +103,33 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
             ->setStatus($result['status']);
 
         $this->newsLetterRepository->flush();
+    }
+
+    /**
+     * @param NewsLetterEvent $event
+     *
+     * @throws \Exception
+     */
+    public function updateUserMailChimpData(NewsLetterEvent $event)
+    {
+        $loyalty = $event->getLoyalty();
+        $newsLetter = $this->newsLetterRepository->findOneBy(['email' => $loyalty->getEmail()]);
+
+        $mailChimp = new MailChimp($this->apiKey);
+        $result = $mailChimp->patch('/lists/'.$this->listId.'/members/'.$newsLetter->getChimpId(), [
+            'merge_fields' => [
+                'FNAME' => $loyalty->getFirstName(),
+                'LNAME' => $loyalty->getLastName(),
+                'PHONE' => $loyalty->getMobilePhone(),
+            ],
+        ]);
+
+        if (false === $mailChimp->success()) {
+            $newsLetter->setLastError($mailChimp->getLastError());
+            $this->newsLetterRepository->flush();
+
+            throw new BadRequestHttpException($mailChimp->getLastError());
+        }
+
     }
 }

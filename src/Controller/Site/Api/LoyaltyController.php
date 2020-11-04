@@ -49,11 +49,12 @@ final class LoyaltyController extends AbstractController
     {
         try {
             $loyalty = $this->requestParser->parse($request->request);
+            $newsLetter = $this->requestParser->parseNewsLetter($loyalty->getEmail());
         } catch (BadRequestHttpException $httpException) {
             return $this->json(['error' => $httpException->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $this->handler->save($loyalty);
+        $this->handler->save($loyalty, $newsLetter);
 
         return $this->json(null, JsonResponse::HTTP_CREATED);
     }

@@ -52,6 +52,11 @@ final class CartPageCollector
         }
 
         $orderToken = $this->session->get('order');
+
+        if (!is_string($orderToken)) {
+            $orderToken = $orderToken->__toString();
+        }
+
         $order = $this->orderRepository->getByToken($orderToken);
 
         $products = $this->orderProductRepository->getByOrder($order, $locale);

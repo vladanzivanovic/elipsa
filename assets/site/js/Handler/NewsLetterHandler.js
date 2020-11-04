@@ -30,6 +30,10 @@ class NewsLetterHandler {
                 $(form)[0].reset();
 
                 loader.hide();
+
+                if (!response.hasLoyalty) {
+                    location.href = Routing.generate(`site.loyalty.${LOCALE}`);
+                }
             },
             error: (error) => {
                 const errors = error.responseJSON;

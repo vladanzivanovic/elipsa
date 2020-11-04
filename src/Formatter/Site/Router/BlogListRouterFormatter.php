@@ -58,6 +58,14 @@ final class BlogListRouterFormatter
         $this->categoryTranslationRepository = $categoryTranslationRepository;
     }
 
+    /**
+     * @param string $tag
+     * @param string $locale
+     *
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function localeFormatter(string $tag, string $locale)
     {
         return $this->tagsRepository->getForLocalization($tag, $locale);

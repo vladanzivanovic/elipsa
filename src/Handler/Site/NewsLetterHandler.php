@@ -8,6 +8,7 @@ use App\Entity\NewsLetter;
 use App\Entity\User;
 use App\Event\NewsLetterEvent;
 use App\Helper\ValidatorHelper;
+use App\Repository\LoyaltyRepository;
 use App\Repository\NewsLetterRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -26,6 +27,10 @@ final class NewsLetterHandler
      * @var EventDispatcherInterface
      */
     private $dispatcher;
+    /**
+     * @var LoyaltyRepository
+     */
+    private $loyaltyRepository;
 
     /**
      * NewsLetterHandler constructor.
@@ -33,26 +38,29 @@ final class NewsLetterHandler
      * @param ValidatorHelper          $validator
      * @param NewsLetterRepository     $newsLetterRepository
      * @param EventDispatcherInterface $dispatcher
+     * @param LoyaltyRepository        $loyaltyRepository
      */
     public function __construct(
         ValidatorHelper $validator,
         NewsLetterRepository $newsLetterRepository,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        LoyaltyRepository $loyaltyRepository
     ) {
         $this->validator = $validator;
         $this->newsLetterRepository = $newsLetterRepository;
         $this->dispatcher = $dispatcher;
+        $this->loyaltyRepository = $loyaltyRepository;
     }
 
     /**
      * @param NewsLetter $newsLetter
      *
-     * @return void
+     * @return bool
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(NewsLetter $newsLetter): void
+    public function save(NewsLetter $newsLetter): bool
     {
         $errors = $this->validator->validate($newsLetter, null, "SetNewsLetter");
 
@@ -61,10 +69,13 @@ final class NewsLetterHandler
         }
 
         $this->newsLetterRepository->persist($newsLetter);
-        $this->newsLetterRepository->flush();
 
-        $event = new NewsLetterEvent($newsLetter);
+        $loyalty = $this->loyaltyRepository->findOneBy(['email' => $newsLetter->getEmail()]);
+
+        $event = new NewsLetterEvent($newsLetter, $loyalty);
 
         $this->dispatcher->dispatch($event, NewsLetterEvent::ADD_USER);
+
+        return null !== $loyalty;
     }
 }

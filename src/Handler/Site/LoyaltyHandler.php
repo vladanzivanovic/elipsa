@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Handler\Site;
 
 use App\Entity\Loyalty;
+use App\Entity\NewsLetter;
 use App\Event\EmailEvent;
+use App\Event\NewsLetterEvent;
 use App\Helper\ValidatorHelper;
 use App\Model\EmailModel;
 use App\Repository\LoyaltyRepository;
+use App\Repository\NewsLetterRepository;
 use App\Repository\SettingsRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -34,33 +37,41 @@ final class LoyaltyHandler
      * @var LoyaltyRepository
      */
     private $loyaltyRepository;
+    /**
+     * @var NewsLetterRepository
+     */
+    private $newsLetterRepository;
 
     /**
      * @param ValidatorHelper          $validator
      * @param SettingsRepository       $settingsRepository
      * @param EventDispatcherInterface $dispatcher
      * @param LoyaltyRepository        $loyaltyRepository
+     * @param NewsLetterRepository     $newsLetterRepository
      */
     public function __construct(
         ValidatorHelper $validator,
         SettingsRepository $settingsRepository,
         EventDispatcherInterface $dispatcher,
-        LoyaltyRepository $loyaltyRepository
+        LoyaltyRepository $loyaltyRepository,
+        NewsLetterRepository $newsLetterRepository
     ) {
         $this->validator = $validator;
         $this->settingsRepository = $settingsRepository;
         $this->dispatcher = $dispatcher;
         $this->loyaltyRepository = $loyaltyRepository;
+        $this->newsLetterRepository = $newsLetterRepository;
     }
 
     /**
-     * @param Loyalty $loyalty
+     * @param Loyalty    $loyalty
+     * @param NewsLetter $newsLetter
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
-    public function save(Loyalty $loyalty): void
+    public function save(Loyalty $loyalty, NewsLetter $newsLetter): void
     {
         $errors = $this->validator->validate($loyalty, null, "SetLoyalty");
 
@@ -74,6 +85,17 @@ final class LoyaltyHandler
         $loyaltyEmail = $this->prepareEmail($loyalty);
         $event = new EmailEvent($loyaltyEmail);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+
+        $newsLetterEvent = new NewsLetterEvent($newsLetter, $loyalty);
+        $eventName = NewsLetterEvent::UPDATE_USER;
+
+        if (null === $newsLetter->getId()) {
+            $eventName = NewsLetterEvent::ADD_USER;
+
+            $this->newsLetterRepository->persist($newsLetter);
+        }
+
+        $this->dispatcher->dispatch($newsLetterEvent, $eventName);
     }
 
     /**
