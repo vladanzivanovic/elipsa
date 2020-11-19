@@ -58,6 +58,7 @@ filters: filteri
 sort: sortiranje
 limit: limit
 show_per_page: prikaži
+search: pretraga
 
 next_page: sledeća
 prev_page: prethodna
@@ -469,3 +470,5 @@ order.status.void: Narudžbina je otkazana
 order.status.failed: Greška prilikom naručivanja
 order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
+
+search_site: Pretražite sajt

@@ -24,6 +24,10 @@ class ShopPageController {
         if (SEARCH_CRITERIA.hasOwnProperty('price')) {
             this.dom.addCriteriaOnPage(Translator.trans('price', null, 'message', LOCALE), SEARCH_CRITERIA.price, SEARCH_CRITERIA.price, true);
         }
+
+        if (SEARCH_CRITERIA.hasOwnProperty('search')) {
+            this.dom.addCriteriaOnPage(Translator.trans('search', null, 'message', LOCALE), SEARCH_CRITERIA.search, SEARCH_CRITERIA.search, true);
+        }
     }
 
     registerEvents() {

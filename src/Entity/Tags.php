@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TagsRepository")
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"main_slug", "locale"})})
+ * @ORM\Table(indexes={@ORM\Index(columns={"label"}, flags={"fulltext"})})
  */
 class Tags
 {

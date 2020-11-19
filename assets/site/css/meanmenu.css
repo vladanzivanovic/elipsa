@@ -36,7 +36,7 @@ a.meanmenu-reveal {
     display: block;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
-    float: right;
+    float: left;
 }
 
 .mean-container a.meanmenu-reveal span {

@@ -12,6 +12,7 @@
 @import "../css/style.css";
 @import "../css/typography.css";
 @import "./Components/toastr";
+@import "./Components/search";
 @import "~jquery-eu-cookie-law-popup/css/jquery-eu-cookie-law-popup.css";
 
 div#page-loader {
@@ -67,4 +68,8 @@ div#page-loader {
 }
 .fb_customer_chat_bounce_out_v2 {
   display: none;
+}
+
+.mean-container .mean-bar::after {
+  content: none;
 }

@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductTranslationRepository")
+ * @ORM\Table(indexes={@ORM\Index(columns={"title", "description", "cleaning"}, flags={"fulltext"})})
  */
 class ProductTranslation
 {

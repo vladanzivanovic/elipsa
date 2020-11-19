@@ -206,6 +206,7 @@ class ProductRepository extends ExtendedEntityRepository
             ->innerJoin('p.productTranslations', 'pt')
             ->innerJoin('p.productHasImages', 'phi')
             ->innerJoin('phi.image', 'i')
+            ->innerJoin('p.productHasCategories', 'productHasCategories')
             ->where('p.status = :activeStatus')
             ->andWhere('pt.locale = :locale')
             ->andWhere('i.isMain = :isMain')
@@ -277,6 +278,39 @@ class ProductRepository extends ExtendedEntityRepository
                     ->andWhere('p.price <= :highPrice')
                     ->setParameter('lowPrice', $price[0])
                     ->setParameter('highPrice', $price[1]);
+            }
+
+            if($searchData->has('search')) {
+                $searchWords = explode(' ', $searchData->get('search')[0]);
+
+                array_walk($searchWords, function (&$word) {
+                    $subWord = substr($word, 0, strlen($word) - 1);
+
+                    $word = '+'.str_replace($subWord, $subWord.'*', $word);
+                });
+
+                $search = implode(' ', $searchWords);
+
+                $categorySearchQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasCategories::class, 'phc1')
+                    ->innerJoin(CategoryTranslation::class, 'ct1', 'WITH', 'phc1.category = ct1.category')
+                    ->where('match(ct1.title) against(:search BOOLEAN) > 0')
+                    ->andWhere('phc1.product = p');
+
+                $tagsSearchQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasTags::class, 'pht2')
+                    ->leftJoin(Tags::class, 't2', 'WITH', 'pht2.tag = t2.slug')
+                    ->where('match(t2.label) against(:search BOOLEAN) > 0')
+                    ->andWhere('pht2.product = p');
+
+                $query->andWhere('
+                    (EXISTS ('.$categorySearchQuery->getDQL().')) OR 
+                    (match(pt.title, pt.description, pt.cleaning) against(:search BOOLEAN) > 1) OR
+                    (EXISTS ('.$tagsSearchQuery->getDQL().'))
+                ')
+                    ->setParameter('search', $search);
             }
         }
 

@@ -1,7 +1,7 @@
     {% import 'Site/Macros/navigation.html.twig' as childNavList %}
 <div class="menu-area hidden-sm hidden-xs">
     <div class="container">
-        <div class="row">
+        <div class="row position-relative">
             <div class="col-md-8">
                 <div class="menu">
                     <nav>
@@ -66,6 +66,12 @@
                     </nav>
                 </div>
             </div>
+            {% if false == is_mobile() and false == is_tablet() %}
+                <div class="col-md-4">
+                    <button class="search-opener hvr-bs pull-right"><i class="fa fa-search"></i></button>
+                </div>
+                {{ include('Site/Components/search.html.twig') }}
+            {% endif %}
         </div>
     </div>
 </div>
@@ -118,6 +124,9 @@
                         </ul>
 
                     </nav>
+                    {% if is_mobile() %}
+                        {{ include('Site/Components/search.html.twig') }}
+                    {% endif %}
                 </div>
             </div>
         </div>

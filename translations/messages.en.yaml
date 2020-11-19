@@ -57,6 +57,7 @@ filters: filters
 sort: sort
 limit: limit
 show_per_page: show
+search: search
 
 veličina: size
 boja: color
@@ -64,6 +65,7 @@ kategorije: categories
 sortiranje: sort
 cena: price
 tagovi: tags
+pretraga: search
 
 next_page: next
 prev_page: prev
@@ -476,3 +478,5 @@ order.status.void: Order canceled
 order.status.failed: Greška prilikom naručivanja
 order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
+
+search_site: Search site

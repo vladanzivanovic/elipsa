@@ -1043,6 +1043,15 @@ ul.menu-list li .hot::after {
 
 .menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-img img {}
 
+.search-opener {
+    background: #a70303 none repeat scroll 0 0;
+    border: 0 none;
+    border-radius: 3px;
+    color: #fff;
+    height: 34px;
+    width: 60px;
+}
+
 .my-account {}
 
 .my-account > a {}

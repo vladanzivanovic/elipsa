@@ -15,6 +15,13 @@ class CoreMapper {
             this.newsLetterCloseBtn = '#wd1_nlpopup_close';
             this.resetPasswordBtn = '#reset_btn';
             this.resetForm = '#reset_form';
+            this.searchOpener = '.search-opener';
+            this.searchClose = '.search-close';
+            this.searchArea = '.search-area';
+            this.searchAreaMobile = '.search-area-mobile';
+            this.searchInput = '#search-input';
+            this.searchSubmit = '.search-submit';
+            this.searchForm = '.search-form';
 
             CoreMapper.instance = this;
         }

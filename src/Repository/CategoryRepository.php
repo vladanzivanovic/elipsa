@@ -106,7 +106,7 @@ class CategoryRepository extends ExtendedEntityRepository
                     INNER JOIN category_translation t ON c2.id = t.category_id
                     WHERE t.locale = :locale
                 )
-                SELECT * FROM cte order by lvl;";
+                SELECT * FROM cte order by lvl, title;";
 
         $stmt = $this->_em->getConnection()->prepare($sql);
         $stmt->execute(['locale' => $locale]);
