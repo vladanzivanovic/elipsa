@@ -3,6 +3,10 @@
 {% block bodyClass %}shop-page{% endblock %}
 {% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
 
+{% if products is not empty %}
+    {% block ogImage %}{{ products[0].image_link_list }}{% endblock %}
+{% endif %}
+
 {% set search = search_criteria is not null ? search_criteria.all : [] %}
 
 {% block content %}
