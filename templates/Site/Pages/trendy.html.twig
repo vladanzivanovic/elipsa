@@ -1,7 +1,11 @@
 {% extends ('Site/base.html.twig') %}
 
 {% block bodyClass %}shop-page{% endblock %}
-{% block title %}Elipsa - prodavnica{% endblock %}
+{% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
+
+
+{% block ogImage %}{{ products.data|length > 0 ? app.request.schemeAndHttpHost ~ products.data[0].image_link_list : defaultOgImage }}{% endblock %}
+{% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
 
 {% set search = search_criteria is not null ? search_criteria.all : [] %}
 

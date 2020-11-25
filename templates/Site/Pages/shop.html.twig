@@ -3,7 +3,6 @@
 {% block bodyClass %}shop-page{% endblock %}
 {% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
 
-
 {% block ogImage %}{{ products.data|length > 0 ? app.request.schemeAndHttpHost ~ products.data[0].image_link_list : defaultOgImage }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
 
