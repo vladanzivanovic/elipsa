@@ -3,6 +3,11 @@
 {% block bodyClass %}product-page{% endblock %}
 {% block title %}{{ translation.title }} - Elipsa{% endblock %}
 
+{% block ogTitle %}{{ translation.title }}{% endblock %}
+{% block ogImage %}{{ app.request.schemeAndHttpHost ~ images[0].image_link }}{% endblock %}
+{% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
+{% block ogDescription %}{{ translation.description }}{% endblock %}
+
 {% block content %}
     {% set product = translation.product %}
     {% set prevPage = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? path('site.trendy_page') : path('site.shop_page') %}

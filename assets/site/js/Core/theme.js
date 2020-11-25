@@ -131,9 +131,9 @@ require('webpack-jquery-ui');
     -----------------------*/
     $('#home3_slider').nivoSlider({
         directionNav: true,
-        animSpeed: 2000,
+        animSpeed: 1000,
         slices: 18,
-        pauseTime: 5000000,
+        pauseTime: 6000,
         pauseOnHover: false,
         controlNav: false,
         prevText: '<i class="fa fa-chevron-left nivo-prev-icon"></i>',

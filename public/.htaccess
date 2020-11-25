@@ -153,8 +153,8 @@ DirectoryIndex index.php
         Header set Cache-Control "private, must-revalidate"
     </filesMatch>
 
-    Header set Connection keep-alive
-    Header edit Set-Cookie ^(.*)$ "$1; Secure; SameSite=None"
+#    Header set Connection keep-alive
+#    Header edit Set-Cookie ^(.*)$ "$1; Secure; SameSite=None"
 </ifModule>
 ## END Cache-Control Headers
 

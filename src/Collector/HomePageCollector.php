@@ -79,6 +79,7 @@ final class HomePageCollector
     public function collect(string $locale, ?User $user): array
     {
         $sliders = $this->sliderRepository->getActiveSliderByPosition($locale);
+//        dd($sliders);
         $banners = $this->bannerRepository->getActiveOrderByPosition($locale);
         $products = $this->productRepository->getForHomePage($locale, $user);
 

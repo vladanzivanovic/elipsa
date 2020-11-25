@@ -2,6 +2,8 @@
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
 
+{% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') %}
+
 {% if routeName is null %}
     {% set routeName = 'site.home_page' %}
 {% endif %}
@@ -29,11 +31,11 @@
     <!-- Mobile Specific Meta  -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta property="og:title" content="{% block ogTitle %}ELIPSA{% endblock %}">
-    <meta property="og:image" content="{% block ogImage %}{{ app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') }}{% endblock %}">
+    <meta property="og:title" content="{% block ogTitle %}{% endblock %} ELIPSA">
+    <meta property="og:image" content="{% block ogImage %}{{ defaultOgImage }}{% endblock %}">
     <meta property="og:url" content="{% block ogUrl %}{{ app.request.schemeAndHttpHost }}{% endblock %}">
     <meta property="og:site_name" content="ELIPSA">
-    <meta property="og:description" content="{% block ogDescription %}Jedinstvena elegancija za savremenu poslovnu damu."{% endblock %}>
+    <meta property="og:description" content="{% block ogDescription %}Jedinstvena elegancija za savremenu poslovnu damu."{% endblock %}">
     <meta property="og:type" content="website">
 
     <!-- Google Fonts -->
