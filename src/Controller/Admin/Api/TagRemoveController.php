@@ -56,7 +56,7 @@ final class TagRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove--product-tag/{slug}", name="admin.remove_product_tag_api", methods={"DELETE"}, options={"expose": true})
+     * @Route("/api/remove-product-tag/{slug}", name="admin.remove_product_tag_api", methods={"DELETE"}, options={"expose": true})
      *
      * @param Tags $productTags
      *
