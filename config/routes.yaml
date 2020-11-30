@@ -19,6 +19,13 @@ admin:
   options:
     expose: true
 
+site.legacy_shop_page_redirect:
+  path: /artikal
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    route: site.shop_page
+    permanent: true
+
 site.product_page:
   path:
     rs: /{slug}

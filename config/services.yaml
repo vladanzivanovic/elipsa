@@ -90,6 +90,16 @@ services:
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
 
+    app.sitemap_listener:
+        class: App\EventListener\SiteMapStaticSubscriber
+        tags:
+            - { name: "kernel.event_subscriber", priority: 100 }
+
+    app.sitemap_tag_listener:
+        class: App\EventListener\SiteMapTagsSubscriber
+        tags:
+            - { name: "kernel.event_subscriber", priority: 100 }
+
     app.sitemap_blog_listener:
         class: App\EventListener\SiteMapBlogSubscriber
         tags:

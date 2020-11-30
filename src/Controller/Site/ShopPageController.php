@@ -48,9 +48,9 @@ final class ShopPageController extends AbstractController
      * )
      * @Template("Site/Pages/shop.html.twig")
      *
-     * @param Request $request
-     * @param int     $page
-     * @param string  $searchData
+     * @param Request     $request
+     * @param int         $page
+     * @param string|null $searchData
      *
      * @return array
      */
