@@ -11,18 +11,14 @@ class LoginHandler {
     doLogin() {
         const urlRoute = Routing.generate(`admin_api.login`);
         const type = 'POST';
-        const data = {
-            username: $(this.mapper.loginEmail).val(),
-            password: $(this.mapper.loginPassword).val(),
-        };
+        const data = $(this.mapper.form).serializeArray();
 
         this.notification.showLoadingMessage();
 
         $.ajax({
             type,
-            contentType: 'application/json',
             url: urlRoute,
-            data: JSON.stringify(data),
+            data,
             dataType: 'json',
             success: (response) => {
                 AppHelperService.redirect(Routing.generate('admin.dashboard'));

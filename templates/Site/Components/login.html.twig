@@ -11,6 +11,8 @@
                     <h4 class="lrc-title letter-capitalize">{{ 'login.text' | trans }}</h4>
                     <div class="lrc-login-form">
                         <form id="login-form" enctype="multipart/form-data">
+                            {{ inputs.input('_csrf_token_login', csrf_token('authenticate'), '_csrf_token', '', 'hidden') }}
+
                             <div class="account-name">
                                 <i class="fa fa-user"></i>
                                 {{ inputs.input('login_email', '', 'username', 'Email', 'email', 'letter-capitalize') }}

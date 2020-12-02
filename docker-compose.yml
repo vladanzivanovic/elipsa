@@ -5,7 +5,7 @@ services:
     image: lamp
     container_name: elipsa-lamp
     ports:
-      - "9091:80"
+      - "9191:80"
     volumes:
       - "./:/var/www/html:rw"
     depends_on:

@@ -7,6 +7,7 @@ class CoreMapper {
             this.loginBtn = '#login-btn';
             this.loginEmail = '#login_email';
             this.loginPassword = '#login_password';
+            this.loginCsrf = '#_csrf_token_login';
             this.toggleWishListBtn = '.toggle-wish-list';
             this.newsLetterForm = '#newsLetter';
             this.newsLetterFormFooter = '#newsletter_form_footer';

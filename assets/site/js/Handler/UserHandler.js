@@ -41,18 +41,13 @@ class UserHandler {
     doLogin(mapper) {
         const urlRoute = Routing.generate(`site_api.login`);
         const type = 'POST';
-        const data = {
-            username: $(mapper.loginEmail).val(),
-            password: $(mapper.loginPassword).val(),
-        };
 
         loader.show();
 
         $.ajax({
             type,
-            contentType: 'application/json',
             url: urlRoute,
-            data: JSON.stringify(data),
+            data: $(mapper.loginForm).serializeArray(),
             dataType: 'json',
             success: (response) => {
                 AppHelperService.redirect(Routing.generate('site.home_page'));

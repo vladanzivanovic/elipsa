@@ -28,7 +28,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
 
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
-        if (false !== strpos('admin', $request->attributes->get('_route'))) {
+        if (false !== strpos($request->attributes->get('_route'), 'admin')) {
             return new RedirectResponse($this->router->generate('admin.login'));
         }
 

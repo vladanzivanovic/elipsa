@@ -19,24 +19,24 @@ security:
             pattern: ^/admin
             anonymous: lazy
             provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             json_login:
                 check_path: admin_api.login
-                success_handler: App\Handler\AuthenticationHandler
-                failure_handler: App\Handler\AuthenticationHandler
             access_denied_handler: App\Handler\AccessDeniedHandler
-            entry_point: App\Handler\AuthenticationEntryPointHandler
             logout:
                 path:   admin.logout
 
         main:
             anonymous: lazy
             provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             json_login:
                 check_path: site_api.login
-                success_handler: App\Handler\AuthenticationHandler
-                failure_handler: App\Handler\AuthenticationHandler
             access_denied_handler: App\Handler\AccessDeniedHandler
-            entry_point: App\Handler\AuthenticationEntryPointHandler
 
             logout:
                 path:   site.logout
