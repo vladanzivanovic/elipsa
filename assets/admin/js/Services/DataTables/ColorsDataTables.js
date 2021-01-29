@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 
 export default (() => {
@@ -8,24 +8,23 @@ export default (() => {
     Private.tableRef = $('#data-table');
 
     Public.init = () => {
-        Private.tableRef.DataTable( {
-            serverSide: true,
-            ajax: {
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
+           ajax: {
                 url: Routing.generate('admin.get_product_colors_list'),
                 type: 'POST'
             },
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'hex', name: 'hex', title: 'Boja', render: function(data, type) {
-                    return type === 'display' ?
-                        `<span style="display: block; width: 20px; height: 20px; background-color: ${data}"></span>` :
-                        data;
+                        return type === 'display' ?
+                            `<span style="display: block; width: 20px; height: 20px; background-color: ${data}"></span>` :
+                            data;
                     } },
                 { data: 'rs_name', name: 'rs_name', title: 'Naziv - srpski' },
                 { data: 'en_name', name: 'en_name', title: 'Naziv - engleski' },
                 { data: 'id', orderable: false, render: function (id, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_color_page', {id})}">Izmeni</a> ` : '';
-                    const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${id}">Ukloni</button>` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_color_page', {id})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${id}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
@@ -33,8 +32,9 @@ export default (() => {
                     } },
             ],
             order: [[0, 'desc']],
-            pageLength: 100,
         });
+
+        Private.tableRef.DataTable(options);
     };
 
     Public.reload = () => {

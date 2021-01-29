@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
@@ -10,8 +10,7 @@ export default (() => {
     Private.dataTable = null;
 
     Public.init = () => {
-        Private.dataTable = Private.tableRef.DataTable( {
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.get_career_list'),
                 type: 'POST'
@@ -31,8 +30,8 @@ export default (() => {
                     } },
             ],
             order: [[0, 'asc']],
-            pageLength: 100,
         });
+        Private.dataTable = Private.tableRef.DataTable(options);
 
         Private.registerEvents();
     };

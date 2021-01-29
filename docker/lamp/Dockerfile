@@ -10,35 +10,36 @@ RUN apt-get install -y apache2
 RUN apt-get install -y zip unzip
 RUN a2enmod rewrite
 
-RUN apt-get update -y
-
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 
 RUN apt-get update -y
-RUN apt-get upgrade -y
 
-RUN apt-get install -y php7.3
-RUN apt-get install -y libapache2-mod-php7.3
-RUN apt-get install -y php7.3-mysql
-RUN apt-get update -y
-RUN apt-get install -y php7.3-gd 
-RUN apt-get install -y php7.3-imagick 
-RUN apt-get install -y php7.3-recode 
-RUN apt-get install -y php7.3-tidy 
-RUN apt-get install -y php7.3-xmlrpc
-RUN apt-get install -y php7.3-xml
-RUN apt-get install -y php7.3-cli
-RUN apt-get install -y php7.3-common
-RUN apt-get install -y php7.3-curl
-RUN apt-get install -y php7.3-mbstring
-RUN apt-get install -y php7.3-zip
-RUN apt-get install -y php-intl
+RUN apt-get update -y && apt-get install -y php7.4
+RUN apt-get install -y php-pear
+RUN apt-get install -y  libapache2-mod-php7.4
+RUN apt-get install -y php7.4-mysql
+RUN apt-get install -y php7.4-bcmath
+RUN apt-get install -y php7.4-json
+RUN apt-get install -y php7.4-cgi
+RUN apt-get install -y php7.4-xsl
+RUN apt-get install -y php7.4-gd
+RUN apt-get install -y php7.4-imagick
+RUN apt-get install -y php7.4-tidy
+RUN apt-get install -y php7.4-xmlrpc
+RUN apt-get install -y php7.4-xml
+RUN apt-get install -y php7.4-cli
+RUN apt-get install -y php7.4-common
+RUN apt-get install -y php7.4-curl
+RUN apt-get install -y php7.4-mbstring
+RUN apt-get install -y php7.4-zip
+RUN apt-get install -y php7.4-intl
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 RUN apt-get update
 RUN apt-get install -y nodejs
+#RUN apt-get install -y npm
 RUN apt-get install -y net-tools
 RUN apt-get install -y git
 
@@ -46,13 +47,14 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
 # Make sure we're installing what we think we're installing!
 && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
-&& php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot --version=1.10.13 \
+&& php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot \
 && rm -f /tmp/composer-setup.*
 
 RUN a2enmod headers
 RUN a2enmod expires
 
 COPY 000-default.conf /etc/apache2/sites-available
+COPY custom.ini /etc/php/7.4/apache2/conf.d/custom.ini
 
 RUN phpenmod intl
 

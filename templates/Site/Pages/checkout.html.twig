@@ -86,7 +86,7 @@
                                     <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ productTotal | number_format(2)  }} RSD</span></li>
                                 {% endfor %}
                                 {% set totalWithDiscount = total %}
-                                {% set totalWithShipping = shipping + total %}
+                                {% set totalWithShipping = shipping | trim + total %}
 
                                 {% if promo_price is not null %}
                                     {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}

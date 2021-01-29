@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
@@ -10,8 +10,7 @@ export default (() => {
     Private.dataTable = null;
 
     Public.init = () => {
-        Private.dataTable = Private.tableRef.DataTable( {
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.get_banner_list'),
                 type: 'POST'
@@ -19,14 +18,14 @@ export default (() => {
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'image', orderable: false, title: 'Slika', width: '200px', render: function (data, type, row, meta) {
-                    const image = `<img src="${data}" class="slider-table-image">`
+                        const image = `<img src="${data}" class="slider-table-image">`
 
                         return type === 'display' ?
                             image :
                             data;
                     } },
                 { data: 'type', name: 'type', title: 'Tip', render: function (data, type, row, meta) {
-                    return type === 'display' ? `<p class="text-uppercase">${data}</p>` : data;
+                        return type === 'display' ? `<p class="text-uppercase">${data}</p>` : data;
                     } },
                 { data: 'status_text', name: 'is_active', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const checkedAttr = row.is_active === true ? 'checked' : '';
@@ -37,8 +36,8 @@ export default (() => {
                         return type === 'display' ? html : data;
                     } },
                 { data: 'id', orderable: false, render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_banner_page', {id: data})}">Izmeni</a> ` : '';
-                    const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_banner_page', {id: data})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
@@ -46,12 +45,13 @@ export default (() => {
                     } },
             ],
             order: [[2, 'asc']],
-            pageLength: 100,
             rowReorder: {
                 dataSrc: 'id',
                 update: false,
             }
         });
+
+        Private.dataTable = Private.tableRef.DataTable(options);
     };
 
     Public.reload = () => {

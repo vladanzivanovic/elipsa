@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
@@ -10,8 +10,7 @@ export default (() => {
     Private.dataTable = null;
 
     Public.init = () => {
-        Private.dataTable = Private.tableRef.DataTable( {
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.get_order_list'),
                 type: 'POST'
@@ -21,7 +20,7 @@ export default (() => {
                 { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
                 { data: 'email', name: 'email', title: 'Email' },
                 { data: 'payment_type', name: 'payment_type', title: 'Tip plaćanja', render: function (payment_type, type, row, meta) {
-                    return Translator.trans(payment_type, null, 'messages', LOCALE);
+                        return Translator.trans(payment_type, null, 'messages', LOCALE);
                     } },
                 { data: 'status', name: 'status', title: 'Status', render: function (status, type, row, meta) {
                         return Translator.trans(status, null, 'messages', LOCALE);
@@ -34,8 +33,9 @@ export default (() => {
                     } },
             ],
             order: [[0, 'DESC']],
-            pageLength: 100,
         });
+
+        Private.dataTable = Private.tableRef.DataTable(options);
     };
 
     Public.reload = () => {

@@ -41,6 +41,7 @@
     <script nonce="{{ csp_nonce('script') }}">
         const LOCALE = 'rs';
         const ROUTE_NAME = '{{ routeName }}';
+        const DATATABLE_LANG = 'https://cdn.datatables.net/plug-ins/1.10.22/i18n/Serbian_latin.json';
         window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
     </script>
     <script src="{{ preload(asset('build/runtime.js')) }}"></script>

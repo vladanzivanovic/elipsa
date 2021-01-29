@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import NotificationService from "../../../../js/NotificationService";
 
 export default (() => {
@@ -10,8 +10,7 @@ export default (() => {
 
 
     Public.init = () => {
-        Private.tableRef.DataTable( {
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.get_product_list'),
                 type: 'POST'
@@ -23,28 +22,28 @@ export default (() => {
                 { data: 'discount', name: 'discount', title: 'Popust', type: "num" },
                 { data: 'sizes', name: 'sizes', title: 'Veličine' },
                 { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
-                    const checkedAttr = row.status === 2 ? 'checked' : '';
+                        const checkedAttr = row.status === 2 ? 'checked' : '';
 
-                    let html = CAN_EDIT ? `<p class="status-text">${data}</p><input type="checkbox" class="set-active-product" data-slug="${row.slug}" ${checkedAttr}/>` : `<p class="status-text">${data}</p>`;
+                        let html = CAN_EDIT ? `<p class="status-text">${data}</p><input type="checkbox" class="set-active-product" data-slug="${row.slug}" ${checkedAttr}/>` : `<p class="status-text">${data}</p>`;
 
-                    if (row.status === 3) {
-                        html = `<p class="status-text">${data}</p>`;
-                    }
+                        if (row.status === 3) {
+                            html = `<p class="status-text">${data}</p>`;
+                        }
 
-                    return type === 'display' ? html : data;
-                } },
+                        return type === 'display' ? html : data;
+                    } },
                 { data: 'position_text', name: 'show_home_page', title: 'Početna stranica', width: '200px', render: function (data, type, row, meta) {
-                    let html = '';
+                        let html = '';
 
-                    if (data) {
-                        html = `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`
-                    }
-;
-                    return type === 'display' ? html : data;
-                } },
+                        if (data) {
+                            html = `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`
+                        }
+                        ;
+                        return type === 'display' ? html : data;
+                    } },
                 { data: 'slug', searchable: false, orderable: false, render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.edit_product_page', {slug: data})}">Izmeni</a> ` : '';
-                    const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-link" href="${Routing.generate('admin.edit_product_page', {slug: data})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
@@ -52,8 +51,9 @@ export default (() => {
                     } },
             ],
             order: [[0, 'desc']],
-            pageLength: 100,
-        })
+        });
+
+        Private.tableRef.DataTable(options)
             .on('search.dt', () => {
                 Private.notification.showLoadingMessage();
             })

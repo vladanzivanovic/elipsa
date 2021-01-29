@@ -97,7 +97,7 @@
                         <h3 class="sccb-title letter-capitalize">{{ 'cart.total_cost' | trans }}</h3>
                         <div class="sccb-cart-content">
                             {% set totalWithDiscount = total %}
-                            {% set totalWithShipping = shipping + total %}
+                            {% set totalWithShipping = shipping | trim + total %}
 
                             {% if promo_price is not null %}
                                 {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}

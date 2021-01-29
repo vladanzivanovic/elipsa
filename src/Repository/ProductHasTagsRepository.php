@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\ProductHasTags;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +11,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method ProductHasTags[]    findAll()
  * @method ProductHasTags[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProductHasTagsRepository extends ServiceEntityRepository
+class ProductHasTagsRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

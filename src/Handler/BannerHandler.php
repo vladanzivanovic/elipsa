@@ -37,8 +37,6 @@ final class BannerHandler
     private $bannerRepository;
 
     /**
-     * SliderHandler constructor.
-     *
      * @param BannerRepository      $bannerRepository
      * @param ValidatorHelper       $validator
      * @param ImageService          $imageService

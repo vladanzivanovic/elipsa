@@ -9,31 +9,23 @@ services:
     volumes:
       - "./:/var/www/html:rw"
     depends_on:
-      - elipsa-mysql
-    networks:
-      elipsa-network:
-        ipv4_address: 172.26.0.10
+      - mysql
 
-  elipsa-mysql:
-    build: ./docker/mysql
-    image: mysql
+  mysql:
+    image: mariadb:10.4.10
+    hostname: elipsa-mysql
     container_name: elipsa-mysql
     volumes:
-      - "./docker/mysql-mount:/var/lib/mysql:rw"
+      - "./docker/mysql:/var/lib/mysql:rw"
     ports:
       - "63307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=vlada123!!!
       - MYSQL_DATABASE=elipsa
-      - MYSQL_USER=vlada
-      - MYSQL_PASSWORD=vlada
-    networks:
-      elipsa-network:
-        ipv4_address: 172.26.0.2
 
   elipsa-phpmyadmin:
     depends_on:
-      - elipsa-mysql
+      - mysql
     image: phpmyadmin/phpmyadmin
     container_name: elipsa-phpmyadmin
     restart: always
@@ -42,23 +34,13 @@ services:
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: vlada123!!!
-    networks:
-      elipsa-network:
-        ipv4_address: 172.26.0.3
-      
+
   elipsa-mailcatcher:
     image: schickling/mailcatcher
     container_name: elipsa-mailcatcher
     ports:
       - "1027:1025" # changed to 1026 to avoid local instance of mailcatcher
       - "1082:1080"
-    networks:
-      elipsa-network:
-        ipv4_address: 172.26.0.4
 
-networks:
-  elipsa-network:
-    name: elipsa-network
-    ipam:
-      config:
-        - subnet: 172.26.0.0/24
+volumes:
+  mysql-data:

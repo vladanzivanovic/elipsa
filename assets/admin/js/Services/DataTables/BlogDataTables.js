@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import dtResponsive from 'datatables.net-responsive-dt';
 
 export default (() => {
@@ -8,9 +8,7 @@ export default (() => {
     Private.tableRef = $('#data-table');
 
     Public.init = () => {
-        Private.tableRef.DataTable( {
-            responsive: true,
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.blog_list'),
                 type: 'POST'
@@ -34,8 +32,8 @@ export default (() => {
                     } },
             ],
             order: [[0, 'desc']],
-            pageLength: 100,
         });
+        Private.tableRef.DataTable(options);
     };
 
     Public.reload = () => {

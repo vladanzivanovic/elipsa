@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 
 export default (() => {
@@ -9,8 +9,7 @@ export default (() => {
     Private.dataTable = null;
 
     Public.init = () => {
-        Private.dataTable = Private.tableRef.DataTable( {
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.get_user_list'),
                 type: 'POST'
@@ -31,8 +30,8 @@ export default (() => {
                         return type === 'display' ? html : data;
                     } },
                 { data: 'id', orderable: false, render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_user_page', {id: data})}">Izmeni</a> ` : '';
-                    const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Onemogući</button>` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_user_page', {id: data})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Onemogući</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
@@ -40,8 +39,9 @@ export default (() => {
                     } },
             ],
             order: [[2, 'asc']],
-            pageLength: 100,
         });
+
+        Private.dataTable = Private.tableRef.DataTable(options);
     };
 
     Public.reload = () => {

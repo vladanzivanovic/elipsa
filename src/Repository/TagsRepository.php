@@ -56,7 +56,7 @@ class TagsRepository extends ExtendedEntityRepository
             ->select(
                 'pt.id as id',
                 'pt.label as rs_name',
-                'pt.mainSlug as minSLug',
+                'pt.mainSlug as minSlug',
                 'pten.label as en_name',
                 'pt.slug as slug'
             )
@@ -67,7 +67,18 @@ class TagsRepository extends ExtendedEntityRepository
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
+            ->groupBy('pt.id')
         ;
+
+        if ($type === Tags::TYPE_BLOG) {
+            $query->addSelect('COUNT(bht.id) as total_products')
+                ->leftJoin(BlogHasTags::class, 'bht', 'WITH', 'bht.tag = pt.mainSlug');
+        }
+
+        if ($type === Tags::TYPE_PRODUCT) {
+            $query->addSelect('COUNT(pht.id) as total_products')
+                ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = pt.mainSlug');
+        }
 
         return $query->getQuery()->getArrayResult();
     }

@@ -1,4 +1,4 @@
-import dt from 'datatables.net-dt';
+require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 
 export default (() => {
@@ -8,8 +8,7 @@ export default (() => {
     Private.tableRef = $('#data-table');
 
     Public.init = () => {
-        Private.tableRef.DataTable( {
-            serverSide: true,
+        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
                 url: Routing.generate('admin.get_category_list'),
                 type: 'POST'
@@ -20,8 +19,8 @@ export default (() => {
                 { data: 'en_name', name: 'titles', title: 'Naziv - engleski' },
                 { data: 'parent', name: 'parent', title: 'Glavna kategorija' },
                 { data: 'slug', orderable: false, render: function (data, type, row, meta) {
-                    const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_category_page', {slug: data})}">Izmeni</a> ` : '';
-                    const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}">Ukloni</button>` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_category_page', {slug: data})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
@@ -29,8 +28,8 @@ export default (() => {
                     } },
             ],
             order: [[0, 'desc']],
-            pageLength: 100,
         });
+            Private.tableRef.DataTable(options);
     };
 
     Public.reload = () => {

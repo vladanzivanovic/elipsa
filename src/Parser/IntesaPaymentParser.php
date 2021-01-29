@@ -53,7 +53,7 @@ final class IntesaPaymentParser
         $xml->addChild('Password', $this->parameterBag->get('intesa_password'));
         $xml->addChild('ClientId', $this->parameterBag->get('intesa_merchant_id'));
         $xml->addChild('Type', $type);
-        $xml->addChild('OrderId', (string) $order->getId());
+        $xml->addChild('OrderId', (string) $order->getToken());
 
         $response = $this->client->request(
             'POST',
