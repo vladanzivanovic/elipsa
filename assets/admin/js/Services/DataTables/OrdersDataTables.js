@@ -32,7 +32,7 @@ export default (() => {
                             viewLink : id;
                     } },
             ],
-            order: [[0, 'DESC']],
+            order: [[0, 'desc']],
         });
 
         Private.dataTable = Private.tableRef.DataTable(options);

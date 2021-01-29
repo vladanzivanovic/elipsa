@@ -11,10 +11,6 @@ export default (() => {
 
     Public.init = () => {
         const options = Object.assign({}, window.DATATABLE_OPTIONS, {
-            language: {
-                url: DATATABLE_LANG
-            },
-            serverSide: true,
             ajax: {
                 url: Routing.generate('admin.get_home_banner_list'),
                 type: 'POST'
@@ -47,7 +43,6 @@ export default (() => {
                     } },
             ],
             order: [[2, 'asc']],
-            pageLength: 100,
             rowReorder: {
                 dataSrc: 'id',
                 update: false,

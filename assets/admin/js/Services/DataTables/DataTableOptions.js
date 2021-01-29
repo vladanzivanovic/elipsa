@@ -6,5 +6,4 @@ window.DATATABLE_OPTIONS = {
     },
     serverSide: true,
     pageLength: 100,
-    responsive: true,
 };

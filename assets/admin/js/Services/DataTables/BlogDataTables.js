@@ -1,5 +1,4 @@
 require('./DataTableOptions');
-import dtResponsive from 'datatables.net-responsive-dt';
 
 export default (() => {
     let Public = {},
