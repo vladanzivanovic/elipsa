@@ -10,10 +10,6 @@ export default (() => {
 
     Public.init = () => {
         const options = Object.assign({}, window.DATATABLE_OPTIONS, {
-            language: {
-                url: DATATABLE_LANG
-            },
-            serverSide: true,
             ajax: {
                 url: Routing.generate('admin.get_catalog_list'),
                 type: 'POST'
@@ -39,7 +35,6 @@ export default (() => {
                     } },
             ],
             order: [[2, 'asc']],
-            pageLength: 100,
         });
 
         Private.dataTable = Private.tableRef.DataTable(options);
