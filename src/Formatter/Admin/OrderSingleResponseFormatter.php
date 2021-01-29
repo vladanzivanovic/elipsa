@@ -16,20 +16,11 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class OrderSingleResponseFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private ImageRepository $imageRepository;
 
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private SettingsRepository $settingsRepository;
 
     /**
      * @param RouterInterface    $router
