@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Career;
 use App\Entity\CareerDescriptionTranslation;
 use App\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 

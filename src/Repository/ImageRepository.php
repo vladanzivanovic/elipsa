@@ -13,7 +13,8 @@ use App\Entity\Product;
 use App\Entity\ProductColor;
 use App\Entity\ProductHasImages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Image|null find($id, $lockMode = null, $lockVersion = null)
@@ -193,6 +194,18 @@ class ImageRepository extends ExtendedEntityRepository
             ->setParameter('product', $product)
             ->setParameter('isMain', true)
             ->orderBy('pc.id');
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function getRelatedImage(string $imageName): ?Image
+    {
+        $query = $this->createQueryBuilder('i')
+            ->where('i.parentImage = :parentImageName')
+            ->setParameter('parentImageName', $imageName);
 
         return $query->getQuery()->getOneOrNullResult();
     }

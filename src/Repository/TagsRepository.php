@@ -8,7 +8,7 @@ use App\Entity\Product;
 use App\Entity\ProductHasTags;
 use App\Entity\Tags;
 use App\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 

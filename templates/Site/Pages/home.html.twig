@@ -8,7 +8,9 @@
         <!-- Slider Image -->
         <div id="home3_slider" class="nivoSlider slider-image">
             {% for slider in sliders %}
-                <img src="{{ is_mobile() ? slider.mobile_image_link : slider.image_link }}" alt="" title="#{{ slider.id }}" />
+                <a class="hvr-bs" href="{{ slider['button_link'] }}">
+                    <img src="{{ is_mobile() ? slider.mobile_image_link : slider.image_link }}" alt="" title="#{{ slider.id }}" />
+                </a>
             {% endfor %}
         </div>
         {% for slider in sliders %}
@@ -17,35 +19,19 @@
                 <div class="slider-progress"></div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12 {{ 'text-' ~ slider['position'] }}">
+                        {% set sliderPosition = 'text-' ~ slider['position'] %}
+                        {% if is_mobile() or is_tablet() %}
+                            {% set sliderPosition = 'text-center' %}
+                        {% endif %}
+
+                        <div class="col-xs-12 {{ sliderPosition }}">
                                 <div class="slide3-text">
                                     <div class="middle-text">
-                                        {% if slider['description'][0] is defined %}
+                                        {% if slider['description'] is defined %}
                                         <div class="cap-dec animated bounceIn">
-                                            <h6>{{ slider['description'][0] is defined ? slider['description'][0] : '&nbsp;' }}</h6>
+                                            {{ slider['description'] is defined ? slider['description'] | raw : '&nbsp;' }}
                                         </div>
                                         {% endif %}
-                                        {% if slider['description'][1] is defined %}
-                                        <div class="cap-title animated zoomIn">
-                                            <h2>{{ slider['description'][1] is defined ? slider['description'][1] | capitalize : '&nbsp;' }}</h2>
-                                            {% endif %}
-                                        </div>
-                                        {% if slider['description'][2] is defined %}
-                                        <div class="cap-title-2 animated zoomIn">
-                                            <h3>{{ slider['description'][2] is defined ? slider['description'][2] : '&nbsp;' }}</h3>
-                                        </div>
-                                        {% endif %}
-                                        <div class="cap-text animated zoomIn">
-                                            {% if slider['description'][3] is defined %}
-                                            <p>{{ slider['description'][3] is defined ? slider['description'][3] : '&nbsp;' }}</p>
-                                            {% endif %}
-                                            {% if slider['description'][4] is defined %}
-                                            <span>{{ slider['description'][4] is defined ? slider['description'][4] : '&nbsp;' }}</span>
-                                            {% endif %}
-                                        </div>
-                                        <div class="cap-view animated bounceInUp">
-                                            <a class="hvr-bs" href="{{ slider['button_link'] }}">{{ slider['button_text'] }}</a>
-                                        </div>
                                     </div>
                                 </div>
                         </div>
@@ -84,62 +70,66 @@
     <div class="home3-banner-area">
         <div class="container">
             <div class="row">
-                {% if banners[1] is defined %}
-                    {% set firstBanner = banners[1] %}
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="h3b-single-banner-4 h3b-single-banner">
-                            <div class="h3b-img">
-                                <img src="{{ firstBanner['image_link'] }}" alt="">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    {% if banners[1] is defined %}
+                        {% set firstBanner = banners[1] %}
+                        <a href="{{ firstBanner['button_link'] }}">
+                            <div class="h3b-single-banner-4 h3b-single-banner">
+                                <div class="h3b-img">
+                                    <img src="{{ firstBanner['image_link'] }}" alt="{{ default_alt_tag }}">
+                                </div>
+                                <div class="h3b-content-banner-4 h3b-content">
+                                    <h3>{{ firstBanner['description'][0] is defined ? firstBanner['description'][0] : '&nbsp;' }}</h3>
+                                    <h2>{{ firstBanner['description'][1] is defined ? firstBanner['description'][1] : '&nbsp;' }}</h2>
+                                </div>
                             </div>
-                            <div class="h3b-content-banner-4 h3b-content">
-                                <h3>{{ firstBanner['description'][0] is defined ? firstBanner['description'][0] : '&nbsp;' }}</h3>
-                                <h2>{{ firstBanner['description'][1] is defined ? firstBanner['description'][1] : '&nbsp;' }}</h2>
-                                <a href="{{ firstBanner['button_link'] }}">{{ firstBanner['button_text'] }}</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
                 <div class="col-md-4 hidden-sm col-xs-12 home-middle-banners">
                     {% if banners[2] is defined %}
                         {% set secondBanner = banners[2] %}
-                        <div class="h3b-single-banner-3 h3b-single-banner">
-                            <div class="h3b-img">
-                                <img src="{{ secondBanner['image_link'] }}" alt="">
+                        <a href="{{ secondBanner['button_link'] }}">
+                            <div class="h3b-single-banner-3 h3b-single-banner">
+                                <div class="h3b-img">
+                                    <img src="{{ secondBanner['image_link'] }}" alt="{{ default_alt_tag }}">
+                                </div>
+                                <div class="h3b-content-banner-3 h3b-content">
+                                    <h2>{{ secondBanner['description'][0] is defined ? secondBanner['description'][0] : '&nbsp;' }}</h2>
+                                </div>
                             </div>
-                            <div class="h3b-content-banner-3 h3b-content">
-                                <h2>{{ secondBanner['description'][0] is defined ? secondBanner['description'][0] : '&nbsp;' }}</h2>
-                                <a href="{{ secondBanner['button_link'] }}">{{ secondBanner['button_text'] }}</a>
-                            </div>
-                        </div>
+                        </a>
                     {% endif %}
                     {% if banners[3] is defined %}
                         {% set thirdBanner = banners[3] %}
-                        <div class="h3b-single-banner-3 h3b-single-banner">
-                            <div class="h3b-img">
-                                <img src="{{ thirdBanner['image_link'] }}" alt="">
+                        <a href="{{ thirdBanner['button_link'] }}">
+                            <div class="h3b-single-banner-3 h3b-single-banner">
+                                <div class="h3b-img">
+                                    <img src="{{ thirdBanner['image_link'] }}" alt="">
+                                </div>
+                                <div class="h3b-content-banner-3 h3b-content">
+                                    <h2>{{ thirdBanner['description'][0] is defined ? thirdBanner['description'][0] : '&nbsp;' }}</h2>
+                                </div>
                             </div>
-                            <div class="h3b-content-banner-3 h3b-content">
-                                <h2>{{ thirdBanner['description'][0] is defined ? thirdBanner['description'][0] : '&nbsp;' }}</h2>
-                                <a href="{{ thirdBanner['button_link'] }}">{{ thirdBanner['button_text'] }}</a>
-                            </div>
-                        </div>
+                        </a>
                     {% endif %}
                 </div>
-                {% if banners[4] is defined %}
-                    {% set fourthBanner = banners[4] %}
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="h3b-single-banner-4 h3b-single-banner">
-                            <div class="h3b-img">
-                                <img src="{{ fourthBanner['image_link'] }}" alt="">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    {% if banners[4] is defined %}
+                        {% set fourthBanner = banners[4] %}
+                        <a href="{{ fourthBanner['button_link'] }}">
+                            <div class="h3b-single-banner-4 h3b-single-banner">
+                                <div class="h3b-img">
+                                    <img src="{{ fourthBanner['image_link'] }}" alt="">
+                                </div>
+                                <div class="h3b-content-banner-4 h3b-content">
+                                    <h3>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][0] : '&nbsp;' }}</h3>
+                                    <h2>{{ fourthBanner['description'][1] is defined ? fourthBanner['description'][1] : '&nbsp;' }}</h2>
+                                </div>
                             </div>
-                            <div class="h3b-content-banner-4 h3b-content">
-                                <h3>{{ fourthBanner['description'][0] is defined ? fourthBanner['description'][0] : '&nbsp;' }}</h3>
-                                <h2>{{ fourthBanner['description'][1] is defined ? fourthBanner['description'][1] : '&nbsp;' }}</h2>
-                                <a href="{{ fourthBanner['button_link'] }}">{{ fourthBanner['button_text'] }}</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

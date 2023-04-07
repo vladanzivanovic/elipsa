@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Entity\User;
 use App\Entity\UserWishes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\DBAL\ParameterType;
 
 /**

@@ -8,3 +8,4 @@ twig:
         intesa_gateway: '%env(resolve:GATEWAY)%'
         intesa_merchant_id: '%env(resolve:MERCHANT_ID)%'
         intesa_store_key: '%env(resolve:STORE_KEY)%'
+        languages: '%languages%'

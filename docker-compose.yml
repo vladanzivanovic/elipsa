@@ -1,24 +1,24 @@
 version: '3.6'
 services:
-  elipsa-lamp:
+  lamp:
     build: ./docker/lamp
     image: lamp
     container_name: elipsa-lamp
     ports:
-      - "9191:80"
+      - "9600:80"
     volumes:
-      - "./:/var/www/html:rw"
+      - "elipsa-sync:/var/www/html:nocopy"
     depends_on:
       - mysql
 
   mysql:
-    image: mariadb:10.4.10
+    image: mariadb:10
     hostname: elipsa-mysql
     container_name: elipsa-mysql
     volumes:
-      - "./docker/mysql:/var/lib/mysql:rw"
+      - "./docker/mysql-mount:/var/lib/mysql:rw"
     ports:
-      - "63307:3306"
+      - "9601:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=vlada123!!!
       - MYSQL_DATABASE=elipsa
@@ -30,7 +30,7 @@ services:
     container_name: elipsa-phpmyadmin
     restart: always
     ports:
-      - '8083:80'
+      - '9602:80'
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: vlada123!!!
@@ -39,8 +39,9 @@ services:
     image: schickling/mailcatcher
     container_name: elipsa-mailcatcher
     ports:
-      - "1027:1025" # changed to 1026 to avoid local instance of mailcatcher
-      - "1082:1080"
+      - "9603:1025" # changed to 1026 to avoid local instance of mailcatcher
+      - "9604:1080"
 
 volumes:
-  mysql-data:
+  elipsa-sync:
+    external: true

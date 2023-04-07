@@ -498,9 +498,6 @@
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.18.1"
     },
-    "symfony/polyfill-intl-icu": {
-        "version": "v1.18.1"
-    },
     "symfony/polyfill-intl-idn": {
         "version": "v1.18.1"
     },

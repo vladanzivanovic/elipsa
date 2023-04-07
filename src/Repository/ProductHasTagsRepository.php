@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ProductHasTags;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ProductHasTags|null find($id, $lockMode = null, $lockVersion = null)

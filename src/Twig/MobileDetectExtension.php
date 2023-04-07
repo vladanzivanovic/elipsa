@@ -3,19 +3,20 @@
 namespace App\Twig;
 
 
+use Detection\MobileDetect;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class MobileDetectExtension extends AbstractExtension
 {
-    protected $detector;
+    protected \Detection\MobileDetect $detector;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->detector = new \Mobile_Detect();
+        $this->detector = new \Detection\MobileDetect();
     }
 
     /**

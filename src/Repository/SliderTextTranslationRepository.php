@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\SliderTextTranslation;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method SliderTextTranslation|null find($id, $lockMode = null, $lockVersion = null)

@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Description;
 use App\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Description|null find($id, $lockMode = null, $lockVersion = null)

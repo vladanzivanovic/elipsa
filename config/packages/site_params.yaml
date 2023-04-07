@@ -106,3 +106,12 @@ parameters:
     - pe-ly-tumble-dry-resistant
     - pe-ly-tumble-dry
     - pe-ly-wring
+  languages:
+    rs:
+      name: Srpski
+      code: rs
+      currencyCode: RSD
+    en:
+      name: Engleski
+      code: en
+      currencyCode: EUR

@@ -4,44 +4,39 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
-use App\Entity\Slider;
-use App\Helper\ConstantsHelper;
+use App\View\SliderView;
 use Symfony\Component\Routing\RouterInterface;
 
 final class HomePageResponseFormatter
 {
     use FormatterTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * HomePageResponseFormatter constructor.
-     *
-     * @param RouterInterface $router
-     */
+    private SliderView $sliderView;
+
     public function __construct(
-        RouterInterface $router
+        RouterInterface $router,
+        SliderView $sliderView
     ) {
         $this->router = $router;
+        $this->sliderView = $sliderView;
     }
 
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    public function formatResponse(array $data): array
+    public function formatResponse(array $data, string $locale): array
     {
-        $data['sliders'] = array_map(function ($slider) {
-            $slider['description'] = explode(PHP_EOL, $slider['description']);
-            $slider['image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['image'], 'filter' => 'site_slider']);
-            $slider['mobile_image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['mobile_image'], 'filter' => 'site_slider_mobile']);
-            $slider['position'] = ConstantsHelper::getConstantName((string) $slider['position'], 'POSITION', Slider::class);
+        $data['sliders'] = array_map(function ($slider) use ($locale) {
 
-            return $slider;
+            return $this->sliderView->siteView($slider, $locale);
+//            $slider['description'] = explode(PHP_EOL, $slider['description']);
+//            preg_match('%(<p[^>]*>.*?</p>)%i', $slider['description'], $matcher);
+
+//            $slider['description'] = $matcher;
+//            $slider['image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['image'], 'filter' => 'site_slider']);
+//            $slider['mobile_image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['mobile_image'], 'filter' => 'site_slider_mobile']);
+//            $slider['position'] = ConstantsHelper::getConstantName((string) $slider['position'], 'POSITION', Slider::class);
+
+//            return $slider;
         }, $data['sliders']);
 
         $data['banners'] = $this->formatBanners($data['banners']);

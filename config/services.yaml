@@ -8,7 +8,7 @@ imports:
 parameters:
     container.dumper.inline_factories: true
     # rs must be first language
-    locales: rs|en
+    locales: '%env(LOCALES)%'
     upload_dir: '%kernel.project_dir%/storage/'
     upload_tmp_dir: 'tmp/'
     upload_image_dir: 'image/'

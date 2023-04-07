@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BlogHasImages;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method LocationHasImages|null find($id, $lockMode = null, $lockVersion = null)

@@ -1,20 +1,21 @@
 @import "~nivo-slider/nivo-slider.css";
 @import "../Components/common-product";
 
+.nivoSlider {
+  a.nivo-imageLink {
+    z-index: 1000;
+  }
+  .nivo-caption {
+    overflow: visible;
+  }
+}
 .mobile.home {
   #home3_slider {
 
     .nivo-caption {
-      background: rgba(255 ,255, 255, 0.6);
       overflow: visible;
-      bottom: 16%;
+      top: 35%;
       .slide3-text {
-        * {
-          font-size: 22px !important;
-          line-height: 19px !important;
-          margin-bottom: 4px !important;
-        }
-
         .cap-view {
           margin-top: 20px !important;
           position: absolute;

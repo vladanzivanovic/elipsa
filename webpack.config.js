@@ -1,13 +1,12 @@
 var Encore = require('@symfony/webpack-encore');
 
-
 Encore
     // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
     .cleanupOutputBeforeBuild()
-    .enableSourceMaps(!Encore.isProduction())
+    .enableSourceMaps()
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
@@ -74,16 +73,18 @@ Encore
         //pattern: /\.(png|jpg|jpeg)$/
     })
     .configureTerserPlugin((options) => {
-        options.cache = true;
         options.extractComments = 'all';
-        options.sourceMap = true;
+        options.terserOptions = {
+            sourceMap: true,
+        }
     })
 ;
 
 let config = Encore.getWebpackConfig();
 config.resolve.alias = {
     'waypoints': __dirname + '/node_modules/jquery-waypoints/waypoints.js',
-    'router'   : __dirname + '/assets/js/router.js'
+    'router'   : __dirname + '/assets/js/router.js',
+    'jQuery' : __dirname + '/node_modules/jquery'
 };
 // config.devtool = 'source-map';
 //

@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Product;
 use App\Entity\ProductCleaning;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ProductCleaning|null find($id, $lockMode = null, $lockVersion = null)
