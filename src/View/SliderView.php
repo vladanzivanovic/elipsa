@@ -35,16 +35,15 @@ final class SliderView
         $sliderImageName = $slider->getImage()->getName();
         $mobileImage = $this->imageRepository->getRelatedImage($sliderImageName);
 
-//        preg_match_all('%(<p[^>]*>.*?</p>)%i', $sliderTrans->getDescription(), $descriptions);
+        preg_match_all('%(<p[^>]*>.*?</p>)%im', $sliderTrans->getDescription(), $descriptions);
 
         return [
             'id' => $slider->getId(),
             'button_link' => $sliderTrans->getButtonLink(),
             'button_text' => $sliderTrans->getButtonText(),
-            'description' => $sliderTrans->getDescription(),
+            'descriptions' => $descriptions[0],
             'image_link' => $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $sliderImageName, 'filter' => 'site_slider']),
             'mobile_image_link' => $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $mobileImage->getName(), 'filter' => 'site_slider_mobile']),
-            'position' => ConstantsHelper::getConstantName((string) $slider->getTextPosition(), 'POSITION', Slider::class)
         ];
     }
 }

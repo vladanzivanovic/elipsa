@@ -66,8 +66,6 @@ final class SliderEditRequestParser
             $slider->setPosition($newPosition);
         }
 
-        $slider->setTextPosition($bag->getInt('position'));
-
         $this->setLocale($bag, $slider);
 
         $this->imageService->setImages($slider, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);

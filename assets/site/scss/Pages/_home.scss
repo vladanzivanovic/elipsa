@@ -7,6 +7,13 @@
   }
   .nivo-caption {
     overflow: visible;
+    bottom: 20%;
+    color: #000;
+
+    .slide3-text {
+      margin-left: 2.5vw;
+      margin-right: 2.5vw;
+    }
   }
 }
 .mobile.home {
@@ -14,8 +21,15 @@
 
     .nivo-caption {
       overflow: visible;
-      top: 35%;
+      bottom: 2%;
       .slide3-text {
+        margin-left: 0;
+        margin-right: 0;
+
+        * {
+          margin-bottom: 4px !important;
+        }
+
         .cap-view {
           margin-top: 20px !important;
           position: absolute;

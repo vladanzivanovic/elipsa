@@ -62,7 +62,6 @@ final class SliderEditResponseFormatter
             'en_description' => $enTrans->getDescription(),
             'en_button' => $enTrans->getButtonText(),
             'en_link' => $enTrans->getButtonLink(),
-            'position' => $slider->getTextPosition(),
             'selectedImages' => $imagesArray,
         ];
     }

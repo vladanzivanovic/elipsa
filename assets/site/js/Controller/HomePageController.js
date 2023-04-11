@@ -49,6 +49,26 @@ class HomePageController {
             prevText: '<i class="fa fa-chevron-left nivo-prev-icon"></i>',
             nextText: '<i class="fa fa-chevron-right nivo-next-icon"></i>'
         });
+
+        if (IS_MOBILE) {
+            this.#setFontSizeForMobile();
+        }
+    }
+
+    #setFontSizeForMobile()
+    {
+        const devider = 1000/window.innerWidth;
+
+        $('.slide3-text *').each((i, e) => {
+            const currentFontSize = $(e).prop("style")["font-size"];
+
+            if (currentFontSize != '') {
+                const sizeNumber = $(e).prop("style")["font-size"].match(/\d+/g);
+                const newFontSize = sizeNumber[0] / devider;
+
+                $(e).css('font-size', `${newFontSize}px`);
+            }
+        });
     }
 }
 

@@ -15,10 +15,10 @@ class SliderEditController {
             this.summernote.createCallBacksSummernote(this.mapper.descriptionRs, 'slider')
         );
 
-        this.summernote.initialize(
-            this.mapper.descriptionEn,
-            this.summernote.createCallBacksSummernote(this.mapper.descriptionEn, 'slider')
-        );
+        // this.summernote.initialize(
+        //     this.mapper.descriptionEn,
+        //     this.summernote.createCallBacksSummernote(this.mapper.descriptionEn, 'slider')
+        // );
 
         $('.dropdown-toggle').dropdown();
 

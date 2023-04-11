@@ -109,9 +109,9 @@ class CategoryRepository extends ExtendedEntityRepository
                 SELECT * FROM cte order by lvl, title;";
 
         $stmt = $this->_em->getConnection()->prepare($sql);
-        $stmt->execute(['locale' => $locale]);
+        $results = $stmt->executeQuery(['locale' => $locale]);
 
-        return $stmt->fetchAll();
+        return $results->fetchAllAssociative();
     }
 
     /**
