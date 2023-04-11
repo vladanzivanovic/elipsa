@@ -377,7 +377,8 @@ class ProductRepository extends ExtendedEntityRepository
             ->setParameter('locale', $locale)
             ->setParameter('isMain', true)
             ->setParameter('activeStatus', Product::STATUS_ACTIVE)
-            ->groupBy('p.id');
+            ->groupBy('p.id')
+            ->orderBy('RAND()');
 
         if ($user !== null) {
             $wishQuery = $this->_em->createQueryBuilder()
