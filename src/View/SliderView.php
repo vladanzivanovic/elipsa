@@ -40,7 +40,6 @@ final class SliderView
         return [
             'id' => $slider->getId(),
             'button_link' => $sliderTrans->getButtonLink(),
-            'button_text' => $sliderTrans->getButtonText(),
             'descriptions' => $descriptions[0],
             'image_link' => $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $sliderImageName, 'filter' => 'site_slider']),
             'mobile_image_link' => $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $mobileImage->getName(), 'filter' => 'site_slider_mobile']),

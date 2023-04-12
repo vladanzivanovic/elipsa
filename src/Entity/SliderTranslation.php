@@ -14,33 +14,28 @@ class SliderTranslation
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $buttonText;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $buttonLink;
+    private ?string $buttonLink;
 
     /**
      * @ORM\Column(type="string", length=2)
      */
-    private $locale;
+    private ?string $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Slider", inversedBy="sliderTranslations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $slider;
+    private ?Slider $slider;
 
     public function getId(): ?int
     {
@@ -55,18 +50,6 @@ class SliderTranslation
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getButtonText(): ?string
-    {
-        return $this->buttonText;
-    }
-
-    public function setButtonText(string $buttonText): self
-    {
-        $this->buttonText = $buttonText;
 
         return $this;
     }

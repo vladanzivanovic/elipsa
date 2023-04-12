@@ -86,7 +86,6 @@ final class SliderEditRequestParser
             }
 
             $trans->setDescription($lagBag->get('description'));
-            $trans->setButtonText($lagBag->get('button'));
             $trans->setButtonLink($lagBag->get('link'));
             $trans->setLocale($locale);
 
