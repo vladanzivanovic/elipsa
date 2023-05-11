@@ -2,6 +2,8 @@ pending: 'na čekanju'
 active: 'aktivan'
 disabled: 'zaključan'
 
+scroll_top_page: 'Vrh stranice'
+
 view: 'pogledaj'
 
 default_title: Modna Kuća Elipsa
@@ -10,6 +12,9 @@ new: 'novo'
 discount: 'popust'
 down: dole
 up: gore
+
+season: Sezona
+collection: Kolekcija
 
 choose: Izberite
 
@@ -45,6 +50,7 @@ navi:
   use_conditions: Uslovi korišćenja
   career: Zaposlenje
   cookie_policy: Politika kolačića
+  seasons: Sezone
 
 
 serbian: Srpski
@@ -440,6 +446,8 @@ pe-ly-wring: 'Odeća se sme cediti uvrtanjem.'
 banner.loyalty: loyalty
 banner.news_letter: newsletter
 banner.pop_up: Običan popup
+banner.menu: Veliki meni
+banner.season: Sezone
 
 job.applied_for_form: Postani i ti deo našeg tima
 job.application_form: Popunite prijavu

@@ -17,6 +17,7 @@ use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,27 +25,12 @@ final class TagEditController extends AbstractController
 {
     use ControllerTrait;
 
-    /**
-     * @var TagRequestParser
-     */
-    private $requestParser;
+    private TagRequestParser $requestParser;
 
-    /**
-     * @var TagHandler
-     */
-    private $tagHandler;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TagHandler $tagHandler;
 
-    /**
-     * TagEditController constructor.
-     *
-     * @param TagRequestParser    $requestParser
-     * @param TagHandler          $tagHandler
-     * @param TranslatorInterface $translator
-     */
+    private TranslatorInterface $translator;
+
     public function __construct(
         TagRequestParser $requestParser,
         TagHandler $tagHandler,
@@ -64,7 +50,7 @@ final class TagEditController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function insert(Request $request)
+    public function insert(Request $request): JsonResponse
     {
         $relatedType = $request->attributes->get('_route') === 'admin.add_blog_tag_api' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
 
@@ -76,7 +62,7 @@ final class TagEditController extends AbstractController
 
         $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -89,7 +75,7 @@ final class TagEditController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(Request $request, Tags $productTags)
+    public function update(Request $request, Tags $productTags): JsonResponse
     {
         $relatedType = $request->attributes->get('_route') === 'admin.edit_blog_tag_api' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
 
@@ -99,7 +85,7 @@ final class TagEditController extends AbstractController
 
         $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**

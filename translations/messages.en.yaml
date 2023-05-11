@@ -2,6 +2,8 @@ pending: 'pending'
 active: 'active'
 disabled: 'disabled'
 
+scroll_top_page: 'Page top'
+
 view: 'view'
 
 default_title: Fashion House Elipsa
@@ -10,6 +12,9 @@ new: 'new'
 discount: 'discount'
 down: down
 up: up
+
+season: Season
+collection: Collection
 
 choose: Choose
 
@@ -45,6 +50,7 @@ navi:
   use_conditions: Use conditions
   career: Careers
   cookie_policy: Cookie policy
+  seasons: Seasons
 
 serbian: Serbian
 english: English
@@ -448,6 +454,8 @@ pe-ly-wring: 'Clothes may be strained by twisting.'
 banner.loyalty: loyalty
 banner.news_letter: newsletter
 banner.pop_up: Basic popup
+banner.menu: Big menu
+banner.season: Season
 
 job.applied_for_form: Join our team
 job.application_form: Apply for position

@@ -14,10 +14,14 @@ class TagEditValidator {
 
         options = {
             rules: {
-                rs_title: 'required',
-                en_title: 'required',
+                rs_title: {required: true},
+                en_title: {required: true},
             },
         };
+
+        if (ROUTE_SUB_NAME === 'product') {
+            options.rules.product_type = {isSelectBoxEmpty: true};
+        }
 
         $.extend(options, window.helpBlock);
 

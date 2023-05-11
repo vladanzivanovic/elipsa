@@ -4,64 +4,62 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Entity\Banner;
+use App\Repository\BannerRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SliderTextRepository;
 use App\Repository\TagsRepository;
+use App\View\BannerView;
 use DateTime;
 use Exception;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class NavigationMenuExtension extends AbstractExtension
 {
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
+    private CategoryRepository $categoryRepository;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * @var SliderTextRepository
-     */
-    private $sliderTextRepository;
+    private SliderTextRepository $sliderTextRepository;
 
-    /**
-     * @param CategoryRepository   $categoryRepository
-     * @param TagsRepository       $tagsRepository
-     * @param SliderTextRepository $sliderTextRepository
-     */
+    private BannerRepository $bannerRepository;
+
+    private RouterInterface $router;
+
+    private BannerView $bannerView;
+
     public function __construct(
         CategoryRepository $categoryRepository,
         TagsRepository $tagsRepository,
-        SliderTextRepository $sliderTextRepository
+        SliderTextRepository $sliderTextRepository,
+        BannerRepository $bannerRepository,
+        RouterInterface $router,
+        BannerView $bannerView
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->tagsRepository = $tagsRepository;
         $this->sliderTextRepository = $sliderTextRepository;
+        $this->bannerRepository = $bannerRepository;
+        $this->router = $router;
+        $this->bannerView = $bannerView;
     }
 
     /**
-     * @return array
+     * @return array<int, TwigFunction>
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('navigation_menu', [$this, 'getNavigationMenu']),
             new TwigFunction('navigation_tags', [$this, 'getNavigationTags']),
             new TwigFunction('slider_text', [$this, 'getSliderText']),
+            new TwigFunction('menu_banners', [$this, 'getMenuBanners']),
+            new TwigFunction('season_banner', [$this, 'getSeasonBanner']),
         ];
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function getNavigationMenu(string $locale): array
     {
         $categories = $this->categoryRepository->getForNavigationMenu($locale);
@@ -75,12 +73,6 @@ final class NavigationMenuExtension extends AbstractExtension
         });
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function getNavigationTags(string $locale): array
     {
         $tags = $this->tagsRepository->getForNavigationMenu($locale);
@@ -98,7 +90,19 @@ final class NavigationMenuExtension extends AbstractExtension
         return $this->sliderTextRepository->getList($locale);
     }
 
-    private function formatMegaMenu(array $categories, int $level, int $maxLevel)
+    public function getMenuBanners(string $locale): array
+    {
+        return $this->getBanners($locale, Banner::TYPE_MENU);
+    }
+
+    public function getSeasonBanner(string $locale): ?array
+    {
+        $banners = $this->getBanners($locale, Banner::TYPE_SEASON);
+
+        return $banners[0] ?? null;
+    }
+
+    private function formatMegaMenu(array $categories, int $level, int $maxLevel): array
     {
         $formattedMenu = [];
 
@@ -121,11 +125,23 @@ final class NavigationMenuExtension extends AbstractExtension
         return $formattedMenu;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'navigation_extension';
+    }
+
+    public function getBanners(string $locale, int $type): array
+    {
+        $banners = $this->bannerRepository->getActiveByType($type);
+
+        $formattedBanners = [];
+
+        foreach ($banners as $banner) {
+//            $banner['image_link'] = $this->router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['image'], 'filter' => 'menu_banner']);
+
+            $formattedBanners[] = $this->bannerView->menuView($banner, $locale);
+        }
+
+        return $formattedBanners;
     }
 }

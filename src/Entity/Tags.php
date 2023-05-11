@@ -16,40 +16,49 @@ class Tags
     public const TYPE_PRODUCT = 1;
     public const TYPE_BLOG = 2;
 
+    public const PRODUCT_TYPE_SEASON = 'season';
+
+    public const PRODUCT_TYPE_COLLECTION = 'collection';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="field.not_blank", groups={"SetTag"})
      * @Assert\Length(maxMessage="field.max_length", groups={"SetTag"}, max="50")
      */
-    private $label;
+    private string $label;
 
     /**
      * @ORM\Column(type="string", length=2)
      */
-    private $locale;
+    private string $locale;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Gedmo\Slug(fields={"label"}, updatable=false)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $mainSlug;
+    private string $mainSlug;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $relatedType;
+    private int $relatedType;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private string $productType;
 
     public function getId(): ?int
     {
@@ -114,5 +123,15 @@ class Tags
         $this->relatedType = $relatedType;
 
         return $this;
+    }
+
+    public function getProductType(): string
+    {
+        return $this->productType;
+    }
+
+    public function setProductType(string $productType): void
+    {
+        $this->productType = $productType;
     }
 }

@@ -67,6 +67,10 @@ final class TagRequestParser
             $item->setLocale($locale);
             $item->setRelatedType($type);
 
+            if ($type === Tags::TYPE_PRODUCT) {
+                $item->setProductType($bag->get('product_type'));
+            }
+
             $collection->add($item);
         }
 

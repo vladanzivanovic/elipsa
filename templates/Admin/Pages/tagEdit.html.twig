@@ -25,15 +25,24 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
-                                    {{ form.input('Naziv na srpskom', 'title_rs', IS_EDIT ? rs_title : '', 'rs_title') }}
+                                    {{ form.input('Naziv na srpskom', 'title_rs', IS_EDIT ? tags.rs.label : '', 'rs_title') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
-                                    {{ form.input('Naziv na engleskom', 'title_en', IS_EDIT ? en_title : '', 'en_title') }}
+                                    {{ form.input('Naziv na engleskom', 'title_en', IS_EDIT ? tags.en.label : '', 'en_title') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
+                        {% if routeSubName == 'product' %}
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        {{ form.select('Tip taga', 'product_type', 'product_type', IS_EDIT ? tags.rs.productType : '', options, '', 'w-100') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                        {% endif %}
                     </form>
                     {{ form.button('tag_submit', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
                 </div>

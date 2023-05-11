@@ -12,14 +12,24 @@ use Doctrine\ORM\Mapping as ORM;
 class Banner
 {
     public const POSITION_HOME_LEFT = 1;
+
     public const POSITION_HOME_MIDDLE_UP = 2;
+
     public const POSITION_HOME_MIDDLE_DOWN = 3;
+
     public const POSITION_HOME_RIGHT = 4;
 
     public const TYPE_SPEED_LINKS = 1;
+
     public const TYPE_LOYALTY = 2;
+
     public const TYPE_NEWS_LETTER = 3;
+
     public const TYPE_POP_UP = 4;
+
+    public const TYPE_MENU = 5;
+
+    public const TYPE_SEASON = 6;
 
     public const STATUS_PENDING = false;
 
@@ -30,33 +40,33 @@ class Banner
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $image;
+    private Image $image;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private bool $isActive;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $position;
+    private int $position;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BannerTranslation", mappedBy="banner", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $bannerTranslations;
+    private Collection $bannerTranslations;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $type;
+    private int $type;
 
     public function __construct()
     {

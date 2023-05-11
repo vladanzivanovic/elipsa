@@ -1,0 +1,56 @@
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .menu {
+    .menu-list {
+      li {
+        .mega-menu-part {
+
+          .mega-menu-content {
+            > a {
+              padding: 0 !important;
+            }
+          }
+
+          .mega-menu-img {
+            > a {
+              padding-bottom: 5px !important;
+            }
+          }
+        }
+
+        .menu-dropdown {
+          &.with-img {
+            li {
+              > a {
+                padding: 8px 5px !important;
+              }
+            }
+
+            > a {
+              padding-bottom: 5px !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .m-bt-2-xs {
+    margin-bottom: 2rem;
+  }
+
+  .m-bt-3-xs {
+    margin-bottom: 3rem;
+  }
+}
+
+@media only screen and (min-width: 240px) and (max-width: 480px) {
+  .m-bt-2-xss {
+    margin-bottom: 2rem;
+  }
+
+  .m-bt-3-xss {
+    margin-bottom: 3rem;
+  }
+}

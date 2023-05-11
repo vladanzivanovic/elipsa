@@ -77,6 +77,7 @@ class TagsRepository extends ExtendedEntityRepository
 
         if ($type === Tags::TYPE_PRODUCT) {
             $query->addSelect('COUNT(pht.id) as total_products')
+                ->addSelect('pt.productType as product_type')
                 ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = pt.mainSlug');
         }
 
@@ -92,19 +93,15 @@ class TagsRepository extends ExtendedEntityRepository
      */
     public function getByMainSlugAndLocales(string $mainSlug, array $locales, int $type): array
     {
-        $query = $this->createQueryBuilder('pt')
-            ->select(
-                'pt.label',
-                'pt.locale'
-            )
-            ->where('pt.mainSlug = :mainSlug')
-            ->andWhere('pt.locale IN (:locales)')
-            ->andWhere('pt.relatedType = :relatedType')
+        $query = $this->createQueryBuilder('t')
+            ->where('t.mainSlug = :mainSlug')
+            ->andWhere('t.locale IN (:locales)')
+            ->andWhere('t.relatedType = :relatedType')
             ->setParameter('relatedType', $type)
             ->setParameter('mainSlug', $mainSlug)
             ->setParameter('locales', $locales);
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 
     /**
@@ -139,8 +136,10 @@ class TagsRepository extends ExtendedEntityRepository
             )
             ->where('t.locale = :locale')
             ->andWhere('t.relatedType = :relatedType')
+            ->andWhere('t.productType = :productType')
             ->setParameter('locale', $locale)
-            ->setParameter('relatedType', $type);
+            ->setParameter('relatedType', $type)
+            ->setParameter('productType', Tags::PRODUCT_TYPE_COLLECTION);
 
         return $query->getQuery()->getArrayResult();
     }

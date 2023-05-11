@@ -35,28 +35,72 @@ class BannerEditController {
         });
 
         $(document).on('change', '#banner-select-box', e => {
-            const type = $(e.currentTarget).val();
+            const type = parseInt($(e.currentTarget).val());
 
-            if (type == 2 || type == 3) {
-                $('.links').fadeOut();
-                $('.links').addClass('hide');
-
-                return;
-            }
-
-            if (type == 4) {
-                $('.btn-text').fadeOut();
-                $('.btn-text').addClass('hide');
+            if (type === BANNER_TYPES.TYPE_LOYALTY || type === BANNER_TYPES.TYPE_NEWS_LETTER) {
+                this.#removeLinks();
+                this.#showMobileDropZone();
 
                 return;
             }
 
-            $('.links').fadeIn();
-            $('.links').removeClass('hide');
+            if (type === BANNER_TYPES.TYPE_POP_UP) {
+                this.#removeButtons();
+                this.#showLinks();
+                this.#showMobileDropZone();
 
-            $('.btn-text').fadeIn();
-            $('.btn-text').removeClass('hide');
+                return;
+            }
+
+            if (type === BANNER_TYPES.TYPE_MENU || type === BANNER_TYPES.TYPE_SEASON) {
+                this.#showLinks();
+                this.#removeButtons();
+                this.#removeMobileDropzone();
+
+                return;
+            }
+
+            this.#showButtons();
+            this.#showLinks();
+            this.#showMobileDropZone();
+
         });
+    }
+
+    #removeLinks()
+    {
+        $('.links').fadeOut();
+        $('.links').addClass('hide');
+    }
+
+    #showLinks()
+    {
+        $('.links').fadeIn();
+        $('.links').removeClass('hide');
+    }
+
+    #removeButtons()
+    {
+        $('.btn-text').fadeOut();
+        $('.btn-text').addClass('hide');
+    }
+
+    #showButtons()
+    {
+        $('.btn-text').fadeIn();
+        $('.btn-text').removeClass('hide');
+    }
+
+    #removeMobileDropzone()
+    {
+        $('.mobile-image').fadeOut();
+        $('.mobile-image').addClass('hide');
+    }
+
+    #showMobileDropZone()
+    {
+        $('.mobile-image').fadeIn();
+        $('.mobile-image').removeClass('hide');
     }
 }
 

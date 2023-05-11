@@ -85,7 +85,7 @@ div#preloader {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 10000;
+    z-index: 2147483647;
 }
 
 .menu-area.navbar-fixed-top {
@@ -729,7 +729,7 @@ header {}
     margin-right: 0;
 }
 
-.menu ul.menu-list > li::after {
+.menu ul.menu-list > li > a::after {
     background: #a70303 none repeat scroll 0 0;
     bottom: 20px;
     content: "";
@@ -742,8 +742,8 @@ header {}
     width: 20px;
 }
 
-.menu ul.menu-list.menu-list > li:hover::after,
-.menu ul.menu-list.menu-list > li.active::after {
+.menu ul.menu-list.menu-list > li:hover > a::after,
+.menu ul.menu-list.menu-list > li.active > a::after {
     transform: scaleX(1);
 }
 
@@ -783,7 +783,7 @@ ul.menu-list li .hot::after {
     color: #a70303;
 }
 
-.menu ul.menu-list.menu-list > li a:hover {
+.menu ul.menu-list.menu-list > li > a:hover {
     color: #a70303;
 }
 
@@ -841,7 +841,7 @@ ul.menu-list li .hot::after {
     z-index: 99;
 }
 
-.menu ul.menu-list li:hover .menu-dropdown {
+.menu ul.menu-list > li:hover .menu-dropdown {
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
@@ -884,7 +884,7 @@ ul.menu-list li .hot::after {
 
 /*mega-menu*/
 
-.menu ul.menu-list li .mega-menu-area {
+.menu ul.menu-list > li .mega-menu-area {
     background: #fff none repeat scroll 0 0;
     border-top: 2px solid #e31c7a;
     box-shadow: -5.44px 4.405px 18px 0 rgba(0, 0, 0, 0.1);
@@ -902,7 +902,9 @@ ul.menu-list li .hot::after {
     -o-transition: all 0.6s ease 0s;
     transition: all 0.6s ease 0s;
     visibility: hidden;
-    width: 1110px;
+    min-width: 600px;
+    max-width: 1000px;
+    /*width: 1110px;*/
     z-index: 99;
 }
 
@@ -921,7 +923,7 @@ ul.menu-list li .hot::after {
 /*    marg-right: 0;*/
 /*}*/
 
-.menu ul.menu-list li:hover .mega-menu-area {
+.menu ul.menu-list > li:hover .mega-menu-area {
     opacity: 1;
     -webkit-transform: scaleY(1);
     -ms-transform: scaleY(1);
@@ -930,15 +932,15 @@ ul.menu-list li .hot::after {
     visibility: visible;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part {}
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part {}
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content {
     float: left;
     width: 55%;
     margin-bottom: 25px;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title {
     color: #2c2c2c;
     font-size: 16px;
     font-weight: 700;
@@ -947,11 +949,11 @@ ul.menu-list li .hot::after {
     text-transform: uppercase;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title:hover {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title:hover {
     color: #a70303;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title::after {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title::after {
     background: #333333 none repeat scroll 0 0;
     bottom: -3px;
     content: "";
@@ -964,7 +966,7 @@ ul.menu-list li .hot::after {
     width: 20px;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title:hover::after {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content .mega-menu-title:hover::after {
     background: #a70303 none repeat scroll 0 0;
 }
 
@@ -983,16 +985,16 @@ ul.menu-list li .hot::after {
     margin-bottom: 0;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li.special-collection {}
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content ul li.special-collection {}
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li a {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content ul li a {
     color: #8e8e8e;
     font-size: 14px;
     font-weight: 400;
     padding: 0;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li a:hover {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content ul li a:hover {
     color: #a70303;
 }
 
@@ -1009,7 +1011,7 @@ ul.menu-list li .hot::after {
     font-weight: 500;
 }
 
-.menu ul.menu-list li .mega-menu-area .mega-menu-part .mega-menu-content ul li.sub-menu-holder > a:hover {
+.menu ul.menu-list > li .mega-menu-area .mega-menu-part .mega-menu-content ul li.sub-menu-holder > a:hover {
     color: #a70303;
 }
 
@@ -2629,16 +2631,20 @@ footer {
     line-height: 20px;
     outline-color: rgba(255, 255, 255, 0.5);
     outline-offset: 0;
-    padding-top: 10px;
     position: fixed;
-    right: 20px;
+    right: 50%;
+    left: 50%;
     text-align: center;
     text-shadow: none;
     -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1) 0s;
     -o-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1) 0s;
     transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1) 0s;
-    width: 40px;
-    z-index: 9999;
+    transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    z-index: 8000;
+    padding: 0.5em;
+    width: max-content;
+    width: -moz-max-content;
 }
 
 #scrollUp:hover {

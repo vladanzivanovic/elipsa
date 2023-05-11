@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
-
+import Translator from 'bazinga-translator';
 
 Sentry.init({
     dsn: SENTRY_DSN,

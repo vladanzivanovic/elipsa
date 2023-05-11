@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Collector\Admin\TagEditCollector;
 use App\Entity\ProductColor;
 use App\Entity\Tags;
+use App\Formatter\Admin\TagEditFormatter;
 use App\Repository\ProductColorRepository;
 use App\Repository\TagsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,27 +18,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class TagEditPageController extends AbstractController
 {
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * TagEditPageController constructor.
-     *
-     * @param TagsRepository        $tagsRepository
-     * @param ParameterBagInterface $bag
-     */
+    private ParameterBagInterface $bag;
+
+    private TagEditCollector $tagEditCollector;
+
+    private TagEditFormatter $tagEditFormatter;
+
     public function __construct(
         TagsRepository $tagsRepository,
-        ParameterBagInterface $bag
+        ParameterBagInterface $bag,
+        TagEditCollector $tagEditCollector,
+        TagEditFormatter $tagEditFormatter
     ) {
         $this->tagsRepository = $tagsRepository;
         $this->bag = $bag;
+        $this->tagEditCollector = $tagEditCollector;
+        $this->tagEditFormatter = $tagEditFormatter;
     }
 
     /**
@@ -48,7 +47,9 @@ final class TagEditPageController extends AbstractController
      */
     public function insert(): array
     {
-        return [];
+        $collectedData = $this->tagEditCollector->collect();
+
+        return $this->tagEditFormatter->format($collectedData);
     }
 
     /**
@@ -63,17 +64,10 @@ final class TagEditPageController extends AbstractController
      */
     public function update(Tags $tag, Request $request): array
     {
-        $relatedType = $request->attributes->get('_route') === 'admin.edit_blog_tag_page' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
+        $collectedData = $this->tagEditCollector->collect($tag);
 
-        $locales = explode('|', $this->bag->get('locales'));
-        $tagsByLocale = $this->tagsRepository->getByMainSlugAndLocales($tag->getMainSlug(), $locales, $relatedType);
+//        dd($this->tagEditFormatter->format($collectedData));
 
-        $responseArray = [];
-
-        foreach ($tagsByLocale as $localeItem) {
-            $responseArray[$localeItem['locale'].'_title'] = $localeItem['label'];
-        }
-
-        return $responseArray;
+        return $this->tagEditFormatter->format($collectedData);
     }
 }

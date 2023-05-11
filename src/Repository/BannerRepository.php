@@ -63,27 +63,27 @@ class BannerRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    public function getActiveOrderByPosition(string $locale)
+    public function getActiveByType(int $type)
     {
         $query = $this->createQueryBuilder('b')
-            ->select(
-                'b.id',
-                'b.position',
-                'bt.description',
-                'bt.buttonLink as button_link',
-                'bt.buttonText as button_text',
-                'i.name as image'
-            )
-            ->innerJoin('b.bannerTranslations', 'bt')
-            ->innerJoin('b.image', 'i')
+//            ->select(
+//                'b.id',
+//                'b.position',
+//                'bt.description',
+//                'bt.buttonLink as button_link',
+//                'bt.buttonText as button_text',
+//                'i.name as image'
+//            )
+//            ->innerJoin('b.bannerTranslations', 'bt')
+//            ->innerJoin('b.image', 'i')
             ->where('b.isActive = :isActive')
-            ->andWhere('bt.locale = :locale')
-            ->andWhere('b.type = :speedLinks')
+//            ->andWhere('bt.locale = :locale')
+            ->andWhere('b.type = :type')
             ->setParameter('isActive', true)
-            ->setParameter('locale', $locale)
-            ->setParameter('speedLinks', Banner::TYPE_SPEED_LINKS)
+//            ->setParameter('locale', $locale)
+            ->setParameter('type', $type)
             ->orderBy('b.position');
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 }

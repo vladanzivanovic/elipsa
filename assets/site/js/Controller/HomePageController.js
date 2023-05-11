@@ -57,14 +57,14 @@ class HomePageController {
 
     #setFontSizeForMobile()
     {
-        const devider = 1000/window.innerWidth;
+        const divider = 1000/window.innerWidth;
 
         $('.slide3-text *').each((i, e) => {
             const currentFontSize = $(e).prop("style")["font-size"];
 
             if (currentFontSize != '') {
                 const sizeNumber = $(e).prop("style")["font-size"].match(/\d+/g);
-                const newFontSize = sizeNumber[0] / devider;
+                const newFontSize = sizeNumber[0] / divider;
 
                 $(e).css('font-size', `${newFontSize}px`);
             }

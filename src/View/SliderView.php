@@ -26,7 +26,6 @@ final class SliderView
     }
 
     /**
-     * @throws \ReflectionException
      * @throws NonUniqueResultException
      */
     public function siteView(Slider $slider, $locale): array

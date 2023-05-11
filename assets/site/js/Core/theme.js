@@ -8,7 +8,6 @@ Version      : 1.0
 */
 // -----------------------------
 
-
 //   js index
 /* =================== */
 /*  
@@ -89,10 +88,11 @@ require('webpack-jquery-ui');
     scroll-up
     -----------------*/
     $.scrollUp({
-        scrollText: '<i class="fa fa-arrow-up" aria-hidden="true"></i>',
+        scrollText: `<i class="fa fa-chevron-up" aria-hidden="true"></i> <span>${Translator.trans('scroll_top_page', null, 'messages', LOCALE)}</span>`,
         easingType: 'linear',
         scrollSpeed: 1500,
-        animation: 'fade'
+        animation: 'fade',
+        zIndex: 100000
     });
 
 

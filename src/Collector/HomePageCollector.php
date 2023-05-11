@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Collector;
 
+use App\Entity\Banner;
 use App\Entity\User;
 use App\Repository\BannerRepository;
 use App\Repository\CategoryRepository;
@@ -79,7 +80,7 @@ final class HomePageCollector
     public function collect(string $locale, ?User $user): array
     {
         $sliders = $this->sliderRepository->getRandomActiveSlider($locale);
-        $banners = $this->bannerRepository->getActiveOrderByPosition($locale);
+        $banners = $this->bannerRepository->getActiveByType(Banner::TYPE_SPEED_LINKS);
         $products = $this->productRepository->getForHomePage($locale, $user);
 
         $productIds = array_column($products, 'id');
