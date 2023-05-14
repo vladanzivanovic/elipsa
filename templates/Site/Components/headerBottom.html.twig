@@ -187,7 +187,7 @@
                                 <div class="row">
                                     <div id="slider_text_carousel" class="feature-pro-carousel owl-carousel">
                                         {% for sliderText in sliderTexts %}
-                                            <a href="{{ sliderText.link }}">{{ sliderText.description }}</a>
+                                            <a href="{{ sliderText.link }}">{{ sliderText.description | raw }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>

@@ -103,6 +103,15 @@ div#page-loader {
 .mean-container .mean-bar::after {
   content: none;
 }
+#slider_text_carousel {
+  .owl-item {
+    a {
+      * {
+        line-height: unset;
+      }
+    }
+  }
+}
 
 @media only screen and (max-width: 950px) {
   .home3-banner-area {

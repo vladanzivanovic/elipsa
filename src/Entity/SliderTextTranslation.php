@@ -14,47 +14,52 @@ class SliderTextTranslation
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
-    private $description;
+    private string $title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $description = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $link;
+    private string $link;
 
     /**
      * @ORM\Column(type="string", length=2)
      */
-    private $locale;
+    private string $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SliderText", inversedBy="sliderTextTranslations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $sliderText;
+    private SliderText $sliderText;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getTitle(): string
     {
-        return $this->description;
+        return $this->title;
     }
 
-    public function setDescription(string $description): self
+    public function setTitle(string $title): self
     {
-        $this->description = $description;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getLink(): ?string
+    public function getLink(): string
     {
         return $this->link;
     }
@@ -66,7 +71,7 @@ class SliderTextTranslation
         return $this;
     }
 
-    public function getLocale(): ?string
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -78,7 +83,7 @@ class SliderTextTranslation
         return $this;
     }
 
-    public function getSliderText(): ?SliderText
+    public function getSliderText(): SliderText
     {
         return $this->sliderText;
     }
@@ -88,5 +93,15 @@ class SliderTextTranslation
         $this->sliderText = $sliderText;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 }

@@ -4,11 +4,20 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Helper\ConstantsHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ConstantExtension extends AbstractExtension
 {
+    private ConstantsHelper $constantsHelper;
+
+    public function __construct(ConstantsHelper $constantsHelper)
+    {
+
+        $this->constantsHelper = $constantsHelper;
+    }
+
     /**
      * @return array
      */
@@ -26,9 +35,7 @@ class ConstantExtension extends AbstractExtension
      */
     public function getClassConstants(string $className): array
     {
-        $reflection = new \ReflectionClass($className);
-
-        return $reflection->getConstants();
+        return $this->constantsHelper->getClassConstants($className);
     }
 
     public function getName(): string

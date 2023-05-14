@@ -14,26 +14,20 @@ final class SliderTextEditRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
-    /**
-     * @var SliderTextRepository
-     */
-    private $repository;
+    private SliderTextRepository $repository;
 
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param SliderTextRepository  $repository
-     */
+    private array $locales;
+
     public function __construct(
         ParameterBagInterface $parameterBag,
-        SliderTextRepository $repository
+        SliderTextRepository $repository,
+        string $locales
     ) {
         $this->parameterBag = $parameterBag;
         $this->repository = $repository;
+        $this->locales = explode('|', $locales);
     }
 
     /**
@@ -49,6 +43,8 @@ final class SliderTextEditRequestParser
             $sliderText->setIsActive(false);
         }
 
+        $sliderText->setPosition($bag->get('position'));
+
         $this->setLocale($bag, $sliderText);
 
         return $sliderText;
@@ -56,17 +52,18 @@ final class SliderTextEditRequestParser
 
     private function setLocale(ParameterBag $bag, Slidertext $sliderText)
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
+        foreach ($this->locales as $locale) {
+            $transCollection = $bag->get($locale);
 
-        foreach ($locales as $locale => $lagBag) {
             $trans = new SliderTextTranslation();
 
             if (null !== $sliderText->getId()) {
                 $trans = $sliderText->getByLocale($locale);
             }
 
-            $trans->setDescription($lagBag->get('description'));
-            $trans->setLink($lagBag->get('link'));
+            $trans->setTitle($transCollection['title']);
+            $trans->setDescription($transCollection['description']);
+            $trans->setLink($transCollection['link']);
             $trans->setLocale($locale);
             $trans->setSliderText($sliderText);
 

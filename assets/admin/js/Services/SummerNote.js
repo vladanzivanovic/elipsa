@@ -10,7 +10,7 @@ class SummerNote {
         this.toolbar = [
             ['style', ['bold', 'italic', 'underline', 'clear']],
             ['font', ['strikethrough', 'superscript', 'subscript']],
-            ['font', ['fontsize', 'fontname', 'fontsizeunit']],
+            ['font', ['fontsize', 'fontname']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
@@ -23,7 +23,6 @@ class SummerNote {
         const options = {toolbar: this.toolbar};
 
         options.fontSizes = ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48' , '64', '82', '150', '200', '250', '300'];
-        // options.fontSizeUnits = ['vw'];
         options.lineHeights = [
             '0.2', '0.3', '0.4', '0.5', '0.6', '0.8', '1.0', '1.2', '1.4', '1.5', '1.6', '1.7', '1.9', '2.0', '2.1', '2.3', '2.5', '2.7', '2.8', '2.9', '3.0'
         ]
@@ -33,7 +32,7 @@ class SummerNote {
         }
 
         el.summernote(options);
-        // el.summernote('fontSizeUnit', 'vw');
+        el.summernote('fontSizeUnit', 'px');
     }
 
     createCallBacksSummernote(el, entity)

@@ -52,4 +52,30 @@ final class ConstantsHelper
 
         return null;
     }
+
+    /**
+     * @return array<string, mixed>
+     *
+     * @throws \ReflectionException
+     */
+    public function getClassConstants(string $className, string $prefix = null): array
+    {
+        $reflection = new \ReflectionClass($className);
+
+        $constants = $reflection->getConstants();
+
+        if (null === $prefix) {
+            return $constants;
+        }
+
+        $filteredConstants = [];
+
+        foreach ($constants as $constant => $value) {
+            if (false !== strpos($constant, $prefix)) {
+                $filteredConstants[$constant] = $value;
+            }
+        }
+
+        return $filteredConstants;
+    }
 }

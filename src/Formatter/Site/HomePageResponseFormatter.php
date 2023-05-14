@@ -56,10 +56,6 @@ final class HomePageResponseFormatter
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-//            $filter = in_array($banner['position'], [1,4]) ? 'home_banner_side' : 'home_banner_center';
-//            $banner['description'] = explode(PHP_EOL, $banner['description']);
-//            $banner['image_link'] = $this->router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['image'], 'filter' => $filter]);
-
             $formattedBanners[$banner->getPosition()] = $this->bannerView->speedLinks($banner, $locale);
         }
 

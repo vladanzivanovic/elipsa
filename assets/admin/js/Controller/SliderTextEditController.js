@@ -1,9 +1,11 @@
 import SliderTextHandler from "../Handler/SliderTextHandler";
 import sliderTextEditMapper from "../Mapper/SliderTextEditMapper";
 import sliderTextEditValidator from "../Validators/SliderTextEditValidator";
+import baseEvents from "./BaseEvents";
 
 class SliderTextEditController {
     constructor() {
+        this.baseEvents = baseEvents;
         this.mapper = sliderTextEditMapper;
         this.handler = new SliderTextHandler();
         this.validator = sliderTextEditValidator;
@@ -20,6 +22,8 @@ class SliderTextEditController {
 
             this.handler.save();
         });
+
+        this.baseEvents.events();
     }
 }
 

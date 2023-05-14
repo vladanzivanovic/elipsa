@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\SliderTextRepository;
 use App\Repository\TagsRepository;
 use App\View\BannerView;
+use App\View\SliderTextView;
 use DateTime;
 use Exception;
 use Symfony\Component\Routing\RouterInterface;
@@ -30,13 +31,16 @@ final class NavigationMenuExtension extends AbstractExtension
 
     private BannerView $bannerView;
 
+    private SliderTextView $sliderTextView;
+
     public function __construct(
         CategoryRepository $categoryRepository,
         TagsRepository $tagsRepository,
         SliderTextRepository $sliderTextRepository,
         BannerRepository $bannerRepository,
         RouterInterface $router,
-        BannerView $bannerView
+        BannerView $bannerView,
+        SliderTextView $sliderTextView
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->tagsRepository = $tagsRepository;
@@ -44,6 +48,7 @@ final class NavigationMenuExtension extends AbstractExtension
         $this->bannerRepository = $bannerRepository;
         $this->router = $router;
         $this->bannerView = $bannerView;
+        $this->sliderTextView = $sliderTextView;
     }
 
     /**
@@ -87,7 +92,15 @@ final class NavigationMenuExtension extends AbstractExtension
      */
     public function getSliderText(string $locale): array
     {
-        return $this->sliderTextRepository->getList($locale);
+        $texts = $this->sliderTextRepository->getList();
+
+        $sliderTexts = [];
+
+        foreach ($texts as $text) {
+            $sliderTexts[] = $this->sliderTextView->siteView($text, $locale);
+        }
+
+        return $sliderTexts;
     }
 
     public function getMenuBanners(string $locale): array

@@ -449,6 +449,9 @@ banner.pop_up: Običan popup
 banner.menu: Veliki meni
 banner.season: Sezone
 
+banner_text.header: Header
+banner_text.footer: Footer
+
 job.applied_for_form: Postani i ti deo našeg tima
 job.application_form: Popunite prijavu
 job.form.personal_data: lični podaci
