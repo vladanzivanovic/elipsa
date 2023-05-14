@@ -66,21 +66,9 @@ class BannerRepository extends ExtendedEntityRepository
     public function getActiveByType(int $type)
     {
         $query = $this->createQueryBuilder('b')
-//            ->select(
-//                'b.id',
-//                'b.position',
-//                'bt.description',
-//                'bt.buttonLink as button_link',
-//                'bt.buttonText as button_text',
-//                'i.name as image'
-//            )
-//            ->innerJoin('b.bannerTranslations', 'bt')
-//            ->innerJoin('b.image', 'i')
             ->where('b.isActive = :isActive')
-//            ->andWhere('bt.locale = :locale')
             ->andWhere('b.type = :type')
             ->setParameter('isActive', true)
-//            ->setParameter('locale', $locale)
             ->setParameter('type', $type)
             ->orderBy('b.position');
 

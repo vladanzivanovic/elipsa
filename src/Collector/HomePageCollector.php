@@ -16,46 +16,18 @@ use App\Repository\SliderRepository;
 
 final class HomePageCollector
 {
-    /**
-     * @var SliderRepository
-     */
-    private $sliderRepository;
-    /**
-     * @var BannerRepository
-     */
-    private $bannerRepository;
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private SliderRepository $sliderRepository;
 
-    /**
-     * HomePageCollector constructor.
-     *
-     * @param SliderRepository       $sliderRepository
-     * @param BannerRepository       $bannerRepository
-     * @param CategoryRepository     $categoryRepository
-     * @param ProductRepository      $productRepository
-     * @param ProductColorRepository $colorRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param TagsRepository         $tagsRepository
-     */
+    private BannerRepository $bannerRepository;
+
+    private ProductRepository $productRepository;
+
+    private ProductColorRepository $colorRepository;
+
+    private ProductSizeRepository $sizeRepository;
+
+    private TagsRepository $tagsRepository;
+
     public function __construct(
         SliderRepository $sliderRepository,
         BannerRepository $bannerRepository,
@@ -73,9 +45,7 @@ final class HomePageCollector
     }
 
     /**
-     * @param string $locale
-     *
-     * @return array
+     * @return array<string, mixed>
      */
     public function collect(string $locale, ?User $user): array
     {
