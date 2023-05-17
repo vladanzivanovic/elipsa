@@ -175,7 +175,7 @@
     </div>
 </div>
 <!-- mobile-menu-end -->
-    {% set sliderTexts = slider_text(locale) %}
+    {% set sliderTexts = slider_text(locale, constant('App\\Entity\\SliderText::POSITION_HEADER')) %}
 
     {% if sliderTexts | length > 0 %}
         <div class="slider-text-area">
@@ -187,7 +187,7 @@
                                 <div class="row">
                                     <div id="slider_text_carousel" class="feature-pro-carousel owl-carousel">
                                         {% for sliderText in sliderTexts %}
-                                            <a href="{{ sliderText.link }}">{{ sliderText.description | raw }}</a>
+                                            <a href="{{ sliderText.link }}">{{ sliderText.title }}</a>
                                         {% endfor %}
                                     </div>
                                 </div>

@@ -60,11 +60,13 @@ class SliderTextRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    public function getList(): array
+    public function getListByPosition(string $position): array
     {
         $query = $this->createQueryBuilder('st')
             ->where('st.isActive = :activeSlider')
+            ->andWhere('st.position = :position')
             ->setParameter('activeSlider', SliderText::STATUS_ACTIVE)
+            ->setParameter('position', $position)
         ;
 
         return $query->getQuery()->getResult();

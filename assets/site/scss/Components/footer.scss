@@ -1,0 +1,33 @@
+footer {
+  .footer-desc {
+    &.banner-text {
+      border-bottom: 1px solid #282828;
+      margin-bottom: 2rem;
+      padding: 0 0 2rem 0;
+      justify-content: space-between;
+      display: flex;
+
+      a {
+        color: #fff;
+        padding: 1rem;
+        max-width: 500px;
+        min-width: 150px;
+
+        span {
+          display: block;
+
+          &.banner-text-title {
+            font-size: 1.7rem;
+            color: $site-color;
+          }
+
+          &.banner-text-description {
+            font-size: 1rem;
+            letter-spacing: normal;
+            line-height: normal;
+          }
+        }
+      }
+    }
+  }
+}

@@ -85,14 +85,9 @@ final class NavigationMenuExtension extends AbstractExtension
         return $tags;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
-    public function getSliderText(string $locale): array
+    public function getSliderText(string $locale, string $position): array
     {
-        $texts = $this->sliderTextRepository->getList();
+        $texts = $this->sliderTextRepository->getListByPosition($position);
 
         $sliderTexts = [];
 

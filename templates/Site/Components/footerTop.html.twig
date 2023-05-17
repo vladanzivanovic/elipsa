@@ -1,13 +1,23 @@
 {% set siteSettings = settings() %}
+{% set sliderTexts = slider_text(locale, constant('App\\Entity\\SliderText::POSITION_FOOTER')) %}
+
 <div class="footer-top-area">
     <div class="container">
         <div class="footer-top">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="footer-desc">
-                        <div class="logo-footer text-center">
-                        <img src="{{ asset('build/site/images/logo/logo_bottom.png') }}" alt="{{ default_alt_tag }}">
-                        </div>
+                    <div class="footer-desc banner-text">
+                        {% for sliderText in sliderTexts %}
+                            <a href="{{ sliderText.link }}">
+                                <span class="banner-text-title">{{ sliderText.title }}</span>
+                                <span class="banner-text-description">{{ sliderText.description }}</span>
+                            </a>
+                        {% endfor %}
+
+
+{#                        <div class="logo-footer text-center">#}
+{#                        <img src="{{ asset('build/site/images/logo/logo_bottom.png') }}" alt="{{ default_alt_tag }}">#}
+{#                        </div>#}
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-12">
