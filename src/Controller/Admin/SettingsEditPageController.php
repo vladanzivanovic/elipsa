@@ -11,14 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SettingsEditPageController extends AbstractController
 {
-    /**
-     * @var SettingsPageCollector
-     */
-    private $pageCollector;
+    private SettingsPageCollector $pageCollector;
 
-    /**
-     * @param SettingsPageCollector $pageCollector
-     */
     public function __construct(
         SettingsPageCollector $pageCollector
     ) {

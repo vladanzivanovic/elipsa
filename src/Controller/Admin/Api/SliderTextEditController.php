@@ -46,7 +46,7 @@ final class SliderTextEditController extends AbstractController
 
         $this->handler->save($sliderText);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**

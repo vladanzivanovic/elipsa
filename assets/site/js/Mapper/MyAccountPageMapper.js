@@ -6,7 +6,7 @@ class MyAccountPageMapper {
             this.personalBtn = '#personal-btn';
             this.orderTab = '#order-list-tab';
             this.wishTab = '#wish-list-tab';
-            this.orderTable = '#order-table'
+            this.orderTable = '#order-table';
 
             MyAccountPageMapper.instance = this;
         }

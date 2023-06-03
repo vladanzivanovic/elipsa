@@ -8,30 +8,16 @@ use App\Entity\Location;
 use App\Formatter\Admin\LocationEditResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class LocationEditPageController extends AbstractController
 {
-    /**
-     * @var LocationEditResponseFormatter
-     */
-    private $responseFormatter;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private LocationEditResponseFormatter $responseFormatter;
 
-    /**
-     * @param LocationEditResponseFormatter $responseFormatter
-     * @param ParameterBagInterface         $bag
-     */
     public function __construct(
-        LocationEditResponseFormatter $responseFormatter,
-        ParameterBagInterface $bag
+        LocationEditResponseFormatter $responseFormatter
     ) {
         $this->responseFormatter = $responseFormatter;
-        $this->bag = $bag;
     }
 
     /**

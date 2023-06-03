@@ -48,9 +48,20 @@ navi:
   career_form: Career Form
   policy_and_privacy: Privacy policy
   use_conditions: Use conditions
+  withdraw_policy: Withdraw policy
+  complaint: Complaint
+  payment_methods: Payment methods
+  delivery: Delivery
+  free_delivery: Free delivery
+  in_store_pickup: In-stock pickup
+  product_rehearsal: Product rehearsal
+  product_return_and_exchange: Product return and exchange
+  refund: Refund
   career: Careers
   cookie_policy: Cookie policy
   seasons: Seasons
+  orders: Orders
+  shopping: Shopping
 
 serbian: Serbian
 english: English
@@ -187,7 +198,7 @@ last_name: last name
 address: address
 city: city
 zip_code: postal code
-email: email address
+email: Email address
 mobile_telephone: mobile phone
 telephone: telephone
 create_account: create account
@@ -270,7 +281,7 @@ October: Oktobar
 November: Novembar
 December: Decembar
 
-login.text: login
+login.text: Login
 login.btn: Submit login
 login.remember_me: remember me
 login.successfull: Login was successful
@@ -285,7 +296,7 @@ reset_password.page.success: You are successfuly changed password.
 
 logout.text: logout
 
-registration.text: registration
+registration.text: Registration
 registration.btn: Submit registration
 registration.via: register via
 registration.error.user_exists: You are already registered
@@ -333,6 +344,7 @@ contact.tax_id: Tax ID
 links: links
 store: store
 info: information
+shopping: Shopping
 
 yes: yes
 no: no
@@ -352,6 +364,7 @@ text.type.collaborators: Collaborators
 text.type.career_form: Career Form
 text.type.career: Careers
 text.type.cookie_policy: Cookie policy
+text.type.about_us: About us
 
 collaborator.form.basic_data: basic data
 collaborator.form.where_open_store: Where do you plan to open franchise store?
@@ -488,3 +501,6 @@ order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
 
 search_site: Search site
+
+company_head_office_and_development: Company head office and development
+company_identification_number: Identification number

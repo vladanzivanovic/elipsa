@@ -36,8 +36,6 @@ class SliderTextRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param DataTableModel $tableModel
-     *
      * @return array
      */
     public function getAdminList(DataTableModel $tableModel): array

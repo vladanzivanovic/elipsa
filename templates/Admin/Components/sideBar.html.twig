@@ -36,12 +36,6 @@
                     <span class="link-title">Katalog</span>
                 </a>
             </li>
-            <li class="nav-item {{ routeName() == 'admin.about_us_page' ? 'active' : '' }}">
-                <a href="{{ path('admin.about_us_page') }}" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">O nama</span>
-                </a>
-            </li>
             <li class="nav-item {{ routeName() == 'admin.jobs' ? 'active' : '' }}">
                 <a href="{{ path('admin.jobs') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
@@ -126,6 +120,13 @@
                     <span class="link-title">Tekstovi</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.office_contacts' ? 'active' : '' }}">
+                <a href="{{ path('admin.office_contacts') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Kontakt podaci</span>
+                </a>
+            </li>
+
             <li class="nav-item nav-category">šifarnik</li>
             <li class="nav-item {{ routeName() == 'admin.colors' ? 'active' : '' }}">
                 <a href="{{ path('admin.colors') }}" class="nav-link">

@@ -1,6 +1,7 @@
 {% set locale = app.request.locale %}
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
+{% set siteSettings = site_settings(locale) %}
 
 {% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') %}
 

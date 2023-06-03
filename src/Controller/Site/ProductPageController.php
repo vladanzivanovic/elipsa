@@ -11,23 +11,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProductPageController extends AbstractController
+final class ProductPageController extends AbstractController
 {
-    /**
-     * @var ProductPageCollector
-     */
-    private $pageCollector;
-    /**
-     * @var ProductPageFormatter
-     */
-    private $pageFormatter;
+    private ProductPageCollector $pageCollector;
 
-    /**
-     * ProductPageController constructor.
-     *
-     * @param ProductPageCollector $pageCollector
-     * @param ProductPageFormatter $pageFormatter
-     */
+    private ProductPageFormatter $pageFormatter;
+
     public function __construct(
         ProductPageCollector $pageCollector,
         ProductPageFormatter $pageFormatter

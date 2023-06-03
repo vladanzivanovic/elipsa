@@ -44,14 +44,24 @@ navi:
   contact: Kontakt
   account: Moj nalog
   trends: Trendovi
-  collaborators: Saradnici
+  collaborator: Saradnici
   career_form: Zaposlenje forma
   policy_and_privacy: Politika privatnosti
   use_conditions: Uslovi korišćenja
+  withdraw_policy: Pravo na odustajanje
+  complaint: Reklamacije
+  payment_methods: Način plaćanja
+  delivery: Dostava
+  free_delivery: Besplatna dostava
+  in_store_pickup: Preuzimanje u radnji
+  product_rehearsal: Proba artikala
+  product_return_and_exchange: Zamena i povrat artikala
+  refund: Povraćaj novca
   career: Zaposlenje
   cookie_policy: Politika kolačića
   seasons: Sezone
-
+  orders: Narudžbine
+  shopping: Kupovina
 
 serbian: Srpski
 english: Engleski
@@ -179,7 +189,7 @@ last_name: prezime
 address: adresa
 city: mesto
 zip_code: poštanski broj
-email: email adresa
+email: Email adresa
 mobile_telephone: mobilni telefon
 telephone: telefon
 create_account: napravite nalog
@@ -262,7 +272,7 @@ October: Oktobar
 November: Novembar
 December: Decembar
 
-login.text: prijava
+login.text: Prijava
 login.btn: Prijavi se
 login.remember_me: zapamti me
 login.successful: Uspešno ste se ulogovali
@@ -277,7 +287,7 @@ reset_password.page.success: Uspešno ste promenili lozinku.
 
 logout.text: odjavite se
 
-registration.text: registracija
+registration.text: Registracija
 registration.btn: Registruj se
 registration.via: registracija putem
 registration.error.user_exists: Vi ste već registrovani
@@ -325,6 +335,7 @@ contact.tax_id: PIB
 links: linkovi
 store: prodavnica
 info: informacije
+shopping: Kupovina
 
 yes: da
 no: ne
@@ -344,6 +355,7 @@ text.type.collaborator: Saradnici
 text.type.career_form: Zaposlenje Forma
 text.type.career: Radna mesta
 text.type.cookie_policy: Politika kolačića
+text.type.about_us: O nama
 
 collaborator.form.basic_data: osnovni podaci
 collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?
@@ -483,3 +495,6 @@ order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
 
 search_site: Pretražite sajt
+
+company_head_office_and_development: Sedište firme i proizvodnja
+company_identification_number: Matični broj

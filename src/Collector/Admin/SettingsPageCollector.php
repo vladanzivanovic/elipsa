@@ -8,10 +8,7 @@ use App\Repository\SettingsRepository;
 
 final class SettingsPageCollector
 {
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private SettingsRepository $settingsRepository;
 
     /**
      * @param SettingsRepository $settingsRepository

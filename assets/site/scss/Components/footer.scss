@@ -29,5 +29,26 @@ footer {
         }
       }
     }
+
+    .footer-desc-contact {
+      ul {
+        margin-top: 15px !important;
+        margin-bottom: 20px !important;
+
+        li {
+          padding: 0 !important;
+          margin-bottom: 5px !important;
+          text-transform: none !important;
+        }
+      }
+    }
+  }
+
+  .footer-bottom-area {
+    .footer-bottom-text {
+      margin-top: 2rem;
+      text-align: center;
+      color: $light-gray-color;
+    }
   }
 }

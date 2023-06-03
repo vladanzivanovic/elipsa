@@ -21,52 +21,23 @@ class LocalizationUrlExtension extends AbstractExtension
 {
     use ShopTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private ParameterBagInterface $bag;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var ShopPageRouterFormatter
-     */
-    private $shopPageRouterFormatter;
-    /**
-     * @var BlogListRouterFormatter
-     */
-    private $blogListRouterFormatter;
-    /**
-     * @var ProductPageRouterFormatter
-     */
-    private $productPageRouterFormatter;
-    /**
-     * @var BlogPageRouterFormatter
-     */
-    private $blogPageRouterFormatter;
-    /**
-     * @var JobPageRouterFormatter
-     */
-    private $jobPageRouterFormatter;
+    private ShopPageRouterFormatter $shopPageRouterFormatter;
 
-    /**
-     * @param RouterInterface            $router
-     * @param ParameterBagInterface      $bag
-     * @param TranslatorInterface        $translator
-     * @param ShopPageRouterFormatter    $shopPageRouterFormatter
-     * @param BlogListRouterFormatter    $blogListRouterFormatter
-     * @param ProductPageRouterFormatter $productPageRouterFormatter
-     * @param BlogPageRouterFormatter    $blogPageRouterFormatter
-     * @param JobPageRouterFormatter     $jobPageRouterFormatter
-     */
+    private BlogListRouterFormatter $blogListRouterFormatter;
+
+    private ProductPageRouterFormatter $productPageRouterFormatter;
+
+    private BlogPageRouterFormatter $blogPageRouterFormatter;
+
+    private JobPageRouterFormatter $jobPageRouterFormatter;
+    private array $siteInfoText;
+
     public function __construct(
         RouterInterface $router,
         ParameterBagInterface $bag,
@@ -75,7 +46,8 @@ class LocalizationUrlExtension extends AbstractExtension
         BlogListRouterFormatter $blogListRouterFormatter,
         ProductPageRouterFormatter $productPageRouterFormatter,
         BlogPageRouterFormatter $blogPageRouterFormatter,
-        JobPageRouterFormatter $jobPageRouterFormatter
+        JobPageRouterFormatter $jobPageRouterFormatter,
+        array $siteInfoText
     ) {
         $this->router = $router;
         $this->bag = $bag;
@@ -85,6 +57,7 @@ class LocalizationUrlExtension extends AbstractExtension
         $this->productPageRouterFormatter = $productPageRouterFormatter;
         $this->blogPageRouterFormatter = $blogPageRouterFormatter;
         $this->jobPageRouterFormatter = $jobPageRouterFormatter;
+        $this->siteInfoText = $siteInfoText;
     }
 
     /**
@@ -119,6 +92,10 @@ class LocalizationUrlExtension extends AbstractExtension
             $routeParams['slug'] = $this->jobPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
         }
 
+        if ($routeName === 'site.company_text') {
+            $routeParams['type'] = $this->getTextLocaleSlug($routeParams['type'], $fromLocale, $toLocale);
+        }
+
         if ($toLocale != 'rs') {
             $routeParams['_locale'] = $toLocale;
             $routeName = $this->getRouteName($routeName, $toLocale);
@@ -146,11 +123,18 @@ class LocalizationUrlExtension extends AbstractExtension
         return $routeName;
     }
 
+    private function getTextLocaleSlug(string $slug, string $fromLocale, string $toLocale): ?string
+    {
+        foreach ($this->siteInfoText as $infoText) {
+            if ($infoText['slug'][$fromLocale] === $slug) {
+                return $infoText['slug'][$toLocale];
+            }
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+        return null;
+    }
+
+    public function getName(): string
     {
         return 'localized_url_extension';
     }

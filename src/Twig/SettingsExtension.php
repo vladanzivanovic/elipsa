@@ -17,14 +17,8 @@ use Twig\TwigFunction;
 
 final class SettingsExtension extends AbstractExtension
 {
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private SettingsRepository $settingsRepository;
 
-    /**
-     * @param SettingsRepository $settingsRepository
-     */
     public function __construct(
         SettingsRepository $settingsRepository
     ) {
@@ -34,19 +28,19 @@ final class SettingsExtension extends AbstractExtension
     /**
      * @return array
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('settings', [$this, 'getSettings']),
+            new TwigFunction('site_settings', [$this, 'getSettings']),
         ];
     }
 
     /**
      * @return array|null
      */
-    public function getSettings(): ?array
+    public function getSettings(string $locale): ?array
     {
-        $settings = $this->settingsRepository->getSettingsForContactPage();
+        $settings = $this->settingsRepository->getAllSettingsByLocale($locale);
 
         $formatted = [];
 
