@@ -39,7 +39,7 @@ class Description
 
     public const TYPE_REFUND = 'refund';
 
-    public const ABOUT_US = 'about_us';
+    public const TYPE_ABOUT_US = 'about_us';
 
     /**
      * @ORM\Id()

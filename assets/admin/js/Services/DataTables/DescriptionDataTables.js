@@ -16,7 +16,7 @@ export default (() => {
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'type_text', name: 'type', title: 'Stranica', render: function (type_text, type, row, meta) {
-                        return type === 'display' ? Translator.trans(`text.type.${type_text}`, null, 'messages', LOCALE) : type_text;
+                        return type === 'display' ? Translator.trans(`navi.${type_text}`, null, 'messages', LOCALE) : type_text;
                     } },
                 { data: 'type', orderable: false, render: function (data, type, row, meta) {
                         const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.edit_description_page', {type: data})}">Izmeni</a> ` : '';
