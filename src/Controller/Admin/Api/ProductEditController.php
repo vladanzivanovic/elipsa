@@ -9,26 +9,19 @@ use App\Entity\ProductTranslation;
 use App\Handler\ProductEditHandler;
 use App\Helper\ConstantsHelper;
 use App\Parser\ProductEditRequestParser;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductEditController extends AbstractController
 {
-    /**
-     * @var ProductEditRequestParser
-     */
-    private $requestParser;
-    /**
-     * @var ProductEditHandler
-     */
-    private $editHandler;
+    private ProductEditRequestParser $requestParser;
 
-    /**
-     * @param ProductEditRequestParser $requestParser
-     * @param ProductEditHandler       $editHandler
-     */
+    private ProductEditHandler $editHandler;
+
     public function __construct(
         ProductEditRequestParser $requestParser,
         ProductEditHandler $editHandler
@@ -39,10 +32,7 @@ final class ProductEditController extends AbstractController
 
     /**
      * @Route("/api/add-product", name="admin.add_product_api", methods={"POST"}, options={"expose": true})
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function insert(Request $request): JsonResponse
     {
@@ -50,18 +40,12 @@ final class ProductEditController extends AbstractController
 
         $this->editHandler->save($product);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
      * @Route("/api/edit-product/{slug}", name="admin.edit_product_api", methods={"PUT"}, options={"expose": true})
-     * @param Request            $request
-     *
-     * @param ProductTranslation $productTranslation
-     *
-     * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
      */
     public function update(Request $request, ProductTranslation $productTranslation): JsonResponse
     {
@@ -69,18 +53,11 @@ final class ProductEditController extends AbstractController
 
         $this->editHandler->save($product);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
      * @Route("/api/product-change-status/{slug}/{status}", name="admin.api_product_change_status", methods={"PATCH"}, options={"expose": true})
-     * @param ProductTranslation $productTranslation
-     * @param int                $status
-     *
-     * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \ReflectionException
      */
     public function changeStatus(ProductTranslation $productTranslation, int $status): JsonResponse
     {

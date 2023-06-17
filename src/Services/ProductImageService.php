@@ -93,7 +93,7 @@ final class ProductImageService
         $exceptions = [];
 
         foreach ($data as $index => $image) {
-            $color = $this->colorRepository->find($image['color']);
+            $color = $this->colorRepository->find($image['color_id']);
 
             if (isset($image['id'])) {
                 $imageObj = $this->imageRepository->find($image['id']);
@@ -112,7 +112,7 @@ final class ProductImageService
                     continue;
                 }
 
-                if (true === $image['isMain']) {
+                if (true === $image['is_main']) {
                     $this->updateImage($product, $imageObj);
                 }
 
@@ -120,17 +120,18 @@ final class ProductImageService
             }
 
             try {
-                $image['file'] = $rootDir.$tmpDir.$image['fileName'];
+                $image['file'] = $rootDir.$tmpDir.$image['file_name'];
+                $image['fileName'] = $image['file_name']; //f todo fix this
                 $file = $this->img->setFileObject($image);
             } catch (FileNotFoundException $exception) {
-                $exceptions[] = $image['fileName'];
+                $exceptions[] = $image['file_name'];
 
                 continue;
             }
 
             $mediaObj = new Image();
 
-            $image['file'] = $rootDir.$tmpDir.$image['fileName'];
+            $image['file'] = $rootDir.$tmpDir.$image['file_name'];
 
             if (!($file instanceof UploadedFile)) {
                 continue;
@@ -140,7 +141,7 @@ final class ProductImageService
 
             $mediaObj->setRelatedToType(Image::RELATED_TYPE_PRODUCT);
             $mediaObj->setName($slug.'-'.++$index);
-            $mediaObj->setIsmain($image['isMain']);
+            $mediaObj->setIsmain($image['is_main']);
             $mediaObj->setOriginalName($newName);
             $mediaObj->setFile($file);
             $mediaObj->setDevice(Image::DEVICE_DESKTOP);

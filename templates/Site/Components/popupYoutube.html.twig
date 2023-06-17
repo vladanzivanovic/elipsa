@@ -1,0 +1,26 @@
+<!-- modal-start -->
+<div class="modal fade" id="youtubeModal" role="dialog">
+    <div class="modal-dialog product-modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="modal-body-title">
+                        <h2 class="spd-title">{{ payload.title }}</h2>
+                    </div>
+                    <div class="product-tab-area youtube-area">
+                        <div class="clearfix">
+                            <div class="youtube-carousel owl-carousel">
+                                {% for index, youtube in payload.youtubes %}
+                                    <div class="item-video" data-merge="{{ index }}"><a class="owl-video" href="https://www.youtube.com/watch?v={{ youtube.YouTubeId }}"></a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal-end -->

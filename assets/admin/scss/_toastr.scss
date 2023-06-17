@@ -1,7 +1,12 @@
 #toast-container {
-  >.toast-info, >.toast-error, >.toast-success {
+  >.toast-info, >.toast-error, >.toast-success, >.toast-warning {
     background-color: #0b1327;
     box-shadow: none;
     border: 1px solid #162240;
+
+    .toast-progress {
+      background-color: #fff;
+      opacity: 0.7;
+    }
   }
 }

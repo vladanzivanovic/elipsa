@@ -16,26 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private DataTableRequestParser $requestParser;
 
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private ProductRepository $productRepository;
 
-    /**
-     * @var ProductDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private ProductDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @param DataTableRequestParser            $requestParser
-     * @param ProductRepository                 $productRepository
-     * @param ProductDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         ProductRepository $productRepository,

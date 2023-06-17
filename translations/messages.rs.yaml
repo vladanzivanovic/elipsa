@@ -38,7 +38,7 @@ navi:
   locations: Prodajna mesta
   loyalty: Loyalty
   catalogue: Katalog
-  shop: Prodavnica
+  shop: Online Shop
   blog: Blog
   ask_us: Pitajte nas
   contact: Kontakt
@@ -498,3 +498,9 @@ search_site: Pretražite sajt
 
 company_head_office_and_development: Sedište firme i proizvodnja
 company_identification_number: Matični broj
+
+youtube:
+  id_required: 'Molimo vas unesite Id'
+  exists: 'Video je već unešen.'
+  url_not_valid: 'Youtube url nije validan'
+  link_button: Pogledajte video proizvoda

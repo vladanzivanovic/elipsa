@@ -2,7 +2,6 @@ class DropZoneDom {
     generateHtml(fileWrapper, file, options)
     {
         let mainClass = file.isMain ? 'main-image' : '';
-        let colorSelect = '';
 
         let li = $('<li>', {
             class: 'dropzone-file ' + mainClass,

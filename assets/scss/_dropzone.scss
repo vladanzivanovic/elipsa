@@ -131,31 +131,6 @@
     }
 }
 
-#youtube-video-lists {
-    li {
-        iframe{
-            width: 100%;
-            height:200px;
-        }
-        &:hover {
-            .youtube-close {
-                position: absolute;
-                color: #fff;
-                z-index: 999;
-                cursor: pointer;
-                top: -7px;
-                left: 94%;
-                text-shadow: 0 0 6px #000;
-                &:before {
-                    font-family: FontAwesome;
-                    content: "\f00d";
-                    font-size: 2em;
-                }
-            }
-        }
-    }
-}
-
 @media (max-width: 481px) {
     #dropzone {
         .dropzone-placeholder {

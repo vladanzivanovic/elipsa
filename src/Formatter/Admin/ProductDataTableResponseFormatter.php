@@ -8,46 +8,36 @@ use App\Entity\Product;
 use App\Helper\ConstantsHelper;
 use App\Model\DataTableModel;
 use App\Repository\ProductSizeRepository;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductDataTableResponseFormatter
 {
     use DataTableResponseTrait;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
+    private TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface   $translator
-     * @param ProductSizeRepository $sizeRepository
-     */
+    private ProductSizeRepository $sizeRepository;
+
+    private RouterInterface $router;
+
     public function __construct(
         TranslatorInterface $translator,
-        ProductSizeRepository $sizeRepository
+        ProductSizeRepository $sizeRepository,
+        RouterInterface $router
     ) {
         $this->translator = $translator;
         $this->sizeRepository = $sizeRepository;
+        $this->router = $router;
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $data
-     * @param int            $total
-     *
-     * @return array
-     */
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         $data = array_map(function ($product) {
             $statusText = ConstantsHelper::getConstantName((string) $product['status'], 'STATUS', Product::class);
             $product['status_text'] = $this->translator->trans($statusText);
             $product['position_text'] = null;
+            $product['link'] = $this->router->generate('site.product_page', ['slug' => $product['slug']]);
 
             if ($product['show_home_page'] > 0) {
                 $product['position_text'] = ConstantsHelper::getConstantName((string)$product['show_home_page'], 'HOME_PAGE', Product::class);

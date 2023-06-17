@@ -1,12 +1,12 @@
-{% macro productGrid(product, tags, colors, sizes, class, locale) %}
+{% macro productGrid(product, class, locale) %}
     <div class="{{ class }}">
         <div class="single-featured-item">
             <div class="sfi-img">
-                <a href="{{ path('site.product_page', {'slug': product.slug}) }}"><img src="{{ product.image_link_list }}" alt="{{ default_alt_tag }}"></a>
+                <a href="{{ path('site.product_page', {'slug': product.slug}) }}"><img src="{{ product.image.file }}" alt="{{ default_alt_tag }}"></a>
                 <ul class="sfi-tag-list">
-                    {% if tags | length > 0 %}
+                    {% if product.tags | length > 0 %}
                         {% set tagKey = 'tags' | trans %}
-                        {% for tag in tags  %}
+                        {% for tag in product.tags  %}
                             <li><a href="{{ path('site.trendy_page', {'searchData': tagKey ~ '/'~ tag.slug}) }}">{{ tag.label }}</a></li>
                         {% endfor %}
                     {% endif %}
@@ -14,17 +14,17 @@
                 <div class="sfi-img-content sfi-data-content">
                     <p class="letter-capitalize">{{ 'available_colors' | trans }}:</p>
                     <ul class="sfi-data-color">
-                        {% for color in colors[product.id] %}
+                        {% for hex, color in product.colors %}
                             <li>
-                                <a style="background-color: {{ color }}" href="#"></a>
+                                <a style="background-color: {{ hex }}" href="#"></a>
                             </li>
                         {% endfor %}
                     </ul>
                     <p class="letter-capitalize">{{ 'available_sizes' | trans }}:</p>
                     <ul>
-                        {% for productSize in sizes[product.id] %}
+                        {% for productSize in product.sizes %}
                             <li>
-                                <a href="#">{{ productSize }}</a>
+                                <a href="#">{{ productSize.size }}</a>
                             </li>
                         {% endfor %}
                     </ul>

@@ -105,6 +105,33 @@
     }
   }
 
+  .home3-newsletter-area {
+    @media only screen and (max-width: 767px) {
+      height: calc(100vw/2);
+    }
+    .h3-newsletter-left {
+      @media only screen and (max-width: 767px) and (min-width: 480px) {
+        padding-left: 0;
+        text-align: center;
+        margin-bottom: 20px !important;
+      }
+    }
+
+    .h3-newsletter-form {
+      .h3-newsletter-input {
+        > a {
+          @media only screen and (max-width: 767px) {
+            position: unset;
+            transform: none !important;
+            display: block;
+            padding: 0;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
   @media only screen and (max-width: 480px) and (min-width: 240px) {
     .owl-item {
       > div {

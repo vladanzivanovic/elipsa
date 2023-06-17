@@ -194,15 +194,15 @@ class ProductRepository extends ExtendedEntityRepository
     public function getDqlForPaginationPage(string $locale, ?User $user, ?ParameterBag $searchData): QueryBuilder
     {
         $query = $this->createQueryBuilder('p')
-            ->select(
-                'p.id',
-                'p.price',
-                'p.discount',
-                'pt.title',
-                'pt.slug',
-                'pt.shortDescription as short_description',
-                'i.name as image'
-            )
+//            ->select(
+//                'p.id',
+//                'p.price',
+//                'p.discount',
+//                'pt.title',
+//                'pt.slug',
+//                'pt.shortDescription as short_description',
+//                'i.name as image'
+//            )
             ->innerJoin('p.productTranslations', 'pt')
             ->innerJoin('p.productHasImages', 'phi')
             ->innerJoin('phi.image', 'i')
@@ -346,7 +346,7 @@ class ProductRepository extends ExtendedEntityRepository
             ->setParameter('product', $product)
             ->setMaxResults(6);
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 
     /**

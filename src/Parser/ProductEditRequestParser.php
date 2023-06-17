@@ -20,59 +20,39 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 final class ProductEditRequestParser
 {
     use ParserTrait;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
 
-    /**
-     * @var ProductTranslationRepository
-     */
-    private $translationRepository;
+    private ParameterBagInterface $parameterBag;
 
-    /**
-     * @var CategoryTranslationRepository
-     */
-    private $categoryTranslationRepository;
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ProductImageService
-     */
-    private $imageService;
+    private ProductTranslationRepository $translationRepository;
 
-    /**
-     * ProductEditRequestParser constructor.
-     *
-     * @param ParameterBagInterface         $parameterBag
-     * @param ProductTranslationRepository  $translationRepository
-     * @param CategoryTranslationRepository $categoryTranslationRepository
-     * @param ProductSizeRepository         $sizeRepository
-     * @param ProductImageService           $imageService
-     */
+    private CategoryTranslationRepository $categoryTranslationRepository;
+
+    private ProductSizeRepository $sizeRepository;
+
+    private ProductImageService $imageService;
+
+    private YouTubeParser $youTubeParser;
+
+    private array $locales;
+
     public function __construct(
         ParameterBagInterface $parameterBag,
         ProductTranslationRepository $translationRepository,
         CategoryTranslationRepository $categoryTranslationRepository,
         ProductSizeRepository $sizeRepository,
-        ProductImageService $imageService
+        ProductImageService $imageService,
+        YouTubeParser $youTubeParser,
+        string $locales
     ) {
         $this->parameterBag = $parameterBag;
         $this->translationRepository = $translationRepository;
         $this->categoryTranslationRepository = $categoryTranslationRepository;
         $this->sizeRepository = $sizeRepository;
         $this->imageService = $imageService;
+        $this->youTubeParser = $youTubeParser;
+        $this->locales = explode('|', $locales);
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param Product|null $product
-     *
-     * @return Product
-     * @throws \Doctrine\ORM\ORMException
-     */
     public function parse(ParameterBag $bag, ?Product $product = null): Product
     {
         if (!$product instanceof Product) {
@@ -101,38 +81,31 @@ final class ProductEditRequestParser
 
         $this->imageService->setImages($product->getProductTranslations()->first(), json_decode($bag->get('images'), true));
 
+        $this->setYoutube($bag, $product);
+
         return $product;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param Product      $product
-     */
     private function setLocales(ParameterBag $bag, Product $product): void
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
-
-        foreach ($locales as $locale => $langBag) {
+        foreach ($this->locales as $locale) {
+            $transCollection = $bag->get($locale);
             $trans = new ProductTranslation();
 
             if (!is_null($product->getId())) {
                 $trans = $this->translationRepository->findOneBy(['product' => $product, 'locale' => $locale]);
             }
 
-            $trans->setTitle($bag->get($locale.'_title'));
-            $trans->setDescription($bag->get($locale.'_description'));
-            $trans->setShortDescription($bag->get($locale.'_short_description'));
-            $trans->setCleaning($bag->get($locale.'_cleaning'));
+            $trans->setTitle($transCollection['title']);
+            $trans->setDescription($transCollection['description']);
+            $trans->setShortDescription($transCollection['short_description']);
+            $trans->setCleaning($transCollection['cleaning']);
             $trans->setLocale($locale);
 
             $product->addProductTranslation($trans);
         }
     }
 
-    /**
-     * @param Product $product
-     * @param array   $categories
-     */
     private function setCategories(Product $product, array $categories): void
     {
         if (!is_null($product->getId())) {
@@ -151,10 +124,6 @@ final class ProductEditRequestParser
         }
     }
 
-    /**
-     * @param Product $product
-     * @param array   $tags
-     */
     private function setTags(Product $product, array $tags): void
     {
         if (!is_null($product->getId())) {
@@ -170,10 +139,6 @@ final class ProductEditRequestParser
         }
     }
 
-    /**
-     * @param Product $product
-     * @param array   $sizes
-     */
     private function setSizes(Product $product, array $sizes): void
     {
         if (!is_null($product->getId())) {
@@ -192,7 +157,6 @@ final class ProductEditRequestParser
         }
     }
 
-
     private function setCleaning(Product $product, ParameterBag $bag)
     {
         $collection = $product->getProductCleanings();
@@ -206,6 +170,26 @@ final class ProductEditRequestParser
 
                 $product->addProductCleaning($cleaning);
             }
+        }
+    }
+
+    public function setYoutube(ParameterBag $bag, Product $product): void
+    {
+        $collection = $product->getYoutubes();
+        $collection->clear();
+
+        if (false === $bag->has('youtube')) {
+            return;
+        }
+
+        foreach ($bag->get('youtube') as $youtube) {
+            $youtube = $this->youTubeParser->parse(json_decode($youtube, true));
+
+            if (null === $youtube) {
+                continue;
+            }
+
+            $product->addYoutube($youtube);
         }
     }
 }

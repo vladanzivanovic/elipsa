@@ -38,7 +38,7 @@ navi:
   locations: Locations
   loyalty: Loyalty
   catalogue: Catalogue
-  shop: Shop
+  shop: Online Shop
   blog: Blog
   ask_us: Ask us
   contact: Contact
@@ -504,3 +504,9 @@ search_site: Search site
 
 company_head_office_and_development: Company head office and development
 company_identification_number: Identification number
+
+youtube:
+  id_required: Enter video id
+  exists: Video already exits
+  url_not_valid: Youtube url is not valid
+  link_button: Watch product video

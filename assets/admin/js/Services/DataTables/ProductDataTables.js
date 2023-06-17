@@ -17,6 +17,11 @@ export default (() => {
             },
             columns: [
                 { data: 'code', name: 'code', title: 'Šifra' },
+                { data: 'title', name: 'title', title: 'Naziv', width: '200px', render: function (title, type, row, meta) {
+                        let html = `<a href="${row.link}" target="_blank">${title}</a>`;
+
+                        return type === 'display' ? html : title;
+                    } },
                 { data: 'title', name: 'title', title: 'Naziv' },
                 { data: 'price', name: 'price', title: 'Cena', type: "num" },
                 { data: 'discount', name: 'discount', title: 'Popust', type: "num" },

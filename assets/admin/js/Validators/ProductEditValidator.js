@@ -1,15 +1,21 @@
+import productEditMapper from "../Mapper/ProductEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class ProductEditValidator {
+    #mapper;
+
     constructor() {
         if (!ProductEditValidator.instance) {
+            this.#mapper = productEditMapper;
+
             ProductEditValidator.instance = this;
         }
 
         return ProductEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
         options = {
@@ -37,7 +43,7 @@ class ProductEditValidator {
 
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

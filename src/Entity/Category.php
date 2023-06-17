@@ -169,4 +169,14 @@ class Category
 
         return $this;
     }
+
+    public function getByLocale(string $locale): CategoryTranslation
+    {
+        $filteredTrans = $this->categoryTranslations->filter(function ($trans) use ($locale) {
+            /** @var CategoryTranslation $trans */
+            return $trans->getLocale() === $locale;
+        });
+
+        return $filteredTrans->first();
+    }
 }

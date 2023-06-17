@@ -27,79 +27,82 @@ class Product
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $price;
+    private ?int $price;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $discount;
+    private ?int $discount;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $status;
+    private ?int $status;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $productTranslations;
+    private Collection $productTranslations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasTags", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $productHasTags;
+    private Collection $productHasTags;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $badge;
+    private ?int $badge;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $code;
+    private ?string $code;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $productHasCategories;
+    private Collection $productHasCategories;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $productHasSizes;
+    private Collection $productHasSizes;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasImages", mappedBy="product", cascade={"persist", "remove"})
      */
-    private $productHasImages;
+    private Collection $productHasImages;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $showHomePage;
+    private ?int $showHomePage;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductCleaning", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $productCleanings;
+    private Collection $productCleanings;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Youtube", mappedBy="product", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private Collection $youtubes;
 
     public function __construct()
     {
-        $this->productSizes = new ArrayCollection();
         $this->productTranslations = new ArrayCollection();
         $this->productHasTags = new ArrayCollection();
-        $this->productHasColors = new ArrayCollection();
         $this->productHasCategories = new ArrayCollection();
         $this->productHasSizes = new ArrayCollection();
-        $this->images = new ArrayCollection();
         $this->productHasImages = new ArrayCollection();
         $this->productCleanings = new ArrayCollection();
+        $this->youtubes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +288,20 @@ class Product
     }
 
     /**
+     * @return array<int, Category>
+     */
+    public function getCategories(): array
+    {
+        $categories = [];
+
+        foreach ($this->getProductHasCategories() as $productHasCategory) {
+            $categories[] = $productHasCategory->getCategory();
+        }
+
+        return $categories;
+    }
+
+    /**
      * @return Collection|ProductHasSizes[]
      */
     public function getProductHasSizes(): Collection
@@ -313,6 +330,24 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return array<int, ProductSize>
+     */
+    public function getAvailableSizes(): array
+    {
+        $sizes = [];
+
+        foreach ($this->productHasSizes as $productHasSize) {
+            if (false === $productHasSize->getIsAvailable()) {
+                continue;
+            }
+
+            $sizes[] = $productHasSize->getSize();
+        }
+
+        return $sizes;
     }
 
     /**
@@ -346,6 +381,19 @@ class Product
         return $this;
     }
 
+    public function getMainImage(): ?Image
+    {
+        foreach ($this->getProductHasImages() as $productHasImage) {
+            $image = $productHasImage->getImage();
+
+            if (true === $image->getIsMain()) {
+                return $image;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @param string $locale
      *
@@ -373,9 +421,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|ProductCleaning[]
-     */
     public function getProductCleanings(): Collection
     {
         return $this->productCleanings;
@@ -402,5 +447,44 @@ class Product
         }
 
         return $this;
+    }
+
+    public function addYoutube(Youtube $youtube): void
+    {
+        if (!$this->youtubes->contains($youtube)) {
+            $this->youtubes[] = $youtube;
+
+            $youtube->setProduct($this);
+        }
+    }
+
+    public function removeYoutubes(Youtube $youtube)
+    {
+        $this->youtubes->removeElement($youtube);
+    }
+
+    public function getYoutubes(): Collection
+    {
+        return $this->youtubes;
+    }
+
+    /**
+     * @return array<int, ProductColor>
+     */
+    public function getProductColors(): array
+    {
+        $colors = [];
+
+        foreach ($this->getProductHasImages() as $productHasImage) {
+            $color = $productHasImage->getColor();
+
+            if (isset($colors[$color->getHex()])) {
+                continue;
+            }
+
+            $colors[$color->getHex()] = $color;
+        }
+
+        return $colors;
     }
 }
