@@ -9,22 +9,14 @@ use App\Entity\OrderProduct;
 use App\Entity\ProductHasImages;
 use App\Entity\ProductTranslation;
 use App\Parser\ImageParser;
-use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductHasImagesRepository;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Webmozart\Assert\Assert;
 
 final class ProductImageService
 {
-    use ImageServiceTrait;
-
-    protected ImageService $img;
-
-    private ImageRepository $imageRepository;
-
-    private ParameterBagInterface $bag;
+    use MainImageValidationTrait;
 
     private ProductColorRepository $colorRepository;
 
@@ -33,16 +25,10 @@ final class ProductImageService
     private ImageParser $imageParser;
 
     public function __construct(
-        ImageService $imageService,
-        ParameterBagInterface $bag,
-        ImageRepository $imageRepository,
         ProductColorRepository $colorRepository,
         ProductHasImagesRepository $hasImagesRepository,
         ImageParser $imageParser
     ) {
-        $this->img = $imageService;
-        $this->imageRepository = $imageRepository;
-        $this->bag = $bag;
         $this->colorRepository = $colorRepository;
         $this->hasImagesRepository = $hasImagesRepository;
         $this->imageParser = $imageParser;
