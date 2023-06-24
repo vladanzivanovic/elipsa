@@ -67,7 +67,7 @@
                                 <div id="top_carousel" class="feature-pro-carousel owl-carousel">
                                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                     {% for product in products[2] %}
-                                        {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-xs-12', locale) }}
+                                        {{ productGrid.productGrid(product, 'col-xs-12', locale) }}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -193,7 +193,7 @@
                                     <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
                                         {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                         {% for product in products[1] %}
-                                            {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-xs-12', locale) }}
+                                            {{ productGrid.productGrid(product, 'col-xs-12', locale) }}
                                         {% endfor %}
                                     </div>
                                 </div>

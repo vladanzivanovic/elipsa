@@ -4,9 +4,11 @@ require('@fancyapps/fancybox');
 
 import ProductPageMapper from "../Mapper/ProductPageMapper";
 import ProductPageService from "../Service/ProductPageService";
+import Fotorama from "../Service/Fotorama";
 
 class ProductPageController {
     #mapper
+
     constructor() {
         this.#mapper = ProductPageMapper;
         this.service = new ProductPageService();

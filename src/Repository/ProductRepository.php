@@ -184,35 +184,11 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string       $locale
-     * @param User|null    $user
-     * @param ParameterBag $searchData
-     *
-     * @return QueryBuilder
-     */
-    public function getDqlForPaginationPage(string $locale, ?User $user, ?ParameterBag $searchData): QueryBuilder
+    public function getDqlForPaginationPage(?User $user, ?ParameterBag $searchData): QueryBuilder
     {
         $query = $this->createQueryBuilder('p')
-//            ->select(
-//                'p.id',
-//                'p.price',
-//                'p.discount',
-//                'pt.title',
-//                'pt.slug',
-//                'pt.shortDescription as short_description',
-//                'i.name as image'
-//            )
-            ->innerJoin('p.productTranslations', 'pt')
-            ->innerJoin('p.productHasImages', 'phi')
-            ->innerJoin('phi.image', 'i')
-            ->innerJoin('p.productHasCategories', 'productHasCategories')
             ->where('p.status = :activeStatus')
-            ->andWhere('pt.locale = :locale')
-            ->andWhere('i.isMain = :isMain')
             ->setParameter('activeStatus', Product::STATUS_ACTIVE, ParameterType::INTEGER)
-            ->setParameter('locale', $locale, ParameterType::STRING)
-            ->setParameter('isMain', true, ParameterType::BOOLEAN)
             ->groupBy('p.id')
             ->orderBy('p.id', 'DESC')
         ;
@@ -337,11 +313,11 @@ class ProductRepository extends ExtendedEntityRepository
      *
      * @return array
      */
-    public function getRelatedProducts(string $locale, array $categories, Product $product, ?User $user): array
+    public function getRelatedProducts(array $categories, Product $product, ?User $user): array
     {
         $searchParams = new ParameterBag(['categories' => $categories]);
 
-        $query = $this->getDqlForPaginationPage($locale, $user, $searchParams)
+        $query = $this->getDqlForPaginationPage($user, $searchParams)
             ->andWhere('p <> :product')
             ->setParameter('product', $product)
             ->setMaxResults(6);
@@ -355,27 +331,11 @@ class ProductRepository extends ExtendedEntityRepository
      *
      * @return array
      */
-    public function getForHomePage(string $locale, ?User $user): array
+    public function getForHomePage(?User $user): array
     {
         $query = $this->createQueryBuilder('p')
-            ->select(
-                'p.id',
-                'pt.title',
-                'pt.slug',
-                'p.price',
-                'p.discount',
-                'i.name as image',
-                'p.showHomePage as show_home_page'
-            )
-            ->innerJoin('p.productTranslations', 'pt')
-            ->innerJoin('p.productHasImages', 'phi')
-            ->innerJoin('phi.image', 'i')
             ->where('p.showHomePage > 0')
-            ->andWhere('pt.locale = :locale')
-            ->andWhere('i.isMain = :isMain')
             ->andWhere('p.status = :activeStatus')
-            ->setParameter('locale', $locale)
-            ->setParameter('isMain', true)
             ->setParameter('activeStatus', Product::STATUS_ACTIVE)
             ->groupBy('p.id')
             ->orderBy('RAND()');
@@ -393,7 +353,7 @@ class ProductRepository extends ExtendedEntityRepository
                 ->setParameter('user', $user);
         }
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 
     /**

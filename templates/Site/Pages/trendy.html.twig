@@ -3,7 +3,7 @@
 {% block bodyClass %}shop-page{% endblock %}
 {% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
 
-{% block ogImage %}{{ products.data|length > 0 ? app.request.schemeAndHttpHost ~ products.data[0].image_link_list : defaultOgImage }}{% endblock %}
+{% block ogImage %}{{ products.data|length > 0 ? app.request.schemeAndHttpHost ~ products.data[0].image.file : defaultOgImage }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
 
 {% set search = search_criteria is not null ? search_criteria.all : [] %}
@@ -54,7 +54,7 @@
                                         <div class="row">
                                             {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                             {% for product in products.data %}
-                                                {{ productGrid.productGrid(product, product_tags[product.id] is defined ? product_tags[product.id] : [], product_colors, product_sizes, 'col-md-4 col-sm-6 col-xs-6', locale) }}
+                                                {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale) }}
                                             {% endfor %}
                                         </div>
                                         {{ include('Site/Components/paginate.html.twig') }}

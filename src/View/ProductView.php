@@ -85,6 +85,7 @@ final class ProductView
             'code' => $product->getCode(),
             'price' => $product->getPrice(),
             'discount' => $product->getDiscount(),
+            'show_home_page' => $product->getShowHomePage(),
         ];
     }
 

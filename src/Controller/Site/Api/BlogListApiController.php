@@ -9,7 +9,7 @@ use App\Collector\ProductPageCollector;
 use App\Entity\BlogTranslation;
 use App\Entity\ProductTranslation;
 use App\Formatter\Site\BlogPageResponseFormatter;
-use App\Formatter\Site\ProductPageFormatter;
+use App\Formatter\Site\ProductFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

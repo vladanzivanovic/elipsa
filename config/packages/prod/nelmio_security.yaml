@@ -45,6 +45,7 @@ nelmio_security:
                 - 'https://www.facebook.com'
                 - 'https://web.facebook.com/'
                 - 'https://www.google.com/'
+                - 'https://youtube.com/'
             script-src:
                 - 'self'
                 - 'unsafe-inline'
@@ -68,10 +69,12 @@ nelmio_security:
                 - 'data:'
                 - 'https://www.google.com'
                 - 'https://www.google.rs'
+                - 'https://i.ytimg.com'
             connect-src:
                 - 'self'
                 - 'https://o419240.ingest.sentry.io'
                 - 'https://www.google-analytics.com'
                 - 'https://stats.g.doubleclick.net'
+                - 'https://www.googleapis.com/'
             block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
             # upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport

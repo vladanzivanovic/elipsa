@@ -28,13 +28,13 @@ class ShopPageDom {
             html += `<div class="col-md-4 col-sm-6 col-xs-6">
                         <div class="single-featured-item">
                             <div class="sfi-img">
-                                <a href="${productLink}"><img src="${product.image_link_list}" alt="{{ default_alt_tag }}"></a>
-                                <ul class="sfi-tag-list">${this.listData(data.product_tags[product.id], 'tags')}</ul>
+                                <a href="${productLink}"><img src="${product.image.file}" alt="{{ default_alt_tag }}"></a>
+                                <ul class="sfi-tag-list">${this.listData(product.tags, 'tags')}</ul>
                                 <div class="sfi-img-content sfi-data-content">
                                     <p class="text-capitalize">${Translator.trans('available_colors', null, 'messages', LOCALE)}:</p>
-                                    <ul class="sfi-data-color">${this.productColors(data.product_colors[product.id])}</ul>
+                                    <ul class="sfi-data-color">${this.productColors(product.colors)}</ul>
                                     <p class="text-capitalize">${Translator.trans('available_sizes', null, 'messages', LOCALE)}:</p>
-                                    <ul>${this.listData(data.product_sizes[product.id])}</ul>
+                                    <ul>${this.listData(product.sizes, 'sizes')}</ul>
                                 </div>
                             </div>
                             <div class="sfi-content">
@@ -69,6 +69,11 @@ class ShopPageDom {
                 const link = AppHelperService.generateLocalizedUrl('site.trendy_page', {'searchData': `${tagKey}/${data[i].slug}`})
 
                 html += `<li><a href="${link}">${data[i].label}</a></li>`;
+
+                continue;
+            }
+            if (type === 'sizes') {
+                html += `<li><a href="#">${data[i].size}</a></li>`;
 
                 continue;
             }

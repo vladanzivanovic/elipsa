@@ -45,8 +45,8 @@ final class ImageView
 
         return [
             'id' => $image->getId(),
-            'file_name' => $image->getName(),
-            'is_main' => $image->getIsMain(),
+            'fileName' => $image->getName(),
+            'isMain' => $image->getIsMain(),
             'file' => $link,
         ];
     }

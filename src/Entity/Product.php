@@ -94,6 +94,11 @@ class Product
      */
     private Collection $youtubes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="product")
+     */
+    private Collection $orderProducts;
+
     public function __construct()
     {
         $this->productTranslations = new ArrayCollection();
@@ -103,6 +108,7 @@ class Product
         $this->productHasImages = new ArrayCollection();
         $this->productCleanings = new ArrayCollection();
         $this->youtubes = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -486,5 +492,10 @@ class Product
         }
 
         return $colors;
+    }
+
+    public function getOrderProducts(): Collection
+    {
+        return $this->orderProducts;
     }
 }

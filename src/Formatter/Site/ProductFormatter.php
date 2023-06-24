@@ -16,13 +16,11 @@ use App\View\TagView;
 use App\View\YoutubeView;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ProductPageFormatter
+final class ProductFormatter
 {
     use FormatterTrait;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+
+    private RouterInterface $router;
 
     private ProductView $productView;
 
@@ -74,16 +72,37 @@ final class ProductPageFormatter
         $productView = $this->productView->singlePageView($product, $locale);
 
         $productView['categories'] = $this->getCategories($product, $locale);
-        $productView['images'] = $this->getImages($product);
+        $productView['media']['images'] = $this->getImages($product);
         $productView['colors'] = $this->getColors($product);
         $productView['sizes'] = $this->getSizes($product);
         $productView['cleaningIcons'] = $this->getCleaningIcons($product);
-        $productView['youtubes'] = $this->getYoutubes($product);
+        $productView['media']['youtubes'] = $this->getYoutubes($product);
 
         return
             ['payload' => $productView] +
-            ['relatedProducts' => $this->getRelatedProducts($data['related_products'], $locale)]
+            ['relatedProducts' => $this->getProducts($data['related_products'], $locale)]
         ;
+    }
+
+    /**
+     * @param array<int, Product> $relatedProducts
+     * @return array<int, mixed>
+     */
+    public function getProducts(array $relatedProducts, string $locale): array
+    {
+        $products = [];
+
+        foreach ($relatedProducts as $relatedProduct) {
+            $product = $this->productView->gridView($relatedProduct, $locale);
+            $product['colors'] = $this->getColors($relatedProduct);
+            $product['sizes'] = $this->getSizes($relatedProduct);
+            $product['tags'] = $this->getTags($relatedProduct, $locale);
+            $product['image'] = $this->imageView->view($relatedProduct->getMainImage(), 'product', 'list_thumb');
+
+            $products[] = $product;
+        }
+
+        return $products;
     }
 
     private function getImages(Product $product): array
@@ -158,27 +177,6 @@ final class ProductPageFormatter
         }
 
         return $formattedTags;
-    }
-
-    /**
-     * @param array<int, Product> $relatedProducts
-     * @return array<int, mixed>
-     */
-    private function getRelatedProducts(array $relatedProducts, string $locale): array
-    {
-        $products = [];
-
-        foreach ($relatedProducts as $relatedProduct) {
-            $product = $this->productView->gridView($relatedProduct, $locale);
-            $product['colors'] = $this->getColors($relatedProduct);
-            $product['sizes'] = $this->getSizes($relatedProduct);
-            $product['tags'] = $this->getTags($relatedProduct, $locale);
-            $product['image'] = $this->imageView->view($relatedProduct->getMainImage(), 'product', 'list_thumb');
-
-            $products[] = $product;
-        }
-
-        return $products;
     }
 
     private function getYoutubes(Product $product): array

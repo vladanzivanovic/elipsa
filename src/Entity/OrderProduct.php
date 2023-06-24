@@ -58,7 +58,7 @@ class OrderProduct
     private $orderProductTranslations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderProducts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;

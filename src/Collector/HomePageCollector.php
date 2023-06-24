@@ -7,7 +7,6 @@ namespace App\Collector;
 use App\Entity\Banner;
 use App\Entity\User;
 use App\Repository\BannerRepository;
-use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
@@ -22,12 +21,6 @@ final class HomePageCollector
 
     private ProductRepository $productRepository;
 
-    private ProductColorRepository $colorRepository;
-
-    private ProductSizeRepository $sizeRepository;
-
-    private TagsRepository $tagsRepository;
-
     public function __construct(
         SliderRepository $sliderRepository,
         BannerRepository $bannerRepository,
@@ -39,9 +32,6 @@ final class HomePageCollector
         $this->sliderRepository = $sliderRepository;
         $this->bannerRepository = $bannerRepository;
         $this->productRepository = $productRepository;
-        $this->colorRepository = $colorRepository;
-        $this->sizeRepository = $sizeRepository;
-        $this->tagsRepository = $tagsRepository;
     }
 
     /**
@@ -51,21 +41,12 @@ final class HomePageCollector
     {
         $sliders = $this->sliderRepository->getRandomActiveSlider($locale);
         $banners = $this->bannerRepository->getActiveByType(Banner::TYPE_SPEED_LINKS);
-        $products = $this->productRepository->getForHomePage($locale, $user);
-
-        $productIds = array_column($products, 'id');
-
-        $productColors = $this->colorRepository->getByProducts($productIds, $locale);
-        $productSizes = $this->sizeRepository->getByProducts($productIds);
-        $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
+        $products = $this->productRepository->getForHomePage($user);
 
         return [
             'sliders'           => $sliders,
             'banners'           => $banners,
             'products'          => $products,
-            'product_colors'    => $productColors,
-            'product_sizes'     => $productSizes,
-            'product_tags'      => $productTags,
         ];
     }
 }

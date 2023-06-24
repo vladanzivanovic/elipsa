@@ -16,6 +16,7 @@ final class YoutubeView
             'YouTubeId' => $youtube->getYoutubeId(),
             'Title' => $youtube->getTitle(),
             'Thumbnails' => $youtube->getImages(),
+            'link' => 'https://www.youtube.com/watch?v='.$youtube->getYoutubeId()
         ];
     }
 }

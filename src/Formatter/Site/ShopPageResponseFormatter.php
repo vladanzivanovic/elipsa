@@ -12,34 +12,24 @@ final class ShopPageResponseFormatter
 {
     use FormatterTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private ParameterBagInterface $bag;
 
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private SessionInterface $session;
 
-    /**
-     * @param RouterInterface       $router
-     * @param ParameterBagInterface $bag
-     * @param SessionInterface      $session
-     */
+    private ProductFormatter $productFormatter;
+
     public function __construct(
         RouterInterface $router,
         ParameterBagInterface $bag,
-        SessionInterface $session
+        SessionInterface $session,
+        ProductFormatter $productFormatter
     ) {
         $this->router = $router;
         $this->bag = $bag;
         $this->session = $session;
+        $this->productFormatter = $productFormatter;
     }
 
     /**
@@ -49,19 +39,14 @@ final class ShopPageResponseFormatter
      *
      * @return array<string, array<array<string|int, mixed>>>
      */
-    public function formatResponse(array $data, string $locale, string $routeName): array
-    {
+    public function formatResponse(
+        array $data,
+        string $locale,
+        string $routeName
+    ): array {
         $sortMapping = $this->bag->get('shop')['sort_mapping'];
 
-        $data['products']['data'] = array_map(function ($product) {
-            $product['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $product['image'], 'filter' => 'list_thumb']);
-
-            return $product;
-        }, $data['products']['data']);
-
-        $data['product_colors'] = $this->formatColors($data['product_colors']);
-        $data['product_sizes'] = $this->formatSizes($data['product_sizes']);
-        $data['product_tags'] = $this->formatTags($data['product_tags']);
+        $data['products']['data'] = $this->productFormatter->getProducts($data['products']['data'], $locale);
 
         if (null !== $data['search_criteria'] && $data['search_criteria']->has('sort')) {
             $data['search_criteria']->set('sort', [array_search($data['search_criteria']->get('sort'), $sortMapping)]);

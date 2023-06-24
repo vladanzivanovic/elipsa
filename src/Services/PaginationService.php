@@ -86,7 +86,7 @@ class PaginationService
             ->setFirstResult($this->offset)
             ->setMaxResults($this->limit)
             ->getQuery()
-            ->getArrayResult();
+            ->getResult();
     }
 
     private function getPrevPage()

@@ -23,10 +23,12 @@ RUN apt-get install -y php-pear
 RUN apt-get install -y  libapache2-mod-php$PHP_VERSION
 RUN apt-get install -y php$PHP_VERSION-mysql
 RUN apt-get install -y php$PHP_VERSION-bcmath
-RUN apt-get install -y php7.4-json
+RUN apt-get install -y php$PHP_VERSION-json
 RUN apt-get install -y php$PHP_VERSION-cgi
 RUN apt-get install -y php$PHP_VERSION-xsl
 RUN apt-get install -y php$PHP_VERSION-gd
+
+RUN apt-get update -y
 RUN apt-get install -y php$PHP_VERSION-imagick
 RUN apt-get install -y php$PHP_VERSION-tidy
 RUN apt-get install -y php$PHP_VERSION-xmlrpc
@@ -37,6 +39,7 @@ RUN apt-get install -y php$PHP_VERSION-curl
 RUN apt-get install -y php$PHP_VERSION-mbstring
 RUN apt-get install -y php$PHP_VERSION-zip
 RUN apt-get install -y php$PHP_VERSION-intl
+RUN apt-get install -y php$PHP_VERSION-dev
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
@@ -56,10 +59,13 @@ RUN a2enmod headers
 RUN a2enmod expires
 RUN a2enmod http2
 
+RUN pecl install xdebug-3.1.6
+
 RUN usermod -u 501 www-data
 
 COPY 000-default.conf /etc/apache2/sites-available
 COPY custom.ini /etc/php/$PHP_VERSION/apache2/conf.d/custom.ini
+COPY 20-xdebug.ini /etc/php/$PHP_VERSION/apache2/conf.d/20-xdebug.ini
 
 RUN phpenmod intl
 

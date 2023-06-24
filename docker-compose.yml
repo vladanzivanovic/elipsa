@@ -10,6 +10,9 @@ services:
       - "./:/var/www/html:rw,cached"
     depends_on:
       - mysql
+    environment:
+      PHP_IDE_CONFIG: "serverName=local"
+      XDEBUG_SESSION: "PHPSTORM"
 
   mysql:
     image: mariadb:10

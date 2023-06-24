@@ -14,19 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class HomePageController extends AbstractController
 {
-    /**
-     * @var HomePageCollector
-     */
-    private $pageCollectors;
-    /**
-     * @var HomePageResponseFormatter
-     */
-    private $responseFormatter;
+    private HomePageCollector $pageCollectors;
 
-    /**
-     * @param HomePageCollector         $pageCollectors
-     * @param HomePageResponseFormatter $responseFormatter
-     */
+    private HomePageResponseFormatter $responseFormatter;
+
     public function __construct(
         HomePageCollector $pageCollectors,
         HomePageResponseFormatter $responseFormatter
@@ -46,7 +37,7 @@ final class HomePageController extends AbstractController
     public function index(Request $request): array
     {
         $locale = $request->getLocale();
-        $data = $this->pageCollectors->collect($locale, $this->getUser()  );
+        $data = $this->pageCollectors->collect($locale, $this->getUser());
 
         return $this->responseFormatter->formatResponse($data, $locale);
     }

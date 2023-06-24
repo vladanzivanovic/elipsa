@@ -4,7 +4,7 @@
 {% block title %}{{ payload.title }} - Elipsa{% endblock %}
 
 {% block ogTitle %}{{ payload.title }}{% endblock %}
-{% block ogImage %}{{ app.request.schemeAndHttpHost ~ payload.images[0].file }}{% endblock %}
+{% block ogImage %}{{ app.request.schemeAndHttpHost ~ payload.media.images[0].file }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
 {% block ogDescription %}{{ payload.description }}{% endblock %}
 
@@ -21,25 +21,27 @@
                 <div class="col-md-6 col-xs-12">
                     <div class="product-tab-area">
                         <div class="clearfix">
-                            <div class="product-tab-content tab-content">
-                                {% for image in payload.images %}
-                                    <div id="images-{{ image.file_name }}" data-color="{{ image.color_id }}" class="large-image tab-pane fade {{ loop.first ? 'in active' : '' }}">
-                                        <a href="{{ image.file }}" data-fancybox="images-{{ image.color_id }}">
-                                            <i class="fa fa-search-plus"></i>
-                                            <img src="{{ image.file }}" alt="{{ default_alt_tag }}">
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            <div class="product-tab-menu">
-                                <ul class="product-tab">
-                                    {% for image in payload.images %}
-                                        <li class="thumb-image {{ loop.first ? 'active' : '' }}" data-color="{{ image.color_id }}" data-image="{{ image.file_name }}">
-                                            <a data-toggle="tab" href="#images-{{ image.file_name }}"><img src="{{ image.file_thumb }}" alt="{{ default_alt_tag }}"></a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                            <div class="photo-gallery style1 fotorama" data-allowfullscreen="native" data-nav="thumbs" data-auto="false"></div>
+
+{#                            <div class="product-tab-content tab-content">#}
+{#                                {% for image in payload.images %}#}
+{#                                    <div id="images-{{ image.file_name }}" data-color="{{ image.color_id }}" class="large-image tab-pane fade {{ loop.first ? 'in active' : '' }}">#}
+{#                                        <a href="{{ image.file }}" data-fancybox="images-{{ image.color_id }}">#}
+{#                                            <i class="fa fa-search-plus"></i>#}
+{#                                            <img src="{{ image.file }}" alt="{{ default_alt_tag }}">#}
+{#                                        </a>#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                            <div class="product-tab-menu">#}
+{#                                <ul class="product-tab">#}
+{#                                    {% for image in payload.images %}#}
+{#                                        <li class="thumb-image {{ loop.first ? 'active' : '' }}" data-color="{{ image.color_id }}" data-image="{{ image.file_name }}">#}
+{#                                            <a data-toggle="tab" href="#images-{{ image.file_name }}"><img src="{{ image.file_thumb }}" alt="{{ default_alt_tag }}"></a>#}
+{#                                        </li>#}
+{#                                    {% endfor %}#}
+{#                                </ul>#}
+{#                            </div>#}
                         </div>
                     </div>
                 </div>
@@ -116,9 +118,11 @@
                                 <li><a href="#"><i class="fa fa-rss"></i></a></li>
                             </ul>
                         </div>
-                        <div class="spd-youtube-btn">
-                            <button type="button" class="col-xs-12 col-lg-6" data-toggle="modal" data-target="#youtubeModal">{{ 'youtube.link_button' | trans }}</button>
-                        </div>
+{#                        {% if payload.youtubes | length > 0 %}#}
+{#                            <div class="spd-youtube-btn">#}
+{#                                <button type="button" class="col-xs-12 col-lg-6" data-toggle="modal" data-target="#youtubeModal">{{ 'youtube.link_button' | trans }}</button>#}
+{#                            </div>#}
+{#                        {% endif %}#}
                     </div>
                 </div>
             </div>
@@ -185,8 +189,6 @@
         </div>
     </div>
     <!-- related-product-area-end -->
-
-    {{ include('Site/Components/popupYoutube.html.twig') }}
 {% endblock %}
 
 {% block pageStyleSheets %}
@@ -195,5 +197,27 @@
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const SLUG = '{{ app.request.attributes.get('slug') }}';
+        const MEDIA = JSON.parse('{{ payload.media | json_encode() | raw }}');
+
+        {#window.slideImages = [];#}
+        {#window.isMobile = {{ is_mobile() ? 1 : 0 }};#}
+
+        {#{% for image in payload.media.images %}#}
+        {#    MEDIA.push({#}
+        {#        img: '{{ image.file }}',#}
+        {#        thumb: '{{ image.file_thumb }}',#}
+        {#        full: '{{ image.file }}',#}
+        {#        color: '{{ image.color_id }}',#}
+        {#    });#}
+        {#{% endfor %}#}
+
+        {#{% for youtube in payload.media.youtubes %}#}
+        {#    MEDIA.push({#}
+        {#        video: '{{ youtube.link }}',#}
+        {#        img: '{{ youtube.Thumbnails.standard.url }}',#}
+        {#        full: '{{ youtube.Thumbnails.maxres.url }}',#}
+        {#        thumb: '{{ youtube.Thumbnails.default.url }}',#}
+        {#    });#}
+        {#{% endfor %}#}
     </script>
 {% endblock %}

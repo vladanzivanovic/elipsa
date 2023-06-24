@@ -19,14 +19,18 @@ final class HomePageResponseFormatter
 
     private BannerView $bannerView;
 
+    private ProductFormatter $productFormatter;
+
     public function __construct(
         RouterInterface $router,
         SliderView $sliderView,
-        BannerView $bannerView
+        BannerView $bannerView,
+        ProductFormatter $productFormatter
     ) {
         $this->router = $router;
         $this->sliderView = $sliderView;
         $this->bannerView = $bannerView;
+        $this->productFormatter = $productFormatter;
     }
 
     public function formatResponse(array $data, string $locale): array
@@ -37,11 +41,9 @@ final class HomePageResponseFormatter
         }, $data['sliders']);
 
         $data['banners'] = $this->formatBanners($data['banners'], $locale);
-        $data['products'] = $this->formatProducts($data['products']);
-
-        $data['product_colors'] = $this->formatColors($data['product_colors']);
-        $data['product_sizes'] = $this->formatSizes($data['product_sizes']);
-        $data['product_tags'] = $this->formatTags($data['product_tags']);
+        $data['products'] = $this->formatProducts(
+            $this->productFormatter->getProducts($data['products'], $locale)
+        );
 
         return $data;
     }
@@ -72,8 +74,6 @@ final class HomePageResponseFormatter
         $formattedProducts = [];
 
         foreach ($products as $product){
-            $product['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $product['image'], 'filter' => 'list_thumb']);
-
             $formattedProducts[$product['show_home_page']][] = $product;
         }
 

@@ -7,7 +7,6 @@ import YoutubeService from "../Services/YouTubeService";
 import productEditMapper from "../Mapper/ProductEditMapper";
 require ('select2/dist/js/select2.full.min');
 
-
 class ProductEditController {
     #mapper;
     #dropZone;

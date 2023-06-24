@@ -6,7 +6,7 @@ namespace App\Controller\Site;
 
 use App\Collector\ProductPageCollector;
 use App\Entity\ProductTranslation;
-use App\Formatter\Site\ProductPageFormatter;
+use App\Formatter\Site\ProductFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +15,11 @@ final class ProductPageController extends AbstractController
 {
     private ProductPageCollector $pageCollector;
 
-    private ProductPageFormatter $pageFormatter;
+    private ProductFormatter $pageFormatter;
 
     public function __construct(
         ProductPageCollector $pageCollector,
-        ProductPageFormatter $pageFormatter
+        ProductFormatter $pageFormatter
     ) {
         $this->pageCollector = $pageCollector;
         $this->pageFormatter = $pageFormatter;
