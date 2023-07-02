@@ -1,8 +1,12 @@
 import shopPageDom from "../Dom/ShopPageDom";
+import HeaderMapper from "../Mapper/HeaderMapper";
 
 class ShopPageRouting {
+    #headerMapper;
+
     constructor() {
         this.dom = shopPageDom;
+        this.#headerMapper = HeaderMapper;
         this.params = {};
 
         if (Object.keys(SEARCH_CRITERIA).length > 0) {
@@ -29,6 +33,10 @@ class ShopPageRouting {
 
             if (this.params[paramName].length === 0) {
                 delete this.params[paramName];
+            }
+
+            if (paramName === 'search') {
+                $(this.#headerMapper.searchInput).val('');
             }
 
             return;

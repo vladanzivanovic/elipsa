@@ -125,39 +125,6 @@ class CoreController {
             autoAcceptCookiePolicy : false,
             htmlMarkup : null
         });
-
-        $(document).on('click touchend', this.mapper.searchOpener, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (!$(this.mapper.searchArea).hasClass('show')) {
-                $(this.mapper.searchArea).fadeIn(500);
-                $(this.mapper.searchArea).addClass('show');
-            }
-        })
-
-        $(document).on('click touchend', this.mapper.searchClose, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if ($(this.mapper.searchArea).hasClass('show')) {
-                $(this.mapper.searchArea).fadeOut(500);
-                $(this.mapper.searchArea).removeClass('show');
-            }
-        })
-
-        $(document).on('submit', this.mapper.searchForm, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            location.href = Routing.generate(`site.shop_page.${LOCALE}`) +
-                `/1/${Translator.trans(
-                    'search', 
-                    null, 
-                    'messages', 
-                    LOCALE
-                )}/${$(this.mapper.searchInput).val()}`;
-        })
     }
 }
 

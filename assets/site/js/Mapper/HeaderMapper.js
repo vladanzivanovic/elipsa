@@ -11,6 +11,11 @@ class HeaderMapper {
             this.resetPwdFormWrapper = '#reset_password_form_wrapper';
             this.resetPasswordSubmitBtn = '#reset_btn';
             this.resetForm = '#reset_form';
+            this.searchOpener = '.search-opener';
+            this.searchClose = '.search-close';
+            this.searchArea = '.search-area';
+            this.searchInput = '#search-input';
+            this.searchForm = '.search-form';
 
             HeaderMapper.instance = this;
         }
