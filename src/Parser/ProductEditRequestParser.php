@@ -10,9 +10,11 @@ use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
 use App\Entity\ProductTranslation;
+use App\Entity\Tags;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\ProductTranslationRepository;
+use App\Repository\TagsRepository;
 use App\Services\ProductImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -35,6 +37,8 @@ final class ProductEditRequestParser
 
     private array $locales;
 
+    private TagsRepository $tagsRepository;
+
     public function __construct(
         ParameterBagInterface $parameterBag,
         ProductTranslationRepository $translationRepository,
@@ -42,6 +46,7 @@ final class ProductEditRequestParser
         ProductSizeRepository $sizeRepository,
         ProductImageService $imageService,
         YouTubeParser $youTubeParser,
+        TagsRepository $tagsRepository,
         string $locales
     ) {
         $this->parameterBag = $parameterBag;
@@ -51,6 +56,7 @@ final class ProductEditRequestParser
         $this->imageService = $imageService;
         $this->youTubeParser = $youTubeParser;
         $this->locales = explode('|', $locales);
+        $this->tagsRepository = $tagsRepository;
     }
 
     public function parse(ParameterBag $bag, ?Product $product = null): Product
@@ -64,6 +70,7 @@ final class ProductEditRequestParser
         $product->setDiscount($bag->getInt('discount'));
         $product->setPrice($bag->getInt('price'));
         $product->setShowHomePage((int) $bag->get('show_home_page'));
+        $product->setSold($bag->getBoolean('sold'));
 
         $this->setLocales($bag, $product);
 
@@ -92,7 +99,7 @@ final class ProductEditRequestParser
             $transCollection = $bag->get($locale);
             $trans = new ProductTranslation();
 
-            if (!is_null($product->getId())) {
+            if (null !== $product->getId()) {
                 $trans = $this->translationRepository->findOneBy(['product' => $product, 'locale' => $locale]);
             }
 
@@ -124,12 +131,14 @@ final class ProductEditRequestParser
         }
     }
 
-    private function setTags(Product $product, array $tags): void
+    private function setTags(Product $product, array $tagIds): void
     {
         if (!is_null($product->getId())) {
             $hasTags = $product->getProductHasTags();
             $hasTags->clear();
         }
+
+        $tags = $this->tagsRepository->findBy(['id' => $tagIds]);
 
         foreach ($tags as $tag) {
             $hasTags = new ProductHasTags();

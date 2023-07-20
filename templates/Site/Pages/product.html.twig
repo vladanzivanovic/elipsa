@@ -22,26 +22,6 @@
                     <div class="product-tab-area">
                         <div class="clearfix">
                             <div class="photo-gallery style1 fotorama" data-allowfullscreen="native" data-nav="thumbs" data-auto="false"></div>
-
-{#                            <div class="product-tab-content tab-content">#}
-{#                                {% for image in payload.images %}#}
-{#                                    <div id="images-{{ image.file_name }}" data-color="{{ image.color_id }}" class="large-image tab-pane fade {{ loop.first ? 'in active' : '' }}">#}
-{#                                        <a href="{{ image.file }}" data-fancybox="images-{{ image.color_id }}">#}
-{#                                            <i class="fa fa-search-plus"></i>#}
-{#                                            <img src="{{ image.file }}" alt="{{ default_alt_tag }}">#}
-{#                                        </a>#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-{#                            </div>#}
-{#                            <div class="product-tab-menu">#}
-{#                                <ul class="product-tab">#}
-{#                                    {% for image in payload.images %}#}
-{#                                        <li class="thumb-image {{ loop.first ? 'active' : '' }}" data-color="{{ image.color_id }}" data-image="{{ image.file_name }}">#}
-{#                                            <a data-toggle="tab" href="#images-{{ image.file_name }}"><img src="{{ image.file_thumb }}" alt="{{ default_alt_tag }}"></a>#}
-{#                                        </li>#}
-{#                                    {% endfor %}#}
-{#                                </ul>#}
-{#                            </div>#}
                         </div>
                     </div>
                 </div>
@@ -99,16 +79,18 @@
                                 </ul>
                             </div>
                         </div>
-{#                        <div class="spd-meta">#}
-{#                            <div class="spd-meta-tags">#}
-{#                                <span class="letter-capitalize">{{ 'tags' | trans }}:</span>#}
-{#                                <ul>#}
-{#                                    {% for tag in tags %}#}
-{#                                        <li><a href="#">{{ tag.label }}</a></li>#}
-{#                                    {% endfor %}#}
-{#                                </ul>#}
-{#                            </div>#}
-{#                        </div>#}
+                        <div class="spd-meta">
+                            <div class="spd-meta-tags">
+                                <span class="letter-capitalize">{{ 'tags' | trans }}:</span>
+                                <ul>
+                                    {% for tag in payload.tags %}
+                                        <li>
+                                            <a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}" target="_blank">{{ tag[locale].title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                         <div class="spd-share">
                             <span class="letter-capitalize">{{ 'share_link' | trans }}:</span>
                             <ul>

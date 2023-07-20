@@ -134,7 +134,7 @@ final class ShopPageCollector
         ];
 
         if (true === $isTrendyPage) {
-            $collection['tags'] = $this->tagsRepository->getForOptions(Tags::TYPE_PRODUCT, $locale);
+            $collection['tags'] = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_PRODUCT]);
         }
 
         return $collection;

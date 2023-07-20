@@ -6,87 +6,72 @@ namespace App\View;
 
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
-use App\Repository\CategoryTranslationRepository;
-use App\Repository\ImageRepository;
-use App\Repository\ProductCleaningRepository;
-use App\Repository\ProductHasImagesRepository;
-use App\Repository\ProductSizeRepository;
-use App\Repository\TagsRepository;
-use Symfony\Component\Routing\RouterInterface;
+use App\Factory\NumberFormatterFactory;
 
 final class ProductView
 {
     private array $locales;
-    private CategoryTranslationRepository $categoryTranslationRepository;
-    private TagsRepository $tagsRepository;
-    private ProductSizeRepository $sizeRepository;
-    private ProductHasImagesRepository $hasImagesRepository;
-    private ImageRepository $imageRepository;
-    private RouterInterface $router;
-    private ProductCleaningRepository $cleaningRepository;
 
-    private ImageView $imageView;
+    private PriceView $priceView;
 
     public function __construct(
-        string $locales,
-        CategoryTranslationRepository $categoryTranslationRepository,
-        TagsRepository $tagsRepository,
-        ProductSizeRepository $sizeRepository,
-        ProductHasImagesRepository $hasImagesRepository,
-        ImageRepository $imageRepository,
-        RouterInterface $router,
-        ProductCleaningRepository $cleaningRepository,
-        ImageView $imageView
+        PriceView $priceView,
+        string $locales
     ) {
         $this->locales = explode('|', $locales);
-        $this->categoryTranslationRepository = $categoryTranslationRepository;
-        $this->tagsRepository = $tagsRepository;
-        $this->sizeRepository = $sizeRepository;
-        $this->hasImagesRepository = $hasImagesRepository;
-        $this->imageRepository = $imageRepository;
-        $this->router = $router;
-        $this->cleaningRepository = $cleaningRepository;
-        $this->imageView = $imageView;
+        $this->priceView = $priceView;
     }
 
     public function editView(Product $product): array
     {
-        $view = [
-            'show_home_page' => $product->getShowHomePage(),
-        ];
+        $translations = [];
 
         foreach ($this->locales as $locale) {
-            $view[$locale] = $this->getTranslationValues($product->getByLocale($locale));
+            $translations[$locale] = $this->getTranslationValues($product->getByLocale($locale));
         }
 
-        return $view + $this->view($product);
+        return $translations + $this->view($product, 'rs');
     }
 
     public function singlePageView(Product $product, string $locale): array
     {
-        $view = [];
-
         $translationView = $this->getTranslationValues($product->getByLocale($locale));
 
-        return $view + $translationView + $this->view($product);
+        return $translationView + $this->view($product, $locale);
     }
 
     public function gridView(Product $product, string $locale): array
     {
         $translationView = $this->getTranslationValues($product->getByLocale($locale));
 
-        return $translationView + $this->view($product);
+        return $translationView + $this->view($product, $locale);
     }
 
-    public function view(Product $product): array
+    public function view(Product $product, string $locale): array
     {
-        return [
+        $discount = $product->getDiscount();
+        $price = $product->getPrice();
+
+        $view = [
             'id' => $product->getId(),
             'code' => $product->getCode(),
-            'price' => $product->getPrice(),
-            'discount' => $product->getDiscount(),
+            'price' => $this->priceView->view($price, $locale),
             'show_home_page' => $product->getShowHomePage(),
+            'is_sold' => $product->isSold(),
+            'discount' => null,
         ];
+
+        if (0 < $discount) {
+            $percentage = (int) round(abs((100 - ($discount/$price) * 100)));
+
+            $view['discount'] = [
+                'price' => $this->priceView->view($discount, $locale),
+                'percentage' => 100 !== $percentage ? $percentage : 0,
+                'saving' => $this->priceView->view($discount - $price, $locale),
+            ];
+        }
+
+        return $view;
     }
 
     private function getTranslationValues(ProductTranslation $productTranslation): array

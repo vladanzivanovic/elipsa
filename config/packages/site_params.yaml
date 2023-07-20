@@ -111,10 +111,16 @@ parameters:
       name: Srpski
       code: rs
       currencyCode: RSD
+      locale: sr_RS
     en:
       name: Engleski
       code: en
-      currencyCode: EUR
+      currencyCode: RSD
+      locale: en_AT
+#    ba:
+#      name: Bosanski
+#      code: ba
+#      currencyCode: BAM
   site_info_texts:
     cookie_policy:
       title: navi.cookie_policy

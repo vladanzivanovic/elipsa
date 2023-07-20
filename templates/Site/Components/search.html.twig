@@ -1,6 +1,6 @@
 {% set search = '' %}
 
-{% if search_criteria.has('search') == true %}
+{% if search_criteria is defined and search_criteria is not null and search_criteria.has('search') == true %}
     {% set search = search_criteria.get('search')[0] %}
 {% endif %}
 

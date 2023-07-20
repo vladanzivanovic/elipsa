@@ -19,6 +19,10 @@ class TagEditValidator {
             },
         };
 
+        for(const [locale, data] of Object.entries(LANGUAGES)) {
+            options.rules[`${locale}[title]`] = 'required';
+        }
+
         if (ROUTE_SUB_NAME === 'product') {
             options.rules.product_type = {isSelectBoxEmpty: true};
         }

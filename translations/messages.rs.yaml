@@ -89,6 +89,8 @@ from_lowest_price: najjeftinije prvo
 from_highest_price: najskuplje prvo
 on_sale: na rasprodaji
 first_new: najnoviji
+sold: Rasporodato
+saving: Ušteda
 
 select.color: izaberite boju
 select.size: izberite veličinu

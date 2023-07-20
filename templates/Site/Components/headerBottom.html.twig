@@ -45,7 +45,7 @@
                                             <div class="mega-menu-part">
                                                 <div class="mega-menu-content">
                                                     {% for tag in navigationTags %}
-                                                        <a class="mega-menu-title" href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag.slug }) }}">{{ tag.label }}</a>
+                                                        <a class="mega-menu-title" href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}">{{ tag[locale].title }}</a>
                                                     {% endfor %}
                                                 </div>
                                                 <div class="mega-menu-img">
@@ -64,7 +64,7 @@
                                 <div class="menu-dropdown with-img">
                                     <ul>
                                         {% for tag in navigationTags %}
-                                            <li><a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag.slug }) }}">{{ tag.label }}</a></li>
+                                            <li><a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}">{{ tag[locale].title }}</a></li>
                                         {% endfor %}
                                     </ul>
                                     {% if seasonBanner is not null %}
@@ -154,7 +154,7 @@
                             <li><a href="{{ path('site.trendy_page') }}">{{ 'navi.trends' | trans }}</a>
                                 <ul>
                                     {% for tag in navigationTags %}
-                                        <li><a class="mega-menu-title" href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag.slug }) }}">{{ tag.label }}</a>
+                                        <li><a class="mega-menu-title" href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}">{{ tag[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>

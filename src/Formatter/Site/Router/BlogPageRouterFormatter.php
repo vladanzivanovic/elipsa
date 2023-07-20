@@ -8,14 +8,8 @@ use App\Repository\BlogTranslationRepository;
 
 final class BlogPageRouterFormatter
 {
-    /**
-     * @var BlogTranslationRepository
-     */
-    private $blogTranslationRepository;
+    private BlogTranslationRepository $blogTranslationRepository;
 
-    /**
-     * @param BlogTranslationRepository     $blogTranslationRepository
-     */
     public function __construct(
         BlogTranslationRepository $blogTranslationRepository
     ) {
@@ -28,12 +22,12 @@ final class BlogPageRouterFormatter
      *
      * @return string
      */
-    public function localeFormatter(string $slug, string $locale): string
+    public function localeFormatter(string $slug, string $locale): ?string
     {
         $fromTrans = $this->blogTranslationRepository->findOneBy(['alias' => $slug]);
 
         $toTrans = $fromTrans->getBlog()->getBlogTranslationByLocale($locale);
 
-        return $toTrans->getAlias();
+        return null !== $toTrans ? $toTrans->getAlias() : null;
     }
 }

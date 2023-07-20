@@ -39,8 +39,8 @@ final class TrendyPageController extends AbstractController
      * @Template("Site/Pages/trendy.html.twig")
      *
      * @param Request $request
-     * @param int     $page
-     * @param string  $searchData
+     * @param int $page
+     * @param string|null $searchData
      *
      * @return array
      */

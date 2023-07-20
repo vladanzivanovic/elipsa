@@ -65,22 +65,12 @@ class CatalogueRepository extends ExtendedEntityRepository
     public function getCatalogPage(string $locale): array
     {
         $query = $this->createQueryBuilder('c')
-            ->select(
-                'c.id',
-                'ct.slug',
-                'ct.title',
-                'i.name as imageName',
-            )
             ->innerJoin('c.catalogueTranslations', 'ct')
-            ->innerJoin('c.catalogueHasImages', 'chi')
-            ->innerJoin('chi.image', 'i')
             ->where('ct.locale = :locale')
-            ->andWhere('i.isMain = :isMain')
             ->andWhere('c.status = :activeStatus')
             ->setParameter('locale', $locale)
-            ->setParameter('isMain', true)
             ->setParameter('activeStatus', Catalogue::STATUS_ACTIVE);
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 }

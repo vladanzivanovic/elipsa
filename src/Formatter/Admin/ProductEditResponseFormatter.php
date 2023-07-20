@@ -29,6 +29,8 @@ final class ProductEditResponseFormatter
 
     private YoutubeView $youtubeView;
 
+    private TagOptionsFormatter $tagOptionsFormatter;
+
     public function __construct(
         CategoryTranslationRepository $categoryTranslationRepository,
         TagsRepository $tagsRepository,
@@ -36,7 +38,8 @@ final class ProductEditResponseFormatter
         ProductCleaningRepository $cleaningRepository,
         ProductView $productView,
         ImageView $imageView,
-        YoutubeView $youtubeView
+        YoutubeView $youtubeView,
+        TagOptionsFormatter $tagOptionsFormatter
     ) {
         $this->categoryTranslationRepository = $categoryTranslationRepository;
         $this->tagsRepository = $tagsRepository;
@@ -45,6 +48,7 @@ final class ProductEditResponseFormatter
         $this->productView = $productView;
         $this->imageView = $imageView;
         $this->youtubeView = $youtubeView;
+        $this->tagOptionsFormatter = $tagOptionsFormatter;
     }
 
     /**
@@ -52,19 +56,37 @@ final class ProductEditResponseFormatter
      *
      * @return array
      */
-    public function formatResponse(Product $product): array
+    public function formatResponse(array $options, ?Product $product = null): array
     {
-        $response = [
-            'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
-            'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'mainSlug'),
-            'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
-            'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
+        $payload = [];
+
+        if (null !== $product) {
+            $response = [
+                'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
+                'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'id'),
+                'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
+                'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
+            ];
+
+            $payload = $response +
+                $this->productView->editView($product) +
+                $this->getImages($product) +
+                $this->getYoutube($product);
+        }
+
+        $formattedOptions = [
+            'tags' => $this->tagOptionsFormatter->formatTagOptions($options['tags']),
+            'categories' => $options['categories'],
+            'sizes' => $options['sizes'],
+            'colors' => $options['colors'],
         ];
 
-        return ['payload' => $response +
-            $this->productView->editView($product) +
-            $this->getImages($product) +
-            $this->getYoutube($product)];
+
+
+        return [
+            'payload' => $payload,
+            'options' => $formattedOptions,
+        ];
     }
 
     private function getImages(Product $product): array
@@ -88,4 +110,6 @@ final class ProductEditResponseFormatter
 
         return ['youtubes' => $youtubes];
     }
+
+
 }

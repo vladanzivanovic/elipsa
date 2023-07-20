@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
+use App\View\TagView;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -20,16 +21,20 @@ final class ShopPageResponseFormatter
 
     private ProductFormatter $productFormatter;
 
+    private TagView $tagView;
+
     public function __construct(
         RouterInterface $router,
         ParameterBagInterface $bag,
         SessionInterface $session,
-        ProductFormatter $productFormatter
+        ProductFormatter $productFormatter,
+        TagView $tagView
     ) {
         $this->router = $router;
         $this->bag = $bag;
         $this->session = $session;
         $this->productFormatter = $productFormatter;
+        $this->tagView = $tagView;
     }
 
     /**
@@ -53,6 +58,16 @@ final class ShopPageResponseFormatter
         }
 
         $data['localized_url'] = $this->router->generate($routeName, ['_locale' => $locale === 'rs' ? 'en' : 'rs', 'searchData' => $data['localized_url']]);
+
+        if (isset($data['tags'])) {
+            $tagList = [];
+
+            foreach ($data['tags'] as $tag) {
+                $tagList[] = $this->tagView->view($tag);
+            }
+
+            $data['tags'] = $tagList;
+        }
 
         return $data;
     }

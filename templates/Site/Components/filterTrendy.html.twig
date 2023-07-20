@@ -5,7 +5,7 @@
         <h4 class="sidebar-title">{{ 'tags' | trans }}</h4>
         {% for tag in tags %}
             <div class="sidebar-box">
-                <button class="sidebar-category-button category-btn {{ search.tags is defined and tag.slug in search.tags ? 'active' : '' }}" data-search-name="tags" data-search="{{ tag.slug }}">{{ tag.title }}</button>
+                <button class="sidebar-category-button category-btn {{ search.tags is defined and tag[locale].slug in search.tags ? 'active' : '' }}" data-search-name="tags" data-search="{{ tag[locale].slug }}">{{ tag[locale].title }}</button>
             </div>
         {% endfor %}
     </div>

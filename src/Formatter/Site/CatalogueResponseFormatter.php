@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
-use Symfony\Component\Routing\RouterInterface;
+use App\Entity\Catalogue;
+use App\View\CatalogView;
 
 final class CatalogueResponseFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private CatalogView $catalogView;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(
-        RouterInterface $router
+        CatalogView $catalogView
     ) {
-
-        $this->router = $router;
+        $this->catalogView = $catalogView;
     }
-    public function formatResponse(array $catalogues)
-    {
-        return array_map(function ($catalog) {
-            $catalog['image_link'] = $this->router->generate('app.image_show', ['entity' => 'catalog', 'name' => $catalog['imageName'], 'filter' => 'list_thumb']);
 
-            return $catalog;
-        }, $catalogues);
+    /**
+     * @param array<int, Catalogue> $catalogues
+     * @param string $locale
+     * @return array
+     */
+    public function formatResponse(array $catalogues, string $locale): array
+    {
+        $catalogListView = [];
+
+        foreach ($catalogues as $catalogue) {
+            $catalogListView[] = $this->catalogView->view($catalogue, $locale);
+        }
+
+        return ['catalogues' => $catalogListView];
     }
 }

@@ -36,19 +36,14 @@ trait FormatterTrait
         return $formattedProduct;
     }
 
-    /**
-     * @param array $productTags
-     *
-     * @return array
-     */
-    private function formatTags(array $productTags): array
+    private function formatTags(array $tags): array
     {
-        $formattedProduct = [];
+        $tagList = [];
 
-        foreach ($productTags as $productTag) {
-            $formattedProduct[$productTag['productId']][] = $productTag;
+        foreach ($tags as $tag) {
+            $tagList[] = $this->tagView->view($tag);
         }
 
-        return $formattedProduct;
+        return $tagList;
     }
 }

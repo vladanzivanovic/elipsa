@@ -52,7 +52,7 @@ final class TagEditCollector
 
             $locales = explode('|', $this->locales);
 
-            $data['tags'] = $this->tagsRepository->getByMainSlugAndLocales($tag->getMainSlug(), $locales, $relatedType);
+            $data['tag'] = $tag;
         }
 
         return $data;

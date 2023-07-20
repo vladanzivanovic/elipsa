@@ -3,14 +3,16 @@
         <div class="single-featured-item">
             <div class="sfi-img">
                 <a href="{{ path('site.product_page', {'slug': product.slug}) }}"><img src="{{ product.image.file }}" alt="{{ default_alt_tag }}"></a>
-                <ul class="sfi-tag-list">
-                    {% if product.tags | length > 0 %}
-                        {% set tagKey = 'tags' | trans %}
-                        {% for tag in product.tags  %}
-                            <li><a href="{{ path('site.trendy_page', {'searchData': tagKey ~ '/'~ tag.slug}) }}">{{ tag.label }}</a></li>
-                        {% endfor %}
-                    {% endif %}
-                </ul>
+                {% if product.is_sold == true %}
+                <div class="product-sold">
+                    <span>{{ 'sold' | trans }}</span>
+                </div>
+                {% endif %}
+                {% if product.discount is not null %}
+                <div class="sfi-img-banner">
+                    <span>-{{ product.discount.percentage }} %</span>
+                </div>
+                {% endif %}
                 <div class="sfi-img-content sfi-data-content">
                     <p class="letter-capitalize">{{ 'available_colors' | trans }}:</p>
                     <ul class="sfi-data-color">
@@ -41,10 +43,20 @@
                     <a class="sfi-name" href="{{ path('site.product_page', {'slug': product.slug}) }}">{{ product.title }}</a>
                 </div>
                 <div class="sfi-price-rating">
-                    <p class="sfi-price text-uppercase"><span class="{{  product.discount > 0 ? 'discount-price' : '' }}">{{ product.discount > 0 ? product.discount | number_format(2) : product.price | number_format(2) }} RSD</span></p>
-                    {% if product.discount > 0 %}
-                        <p class="sfi-old-price">-{{ product.price | number_format(2) }} RSD</p>
+                    {% if product.discount is not null %}
+                        <p class="sfi-old-price">-{{ product.price.amount }} {{ product.price.currency }}</p>
+                        <div class="discount-price">
+                            <p class="sfi-price text-uppercase">
+                                <span>{{ product.discount.price.amount }} {{ product.price.currency }}</span>
+                            </p>
+                            <p class="price-saving">{{ 'saving' | trans }} {{ product.discount.saving.amount }} {{ product.discount.saving.currency }}</p>
+                        </div>
+                    {% else %}
+                        <p class="sfi-price text-uppercase">
+                            <span>{{ product.price.amount }} {{ product.price.currency }}</span>
+                        </p>
                     {% endif %}
+
                 </div>
             </div>
         </div>

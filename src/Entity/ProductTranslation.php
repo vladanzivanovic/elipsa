@@ -16,44 +16,44 @@ class ProductTranslation
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
+     * @Gedmo\Slug(fields={"title"}, updatable=true)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\Column(type="string", length=2)
      */
-    private $locale;
+    private string $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productTranslations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private Product $product;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $shortDescription;
+    private string $shortDescription;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $cleaning;
+    private string $cleaning;
 
     public function getId(): ?int
     {

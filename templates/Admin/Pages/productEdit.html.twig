@@ -68,19 +68,19 @@
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Kategorija', 'categories', 'categories[]', IS_EDIT ? payload['selectedCategories'] : '', categories, '', 'w-100', true) }}
+                                    {{ form.select('Kategorija', 'categories', 'categories[]', IS_EDIT ? payload['selectedCategories'] : '', options.categories, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? payload['selectedTags'] : '', tags, '', 'w-100', true) }}
+                                    {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? payload['selectedTags'] : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Veličine', 'sizes', 'sizes[]', IS_EDIT ? payload['selectedSizes'] : '', sizes, '', 'w-100', true) }}
+                                    {{ form.select('Veličine', 'sizes', 'sizes[]', IS_EDIT ? payload['selectedSizes'] : '', options.sizes, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -92,20 +92,27 @@
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload['discount'] : '', 'discount') }}
+                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.discount.price : '', 'discount') }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p>Prikaz na pocetnoj stranici</p>
                                 <div class="form-check form-check-flat form-check-primary">
                                     {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}
-                                    {{ form.checkbox('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == upValue ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == upValue ? 'checked="checked"' : null ) }}
                                 </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
                                     {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}
 
-                                    {{ form.checkbox('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == downValue ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == downValue ? 'checked="checked"' : null ) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-3">
+                                <p>&nbsp;</p>
+                                <div class="form-check form-check-flat form-check-primary">
+                                    {{ form.checkbox('Rasprodato', 'sold', 1, 'sold', 'form-check-label', 'form-check-input', IS_EDIT and payload['is_sold'] == true ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -170,7 +177,7 @@
     <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
         const SLUG = '{{ app.request.attributes.get('slug') }}';
-        const COLORS = JSON.parse('{{ colors|json_encode|raw }}');
+        const COLORS = JSON.parse('{{ options.colors|json_encode|raw }}');
 
         {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ payload['selectedImages']|json_encode()|raw }}');

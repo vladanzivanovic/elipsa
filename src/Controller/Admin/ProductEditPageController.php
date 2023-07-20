@@ -46,12 +46,14 @@ final class ProductEditPageController extends AbstractController
      */
     public function insert(): array
     {
-        return [
+        $options = [
             'tags' => $this->tagsRepository->getForOptions(),
             'categories' => $this->categoryRepository->getAll(),
             'sizes' => $this->sizeRepository->getForOptions(),
             'colors' => $this->colorRepository->getForOptions(),
         ];
+
+        return $this->responseFormatter->formatResponse($options);
     }
 
     /**
@@ -60,8 +62,6 @@ final class ProductEditPageController extends AbstractController
      */
     public function edit(ProductTranslation $productTranslation): array
     {
-        $productData = $this->responseFormatter->formatResponse($productTranslation->getProduct());
-
         $options = [
             'tags' => $this->tagsRepository->getForOptions(),
             'categories' => $this->categoryRepository->getAll(),
@@ -69,8 +69,6 @@ final class ProductEditPageController extends AbstractController
             'colors' => $this->colorRepository->getForOptions(),
         ];
 
-//        dd($productData);
-
-        return  $productData + $options;
+        return $this->responseFormatter->formatResponse($options, $productTranslation->getProduct());
     }
 }

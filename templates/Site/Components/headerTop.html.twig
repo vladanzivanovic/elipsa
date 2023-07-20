@@ -11,20 +11,36 @@
                     </div>
                 </div>
                 <div class="language col-xs-3 text-center row">
-                    {% if locale == 'en' %}
-                        <a id="current_language" href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
-                    {% else %}
-                        <a id="current_language" href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
-                    {% endif %}
+                    {% for language in languages %}
+                        {% if locale == language.code %}
+                            <a href="#">{{ language.name | trans }}</a>
+                        {% endif %}
+                    {% endfor %}
                     <ul id="locale-dropdown" class="menu-right-dropdown">
-                        <li>
-                            {% if locale == 'en' %}
-                                <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
-                            {% else %}
-                                <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
+                        {% for localeCode, language in transUrls %}
+                            {% if locale != localeCode %}
+                                <li>
+                                    <a id="locale_{{ language.code }}" data-locale-code="{{ language.code }}" href="{{ language.url }}">{{ language.name | trans }}</a>
+                                </li>
                             {% endif %}
-                        </li>
+                        {% endfor %}
                     </ul>
+
+
+{#                    {% if locale == 'en' %}#}
+{#                        <a id="current_language" href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
+{#                    {% else %}#}
+{#                        <a id="current_language" href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
+{#                    {% endif %}#}
+{#                    <ul id="locale-dropdown" class="menu-right-dropdown">#}
+{#                        <li>#}
+{#                            {% if locale == 'en' %}#}
+{#                                <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
+{#                            {% else %}#}
+{#                                <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
+{#                            {% endif %}#}
+{#                        </li>#}
+{#                    </ul>#}
                 </div>
             </div>
         {% endif %}
@@ -41,20 +57,36 @@
                     {#                        </ul>#}
                     {#                    </div>#}
                     <div class="language">
-                        {% if locale == 'en' %}
-                            <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
-                        {% else %}
-                            <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
-                        {% endif %}
+                        {% for language in languages %}
+                            {% if locale == language.code %}
+                                <a href="#">{{ language.name | trans }}</a>
+                            {% endif %}
+                        {% endfor %}
                         <ul id="locale-dropdown" class="menu-right-dropdown">
-                            <li>
-                                {% if locale == 'en' %}
-                                    <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>
-                                {% else %}
-                                    <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>
+                            {% for localeCode, language in transUrls %}
+                                {% if locale != localeCode %}
+                                    <li>
+                                        <a id="locale_{{ language.code }}" data-locale-code="{{ language.code }}" href="{{ language.url }}">{{ language.name | trans }}</a>
+                                    </li>
                                 {% endif %}
-                            </li>
+                            {% endfor %}
                         </ul>
+
+
+{#                        {% if locale == 'en' %}#}
+{#                            <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
+{#                        {% else %}#}
+{#                            <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
+{#                        {% endif %}#}
+{#                        <ul id="locale-dropdown" class="menu-right-dropdown">#}
+{#                            <li>#}
+{#                                {% if locale == 'en' %}#}
+{#                                    <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
+{#                                {% else %}#}
+{#                                    <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
+{#                                {% endif %}#}
+{#                            </li>#}
+{#                        </ul>#}
                     </div>
                 </div>
             </div>

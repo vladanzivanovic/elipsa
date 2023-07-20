@@ -14,6 +14,7 @@ use App\Entity\ProductHasTags;
 use App\Entity\ProductSize;
 use App\Entity\ProductTranslation;
 use App\Entity\Tags;
+use App\Entity\TagTranslation;
 use App\Entity\User;
 use App\Entity\UserWishes;
 use App\Model\DataTableModel;
@@ -62,42 +63,12 @@ class ProductRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(p.id) as total')
+            ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
+            ->setParameter('locale', 'rs')
         ;
 
         if (!empty($tableModel->getSearch())) {
-            $colorQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasImages::class, 'phiColor')
-                ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color AND colort.locale = :locale')
-                ->where('REGEXP(colort.slug, :regex) = true')
-                ->andWhere('phiColor.product = p');
-
-            $tagsQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasTags::class, 'pht')
-                ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
-                ->where('REGEXP(t.slug, :regex) = true')
-                ->andWhere('pht.product = p');
-
-            $categoryQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasCategories::class, 'phc')
-                ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category AND ct.locale = :locale')
-                ->where('REGEXP(ct.slug, :regex) = true')
-                ->andWhere('phc.product = p');
-
-            $query
-                ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
-                ->andWhere('
-                pt.title LIKE :search or
-                p.code LIKE :search or
-                EXISTS ('.$colorQuery->getDQL().') or
-                EXISTS ('.$tagsQuery->getDQL().') or 
-                EXISTS ('.$categoryQuery->getDQL().')
-            ')
-                ->setParameter('search', '%'.$tableModel->getSearch().'%')
-                ->setParameter('regex', $tableModel->getSearch())
-                ->setParameter('locale', 'rs');
+            $this->dataTableSearchPart($query, $tableModel);
         }
 
         return $query->getQuery()->getSingleScalarResult();
@@ -133,36 +104,7 @@ class ProductRepository extends ExtendedEntityRepository
         ;
 
         if (!empty($tableModel->getSearch())) {
-            $colorQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasImages::class, 'phiColor')
-                ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color AND colort.locale = :locale')
-                ->where('REGEXP(colort.slug, :regex) = true')
-                ->andWhere('phiColor.product = p');
-
-            $tagsQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasTags::class, 'pht')
-                ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
-                ->where('REGEXP(t.slug, :regex) = true')
-                ->andWhere('pht.product = p');
-
-            $categoryQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasCategories::class, 'phc')
-                ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category AND ct.locale = :locale')
-                ->where('REGEXP(ct.slug, :regex) = true')
-                ->andWhere('phc.product = p');
-
-            $query->andWhere('
-                pt.title LIKE :search or
-                p.code LIKE :search or
-                EXISTS ('.$colorQuery->getDQL().') or 
-                EXISTS ('.$tagsQuery->getDQL().') or 
-                EXISTS ('.$categoryQuery->getDQL().')
-            ')
-                ->setParameter('search', '%'.$tableModel->getSearch().'%')
-                ->setParameter('regex', $tableModel->getSearch());
+            $this->dataTableSearchPart($query, $tableModel);
         }
 
         return $query->getQuery()->getArrayResult();
@@ -184,6 +126,10 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function getDqlForPaginationPage(?User $user, ?ParameterBag $searchData): QueryBuilder
     {
         $query = $this->createQueryBuilder('p')
@@ -200,80 +146,64 @@ class ProductRepository extends ExtendedEntityRepository
         }
 
         if (null !== $searchData) {
-//            if ($searchData->has('categories')) {
-//                $categoryQuery = $this->_em->createQueryBuilder()
-//                    ->select('1')
-//                    ->from(ProductHasCategories::class, 'phc')
-//                    ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category')
-//                    ->where('ct.slug IN (:categorySlugs)')
-//                    ->andWhere('phc.product = p');
-//
-//                $query->andWhere('EXISTS ('.$categoryQuery->getDQL().')')
-//                    ->setParameter('categorySlugs', $searchData->get('categories'));
-//            }
-//            if ($searchData->has('tags_localized')) {
-//                $tagsQuery = $this->_em->createQueryBuilder()
-//                    ->select('1')
-//                    ->from(ProductHasTags::class, 'pht')
-//                    ->leftJoin(Tags::class, 't', 'WITH', 'pht.tag = t.slug')
-//                    ->where('t.slug IN (:tagsSlug)')
-//                    ->andWhere('pht.product = p');
-//
-//                $query->andWhere('EXISTS ('.$tagsQuery->getDQL().')')
-//                    ->setParameter('tagsSlug', $searchData->get('tags_localized'));
-//            }
-//
-//            if ($searchData->has('color')) {
-//                $colorQuery = $this->_em->createQueryBuilder()
-//                    ->select('1')
-//                    ->from(ProductHasImages::class, 'phiColor')
-//                    ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color')
-//                    ->where('colort.slug IN (:colorSlugs)')
-//                    ->andWhere('phiColor.product = p');
-//
-//                $query->andWhere('EXISTS ('.$colorQuery->getDQL().')')
-//                    ->setParameter('colorSlugs', $searchData->get('color'));
-//            }
-//
-//            if ($searchData->has('size')) {
-//                $sizesQuery = $this->_em->createQueryBuilder()
-//                    ->select('1')
-//                    ->from(ProductHasSizes::class, 'phs')
-//                    ->innerJoin(ProductSize::class, 's', 'WITH', 's = phs.size')
-//                    ->where('s.size IN (:sizes)')
-//                    ->andWhere('phs.product = p');
-//
-//                $query->andWhere('EXISTS ('.$sizesQuery->getDQL().')')
-//                    ->setParameter('sizes', $searchData->get('size'));
-//            }
-//
-//            if ($searchData->has('price')) {
-//                $price = explode('-', $searchData->get('price')[0]);
-//
-//                $query->andWhere('p.price >= :lowPrice')
-//                    ->andWhere('p.price <= :highPrice')
-//                    ->setParameter('lowPrice', $price[0])
-//                    ->setParameter('highPrice', $price[1]);
-//            }
+            if ($searchData->has('categories')) {
+                $categoryQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasCategories::class, 'phc')
+                    ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category')
+                    ->where('ct.slug IN (:categorySlugs)')
+                    ->andWhere('phc.product = p');
+
+                $query->andWhere('EXISTS ('.$categoryQuery->getDQL().')')
+                    ->setParameter('categorySlugs', $searchData->get('categories'));
+            }
+            if ($searchData->has('tags_localized')) {
+                $tagsQuery = $this->_em->createQueryBuilder()
+                    ->select('tt')
+                    ->from(TagTranslation::class, 'tt')
+                    ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = tt.tag')
+                    ->where('tt.slug IN (:tagsSlug)')
+                    ->andWhere('pht.product = p');
+
+                $query->andWhere('EXISTS ('.$tagsQuery->getDQL().')')
+                    ->setParameter('tagsSlug', $searchData->get('tags_localized'));
+            }
+
+            if ($searchData->has('color')) {
+                $colorQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasImages::class, 'phiColor')
+                    ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color')
+                    ->where('colort.slug IN (:colorSlugs)')
+                    ->andWhere('phiColor.product = p');
+
+                $query->andWhere('EXISTS ('.$colorQuery->getDQL().')')
+                    ->setParameter('colorSlugs', $searchData->get('color'));
+            }
+
+            if ($searchData->has('size')) {
+                $sizesQuery = $this->_em->createQueryBuilder()
+                    ->select('1')
+                    ->from(ProductHasSizes::class, 'phs')
+                    ->innerJoin(ProductSize::class, 's', 'WITH', 's = phs.size')
+                    ->where('s.size IN (:sizes)')
+                    ->andWhere('phs.product = p');
+
+                $query->andWhere('EXISTS ('.$sizesQuery->getDQL().')')
+                    ->setParameter('sizes', $searchData->get('size'));
+            }
+
+            if ($searchData->has('price')) {
+                $price = explode('-', $searchData->get('price')[0]);
+
+                $query->andWhere('p.price >= :lowPrice')
+                    ->andWhere('p.price <= :highPrice')
+                    ->setParameter('lowPrice', $price[0])
+                    ->setParameter('highPrice', $price[1]);
+            }
 
             if($searchData->has('search')) {
-
-                $categorySearchQuery = $this->_em->createQueryBuilder()
-                    ->select('1')
-                    ->from(ProductHasCategories::class, 'phc1')
-                    ->innerJoin(CategoryTranslation::class, 'ct1', 'WITH', 'phc1.category = ct1.category')
-                    ->where('match(ct1.title) against(:search BOOLEAN) > 0.5')
-                    ->andWhere('phc1.product = p');
-
-                $tagsSearchQuery = $this->_em->createQueryBuilder()
-                    ->select('1')
-                    ->from(ProductHasTags::class, 'pht2')
-                    ->leftJoin(Tags::class, 't2', 'WITH', 'pht2.tag = t2.slug')
-                    ->where('match(t2.label) against(:search BOOLEAN) > 0.5')
-                    ->andWhere('pht2.product = p');
-
-                $search = $this->testSearchString($searchData->get('search')[0]);
-
+                $search = $this->getSearchString($searchData->get('search')[0]);
 
                 $query
                     ->innerJoin('p.productTranslations', 'pt')
@@ -376,7 +306,7 @@ class ProductRepository extends ExtendedEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    private function testSearchString(string $searchString): string
+    private function getSearchString(string $searchString): string
     {
         $searchLength = mb_strlen($searchString);
         $originalString = $searchString;
@@ -419,9 +349,48 @@ class ProductRepository extends ExtendedEntityRepository
         if ((int) $count === 0) {
             $originalString = mb_substr($originalString, 0, $searchLength - 1);
 
-            $search = $this->testSearchString($originalString);
+            $search = $this->getSearchString($originalString);
         }
 
         return $search;
+    }
+
+    /**
+     * @param QueryBuilder $query
+     * @param DataTableModel $tableModel
+     * @return void
+     */
+    public function dataTableSearchPart(QueryBuilder $query, DataTableModel $tableModel): void
+    {
+        $colorQuery = $this->_em->createQueryBuilder()
+            ->select('1')
+            ->from(ProductHasImages::class, 'phiColor')
+            ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color AND colort.locale = :locale')
+            ->where('REGEXP(colort.slug, :regex) = true')
+            ->andWhere('phiColor.product = p');
+
+        $tagsQuery = $this->_em->createQueryBuilder()
+            ->select('1')
+            ->from(TagTranslation::class, 'tt')
+            ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = tt.tag')
+            ->where('REGEXP(tt.slug, :regex) = true')
+            ->andWhere('pht.product = p');
+
+        $categoryQuery = $this->_em->createQueryBuilder()
+            ->select('1')
+            ->from(ProductHasCategories::class, 'phc')
+            ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category AND ct.locale = :locale')
+            ->where('REGEXP(ct.slug, :regex) = true')
+            ->andWhere('phc.product = p');
+
+        $query->andWhere('
+                pt.title LIKE :search or
+                p.code LIKE :search or
+                EXISTS (' . $colorQuery->getDQL() . ') or 
+                EXISTS (' . $tagsQuery->getDQL() . ') or 
+                EXISTS (' . $categoryQuery->getDQL() . ')
+            ')
+            ->setParameter('search', '%' . $tableModel->getSearch() . '%')
+            ->setParameter('regex', $tableModel->getSearch());
     }
 }

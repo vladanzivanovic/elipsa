@@ -25,12 +25,12 @@
                                 <div id="grid" class="tab-pane fade in active">
                                     <div class="grid-items">
                                         <div class="row">
-                                            {% for image in images %}
+                                            {% for image in images.all %}
                                                 <div class="col-md-3 col-xs-6">
                                                     <div class="single-featured-item">
                                                         <div class="sfi-img">
-                                                            <a href="{{ image.file }}" data-fancybox="catalog">
-                                                                <img src="{{ image.file }}" alt="{{ default_alt_tag }}">
+                                                            <a href="{{ image.full.file }}" data-fancybox="catalog">
+                                                                <img src="{{ image.thumb.file }}" alt="{{ default_alt_tag }}">
                                                             </a>
                                                         </div>
                                                     </div>

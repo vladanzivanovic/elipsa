@@ -52,8 +52,12 @@
                                     <div class="grid-items">
                                         <div class="row">
                                             {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                            {% for product in products.data %}
-                                                {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale) }}
+                                            {% for products in products.data | batch(3) %}
+                                                <div class="row">
+                                                    {% for product in products %}
+                                                        {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale) }}
+                                                    {% endfor %}
+                                                </div>
                                             {% endfor %}
                                         </div>
                                         {{ include('Site/Components/paginate.html.twig') }}

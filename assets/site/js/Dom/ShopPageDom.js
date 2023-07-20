@@ -29,7 +29,6 @@ class ShopPageDom {
                         <div class="single-featured-item">
                             <div class="sfi-img">
                                 <a href="${productLink}"><img src="${product.image.file}" alt="{{ default_alt_tag }}"></a>
-                                <ul class="sfi-tag-list">${this.listData(product.tags, 'tags')}</ul>
                                 <div class="sfi-img-content sfi-data-content">
                                     <p class="text-capitalize">${Translator.trans('available_colors', null, 'messages', LOCALE)}:</p>
                                     <ul class="sfi-data-color">${this.productColors(product.colors)}</ul>

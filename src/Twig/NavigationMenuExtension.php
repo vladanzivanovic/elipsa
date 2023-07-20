@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Entity\Banner;
+use App\Entity\Tags;
 use App\Repository\BannerRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SliderTextRepository;
 use App\Repository\TagsRepository;
 use App\View\BannerView;
 use App\View\SliderTextView;
-use DateTime;
-use Exception;
-use Symfony\Component\Routing\RouterInterface;
+use App\View\TagView;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -27,28 +26,28 @@ final class NavigationMenuExtension extends AbstractExtension
 
     private BannerRepository $bannerRepository;
 
-    private RouterInterface $router;
-
     private BannerView $bannerView;
 
     private SliderTextView $sliderTextView;
+
+    private TagView $tagView;
 
     public function __construct(
         CategoryRepository $categoryRepository,
         TagsRepository $tagsRepository,
         SliderTextRepository $sliderTextRepository,
         BannerRepository $bannerRepository,
-        RouterInterface $router,
         BannerView $bannerView,
-        SliderTextView $sliderTextView
+        SliderTextView $sliderTextView,
+        TagView $tagView
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->tagsRepository = $tagsRepository;
         $this->sliderTextRepository = $sliderTextRepository;
         $this->bannerRepository = $bannerRepository;
-        $this->router = $router;
         $this->bannerView = $bannerView;
         $this->sliderTextView = $sliderTextView;
+        $this->tagView = $tagView;
     }
 
     /**
@@ -80,9 +79,15 @@ final class NavigationMenuExtension extends AbstractExtension
 
     public function getNavigationTags(string $locale): array
     {
-        $tags = $this->tagsRepository->getForNavigationMenu($locale);
+        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_PRODUCT]);
 
-        return $tags;
+        $formattedTags = [];
+
+        foreach ($tags as $tag) {
+            $formattedTags[] = $this->tagView->view($tag);
+        }
+
+        return $formattedTags;
     }
 
     public function getSliderText(string $locale, string $position): array
@@ -145,8 +150,6 @@ final class NavigationMenuExtension extends AbstractExtension
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-//            $banner['image_link'] = $this->router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['image'], 'filter' => 'menu_banner']);
-
             $formattedBanners[] = $this->bannerView->menuView($banner, $locale);
         }
 

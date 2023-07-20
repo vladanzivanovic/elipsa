@@ -23,9 +23,10 @@ class BlogHasTags
     private $blog;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tags")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $tag;
+    private Tags $tag;
 
     public function getId(): ?int
     {
@@ -44,12 +45,12 @@ class BlogHasTags
         return $this;
     }
 
-    public function getTag(): ?string
+    public function getTag(): Tags
     {
         return $this->tag;
     }
 
-    public function setTag(string $tag): self
+    public function setTag(Tags $tag): self
     {
         $this->tag = $tag;
 

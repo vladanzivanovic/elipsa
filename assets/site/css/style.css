@@ -1561,12 +1561,10 @@ ul.menu-list li .hot::after {
     font-weight: 700;
 }
 .single-featured-item .sfi-content .sfi-price-rating .sfi-price span.discount-price {
-    color: #a70303;
 }
 
 .single-featured-item .sfi-content .sfi-price-rating .sfi-old-price {
     color: #b8b8b7;
-    display: inline-block;
     font-family: "Montserrat", sans-serif;
     font-size: 16px;
     font-weight: 700;
@@ -4343,7 +4341,8 @@ footer {
 }
 
 .grid-items .single-featured-item .sfi-content .sfi-price-rating .sfi-old-price {
-    font-size: 12px;
+    font-size: 11px;
+    text-decoration: line-through;
 }
 
 .grid-items .single-featured-item .sfi-content .sfi-price-rating .sfi-price span {

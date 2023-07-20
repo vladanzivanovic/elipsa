@@ -97,6 +97,8 @@ from_lowest_price: lower price first
 from_highest_price: higher price first
 on_sale: on sale
 first_new: new
+sold: Sold
+saving: Saving
 
 select.color: select color
 select.size: select size

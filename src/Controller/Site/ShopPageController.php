@@ -28,7 +28,8 @@ final class ShopPageController extends AbstractController
     /**
      * @Route({
      *          "rs": "/proizvodi/{page}/{searchData}",
-     *          "en": "/products/{page}/{searchData}"
+     *          "en": "/products/{page}/{searchData}",
+     *          "ba": "/proizvodi/{page}/{searchData}"
      *     },
      *     name="site.shop_page",
      *     methods={"GET"},

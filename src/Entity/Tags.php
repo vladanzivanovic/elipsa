@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TagsRepository")
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"main_slug", "locale"})})
- * @ORM\Table(indexes={@ORM\Index(columns={"label"}, flags={"fulltext"})})
  */
 class Tags
 {
@@ -25,30 +23,7 @@ class Tags
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="field.not_blank", groups={"SetTag"})
-     * @Assert\Length(maxMessage="field.max_length", groups={"SetTag"}, max="50")
-     */
-    private string $label;
-
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private string $locale;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"label"}, updatable=false)
-     */
-    private string $slug;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $mainSlug;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -60,57 +35,19 @@ class Tags
      */
     private string $productType;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TagTranslation::class, mappedBy="tag", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private Collection $tagTranslations;
+
+    public function __construct()
+    {
+        $this->tagTranslations = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(string $label): self
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getMainSlug(): ?string
-    {
-        return $this->mainSlug;
-    }
-
-    public function setMainSlug(string $mainSlug): self
-    {
-        $this->mainSlug = $mainSlug;
-
-        return $this;
     }
 
     public function getRelatedType(): ?int
@@ -133,5 +70,45 @@ class Tags
     public function setProductType(string $productType): void
     {
         $this->productType = $productType;
+    }
+
+    /**
+     * @return Collection<int, TagTranslation>
+     */
+    public function getTagTranslations(): Collection
+    {
+        return $this->tagTranslations;
+    }
+
+    public function addTagTranslation(TagTranslation $tagTranslation): self
+    {
+        if (!$this->tagTranslations->contains($tagTranslation)) {
+            $this->tagTranslations[] = $tagTranslation;
+            $tagTranslation->setTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTagTranslation(TagTranslation $tagTranslation): self
+    {
+        if ($this->tagTranslations->removeElement($tagTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($tagTranslation->getTag() === $this) {
+                $tagTranslation->setTag(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getByLocale(string $locale): ?TagTranslation
+    {
+        $filteredTrans = $this->tagTranslations->filter(function ($trans) use ($locale) {
+            /** @var TagTranslation $trans */
+            return $trans->getLocale() === $locale;
+        });
+
+        return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
     }
 }

@@ -14,20 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class TrendyListController extends AbstractController
 {
-    /**
-     * @var ShopPageCollector
-     */
-    private $collectors;
+    private ShopPageCollector $collectors;
 
-    /**
-     * @var ShopPageResponseFormatter
-     */
-    private $formatter;
+    private ShopPageResponseFormatter $formatter;
 
-    /**
-     * @param ShopPageCollector         $collectors
-     * @param ShopPageResponseFormatter $formatter
-     */
     public function __construct(
         ShopPageCollector $collectors,
         ShopPageResponseFormatter $formatter

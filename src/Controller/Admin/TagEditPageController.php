@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Collector\Admin\TagEditCollector;
 use App\Entity\ProductColor;
 use App\Entity\Tags;
+use App\Entity\TagTranslation;
 use App\Formatter\Admin\TagEditFormatter;
 use App\Repository\ProductColorRepository;
 use App\Repository\TagsRepository;
@@ -57,14 +58,14 @@ final class TagEditPageController extends AbstractController
      * @Route("/edit-blog-tag/{slug}", name="admin.edit_blog_tag_page", methods={"GET"})
      * @Template("Admin/Pages/tagEdit.html.twig")
      *
-     * @param Tags    $tag
+     * @param TagTranslation $tagTranslation
      * @param Request $request
      *
      * @return array
      */
-    public function update(Tags $tag, Request $request): array
+    public function update(TagTranslation $tagTranslation, Request $request): array
     {
-        $collectedData = $this->tagEditCollector->collect($tag);
+        $collectedData = $this->tagEditCollector->collect($tagTranslation->getTag());
 
 //        dd($this->tagEditFormatter->format($collectedData));
 

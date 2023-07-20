@@ -4,19 +4,20 @@ namespace App\Twig;
 
 
 use Detection\MobileDetect;
+use MobileDetectBundle\DeviceDetector\MobileDetectorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class MobileDetectExtension extends AbstractExtension
 {
-    protected \Detection\MobileDetect $detector;
+    protected MobileDetectorInterface $detector;
 
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(MobileDetectorInterface $detector)
     {
-        $this->detector = new \Detection\MobileDetect();
+        $this->detector = $detector;
     }
 
     /**

@@ -77,6 +77,7 @@ final class ProductFormatter
         $productView['sizes'] = $this->getSizes($product);
         $productView['cleaningIcons'] = $this->getCleaningIcons($product);
         $productView['media']['youtubes'] = $this->getYoutubes($product);
+        $productView['tags'] = $this->getTags($product, $locale);
 
         return
             ['payload' => $productView] +
@@ -162,17 +163,11 @@ final class ProductFormatter
 
     private function getTags(Product $product, string $locale): array
     {
-        $tagSlugs = [];
-
-        foreach ($product->getProductHasTags() as $productHasTag) {
-            $tagSlugs[] = $productHasTag->getTag();
-        }
-
-        $tags = $this->tagsRepository->findBy(['mainSlug' => $tagSlugs, 'locale' => $locale]);
-
         $formattedTags = [];
 
-        foreach ($tags as $tag) {
+        foreach ($product->getProductHasTags() as $productHasTag) {
+            $tag = $productHasTag->getTag();
+
             $formattedTags[] = $this->tagView->view($tag);
         }
 

@@ -2,6 +2,7 @@
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set siteSettings = site_settings(locale) %}
+{% set transUrls = languages %}
 
 {% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') %}
 
@@ -15,6 +16,11 @@
 {% if app is not null and (app.request.attributes.get('_route_params') is not null or app.request.query.all is not empty) %}
     {% set routeParams = routeParams|merge(query) %}
 {% endif %}
+
+{% for language in languages %}
+    {% set language = language|merge({'url': url_locale(routeName, routeParams, locale, language.code)}) %}
+    {% set transUrls = transUrls|merge({(language.code): language}) %}
+{% endfor %}
 
 {% import 'Site/Macros/externalServices.html.twig' as externals %}
 

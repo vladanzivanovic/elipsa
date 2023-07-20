@@ -6,7 +6,6 @@ namespace App\Formatter\Site\Router;
 
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ColorTranslationRepository;
-use App\Repository\TagsRepository;
 use App\ShopTrait;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -16,62 +15,37 @@ final class ShopPageRouterFormatter
 {
     use ShopTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private ParameterBagInterface $bag;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
-    /**
-     * @var ColorTranslationRepository
-     */
-    private $colorTranslationRepository;
-    /**
-     * @var CategoryTranslationRepository
-     */
-    private $categoryTranslationRepository;
+    private ColorTranslationRepository $colorTranslationRepository;
 
-    /**
-     * @param ParameterBagInterface         $bag
-     * @param TranslatorInterface           $translator
-     * @param TagsRepository                $tagsRepository
-     * @param ColorTranslationRepository    $colorTranslationRepository
-     * @param CategoryTranslationRepository $categoryTranslationRepository
-     */
+    private CategoryTranslationRepository $categoryTranslationRepository;
+
+    private TagUrlLocalizationFormatter $tagUrlLocalizationFormatter;
+
     public function __construct(
         ParameterBagInterface $bag,
         TranslatorInterface $translator,
-        TagsRepository $tagsRepository,
         ColorTranslationRepository $colorTranslationRepository,
-        CategoryTranslationRepository $categoryTranslationRepository
+        CategoryTranslationRepository $categoryTranslationRepository,
+        TagUrlLocalizationFormatter $tagUrlLocalizationFormatter
     ) {
-        $this->tagsRepository = $tagsRepository;
         $this->bag = $bag;
         $this->translator = $translator;
         $this->colorTranslationRepository = $colorTranslationRepository;
         $this->categoryTranslationRepository = $categoryTranslationRepository;
+        $this->tagUrlLocalizationFormatter = $tagUrlLocalizationFormatter;
     }
 
-    public function localeFormatter(string $searchData, string $locale)
+    public function localeFormatter(string $searchData, string $locale): string
     {
         $searchData = $this->parseSearchData($searchData);
 
         return $this->createUrlString($searchData, $locale);
     }
-    /**
-     * @param ParameterBag $bag
-     * @param string       $locale
-     *
-     * @return string
-     */
+
     public function createUrlString(ParameterBag $bag, string $locale): string
     {
         $urlParams = '';
@@ -82,7 +56,7 @@ final class ShopPageRouterFormatter
             switch ($filter) {
                 case 'tags':
                     foreach ($criteria as $tag) {
-                        $criteriaTrans[] = $this->tagsRepository->getForLocalization($tag, $locale);
+                        $criteriaTrans[] = $this->tagUrlLocalizationFormatter->localeFormatter($tag, $locale);
                     }
                     break;
                 case 'color':

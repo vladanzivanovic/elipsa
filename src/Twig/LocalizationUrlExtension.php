@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use App\Formatter\Site\Router\BlogListRouterFormatter;
+use App\Formatter\Site\Router\TagUrlLocalizationFormatter;
 use App\Formatter\Site\Router\BlogPageRouterFormatter;
 use App\Formatter\Site\Router\JobPageRouterFormatter;
 use App\Formatter\Site\Router\ProductPageRouterFormatter;
@@ -29,7 +29,7 @@ class LocalizationUrlExtension extends AbstractExtension
 
     private ShopPageRouterFormatter $shopPageRouterFormatter;
 
-    private BlogListRouterFormatter $blogListRouterFormatter;
+    private TagUrlLocalizationFormatter $tagUrlLocalizationFormatter;
 
     private ProductPageRouterFormatter $productPageRouterFormatter;
 
@@ -43,7 +43,7 @@ class LocalizationUrlExtension extends AbstractExtension
         ParameterBagInterface $bag,
         TranslatorInterface $translator,
         ShopPageRouterFormatter $shopPageRouterFormatter,
-        BlogListRouterFormatter $blogListRouterFormatter,
+        TagUrlLocalizationFormatter $tagUrlLocalizationFormatter,
         ProductPageRouterFormatter $productPageRouterFormatter,
         BlogPageRouterFormatter $blogPageRouterFormatter,
         JobPageRouterFormatter $jobPageRouterFormatter,
@@ -53,7 +53,7 @@ class LocalizationUrlExtension extends AbstractExtension
         $this->bag = $bag;
         $this->translator = $translator;
         $this->shopPageRouterFormatter = $shopPageRouterFormatter;
-        $this->blogListRouterFormatter = $blogListRouterFormatter;
+        $this->tagUrlLocalizationFormatter = $tagUrlLocalizationFormatter;
         $this->productPageRouterFormatter = $productPageRouterFormatter;
         $this->blogPageRouterFormatter = $blogPageRouterFormatter;
         $this->jobPageRouterFormatter = $jobPageRouterFormatter;
@@ -70,22 +70,27 @@ class LocalizationUrlExtension extends AbstractExtension
         ];
     }
 
-    public function generateUrlLocale(string $routeName, array $routeParams, string $fromLocale, string $toLocale)
+    public function generateUrlLocale(string $routeName, array $routeParams, string $fromLocale, string $toLocale): string
     {
         if (($routeName === 'site.shop_page' || $routeName === 'site.trendy_page') && isset($routeParams['searchData'])) {
             $routeParams['searchData'] = $this->shopPageRouterFormatter->localeFormatter($routeParams['searchData'], $toLocale);
         }
 
         if ($routeName === 'site.blog_list_page' && isset($routeParams['tag'])) {
-            $routeParams['tag'] = $this->blogListRouterFormatter->localeFormatter($routeParams['tag'], $toLocale);
+            $tag = $this->tagUrlLocalizationFormatter->localeFormatter($routeParams['tag'], $toLocale);
+
+            $routeParams['tag'] = $tag ?? '#';
         }
 
         if ($routeName === 'site.product_page') {
-            $routeParams['slug'] = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+            $slug = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+            $routeParams['slug'] = $slug ?? '#';
         }
 
         if ($routeName === 'site.blog_detailed_page') {
-            $routeParams['slug'] = $this->blogPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+            $tag = $this->blogPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+
+            $routeParams['slug'] = $tag ?? '#';
         }
 
         if ($routeName === 'site.jobs_detail_page') {

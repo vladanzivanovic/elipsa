@@ -27,7 +27,7 @@ class Product
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -98,6 +98,11 @@ class Product
      * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="product")
      */
     private Collection $orderProducts;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $sold;
 
     public function __construct()
     {
@@ -400,19 +405,14 @@ class Product
         return null;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return ProductTranslation
-     */
-    public function getByLocale(string $locale): ProductTranslation
+    public function getByLocale(string $locale): ?ProductTranslation
     {
         $filteredTrans = $this->productTranslations->filter(function ($trans) use ($locale) {
             /** @var ProductTranslation $trans */
             return $trans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
     }
 
     public function getShowHomePage(): ?int
@@ -497,5 +497,17 @@ class Product
     public function getOrderProducts(): Collection
     {
         return $this->orderProducts;
+    }
+
+    public function isSold(): ?bool
+    {
+        return $this->sold;
+    }
+
+    public function setSold(bool $sold): self
+    {
+        $this->sold = $sold;
+
+        return $this;
     }
 }
