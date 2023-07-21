@@ -88,7 +88,8 @@
     <div id="preloader"></div>
 
     {% set navigationMenu = navigation_menu(locale) %}
-    {% set navigationTags = navigation_tags(locale) %}
+    {% set navigationTagsSeasson = navigation_tags(constant('App\\Entity\\Tags::PRODUCT_TYPE_SEASON')) %}
+    {% set navigationTagsCollection = navigation_tags(constant('App\\Entity\\Tags::PRODUCT_TYPE_COLLECTION')) %}
 
     <!-- header-start -->
     <header>

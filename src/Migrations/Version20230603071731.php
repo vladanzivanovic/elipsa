@@ -28,7 +28,7 @@ final class Version20230603071731 extends AbstractMigration
             'description',
             [
                 'description' => $aboutUsRS['value'],
-                'type' => Description::ABOUT_US,
+                'type' => 'ABOUT_US',
                 'locale' => 'rs'
             ]
         );
@@ -37,7 +37,7 @@ final class Version20230603071731 extends AbstractMigration
             'description',
             [
                 'description' => $aboutUsEn['value'],
-                'type' => Description::ABOUT_US,
+                'type' => 'ABOUT_US',
                 'locale' => 'en'
             ]
         );

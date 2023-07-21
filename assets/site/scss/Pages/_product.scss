@@ -5,6 +5,7 @@
 @import "~@staaky/tipped/dist/css/tipped.css";
 @import "../Components/youtube";
 @import "~fotorama/fotorama.css";
+@import "../colors";
 
 .product-page {
   .spd-select-color {
@@ -44,23 +45,36 @@
       }
     }
   }
+  .spd-price {
+    color: $black-color;
+    font-weight: 600;
+  }
+
+  .spd-old-price {
+    color: $old-price;
+    text-decoration: line-through;
+  }
+
   .spd-select-size {
     span {
       display: inline-block;
     }
   }
+
   .spd-meta {
     &-cat {
       span {
         display: inline-block;
       }
     }
+
     &-tags {
       span {
         display: inline-block;
       }
     }
   }
+
   .spd-share {
     border-bottom: 1px solid #e5e5e5;
     margin: 0 0 21px;
@@ -70,6 +84,7 @@
       display: inline-block;
     }
   }
+
   .spd-youtube-btn {
     button {
       background: #a70303 none repeat scroll 0 0;

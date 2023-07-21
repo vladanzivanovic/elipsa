@@ -77,9 +77,9 @@ final class NavigationMenuExtension extends AbstractExtension
         });
     }
 
-    public function getNavigationTags(string $locale): array
+    public function getNavigationTags(string $productType): array
     {
-        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_PRODUCT]);
+        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_PRODUCT, 'productType' => $productType]);
 
         $formattedTags = [];
 

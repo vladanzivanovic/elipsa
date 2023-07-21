@@ -100,45 +100,6 @@
     > .tab-content {
       margin-top: 20px;
     }
-
-    .single-featured-item {
-      .sfi-img {
-        .product-sold {
-          position: absolute;
-          top: 0;
-          right: 0;
-          background: $dark-gray-color;
-          padding: 0 5px;
-          font-size: 10px;
-          color: white;
-        }
-
-        .sfi-img-banner {
-          span {
-            font-size: 12px;
-          }
-        }
-      }
-
-      .sfi-price-rating {
-        p {
-          line-height: 15px;
-        }
-
-        .discount-price {
-          display: flex;
-          justify-content: space-between;
-
-          .price-saving {
-            font-size: 12px;
-            font-weight: 700;
-            color: $site-color;
-            font-family: "Montserrat", sans-serif;
-            text-transform: uppercase;
-          }
-        }
-      }
-    }
   }
 
   .shop-menu {

@@ -28,12 +28,19 @@
                 <div class="col-md-6 col-xs-12">
                     <div class="single-product-description-area">
                         <h2 class="spd-title">{{ payload.title }}</h2>
-                        <p class="spd-price">{{ payload.discount > 0 ? payload.discount | number_format(2) : payload.price | number_format(2) }} RSD
+                        <p class="spd-price">{{ payload.discount is not null ? payload.discount.price.amount : payload.price.amount }} {{ payload.price.currency }}
 
-                            {% if payload.discount > 0 %}
-                                <span class="spd-old-price">{{ payload.price | number_format(2) }} RSD</span>
+                            {% if payload.discount is not null %}
+                                <span class="spd-old-price">-{{ payload.price.amount }} {{ payload.price.currency }}</span>
                             {% endif %}
                         </p>
+                        {% if payload.discount is not null %}
+                            <div class="spd-meta">
+                                <div class="spd-meta-type">
+                                    <p class="saving-price">{{ 'saving' | trans }} <span>{{ payload.discount.saving.amount }} {{ payload.discount.saving.currency }}</span></p>
+                                </div>
+                            </div>
+                        {% endif %}
                         <p class="spd-text">{{ payload.short_description }}</p>
 {#                        <ul class="spd-list">#}
 {#                            <li>Satisfaction 100% Guaranteed</li>#}

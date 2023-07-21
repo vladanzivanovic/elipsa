@@ -16,6 +16,7 @@
 @import "~jquery-eu-cookie-law-popup/css/jquery-eu-cookie-law-popup.css";
 @import "./Components/menu";
 @import "./Components/footer";
+@import "./Components/product_grid";
 @import "responsive";
 
 
@@ -119,6 +120,16 @@ div#page-loader {
         line-height: unset;
       }
     }
+  }
+}
+
+.saving-price {
+  font-weight: 700;
+  color: $site-color !important;
+  font-family: "Montserrat", sans-serif !important;
+  text-transform: uppercase;
+  * {
+    color: inherit !important;
   }
 }
 
