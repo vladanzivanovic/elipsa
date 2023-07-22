@@ -11,13 +11,26 @@
                 {% if true == pagination['disableFirst'] %}
                     {% set classFirst = 'disabled' %}
                 {% endif %}
+                {% set paramNumber = is_mobile() ? 2 : 3 %}
 
                 <li class="first {{ classFirst }}">
-                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': 1} ) ) }}"><i class="fa fa-angle-double-left"></i> {{ 'first_page' | trans }}</a>
+                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': 1} ) ) }}">
+                        <i class="fa fa-angle-double-left"></i>
+                        {% if false == is_mobile() %}
+                            {{ 'first_page' | trans }}
+                        {% endif %}
+                    </a>
                 </li>
-                <li class="prev {{ classFirst }}"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['prevPage']} ) ) }}"><i class="fa fa-angle-left"></i> {{ 'prev_page' | trans }}</a></li>
+                <li class="prev {{ classFirst }}">
+                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['prevPage']} ) ) }}">
+                        <i class="fa fa-angle-left"></i>
+                        {% if false == is_mobile() %}
+                            {{ 'prev_page' | trans }}
+                        {% endif %}
+                    </a>
+                </li>
 
-                {% for prev in pagination['currentPage'] - 3..pagination['currentPage'] - 1 %}
+                {% for prev in pagination['currentPage'] - paramNumber..pagination['currentPage'] - 1 %}
                     {% if prev > 0 %}
                         <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': prev} ) ) }}">{{ prev }}</a></li>
                     {% endif %}
@@ -25,9 +38,13 @@
 
                 <li class="pages active"><a href="#">{{ pagination['currentPage'] }}</a></li>
 
-                {% for next in pagination['currentPage'] + 1..pagination['currentPage'] + 3 %}
+                {% for next in pagination['currentPage'] + 1..pagination['currentPage'] + paramNumber %}
                     {% if next <= pagination['totalPages'] %}
-                        <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': next} ) ) }}">{{ next }}</a></li>
+                        <li class="pages">
+                            <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': next} ) ) }}">
+                                {{ next }}
+                            </a>
+                        </li>
                     {% endif %}
                 {% endfor %}
 
@@ -35,8 +52,22 @@
                     {% set classLast = 'disabled' %}
                 {% endif %}
 
-                <li class="next {{ classLast }}"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['nextPage']} ) ) }}">{{ 'next_page' | trans }} <i class="fa fa-angle-right"></i></a></li>
-                <li class="last {{ classLast }}"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['totalPages']} ) ) }}">{{ 'last_page' | trans }} <i class="fa fa-angle-double-right"></i></a></li>
+                <li class="next {{ classLast }}">
+                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['nextPage']} ) ) }}">
+                        {% if false == is_mobile() %}
+                            {{ 'next_page' | trans }}
+                        {% endif %}
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="last {{ classLast }}">
+                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['totalPages']} ) ) }}">
+                        {% if false == is_mobile() %}
+                            {{ 'last_page' | trans }}
+                        {% endif %}
+                        <i class="fa fa-angle-double-right"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

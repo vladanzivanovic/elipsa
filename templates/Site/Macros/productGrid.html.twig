@@ -4,14 +4,14 @@
             <div class="sfi-img">
                 <a href="{{ path('site.product_page', {'slug': product.slug}) }}"><img src="{{ product.image.file }}" alt="{{ default_alt_tag }}"></a>
                 {% if product.is_sold == true %}
-                <div class="product-sold">
-                    <span>{{ 'sold' | trans }}</span>
-                </div>
+                    <div class="product-sold">
+                        <span>{{ 'sold' | trans }}</span>
+                    </div>
                 {% endif %}
                 {% if product.discount is not null %}
-                <div class="sfi-img-banner">
-                    <span>-{{ product.discount.percentage }} %</span>
-                </div>
+                    <div class="sfi-img-banner">
+                        <span>-{{ product.discount.percentage }} %</span>
+                    </div>
                 {% endif %}
                 <div class="sfi-img-content sfi-data-content">
                     <p class="letter-capitalize">{{ 'available_colors' | trans }}:</p>
@@ -56,7 +56,6 @@
                             <span>{{ product.price.amount }} {{ product.price.currency }}</span>
                         </p>
                     {% endif %}
-
                 </div>
             </div>
         </div>
