@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
+use App\Entity\OrderProduct;
 use App\Entity\Product;
 use App\Entity\ProductCleaning;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
 use App\Entity\ProductTranslation;
+use App\Entity\ShopOrder;
 use App\Entity\Tags;
+use App\Parser\Site\Order\OrderProductTranslationParser;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\ProductTranslationRepository;
@@ -35,9 +38,11 @@ final class ProductEditRequestParser
 
     private YouTubeParser $youTubeParser;
 
-    private array $locales;
-
     private TagsRepository $tagsRepository;
+
+    private OrderProductTranslationParser $orderProductTranslationParser;
+
+    private array $locales;
 
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -47,6 +52,7 @@ final class ProductEditRequestParser
         ProductImageService $imageService,
         YouTubeParser $youTubeParser,
         TagsRepository $tagsRepository,
+        OrderProductTranslationParser $orderProductTranslationParser,
         string $locales
     ) {
         $this->parameterBag = $parameterBag;
@@ -57,6 +63,7 @@ final class ProductEditRequestParser
         $this->youTubeParser = $youTubeParser;
         $this->locales = explode('|', $locales);
         $this->tagsRepository = $tagsRepository;
+        $this->orderProductTranslationParser = $orderProductTranslationParser;
     }
 
     public function parse(ParameterBag $bag, ?Product $product = null): Product
@@ -90,7 +97,29 @@ final class ProductEditRequestParser
 
         $this->setYoutube($bag, $product);
 
+        $this->updateOrderProducts($product);
+
         return $product;
+    }
+
+    public function setYoutube(ParameterBag $bag, Product $product): void
+    {
+        $collection = $product->getYoutubes();
+        $collection->clear();
+
+        if (false === $bag->has('youtube')) {
+            return;
+        }
+
+        foreach ($bag->get('youtube') as $youtube) {
+            $youtube = $this->youTubeParser->parse(json_decode($youtube, true));
+
+            if (null === $youtube) {
+                continue;
+            }
+
+            $product->addYoutube($youtube);
+        }
     }
 
     private function setLocales(ParameterBag $bag, Product $product): void
@@ -182,23 +211,28 @@ final class ProductEditRequestParser
         }
     }
 
-    public function setYoutube(ParameterBag $bag, Product $product): void
+    private function updateOrderProducts(Product $product)
     {
-        $collection = $product->getYoutubes();
-        $collection->clear();
+        foreach ($product->getOrderProducts() as $orderProduct) {
+            $order = $orderProduct->getOrderId();
 
-        if (false === $bag->has('youtube')) {
-            return;
-        }
-
-        foreach ($bag->get('youtube') as $youtube) {
-            $youtube = $this->youTubeParser->parse(json_decode($youtube, true));
-
-            if (null === $youtube) {
+            if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
                 continue;
             }
 
-            $product->addYoutube($youtube);
+            $orderProduct->setPrice($product->getPrice());
+            $orderProduct->setDiscount($product->getDiscount());
+
+            $this->setTranslations($product, $orderProduct);
+        }
+    }
+
+    private function setTranslations(Product $product, OrderProduct $orderProduct): void
+    {
+        foreach ($product->getProductTranslations() as $productTranslation) {
+            $orderProductTranslation = $this->orderProductTranslationParser->parse($productTranslation, $orderProduct);
+
+            $orderProduct->addOrderProductTranslation($orderProductTranslation);
         }
     }
 }

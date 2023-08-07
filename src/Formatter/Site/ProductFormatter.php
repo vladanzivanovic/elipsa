@@ -69,7 +69,7 @@ final class ProductFormatter
         /** @var Product $product */
         $product = $data['product'];
 
-        $productView = $this->productView->singlePageView($product, $locale);
+        $productView = $this->productView->view($product, $locale);
 
         $productView['categories'] = $this->getCategories($product, $locale);
         $productView['media']['images'] = $this->getImages($product);
@@ -94,7 +94,7 @@ final class ProductFormatter
         $products = [];
 
         foreach ($relatedProducts as $relatedProduct) {
-            $product = $this->productView->gridView($relatedProduct, $locale);
+            $product = $this->productView->view($relatedProduct, $locale);
             $product['colors'] = $this->getColors($relatedProduct);
             $product['sizes'] = $this->getSizes($relatedProduct);
             $product['tags'] = $this->getTags($relatedProduct, $locale);

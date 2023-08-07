@@ -2,12 +2,14 @@ import headerMapper from "../Mapper/HeaderMapper";
 import UserHandler from "../Handler/UserHandler";
 import registrationValidator from "../Validators/RegistrationValidator";
 import resetPasswordValidator from "../Validators/ResetPasswordValidator";
+import orderApiProvider from "../Provider/OrderApiProvider";
+import cartDropDownDom from "../Dom/CartDropDownDom";
 
 class HeaderEvents {
     #mapper;
     #userHandler;
     #registrationValidator;
-    #resetPasswordValidator
+    #resetPasswordValidator;
 
     constructor() {
         this.#mapper = headerMapper;

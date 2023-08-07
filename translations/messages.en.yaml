@@ -112,6 +112,8 @@ share_link: share link
 product.description: product description
 product.material_cleaning: material and cleaning
 product.size_table: table size
+product.unavailable: Product is unavailable
+
 
 related_products: related products
 
@@ -131,6 +133,7 @@ cart.total_cost: cart total
 cart.promo_coupon: Discount code
 cart.promo_coupon_text: Enter your code if you have one.
 cart.add_coupon_btn: add code
+cart.remove_coupon_btn: Remove code
 
 cart.table.image: image
 cart.table.product_name: product

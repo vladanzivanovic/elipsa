@@ -12,6 +12,67 @@ class CartDropDownDom {
         return CartDropDownDom.instance;
     }
 
+    manageDropDown(order)
+    {
+        localStorage.setItem('orderData', JSON.stringify(order));
+
+        for (let product of order.products) {
+            this.manageProduct(product);
+        }
+
+        this.setOrderData(order);
+    }
+
+    manageProduct(orderProduct)
+    {
+        let productDom = this.template();
+        let existingProduct = $(`.single-product[data-id="${orderProduct.id}"]`);
+
+        const isDiscounted = 0 < Object.keys(orderProduct.discount).length;
+
+        if (orderProduct.is_sold) {
+            return;
+        }
+
+        orderProduct.amount = isDiscounted ? orderProduct.discount.price.amount : orderProduct.price.amount;
+        orderProduct.currency = isDiscounted ? orderProduct.discount.price.currency : orderProduct.price.currency;
+        orderProduct.title = orderProduct.translation.title;
+        orderProduct.image_link = orderProduct.image.file;
+        orderProduct.product_id = orderProduct.id;
+        orderProduct.link = Routing.generate(`site.product_page.${LOCALE}`, {'slug': orderProduct.translation.slug});
+        orderProduct.slug = orderProduct.translation.slug;
+
+        productDom = productDom.replace(/image_link|product_id|title|quantity|amount|currency|size|link/gi, search => {
+            return orderProduct[search];
+        });
+
+        existingProduct.replaceWith(productDom);
+
+        if (existingProduct.length === 0) {
+            this.mapper.productList.append(productDom);
+
+            // this.mapper.productLength.text(parseInt(this.mapper.productLength.text()) + 1);
+        }
+    }
+
+    setOrderData(order)
+    {
+        let productsCounter = 0;
+
+        this.mapper.total.data('cartTotal', order.total.unformatted_amount);
+        this.mapper.total.text(order.total.amount);
+
+        for (let product of order.products) {
+            if (product.is_sold) {
+                continue;
+            }
+
+            productsCounter++;
+        }
+
+        this.mapper.productLength.text(productsCounter);
+    }
+
     addProduct(product) {
         let productDom = this.template();
         let total = parseInt(this.mapper.total.data('cartTotal'));
@@ -45,17 +106,17 @@ class CartDropDownDom {
     }
 
     removeProduct(id) {
-        let total = parseInt(this.mapper.total.data('cartTotal'));
+        // let total = parseInt(this.mapper.total.data('cartTotal'));
         const product = $(`.single-product[data-id="${id}"]`);
-        const oldPrice = parseInt($('.quantity-number', product).data('cartQuantity')) * parseInt($('.mcp-pro-price', product).data('cartPrice'));
+        // const oldPrice = parseInt($('.quantity-number', product).data('cartQuantity')) * parseInt($('.mcp-pro-price', product).data('cartPrice'));
 
         product.remove();
 
-        total -= oldPrice;
-
-        this.mapper.total.data('cartTotal', total);
-        this.mapper.total.text(AppHelperService.formatPrice(total));
-        this.mapper.productLength.text(parseInt(this.mapper.productLength.text()) - 1);
+        // total -= oldPrice;
+        //
+        // this.mapper.total.data('cartTotal', total);
+        // this.mapper.total.text(AppHelperService.formatPrice(total));
+        // this.mapper.productLength.text(parseInt(this.mapper.productLength.text()) - 1);
     }
 
     template() {
@@ -64,16 +125,16 @@ class CartDropDownDom {
                         <img src="image_link" alt="">
                     </div>
                     <div class="single-mcp-content">
-                        <a class="mcp-product-name" href="#">product_name</a>
-                        <span class="mcp-pro-quantity"><span class="quantity-number" data-cart-quantity="product_quantity">product_quantity</span> x <span class="mcp-pro-price" data-cart-price="product_price">product_price_text RSD</span></span>
+                        <a class="mcp-product-name" href="link">title (size)</a>
+                        <span class="mcp-pro-quantity"><span class="quantity-number" data-cart-quantity="quantity">quantity</span> x <span class="mcp-pro-price" data-cart-price="amount">amount currency</span></span>
                     </div>
-                    <a href="#" class="mcp-pro-delete"><i class="fa fa-times"></i></a>
+                    <a href="javascript:void(0)" class="mcp-pro-delete"><i class="fa fa-times"></i></a>
                 </div>`;
     }
 }
 
-const instance = new CartDropDownDom();
+const cartDropDownDom = new CartDropDownDom();
 
-Object.freeze(instance);
+Object.freeze(cartDropDownDom);
 
-export default instance;
+export default cartDropDownDom;

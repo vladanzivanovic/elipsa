@@ -50,6 +50,22 @@ site.ask_us:
   defaults:
     template: Site/Pages/askUsPage.html.twig
 
+site.cart_page:
+  path:
+    rs: /korpa
+    en: /en/cart
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/cart.html.twig
+
+site.checkout_page:
+  path:
+    rs: /korpa/unos-podataka
+    en: /en/checkout
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/checkout.html.twig
+
 site.logout:
   path: /logout
 

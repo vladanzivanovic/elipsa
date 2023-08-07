@@ -185,9 +185,6 @@ class ImageRepository extends ExtendedEntityRepository
     public function getMainByProduct(Product $product): Image
     {
         $query = $this->createQueryBuilder('i')
-            ->select(
-                'i'
-            )
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.image = i AND phi.product = :product')
             ->innerJoin(ProductColor::class, 'pc', 'WITH', 'phi.color = pc')
             ->where('i.isMain = :isMain')

@@ -14,6 +14,8 @@ use App\Model\EmailModel;
 use App\Repository\OrderProductRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\ShopOrderRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\InputBag;
@@ -87,16 +89,13 @@ final class OrderHandler
     }
 
     /**
-     * @param ShopOrder $order
-     *
-     * @return int
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \ReflectionException
+     * @throws OptimisticLockException
+     * @throws ORMException
+     * @throws \Exception
      */
-    public function save(ShopOrder $order): int
+    public function save(ShopOrder $order, string $group = null): int
     {
-        $errors = $this->validator->validate($order, null, "SetOrder");
+        $errors = $this->validator->validate($order, null, $group);
 
         if ($errors->count() > 0) {
             throw new UnprocessableEntityHttpException(json_encode($this->validator->parseErrors($errors)));
@@ -112,29 +111,17 @@ final class OrderHandler
     }
 
     /**
-     * @param OrderProduct $orderProduct
-     *
-     * @return void
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
-    public function removeProduct(OrderProduct $orderProduct): void
+    public function remove(ShopOrder $order): void
     {
-        $order = $orderProduct->getOrderId();
+        $this->orderRepository->delete($order);
 
-        $products = $order->getOrderProducts();
-
-        if ($products->count() > 1) {
-            $this->orderProductRepository->removeWithFlush($orderProduct);
-
-            return;
-        }
-
-        $this->orderRepository->removeWithFlush($order);
-
-        $this->session->remove('order');
+        $this->orderRepository->flush();
     }
+
+
 
     /**
      * @param PromotionCoupon $coupon

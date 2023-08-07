@@ -1,53 +1,43 @@
-import AppHelperService from "../../../js/Helper/AppHelperService";
 import ProductPageMapper from "../Mapper/ProductPageMapper";
-import CartDom from "../Dom/CartDropDownDom";
+import cartDropDownDom from "../Dom/CartDropDownDom";
 import NotificationService from "../../../js/NotificationService";
+import orderApiHandler from "./Order/OrderApiHandler";
+import loader from "../Dom/LoaderDom";
 
 class ProductPageHandler {
+    #orderApiHandler;
+
     constructor() {
         this.mapper = ProductPageMapper;
-        this.cartDom = CartDom;
+        this.cartDom = cartDropDownDom;
         this.notification = NotificationService();
+        this.#orderApiHandler = orderApiHandler;
     }
 
-    save() {
-        let urlRoute = AppHelperService.generateLocalizedUrl('site_api.set_order', {slug: SLUG});
-        let type = 'POST';
-        const data = [
-            {
-                name: 'color',
-                value: $('.color-btn.active').data('color'),
-            },
-            {
-                name: 'size',
-                value: $('.size-btn.active').text(),
-            },
-            {
-                name: 'quantity',
-                value: this.mapper.quantity.val(),
-            },
-        ];
+    async save()
+    {
+        loader.show();
 
-        this.validateBeforeSave(data);
+        if (!localStorage.getItem('order')) {
+            const order = await this.#orderApiHandler.create();
 
-        $('#page-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
+            localStorage.setItem('order', order.token);
+        }
 
+        try {
+            const order = await this.#orderApiHandler.manageProduct(
+                $('.color-btn.active').data('color'),
+                $('.size-btn.active').text(),
+                this.mapper.quantity.val()
+            )
 
-        $.ajax({
-            type,
-            url: urlRoute,
-            data,
-            dataType: 'json',
-            success: (response) => {
-                this.cartDom.addProduct(response);
-                $('#scrollUp').click();
-                $('#top_cart').click();
-                $('#page-loader').addClass('hide');
-            },
-            error: (error) => {
-                $('#page-loader').addClass('hide');
-            }
-        })
+            this.cartDom.manageDropDown(order);
+
+            $('#scrollUp').click();
+            $('#top_cart').click();
+        } catch {}
+
+        loader.hide();
     }
 
     validateBeforeSave(formData) {

@@ -1,18 +1,18 @@
 {% extends 'Site/base.html.twig' %}
 
 {% block bodyClass %}product-page{% endblock %}
-{% block title %}{{ payload.title }} - Elipsa{% endblock %}
+{% block title %}{{ payload.translations[locale].title }} - Elipsa{% endblock %}
 
-{% block ogTitle %}{{ payload.title }}{% endblock %}
+{% block ogTitle %}{{ payload.translations[locale].title }}{% endblock %}
 {% block ogImage %}{{ app.request.schemeAndHttpHost ~ payload.media.images[0].file }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
-{% block ogDescription %}{{ payload.description }}{% endblock %}
+{% block ogDescription %}{{ payload.translations[locale].description }}{% endblock %}
 
 {% block content %}
 {#    {% set product = translation.product %}#}
     {% set prevPage = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? path('site.trendy_page') : path('site.shop_page') %}
     {% set prevPageTitle = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? 'title.trends' | trans : 'title.shop_page' | trans %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title' : 'title.shop_page' | trans, 'link': prevPage}, {'title': payload.title }], 'activePage': payload.title}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title' : 'title.shop_page' | trans, 'link': prevPage}, {'title': payload.translations[locale].title }], 'activePage': payload.translations[locale].title}) }}
 
     <!-- single-product-area-start -->
     <div class="single-product-area">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <div class="single-product-description-area">
-                        <h2 class="spd-title">{{ payload.title }}</h2>
+                        <h2 class="spd-title">{{ payload.translations[locale].title }}</h2>
                         <p class="spd-price">{{ payload.discount is not null ? payload.discount.price.amount : payload.price.amount }} {{ payload.price.currency }}
 
                             {% if payload.discount is not null %}
@@ -41,12 +41,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <p class="spd-text">{{ payload.short_description }}</p>
-{#                        <ul class="spd-list">#}
-{#                            <li>Satisfaction 100% Guaranteed</li>#}
-{#                            <li>Free shipping on orders over $99</li>#}
-{#                            <li>14 day easy Return</li>#}
-{#                        </ul>#}
+                        <p class="spd-text">{{ payload.translations[locale].short_description }}</p>
                         <div class="spd-select-color">
                             <span class="letter-capitalize">{{ 'select.color' | trans }}:</span>
                             <ul>
@@ -69,7 +64,9 @@
                             <p class="quantity cart-plus-minus">
                                 <input type="text" id="product-quantity" value="1" />
                             </p>
-                            <button type="button" class="spd-add-to hvr-bs letter-capitalize">{{ 'add_to_cart' | trans }}</button>
+                            <button type="button" class="spd-add-to hvr-bs letter-capitalize {{ true == payload.is_sold ? 'disabled' : '' }}" {{ true == payload.is_sold ? 'disabled="disabled"' : '' }}>
+                                {{ 'add_to_cart' | trans }}
+                            </button>
                         </div>
                         <div class="spd-meta">
                             <div class="spd-meta-type">
@@ -107,11 +104,6 @@
                                 <li><a href="#"><i class="fa fa-rss"></i></a></li>
                             </ul>
                         </div>
-{#                        {% if payload.youtubes | length > 0 %}#}
-{#                            <div class="spd-youtube-btn">#}
-{#                                <button type="button" class="col-xs-12 col-lg-6" data-toggle="modal" data-target="#youtubeModal">{{ 'youtube.link_button' | trans }}</button>#}
-{#                            </div>#}
-{#                        {% endif %}#}
                     </div>
                 </div>
             </div>
@@ -134,7 +126,7 @@
                         <div class="spt-content">
                             <div class="tab-content">
                                 <div id="pdesc" class="tab-pane fade in active">
-                                    <p>{{ payload.description }}</p>
+                                    <p>{{ payload.translations[locale].description }}</p>
                                 </div>
                                 <div id="ainfo" class="tab-pane fade">
                                     <ul id="cleaning" class="col-xs-12">
@@ -144,7 +136,7 @@
                                             </li>
                                         {% endfor %}
                                     </ul>
-                                    <p>{{ payload.cleaning }}</p>
+                                    <p>{{ payload.translations[locale].cleaning }}</p>
                                 </div>
                                 <div id="size_table" class="tab-pane fade">
                                     <img src="{{ asset('build/site/images/size_table_'~ locale ~'.jpg') }}">
@@ -171,7 +163,7 @@
                 <div class="related-pro-carousel owl-carousel">
                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                     {% for relatedProduct in relatedProducts %}
-                        {{ productGrid.productGrid(relatedProduct, 'col-xs-12') }}
+                        {{ productGrid.productGrid(relatedProduct, 'col-xs-12', locale) }}
                     {% endfor %}
                 </div>
             </div>
@@ -187,26 +179,5 @@
     <script nonce="{{ csp_nonce('script') }}">
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const MEDIA = JSON.parse('{{ payload.media | json_encode() | raw }}');
-
-        {#window.slideImages = [];#}
-        {#window.isMobile = {{ is_mobile() ? 1 : 0 }};#}
-
-        {#{% for image in payload.media.images %}#}
-        {#    MEDIA.push({#}
-        {#        img: '{{ image.file }}',#}
-        {#        thumb: '{{ image.file_thumb }}',#}
-        {#        full: '{{ image.file }}',#}
-        {#        color: '{{ image.color_id }}',#}
-        {#    });#}
-        {#{% endfor %}#}
-
-        {#{% for youtube in payload.media.youtubes %}#}
-        {#    MEDIA.push({#}
-        {#        video: '{{ youtube.link }}',#}
-        {#        img: '{{ youtube.Thumbnails.standard.url }}',#}
-        {#        full: '{{ youtube.Thumbnails.maxres.url }}',#}
-        {#        thumb: '{{ youtube.Thumbnails.default.url }}',#}
-        {#    });#}
-        {#{% endfor %}#}
     </script>
 {% endblock %}

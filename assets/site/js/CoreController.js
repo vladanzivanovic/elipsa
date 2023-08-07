@@ -6,14 +6,18 @@ import WishListHandler from "./Handler/WishListHandler";
 import NewsLetterHandler from "./Handler/NewsLetterHandler";
 import FooterEvents from "./Events/FooterEvents";
 import HeaderEvents from "./Events/HeaderEvents";
+import CartDropDownEvents from "./Events/CartDropDownEvents";
 
 require('jquery-eu-cookie-law-popup/js/jquery-eu-cookie-law-popup');
 
 class CoreController {
+    #handler;
+    #mapper;
+
     constructor() {
         this.baseCore = new BaseCoreController();
-        this.handler = new CartHandler();
-        this.mapper = coreMapper;
+        this.#handler = new CartHandler();
+        this.#mapper = coreMapper;
 
         loader;
 
@@ -21,6 +25,7 @@ class CoreController {
 
         new HeaderEvents();
         new FooterEvents();
+        new CartDropDownEvents();
     }
 
     siteMobileMenu() {
@@ -63,16 +68,7 @@ class CoreController {
     }
 
     registerEvents() {
-        $(document).on('click touchend', '.top-cart .mcp-pro-delete', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const productId = $(e.currentTarget).parent('.single-product').data('id');
-
-            this.handler.remove(productId);
-        });
-
-        $(document).on('click touchend', this.mapper.toggleWishListBtn, e => {
+        $(document).on('click touchend', this.#mapper.toggleWishListBtn, e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -81,22 +77,22 @@ class CoreController {
             handler.toggle($(e.currentTarget));
         });
 
-        $(document).on('click touchend', this.mapper.newsLetterSubmitBtn, e => {
+        $(document).on('click touchend', this.#mapper.newsLetterSubmitBtn, e => {
             e.preventDefault();
             e.stopPropagation();
 
             const handler = new NewsLetterHandler();
 
-            handler.addUser(this.mapper.newsLetterForm, true);
+            handler.addUser(this.#mapper.newsLetterForm, true);
         });
 
-        $(document).on('click touchend', this.mapper.newsLetterSubmitBtnFooter, e => {
+        $(document).on('click touchend', this.#mapper.newsLetterSubmitBtnFooter, e => {
             e.preventDefault();
             e.stopPropagation();
 
             const handler = new NewsLetterHandler();
 
-            handler.addUser(this.mapper.newsLetterFormFooter);
+            handler.addUser(this.#mapper.newsLetterFormFooter);
         });
 
         $('#current_language').on('click touchend', e => {

@@ -6,6 +6,7 @@ namespace App\View;
 
 use App\Entity\Image;
 use App\Entity\ProductHasImages;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 final class ImageView
@@ -53,6 +54,10 @@ final class ImageView
 
     private function generateImageLink(string $name, string $entity, string $filter): string
     {
-        return $this->router->generate('app.image_show', ['entity' => $entity, 'name' => $name, 'filter' => $filter]);
+        return $this->router->generate(
+            'app.image_show',
+            ['entity' => $entity, 'name' => $name, 'filter' => $filter],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

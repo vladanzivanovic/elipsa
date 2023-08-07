@@ -102,7 +102,7 @@ class Product
     /**
      * @ORM\Column(type="boolean")
      */
-    private $sold;
+    private bool $sold;
 
     public function __construct()
     {
@@ -361,6 +361,17 @@ class Product
         return $sizes;
     }
 
+    public function isSizeAvailable(string $size): bool
+    {
+        foreach ($this->getAvailableSizes() as $availableSize) {
+            if ($availableSize->getSize() === $size) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @return Collection|ProductHasImages[]
      */
@@ -494,6 +505,16 @@ class Product
         return $colors;
     }
 
+    public function hasColor(ProductColor $color): bool
+    {
+        $colors = $this->getProductColors();
+
+        return in_array($color, $colors, true);
+    }
+
+    /**
+     * @return Collection<int, OrderProduct>
+     */
     public function getOrderProducts(): Collection
     {
         return $this->orderProducts;

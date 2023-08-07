@@ -27,26 +27,26 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload[locale]['title'] : '', locale~'[title]') }}
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : '', locale~'[title]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.textarea('Kratak opis', 'short_description_'~locale, IS_EDIT ? payload[locale]['short_description'] : '', locale~'[short_description]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Kratak opis', 'short_description_'~locale, IS_EDIT ? payload.translations[locale]['short_description'] : '', locale~'[short_description]', 10, '', 'form-control') }}
                                     </div>
                                 </div><!-- Col -->
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.textarea('Opis', 'description_rs'~locale, IS_EDIT ? payload[locale]['description'] : '', locale~'[description]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Opis', 'description_rs'~locale, IS_EDIT ? payload.translations[locale]['description'] : '', locale~'[description]', 10, '', 'form-control') }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.textarea('Materijali i održavanje', 'cleaning_'~locale, IS_EDIT ? payload[locale]['cleaning'] : '', locale~'[cleaning]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Materijali i održavanje', 'cleaning_'~locale, IS_EDIT ? payload.translations[locale]['cleaning'] : '', locale~'[cleaning]', 10, '', 'form-control') }}
                                     </div>
                                 </div><!-- Col -->
                             </div>
@@ -87,12 +87,12 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Cena', 'price', IS_EDIT ? payload['price'] : '', 'price') }}
+                                    {{ form.input('Cena', 'price', IS_EDIT ? payload.price : '', 'price') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.discount.price : '', 'discount') }}
+                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.discount : '', 'discount') }}
                                 </div>
                             </div><!-- Col -->
                         </div>

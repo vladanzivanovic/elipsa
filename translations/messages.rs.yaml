@@ -103,14 +103,15 @@ share_link: Link za deljenje
 product.description: opis proizvoda
 product.material_cleaning: materijali i održavanje
 product.size_table: tabela veličina
+product.unavailable: Proizvod više nije dostupan
 
 related_products: slični proizvodi
 
-cart.name: korpa
-cart.total_products: ukupno
-cart.total_shipping: ukupno sa poštarinom
-cart.view: pogledaj korpu
-cart.checkout: naruči
+cart.name: Korpa
+cart.total_products: Ukupno
+cart.total_shipping: Ukupno sa poštarinom
+cart.view: Pogledaj korpu
+cart.checkout: Naruči
 cart.personal_data: vaši podaci
 cart.order_completed_successful: uspešna narudžbina
 cart.continue_shopping: nastavi kupovinu
@@ -122,6 +123,7 @@ cart.total_cost: iznos vaše korpe
 cart.promo_coupon: promotivni kod
 cart.promo_coupon_text: unesite promotivni kod ukoliko ga imate.
 cart.add_coupon_btn: dodaj kod
+cart.remove_coupon_btn: Ukloni kod
 
 cart.table.image: slika
 cart.table.product_name: proizvod

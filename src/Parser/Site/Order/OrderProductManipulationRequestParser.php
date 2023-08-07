@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Site;
+namespace App\Parser\Site\Order;
 
 use App\Entity\OrderProduct;
 use App\Entity\OrderProductTranslation;
@@ -12,13 +12,12 @@ use App\Entity\ShopOrder;
 use App\Repository\ImageRepository;
 use App\Repository\OrderProductRepository;
 use App\Repository\ProductColorRepository;
-use App\Repository\ProductRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\ShopOrderRepository;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-final class OrderEditRequestParser
+final class OrderProductManipulationRequestParser
 {
     /**
      * @var OrderProductRepository
@@ -42,7 +41,7 @@ final class OrderEditRequestParser
     private $orderRepository;
 
     /**
-     * OrderEditRequestParser constructor.
+     * OrderProductManipulationRequestParser constructor.
      *
      * @param OrderProductRepository $orderProductRepository
      * @param ProductSizeRepository  $sizeRepository

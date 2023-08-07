@@ -16,32 +16,37 @@ class PromotionCoupon
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $code;
+    private string $code;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $validFrom;
+    private \DateTimeInterface $validFrom;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $validTo;
+    private \DateTimeInterface $validTo;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $discount;
+    private int $discount;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ShopOrder", mappedBy="coupon")
      */
-    private $shopOrders;
+    private Collection $shopOrders;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $useOnDiscountedProducts = false;
 
     public function __construct()
     {
@@ -128,6 +133,18 @@ class PromotionCoupon
                 $shopOrder->setCoupon(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isUseOnDiscountedProducts(): ?bool
+    {
+        return $this->useOnDiscountedProducts;
+    }
+
+    public function setUseOnDiscountedProducts(bool $useOnDiscountedProducts): self
+    {
+        $this->useOnDiscountedProducts = $useOnDiscountedProducts;
 
         return $this;
     }

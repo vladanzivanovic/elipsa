@@ -7,50 +7,48 @@ namespace App\View;
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Factory\NumberFormatterFactory;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class ProductView
 {
-    private array $locales;
-
     private PriceView $priceView;
+
+    private RouterInterface $router;
+
+    private array $locales;
 
     public function __construct(
         PriceView $priceView,
+        RouterInterface $router,
         string $locales
     ) {
         $this->locales = explode('|', $locales);
         $this->priceView = $priceView;
+        $this->router = $router;
     }
 
     public function editView(Product $product): array
     {
         $translations = [];
+        $view = $this->view($product, 'rs');
 
         foreach ($this->locales as $locale) {
             $translations[$locale] = $this->getTranslationValues($product->getByLocale($locale));
         }
 
-        return $translations + $this->view($product, 'rs');
-    }
+        $view['price'] = $product->getPrice();
+        $view['discount'] = $product->getDiscount();
+        $view['translations'] = $translations;
 
-    public function singlePageView(Product $product, string $locale): array
-    {
-        $translationView = $this->getTranslationValues($product->getByLocale($locale));
-
-        return $translationView + $this->view($product, $locale);
-    }
-
-    public function gridView(Product $product, string $locale): array
-    {
-        $translationView = $this->getTranslationValues($product->getByLocale($locale));
-
-        return $translationView + $this->view($product, $locale);
+        return $view;
     }
 
     public function view(Product $product, string $locale): array
     {
         $discount = $product->getDiscount();
         $price = $product->getPrice();
+        $trans = $product->getByLocale($locale);
 
         $view = [
             'id' => $product->getId(),
@@ -60,6 +58,8 @@ final class ProductView
             'is_sold' => $product->isSold(),
             'discount' => null,
         ];
+
+        $view['translations'][$locale] = $this->getTranslationValues($trans);
 
         if (0 < $discount) {
             $percentage = (int) round(abs((100 - ($discount/$price) * 100)));

@@ -3,156 +3,138 @@ import CartDom from "../Dom/CartDropDownDom";
 import cartPageMapper from "../Mapper/CartPageMapper";
 import NotificationService from "../../../js/NotificationService";
 import loader from "../Dom/LoaderDom";
+import orderApiHandler from "./Order/OrderApiHandler";
+import cartPageManipulator from "../Manipulator/CartPageManipulator";
+import orderApiChecker from "../Checker/OrderApiChecker";
 
 class CartHandler {
+    #orderApiHandler;
+    #pageManipulator;
+    #pageMapper;
+    #orderApiChecker;
+
     constructor() {
         this.cartDom = CartDom;
-        this.pageMapper = cartPageMapper;
+        this.#pageMapper = cartPageMapper;
         this.notification = NotificationService();
+        this.#orderApiHandler = orderApiHandler;
+        this.#pageManipulator = cartPageManipulator;
+        this.#orderApiChecker = orderApiChecker;
     }
 
-    update() {
-        const data = [];
-        $.each($(this.pageMapper.quatityInput), (index, elm) => {
-            data.push({
-                name: $(elm).attr('name'),
-                value: $(elm).val(),
-            })
-        });
-
-        $('#page-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
-
-        $.ajax({
-            type: 'PUT',
-            url: AppHelperService.generateLocalizedUrl('site_api.update_order_products'),
-            data,
-            dataType: 'json',
-            success: response => {
-                this.updateProductsPrices();
-                $('#page-loader').addClass('hide');
-            },
-            error: error => {
-                $('#page-loader').addClass('hide');
-            }
-        })
-    }
-
-    remove(id, elm) {
-        let urlRoute = AppHelperService.generateLocalizedUrl('site_api.remove_order_product', {id});
-        let type = 'DELETE';
-
-        $('#page-loader').fadeOut('slow', function() { $(this).removeClass('hide'); });
-
-        $.ajax({
-            type,
-            url: urlRoute,
-            dataType: 'json',
-            success: (response) => {
-                this.cartDom.removeProduct(id);
-
-                if (elm) {
-                    elm.remove();
-                    this.updateProductsPrices();
-                }
-                $('#page-loader').addClass('hide');
-            },
-            error: (error) => {
-                $('#page-loader').addClass('hide');
-            }
-        })
-    }
-
-    setCoupon() {
+    async removeProduct(event)
+    {
         loader.show();
-        this.pageMapper.promoCouponErrorText.empty();
 
-        $.ajax({
-            type: 'PATCH',
-            url: AppHelperService.generateLocalizedUrl('site_api.set_order_coupon', {code: this.pageMapper.promoCouponInput.val()}),
-            dataType: 'json',
-            success: response => {
-                let total = parseInt(this.pageMapper.total.data('totalPrice'));
-                let shippingPrice = 0;
-                let totalWithShipping = Math.round(total);
+        try {
+            let order;
 
-                window.DISCOUNT = response.discount;
-                const totalWithDiscount = total - (total * (window.DISCOUNT/100));
+            const productRow = $(event.currentTarget).parents('tr');
 
-                this.pageMapper.promoCouponPrice.text(response.discount);
-                this.pageMapper.promoCouponPrice.closest('.promo-coupon-holder').removeClass('hide');
+            order = await this.#orderApiHandler.removeProduct(productRow.data('id'));
 
-                if (totalWithDiscount < FREE_SHIPPING) {
-                    shippingPrice = SHIPPING;
-                    totalWithShipping = totalWithDiscount + SHIPPING;
-                } else {
-                    totalWithShipping = totalWithDiscount;
-                }
+            if(
+                0 === order.products.length ||
+                false === this.#orderApiChecker.hasAvailableProducts(order.products)
+            ) {
+                await this.#orderApiHandler.removeOrder();
 
-                this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));
+                localStorage.removeItem('order');
+                localStorage.removeItem('orderData');
 
-                this.pageMapper.totalShipping.data('totalWithShipping', totalWithShipping);
-                this.pageMapper.totalShipping.text(AppHelperService.formatPrice(Math.round(totalWithShipping)));
-
-                loader.hide();
-            },
-            error: error => {
-                if (error.responseJSON.message) {
-                    this.pageMapper.promoCouponErrorText.text(Translator.trans(error.responseJSON.message, null, 'validators', LOCALE));
-                } else {
-                    this.pageMapper.promoCouponErrorText.text(Translator.trans('promo_coupon.not_found', null, 'validators', LOCALE));
-                }
-
-                loader.hide();
+                order = null;
             }
-        })
+
+            this.#pageManipulator.updatePage(order);
+
+        } catch (e) {
+            let message = e.message;
+
+            if (e.responseJSON.error) {
+                message = e.responseJSON.error.message;
+            }
+
+            this.#pageManipulator.showError(message, 'coupon');
+        }
+
+        loader.hide();
     }
 
-    updateProductsPrices() {
-        let total = 0;
-        let totalWithDiscount = null;
+    async manageCoupon(removeCoupon = false) {
+        loader.show();
+        this.#pageMapper.promoCouponErrorText.empty();
 
-        $.each($('.product_price_value'), (index, elm) => {
-            const tr = $(elm).closest('tr');
-            const quantity = tr.find('input').val();
-            const productTotalPrice = tr.find('.product_price_total');
-            let productTotal = quantity * parseInt($(elm).data('price'));
+        try {
+            let order;
 
-            productTotalPrice.text(AppHelperService.formatPrice(productTotal));
+            if (true === removeCoupon) {
+                const localOrder = JSON.parse(localStorage.getItem('orderData'));
 
-            total += parseInt(productTotal);
-        });
+                order = await this.#orderApiHandler.removeCoupon(
+                    localOrder.promotion.code
+                );
+            } else {
+                const couponCode = $(this.#pageMapper.promoCouponInput).val();
 
-        this.pageMapper.total.text(AppHelperService.formatPrice(total));
+                if (0 === couponCode.length) {
+                    throw new Error('field.not_blank');
+                }
 
-        let shippingPrice = 0;
-        let totalWithShipping = Math.round(total);
+                order = await this.#orderApiHandler.setCoupon(couponCode);
 
-        if (window.DISCOUNT > 0) {
-            totalWithDiscount = total - (total * (window.DISCOUNT/100));
-            totalWithShipping = Math.round(totalWithDiscount);
-
-            if (totalWithDiscount < FREE_SHIPPING) {
-                shippingPrice = SHIPPING;
-                totalWithShipping = Math.round(totalWithDiscount + SHIPPING);
+                $(this.#pageMapper.promoCouponInput).val('');
             }
 
-            this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));
+            this.#pageManipulator.updatePage(order);
 
-            this.pageMapper.totalShipping.data('totalWithShipping', totalWithShipping);
-            this.pageMapper.totalShipping.text(AppHelperService.formatPrice(totalWithShipping));
+        } catch (e) {
+            let message = e.message;
 
-            return true;
+            if (e?.responseJSON?.error) {
+                message = e.responseJSON.error.message;
+            }
+
+            this.#pageManipulator.showError(message, 'coupon');
         }
 
-        if (total < FREE_SHIPPING) {
-            shippingPrice = SHIPPING;
-            totalWithShipping = Math.round(total + SHIPPING);
+        loader.hide();
+    }
+
+    async updateProducts()
+    {
+        loader.show();
+
+        try {
+            let order;
+
+            const localOrder = JSON.parse(localStorage.getItem('orderData'));
+
+            for(let orderProduct of localOrder.products) {
+                const productRow = $(`tr[data-id="${orderProduct.id}"]`);
+
+                const quantity = productRow.find('input[name="quantity"]').val();
+
+                order = await this.#orderApiHandler.manageProduct(
+                    orderProduct.color.id,
+                    orderProduct.size.toString(),
+                    quantity,
+                    orderProduct.translation.slug
+                );
+            }
+
+            this.#pageManipulator.updatePage(order);
+
+        } catch (e) {
+            let message = e.message;
+
+            if (e.responseJSON.error) {
+                message = e.responseJSON.error.message;
+            }
+
+            this.#pageManipulator.showError(message, 'coupon');
         }
 
-        this.pageMapper.shippingPrice.text(AppHelperService.formatPrice(shippingPrice));
-
-        this.pageMapper.totalShipping.data('totalWithShipping', totalWithShipping);
-        this.pageMapper.totalShipping.text(AppHelperService.formatPrice(totalWithShipping));
+        loader.hide();
     }
 }
 

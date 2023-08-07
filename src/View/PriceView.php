@@ -20,6 +20,7 @@ final class PriceView
         $this->numberFormatterFactory = $numberFormatterFactory;
         $this->languages = $languages;
     }
+
     public function view(int $price, string $locale): array
     {
         $language = $this->languages[$locale];
@@ -30,6 +31,7 @@ final class PriceView
         return [
             'amount' => $numberFormatter->format($price),
             'currency' => $language['currencyCode'],
+            'unformatted_amount' => $price,
         ];
     }
 }

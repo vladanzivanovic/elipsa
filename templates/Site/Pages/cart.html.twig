@@ -11,59 +11,22 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    {% if products is defined %}
-                        <div class="shopping-cart-table table-responsive">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th class="cart-img-title letter-capitalize">{{ 'cart.table.image' | trans }}</th>
-                                    <th class="cart-pro-name letter-capitalize">{{ 'cart.table.product_name' | trans }}</th>
-                                    <th class="cart-pro-price letter-capitalize">{{ 'cart.table.price' | trans }}</th>
-                                    <th class="cart-pro-quantity letter-capitalize">{{ 'cart.table.quantity' | trans }}</th>
-                                    <th class="cart-pro-total-price letter-capitalize">{{ 'cart.table.total' | trans }}</th>
-                                    <th class="cart-pro-remove"><i class="fa fa-times"></i></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for product in products %}
-                                    {% set price = product.discount > 0 ? product.discount : product.price %}
-
-                                    <tr class="table-row1">
-                                        <td class="cart_product_image_value">
-                                            <div class="pro-photo-checkout">
-                                                <img src="{{ product.image_link }}" alt="{{ default_alt_tag }}" />
-                                            </div>
-                                        </td>
-                                        <td class="cart_product_name_value">
-                                            <p class="cart_product_name">
-                                                <a href="#">{{ product.name }}</a>
-                                            </p>
-                                        </td>
-                                        <td class="cart_product_price_value">
-                                            <span class="product_price"><span class="product_price_value" data-price="{{ price }}">{{ price | number_format(2) }}</span> RSD</span>
-                                        </td>
-                                        <td class="cart_product_quantity_value">
-                                            <div class="product-quantity-t">
-                                                <input type="number" name="{{ product.id }}" value="{{ product.quantity }}" min="1" />
-                                            </div>
-                                        </td>
-                                        <td class="cart_product_total_value">
-                                            {% set productTotal = product.quantity * price %}
-                                            <span class="product_price"><span class="product_price_total">{{ productTotal | number_format(2) }}</span> RSD</span>
-                                        </td>
-                                        <td class="cart_product_name">
-                                            <a href="#" class="remove-product" data-id="{{ product.id }}" data-price="{{ productTotal }}">
-                                                <i class="fa fa-times"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <h5 class="letter-capitalize">{{ 'cart.empty' | trans }}</h5>
-                    {% endif %}
+                    <div class="shopping-cart-table table-responsive">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="cart-img-title letter-capitalize">{{ 'cart.table.image' | trans }}</th>
+                                <th class="cart-pro-name letter-capitalize">{{ 'cart.table.product_name' | trans }}</th>
+                                <th class="cart-pro-price letter-capitalize">{{ 'cart.table.price' | trans }}</th>
+                                <th class="cart-pro-quantity letter-capitalize">{{ 'cart.table.quantity' | trans }}</th>
+                                <th class="cart-pro-total-price letter-capitalize">{{ 'cart.table.total' | trans }}</th>
+                                <th class="cart-pro-remove"><i class="fa fa-times"></i></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,7 +39,7 @@
                 <div class="col-xs-12">
                     <div class="scca-head">
                         <a class="scb-continue shopping-cart-button hvr-bs" href="{{ path('site.shop_page') }}">{{ 'cart.continue_shopping' | trans }}</a>
-                        <a class="scb-update shopping-cart-button hvr-bs {{ products is not defined ? 'disabled' : '' }}" href="#">{{ 'cart.update' | trans }}</a>
+                        <a class="scb-update shopping-cart-button hvr-bs update-products" href="#">{{ 'cart.update' | trans }}</a>
                     </div>
                 </div>
             </div>
@@ -85,9 +48,13 @@
                     <div class="sccb-discount shopping-cart-content-box">
                         <h3 class="sccb-title letter-capitalize">{{ 'cart.promo_coupon' | trans }}</h3>
                         <span class="sccb-shipping-title letter-capitalize">{{ 'cart.promo_coupon_text' | trans }}</span>
-                        <div class="sccb-discount-subscribe-box clearfix">
+                        <div class="sccb-discount-subscribe-box clearfix add-coupon-wrapper hide">
                             <input type="text" name="coupon" id="promo_coupon" value="">
-                            <a class="sccb-discount-subscribe shopping-cart-button hvr-bs promo-coupon-btn {{ products is not defined ? 'disabled' : '' }}" href="#">{{ 'cart.add_coupon_btn' | trans }}</a>
+                            <a class="sccb-discount-subscribe shopping-cart-button hvr-bs promo-coupon-btn" href="#">{{ 'cart.add_coupon_btn' | trans }}</a>
+                        </div>
+                        <div class="sccb-discount-subscribe-box clearfix view-coupon-wrapper hide">
+                            <p class="promo-coupon-code-view"></p>
+                            <a class="sccb-discount-subscribe shopping-cart-button hvr-bs promo-coupon-remove-btn" href="#">{{ 'cart.remove_coupon_btn' | trans }}</a>
                         </div>
                         <p id="coupon-error-text" class="sccb-discount-error"></p>
                     </div>
@@ -96,21 +63,18 @@
                     <div class="sccb-cart-total shopping-cart-content-box">
                         <h3 class="sccb-title letter-capitalize">{{ 'cart.total_cost' | trans }}</h3>
                         <div class="sccb-cart-content">
-                            {% set totalWithDiscount = total %}
-                            {% set totalWithShipping = shipping | trim + total %}
-
-                            {% if promo_price is not null %}
-                                {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}
-                                {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping_price %}
-                                {% set totalWithShipping = shipping + totalWithDiscount %}
-                            {% endif %}
-                            <h6 class="text-uppercase">{{ 'cart.total_products' | trans }}: <span><span class="total-price" data-total-price="{{ total }}">{{ total | number_format(2) }}</span> RSD</span></h6>
-                            <h6 class="text-uppercase {{ promo_price is null ? 'hide' : '' }} promo-coupon-holder">{{ 'cart.promo_coupon' | trans }}: <span><span class="promo-coupon-discount">{{ promo_price }}</span> %</span></h6>
-                            <h6 class="text-uppercase">{{ 'cart.shipping' | trans }}: <span><span class="shipping-price">{{ shipping | number_format(2) }}</span> RSD</span></h6>
-                            <h6 class="text-uppercase">{{ 'cart.total_shipping' | trans }}: <span><span class="total-price-shipping" data-total-with-shipping="{{ totalWithShipping }}">{{ totalWithShipping | round | number_format(2) }}</span> RSD</span></h6>
+                            <h6 class="text-uppercase total-products-amount">{{ 'cart.total_products' | trans }}:
+                                    <span class="total-price"></span>
+                            </h6>
+                            <h6 class="text-uppercase promo-coupon-amount-holder">{{ 'cart.promo_coupon' | trans }}:
+                                <span class="promo-coupon-discount"></span></h6>
+                            <h6 class="text-uppercase">{{ 'cart.shipping' | trans }}: <span class="shipping-price"></span></h6>
+                            <h6 class="text-uppercase">{{ 'cart.total_shipping' | trans }}:
+                                <span class="total-price-shipping"></span>
+                            </h6>
                         </div>
                         <div class="sccb-cart-button">
-                            <a class="shopping-cart-button hvr-bs text-uppercase {{ products is not defined ? 'disabled' : '' }}" href="{{ path('site.checkout_page') }}">{{ 'cart.next_step' | trans }}</a>
+                            <a class="shopping-cart-button hvr-bs text-uppercase next-step-btn" href="{{ path('site.checkout_page') }}">{{ 'cart.next_step' | trans }}</a>
                         </div>
                     </div>
                 </div>
@@ -118,15 +82,6 @@
         </div>
     </div>
     <!-- shopping-cart-content-area-end -->
-{% endblock %}
-
-{% block pageJavascript %}
-    <script nonce="{{ csp_nonce('script') }}">
-        const TOTAL = {{ total }};
-        const FREE_SHIPPING = {{ free_shipping_price }};
-        const SHIPPING = {{ shipping_price }};
-        window.DISCOUNT = parseInt('{{ promo_price is not null ? promo_price : 0 }}');
-    </script>
 {% endblock %}
 
 {% block pageStyleSheets %}
