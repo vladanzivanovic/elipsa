@@ -39,9 +39,9 @@ final class OrderPaymentRequestView
         $orgClientId = $this->parameterBag->get('intesa_merchant_id');
         $oid = $order->getToken();
         $orgAmount = $order->getTotal().'.00';
-        $orgOkUrl = str_replace('http://localhost:9600', 'https://test.elipsa.rs', $this->router->generate('site.checkout_completed_successful_card', ['token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL));
-        $orgFailUrl = str_replace('http://localhost:9600', 'https://test.elipsa.rs', $this->router->generate('site.checkout_failed', [], UrlGeneratorInterface::ABSOLUTE_URL));
-        $cancelUrl = str_replace('http://localhost:9600', 'https://test.elipsa.rs', $this->router->generate('site.checkout_page', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        $orgOkUrl = $this->router->generate('site.checkout_completed_successful_card', ['token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $orgFailUrl = $this->router->generate('site.checkout_failed', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $cancelUrl = $this->router->generate('site.checkout_page', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $orgTransactionType = "PreAuth";
         $orgCurrency = "941";
 

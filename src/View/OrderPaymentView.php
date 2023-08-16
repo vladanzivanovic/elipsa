@@ -17,8 +17,6 @@ final class OrderPaymentView
         $transactionData = $order->getTransactionData();
         $preAuth = $transactionData['PreAuth'];
 
-        dd($transactionData);
-
         $view = [
             'pre_auth' => [
                 'transaction_date_time' => $preAuth['EXTRA_TRXDATE'] ? new \DateTime($preAuth['EXTRA_TRXDATE']) : null,
