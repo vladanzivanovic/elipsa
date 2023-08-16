@@ -573,7 +573,7 @@ header {}
     text-align: left;
     top: 40px;
     width: 300px;
-    z-index: 99;
+    z-index: 10000;
 }
 
 .my-cart::before {

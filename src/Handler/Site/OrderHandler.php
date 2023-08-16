@@ -14,6 +14,7 @@ use App\Model\EmailModel;
 use App\Repository\OrderProductRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\ShopOrderRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use phpDocumentor\Reflection\Types\This;
@@ -140,23 +141,15 @@ final class OrderHandler
     }
 
     /**
-     * @param string       $orderToken
-     * @param string       $locale
-     *
-     * @param ParameterBag $bag
-     *
-     * @return array
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
+     * @throws ORMException
      * @throws \ReflectionException
+     * @throws NonUniqueResultException
      */
-    public function completeCheckoutOnSuccess(string $orderToken, string $locale, ParameterBag $bag): array
+    public function completeCheckoutOnSuccess(ShopOrder $order, string $locale, ParameterBag $bag): void
     {
         $this->isSuccessfulTransaction = true;
 
-        $order = $this->orderRepository->getByToken($orderToken);
         $order->setStatus(ShopOrder::STATUS_COMPLETED);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
@@ -166,11 +159,11 @@ final class OrderHandler
 
         $this->orderRepository->flush();
 
-        $settings = $this->getSettings();
+//        $settings = $this->getSettings();
+//
+//        $this->sendEmail($order, $locale, $bag);
 
-        $this->sendEmail($order, $locale, $bag);
-
-        return ['order' => $order, 'settings' => $settings];
+//        return ['order' => $order, 'settings' => $settings];
     }
 
     /**

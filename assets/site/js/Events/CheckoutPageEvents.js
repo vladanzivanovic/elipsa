@@ -1,14 +1,17 @@
 import checkoutPageMapper from "../Mapper/CheckoutPageMapper";
 import userService from "../Service/UserService";
+import checkoutHandler from "../Handler/CheckoutHandler";
 
 class CheckoutPageEvents {
     #pageMapper;
     #userService;
+    #handler;
 
     constructor() {
         if(!CheckoutPageEvents.instance) {
             this.#pageMapper = checkoutPageMapper;
             this.#userService = userService;
+            this.#handler = checkoutHandler;
 
             CheckoutPageEvents.instance = this;
         }
@@ -18,13 +21,6 @@ class CheckoutPageEvents {
 
     registerEvents()
     {
-        $(this.#pageMapper.form).on('submit', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            // this.handler.save();
-        });
-
         $('.open-login').on('click touchend', e => {
             e.preventDefault();
             e.stopPropagation();
@@ -62,6 +58,17 @@ class CheckoutPageEvents {
             $(this.#pageMapper.password).attr('disabled', 'disabled');
             $(this.#pageMapper.accountCreateChk).prop('checked', false);
         });
+
+        $(this.#pageMapper.form).on('submit', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this.#handler.save();
+        });
+
+        $(this.#pageMapper.email).on('keyup', e => {
+            $(this.#pageMapper.accountCreateError).fadeOut();
+        })
     }
 }
 

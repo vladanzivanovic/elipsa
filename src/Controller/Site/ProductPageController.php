@@ -30,7 +30,7 @@ final class ProductPageController extends AbstractController
      */
     public function index(ProductTranslation $productTranslation, Request $request): array
     {
-        $locale = $request->getSession()->get('_locale');
+        $locale = $request->getLocale();
 
         $collection = $this->pageCollector->collect($productTranslation, $locale, $this->getUser());
 

@@ -3,25 +3,30 @@ import cartDropDownDom from "../Dom/CartDropDownDom";
 import NotificationService from "../../../js/NotificationService";
 import orderApiHandler from "./Order/OrderApiHandler";
 import loader from "../Dom/LoaderDom";
+import orderStorageManipulator from "../Manipulator/OrderStorageManipulator";
 
 class ProductPageHandler {
     #orderApiHandler;
+    #orderStorageManipulator;
 
     constructor() {
         this.mapper = ProductPageMapper;
         this.cartDom = cartDropDownDom;
         this.notification = NotificationService();
         this.#orderApiHandler = orderApiHandler;
+        this.#orderStorageManipulator = orderStorageManipulator;
     }
 
     async save()
     {
+        const orderToken = this.#orderStorageManipulator.getOrderToken();
+
         loader.show();
 
-        if (!localStorage.getItem('order')) {
+        if (!orderToken) {
             const order = await this.#orderApiHandler.create();
 
-            localStorage.setItem('order', order.token);
+            this.#orderStorageManipulator.setOrder(order.token, order);
         }
 
         try {
@@ -38,19 +43,6 @@ class ProductPageHandler {
         } catch {}
 
         loader.hide();
-    }
-
-    validateBeforeSave(formData) {
-        for (let i in formData) {
-            const value = formData[i].value;
-            const name = formData[i].name;
-
-            if (!value || value < 1) {
-                this.notification.show('error', Translator.trans(`product.${name}`, null, 'validators', LOCALE), true);
-
-                throw 'Validation failed.';
-            }
-        }
     }
 }
 

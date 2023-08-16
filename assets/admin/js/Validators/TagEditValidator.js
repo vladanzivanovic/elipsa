@@ -12,6 +12,7 @@ class TagEditValidator {
     validate(form) {
         let options;
 
+        //todo fix this
         options = {
             rules: {
                 rs_title: {required: true},

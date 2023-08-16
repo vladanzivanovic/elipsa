@@ -1,13 +1,16 @@
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import orderApiChecker from "../../Checker/OrderApiChecker";
 import loader from "../../Dom/LoaderDom";
+import orderStorageManipulator from "../../Manipulator/OrderStorageManipulator";
 
 class OrderApiHandler {
     #checker;
+    #orderStorageManipulator;
 
     constructor() {
         if (!OrderApiHandler.instance) {
             this.#checker = orderApiChecker;
+            this.#orderStorageManipulator = orderStorageManipulator;
 
             OrderApiHandler.instance = this;
         }
@@ -39,8 +42,8 @@ class OrderApiHandler {
 
     async manageProduct(color, size, quantity, slug = SLUG)
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.set_product_order', {
-            token: localStorage.getItem('order'),
+        const urlRoute = Routing.generate('site_api.set_product_order', {
+            token: this.#orderStorageManipulator.getOrderToken(),
             slug
         });
 
@@ -69,10 +72,15 @@ class OrderApiHandler {
         return result;
     }
 
-    async completeOrder()
+    /**
+     *
+     * @param {JSON} formData
+     * @returns {Promise<*>}
+     */
+    async completeOrder(formData)
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.add_order_complete_code",', {
-            token: localStorage.getItem('order'),
+        const urlRoute = Routing.generate('site_api.order_complete', {
+            token: this.#orderStorageManipulator.getOrderToken(),
         });
 
         let result;
@@ -81,7 +89,7 @@ class OrderApiHandler {
             result = await $.ajax({
                 type: 'POST',
                 url: urlRoute,
-                data: null,
+                data: JSON.stringify(formData),
                 dataType: 'json',
                 contentType: 'application/json',
                 headers: {
@@ -98,8 +106,8 @@ class OrderApiHandler {
 
     async removeOrder()
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.remove_order', {
-            token: localStorage.getItem('order'),
+        const urlRoute = Routing.generate('site_api.remove_order', {
+            token: this.#orderStorageManipulator.getOrderToken(),
         });
 
         let result;
@@ -124,8 +132,8 @@ class OrderApiHandler {
 
     async removeProduct(orderProductId)
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.remove_order_product', {
-            token: localStorage.getItem('order'),
+        const urlRoute = Routing.generate('site_api.remove_order_product', {
+            token: this.#orderStorageManipulator.getOrderToken(),
             orderProductId: orderProductId
         });
 
@@ -152,8 +160,8 @@ class OrderApiHandler {
 
     async setCoupon(couponCode)
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.add_order_coupon_code', {
-            token: localStorage.getItem('order'),
+        const urlRoute = Routing.generate('site_api.add_order_coupon_code', {
+            token: this.#orderStorageManipulator.getOrderToken(),
             code: couponCode
         })
 
@@ -180,8 +188,8 @@ class OrderApiHandler {
 
     async removeCoupon(couponCode)
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.remove_order_coupon_code', {
-            token: localStorage.getItem('order'),
+        const urlRoute = Routing.generate('site_api.remove_order_coupon_code', {
+            token: this.#orderStorageManipulator.getOrderToken(),
             code: couponCode
         })
 

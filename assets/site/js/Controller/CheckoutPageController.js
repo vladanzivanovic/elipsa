@@ -1,7 +1,7 @@
 import checkoutPageMapper from "../Mapper/CheckoutPageMapper";
-import CheckoutHandler from "../Handler/CheckoutHandler";
+// import CheckoutHandler from "../Handler/CheckoutHandler";
 import checkoutValidation from "../Validators/CheckoutValidation";
-import UserService from "../Service/UserService";
+// import UserService from "../Service/UserService";
 import RecaptchaLoader from "../../../js/Services/RecaptchaLoader";
 import checkoutPageEvents from "../Events/CheckoutPageEvents";
 import checkoutPageManipulator from "../Manipulator/CheckoutPageManipulator";
@@ -9,11 +9,12 @@ import checkoutPageManipulator from "../Manipulator/CheckoutPageManipulator";
 class CheckoutPageController {
     #pageEvents;
     #pageManipulator;
+    #validator;
 
     constructor() {
         this.mapper = checkoutPageMapper;
-        this.handler = new CheckoutHandler();
-        this.validator = checkoutValidation;
+        // this.handler = new CheckoutHandler();
+        this.#validator = checkoutValidation;
         // this.userService = new UserService();
         this.#pageEvents = checkoutPageEvents;
         this.#pageManipulator = checkoutPageManipulator;
@@ -22,12 +23,12 @@ class CheckoutPageController {
 
         this.#pageManipulator.setPage();
 
-        this.validator.validate();
+        this.#validator.validate();
 
         this.#pageEvents.registerEvents();
     }
 
-    registerEvents() {
+    // registerEvents() {
         // this.mapper.form.on('submit', e => {
         //     e.preventDefault();
         //     e.stopPropagation();
@@ -76,10 +77,10 @@ class CheckoutPageController {
         //     this.mapper.accountCreateChk.prop('checked', false);
         // });
 
-        this.mapper.email.on('keyup', e => {
-            this.mapper.accountCreateError.fadeOut();
-        })
-    }
+        // this.mapper.email.on('keyup', e => {
+        //     this.mapper.accountCreateError.fadeOut();
+        // })
+    // }
 }
 
 export default CheckoutPageController;

@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use App\Collector\CartPageCollector;
 use App\Formatter\Site\CartPageFormatter;
+use App\Formatter\Site\OrderEditResponseFormatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -21,16 +22,20 @@ final class CartExtension extends AbstractExtension
      */
     private $pageCollector;
 
+    private OrderEditResponseFormatter $responseFormatter;
+
     /**
      * @param CartPageCollector $pageCollector
      * @param CartPageFormatter $pageFormatter
      */
     public function __construct(
         CartPageCollector $pageCollector,
-        CartPageFormatter $pageFormatter
+        CartPageFormatter $pageFormatter,
+        OrderEditResponseFormatter $responseFormatter
     ) {
         $this->pageFormatter = $pageFormatter;
         $this->pageCollector = $pageCollector;
+        $this->responseFormatter = $responseFormatter;
     }
 
     /**
@@ -55,6 +60,11 @@ final class CartExtension extends AbstractExtension
         if (null == $orderData['order']) {
             return $orderData;
         }
+
+        return $this->responseFormatter->formatResponse(
+            $order,
+            $locale
+        );
 
         return $this->pageFormatter->formatResponse($orderData);
     }

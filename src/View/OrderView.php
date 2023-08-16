@@ -19,18 +19,22 @@ final class OrderView
 
     private AddressView $addressView;
 
+    private OrderPaymentView $orderPaymentView;
+
     public function __construct(
         OrderProductView $orderProductView,
         PromotionCouponView $promotionCouponView,
         PriceView $priceView,
         SettingsRepository $settingsRepository,
-        AddressView $addressView
+        AddressView $addressView,
+        OrderPaymentView $orderPaymentView
     ) {
         $this->orderProductView = $orderProductView;
         $this->promotionCouponView = $promotionCouponView;
         $this->priceView = $priceView;
         $this->settingsRepository = $settingsRepository;
         $this->addressView = $addressView;
+        $this->orderPaymentView = $orderPaymentView;
     }
     public function view(ShopOrder $order, string $locale): array
     {
@@ -47,6 +51,8 @@ final class OrderView
             'total' => $total,
             'total_with_shipping' => $total,
             'shipping_price' => $this->priceView->view((int) $shippingPrice->getValue(), $locale),
+            'payment' => null,
+            'note' => $order->getNote(),
         ];
 
         if (false === $order->getOrderProducts()->isEmpty()) {
@@ -75,6 +81,10 @@ final class OrderView
 
         if (ShopOrder::STATUS_NEW < $order->getStatus()) {
             $view += $this->addCheckoutInformation($order);
+        }
+
+        if (ShopOrder::PAYMENT_TYPE_CREDIT_CARD === $order->getPaymentType()) {
+            $view['payment'] = $this->orderPaymentView->view($order);
         }
 
         return $view;

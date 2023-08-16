@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
+use App\Formatter\Site\OrderEditResponseFormatter;
 use App\Formatter\Site\OrderFinishPageFormatter;
 use App\Handler\Site\OrderHandler;
-use App\Repository\ShopOrderRepository;
-use Ramsey\Uuid\Uuid;
+use App\Mailer\OrderCompleteMailer;
+use App\Parser\Site\Order\OrderFinishParser;
+use App\View\OrderFinishView;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class OrderFinishPageController extends AbstractController
@@ -19,21 +25,75 @@ final class OrderFinishPageController extends AbstractController
 
     private OrderFinishPageFormatter $pageFormatter;
 
+    private OrderCompleteMailer $orderCompleteMailer;
+
+    private OrderFinishParser $orderFinishParser;
+
+    private OrderEditResponseFormatter $responseFormatter;
+
     public function __construct(
         OrderHandler $handler,
-        OrderFinishPageFormatter $pageFormatter
+        OrderFinishPageFormatter $pageFormatter,
+        OrderCompleteMailer $orderCompleteMailer,
+        OrderFinishParser $orderFinishParser,
+        OrderEditResponseFormatter $responseFormatter
     ) {
         $this->handler = $handler;
         $this->pageFormatter = $pageFormatter;
+        $this->orderCompleteMailer = $orderCompleteMailer;
+        $this->orderFinishParser = $orderFinishParser;
+        $this->responseFormatter = $responseFormatter;
     }
 
     /**
      * @Route({
-     *          "rs": "/korpa/uspesna-narudzbina",
-     *          "en": "/cart/success-order"
+     *          "rs": "/korpa/uspesna-narudzbina/{token}",
+     *          "en": "/cart/success-order/{token}"
      *     },
-     *     name="site.checkout_completed_successful",
-     *     methods={"POST", "GET"},
+     *     name="site.checkout_completed_successful_basic",
+     *     methods={"GET"},
+     *     options={"expose": true}
+     * )
+     * @Template("Site/Pages/checkoutFinish.html.twig")
+     *
+     * @param Request $request
+     * @return array
+     *
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws \ReflectionException
+     */
+    public function successPage(Request $request, string $token): array
+    {
+        $locale = $request->attributes->get('_locale');
+
+        $order = $this->orderFinishParser->parse($token);
+
+        $this->handler->completeCheckoutOnSuccess($order, $locale, $request->request);
+
+        $viewData = $this->pageFormatter->formatResponse(
+            $order,
+            $locale,
+            true
+        );
+
+        $this->orderCompleteMailer->sendEmail($viewData, $order);
+
+//        $request->getSession()->remove('order');
+
+//        dd($viewData);
+
+        return $viewData;
+    }
+
+    /**
+     * @Route({
+     *          "rs": "/korpa/uspesna-narudzbina/{token}",
+     *          "en": "/cart/success-order/{token}"
+     *     },
+     *     name="site.checkout_completed_successful_card",
+     *     methods={"POST"},
      *     options={"expose": true}
      * )
      * @Template("Site/Pages/checkoutFinish.html.twig")
@@ -44,8 +104,9 @@ final class OrderFinishPageController extends AbstractController
      *
      * @throws \ReflectionException
      */
-    public function successPage(Request $request): array
+    public function successPageFromCardPayment(Request $request, string $token): array
     {
+
         $locale = $request->getSession()->get('_locale');
         $orderToken = $request->getMethod() === Request::METHOD_POST ?
             $request->request->get('oid') : $request->getSession()->get('order');

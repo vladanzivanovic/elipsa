@@ -3,9 +3,11 @@ import checkoutPageMapper from "../Mapper/CheckoutPageMapper";
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class CheckoutValidation {
+    #mapper;
+
     constructor() {
         if (!CheckoutValidation.instance) {
-            this.mapper = checkoutPageMapper;
+            this.#mapper = checkoutPageMapper;
 
             CheckoutValidation.instance = this;
         }
@@ -18,22 +20,32 @@ class CheckoutValidation {
 
         options = {
             rules: {
-                country     : {
+                'billing_address[country]': {
                     required: true,
                 },
-                first_name   : 'required',
-                last_name    : 'required',
-                address     : 'required',
-                city        : 'required',
-                zip_code     : {
+                'billing_address[first_name]': {
+                    required: true,
+                },
+                'billing_address[last_name]': {
+                    required: true,
+                },
+                'billing_address[street]': {
+                    required: true,
+                },
+                'billing_address[city]': {
+                    required: true,
+                },
+                'billing_address[zip_code]': {
                     required: true,
                     number  : true
                 },
-                email       : {
+                'billing_address[email]': {
                     required: true,
                     email   : true
                 },
-                mobile_phone : 'required',
+                'billing_address[mobile_phone]': {
+                    required: true,
+                },
                 password    : {
                     minlength: 5,
                     requiredOnDemand: {
@@ -46,7 +58,7 @@ class CheckoutValidation {
         };
         $.extend(options, window.helpBlock);
 
-        return this.mapper.form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 
