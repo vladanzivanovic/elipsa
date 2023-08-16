@@ -6,6 +6,7 @@ import {sha512} from "js-sha512";
 import orderApiHandler from "./Order/OrderApiHandler";
 import orderApiProvider from "../Provider/OrderApiProvider";
 import orderStorageManipulator from "../Manipulator/OrderStorageManipulator";
+import toastrService from "../../../js/Services/ToastrService";
 
 require('jquery.redirect');
 
@@ -14,6 +15,7 @@ class CheckoutHandler {
     #orderApiHandler;
     #orderApiProvider;
     #orderStorageManipulator;
+    #toastr;
 
     constructor() {
         if(!CheckoutHandler.instance) {
@@ -21,6 +23,7 @@ class CheckoutHandler {
             this.#orderApiHandler = orderApiHandler;
             this.#orderApiProvider = orderApiProvider;
             this.#orderStorageManipulator = orderStorageManipulator;
+            this.#toastr = toastrService;
 
             CheckoutHandler.instance = this;
         }
@@ -52,7 +55,6 @@ class CheckoutHandler {
 
                 this.#orderApiHandler.completeOrder(data)
                     .then(async order => {
-
                         const paymentData = await this.#orderApiProvider.getPayment(this.#orderStorageManipulator.getOrderToken('order'));
                         const redirectUrl = Routing.generate(
                             `site.checkout_completed_successful_basic.${LOCALE}`,
@@ -70,6 +72,19 @@ class CheckoutHandler {
                         this.#orderStorageManipulator.removeOrder();
 
                         AppHelperService.redirect(redirectUrl);
+
+                        loader.hide();
+                    })
+                    .catch(e => {
+                        let message = e.message;
+
+                        if (e.responseJSON.error) {
+                            message = e.responseJSON.error.message;
+                        }
+
+                        this.#toastr.error(message);
+
+                        loader.hide();
                     });
 
                 // $.ajax({

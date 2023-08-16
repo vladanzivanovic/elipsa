@@ -27,6 +27,8 @@ final class OrderFinishParser
             $order->setStatus(ShopOrder::STATUS_AWAITING_AUTHORIZATION);
         }
 
+        $order->setCompletedAt(new \DateTime());
+
         return $order;
     }
 }

@@ -51,7 +51,6 @@ final class OrderCompleteParser
 
         $order->setPaymentType($bag->getInt('payment_type'));
         $order->setNote($bag->get('order_note'));
-        $order->setCompletedAt(new \DateTime());
 
         return $order;
     }
