@@ -7,9 +7,12 @@ const Private = Symbol('private');
 
 class SliderTextController {
     constructor() {
+        this.sliderTextTable = new SliderTextDataTables();
+
         if (CAN_VIEW) {
-            SliderTextDataTables().init();
+            this.sliderTextTable.init();
         }
+
         this.notification = NotificationService();
 
         this[Private]().registerEvents();

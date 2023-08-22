@@ -1,12 +1,26 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
-import SliderEditMapper from "../Mapper/SliderEditMapper";
+import sliderEditMapper from "../Mapper/SliderEditMapper";
 import SliderHandler from "../Handler/SliderHandler";
 import sliderEditValidator from "../Validators/SliderEditValidator";
+import SummerNote from "../Services/SummerNote";
 
 class SliderEditController {
     constructor() {
-        this.mapper = new SliderEditMapper();
+        this.mapper = sliderEditMapper;
         this.validator = sliderEditValidator;
+        this.summernote = new SummerNote();
+
+        this.summernote.initialize(
+            this.mapper.descriptionRs,
+            this.summernote.createCallBacksSummernote(this.mapper.descriptionRs, 'slider')
+        );
+
+        this.summernote.initialize(
+            this.mapper.descriptionEn,
+            this.summernote.createCallBacksSummernote(this.mapper.descriptionEn, 'slider')
+        );
+
+        $('.dropdown-toggle').dropdown();
 
         this.dropZone = DropZoneService();
         this.dropZoneMobile = DropZoneService();

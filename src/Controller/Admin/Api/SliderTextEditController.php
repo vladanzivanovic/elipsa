@@ -14,24 +14,15 @@ use App\Parser\SliderTextEditRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderTextEditController extends AbstractController
 {
-    /**
-     * @var SliderTextEditRequestParser
-     */
-    private $requestParser;
+    private SliderTextEditRequestParser $requestParser;
 
-    /**
-     * @var SliderTextHandler
-     */
-    private $handler;
+    private SliderTextHandler $handler;
 
-    /**
-     * @param SliderTextEditRequestParser $requestParser
-     * @param SliderTextHandler           $handler
-     */
     public function __construct(
         SliderTextEditRequestParser $requestParser,
         SliderTextHandler $handler
@@ -55,7 +46,7 @@ final class SliderTextEditController extends AbstractController
 
         $this->handler->save($sliderText);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -71,7 +62,7 @@ final class SliderTextEditController extends AbstractController
 
         $this->handler->save($sliderText);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**

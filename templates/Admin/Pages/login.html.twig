@@ -58,7 +58,9 @@
 </div>
 {% block javascripts %}
     <script nonce="{{ csp_nonce('script') }}">
-        const LOCALE = 'rs';
+        const LOCALE = '{{ 'DEFAULT_LOCALE' | getenv }}';
+        const LANGUAGES = JSON.parse('{{ languages | json_encode | raw }}');
+
         const ROUTE_NAME = '{{ routeName }}';
         window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
     </script>

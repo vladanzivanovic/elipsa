@@ -3,6 +3,9 @@
 @import "../Components/common-product";
 @import "../../../scss/laundry/pe-laundry-icons.css";
 @import "~@staaky/tipped/dist/css/tipped.css";
+@import "../Components/youtube";
+@import "~fotorama/fotorama.css";
+@import "../colors";
 
 .product-page {
   .spd-select-color {
@@ -42,26 +45,55 @@
       }
     }
   }
+  .spd-price {
+    color: $black-color;
+    font-weight: 600;
+  }
+
+  .spd-old-price {
+    color: $old-price;
+    text-decoration: line-through;
+  }
+
   .spd-select-size {
     span {
       display: inline-block;
     }
   }
+
   .spd-meta {
     &-cat {
       span {
         display: inline-block;
       }
     }
+
     &-tags {
       span {
         display: inline-block;
       }
     }
   }
+
   .spd-share {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 0 21px;
+    padding: 0 0 30px;
+
     span {
       display: inline-block;
+    }
+  }
+
+  .spd-youtube-btn {
+    button {
+      background: #a70303 none repeat scroll 0 0;
+      border: 0 none;
+      color: #e5e5e5;
+      font-size: 13px;
+      height: 40px;
+      letter-spacing: 0;
+      padding: 0 25px;
     }
   }
   .spt-tab li {

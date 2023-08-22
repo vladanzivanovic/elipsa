@@ -16,26 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderTextListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private DataTableRequestParser $requestParser;
 
-    /**
-     * @var SliderTextDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private SliderTextDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var SliderTextRepository
-     */
-    private $repository;
+    private SliderTextRepository $repository;
 
-    /**
-     * @param DataTableRequestParser               $requestParser
-     * @param SliderTextRepository                 $repository
-     * @param SliderTextDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         SliderTextRepository $repository,

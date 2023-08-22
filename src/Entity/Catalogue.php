@@ -138,4 +138,17 @@ class Catalogue
 
         return $filteredTrans->first();
     }
+
+    public function getMainImage(): ?Image
+    {
+        foreach ($this->getCatalogueHasImages() as $catalogueHasImage) {
+            $image = $catalogueHasImage->getImage();
+
+            if (true === $image->getIsMain()) {
+                return $image;
+            }
+        }
+
+        return null;
+    }
 }

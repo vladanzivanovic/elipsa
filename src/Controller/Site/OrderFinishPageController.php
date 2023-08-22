@@ -15,20 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class OrderFinishPageController extends AbstractController
 {
-    /**
-     * @var OrderHandler
-     */
-    private $handler;
+    private OrderHandler $handler;
 
-    /**
-     * @var OrderFinishPageFormatter
-     */
-    private $pageFormatter;
+    private OrderFinishPageFormatter $pageFormatter;
 
-    /**
-     * @param OrderHandler             $handler
-     * @param OrderFinishPageFormatter $pageFormatter
-     */
     public function __construct(
         OrderHandler $handler,
         OrderFinishPageFormatter $pageFormatter

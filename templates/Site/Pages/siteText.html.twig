@@ -1,0 +1,22 @@
+{% extends 'Site/base.html.twig' %}
+
+{% block title %}{{ payload.title }}{% endblock %}
+
+{% block bodyClass %}text-page{% endblock %}
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': payload.title }], 'activePage': payload.title }) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-pre-text">{{ payload.description | raw }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/text.css') }}">
+{% endblock %}

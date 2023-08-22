@@ -15,19 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogPageController extends AbstractController
 {
-    /**
-     * @var BlogPageCollector
-     */
-    private $pageCollector;
-    /**
-     * @var BlogDetailedPageResponseFormatter
-     */
-    private $pageFormatter;
+    private BlogPageCollector $pageCollector;
 
-    /**
-     * @param BlogPageCollector                 $pageCollector
-     * @param BlogDetailedPageResponseFormatter $pageFormatter
-     */
+    private BlogDetailedPageResponseFormatter $pageFormatter;
+
     public function __construct(
         BlogPageCollector $pageCollector,
         BlogDetailedPageResponseFormatter $pageFormatter

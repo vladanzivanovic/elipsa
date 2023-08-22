@@ -27,26 +27,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class BannersListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private DataTableRequestParser $requestParser;
 
-    /**
-     * @var BannerDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private BannerDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var BannerRepository
-     */
-    private $bannerRepository;
+    private BannerRepository $bannerRepository;
 
-    /**
-     * @param DataTableRequestParser           $requestParser
-     * @param BannerRepository                 $bannerRepository
-     * @param BannerDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         BannerRepository $bannerRepository,
@@ -67,12 +53,14 @@ final class BannersListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $collectionType = [
             Banner::TYPE_LOYALTY,
             Banner::TYPE_NEWS_LETTER,
             Banner::TYPE_POP_UP,
+            Banner::TYPE_MENU,
+            Banner::TYPE_SEASON,
         ];
 
         if ($request->attributes->get('_route') === 'admin.get_home_banner_list') {

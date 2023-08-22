@@ -1,0 +1,43 @@
+#youtubeModal {
+  z-index: 10000;
+
+  .modal-body-title {
+    margin-bottom: 30px;
+  }
+
+  .product-tab-area {
+    padding: 5px;
+
+    .youtube-carousel {
+
+      .owl-stage-outer {
+        margin: 0 25px;
+
+        .item-video {
+          //height: 400px;
+        }
+      }
+
+      .owl-nav {
+        button {
+          background: #a70303 none repeat scroll 0 0 !important;
+          color: #fff !important;
+          height: 70px;
+          line-height: 70px !important;
+          position: absolute;
+          text-align: center;
+          top: 38%;
+          width: 30px;
+
+          &.owl-prev {
+            left: -10px;
+          }
+
+          &.owl-next {
+            right: -10px;
+          }
+        }
+      }
+    }
+  }
+}

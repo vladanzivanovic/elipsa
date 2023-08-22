@@ -1,10 +1,14 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class SliderTextEditMapper {
     constructor() {
         if (!SliderTextEditMapper.instance) {
-            this.form = '#edit_form';
-            this.submitBtn = '#slider_text_submit';
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this[`description_${locale}`] = '#description_'+locale;
+                this[`link_${locale}`] = '#link_'+locale;
+            }
 
-            SliderTextEditMapper.instance = this;
+            SliderTextEditMapper.instance = Object.assign(this, baseFormMapper);
         }
 
         return SliderTextEditMapper.instance;

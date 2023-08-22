@@ -23,7 +23,7 @@ class ProductHasImages
     private $product;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $image;

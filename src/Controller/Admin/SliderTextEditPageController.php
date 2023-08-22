@@ -40,10 +40,11 @@ final class SliderTextEditPageController extends AbstractController
      * @Template("Admin/Pages/sliderTextEdit.html.twig")
      *
      * @return array
+     * @throws \ReflectionException
      */
     public function insert(): array
     {
-        return [];
+        return $this->responseFormatter->formatResponse();
     }
 
     /**
@@ -53,6 +54,7 @@ final class SliderTextEditPageController extends AbstractController
      * @param SliderText $sliderText
      *
      * @return array
+     * @throws \ReflectionException
      */
     public function update(SliderText $sliderText): array
     {

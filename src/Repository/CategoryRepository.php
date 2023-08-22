@@ -6,7 +6,7 @@ use App\Entity\Category;
 use App\Entity\CategoryTranslation;
 use App\Entity\Product;
 use App\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
@@ -109,9 +109,9 @@ class CategoryRepository extends ExtendedEntityRepository
                 SELECT * FROM cte order by lvl, title;";
 
         $stmt = $this->_em->getConnection()->prepare($sql);
-        $stmt->execute(['locale' => $locale]);
+        $results = $stmt->executeQuery(['locale' => $locale]);
 
-        return $stmt->fetchAll();
+        return $results->fetchAllAssociative();
     }
 
     /**

@@ -35,30 +35,30 @@ final class CartPageController extends AbstractController
         $this->pageFormatter = $pageFormatter;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/korpa",
-     *          "en": "/cart"
-     *     },
-     *     name="site.cart_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/cart.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function index(Request $request): array
-    {
-        if (false === $request->getSession()->has('order')) {
-            return ['total' => 0, 'shipping' => 0, 'promo_price' => 0, 'free_shipping_price' => 0, 'shipping_price' => 0];
-        }
-
-        $orderData = $this->pageCollector->collect($request->getLocale());
-
-        return $this->pageFormatter->formatResponse($orderData);
-    }
+//    /**
+//     * @Route({
+//     *          "rs": "/korpa",
+//     *          "en": "/cart"
+//     *     },
+//     *     name="site.cart_page",
+//     *     methods={"GET"}
+//     * )
+//     * @Template("Site/Pages/cart.html.twig")
+//     *
+//     * @param Request $request
+//     *
+//     * @return array
+//     */
+//    public function index(Request $request): array
+//    {
+//        if (false === $request->getSession()->has('order')) {
+//            return ['total' => 0, 'shipping' => 0, 'promo_price' => 0, 'free_shipping_price' => 0, 'shipping_price' => 0];
+//        }
+//
+//        $orderData = $this->pageCollector->collect($request->getLocale());
+//
+//        return $this->pageFormatter->formatResponse($orderData);
+//    }
 
     /**
      * @Route({

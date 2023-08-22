@@ -4,6 +4,8 @@
     {'title': 'Loyalty - 1920x533', 'value': constant('App\\Entity\\Banner::TYPE_LOYALTY')},
     {'title': 'Newsletter - 1500x735 (mobilna - 600x800)', 'value': constant('App\\Entity\\Banner::TYPE_NEWS_LETTER')},
     {'title': 'PopUp - 1500x735 (mobilna - 600x800)', 'value': constant('App\\Entity\\Banner::TYPE_POP_UP')},
+    {'title': 'Meni - 1000x1428', 'value': constant('App\\Entity\\Banner::TYPE_MENU')},
+    {'title': 'Meni - Sezone - 1000x1428', 'value': constant('App\\Entity\\Banner::TYPE_SEASON')},
 ] %}
 
 {% block title %}Dodavanje/Izmena banera{% endblock %}
@@ -49,7 +51,7 @@
                                 <label>Desktop slika</label>
                             {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 mobile-image">
                                 <label>Mobilna slika</label>
                             {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner_mobile', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
                             </div>
@@ -108,6 +110,7 @@
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
         const IS_SPEED_LINKS = false;
+        const BANNER_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Banner') | json_encode() | raw }}');
 
         {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');

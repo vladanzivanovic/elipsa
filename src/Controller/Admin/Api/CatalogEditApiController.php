@@ -18,19 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CatalogEditApiController extends AbstractController
 {
-    /**
-     * @var CatalogHandler
-     */
-    private $handler;
-    /**
-     * @var CatalogEditRequestParser
-     */
-    private $requestParser;
+    private CatalogHandler $handler;
 
-    /**
-     * @param CatalogHandler           $handler
-     * @param CatalogEditRequestParser $requestParser
-     */
+    private CatalogEditRequestParser $requestParser;
+
     public function __construct(
         CatalogHandler $handler,
         CatalogEditRequestParser $requestParser

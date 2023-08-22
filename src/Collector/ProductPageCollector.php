@@ -103,20 +103,6 @@ final class ProductPageCollector
             $categories[] = $category->getTranslationByLocale($locale)->first()->getSlug();
         }
 
-        $products = $this->productRepository->getRelatedProducts($locale, $categories, $product, $user);
-
-        $productIds = array_column($products, 'id');
-
-        $productColors = $this->colorRepository->getByProducts($productIds, $locale);
-        $productSizes = $this->sizeRepository->getByProducts($productIds);
-        $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
-
-        return [
-            'products'  => $products,
-            'product_colors'    => $productColors,
-            'product_sizes'     => $productSizes,
-            'product_tags'      => $productTags,
-
-        ];
+        return $this->productRepository->getRelatedProducts($categories, $product, $user);
     }
 }

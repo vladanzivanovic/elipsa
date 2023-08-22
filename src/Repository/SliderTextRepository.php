@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\SliderText;
 use App\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
@@ -36,8 +36,6 @@ class SliderTextRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param DataTableModel $tableModel
-     *
      * @return array
      */
     public function getAdminList(DataTableModel $tableModel): array
@@ -45,9 +43,10 @@ class SliderTextRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('st')
             ->select(
                 'st.id as id',
-                'stt.description as description',
                 'st.isActive as is_active',
-                'stt.link as link'
+                'st.position as position',
+                'stt.title as title',
+                'stt.link as link',
             )
             ->innerJoin('st.sliderTextTranslations', 'stt')
             ->where('stt.locale = \'rs\'')
@@ -59,25 +58,15 @@ class SliderTextRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
-    public function getList(string $locale): array
+    public function getListByPosition(string $position): array
     {
         $query = $this->createQueryBuilder('st')
-            ->select(
-                'stt.description',
-                'stt.link'
-            )
-            ->innerJoin('st.sliderTextTranslations', 'stt')
-            ->where('stt.locale = :locale')
-            ->andWhere('st.isActive = :activeSlider')
-            ->setParameter('locale', $locale)
+            ->where('st.isActive = :activeSlider')
+            ->andWhere('st.position = :position')
             ->setParameter('activeSlider', SliderText::STATUS_ACTIVE)
+            ->setParameter('position', $position)
         ;
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 }

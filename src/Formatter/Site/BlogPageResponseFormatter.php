@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Formatter\Site;
 
 use App\Repository\TagsRepository;
+use App\View\TagView;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -12,32 +13,24 @@ final class BlogPageResponseFormatter
 {
     use FormatterTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private RouterInterface $router;
 
-    /**
-     * @param RouterInterface       $router
-     * @param ParameterBagInterface $bag
-     * @param TagsRepository        $tagsRepository
-     */
+    private ParameterBagInterface $bag;
+
+    private TagsRepository $tagsRepository;
+
+    private TagView $tagView;
+
     public function __construct(
         RouterInterface $router,
         ParameterBagInterface $bag,
-        TagsRepository $tagsRepository
+        TagsRepository $tagsRepository,
+        TagView $tagView
     ) {
         $this->router = $router;
         $this->bag = $bag;
         $this->tagsRepository = $tagsRepository;
+        $this->tagView = $tagView;
     }
 
     /**
@@ -60,6 +53,16 @@ final class BlogPageResponseFormatter
 
         if (null !== $data['localized_url']) {
             $data['localized_url'] = $this->router->generate('site.blog_list_page', ['_locale' => $locale === 'rs' ? 'en' : 'rs', 'tag' => $data['localized_url']]);
+        }
+
+        if (isset($data['tags'])) {
+            $tagList = [];
+
+            foreach ($data['tags'] as $tag) {
+                $tagList[] = $this->tagView->view($tag);
+            }
+
+            $data['tags'] = $tagList;
         }
 
         return $data;

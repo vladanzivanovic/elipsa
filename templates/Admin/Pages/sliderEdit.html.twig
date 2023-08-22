@@ -51,11 +51,6 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Teks dugmeta', 'button_rs', IS_EDIT ? rs_button : '', 'rs_button') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
                                     {{ form.input('Link', 'link_rs', IS_EDIT ? rs_link : '', 'rs_link') }}
                                 </div>
                             </div><!-- Row -->
@@ -79,40 +74,9 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Teks dugmeta', 'button_en', IS_EDIT ? en_button : '', 'en_button') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
                                     {{ form.input('Link', 'link_en', IS_EDIT ? en_link : '', 'en_link') }}
                                 </div>
                             </div><!-- Row -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Pozicija teksta</h6>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-check form-check-inline">
-                                    {{ form.radio('Levo', 'text_position_1', 1, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 1 ? 'checked=checked' : null) }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-check form-check-inline">
-                                    {{ form.radio('Sredina', 'text_position_2', IS_EDIT ? position : 2, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 2 ? 'checked=checked' : null) }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-check form-check-inline">
-                                    {{ form.radio('Desno', 'text_position_3', IS_EDIT ? position : 3, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 3 ? 'checked=checked' : null) }}
-                                </div>
-                            </div><!-- Col -->
                         </div>
                     </div>
                 </div>

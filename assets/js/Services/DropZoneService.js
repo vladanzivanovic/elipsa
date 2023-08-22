@@ -102,7 +102,7 @@ export default (() => {
         const index = $('li', Private.mapper.fileWrapper).index(listEl);
         const filesCache = Cache.get('adsFiles')[Private.arrayName];
 
-        filesCache[index].color = $(self).val();
+        filesCache[index].color_id = $(self).val();
     }
 
     Public.getFilesArray = function ($name) {

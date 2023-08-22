@@ -41,63 +41,65 @@ class ShopOrder
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $status;
+    private int $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $completedAt;
+    private ?\DateTimeInterface $completedAt = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
      */
-    private $billingAddress;
+    private ?Address $billingAddress = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
      */
-    private $shippingAddress;
+    private ?Address $shippingAddress = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="orderId", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var Collection<int, OrderProduct>
      */
-    private $orderProducts;
+    private Collection $orderProducts;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="shopOrders", cascade={"persist", "remove"})
      */
-    private $user;
+    private ?User $user = null;
 
     /**
      * @var int|null
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $paymentType;
+    private ?int $paymentType = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $note;
+    private ?string $note = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PromotionCoupon", inversedBy="shopOrders")
      */
-    private $coupon;
+    private ?PromotionCoupon $coupon = null;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $transactionData = [];
+    private array $transactionData = [];
 
     /**
      * @ORM\Column(type="uuid", unique=true)
      */
-    private $token;
+    private string $token;
 
     public function __construct()
     {
@@ -188,6 +190,38 @@ class ShopOrder
         return $this;
     }
 
+    public function getOrderProductByValues(
+        string $slug,
+        string $size,
+        ProductColor $color
+    ): ?OrderProduct {
+        /** @var OrderProduct $orderProduct */
+        foreach ($this->orderProducts as $orderProduct) {
+            $trans = $orderProduct->getBySlug($slug);
+
+            if (
+                null !== $trans &&
+                $size === $orderProduct->getSize() &&
+                $color === $orderProduct->getColor()
+            ) {
+                return $orderProduct;
+            }
+        }
+
+        return null;
+    }
+
+    public function getOrderProductById(int $orderProductId): ?OrderProduct
+    {
+        foreach ($this->orderProducts as $orderProduct) {
+            if ($orderProductId === $orderProduct->getId()) {
+                return $orderProduct;
+            }
+        }
+
+        return null;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -264,7 +298,7 @@ class ShopOrder
         return $this;
     }
 
-    public function getToken()
+    public function getToken(): string
     {
         if (!is_string($this->token)) {
             return $this->token->__toString();
@@ -278,5 +312,16 @@ class ShopOrder
         $this->token = Uuid::uuid4()->toString();
 
         return $this;
+    }
+
+    public function getTotal(): int
+    {
+        $total = 0;
+
+        foreach ($this->orderProducts as $orderProduct) {
+            $total += $orderProduct->getTotal();
+        }
+
+        return $total;
     }
 }

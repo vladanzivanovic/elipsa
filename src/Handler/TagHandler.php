@@ -4,43 +4,26 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Entity\Tags;
 use App\Helper\ValidatorHelper;
 use App\Repository\BlogHasTagsRepository;
 use App\Repository\ProductHasTagsRepository;
 use App\Repository\TagsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class TagHandler
 {
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private ValidatorHelper $validator;
 
-    /**
-     * @var ProductHasTagsRepository
-     */
-    private $productHasTagsRepository;
+    private ProductHasTagsRepository $productHasTagsRepository;
 
-    /**
-     * @var BlogHasTagsRepository
-     */
-    private $blogHasTagsRepository;
+    private BlogHasTagsRepository $blogHasTagsRepository;
 
-    /**
-     * TagHandler constructor.
-     *
-     * @param TagsRepository           $tagsRepository
-     * @param ValidatorHelper          $validator
-     * @param ProductHasTagsRepository $productHasTagsRepository
-     * @param BlogHasTagsRepository    $blogHasTagsRepository
-     */
     public function __construct(
         TagsRepository $tagsRepository,
         ValidatorHelper $validator,
@@ -54,12 +37,10 @@ final class TagHandler
     }
 
     /**
-     * @param ArrayCollection $tags
-     * @param bool            $isEdit
-     *
-     * @throws \Exception
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
-    public function save(ArrayCollection $tags, bool $isEdit = false): void
+    public function save(Tags $tags): void
     {
         $errors = $this->validator->validate($tags, null, "SetTag");
 
@@ -67,10 +48,8 @@ final class TagHandler
             throw new UnprocessableEntityHttpException(json_encode($this->validator->parseErrors($errors)));
         }
 
-        if (false === $isEdit) {
-            foreach ($tags as $tag) {
-                $this->tagsRepository->persist($tag);
-            }
+        if (null === $tags->getId()) {
+            $this->tagsRepository->persist($tags);
         }
 
         $this->tagsRepository->flush();
@@ -82,38 +61,38 @@ final class TagHandler
      * @return void
      * @throws \Doctrine\ORM\ORMException
      */
-    public function removeFromProducts(string $mainSlug): void
+    public function removeFromProducts(Tags $tags): void
     {
-        $productCount = $this->productHasTagsRepository->count(['tag' => $mainSlug]);
+        $productCount = $this->productHasTagsRepository->count(['tag' => $tags]);
 
         if ($productCount > 0) {
-            foreach ($this->productHasTagsRepository->findBy(['tag' => $mainSlug]) as $hasTag) {
+            foreach ($this->productHasTagsRepository->findBy(['tag' => $tags]) as $hasTag) {
                 $this->productHasTagsRepository->delete($hasTag);
             }
         }
 
-        $this->remove($mainSlug);
+        $this->tagsRepository->delete($tags);
 
+        $this->tagsRepository->flush();
     }
 
     /**
-     * @param string $mainSlug
-     *
-     * @return void
-     * @throws \Doctrine\ORM\ORMException
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
-    public function removeFromBlog(string $mainSlug): void
+    public function removeFromBlog(Tags $tags): void
     {
-        $blogCount = $this->blogHasTagsRepository->count(['tag' => $mainSlug]);
+        $blogCount = $this->blogHasTagsRepository->count(['tag' => $tags]);
 
         if ($blogCount > 0) {
-            foreach ($this->blogHasTagsRepository->findBy(['tag' => $mainSlug]) as $hasTag) {
+            foreach ($this->blogHasTagsRepository->findBy(['tag' => $tags]) as $hasTag) {
                 $this->blogHasTagsRepository->delete($hasTag);
             }
         }
 
-        $this->remove($mainSlug);
+        $this->tagsRepository->delete($tags);
 
+        $this->tagsRepository->flush();
     }
 
     /**

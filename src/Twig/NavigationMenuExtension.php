@@ -4,64 +4,66 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Entity\Banner;
+use App\Entity\Tags;
+use App\Repository\BannerRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SliderTextRepository;
 use App\Repository\TagsRepository;
-use DateTime;
-use Exception;
+use App\View\BannerView;
+use App\View\SliderTextView;
+use App\View\TagView;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class NavigationMenuExtension extends AbstractExtension
 {
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
+    private CategoryRepository $categoryRepository;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * @var SliderTextRepository
-     */
-    private $sliderTextRepository;
+    private SliderTextRepository $sliderTextRepository;
 
-    /**
-     * @param CategoryRepository   $categoryRepository
-     * @param TagsRepository       $tagsRepository
-     * @param SliderTextRepository $sliderTextRepository
-     */
+    private BannerRepository $bannerRepository;
+
+    private BannerView $bannerView;
+
+    private SliderTextView $sliderTextView;
+
+    private TagView $tagView;
+
     public function __construct(
         CategoryRepository $categoryRepository,
         TagsRepository $tagsRepository,
-        SliderTextRepository $sliderTextRepository
+        SliderTextRepository $sliderTextRepository,
+        BannerRepository $bannerRepository,
+        BannerView $bannerView,
+        SliderTextView $sliderTextView,
+        TagView $tagView
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->tagsRepository = $tagsRepository;
         $this->sliderTextRepository = $sliderTextRepository;
+        $this->bannerRepository = $bannerRepository;
+        $this->bannerView = $bannerView;
+        $this->sliderTextView = $sliderTextView;
+        $this->tagView = $tagView;
     }
 
     /**
-     * @return array
+     * @return array<int, TwigFunction>
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('navigation_menu', [$this, 'getNavigationMenu']),
             new TwigFunction('navigation_tags', [$this, 'getNavigationTags']),
             new TwigFunction('slider_text', [$this, 'getSliderText']),
+            new TwigFunction('menu_banners', [$this, 'getMenuBanners']),
+            new TwigFunction('season_banner', [$this, 'getSeasonBanner']),
         ];
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     * @throws \Doctrine\DBAL\DBALException
-     */
     public function getNavigationMenu(string $locale): array
     {
         $categories = $this->categoryRepository->getForNavigationMenu($locale);
@@ -75,30 +77,45 @@ final class NavigationMenuExtension extends AbstractExtension
         });
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function getNavigationTags(string $locale): array
+    public function getNavigationTags(string $productType): array
     {
-        $tags = $this->tagsRepository->getForNavigationMenu($locale);
+        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_PRODUCT, 'productType' => $productType]);
 
-        return $tags;
+        $formattedTags = [];
+
+        foreach ($tags as $tag) {
+            $formattedTags[] = $this->tagView->view($tag);
+        }
+
+        return $formattedTags;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
-    public function getSliderText(string $locale): array
+    public function getSliderText(string $locale, string $position): array
     {
-        return $this->sliderTextRepository->getList($locale);
+        $texts = $this->sliderTextRepository->getListByPosition($position);
+
+        $sliderTexts = [];
+
+        foreach ($texts as $text) {
+            $sliderTexts[] = $this->sliderTextView->siteView($text, $locale);
+        }
+
+        return $sliderTexts;
     }
 
-    private function formatMegaMenu(array $categories, int $level, int $maxLevel)
+    public function getMenuBanners(string $locale): array
+    {
+        return $this->getBanners($locale, Banner::TYPE_MENU);
+    }
+
+    public function getSeasonBanner(string $locale): ?array
+    {
+        $banners = $this->getBanners($locale, Banner::TYPE_SEASON);
+
+        return $banners[0] ?? null;
+    }
+
+    private function formatMegaMenu(array $categories, int $level, int $maxLevel): array
     {
         $formattedMenu = [];
 
@@ -121,11 +138,21 @@ final class NavigationMenuExtension extends AbstractExtension
         return $formattedMenu;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'navigation_extension';
+    }
+
+    public function getBanners(string $locale, int $type): array
+    {
+        $banners = $this->bannerRepository->getActiveByType($type);
+
+        $formattedBanners = [];
+
+        foreach ($banners as $banner) {
+            $formattedBanners[] = $this->bannerView->menuView($banner, $locale);
+        }
+
+        return $formattedBanners;
     }
 }

@@ -22,11 +22,24 @@
                         <div class="card-body">
                             <div class="row">
                                 {% for setting in settings %}
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id) }}
+                                    {% if setting.inputType != 'textarea' %}
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id, '', setting.inputType) }}
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="row">
+                                {% for setting in settings %}
+                                    {% if setting.inputType == 'textarea' %}
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                {{ form.textarea(setting.name ~ ' - ' ~ languages[setting.locale].name, 'name_' ~ setting.id, setting.value, setting.id, 10, '', 'form-control') }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </div>

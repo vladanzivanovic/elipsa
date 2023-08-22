@@ -14,10 +14,6 @@ class Slider
     public const STATUS_PENDING = false;
     public const STATUS_ACTIVE = true;
 
-    public const POSITION_LEFT = 1;
-    public const POSITION_CENTER = 2;
-    public const POSITION_RIGHT = 3;
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,11 +36,6 @@ class Slider
      * @ORM\JoinColumn(nullable=false)
      */
     private $image;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $textPosition;
 
     /**
      * @ORM\Column(type="integer")
@@ -129,18 +120,6 @@ class Slider
     public function setImage(Image $image): self
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    public function getTextPosition(): ?int
-    {
-        return $this->textPosition;
-    }
-
-    public function setTextPosition(int $textPosition): self
-    {
-        $this->textPosition = $textPosition;
 
         return $this;
     }

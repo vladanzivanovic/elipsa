@@ -14,27 +14,32 @@ class Settings
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $value;
+    private ?string $value;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $slug;
+    private ?string $slug;
 
     /**
      * @ORM\Column(type="string", length=2, nullable=true)
      */
-    private $locale;
+    private ?string $locale;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private ?string $inputType;
 
     public function getId(): ?int
     {
@@ -87,5 +92,15 @@ class Settings
         $this->locale = $locale;
 
         return $this;
+    }
+
+    public function getInputType(): ?string
+    {
+        return $this->inputType;
+    }
+
+    public function setInputType(?string $inputType): void
+    {
+        $this->inputType = $inputType;
     }
 }

@@ -1,22 +1,31 @@
+import baseFormMapper from "./BaseFormMapper";
 
 class ProductEditMapper {
     constructor() {
-        this.form = $('#edit_form');
-        this.titleRs = $('#title_rs', this.form);
-        this.shortDescRs = $('#short_description_rs', this.form);
-        this.descRs = $('#description_rs', this.form);
-        this.titleEn = $('#title_en', this.form);
-        this.shortDescEn = $('#short_description_en', this.form);
-        this.descEn = $('#description_en', this.form);
-        this.code = $('#code', this.form);
-        this.badge = $('#badge', this.form);
-        this.category = $('#categories', this.form);
-        this.tags = $('#tags', this.form);
-        this.sizes = $('#sizes', this.form);
-        this.price = $('#price', this.form);
-        this.discount = $('#discount', this.form);
-        this.submitBtn = $('#product_submit');
+        if (!ProductEditMapper.instance) {
+            this.titleRs = $('#title_rs', baseFormMapper.form);
+            this.shortDescRs = $('#short_description_rs', baseFormMapper.form);
+            this.descRs = $('#description_rs', baseFormMapper.form);
+            this.titleEn = $('#title_en', baseFormMapper.form);
+            this.shortDescEn = $('#short_description_en', baseFormMapper.form);
+            this.descEn = $('#description_en', baseFormMapper.form);
+            this.code = $('#code', baseFormMapper.form);
+            this.badge = $('#badge', baseFormMapper.form);
+            this.category = $('#categories', baseFormMapper.form);
+            this.tags = $('#tags', baseFormMapper.form);
+            this.sizes = $('#sizes', baseFormMapper.form);
+            this.price = $('#price', baseFormMapper.form);
+            this.discount = $('#discount', baseFormMapper.form);
+
+            ProductEditMapper.instance = Object.assign(this, baseFormMapper);
+        }
+
+        return ProductEditMapper.instance;
     }
 }
 
-export default ProductEditMapper;
+const productEditMapper = new ProductEditMapper();
+
+Object.freeze(productEditMapper);
+
+export default productEditMapper;

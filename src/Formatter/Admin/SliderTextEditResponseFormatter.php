@@ -4,51 +4,66 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
-use App\Entity\Image;
-use App\Entity\Slider;
 use App\Entity\SliderText;
-use App\Entity\SliderTextTranslation;
+use App\Helper\ConstantsHelper;
 use App\Repository\ImageRepository;
+use App\View\SliderTextView;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SliderTextEditResponseFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private ConstantsHelper $constantsHelper;
 
-    /**
-     * @param RouterInterface $router
-     * @param ImageRepository $imageRepository
-     */
+    private TranslatorInterface $translator;
+
+    private SliderTextView $sliderTextView;
+
     public function __construct(
-        RouterInterface $router,
-        ImageRepository $imageRepository
+        ConstantsHelper $constantsHelper,
+        TranslatorInterface $translator,
+        SliderTextView $sliderTextView
     ) {
-        $this->router = $router;
-        $this->imageRepository = $imageRepository;
+        $this->constantsHelper = $constantsHelper;
+        $this->translator = $translator;
+        $this->sliderTextView = $sliderTextView;
     }
 
     /**
-     * @param SliderText $sliderText
-     *
-     * @return array
+     * @throws \ReflectionException
      */
-    public function formatResponse(SliderText $sliderText): array
+    public function formatResponse(SliderText $sliderText = null): array
     {
-        $rsTrans = $sliderText->getByLocale('rs');
-        $enTrans = $sliderText->getByLocale('en');
-
-        return [
-            'rs_description' => $rsTrans->getDescription(),
-            'rs_link' => $rsTrans->getLink(),
-            'en_description' => $enTrans->getDescription(),
-            'en_link' => $enTrans->getLink(),
+        $response = [
+            'positionOptions' => $this->formatPositions(),
         ];
+
+        if (null !== $sliderText) {
+            $rsTrans = $sliderText->getByLocale('rs');
+            $enTrans = $sliderText->getByLocale('en');
+
+            $response['payload'] = $this->sliderTextView->editView($sliderText);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    private function formatPositions(): array
+    {
+        $availablePositions = $this->constantsHelper->getClassConstants(SliderText::class, 'POSITION_');
+
+        $formatted = [];
+
+        foreach ($availablePositions as $name => $value) {
+            $formatted[] = [
+                'title' => $this->translator->trans('banner_text.'.$value),
+                'value' => $value
+            ];
+        }
+
+        return $formatted;
     }
 }

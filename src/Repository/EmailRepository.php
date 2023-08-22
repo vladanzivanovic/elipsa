@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Email;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * EmailRepository

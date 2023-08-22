@@ -12,14 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderTextRemoveController extends AbstractController
 {
-    /**
-     * @var SliderTextHandler
-     */
-    private $handler;
+    private SliderTextHandler $handler;
 
-    /**
-     * @param SliderTextHandler $handler
-     */
     public function __construct(
         SliderTextHandler $handler
     ) {

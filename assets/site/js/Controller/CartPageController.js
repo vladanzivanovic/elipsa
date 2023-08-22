@@ -1,37 +1,23 @@
 import cartPageMapper from "../Mapper/CartPageMapper";
 import CartHandler from "../Handler/CartHandler";
+import orderApiProvider from "../Provider/OrderApiProvider";
+import cartPageDom from "../Dom/CartPageDom";
+import cartPageManipulator from "../Manipulator/CartPageManipulator";
+import cartPageEvents from "../Events/CartPageEvents";
 
 class CartPageController {
+    #pageManipulator;
+    #pageEvents;
+
     constructor() {
         this.mapper = cartPageMapper;
         this.hander = new CartHandler();
+        this.#pageManipulator = cartPageManipulator;
+        this.#pageEvents = cartPageEvents;
 
-        this.registerEvents();
-    }
+        this.#pageManipulator.setCartPage();
 
-    registerEvents() {
-        this.mapper.updateBtn.on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.hander.update();
-        });
-
-        this.mapper.removeProduct.on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const id = $(e.currentTarget).data('id');
-
-            this.hander.remove(id, $(e.currentTarget).closest('tr'));
-        })
-
-        this.mapper.promoCouponBtn.on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.hander.setCoupon();
-        });
+        this.#pageEvents.registerEvents();
     }
 }
 

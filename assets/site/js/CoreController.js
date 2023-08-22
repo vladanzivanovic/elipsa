@@ -2,27 +2,30 @@ import BaseCoreController from "../../js/CoreController";
 import CartHandler from "./Handler/CartHandler";
 import loader from "./Dom/LoaderDom";
 import coreMapper from "./Mapper/CoreMapper";
-import UserHandler from "./Handler/UserHandler";
-import registrationValidator from "./Validators/RegistrationValidator";
 import WishListHandler from "./Handler/WishListHandler";
 import NewsLetterHandler from "./Handler/NewsLetterHandler";
-import resetPasswordValidator from "./Validators/ResetPasswordValidator";
+import FooterEvents from "./Events/FooterEvents";
+import HeaderEvents from "./Events/HeaderEvents";
+import CartDropDownEvents from "./Events/CartDropDownEvents";
 
 require('jquery-eu-cookie-law-popup/js/jquery-eu-cookie-law-popup');
 
 class CoreController {
+    #handler;
+    #mapper;
+
     constructor() {
         this.baseCore = new BaseCoreController();
-        this.handler = new CartHandler();
-        this.mapper = coreMapper;
-        this.registrationValidator = registrationValidator;
-        this.resetPasswordValidator = resetPasswordValidator;
+        this.#handler = new CartHandler();
+        this.#mapper = coreMapper;
 
         loader;
 
         this.sliderText();
 
-        this.registerEvents();
+        new HeaderEvents();
+        new FooterEvents();
+        new CartDropDownEvents();
     }
 
     siteMobileMenu() {
@@ -65,32 +68,7 @@ class CoreController {
     }
 
     registerEvents() {
-        $(document).on('click touchend', '.top-cart .mcp-pro-delete', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const productId = $(e.currentTarget).parent('.single-product').data('id');
-
-            this.handler.remove(productId);
-        });
-
-        $(document).on('click touchend', this.mapper.registrationBtn, e => {
-            const handler = new UserHandler();
-
-            this.registrationValidator.validate(this.mapper.registrationForm);
-
-            $(this.mapper.registrationForm).valid();
-
-            handler.doRegistration(this.mapper.registrationForm);
-        });
-
-        $(document).on('click touchend', this.mapper.loginBtn, e => {
-            const handler = new UserHandler();
-
-            handler.doLogin(this.mapper);
-        });
-
-        $(document).on('click touchend', this.mapper.toggleWishListBtn, e => {
+        $(document).on('click touchend', this.#mapper.toggleWishListBtn, e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -99,22 +77,22 @@ class CoreController {
             handler.toggle($(e.currentTarget));
         });
 
-        $(document).on('click touchend', this.mapper.newsLetterSubmitBtn, e => {
+        $(document).on('click touchend', this.#mapper.newsLetterSubmitBtn, e => {
             e.preventDefault();
             e.stopPropagation();
 
             const handler = new NewsLetterHandler();
 
-            handler.addUser(this.mapper.newsLetterForm, true);
+            handler.addUser(this.#mapper.newsLetterForm, true);
         });
 
-        $(document).on('click touchend', this.mapper.newsLetterSubmitBtnFooter, e => {
+        $(document).on('click touchend', this.#mapper.newsLetterSubmitBtnFooter, e => {
             e.preventDefault();
             e.stopPropagation();
 
             const handler = new NewsLetterHandler();
 
-            handler.addUser(this.mapper.newsLetterFormFooter);
+            handler.addUser(this.#mapper.newsLetterFormFooter);
         });
 
         $('#current_language').on('click touchend', e => {
@@ -132,40 +110,6 @@ class CoreController {
             $(listElm).removeClass('active-list');
         });
 
-        $('#reset_password_btn').on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            $('.lrc-login').fadeOut();
-            $('.lrc-register').fadeOut();
-            $('#reset_password').fadeOut();
-
-            $('#reset_password_form_wrapper').fadeIn();
-            $('#login_register_show').fadeIn();
-        });
-
-        $('#login_register_show_btn').on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            $('.lrc-login').fadeIn();
-            $('.lrc-register').fadeIn();
-            $('#reset_password').fadeIn();
-
-            $('#reset_password_form_wrapper').fadeOut();
-            $('#login_register_show').fadeOut();
-        });
-
-        $(document).on('click touchend', this.mapper.resetPasswordBtn, e => {
-            const handler = new UserHandler();
-
-            this.resetPasswordValidator.validate(this.mapper.resetForm);
-
-            $(this.mapper.resetForm).valid();
-
-            handler.doResetPassword(this.mapper);
-        });
-
         $(document).euCookieLawPopup().init({
             cookiePolicyUrl : Routing.generate(`site.cookie_policy.${LOCALE}`),
             popupTitle : Translator.trans('eu.cookies.accept.title', null, 'messages', LOCALE),
@@ -177,39 +121,6 @@ class CoreController {
             autoAcceptCookiePolicy : false,
             htmlMarkup : null
         });
-
-        $(document).on('click touchend', this.mapper.searchOpener, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (!$(this.mapper.searchArea).hasClass('show')) {
-                $(this.mapper.searchArea).fadeIn(500);
-                $(this.mapper.searchArea).addClass('show');
-            }
-        })
-
-        $(document).on('click touchend', this.mapper.searchClose, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if ($(this.mapper.searchArea).hasClass('show')) {
-                $(this.mapper.searchArea).fadeOut(500);
-                $(this.mapper.searchArea).removeClass('show');
-            }
-        })
-
-        $(document).on('submit', this.mapper.searchForm, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            location.href = Routing.generate(`site.shop_page.${LOCALE}`) +
-                `/1/${Translator.trans(
-                    'search', 
-                    null, 
-                    'messages', 
-                    LOCALE
-                )}/${$(this.mapper.searchInput).val()}`;
-        })
     }
 }
 

@@ -2,14 +2,19 @@ pending: 'pending'
 active: 'active'
 disabled: 'disabled'
 
+scroll_top_page: 'Page top'
+
 view: 'view'
 
-default_title: Selling online woman clothes and accessories | Fashion house Elipsa
+default_title: Fashion House Elipsa
 
 new: 'new'
 discount: 'discount'
 down: down
 up: up
+
+season: Season
+collection: Collection
 
 choose: Choose
 
@@ -33,7 +38,7 @@ navi:
   locations: Locations
   loyalty: Loyalty
   catalogue: Catalogue
-  shop: Shop
+  shop: Online Shop
   blog: Blog
   ask_us: Ask us
   contact: Contact
@@ -43,8 +48,20 @@ navi:
   career_form: Career Form
   policy_and_privacy: Privacy policy
   use_conditions: Use conditions
+  withdraw_policy: Withdraw policy
+  complaint: Complaint
+  payment_methods: Payment methods
+  delivery: Delivery
+  free_delivery: Free delivery
+  in_store_pickup: In-stock pickup
+  product_rehearsal: Product rehearsal
+  product_return_and_exchange: Product return and exchange
+  refund: Refund
   career: Careers
   cookie_policy: Cookie policy
+  seasons: Seasons
+  orders: Orders
+  shopping: Shopping
 
 serbian: Serbian
 english: English
@@ -80,6 +97,8 @@ from_lowest_price: lower price first
 from_highest_price: higher price first
 on_sale: on sale
 first_new: new
+sold: Sold
+saving: Saving
 
 select.color: select color
 select.size: select size
@@ -93,6 +112,8 @@ share_link: share link
 product.description: product description
 product.material_cleaning: material and cleaning
 product.size_table: table size
+product.unavailable: Product is unavailable
+
 
 related_products: related products
 
@@ -112,6 +133,7 @@ cart.total_cost: cart total
 cart.promo_coupon: Discount code
 cart.promo_coupon_text: Enter your code if you have one.
 cart.add_coupon_btn: add code
+cart.remove_coupon_btn: Remove code
 
 cart.table.image: image
 cart.table.product_name: product
@@ -181,7 +203,7 @@ last_name: last name
 address: address
 city: city
 zip_code: postal code
-email: email address
+email: Email address
 mobile_telephone: mobile phone
 telephone: telephone
 create_account: create account
@@ -264,7 +286,7 @@ October: Oktobar
 November: Novembar
 December: Decembar
 
-login.text: login
+login.text: Login
 login.btn: Submit login
 login.remember_me: remember me
 login.successfull: Login was successful
@@ -279,7 +301,7 @@ reset_password.page.success: You are successfuly changed password.
 
 logout.text: logout
 
-registration.text: registration
+registration.text: Registration
 registration.btn: Submit registration
 registration.via: register via
 registration.error.user_exists: You are already registered
@@ -327,6 +349,7 @@ contact.tax_id: Tax ID
 links: links
 store: store
 info: information
+shopping: Shopping
 
 yes: yes
 no: no
@@ -346,6 +369,7 @@ text.type.collaborators: Collaborators
 text.type.career_form: Career Form
 text.type.career: Careers
 text.type.cookie_policy: Cookie policy
+text.type.about_us: About us
 
 collaborator.form.basic_data: basic data
 collaborator.form.where_open_store: Where do you plan to open franchise store?
@@ -448,6 +472,8 @@ pe-ly-wring: 'Clothes may be strained by twisting.'
 banner.loyalty: loyalty
 banner.news_letter: newsletter
 banner.pop_up: Basic popup
+banner.menu: Big menu
+banner.season: Season
 
 job.applied_for_form: Join our team
 job.application_form: Apply for position
@@ -480,3 +506,12 @@ order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
 
 search_site: Search site
+
+company_head_office_and_development: Company head office and development
+company_identification_number: Identification number
+
+youtube:
+  id_required: Enter video id
+  exists: Video already exits
+  url_not_valid: Youtube url is not valid
+  link_button: Watch product video

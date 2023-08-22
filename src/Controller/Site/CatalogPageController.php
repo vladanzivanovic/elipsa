@@ -71,8 +71,10 @@ final class CatalogPageController extends AbstractController
      */
     public function getCatalogues(Request $request): array
     {
-        $catalogues = $this->catalogueRepository->getCatalogPage($request->getLocale());
+        $locale = $request->getLocale();
 
-        return ['catalogues' => $this->responseFormatter->formatResponse($catalogues)];
+        $catalogues = $this->catalogueRepository->getCatalogPage($locale);
+
+        return $this->responseFormatter->formatResponse($catalogues, $locale);
     }
 }

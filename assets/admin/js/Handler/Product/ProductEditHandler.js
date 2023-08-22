@@ -1,18 +1,24 @@
 import DropZoneService from "../../../../js/Services/DropZoneService";
 import AppHelperService from "../../../../js/Helper/AppHelperService";
-import NotificationService from "../../../../js/NotificationService";
-import TagsDataTables from "../../Services/DataTables/TagsDataTables";
 import ProductDataTables from "../../Services/DataTables/ProductDataTables";
+import toastrService from "../../../../js/Services/ToastrService";
+import productEditMapper from "../../Mapper/ProductEditMapper";
 
 class ProductEditHandler {
-    constructor() {
-        this.notification = NotificationService();
+    #mapper;
+    #notification;
+    #youtube;
+
+    constructor(youtube) {
+        this.#mapper = productEditMapper;
+        this.#notification = toastrService;
+        this.#youtube = youtube;
     }
 
-    save(mapper) {
+    save() {
         let urlRoute = Routing.generate('admin.add_product_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = $(this.#mapper.form).serializeArray();
 
         data.push({
             name: 'images',
@@ -24,11 +30,20 @@ class ProductEditHandler {
             type = 'PUT';
         }
 
-        if (! mapper.form.valid()) {
+        if (! $(this.#mapper.form).valid()) {
             return false;
         }
 
-        this.notification.showLoadingMessage();
+        for (const youtube of this.#youtube.getLists()) {
+            if (!youtube.isDeleted) {
+                data.push({
+                    name: 'youtube[]',
+                    value: JSON.stringify(youtube)
+                });
+            }
+        }
+
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type,
@@ -42,7 +57,7 @@ class ProductEditHandler {
                 let errors = error.responseJSON;
 
                 if (!AppHelperService.isJsonString(errors.error)) {
-                    this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
+                    this.#notification.error(Translator.trans('generic_error', null, 'messages', LOCALE));
                 }
             }
         })
@@ -57,31 +72,31 @@ class ProductEditHandler {
                 checkbox.parentElement.firstElementChild.innerText = Translator.trans(response.text, null, 'messages', LOCALE);
             },
             error: () => {
-                this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
+                this.#notification.error(Translator.trans('generic_error', null, 'message', LOCALE));
             }
         })
     }
 
     remove(slug) {
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type: 'DELETE',
             url: Routing.generate(`admin.remove_product_api`, {slug}),
             success: () => {
                 ProductDataTables().reload();
-                this.notification.remove();
+                this.#notification.remove();
             },
             error: (error) => {
                 const errors = error.responseJSON;
 
                 if (errors.hasOwnProperty('message')) {
-                    this.notification.show('error', errors.message, true);
+                    this.#notification.error(errors.message);
 
                     return;
                 }
 
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
+                this.#notification.error(Translator.trans('generic_error', null, 'messages'. LOCALE));
             }
         })
     }

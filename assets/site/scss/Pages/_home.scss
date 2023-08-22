@@ -1,17 +1,69 @@
 @import "~nivo-slider/nivo-slider.css";
 @import "../Components/common-product";
 
+.nivoSlider {
+  a.nivo-imageLink {
+    z-index: 1000;
+  }
+  .nivo-caption {
+    overflow: visible;
+    bottom: 20%;
+    color: #000;
+
+    .slide3-text {
+      margin-left: 2.5vw;
+      margin-right: 2.5vw;
+    }
+  }
+}
+
+.home3-banner-area {
+  .home3-row {
+    .home3-banner-column {
+      display: flex;
+      justify-content: center;
+
+      &.home-middle-banners {
+        flex-direction: column;
+
+        > a {
+          &:first-of-type {
+            margin-bottom: 3.4rem;
+          }
+        }
+      }
+
+      > a {
+        flex-grow: 1;
+
+        .h3b-single-banner {
+
+          margin-bottom: 0;
+
+          .h3b-img {
+
+            img {
+              min-width: 100%;
+              max-width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .mobile.home {
   #home3_slider {
 
     .nivo-caption {
-      background: rgba(255 ,255, 255, 0.6);
       overflow: visible;
-      bottom: 16%;
+      bottom: 2%;
       .slide3-text {
+        margin-left: 0;
+        margin-right: 0;
+
         * {
-          font-size: 22px !important;
-          line-height: 19px !important;
           margin-bottom: 4px !important;
         }
 
@@ -36,10 +88,47 @@
   }
 
   .home3-banner-area {
-    padding-bottom: 20px;
+    padding-bottom: 1rem;
 
-    .home-middle-banners {
-      margin: 10px 0;
+    .home3-row {
+      @media only screen and (min-width: 600px) and (max-width: 950px) {
+        display: flex;
+        margin-bottom: 2rem;
+      }
+
+      .home-middle-banners {
+
+        @media only screen and (min-width: 600px) and (max-width: 950px) {
+          flex-direction: row;
+        }
+      }
+    }
+  }
+
+  .home3-newsletter-area {
+    @media only screen and (max-width: 767px) {
+      height: calc(100vw/2);
+    }
+    .h3-newsletter-left {
+      @media only screen and (max-width: 767px) and (min-width: 480px) {
+        padding-left: 0;
+        text-align: center;
+        margin-bottom: 20px !important;
+      }
+    }
+
+    .h3-newsletter-form {
+      .h3-newsletter-input {
+        > a {
+          @media only screen and (max-width: 767px) {
+            position: unset;
+            transform: none !important;
+            display: block;
+            padding: 0;
+            text-align: center;
+          }
+        }
+      }
     }
   }
 

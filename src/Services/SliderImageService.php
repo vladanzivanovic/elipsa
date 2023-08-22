@@ -5,63 +5,29 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\Image;
-use App\Entity\Product;
 use App\Entity\Slider;
-use App\Repository\ImageRepository;
-use Gedmo\Sluggable\Util\Urlizer;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Parser\ImageParser;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Webmozart\Assert\Assert;
 
 final class SliderImageService
 {
-    /**
-     * @var ImageService
-     */
-    protected $img;
+    use MainImageValidationTrait;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    protected ImageService $img;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private ImageParser $imageParser;
 
-    /**
-     * SliderImageService constructor.
-     *
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     * @param ImageRepository       $imageRepository
-     */
     public function __construct(
         ImageService $imageService,
-        ParameterBagInterface $bag,
-        ImageRepository $imageRepository
+        ImageParser $imageParser
     ) {
         $this->img = $imageService;
-        $this->imageRepository = $imageRepository;
-        $this->bag = $bag;
+        $this->imageParser = $imageParser;
     }
 
-    /**
-     * @param Slider $slider
-     * @param array  $data
-     * @param int    $device
-     *
-     * @throws \Doctrine\ORM\ORMException
-     */
     public function setImages(Slider $slider, array $data, int $device): void
     {
-        $rootDir = $this->bag->get('upload_dir');
-        $tmpDir = $this->bag->get('upload_tmp_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
-
         if(empty(array_filter($data))) {
             return;
         }
@@ -70,107 +36,33 @@ final class SliderImageService
 
         $exceptions = [];
 
-        foreach ($data as $index => $image) {
-            if (!empty($image['id'])) {
-                if (isset($image['deleted']) && true === $image['deleted']) {
-                    $imageObj = $this->imageRepository->find($image['id']);
+        foreach ($data as $payload) {
+            try {
+                $image = $this->imageParser->parse($payload, $device);
+                $image->setRelatedToType(Image::RELATED_TYPE_SLIDER);
 
-                    $image['file'] = $rootDir . $imageDir . $imageObj->getOriginalName();
-                    $file = $this->img->setFileObject($image);
-                    $imageObj->setFile($file);
-                    $imageObj->setIsDeleted(true);
-
-                    $this->imageRepository->delete($imageObj);
-
-                    continue;
+                if ($device === Image::DEVICE_MOBILE) {
+                    $image->setParentImage($slider->getImage()->getName());
                 }
 
-                continue;
-            }
+                if (!empty($payload['id'])) {
+                    if (isset($payload['deleted']) && true === $payload['deleted']) {
+                        $this->imageParser->delete($image);
 
-            try {
-                $image['file'] = $rootDir.$tmpDir.$image['fileName'];
-                $file = $this->img->setFileObject($image);
-            } catch (FileNotFoundException $exception) {
-                $exceptions[] = $image['fileName'];
+                        continue;
+                    }
+                }
 
-                continue;
-            }
-
-            $mediaObj = new Image();
-
-            $image['file'] = $rootDir.$tmpDir.$image['fileName'];
-
-            if (!($file instanceof UploadedFile)) {
-                continue;
-            }
-
-            $slug = Urlizer::transliterate(md5($file->getFilename()));
-
-            $newName = $slug.'.'.$file->guessExtension();
-
-            $mediaObj->setRelatedToType(Image::RELATED_TYPE_SLIDER);
-            $mediaObj->setName($slug.'-'.++$index);
-            $mediaObj->setIsmain($image['isMain']);
-            $mediaObj->setOriginalName($newName);
-            $mediaObj->setFile($file);
-            $mediaObj->setDevice($device);
-
-            if ($device === Image::DEVICE_MOBILE) {
-                $mediaObj->setParentImage($slider->getImage()->getName());
-            }
-
-            $this->imageRepository->persist($mediaObj);
-
-            if ($device === Image::DEVICE_DESKTOP) {
-                $slider->setImage($mediaObj);
+                if ($device === Image::DEVICE_DESKTOP) {
+                    $slider->setImage($image);
+                }
+            } catch (\Throwable $throwable) {
+                $exceptions[] = $throwable->getMessage();
             }
         }
 
         if (count($exceptions) > 0) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
-    }
-
-    /**
-     * @param array $images
-     *
-     * @return void
-     */
-    public function deleteImages(array $images): void
-    {
-        $rootDir = $this->bag->get('upload_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
-
-        foreach ($images as $image) {
-            /** @var Image $imageObj */
-            $imageObj = $this->imageRepository->find($image['id']);
-
-            $this->img->deleteImage($this->img->setFileObject(['file' => $rootDir.$imageDir.$imageObj->getName(), 'fileName' => $imageObj->getName()]));
-        }
-    }
-
-    /**
-     * @param Product $product
-     * @param Image   $image
-     *
-     * @return void
-     */
-    private function updateImage(Product $product, Image $image): void
-    {
-        $this->imageRepository->removeMainImage($product, Image::RELATED_TYPE_PRODUCT);
-
-        $image->setIsMain(true);
-    }
-
-    private function validateMainImage(array $data)
-    {
-        foreach ($data as $image) {
-            if (true === !!$image['isMain']) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -1,6 +1,12 @@
+{% set search = '' %}
+
+{% if search_criteria is defined and search_criteria is not null and search_criteria.has('search') == true %}
+    {% set search = search_criteria.get('search')[0] %}
+{% endif %}
+
 <div class="col-xs-12 search-area">
     <form enctype="multipart/form-data" class="search-form">
-        <input type="text" name="search" id="search-input" placeholder="{{ 'search_site' | trans }}">
+        <input type="text" name="search" id="search-input" placeholder="{{ 'search_site' | trans }}" value="{{ search }}">
         <button class="hvr-bs search-submit"><i class="fa fa-search"></i></button>
         <button type="button" class="hvr-bs search-close"><i class="fa fa-times"></i></button>
     </form>

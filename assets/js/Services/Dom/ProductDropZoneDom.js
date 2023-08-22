@@ -8,7 +8,7 @@ class ProductDropZoneDom {
 
         let colorSelect = $('<select>', {
             class: 'dropdown-colors',
-            name: 'color'
+            name: 'color_id'
         });
 
         $.each(COLORS, (i, v) => {
@@ -17,12 +17,12 @@ class ProductDropZoneDom {
                 'data-hex': v.hex,
             };
 
-            if (file.hasOwnProperty('color') && file.color === v.value) {
+            if (file.hasOwnProperty('color_id') && file.color_id === v.value) {
                 selectOptions.selected = 'selected';
             }
 
-            if (!file.hasOwnProperty('color') && i === 0) {
-                file.color = v.value;
+            if (!file.hasOwnProperty('color_id') && i === 0) {
+                file.color_id = v.value;
             }
 
             colorSelect.append($('<option>', selectOptions));

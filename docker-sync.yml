@@ -1,0 +1,15 @@
+version: "2"
+options:
+    ## activate this if you want to debug sync process, 
+    ## after finish set comment flag again as it can create memory leak
+    #verbose: true
+    native_osx_image: 'infostreams/docker-sync-unison'
+    compose-file-path: './docker-compose.yml'
+syncs:
+    elipsa-sync:
+        notify_terminal: true
+        src: ./
+        sync_excludes: ['.DS_Store', 'docker', '.idea', 'var']
+        sync_userid: '501'
+        sync_groupid: '20'
+        sync_strategy: 'native_osx'

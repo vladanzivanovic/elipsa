@@ -6,31 +6,20 @@ namespace App\Controller\Site;
 
 use App\Collector\ProductPageCollector;
 use App\Entity\ProductTranslation;
-use App\Formatter\Site\ProductPageFormatter;
+use App\Formatter\Site\ProductFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProductPageController extends AbstractController
+final class ProductPageController extends AbstractController
 {
-    /**
-     * @var ProductPageCollector
-     */
-    private $pageCollector;
-    /**
-     * @var ProductPageFormatter
-     */
-    private $pageFormatter;
+    private ProductPageCollector $pageCollector;
 
-    /**
-     * ProductPageController constructor.
-     *
-     * @param ProductPageCollector $pageCollector
-     * @param ProductPageFormatter $pageFormatter
-     */
+    private ProductFormatter $pageFormatter;
+
     public function __construct(
         ProductPageCollector $pageCollector,
-        ProductPageFormatter $pageFormatter
+        ProductFormatter $pageFormatter
     ) {
         $this->pageCollector = $pageCollector;
         $this->pageFormatter = $pageFormatter;
@@ -38,11 +27,6 @@ class ProductPageController extends AbstractController
 
     /**
      * @Template("Site/Pages/product.html.twig")
-     *
-     * @param ProductTranslation $productTranslation
-     * @param Request            $request
-     *
-     * @return array
      */
     public function index(ProductTranslation $productTranslation, Request $request): array
     {
@@ -50,6 +34,6 @@ class ProductPageController extends AbstractController
 
         $collection = $this->pageCollector->collect($productTranslation, $locale, $this->getUser());
 
-        return $this->pageFormatter->formatResponse($collection);
+        return $this->pageFormatter->formatResponse($collection, $locale);
     }
 }

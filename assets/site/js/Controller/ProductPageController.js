@@ -4,10 +4,13 @@ require('@fancyapps/fancybox');
 
 import ProductPageMapper from "../Mapper/ProductPageMapper";
 import ProductPageService from "../Service/ProductPageService";
+import Fotorama from "../Service/Fotorama";
 
 class ProductPageController {
+    #mapper
+
     constructor() {
-        this.mapper = ProductPageMapper;
+        this.#mapper = ProductPageMapper;
         this.service = new ProductPageService();
         this.handler = new ProductPageHandler();
 
@@ -19,21 +22,21 @@ class ProductPageController {
     }
 
     registerEvents() {
-        this.mapper.color.on('click touchend', e => {
+        this.#mapper.color.on('click touchend', e => {
             e.preventDefault();
             e.stopPropagation();
 
             this.service.showImagesByColor($(e.currentTarget));
         });
 
-        this.mapper.size.on('click touchend', e => {
+        this.#mapper.size.on('click touchend', e => {
             e.preventDefault();
             e.stopPropagation();
 
             this.service.toggleActiveSize(e.currentTarget);
         });
 
-        this.mapper.addBtn.on('click touchend', e => {
+        this.#mapper.addBtn.on('click touchend', e => {
             this.handler.save();
         });
     }

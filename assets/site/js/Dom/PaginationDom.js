@@ -23,14 +23,19 @@ class PaginationDom {
         $('.pagination .next').addClass(data.disableLast ? 'disabled' : '');
         $('.pagination .last').addClass(data.disableLast ? 'disabled' : '');
 
-        let i = data.totalPages;
+        let lastNextPage = data.currentPage + 3;
+        let nextPage = data.nextPage;
 
-        while( i > 0 ) {
-            let url = location.href.replace(/\/1/g, '/'+i);
-            $(`<li class="pages ${i === 1 ? 'active' : ''}"><a href="${url}">${i}</a></li>`).insertAfter('.prev');
+        while (nextPage <= lastNextPage) {
+            let url = location.href.replace(/\/1/g, '/'+nextPage);
+            $(`<li class="pages"><a href="${url}">${nextPage}</a></li>`).insertBefore('.next');
 
-            i--;
+            nextPage++;
         }
+
+        let url = location.href.replace(/\/1/g, '/'+data.currentPage);
+        $(`<li class="pages active"><a href="${url}">${data.currentPage}</a></li>`).insertAfter('.prev');
+
 
         return html;
     };

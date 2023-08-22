@@ -57,12 +57,9 @@ final class SliderEditResponseFormatter
 
         return [
             'rs_description' => $rsTrans->getDescription(),
-            'rs_button' => $rsTrans->getButtonText(),
             'rs_link' => $rsTrans->getButtonLink(),
             'en_description' => $enTrans->getDescription(),
-            'en_button' => $enTrans->getButtonText(),
             'en_link' => $enTrans->getButtonLink(),
-            'position' => $slider->getTextPosition(),
             'selectedImages' => $imagesArray,
         ];
     }

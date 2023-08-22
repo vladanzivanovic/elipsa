@@ -14,22 +14,30 @@ class SliderText
     public const STATUS_PENDING = false;
     public const STATUS_ACTIVE = true;
 
+    public const POSITION_HEADER = 'header';
+    public const POSITION_FOOTER = 'footer';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private ?bool $isActive = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SliderTextTranslation", mappedBy="sliderText", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $sliderTextTranslations;
+    private Collection $sliderTextTranslations;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=false)
+     */
+    private ?string $position;
 
     public function __construct()
     {
@@ -84,11 +92,6 @@ class SliderText
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return SliderTextTranslation
-     */
     public function getByLocale(string $locale): SliderTextTranslation
     {
         $transCollection = $this->sliderTextTranslations;
@@ -99,5 +102,15 @@ class SliderText
         });
 
         return $filtered->first();
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(string $position): void
+    {
+        $this->position = $position;
     }
 }

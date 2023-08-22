@@ -8,32 +8,16 @@ use App\Entity\Slider;
 use App\Formatter\Admin\SliderEditResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderEditPageController extends AbstractController
 {
-    /**
-     * @var SliderEditResponseFormatter
-     */
-    private $responseFormatter;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private SliderEditResponseFormatter $responseFormatter;
 
-    /**
-     * SliderEditPageController constructor.
-     *
-     * @param SliderEditResponseFormatter $responseFormatter
-     * @param ParameterBagInterface       $bag
-     */
     public function __construct(
-        SliderEditResponseFormatter $responseFormatter,
-        ParameterBagInterface $bag
+        SliderEditResponseFormatter $responseFormatter
     ) {
         $this->responseFormatter = $responseFormatter;
-        $this->bag = $bag;
     }
 
     /**

@@ -4,34 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Banner;
 use App\Formatter\Admin\DescriptionEditResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class DescriptionEditPageController extends AbstractController
 {
-    /**
-     * @var DescriptionEditResponseFormatter
-     */
-    private $responseFormatter;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private DescriptionEditResponseFormatter $responseFormatter;
 
-    /**
-     * @param DescriptionEditResponseFormatter $responseFormatter
-     * @param ParameterBagInterface            $bag
-     */
     public function __construct(
-        DescriptionEditResponseFormatter $responseFormatter,
-        ParameterBagInterface $bag
+        DescriptionEditResponseFormatter $responseFormatter
     ) {
         $this->responseFormatter = $responseFormatter;
-        $this->bag = $bag;
     }
 
     /**
@@ -42,7 +27,7 @@ final class DescriptionEditPageController extends AbstractController
      */
     public function insert(): array
     {
-        return [];
+        return $this->responseFormatter->formatResponse();
     }
 
     /**

@@ -17,20 +17,20 @@ class OrderProduct
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="ShopOrder", inversedBy="orderProducts")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $orderId;
+    private ShopOrder $orderId;
 
     /**
      * @ORM\Column(type="string", length=5)
      *
      * @Assert\NotBlank(message="product.size")
      */
-    private $size;
+    private string $size;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductColor", inversedBy="orderProducts")
@@ -38,46 +38,53 @@ class OrderProduct
      *
      * @Assert\NotBlank(message="product.color")
      */
-    private $color;
+    private ProductColor $color;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="product.quantity")
      * @Assert\Positive(message="product.quantity_positive_number")
      */
-    private $quantity;
+    private int $quantity;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $price;
+    private int $price;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OrderProductTranslation", mappedBy="orderProduct", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $orderProductTranslations;
+    private Collection $orderProductTranslations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderProducts")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private Product $product;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $code;
+    private string $code;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Image")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $image;
+    private Image $image;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $discount;
+    private ?int $discount = null;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $promotionPrice = null;
+
+    private int $total = 0;
 
     public function __construct()
     {
@@ -145,6 +152,8 @@ class OrderProduct
     public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        $this->recalculateTotal();
 
         return $this;
     }
@@ -225,6 +234,8 @@ class OrderProduct
     {
         $this->discount = $discount;
 
+        $this->recalculateTotal();
+
         return $this;
     }
 
@@ -242,4 +253,53 @@ class OrderProduct
 
         return $filteredTrans->first();
     }
+
+    public function getBySlug(string $slug): ?OrderProductTranslation
+    {
+        $filteredTrans = $this->orderProductTranslations->filter(
+            function (OrderProductTranslation $trans) use ($slug) {
+                return $trans->getSlug() === $slug;
+            }
+        );
+
+        return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
+    }
+
+    public function getPromotionPrice(): ?int
+    {
+        return $this->promotionPrice;
+    }
+
+    public function setPromotionPrice(?int $promotionPrice): self
+    {
+        $this->promotionPrice = $promotionPrice;
+
+        $this->recalculateTotal();
+
+        return $this;
+    }
+
+    public function getTotal(): int
+    {
+        $this->recalculateTotal();
+
+        return $this->total;
+    }
+
+    public function getRealPrice(): int
+    {
+        return 0 < $this->discount ? $this->discount : $this->price;
+    }
+
+    private function recalculateTotal(): void
+    {
+        $price = 0 < $this->discount ? $this->discount : $this->price;
+
+        if (null !== $this->promotionPrice) {
+            $price = $price + $this->promotionPrice;
+        }
+
+        $this->total = $price * $this->quantity;
+    }
+
 }

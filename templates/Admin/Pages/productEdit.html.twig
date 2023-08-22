@@ -18,76 +18,43 @@
     </div>
 
     <form id="edit_form" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Srpski</h6>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.input('Naziv', 'title_rs', IS_EDIT ? rs_title : '', 'rs_title') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'short_description_rs', IS_EDIT ? rs_short_description : '', 'rs_short_description', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.textarea('Opis', 'description_rs', IS_EDIT ? rs_description : '', 'rs_description', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.textarea('Materijali i održavanje', 'cleaning_rs', IS_EDIT ? rs_cleaning : '', 'rs_cleaning', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Engleski</h6>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.input('Naziv', 'title_en', IS_EDIT ? en_title : '', 'en_title') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'short_description_en', IS_EDIT ? en_short_description : '', 'en_short_description', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.textarea('Opis', 'description_en', IS_EDIT ? en_description : '', 'en_description', 10, '', 'form-control') }}
-                                </div>
+        {% for locale, lang in app_params('languages') %}
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ lang.name }}</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : '', locale~'[title]') }}
+                                    </div>
+                                </div><!-- Col -->
                             </div><!-- Row -->
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.textarea('Materijali i održavanje', 'cleaning_en', IS_EDIT ? en_cleaning : '', 'en_cleaning', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.textarea('Kratak opis', 'short_description_'~locale, IS_EDIT ? payload.translations[locale]['short_description'] : '', locale~'[short_description]', 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.textarea('Opis', 'description_rs'~locale, IS_EDIT ? payload.translations[locale]['description'] : '', locale~'[description]', 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.textarea('Materijali i održavanje', 'cleaning_'~locale, IS_EDIT ? payload.translations[locale]['cleaning'] : '', locale~'[cleaning]', 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
         <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
@@ -96,49 +63,56 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Šifra', 'code', IS_EDIT ? code : '', 'code') }}
+                                    {{ form.input('Šifra', 'code', IS_EDIT ? payload['code'] : '', 'code') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Kategorija', 'categories', 'categories[]', IS_EDIT ? selectedCategories : '', categories, '', 'w-100', true) }}
+                                    {{ form.select('Kategorija', 'categories', 'categories[]', IS_EDIT ? payload['selectedCategories'] : '', options.categories, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? selectedTags : '', tags, '', 'w-100', true) }}
+                                    {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? payload['selectedTags'] : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Veličine', 'sizes', 'sizes[]', IS_EDIT ? selectedSizes : '', sizes, '', 'w-100', true) }}
+                                    {{ form.select('Veličine', 'sizes', 'sizes[]', IS_EDIT ? payload['selectedSizes'] : '', options.sizes, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Cena', 'price', IS_EDIT ? price : '', 'price') }}
+                                    {{ form.input('Cena', 'price', IS_EDIT ? payload.price : '', 'price') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Popust', 'discount', IS_EDIT ? discount : '', 'discount') }}
+                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.discount : '', 'discount') }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p>Prikaz na pocetnoj stranici</p>
                                 <div class="form-check form-check-flat form-check-primary">
                                     {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}
-                                    {{ form.checkbox('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == upValue ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == upValue ? 'checked="checked"' : null ) }}
                                 </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
                                 <div class="form-check form-check-flat form-check-primary">
                                     {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}
 
-                                    {{ form.checkbox('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and show_home_page == downValue ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == downValue ? 'checked="checked"' : null ) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-3">
+                                <p>&nbsp;</p>
+                                <div class="form-check form-check-flat form-check-primary">
+                                    {{ form.checkbox('Rasprodato', 'sold', 1, 'sold', 'form-check-label', 'form-check-input', IS_EDIT and payload['is_sold'] == true ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -154,7 +128,7 @@
                         <div class="row">
                             {% for icon in cleaning %}
                                 {% set additionalAttributes = 'data-error-after=\'#card_title\' ' %}
-                                {% if IS_EDIT and icon in cleaning_box %}
+                                {% if IS_EDIT and icon in payload['cleaning_box'] %}
                                     {% set additionalAttributes = additionalAttributes ~ 'checked="checked"' %}
                                 {% endif %}
 
@@ -182,17 +156,32 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Video</h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% include 'Admin/Components/youtube.html.twig' %}
+                            </div>
+                        </div><!--Row-->
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-    {{ form.button('product_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
         const SLUG = '{{ app.request.attributes.get('slug') }}';
-        const COLORS = JSON.parse('{{ colors|json_encode|raw }}');
+        const COLORS = JSON.parse('{{ options.colors|json_encode|raw }}');
 
         {% if IS_EDIT %}
-            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+            const IMAGES = JSON.parse('{{ payload['selectedImages']|json_encode()|raw }}');
+            const YOUTUBES = JSON.parse('{{ payload['youtubes'] | json_encode | e('js') }}');
         {% endif %}
 
     </script>

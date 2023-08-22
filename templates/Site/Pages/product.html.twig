@@ -1,18 +1,18 @@
 {% extends 'Site/base.html.twig' %}
 
 {% block bodyClass %}product-page{% endblock %}
-{% block title %}{{ translation.title }} - Elipsa{% endblock %}
+{% block title %}{{ payload.translations[locale].title }} - Elipsa{% endblock %}
 
-{% block ogTitle %}{{ translation.title }}{% endblock %}
-{% block ogImage %}{{ app.request.schemeAndHttpHost ~ images[0].image_link }}{% endblock %}
+{% block ogTitle %}{{ payload.translations[locale].title }}{% endblock %}
+{% block ogImage %}{{ app.request.schemeAndHttpHost ~ payload.media.images[0].file }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
-{% block ogDescription %}{{ translation.description }}{% endblock %}
+{% block ogDescription %}{{ payload.translations[locale].description }}{% endblock %}
 
 {% block content %}
-    {% set product = translation.product %}
+{#    {% set product = translation.product %}#}
     {% set prevPage = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? path('site.trendy_page') : path('site.shop_page') %}
     {% set prevPageTitle = app.request.server.get('HTTP_REFERER') == path('site.trendy_page') ? 'title.trends' | trans : 'title.shop_page' | trans %}
-    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title' : 'title.shop_page' | trans, 'link': prevPage}, {'title': translation.title }], 'activePage': translation.title}) }}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title' : 'title.shop_page' | trans, 'link': prevPage}, {'title': payload.translations[locale].title }], 'activePage': payload.translations[locale].title}) }}
 
     <!-- single-product-area-start -->
     <div class="single-product-area">
@@ -21,47 +21,31 @@
                 <div class="col-md-6 col-xs-12">
                     <div class="product-tab-area">
                         <div class="clearfix">
-                            <div class="product-tab-content tab-content">
-                                {% for image in images %}
-                                    <div id="images-{{ image.fileName }}" data-color="{{ image.color }}" class="large-image tab-pane fade {{ loop.first ? 'in active' : '' }}">
-                                        <a href="{{ image.image_link }}" data-fancybox="images-{{ image.color }}">
-                                            <i class="fa fa-search-plus"></i>
-                                            <img src="{{ image.image_link }}" alt="{{ default_alt_tag }}">
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            <div class="product-tab-menu">
-                                <ul class="product-tab">
-                                    {% for image in images %}
-                                        <li class="thumb-image {{ loop.first ? 'active' : '' }}" data-color="{{ image.color }}" data-image="{{ image.fileName }}">
-                                            <a data-toggle="tab" href="#images-{{ image.fileName }}"><img src="{{ image.image_link_thumb }}" alt="{{ default_alt_tag }}"></a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                            <div class="photo-gallery style1 fotorama" data-allowfullscreen="native" data-nav="thumbs" data-auto="false"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <div class="single-product-description-area">
-                        <h2 class="spd-title">{{ translation.title }}</h2>
-                        <p class="spd-price">{{ product.discount > 0 ? product.discount | number_format(2) : product.price | number_format(2) }} RSD
+                        <h2 class="spd-title">{{ payload.translations[locale].title }}</h2>
+                        <p class="spd-price">{{ payload.discount is not null ? payload.discount.price.amount : payload.price.amount }} {{ payload.price.currency }}
 
-                            {% if product.discount > 0 %}
-                                <span class="spd-old-price">{{ product.price | number_format(2) }} RSD</span>
+                            {% if payload.discount is not null %}
+                                <span class="spd-old-price">-{{ payload.price.amount }} {{ payload.price.currency }}</span>
                             {% endif %}
                         </p>
-                        <p class="spd-text">{{ translation.shortDescription }}</p>
-{#                        <ul class="spd-list">#}
-{#                            <li>Satisfaction 100% Guaranteed</li>#}
-{#                            <li>Free shipping on orders over $99</li>#}
-{#                            <li>14 day easy Return</li>#}
-{#                        </ul>#}
+                        {% if payload.discount is not null %}
+                            <div class="spd-meta">
+                                <div class="spd-meta-type">
+                                    <p class="saving-price">{{ 'saving' | trans }} <span>{{ payload.discount.saving.amount }} {{ payload.discount.saving.currency }}</span></p>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <p class="spd-text">{{ payload.translations[locale].short_description }}</p>
                         <div class="spd-select-color">
                             <span class="letter-capitalize">{{ 'select.color' | trans }}:</span>
                             <ul>
-                                {% for color in colors %}
+                                {% for color in payload.colors %}
                                     <li>
                                         <a style="background-color: {{ color.hex }}" href="#" data-color="{{ color.id }}" class="color-btn {{ loop.first ? 'active' : '' }}"></a>
                                     </li>
@@ -71,7 +55,7 @@
                         <div class="spd-select-size">
                             <span class="letter-capitalize">{{ 'select.size' | trans }}:</span>
                             <ul>
-                                {% for size in sizes %}
+                                {% for size in payload.sizes %}
                                     <li><a href="#" class="size-btn">{{ size.size }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -80,18 +64,20 @@
                             <p class="quantity cart-plus-minus">
                                 <input type="text" id="product-quantity" value="1" />
                             </p>
-                            <button type="button" class="spd-add-to hvr-bs letter-capitalize">{{ 'add_to_cart' | trans }}</button>
+                            <button type="button" class="spd-add-to hvr-bs letter-capitalize {{ true == payload.is_sold ? 'disabled' : '' }}" {{ true == payload.is_sold ? 'disabled="disabled"' : '' }}>
+                                {{ 'add_to_cart' | trans }}
+                            </button>
                         </div>
                         <div class="spd-meta">
                             <div class="spd-meta-type">
-                                <p>SKU: <span>{{ product.code }} </span></p>
+                                <p>SKU: <span>{{ payload.code }} </span></p>
                             </div>
                         </div>
                         <div class="spd-meta">
                             <div class="spd-meta-cat">
                                 <span class="letter-capitalize">{{ 'categories' | trans }}:</span>
                                 <ul>
-                                    {% for category in productCategories %}
+                                    {% for category in payload.categories %}
                                         <li><a href="#">{{ category.title }}</a></li>
                                     {% endfor %}
                                 </ul>
@@ -101,8 +87,10 @@
                             <div class="spd-meta-tags">
                                 <span class="letter-capitalize">{{ 'tags' | trans }}:</span>
                                 <ul>
-                                    {% for tag in tags %}
-                                        <li><a href="#">{{ tag.label }}</a></li>
+                                    {% for tag in payload.tags %}
+                                        <li>
+                                            <a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}" target="_blank">{{ tag[locale].title }}</a>
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -138,18 +126,17 @@
                         <div class="spt-content">
                             <div class="tab-content">
                                 <div id="pdesc" class="tab-pane fade in active">
-                                    <p>{{ translation.description }}</p>
+                                    <p>{{ payload.translations[locale].description }}</p>
                                 </div>
                                 <div id="ainfo" class="tab-pane fade">
                                     <ul id="cleaning" class="col-xs-12">
-                                        {% for icon in cleaningIcons %}
+                                        {% for cleaningIcon in payload.cleaningIcons %}
                                             <li class="col-md-1 col-xs-2">
-                                                <span class="cleaning-icons {{ icon }}" title="{{ icon | trans }}"></span>
+                                                <span class="cleaning-icons {{ cleaningIcon.icon }}" title="{{ cleaningIcon.icon | trans }}"></span>
                                             </li>
                                         {% endfor %}
                                     </ul>
-
-                                    <p>{{ translation.cleaning }}</p>
+                                    <p>{{ payload.translations[locale].cleaning }}</p>
                                 </div>
                                 <div id="size_table" class="tab-pane fade">
                                     <img src="{{ asset('build/site/images/size_table_'~ locale ~'.jpg') }}">
@@ -175,8 +162,8 @@
             <div class="row">
                 <div class="related-pro-carousel owl-carousel">
                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                    {% for relatedProduct in related_products.products %}
-                        {{ productGrid.productGrid(relatedProduct, related_products.product_tags[relatedProduct.id] is defined ? related_products.product_tags[relatedProduct.id] : [], related_products.product_colors, related_products.product_sizes, 'col-xs-12') }}
+                    {% for relatedProduct in relatedProducts %}
+                        {{ productGrid.productGrid(relatedProduct, 'col-xs-12', locale) }}
                     {% endfor %}
                 </div>
             </div>
@@ -191,5 +178,6 @@
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const SLUG = '{{ app.request.attributes.get('slug') }}';
+        const MEDIA = JSON.parse('{{ payload.media | json_encode() | raw }}');
     </script>
 {% endblock %}

@@ -5,79 +5,50 @@ declare(strict_types=1);
 namespace App\Formatter\Admin;
 
 use App\Entity\Product;
-use App\Entity\ProductHasCategories;
 use App\Repository\CategoryTranslationRepository;
-use App\Repository\ImageRepository;
 use App\Repository\ProductCleaningRepository;
-use App\Repository\ProductHasImagesRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\TagsRepository;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Routing\RouterInterface;
+use App\View\ImageView;
+use App\View\ProductView;
+use App\View\YoutubeView;
 
 final class ProductEditResponseFormatter
 {
-    use ImageTrait;
+    private CategoryTranslationRepository $categoryTranslationRepository;
 
-    /**
-     * @var CategoryTranslationRepository
-     */
-    private $categoryTranslationRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private ProductSizeRepository $sizeRepository;
 
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
+    private ProductCleaningRepository $cleaningRepository;
 
-    /**
-     * @var ProductHasImagesRepository
-     */
-    private $hasImagesRepository;
+    private ProductView $productView;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private ImageView $imageView;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ProductCleaningRepository
-     */
-    private $cleaningRepository;
+    private YoutubeView $youtubeView;
 
-    /**
-     * @param CategoryTranslationRepository $categoryTranslationRepository
-     * @param TagsRepository                $tagsRepository
-     * @param ProductSizeRepository         $sizeRepository
-     * @param ProductHasImagesRepository    $hasImagesRepository
-     * @param ImageRepository               $imageRepository
-     * @param RouterInterface               $router
-     * @param ProductCleaningRepository     $cleaningRepository
-     */
+    private TagOptionsFormatter $tagOptionsFormatter;
+
     public function __construct(
         CategoryTranslationRepository $categoryTranslationRepository,
         TagsRepository $tagsRepository,
         ProductSizeRepository $sizeRepository,
-        ProductHasImagesRepository $hasImagesRepository,
-        ImageRepository $imageRepository,
-        RouterInterface $router,
-        ProductCleaningRepository $cleaningRepository
+        ProductCleaningRepository $cleaningRepository,
+        ProductView $productView,
+        ImageView $imageView,
+        YoutubeView $youtubeView,
+        TagOptionsFormatter $tagOptionsFormatter
     ) {
         $this->categoryTranslationRepository = $categoryTranslationRepository;
         $this->tagsRepository = $tagsRepository;
         $this->sizeRepository = $sizeRepository;
-        $this->hasImagesRepository = $hasImagesRepository;
-        $this->imageRepository = $imageRepository;
-        $this->router = $router;
         $this->cleaningRepository = $cleaningRepository;
+        $this->productView = $productView;
+        $this->imageView = $imageView;
+        $this->youtubeView = $youtubeView;
+        $this->tagOptionsFormatter = $tagOptionsFormatter;
     }
 
     /**
@@ -85,32 +56,60 @@ final class ProductEditResponseFormatter
      *
      * @return array
      */
-    public function formatResponse(Product $product): array
+    public function formatResponse(array $options, ?Product $product = null): array
     {
-        $rsTrans = $product->getByLocale('rs');
-        $enTrans = $product->getByLocale('en');
+        $payload = [];
 
+        if (null !== $product) {
+            $response = [
+                'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
+                'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'id'),
+                'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
+                'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
+            ];
 
-        $product = [
-            'rs_title' => $rsTrans->getTitle(),
-            'rs_short_description' => $rsTrans->getShortDescription(),
-            'rs_description' => $rsTrans->getDescription(),
-            'rs_cleaning' => $rsTrans->getCleaning(),
-            'en_title' => $enTrans->getTitle(),
-            'en_short_description' => $enTrans->getShortDescription(),
-            'en_description' => $enTrans->getDescription(),
-            'en_cleaning' => $enTrans->getCleaning(),
-            'code' => $product->getCode(),
-            'price' => $product->getPrice(),
-            'discount' => $product->getDiscount(),
-            'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
-            'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'mainSlug'),
-            'selectedSizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
-            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByProduct($product), 'product'),
-            'show_home_page' => $product->getShowHomePage(),
-            'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
+            $payload = $response +
+                $this->productView->editView($product) +
+                $this->getImages($product) +
+                $this->getYoutube($product);
+        }
+
+        $formattedOptions = [
+            'tags' => $this->tagOptionsFormatter->formatTagOptions($options['tags']),
+            'categories' => $options['categories'],
+            'sizes' => $options['sizes'],
+            'colors' => $options['colors'],
         ];
 
-        return $product;
+
+
+        return [
+            'payload' => $payload,
+            'options' => $formattedOptions,
+        ];
     }
+
+    private function getImages(Product $product): array
+    {
+        $images = [];
+
+        foreach ($product->getProductHasImages() as $productHasImage) {
+            $images[] = $this->imageView->editProductView($productHasImage, 'product');
+        }
+
+        return ['selectedImages' => $images];
+    }
+
+    private function getYoutube(Product $product): array
+    {
+        $youtubes = [];
+
+        foreach ($product->getYoutubes() as $youtube) {
+            $youtubes[] = $this->youtubeView->view($youtube);
+        }
+
+        return ['youtubes' => $youtubes];
+    }
+
+
 }

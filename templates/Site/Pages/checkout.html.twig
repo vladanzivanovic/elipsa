@@ -79,37 +79,38 @@
                         <h4 class="checkout-box-title text-uppercase">{{ 'checkout.your_order' | trans }}</h4>
                         <div class="yob-content">
                             <p class="yobc-title text-uppercase">{{ 'checkout.product_total' | trans | raw }}</p>
+                            <ul class="product-list">
+{#                                {% for product in products %}#}
+{#                                    {% set price = product.discount > 0 ? product.discount : product.price %}#}
+{#                                    {% set productTotal = product.quantity * price %}#}
+{#                                    <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ productTotal | number_format(2)  }} RSD</span></li>#}
+{#                                {% endfor %}#}
+{#                                {% set totalWithDiscount = total %}#}
+{#                                {% set totalWithShipping = shipping | trim + total %}#}
+{##}
+{#                                {% if promo_price is not null %}#}
+{#                                    {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}#}
+{#                                    {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping_price %}#}
+{#                                    {% set totalWithShipping = shipping + totalWithDiscount %}#}
+{#                                {% endif %}#}
+{##}
+                            </ul>
                             <ul>
-                                {% for product in products %}
-                                    {% set price = product.discount > 0 ? product.discount : product.price %}
-                                    {% set productTotal = product.quantity * price %}
-                                    <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ productTotal | number_format(2)  }} RSD</span></li>
-                                {% endfor %}
-                                {% set totalWithDiscount = total %}
-                                {% set totalWithShipping = shipping | trim + total %}
-
-                                {% if promo_price is not null %}
-                                    {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}
-                                    {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping_price %}
-                                    {% set totalWithShipping = shipping + totalWithDiscount %}
-                                {% endif %}
-
-                                <li class="order-total clearfix">{{ 'cart.total_products' | trans }} <span>{{ total | number_format(2) }} RSD</span></li>
-                                <li class="order-total {{ promo_price is null ? 'hide' : '' }} clearfix">{{ 'cart.promo_coupon' | trans }} <span>{{ promo_price }} %</span></li>
-                                <li class="order-total clearfix">{{ 'cart.shipping' | trans }} <span>{{ shipping | number_format(2) }} RSD</span></li>
-                                <li class="order-total clearfix">
+                                <li id="products-total" class="order-total clearfix">{{ 'cart.total_products' | trans }} <span></span></li>
+                                <li id="promo-price" class="order-total clearfix">{{ 'cart.promo_coupon' | trans }} <span></span></li>
+                                <li id="shipping-price" class="order-total clearfix">{{ 'cart.shipping' | trans }} <span></span></li>
+                                <li id="total-with-shipping" class="order-total clearfix">
                                     {{ 'cart.total_shipping' | trans }}
-                                    <span>{{ totalWithShipping | round | number_format(2) }} RSD</span>
-                                    <input type="hidden" name="total_amount" value="{{ totalWithShipping | round }}">
+                                    <span></span>
                                 </li>
                             </ul>
                             <div class="create-account-checkout-method">
                                 <div class="select-payment-method">
-                                    {{ inputs.input('byTaking', 1, 'payment_type', '', 'radio') }}
+                                    {{ inputs.input('byTaking', constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING'), 'payment_type', '', 'radio') }}
                                     <label for="byTaking" class="letter-capitalize">{{ 'checkout.payment.by_taking' | trans }}</label>
                                 </div>
                                 <div class="select-payment-method">
-                                    {{ inputs.input('creditCard', 2, 'payment_type', '', 'radio', '', 'data-show-error-after=yes') }}
+                                    {{ inputs.input('creditCard', constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD'), 'payment_type', '', 'radio', '', 'data-show-error-after=yes') }}
                                     <label for="creditCard" class="letter-capitalize">{{ 'checkout.paymeny.credit_card' | trans }}</label>
                                 </div>
                                 <div class="select-payment-method terms-and-conditions">

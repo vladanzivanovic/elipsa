@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG PHP_VERSION=7.4
 
 RUN apt-get update -y
 RUN apt-get install -y apt-utils
@@ -10,36 +11,40 @@ RUN apt-get install -y apache2
 RUN apt-get install -y zip unzip
 RUN a2enmod rewrite
 
+RUN apt-get update -y
+
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 
 RUN apt-get update -y
 
-RUN apt-get update -y && apt-get install -y php7.4
+RUN apt-get update -y && apt-get install -y php$PHP_VERSION
 RUN apt-get install -y php-pear
-RUN apt-get install -y  libapache2-mod-php7.4
-RUN apt-get install -y php7.4-mysql
-RUN apt-get install -y php7.4-bcmath
-RUN apt-get install -y php7.4-json
-RUN apt-get install -y php7.4-cgi
-RUN apt-get install -y php7.4-xsl
-RUN apt-get install -y php7.4-gd
-RUN apt-get install -y php7.4-imagick
-RUN apt-get install -y php7.4-tidy
-RUN apt-get install -y php7.4-xmlrpc
-RUN apt-get install -y php7.4-xml
-RUN apt-get install -y php7.4-cli
-RUN apt-get install -y php7.4-common
-RUN apt-get install -y php7.4-curl
-RUN apt-get install -y php7.4-mbstring
-RUN apt-get install -y php7.4-zip
-RUN apt-get install -y php7.4-intl
+RUN apt-get install -y  libapache2-mod-php$PHP_VERSION
+RUN apt-get install -y php$PHP_VERSION-mysql
+RUN apt-get install -y php$PHP_VERSION-bcmath
+RUN apt-get install -y php$PHP_VERSION-json
+RUN apt-get install -y php$PHP_VERSION-cgi
+RUN apt-get install -y php$PHP_VERSION-xsl
+RUN apt-get install -y php$PHP_VERSION-gd
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get update -y
+RUN apt-get install -y php$PHP_VERSION-imagick
+RUN apt-get install -y php$PHP_VERSION-tidy
+RUN apt-get install -y php$PHP_VERSION-xmlrpc
+RUN apt-get install -y php$PHP_VERSION-xml
+RUN apt-get install -y php$PHP_VERSION-cli
+RUN apt-get install -y php$PHP_VERSION-common
+RUN apt-get install -y php$PHP_VERSION-curl
+RUN apt-get install -y php$PHP_VERSION-mbstring
+RUN apt-get install -y php$PHP_VERSION-zip
+RUN apt-get install -y php$PHP_VERSION-intl
+RUN apt-get install -y php$PHP_VERSION-dev
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 RUN apt-get update
 RUN apt-get install -y nodejs
-#RUN apt-get install -y npm
 RUN apt-get install -y net-tools
 RUN apt-get install -y git
 
@@ -52,9 +57,15 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 
 RUN a2enmod headers
 RUN a2enmod expires
+RUN a2enmod http2
+
+RUN pecl install xdebug-3.1.6
+
+RUN usermod -u 501 www-data
 
 COPY 000-default.conf /etc/apache2/sites-available
-COPY custom.ini /etc/php/7.4/apache2/conf.d/custom.ini
+COPY custom.ini /etc/php/$PHP_VERSION/apache2/conf.d/custom.ini
+COPY 20-xdebug.ini /etc/php/$PHP_VERSION/apache2/conf.d/20-xdebug.ini
 
 RUN phpenmod intl
 

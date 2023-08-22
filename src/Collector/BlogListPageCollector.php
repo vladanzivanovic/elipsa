@@ -6,60 +6,24 @@ namespace App\Collector;
 
 use App\Entity\Tags;
 use App\Repository\BlogRepository;
-use App\Repository\ProductColorRepository;
-use App\Repository\ProductRepository;
-use App\Repository\ProductSizeRepository;
 use App\Repository\TagsRepository;
 use App\Services\PaginationService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class BlogListPageCollector
 {
-    /**
-     * @var PaginationService
-     */
-    private $paginationService;
+    private PaginationService $paginationService;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private BlogRepository $blogRepository;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
-
-    /**
-     * @var BlogRepository
-     */
-    private $blogRepository;
-
-    /**
-     * @param PaginationService      $paginationService
-     * @param TagsRepository         $tagsRepository
-     * @param TranslatorInterface    $translator
-     * @param ParameterBagInterface  $bag
-     * @param BlogRepository         $blogRepository
-     */
     public function __construct(
         PaginationService $paginationService,
         TagsRepository $tagsRepository,
-        TranslatorInterface $translator,
-        ParameterBagInterface $bag,
         BlogRepository $blogRepository
     ) {
         $this->paginationService = $paginationService;
         $this->tagsRepository = $tagsRepository;
-        $this->translator = $translator;
-        $this->bag = $bag;
         $this->blogRepository = $blogRepository;
     }
 
@@ -75,16 +39,16 @@ final class BlogListPageCollector
         $tagMainSlug = [['mainSlug' => null]];
         $localizedUrl = null;
 
-        if (null !== $tag) {
-            $tagMainSlug = $this->tagsRepository->getMainSlug($tag, $locale, Tags::TYPE_BLOG);
-
-            $localizedUrl = $this->tagsRepository->getForLocalization($tag, $locale === 'rs' ? 'en' : 'rs');
-        }
+//        if (null !== $tag) {
+//            $tagMainSlug = $this->tagsRepository->getMainSlug($tag, $locale, Tags::TYPE_BLOG);
+//
+//            $localizedUrl = $this->tagsRepository->getForLocalization($tag, $locale === 'rs' ? 'en' : 'rs');
+//        }
 
         $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tagMainSlug[0]['mainSlug']);
         $blogList = $this->paginationService->pagination($blogDql, $currentPage, 12);
 
-        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG, 'locale' => $locale]);
+        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG]);
 
         return [
             'blog_list'         => $blogList,

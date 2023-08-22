@@ -22,7 +22,6 @@ import BlogController from "./BlogController";
 import BlogEditController from "./BlogEditController";
 import LoyaltyController from "./LoyaltyController";
 import BannersController from "./BannersController";
-import AboutUsPageController from "./AboutUsPageController";
 import LoginPageController from "./LoginPageController";
 import UsersController from "./UsersController";
 import UserEditController from "./UserEditController";
@@ -38,6 +37,8 @@ import JobEditController from "./JobEditController";
 import OrderSinglePageController from "./OrderSinglePageController";
 import CatalogController from "./CatalogController";
 import CatalogEditController from "./CatalogEditController";
+import OfficeContactEditController from "./OfficeContactEditController";
+import OfficeContactsController from "./OfficeContactsController";
 
 let routes = [
     {
@@ -205,10 +206,6 @@ let routes = [
         controller: CatalogEditController,
     },
     {
-        name: 'admin.about_us_page',
-        controller: AboutUsPageController,
-    },
-    {
         name: 'admin.login',
         controller: LoginPageController,
     },
@@ -275,6 +272,18 @@ let routes = [
     {
         name: 'admin.view_single_order',
         controller: OrderSinglePageController,
+    },
+    {
+        name: 'admin.office_contacts',
+        controller: OfficeContactsController,
+    },
+    {
+        name: 'admin.add_office_contact_page',
+        controller: OfficeContactEditController,
+    },
+    {
+        name: 'admin.edit_office_contact_page',
+        controller: OfficeContactEditController,
     },
 ];
 

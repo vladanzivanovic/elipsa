@@ -1,21 +1,32 @@
 class UserService {
-    isUserExistsByEmail(email) {
-        let deferred = $.Deferred();
+    constructor() {
+        if (!UserService.instance) {
+            UserService.instance = this;
+        }
 
-        $.ajax({
-            type: 'GET',
-            url: Routing.generate('site_api.user_exists', {email}),
-            dataType: 'json',
-            success: response => {
-                deferred.resolve();
-            },
-            error: error => {
-                deferred.reject(error);
-            }
-        })
+        return UserService.instance;
+    }
 
-        return deferred.promise();
+    async isUserExistsByEmail(email)
+    {
+        let result;
+
+        try {
+            result = await $.ajax({
+                type: 'GET',
+                url: Routing.generate('site_api.user_exists', {email}),
+                dataType: 'json',
+            })
+        } catch (error) {
+            result = error;
+        }
+
+        return result;
     }
 }
 
-export default UserService;
+const userService = new UserService();
+
+Object.freeze(userService);
+
+export default userService;

@@ -145,9 +145,6 @@
             "config/routes/liip_imagine.yaml"
         ]
     },
-    "mobiledetect/mobiledetectlib": {
-        "version": "2.8.34"
-    },
     "monolog/monolog": {
         "version": "2.1.1"
     },
@@ -498,9 +495,6 @@
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.18.1"
     },
-    "symfony/polyfill-intl-icu": {
-        "version": "v1.18.1"
-    },
     "symfony/polyfill-intl-idn": {
         "version": "v1.18.1"
     },
@@ -680,6 +674,9 @@
     },
     "symfony/yaml": {
         "version": "v5.1.7"
+    },
+    "tattali/mobile-detect-bundle": {
+        "version": "v2.2.0"
     },
     "twig/extra-bundle": {
         "version": "v3.0.5"

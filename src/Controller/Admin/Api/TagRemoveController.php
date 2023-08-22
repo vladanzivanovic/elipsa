@@ -5,48 +5,43 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Entity\Tags;
+use App\Entity\TagTranslation;
 use App\Handler\TagHandler;
+use App\Parser\TagRequestParser;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 final class TagRemoveController extends AbstractController
 {
-    /**
-     * @var TagHandler
-     */
-    private $tagHandler;
+    private TagRequestParser $requestParser;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TagHandler $tagHandler;
 
-    /**
-     * @param TagHandler          $tagHandler
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
-        TagHandler $tagHandler,
-        TranslatorInterface $translator
+        TagRequestParser $requestParser,
+        TagHandler $tagHandler
     ) {
         $this->tagHandler = $tagHandler;
-        $this->translator = $translator;
+        $this->requestParser = $requestParser;
     }
 
     /**
      * @Route("/api/remove-product-tag/{slug}", name="admin.remove_product_tag_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Tags $productTags
-     *
      * @return JsonResponse
+     * @throws ORMException
      */
-    public function removeProductTag(Tags $productTags)
+    public function removeProductTag(string $slug): JsonResponse
     {
-        $mainSlug = $productTags->getMainSlug();
+        $tag = $this->requestParser->getTagBySlug($slug);
 
-        $this->tagHandler->removeFromProducts($mainSlug);
+        Assert::notNull($tag);
+
+        $this->tagHandler->removeFromProducts($tag);
 
         return $this->json([]);
     }
@@ -58,11 +53,13 @@ final class TagRemoveController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function removeBlogTag(Tags $tags)
+    public function removeBlogTag(string $slug)
     {
-        $mainSlug = $tags->getMainSlug();
+        $tag = $this->requestParser->getTagBySlug($slug);
 
-        $this->tagHandler->removeFromBlog($mainSlug);
+        Assert::notNull($tag);
+
+        $this->tagHandler->removeFromBlog($tag);
 
         return $this->json([]);
     }

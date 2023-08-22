@@ -47,7 +47,8 @@ final class ShopListController extends AbstractController
     /**
      * @Route({
      *          "rs": "/api/products/{page}/{searchData}",
-     *          "en": "/api/products/{page}/{searchData}"
+     *          "en": "/api/products/{page}/{searchData}",
+     *          "ba": "/api/products/{page}/{searchData}"
      *      },
      *     name="site_api.shop_page",
      *     methods={"GET"},

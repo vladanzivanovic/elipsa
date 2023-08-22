@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\ProductHasTags;
 use App\Entity\Tags;
+use App\Entity\TagTranslation;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -89,13 +91,14 @@ class BlogRepository extends ExtendedEntityRepository
             ->groupBy('blog.id');
 
         if (null !== $tagSlug) {
-            $subQuery = $this->_em->createQueryBuilder()
-                ->from(BlogHasTags::class, 'bht1')
-                ->select('1')
-                ->where('bht1.tag = :tag')
-                ->andWhere('bht1.blog = blog');
+            $tagsQuery = $this->_em->createQueryBuilder()
+                ->select('tt')
+                ->from(TagTranslation::class, 'tt')
+                ->innerJoin(BlogHasTags::class, 'bht', 'WITH', 'bht.tag = tt.tag')
+                ->where('tt.slug IN (:tagsSlug)')
+                ->andWhere('bht.blog = blog');
 
-            $query->andWhere('EXISTS ('. $subQuery->getDQL() .')')
+            $query->andWhere('EXISTS ('. $tagsQuery->getDQL() .')')
                 ->setParameter('tag', $tagSlug);
         }
 

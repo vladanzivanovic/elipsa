@@ -154,59 +154,59 @@ class EncodingHelper {
             return $text;
         } elseif(is_string($text)) {
 
-            $max = strlen($text);
-            $buf = "";
-            for($i = 0; $i < $max; $i++){
-                $c1 = $text{$i};
-                if($c1>="\xc0"){ // Should be converted to UTF-8, if it's not UTF-8 already
-                    $c2 = $i+1 >= $max? "\x00" : $text{$i+1};
-                    $c3 = $i+2 >= $max? "\x00" : $text{$i+2};
-                    $c4 = $i+3 >= $max? "\x00" : $text{$i+3};
-                    if($c1 >= "\xc0" & $c1 <= "\xdf"){ // Looks like 2 bytes UTF-8
-                        if($c2 >= "\x80" && $c2 <= "\xbf"){ // Yeah, almost sure it's UTF-8 already
-                            $buf .= $c1 . $c2;
-                            $i++;
-                        } else { // Not valid UTF-8.  Convert it.
-                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                            $cc2 = ($c1 & "\x3f") | "\x80";
-                            $buf .= $cc1 . $cc2;
-                        }
-                    } elseif($c1 >= "\xe0" & $c1 <= "\xef"){ // Looks like 3 bytes UTF-8
-                        if($c2 >= "\x80" && $c2 <= "\xbf" && $c3 >= "\x80" && $c3 <= "\xbf"){ // Yeah, almost sure it's UTF-8 already
-                            $buf .= $c1 . $c2 . $c3;
-                            $i = $i + 2;
-                        } else { // Not valid UTF-8.  Convert it.
-                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                            $cc2 = ($c1 & "\x3f") | "\x80";
-                            $buf .= $cc1 . $cc2;
-                        }
-                    } elseif($c1 >= "\xf0" & $c1 <= "\xf7"){ // Looks like 4 bytes UTF-8
-                        if($c2 >= "\x80" && $c2 <= "\xbf" && $c3 >= "\x80" && $c3 <= "\xbf" && $c4 >= "\x80" && $c4 <= "\xbf"){ // Yeah, almost sure it's UTF-8 already
-                            $buf .= $c1 . $c2 . $c3;
-                            $i = $i + 2;
-                        } else { // Not valid UTF-8.  Convert it.
-                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                            $cc2 = ($c1 & "\x3f") | "\x80";
-                            $buf .= $cc1 . $cc2;
-                        }
-                    } else { // It doesn't look like UTF-8, but should be converted
-                        $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                        $cc2 = (($c1 & "\x3f") | "\x80");
-                        $buf .= $cc1 . $cc2;
-                    }
-                } elseif(($c1 & "\xc0") == "\x80"){ // Needs conversion
-                    if(isset(self::$win1252ToUtf8[ord($c1)])) { // Found in Windows 1252 special cases
-                        $buf .= self::$win1252ToUtf8[ord($c1)];
-                    } else {
-                        $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                        $cc2 = (($c1 & "\x3f") | "\x80");
-                        $buf .= $cc1 . $cc2;
-                    }
-                } else { // It doesn't need convesion
-                    $buf .= $c1;
-                }
-            }
-            return $buf;
+//            $max = strlen($text);
+//            $buf = "";
+//            for($i = 0; $i < $max; $i++){
+//                $c1 = $text{$i};
+//                if($c1>="\xc0"){ // Should be converted to UTF-8, if it's not UTF-8 already
+//                    $c2 = $i+1 >= $max? "\x00" : $text{$i+1};
+//                    $c3 = $i+2 >= $max? "\x00" : $text{$i+2};
+//                    $c4 = $i+3 >= $max? "\x00" : $text{$i+3};
+//                    if($c1 >= "\xc0" & $c1 <= "\xdf"){ // Looks like 2 bytes UTF-8
+//                        if($c2 >= "\x80" && $c2 <= "\xbf"){ // Yeah, almost sure it's UTF-8 already
+//                            $buf .= $c1 . $c2;
+//                            $i++;
+//                        } else { // Not valid UTF-8.  Convert it.
+//                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
+//                            $cc2 = ($c1 & "\x3f") | "\x80";
+//                            $buf .= $cc1 . $cc2;
+//                        }
+//                    } elseif($c1 >= "\xe0" & $c1 <= "\xef"){ // Looks like 3 bytes UTF-8
+//                        if($c2 >= "\x80" && $c2 <= "\xbf" && $c3 >= "\x80" && $c3 <= "\xbf"){ // Yeah, almost sure it's UTF-8 already
+//                            $buf .= $c1 . $c2 . $c3;
+//                            $i = $i + 2;
+//                        } else { // Not valid UTF-8.  Convert it.
+//                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
+//                            $cc2 = ($c1 & "\x3f") | "\x80";
+//                            $buf .= $cc1 . $cc2;
+//                        }
+//                    } elseif($c1 >= "\xf0" & $c1 <= "\xf7"){ // Looks like 4 bytes UTF-8
+//                        if($c2 >= "\x80" && $c2 <= "\xbf" && $c3 >= "\x80" && $c3 <= "\xbf" && $c4 >= "\x80" && $c4 <= "\xbf"){ // Yeah, almost sure it's UTF-8 already
+//                            $buf .= $c1 . $c2 . $c3;
+//                            $i = $i + 2;
+//                        } else { // Not valid UTF-8.  Convert it.
+//                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
+//                            $cc2 = ($c1 & "\x3f") | "\x80";
+//                            $buf .= $cc1 . $cc2;
+//                        }
+//                    } else { // It doesn't look like UTF-8, but should be converted
+//                        $cc1 = (chr(ord($c1) / 64) | "\xc0");
+//                        $cc2 = (($c1 & "\x3f") | "\x80");
+//                        $buf .= $cc1 . $cc2;
+//                    }
+//                } elseif(($c1 & "\xc0") == "\x80"){ // Needs conversion
+//                    if(isset(self::$win1252ToUtf8[ord($c1)])) { // Found in Windows 1252 special cases
+//                        $buf .= self::$win1252ToUtf8[ord($c1)];
+//                    } else {
+//                        $cc1 = (chr(ord($c1) / 64) | "\xc0");
+//                        $cc2 = (($c1 & "\x3f") | "\x80");
+//                        $buf .= $cc1 . $cc2;
+//                    }
+//                } else { // It doesn't need convesion
+//                    $buf .= $c1;
+//                }
+//            }
+//            return $buf;
         } else {
             return $text;
         }

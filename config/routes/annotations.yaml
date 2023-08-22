@@ -4,6 +4,7 @@ controllers_site:
     prefix:
         rs: ''
         en: '/en'
+        ba: '/ba'
 
 controllers_unique:
     resource: ../../src/Controller/Unique/

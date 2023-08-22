@@ -4,71 +4,61 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
-use App\Entity\Slider;
-use App\Helper\ConstantsHelper;
+use App\Entity\Banner;
+use App\View\BannerView;
+use App\View\SliderView;
 use Symfony\Component\Routing\RouterInterface;
 
 final class HomePageResponseFormatter
 {
     use FormatterTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * HomePageResponseFormatter constructor.
-     *
-     * @param RouterInterface $router
-     */
+    private SliderView $sliderView;
+
+    private BannerView $bannerView;
+
+    private ProductFormatter $productFormatter;
+
     public function __construct(
-        RouterInterface $router
+        RouterInterface $router,
+        SliderView $sliderView,
+        BannerView $bannerView,
+        ProductFormatter $productFormatter
     ) {
         $this->router = $router;
+        $this->sliderView = $sliderView;
+        $this->bannerView = $bannerView;
+        $this->productFormatter = $productFormatter;
     }
 
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    public function formatResponse(array $data): array
+    public function formatResponse(array $data, string $locale): array
     {
-        $data['sliders'] = array_map(function ($slider) {
-            $slider['description'] = explode(PHP_EOL, $slider['description']);
-            $slider['image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['image'], 'filter' => 'site_slider']);
-            $slider['mobile_image_link'] = $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $slider['mobile_image'], 'filter' => 'site_slider_mobile']);
-            $slider['position'] = ConstantsHelper::getConstantName((string) $slider['position'], 'POSITION', Slider::class);
+        $data['sliders'] = array_map(function ($slider) use ($locale) {
 
-            return $slider;
+            return $this->sliderView->siteView($slider, $locale);
         }, $data['sliders']);
 
-        $data['banners'] = $this->formatBanners($data['banners']);
-        $data['products'] = $this->formatProducts($data['products']);
-
-        $data['product_colors'] = $this->formatColors($data['product_colors']);
-        $data['product_sizes'] = $this->formatSizes($data['product_sizes']);
-        $data['product_tags'] = $this->formatTags($data['product_tags']);
+        $data['banners'] = $this->formatBanners($data['banners'], $locale);
+        $data['products'] = $this->formatProducts(
+            $this->productFormatter->getProducts($data['products'], $locale)
+        );
 
         return $data;
     }
 
     /**
-     * @param array $banners
+     * @param Banner[] $banners
      *
      * @return array
      */
-    private function formatBanners(array $banners): array
+    private function formatBanners(array $banners, string $locale): array
     {
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-            $filter = in_array($banner['position'], [1,4]) ? 'home_banner_side' : 'home_banner_center';
-            $banner['description'] = explode(PHP_EOL, $banner['description']);
-            $banner['image_link'] = $this->router->generate('app.image_show', ['entity' => 'banner', 'name' => $banner['image'], 'filter' => $filter]);
-
-            $formattedBanners[$banner['position']] = $banner;
+            $formattedBanners[$banner->getPosition()] = $this->bannerView->speedLinks($banner, $locale);
         }
 
         return $formattedBanners;
@@ -84,8 +74,6 @@ final class HomePageResponseFormatter
         $formattedProducts = [];
 
         foreach ($products as $product){
-            $product['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $product['image'], 'filter' => 'list_thumb']);
-
             $formattedProducts[$product['show_home_page']][] = $product;
         }
 

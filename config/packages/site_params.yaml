@@ -106,3 +106,100 @@ parameters:
     - pe-ly-tumble-dry-resistant
     - pe-ly-tumble-dry
     - pe-ly-wring
+  languages:
+    rs:
+      name: Srpski
+      code: rs
+      currencyCode: RSD
+      locale: sr_RS
+    en:
+      name: Engleski
+      code: en
+      currencyCode: RSD
+      locale: en_AT
+#    ba:
+#      name: Bosanski
+#      code: ba
+#      currencyCode: BAM
+  site_info_texts:
+    cookie_policy:
+      title: navi.cookie_policy
+      type: cookie_policy
+      path: site.cookie_policy
+      slug:
+        rs: politika-kolacica
+        en: cookie-policy
+    policy_and_privacy:
+      title: navi.policy_and_privacy
+      type: policy_and_privacy
+      slug:
+        rs: politika-privatnosti
+        en: privacy-policy
+
+
+    use_conditions:
+      title: navi.use_conditions
+      type: use_conditions
+      slug:
+        rs: uslovi-koriscenja
+        en: use-conditions
+    withdraw_policy:
+      title: navi.cancellation_rights
+      type: cancellation_rights
+      slug:
+        rs: pravo-na-odustajanje
+        en: withdraw-policy
+    complaint:
+      title: navi.complaint
+      type: complaint
+      slug:
+        rs: reklamacije
+        en: complaint
+    payment_methods:
+      title: navi.payment_methods
+      type: payment_methods
+      slug:
+        rs: nacin-placanja
+        en: payment-methods
+    delivery:
+      title: navi.delivery
+      type: delivery
+      slug:
+        rs: dostava
+        en: delivery
+    free_delivery:
+      title: navi.free_delivery
+      type: free_delivery
+      slug:
+        rs: besplatna-dostava
+        en: Free delivery
+    in_store_pickup:
+      title: navi.in_store_pickup
+      type: in_store_pickup
+      slug:
+        rs: preuzimanje-u-radnji
+        en: in-store-pickup
+    product_rehearsal:
+      title: navi.product_rehearsal
+      type: product_rehearsal
+      slug:
+        rs: proba-proizvoda
+        en: product-rehearsal
+    product_return_and_exchange:
+      title: navi.product_return_and_exchange
+      type: product_return_and_exchange
+      slug:
+        rs: zamena-i-povrat-robe
+        en: product-return-and-exchange
+    refund:
+      title: navi.refund
+      type: refund
+      slug:
+        rs: povracaj-novca
+        en: refund
+    about_us:
+      title: navi.about_us
+      type: about_us
+      slug:
+        rs: o-nama
+        en: about-us

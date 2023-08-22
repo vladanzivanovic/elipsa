@@ -66,8 +66,6 @@ final class SliderEditRequestParser
             $slider->setPosition($newPosition);
         }
 
-        $slider->setTextPosition($bag->getInt('position'));
-
         $this->setLocale($bag, $slider);
 
         $this->imageService->setImages($slider, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);
@@ -88,7 +86,6 @@ final class SliderEditRequestParser
             }
 
             $trans->setDescription($lagBag->get('description'));
-            $trans->setButtonText($lagBag->get('button'));
             $trans->setButtonLink($lagBag->get('link'));
             $trans->setLocale($locale);
 

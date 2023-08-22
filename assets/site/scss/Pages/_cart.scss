@@ -1,5 +1,48 @@
+@import "../colors";
+
 .sccb-discount-error {
   color: #f00;
   font-size: 15px;
   padding: 0 15px;
+}
+
+.sccb-discount-subscribe-box {
+  display: flex;
+  justify-content: space-between;
+
+  & .promo-coupon-code-view {
+    width: 48%;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    color: $black-color;
+  }
+}
+
+.product-sold {
+  opacity: 0.5;
+
+  .product-name-sold {
+    opacity: 1;
+    font-weight: 700;
+    color: $black-color
+  }
+}
+
+.product_price {
+  display: block;
+
+  &.old-price {
+    font-size: 12px !important;
+    text-decoration: line-through;
+    color: $old-price;
+  }
+}
+
+.cart_product_size {
+  font-family: 'Montserrat', sans-serif;
+  span {
+    font-family: inherit;
+    font-weight: 600;
+  }
 }

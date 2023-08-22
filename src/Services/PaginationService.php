@@ -8,24 +8,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class PaginationService
 {
-    protected $offset;
-    protected $currentPage;
-    protected $totalPage;
-    /**
-     * @var QueryBuilder
-     */
-    protected $query;
+    protected int $offset;
+    protected int $currentPage;
+    protected int $totalPage;
 
-    /**
-     * @var int
-     */
-    private $limit;
+    protected QueryBuilder $query;
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param $currentPage
-     * @return array
-     */
+    private int $limit;
+
     public function pagination(QueryBuilder $queryBuilder, int $currentPage, int $limit): array
     {
         $dataArray = [];
@@ -49,53 +39,39 @@ class PaginationService
         return $dataArray;
     }
 
-    /**
-     * @return int|mixed
-     */
-    public function calculateOffset()
+    public function calculateOffset(): PaginationService
     {
         $this->offset = ($this->currentPage <= 1) ? 0 : $this->limit*($this->currentPage - 1);
+
         return $this;
     }
 
-    /**
-     * Set number of record for page calculation
-     * @param $no
-     */
     public function setNumberOfData($no)
     {
         $this->limit = $no;
     }
 
-    /**
-     * @param $rows
-     * @return int
-     */
-    public function getTotalPageNumber($rows)
+    public function getTotalPageNumber($rows): void
     {
         $this->totalPage = (int) ceil((int)$rows/$this->limit);
     }
 
-    /**
-     * Get pagination query result
-     * @return array
-     */
-    private function getPaginationData()
+    private function getPaginationData(): array
     {
         return $this->query
             ->setFirstResult($this->offset)
             ->setMaxResults($this->limit)
             ->getQuery()
-            ->getArrayResult();
+            ->getResult();
     }
 
-    private function getPrevPage()
+    private function getPrevPage(): int
     {
         $prevPage = $this->currentPage;
         --$prevPage;
 
         if($this->currentPage <= 1 )
-            $prevPage = 1;
+            $prevPage = 0;
 
         if($this->currentPage > $this->totalPage)
             $prevPage = $this->totalPage;
@@ -103,7 +79,7 @@ class PaginationService
         return $prevPage;
     }
 
-    private function getNextPage()
+    private function getNextPage(): int
     {
         $nextPage = $this->currentPage;
         ++$nextPage;
@@ -113,12 +89,7 @@ class PaginationService
         return $nextPage;
     }
 
-    /**
-     * Get total rows for pagination
-     *
-     * @return float|int
-     */
-    private function totalRows()
+    private function totalRows(): int
     {
         $alias = current($this->query->getDQLPart('from'))->getAlias();
 
@@ -130,14 +101,14 @@ class PaginationService
 
         $totalRowsQuery = $this->filterParams($totalRowsQuery);
 
-        $counter = array_sum(array_column($totalRowsQuery->getScalarResult(), 'totalRows'));
+        $counter = (int) array_sum(array_column($totalRowsQuery->getScalarResult(), 'totalRows'));
 
         $this->getTotalPageNumber($counter);
 
         return $counter;
     }
 
-    private function filterParams(Query $query)
+    private function filterParams(Query $query): Query
     {
         $params = $query->getParameters();
         $queryDql = $query->getDQL();

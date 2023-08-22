@@ -83,17 +83,14 @@ class Blog
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return BlogTranslation
-     */
-    public function getBlogTranslationByLocale(string $locale): BlogTranslation
+    public function getBlogTranslationByLocale(string $locale): ?BlogTranslation
     {
-        return $this->blogTranslations->filter(function ($blogTrans) use ($locale) {
+        $filteredTrans = $this->blogTranslations->filter(function ($blogTrans) use ($locale) {
             /** @var BlogTranslation $blogTrans */
             return $blogTrans->getLocale() == $locale;
-        })->first();
+        });
+
+        return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
     }
 
     /**

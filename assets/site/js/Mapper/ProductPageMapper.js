@@ -10,6 +10,9 @@ class ProductPageMapper {
             this.quantity       = $('#product-quantity');
             this.addBtn         = $('.spd-add-to');
             this.quantityBtn    = $('.qtybutton', $(document));
+            this.youtubeModal = '#youtubeModal';
+            this.youtubeCarousel = '.youtube-carousel';
+            this.youtubeArea = '.youtube-area'
 
             ProductPageMapper.instance = this;
         }

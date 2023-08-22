@@ -92,7 +92,7 @@ final class BlogPageCollector
         $blog = $blogTranslation->getBlog();
 
         $blogTags = $this->tagsRepository->getByBlog($blog, $locale);
-        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG, 'locale' => $locale]);
+        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG]);
 
         return [
             'trans' => $blogTranslation,

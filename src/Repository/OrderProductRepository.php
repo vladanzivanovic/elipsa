@@ -9,7 +9,7 @@ use App\Entity\ProductColor;
 use App\Entity\ShopOrder;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method OrderProduct|null find($id, $lockMode = null, $lockVersion = null)

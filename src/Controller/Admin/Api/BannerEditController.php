@@ -16,20 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class BannerEditController extends AbstractController
 {
-    /**
-     * @var BannerEditRequestParser
-     */
-    private $requestParser;
+    private BannerEditRequestParser $requestParser;
 
-    /**
-     * @var BannerHandler
-     */
-    private $bannerHandler;
+    private BannerHandler $bannerHandler;
 
-    /**
-     * @param BannerEditRequestParser $requestParser
-     * @param BannerHandler           $bannerHandler
-     */
     public function __construct(
         BannerEditRequestParser $requestParser,
         BannerHandler $bannerHandler

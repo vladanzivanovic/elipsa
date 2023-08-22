@@ -88,6 +88,12 @@ admin.slider_text:
   defaults:
     template: Admin/Pages/sliderText.html.twig
 
+admin.office_contacts:
+  path: /office-contact
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/officeContacts.html.twig
+
 admin.orders:
   path: /orders
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController

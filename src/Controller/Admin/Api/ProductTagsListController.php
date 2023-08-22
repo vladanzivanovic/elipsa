@@ -22,28 +22,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductTagsListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private DataTableRequestParser $requestParser;
 
-    /**
-     * @var ProductTagDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private ProductTagDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * ProductTagsListController constructor.
-     *
-     * @param DataTableRequestParser               $requestParser
-     * @param TagsRepository                       $tagsRepository
-     * @param ProductTagDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         TagsRepository $tagsRepository,
@@ -69,6 +53,7 @@ final class ProductTagsListController extends AbstractController
         $relatedType = $request->attributes->get('_route') === 'admin.get_blog_tags_list' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
 
         $formattedRequest = $this->requestParser->formatRequest($request);
+
         $total = $this->tagsRepository->countData($relatedType);
 
         $data = $this->tagsRepository->getAdminList($formattedRequest, $relatedType);

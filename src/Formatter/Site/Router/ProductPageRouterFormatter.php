@@ -8,14 +8,8 @@ use App\Repository\ProductTranslationRepository;
 
 final class ProductPageRouterFormatter
 {
-    /**
-     * @var ProductTranslationRepository
-     */
-    private $productTranslationRepository;
+    private ProductTranslationRepository $productTranslationRepository;
 
-    /**
-     * @param ProductTranslationRepository  $productTranslationRepository
-     */
     public function __construct(
         ProductTranslationRepository $productTranslationRepository
     ) {
@@ -28,12 +22,12 @@ final class ProductPageRouterFormatter
      *
      * @return string
      */
-    public function localeFormatter(string $slug, string $locale): string
+    public function localeFormatter(string $slug, string $locale): ?string
     {
         $fromTrans = $this->productTranslationRepository->findOneBy(['slug' => $slug]);
 
         $toTrans = $fromTrans->getProduct()->getByLocale($locale);
 
-        return $toTrans->getSlug();
+        return null !== $toTrans ? $toTrans->getSlug() : null;
     }
 }

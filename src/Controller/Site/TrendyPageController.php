@@ -13,20 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class TrendyPageController extends AbstractController
 {
-    /**
-     * @var ShopPageCollector
-     */
-    private $collectors;
+    private ShopPageCollector $collectors;
 
-    /**
-     * @var ShopPageResponseFormatter
-     */
-    private $formatter;
+    private ShopPageResponseFormatter $formatter;
 
-    /**
-     * @param ShopPageCollector         $collectors
-     * @param ShopPageResponseFormatter $formatter
-     */
     public function __construct(
         ShopPageCollector $collectors,
         ShopPageResponseFormatter $formatter
@@ -49,8 +39,8 @@ final class TrendyPageController extends AbstractController
      * @Template("Site/Pages/trendy.html.twig")
      *
      * @param Request $request
-     * @param int     $page
-     * @param string  $searchData
+     * @param int $page
+     * @param string|null $searchData
      *
      * @return array
      */

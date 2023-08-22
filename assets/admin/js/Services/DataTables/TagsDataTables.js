@@ -21,7 +21,6 @@ export default (() => {
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'rs_name', name: 'rs_name', title: 'Naziv - srpski' },
-                { data: 'en_name', name: 'en_name', title: 'Naziv - engleski' },
                 { data: 'total_products', name: 'total_products', title: title},
                 { data: 'slug', orderable: false, render: function (data, type, row, meta) {
                         const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_page`, {slug: data})}">Izmeni</a> ` : '';

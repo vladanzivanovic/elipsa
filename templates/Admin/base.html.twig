@@ -39,8 +39,11 @@
 </div>
 {% block javascripts %}
     <script nonce="{{ csp_nonce('script') }}">
-        const LOCALE = 'rs';
+        const LOCALE = '{{ 'DEFAULT_LOCALE' | getenv }}';;
         const ROUTE_NAME = '{{ routeName }}';
+        const LANGUAGES = JSON.parse('{{ languages | json_encode | raw }}');
+        const YOUTUBE_API_KEY = '{{ 'YOUTUBE_API_KEY' | getenv }}';
+
         window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
     </script>
     <script src="{{ preload(asset('build/runtime.js')) }}"></script>

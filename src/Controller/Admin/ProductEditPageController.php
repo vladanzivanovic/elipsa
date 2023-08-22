@@ -16,36 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductEditPageController extends AbstractController
 {
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-    /**
-     * @var ProductEditResponseFormatter
-     */
-    private $responseFormatter;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * ProductEditPageController constructor.
-     *
-     * @param TagsRepository               $tagsRepository
-     * @param CategoryRepository           $categoryRepository
-     * @param ProductSizeRepository        $sizeRepository
-     * @param ProductColorRepository       $colorRepository
-     * @param ProductEditResponseFormatter $responseFormatter
-     */
+    private CategoryRepository $categoryRepository;
+
+    private ProductSizeRepository $sizeRepository;
+
+    private ProductColorRepository $colorRepository;
+
+    private ProductEditResponseFormatter $responseFormatter;
+
     public function __construct(
         TagsRepository $tagsRepository,
         CategoryRepository $categoryRepository,
@@ -63,31 +43,9 @@ final class ProductEditPageController extends AbstractController
     /**
      * @Route("/add-product", name="admin.add_product_page", methods={"GET"})
      * @Template("Admin/Pages/productEdit.html.twig")
-     *
-     * @return array
      */
-    public function insert()
+    public function insert(): array
     {
-        return [
-            'tags' => $this->tagsRepository->getForOptions(),
-            'categories' => $this->categoryRepository->getAll(),
-            'sizes' => $this->sizeRepository->getForOptions(),
-            'colors' => $this->colorRepository->getForOptions(),
-        ];
-    }
-
-    /**
-     * @Route("/edit-product/{slug}", name="admin.edit_product_page", methods={"GET"})
-     * @Template("Admin/Pages/productEdit.html.twig")
-     *
-     * @param ProductTranslation $productTranslation
-     *
-     * @return array
-     */
-    public function edit(ProductTranslation $productTranslation)
-    {
-        $productData = $this->responseFormatter->formatResponse($productTranslation->getProduct());
-
         $options = [
             'tags' => $this->tagsRepository->getForOptions(),
             'categories' => $this->categoryRepository->getAll(),
@@ -95,6 +53,22 @@ final class ProductEditPageController extends AbstractController
             'colors' => $this->colorRepository->getForOptions(),
         ];
 
-        return  $productData + $options;
+        return $this->responseFormatter->formatResponse($options);
+    }
+
+    /**
+     * @Route("/edit-product/{slug}", name="admin.edit_product_page", methods={"GET"})
+     * @Template("Admin/Pages/productEdit.html.twig")
+     */
+    public function edit(ProductTranslation $productTranslation): array
+    {
+        $options = [
+            'tags' => $this->tagsRepository->getForOptions(),
+            'categories' => $this->categoryRepository->getAll(),
+            'sizes' => $this->sizeRepository->getForOptions(),
+            'colors' => $this->colorRepository->getForOptions(),
+        ];
+
+        return $this->responseFormatter->formatResponse($options, $productTranslation->getProduct());
     }
 }

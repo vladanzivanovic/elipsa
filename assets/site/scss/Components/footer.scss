@@ -1,0 +1,59 @@
+footer {
+  .footer-desc {
+    &.banner-text {
+      border-bottom: 1px solid #282828;
+      margin-bottom: 2rem;
+      padding: 0 0 2rem 0;
+      justify-content: space-between;
+      display: flex;
+
+      @media only screen and (max-width: 480px) and (min-width: 240px) {
+        display: block;
+      }
+
+      a {
+        color: #fff;
+        padding: 1rem;
+        max-width: 500px;
+        min-width: 100px;
+
+        span {
+          display: block;
+
+          &.banner-text-title {
+            font-size: 1.7rem;
+            color: $site-color;
+            line-height: normal;
+          }
+
+          &.banner-text-description {
+            font-size: 1rem;
+            letter-spacing: normal;
+            line-height: normal;
+          }
+        }
+      }
+    }
+
+    .footer-desc-contact {
+      ul {
+        margin-top: 15px !important;
+        margin-bottom: 20px !important;
+
+        li {
+          padding: 0 !important;
+          margin-bottom: 5px !important;
+          text-transform: none !important;
+        }
+      }
+    }
+  }
+
+  .footer-bottom-area {
+    .footer-bottom-text {
+      margin-top: 2rem;
+      text-align: center;
+      color: $light-gray-color;
+    }
+  }
+}

@@ -22,6 +22,18 @@ liip_imagine :
             filters :
                 thumbnail  : { size : [370, 551], mode : outbound }
                 background : { size : [370, 551], position : center, color : '#ffffff' }
+        full :
+            cache: ads_photos
+            quality : 100
+            filters:
+                relative_resize:
+                    widen: 1600
+        full_mobile :
+            cache: ads_photos
+            quality : 100
+            filters:
+                relative_resize:
+                    widen: 600
         product_image :
             cache: ads_photos
             quality : 100
@@ -84,19 +96,19 @@ liip_imagine :
                     max: [ 300, 300 ]
         admin_slider_list :
             cache: ads_photos
-            quality : 75
+            quality : 100
             filters :
                 downscale:
                     max: [ 200, 200 ]
         site_slider :
             cache: ads_photos
-            quality : 80
+            quality : 100
             filters :
                 downscale:
                     max: [ 1914, 941 ]
         site_slider_mobile :
             cache: ads_photos
-            quality : 80
+            quality : 100
             filters :
                 downscale:
                     max: [ 500, 439 ]
@@ -142,3 +154,9 @@ liip_imagine :
             filters :
                 thumbnail: { size: [600, 800], mode: outbound }
                 background: { size: [600, 800], position: center, color: '#ffffff' }
+        menu_banner :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail: { size: [280, 400], mode: outbound }
+                background: { size: [280, 400], position: center, color: '#ffffff' }

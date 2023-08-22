@@ -2,14 +2,19 @@ pending: 'na čekanju'
 active: 'aktivan'
 disabled: 'zaključan'
 
+scroll_top_page: 'Vrh stranice'
+
 view: 'pogledaj'
 
-default_title: Online prodaja ženske odeće | Modna kuća Elipsa
+default_title: Modna Kuća Elipsa
 
 new: 'novo'
 discount: 'popust'
 down: dole
 up: gore
+
+season: Sezona
+collection: Kolekcija
 
 choose: Izberite
 
@@ -33,19 +38,30 @@ navi:
   locations: Prodajna mesta
   loyalty: Loyalty
   catalogue: Katalog
-  shop: Prodavnica
+  shop: Online Shop
   blog: Blog
   ask_us: Pitajte nas
   contact: Kontakt
   account: Moj nalog
   trends: Trendovi
-  collaborators: Saradnici
+  collaborator: Saradnici
   career_form: Zaposlenje forma
   policy_and_privacy: Politika privatnosti
   use_conditions: Uslovi korišćenja
+  withdraw_policy: Pravo na odustajanje
+  complaint: Reklamacije
+  payment_methods: Način plaćanja
+  delivery: Dostava
+  free_delivery: Besplatna dostava
+  in_store_pickup: Preuzimanje u radnji
+  product_rehearsal: Proba artikala
+  product_return_and_exchange: Zamena i povrat artikala
+  refund: Povraćaj novca
   career: Zaposlenje
   cookie_policy: Politika kolačića
-
+  seasons: Sezone
+  orders: Narudžbine
+  shopping: Kupovina
 
 serbian: Srpski
 english: Engleski
@@ -73,6 +89,8 @@ from_lowest_price: najjeftinije prvo
 from_highest_price: najskuplje prvo
 on_sale: na rasprodaji
 first_new: najnoviji
+sold: Rasporodato
+saving: Ušteda
 
 select.color: izaberite boju
 select.size: izberite veličinu
@@ -85,14 +103,15 @@ share_link: Link za deljenje
 product.description: opis proizvoda
 product.material_cleaning: materijali i održavanje
 product.size_table: tabela veličina
+product.unavailable: Proizvod više nije dostupan
 
 related_products: slični proizvodi
 
-cart.name: korpa
-cart.total_products: ukupno
-cart.total_shipping: ukupno sa poštarinom
-cart.view: pogledaj korpu
-cart.checkout: naruči
+cart.name: Korpa
+cart.total_products: Ukupno
+cart.total_shipping: Ukupno sa poštarinom
+cart.view: Pogledaj korpu
+cart.checkout: Naruči
 cart.personal_data: vaši podaci
 cart.order_completed_successful: uspešna narudžbina
 cart.continue_shopping: nastavi kupovinu
@@ -104,6 +123,7 @@ cart.total_cost: iznos vaše korpe
 cart.promo_coupon: promotivni kod
 cart.promo_coupon_text: unesite promotivni kod ukoliko ga imate.
 cart.add_coupon_btn: dodaj kod
+cart.remove_coupon_btn: Ukloni kod
 
 cart.table.image: slika
 cart.table.product_name: proizvod
@@ -173,7 +193,7 @@ last_name: prezime
 address: adresa
 city: mesto
 zip_code: poštanski broj
-email: email adresa
+email: Email adresa
 mobile_telephone: mobilni telefon
 telephone: telefon
 create_account: napravite nalog
@@ -256,7 +276,7 @@ October: Oktobar
 November: Novembar
 December: Decembar
 
-login.text: prijava
+login.text: Prijava
 login.btn: Prijavi se
 login.remember_me: zapamti me
 login.successful: Uspešno ste se ulogovali
@@ -271,7 +291,7 @@ reset_password.page.success: Uspešno ste promenili lozinku.
 
 logout.text: odjavite se
 
-registration.text: registracija
+registration.text: Registracija
 registration.btn: Registruj se
 registration.via: registracija putem
 registration.error.user_exists: Vi ste već registrovani
@@ -319,6 +339,7 @@ contact.tax_id: PIB
 links: linkovi
 store: prodavnica
 info: informacije
+shopping: Kupovina
 
 yes: da
 no: ne
@@ -338,6 +359,7 @@ text.type.collaborator: Saradnici
 text.type.career_form: Zaposlenje Forma
 text.type.career: Radna mesta
 text.type.cookie_policy: Politika kolačića
+text.type.about_us: O nama
 
 collaborator.form.basic_data: osnovni podaci
 collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?
@@ -440,6 +462,11 @@ pe-ly-wring: 'Odeća se sme cediti uvrtanjem.'
 banner.loyalty: loyalty
 banner.news_letter: newsletter
 banner.pop_up: Običan popup
+banner.menu: Veliki meni
+banner.season: Sezone
+
+banner_text.header: Header
+banner_text.footer: Footer
 
 job.applied_for_form: Postani i ti deo našeg tima
 job.application_form: Popunite prijavu
@@ -472,3 +499,12 @@ order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
 
 search_site: Pretražite sajt
+
+company_head_office_and_development: Sedište firme i proizvodnja
+company_identification_number: Matični broj
+
+youtube:
+  id_required: 'Molimo vas unesite Id'
+  exists: 'Video je već unešen.'
+  url_not_valid: 'Youtube url nije validan'
+  link_button: Pogledajte video proizvoda

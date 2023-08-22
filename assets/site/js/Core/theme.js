@@ -6,7 +6,6 @@ Template Name: DANDY - Multi-Purpose eCommerce Template
 Version      : 1.0                                          
 * ----------------------------------------------------------------------------------------
 */
-
 // -----------------------------
 
 //   js index
@@ -20,7 +19,7 @@ Version      : 1.0
     -scroll-up
     -nivo slider
     -nivo slider home 2
-    -nivo slider home 3
+    -nivo slider home 3 - in HomeController
     -counter
     -smooth scroll
     -countdown
@@ -89,10 +88,11 @@ require('webpack-jquery-ui');
     scroll-up
     -----------------*/
     $.scrollUp({
-        scrollText: '<i class="fa fa-arrow-up" aria-hidden="true"></i>',
+        scrollText: `<i class="fa fa-chevron-up" aria-hidden="true"></i> <span>${Translator.trans('scroll_top_page', null, 'messages', LOCALE)}</span>`,
         easingType: 'linear',
         scrollSpeed: 1500,
-        animation: 'fade'
+        animation: 'fade',
+        zIndex: 100000
     });
 
 
@@ -119,21 +119,6 @@ require('webpack-jquery-ui');
         animSpeed: 2000,
         slices: 18,
         pauseTime: 5000,
-        pauseOnHover: false,
-        controlNav: false,
-        prevText: '<i class="fa fa-chevron-left nivo-prev-icon"></i>',
-        nextText: '<i class="fa fa-chevron-right nivo-next-icon"></i>'
-    });
-
-
-    /*-----------------------
-    nivo slider home 3
-    -----------------------*/
-    $('#home3_slider').nivoSlider({
-        directionNav: true,
-        animSpeed: 1000,
-        slices: 18,
-        pauseTime: 6000,
         pauseOnHover: false,
         controlNav: false,
         prevText: '<i class="fa fa-chevron-left nivo-prev-icon"></i>',

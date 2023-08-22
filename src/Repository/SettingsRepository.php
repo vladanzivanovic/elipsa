@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Settings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Settings|null find($id, $lockMode = null, $lockVersion = null)
@@ -43,10 +43,27 @@ class SettingsRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('s')
             ->select(
                 's.slug',
-                's.value'
+                's.value',
             )
             ->where('s.slug IN (:settingsSlug)')
-            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID']);
+            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT']);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllSettingsByLocale(string $locale): array
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select(
+                's.slug',
+                's.value',
+            )
+            ->where('s.locale = :locale')
+            ->orWhere('s.locale IS NULL')
+            ->setParameter('locale', $locale);
 
         return $query->getQuery()->getArrayResult();
     }

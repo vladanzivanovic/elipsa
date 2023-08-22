@@ -14,42 +14,43 @@ class ProductHasTags
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productHasTags")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private Product $product;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tags")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $tag;
+    private Tags $tag;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getTag(): ?string
+    public function getTag(): Tags
     {
         return $this->tag;
     }
 
-    public function setTag(string $tag): self
+    public function setTag(Tags $tag): self
     {
         $this->tag = $tag;
 

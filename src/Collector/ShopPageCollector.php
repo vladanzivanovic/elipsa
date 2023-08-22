@@ -22,55 +22,24 @@ final class ShopPageCollector
 {
     use ShopTrait;
 
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
+    private ProductColorRepository $colorRepository;
 
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-    /**
-     * @var PaginationService
-     */
-    private $paginationService;
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
-    /**
-     * @var ShopPageRouterFormatter
-     */
-    private $shopPageRouterFormatter;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private ProductSizeRepository $sizeRepository;
 
-    /**
-     * @param ProductColorRepository  $colorRepository
-     * @param ProductSizeRepository   $sizeRepository
-     * @param ProductRepository       $productRepository
-     * @param PaginationService       $paginationService
-     * @param TagsRepository          $tagsRepository
-     * @param TranslatorInterface     $translator
-     * @param ParameterBagInterface   $bag
-     * @param ShopPageRouterFormatter $shopPageRouterFormatter
-     * @param SessionInterface        $session
-     */
+    private ProductRepository $productRepository;
+
+    private PaginationService $paginationService;
+
+    private TagsRepository $tagsRepository;
+
+    private TranslatorInterface $translator;
+
+    private ParameterBagInterface $bag;
+
+    private ShopPageRouterFormatter $shopPageRouterFormatter;
+
+    private SessionInterface $session;
+
     public function __construct(
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,
@@ -102,13 +71,19 @@ final class ShopPageCollector
      *
      * @return array
      */
-    public function collect(string $locale, int $currentPage, ?UserInterface $user, ?string $searchData = null, bool $isTrendyPage = false)
-    {
+    public function collect(
+        string $locale,
+        int $currentPage,
+        ?UserInterface $user,
+        ?string $searchData = null,
+        bool $isTrendyPage = false
+    ): array {
         $sizes = $this->sizeRepository->getForOptions();
         $prices = $this->productRepository->getLowestAndHighestPrice();
 
         $data = [
             'sizes'     => $sizes,
+            'colors' => $this->colorRepository->getByLocale($locale),
             'prices'    => $prices[0],
         ];
 
@@ -145,14 +120,8 @@ final class ShopPageCollector
 
         $limit = null !== $searchCriteria && $searchCriteria->has('limit') ? (int) $searchCriteria->get('limit')[0] : 12;
 
-        $productDql = $this->productRepository->getDqlForPaginationPage($locale, $user, $searchCriteria);
+        $productDql = $this->productRepository->getDqlForPaginationPage($user, $searchCriteria);
         $products = $this->paginationService->pagination($productDql, $currentPage, $limit);
-
-        $productIds = array_column($products['data'], 'id');
-
-        $productColors = $this->colorRepository->getByProducts($productIds, $locale);
-        $productSizes = $this->sizeRepository->getByProducts($productIds);
-        $productTags = $this->tagsRepository->getByProducts($productIds, $locale);
 
         if (null !== $searchData && $searchCriteria->has('tags_localized')) {
             $searchCriteria->remove('tags_localized');
@@ -160,15 +129,12 @@ final class ShopPageCollector
 
         $collection = [
             'products'          => $products,
-            'product_colors'    => $productColors,
-            'product_sizes'     => $productSizes,
-            'product_tags'      => $productTags,
             'search_criteria'   => null !== $searchData ? $searchCriteria : null,
             'localized_url'     => $localizedUrl,
         ];
 
         if (true === $isTrendyPage) {
-            $collection['tags'] = $this->tagsRepository->getForOptions(Tags::TYPE_PRODUCT, $locale);
+            $collection['tags'] = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_PRODUCT, 'productType' => Tags::PRODUCT_TYPE_SEASON]);
         }
 
         return $collection;
