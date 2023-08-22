@@ -1,20 +1,5 @@
-import loader from "../Dom/LoaderDom";
-import toastrService from "../../../js/Services/ToastrService";
-
 class WishListHandler {
-    #notification
-
-    constructor() {
-        this.#notification = toastrService;
-    }
-
     toggle(elm) {
-        if(!window.USER) {
-            this.#notification.error(Translator.trans(`login_required`, null, 'messages', LOCALE), true);
-
-            return;
-        }
-
         const productId = $(elm).data('product-id');
         const page = $(elm).data('page');
 

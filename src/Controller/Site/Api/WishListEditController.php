@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Api;
 
+use App\Exception\UserException;
 use App\Handler\Site\WishListHandler;
 use App\Parser\WishListRequestParser;
+use App\View\ExceptionView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +20,16 @@ final class WishListEditController extends AbstractController
 
     private WishListHandler $wishListHandler;
 
+    private ExceptionView $exceptionView;
+
     public function __construct(
         WishListRequestParser $wishListRequestParser,
-        WishListHandler $wishListHandler
+        WishListHandler $wishListHandler,
+        ExceptionView $exceptionView
     ) {
         $this->wishListRequestParser = $wishListRequestParser;
         $this->wishListHandler = $wishListHandler;
+        $this->exceptionView = $exceptionView;
     }
 
     /**
@@ -41,16 +47,31 @@ final class WishListEditController extends AbstractController
      */
     public function toggleItem(Request $request, int $productId): JsonResponse
     {
-        $wish = $this->wishListRequestParser->parse($productId, $this->getUser());
+        try {
+            if (null === $this->getUser()) {
+                $userException = new UserException('login_required');
 
-        $isAdded = $wish->getId() === null;
+                $userException->setDomain('messages');
 
-        $this->wishListHandler->toggle($wish);
+                throw $userException;
+            }
 
-        if (true === $isAdded) {
-            return $this->json(null, Response::HTTP_CREATED);
+            $wish = $this->wishListRequestParser->parse($productId, $this->getUser());
+
+            $isAdded = $wish->getId() === null;
+
+            $this->wishListHandler->toggle($wish);
+
+            if (true === $isAdded) {
+                return $this->json(null, Response::HTTP_CREATED);
+            }
+
+            return $this->json(null, Response::HTTP_NO_CONTENT);
+        } catch (\Throwable $throwable) {
+            return $this->json(
+                ['error' => $this->exceptionView->view($throwable, $request->getLocale())],
+                Response::HTTP_UNAUTHORIZED
+            );
         }
-
-        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 }
