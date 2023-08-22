@@ -53,6 +53,7 @@ final class OrderView
             'shipping_price' => $this->priceView->view((int) $shippingPrice->getValue(), $locale),
             'payment' => null,
             'note' => $order->getNote(),
+            'checkout_completed_at' => null !== $order->getCompletedAt() ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
         ];
 
         if (false === $order->getOrderProducts()->isEmpty()) {

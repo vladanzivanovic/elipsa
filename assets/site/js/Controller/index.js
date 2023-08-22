@@ -14,6 +14,7 @@ import ContactPageController from "./ContactPageController";
 import CollaboratorPageController from "./CollaboratorPageController";
 import CareerPageController from "./CareerPageController";
 import ResetPasswordPageController from "./ResetPasswordPageController";
+import OrderFinishPage from "./OrderFinishPage";
 
 let routes = [
     {
@@ -80,6 +81,13 @@ let routes = [
         name: 'site.reset_password_page',
         controller: ResetPasswordPageController,
     },
+    {
+        name: 'site.checkout_completed_successful',
+        controller: OrderFinishPage,
+        params: {
+            'isSuccessful': true
+        }
+    },
 ];
 
 $(document).ready(() => {
@@ -91,6 +99,12 @@ $(document).ready(() => {
     core.siteMobileMenu();
 
     if (route) {
+        if (route.hasOwnProperty('params')) {
+            new route.controller(route.params);
+
+            return;
+        }
+
         new route.controller();
     }
 });

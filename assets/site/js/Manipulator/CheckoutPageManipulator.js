@@ -38,7 +38,9 @@ class CheckoutPageManipulator {
 
     updatePage(order)
     {
-        if (null === order) {
+        if (null === order || null !== order.checkout_completed_at) {
+            this.#orderStorageManipulator.removeOrder();
+
             return;
         }
 

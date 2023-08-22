@@ -1,10 +1,9 @@
 import AppHelperService from "../../../js/Helper/AppHelperService";
+import orderStorageManipulator from "../Manipulator/OrderStorageManipulator";
 
 class OrderApiProvider {
-
     constructor() {
         if (!OrderApiProvider.instance) {
-
             OrderApiProvider.instance = this;
         }
 
@@ -30,7 +29,6 @@ class OrderApiProvider {
                     'Content-Language': LOCALE,
                 }
             });
-
         } catch (error) {
             result = error;
         }

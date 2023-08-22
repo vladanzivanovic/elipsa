@@ -100,6 +100,13 @@ class Product
     private Collection $orderProducts;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserWishes", mappedBy="product")
+     *
+     * @var Collection<int, UserWishes>
+     */
+    private Collection $userWishes;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private bool $sold;
@@ -114,6 +121,7 @@ class Product
         $this->productCleanings = new ArrayCollection();
         $this->youtubes = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+        $this->userWishes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -530,5 +538,16 @@ class Product
         $this->sold = $sold;
 
         return $this;
+    }
+
+    public function isUserWish(User $user): bool
+    {
+        foreach ($this->userWishes as $userWish) {
+            if ($userWish->getUser() === $user) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

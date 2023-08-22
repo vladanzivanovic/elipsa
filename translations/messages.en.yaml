@@ -223,6 +223,9 @@ email.order.text: '<h3>Dear %first_name%,</h3>
   <p>Thanks for your order on site %site_name%. We will contact you soon for confirmation of the order.</p>
   <p>If you have any question or want to make changes on the order, make reply on this email. Please, do not change subject or title of this email, as it will be used to find the order in the system. Thanks</p>
    <p class="last-child">Details about the order are displayed below</p>'
+email.order.failedText: '<h3>Dear %first_name%,</h3>
+  <p>Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.</p>
+  <p class="last-child">If you have any kind of problems ordering products please contact us via email or telephone. Thanks</p>'
 email.order.overview: Your orders
 email.order.seller: Seller
 email.order.seller.name: Company
@@ -230,7 +233,7 @@ email.order.seller.account: Account number
 email.order.seller.address: Address
 email.order.seller.telephone: Telephone
 email.order.seller.mobile: Mobile phone
-email.order.failed.message: Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
+#email.order.failed.message: Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
 email.order.thanks_text: Thank you for your purchase.
 
 
@@ -241,8 +244,10 @@ email.order.buyer.street_number: Street and number
 email.order.buyer.payment_type: Payment
 
 email.registration.title: Account registration on site %siteName%
-email.registration.success.text: Your registration was successull
-email.registration.message: In order to complete registration process you need to activate account.<br/> Click on the link below.
+email.registration.success.text: '<h3>Dear %first_name%,</h3>
+  <p>Your registration was successful.</p>
+  <p class="last-child">In order to complete registration process you need to activate account.<br/> Click on the link below.</p>'
+email.registration.linkText: Confirm registration
 
 email.reset_password.title: Reset password on site %siteName%
 email.reset_password.headline.text: Change password request

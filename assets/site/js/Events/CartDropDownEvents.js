@@ -39,6 +39,10 @@ class CartDropDownEvents {
                     }
                 });
         });
+
+        $(document).on('cart:update', (e, order) => {
+            this.#cartDom.setOrderData(order);
+        })
     }
 
     #setCartDropDown()
@@ -50,7 +54,15 @@ class CartDropDownEvents {
         }
 
         this.#orderApiProvider.getOrder(orderToken)
-            .then(order => this.#cartDom.manageDropDown(order));
+            .then(order => {
+                if (null !== order.checkout_completed_at) {
+                    this.#orderStorageManipulator.removeOrder();
+
+                    return;
+                }
+
+                this.#cartDom.manageDropDown(order)
+            });
     }
 }
 

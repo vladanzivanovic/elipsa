@@ -214,18 +214,18 @@ class ProductRepository extends ExtendedEntityRepository
             }
         }
 
-        if ($user !== null) {
-            $wishQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(UserWishes::class, 'uw')
-                ->where('uw.user = :user')
-                ->andWhere('uw.product = p');
-
-            $query->addSelect(
-                'IFELSE(EXISTS ('.$wishQuery->getDQL().'), 1, 0) as has_wish'
-            )
-                ->setParameter('user', $user);
-        }
+//        if ($user !== null) {
+//            $wishQuery = $this->_em->createQueryBuilder()
+//                ->select('1')
+//                ->from(UserWishes::class, 'uw')
+//                ->where('uw.user = :user')
+//                ->andWhere('uw.product = p');
+//
+//            $query->addSelect(
+//                'IFELSE(EXISTS ('.$wishQuery->getDQL().'), 1, 0) as has_wish'
+//            )
+//                ->setParameter('user', $user);
+//        }
 
         return $query;
     }
@@ -264,18 +264,18 @@ class ProductRepository extends ExtendedEntityRepository
             ->groupBy('p.id')
             ->orderBy('RAND()');
 
-        if ($user !== null) {
-            $wishQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(UserWishes::class, 'uw')
-                ->where('uw.user = :user')
-                ->andWhere('uw.product = p');
-
-            $query->addSelect(
-                'IFELSE(EXISTS ('.$wishQuery->getDQL().'), 1, 0) as has_wish'
-            )
-                ->setParameter('user', $user);
-        }
+//        if ($user !== null) {
+//            $wishQuery = $this->_em->createQueryBuilder()
+//                ->select('1')
+//                ->from(UserWishes::class, 'uw')
+//                ->where('uw.user = :user')
+//                ->andWhere('uw.product = p');
+//
+//            $query->addSelect(
+//                'IFELSE(EXISTS ('.$wishQuery->getDQL().'), 1, 0) as has_wish'
+//            )
+//                ->setParameter('user', $user);
+//        }
 
         return $query->getQuery()->getResult();
     }

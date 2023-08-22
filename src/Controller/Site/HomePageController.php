@@ -39,6 +39,6 @@ final class HomePageController extends AbstractController
         $locale = $request->getLocale();
         $data = $this->pageCollectors->collect($locale, $this->getUser());
 
-        return $this->responseFormatter->formatResponse($data, $locale);
+        return $this->responseFormatter->formatResponse($data, $locale, $this->getUser());
     }
 }

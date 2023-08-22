@@ -143,46 +143,21 @@ final class OrderHandler
     /**
      * @throws OptimisticLockException
      * @throws ORMException
-     * @throws \ReflectionException
-     * @throws NonUniqueResultException
      */
-    public function completeCheckoutOnSuccess(ShopOrder $order, string $locale, ParameterBag $bag): void
+    public function completeCheckoutOnSuccess(ShopOrder $order, ParameterBag $bag): void
     {
         $this->isSuccessfulTransaction = true;
 
-        $order->setStatus(ShopOrder::STATUS_COMPLETED);
-
-        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $order->setTransactionData([ShopOrder::CARD_TYPE_PRE_AUTH => $bag->all()]);
-            $order->setStatus(ShopOrder::STATUS_AWAITING_AUTHORIZATION);
-        }
-
         $this->orderRepository->flush();
-
-//        $settings = $this->getSettings();
-//
-//        $this->sendEmail($order, $locale, $bag);
-
-//        return ['order' => $order, 'settings' => $settings];
     }
 
     /**
-     * @param string       $orderToken
-     * @param string       $locale
-     * @param ParameterBag $bag
-     *
-     * @return array
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \ReflectionException
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
-    public function completeCheckoutOnFail(string $orderToken, string $locale, ParameterBag $bag): array
+    public function completeCheckoutOnFail(ShopOrder $order, ParameterBag $bag): void
     {
         $this->isSuccessfulTransaction = false;
-
-        $order = $this->orderRepository->getByToken($orderToken);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
             $order->setTransactionData($bag->all());
@@ -190,7 +165,7 @@ final class OrderHandler
 
         $order->setStatus(ShopOrder::STATUS_FAILED);
 
-        $settings = $this->getSettings();
+//        $settings = $this->getSettings();
 
         $user = $order->getUser();
         $user->setResetToken(null);
@@ -198,9 +173,9 @@ final class OrderHandler
 
         $this->orderRepository->flush();
 
-        $this->sendEmail($order, $locale, $bag);
+//        $this->sendEmail($order, $locale, $bag);
 
-        return ['order' => $order, 'settings' => $settings];
+//        return ['order' => $order, 'settings' => $settings];
     }
 
     /**

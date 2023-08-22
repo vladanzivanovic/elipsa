@@ -42,10 +42,12 @@ class CheckoutHandler {
 
             grecaptcha.execute(GOOGLE_RECAPTCHA_KEY_SITE, {action: 'complete_order'}).then((token) => {
                 const data = FormHelperService.formToJson($(this.#mapper.form));
+                const user = data.user;
+
 
                 data.recaptcha_response = token;
                 data.shipping_address = data.billing_address;
-                data.user = data.billing_address;
+                data.user = {...user, ...data.billing_address};
 
                 if (! $(this.#mapper.form).valid()) {
                     return false;
@@ -57,7 +59,7 @@ class CheckoutHandler {
                     .then(async order => {
                         const paymentData = await this.#orderApiProvider.getPayment(this.#orderStorageManipulator.getOrderToken('order'));
                         const redirectUrl = Routing.generate(
-                            `site.checkout_completed_successful_basic.${LOCALE}`,
+                            `site.checkout_completed_successful.${LOCALE}`,
                             {
                                 'token': this.#orderStorageManipulator.getOrderToken('order')
                             }
@@ -72,8 +74,6 @@ class CheckoutHandler {
                         this.#orderStorageManipulator.removeOrder();
 
                         AppHelperService.redirect(redirectUrl);
-
-                        loader.hide();
                     })
                     .catch(e => {
                         let message = e.message;
@@ -86,25 +86,6 @@ class CheckoutHandler {
 
                         loader.hide();
                     });
-
-                // $.ajax({
-                //     type: 'PUT',
-                //     url: Routing.generate(`site_api.complete_order.${LOCALE}`),
-                //     data: FormHelperService.sanitize(data),
-                //     dataType: 'json',
-                //     success: response => {
-                //         if ($(`${this.mapper.paymentType}:checked`).val() == PAYMENT_TYPE_ON_DELIVERING) {
-                //             AppHelperService.redirect(Routing.generate(`site.checkout_completed_successful.${LOCALE}`));
-                //
-                //             return;
-                //         }
-                //
-                //         this.redirectToIntesaPayment(response);
-                //     },
-                //     error: error => {
-                //         loader.hide();
-                //     }
-                // })
             });
         });
     }

@@ -59,13 +59,13 @@
                                 {{ form.input('mobile_telephone' | trans ~ ' *', 'mobilePhone', address is not null ? address.phone : '', 'billing_address[mobile_phone]', '', 'tel', null, '', 'text-uppercase') }}
                             </div>
                             <div class="cbab-create-account">
-                                {{ inputs.input('createAccount', '1', 'create_account', '', 'checkbox', '', user is not null ? 'disabled="disabled"' : null) }}
+                                {{ inputs.input('createAccount', '1', 'user[create_account]', '', 'checkbox', '', user is not null ? 'disabled="disabled"' : null) }}
                                 <label for="createAccount" class="letter-capitalize">{{ 'create_account' | trans }}?</label>
                                 <em id="createAccountError" class="error"></em>
                                 <p class="letter-capitalize">{{ 'checkout.login_text' | trans }}</p>
                             </div>
                             <div class="cbab-account-password clearfix">
-                                {{ form.input('password' | trans ~ ' *', 'checkoutPassword', '', 'password', '', 'password','disabled="disabled"', 'text-uppercase', 'text-uppercase') }}
+                                {{ form.input('password' | trans ~ ' *', 'checkoutPassword', '', 'user[password]', '', 'password', 'disabled="disabled"', 'text-uppercase', 'text-uppercase') }}
                             </div>
                             <div class="cbab-order-notes">
                                 <p class="text-uppercase">{{ 'checkout.order_notes' | trans }}</p>

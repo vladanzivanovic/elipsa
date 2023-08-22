@@ -42,7 +42,7 @@ class ShopPageDom {
                             <div class="sfi-content">
                                 <div class="sfi-buttons">
                                     <ul class="clearfix">
-                                        <li><a href="#" class="toggle-wish-list"><i class="fa ${wishListClass}"></i></a></li>
+                                        <li><a href="#" class="toggle-wish-list" data-product-id="${product.id}"><i class="fa ${wishListClass}"></i></a></li>
                                         <li><a href="${productLink}" ><i class="fa fa-eye"></i></a></li>
                                     </ul>
                                 </div>
@@ -105,6 +105,17 @@ class ShopPageDom {
         this.mapper.searchView.append(criteria);
     }
 
+    toggleWish(elm, isAdded)
+    {
+        if (isAdded) {
+            $(elm).find('.fa-heart-o').addClass('fa-heart');
+            $(elm).find('.fa-heart-o').removeClass('fa-heart-o');
+        } else {
+            $(elm).find('.fa-heart').addClass('fa-heart-o');
+            $(elm).find('.fa-heart').removeClass('fa-heart');
+        }
+    }
+
     #setPriceDom(product) {
         if (product.discount !== null) {
             return `
@@ -149,6 +160,7 @@ class ShopPageDom {
 }
 
 const shopPageDom = new ShopPageDom();
+
 Object.freeze(shopPageDom);
 
 export default shopPageDom;

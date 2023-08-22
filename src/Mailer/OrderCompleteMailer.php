@@ -4,63 +4,60 @@ declare(strict_types=1);
 
 namespace App\Mailer;
 
-use App\Collector\SettingsCollector;
-use App\Entity\Settings;
 use App\Entity\ShopOrder;
+use App\Entity\User;
 use App\Event\EmailEvent;
-use App\Helper\ConstantsHelper;
+use App\Formatter\Site\UserRegistrationFormatter;
 use App\Model\EmailModel;
-use App\View\OrderFinishView;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderCompleteMailer
 {
-    private SettingsCollector $settingsCollector;
-
-    private OrderFinishView $orderEmailView;
-
     private EventDispatcherInterface $dispatcher;
 
-    private TranslatorInterface $translator;
+    private TranslatorInterface $translator
+    ;
+    private UserRegistrationFormatter $userRegistrationFormatter;
+
+    private UserRegistrationMailer $userRegistrationMailer;
 
     public function __construct(
-        SettingsCollector $settingsCollector,
-        OrderFinishView $orderEmailView,
         EventDispatcherInterface $dispatcher,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UserRegistrationFormatter $userRegistrationFormatter,
+        UserRegistrationMailer $userRegistrationMailer
     ) {
-        $this->settingsCollector = $settingsCollector;
-        $this->orderEmailView = $orderEmailView;
         $this->dispatcher = $dispatcher;
         $this->translator = $translator;
+        $this->userRegistrationFormatter = $userRegistrationFormatter;
+        $this->userRegistrationMailer = $userRegistrationMailer;
     }
     public function sendEmail(
         array $viewData,
-        ShopOrder $order
+        ShopOrder $order,
+        string $locale
     ): void {
-//        dd($viewData);
-//        $settings = $this->settingsCollector->collect('email');
+        $user = $order->getUser();
         $isSuccessfulTransaction = $viewData['is_successful_transaction'];
-
-        $isAccountCreated = $order->getUser()->getResetToken() !== null;
 
         $emailModelCustomer = $this->prepareEmail($viewData, $order);
         $event = new EmailEvent($emailModelCustomer);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
 
-        if (true === $isSuccessfulTransaction) {
-            $emailModelAdmin = $emailModelCustomer;
-            $emailModelAdmin->setTo($emailModelCustomer->getFrom());
-            $emailModelAdmin->setToName($emailModelCustomer->getFromName());
+        $emailModelAdmin = $emailModelCustomer;
+        $emailModelAdmin->setTo($emailModelCustomer->getFrom());
+        $emailModelAdmin->setToName($emailModelCustomer->getFromName());
 
-            $templateData = $emailModelAdmin->getTemplateData();
-            $templateData['accountCreated'] = false;
-            $emailModelAdmin->setTemplateData($templateData);
+        $templateData = $emailModelAdmin->getTemplateData();
+        $templateData['accountCreated'] = false;
+        $emailModelAdmin->setTemplateData($templateData);
 
-            $event = new EmailEvent($emailModelAdmin);
-            $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+        $event = new EmailEvent($emailModelAdmin);
+        $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+
+        if ( null !== $user->getResetToken() && true === $isSuccessfulTransaction) {
+            $this->sendUserRegistrationEmail($user, $locale);
         }
     }
 
@@ -89,5 +86,12 @@ final class OrderCompleteMailer
         $model->setTemplateData($viewData);
 
         return $model;
+    }
+
+    private function sendUserRegistrationEmail(User $user, string $locale)
+    {
+        $userFormattedData = $this->userRegistrationFormatter->formatResponse($user, $locale);
+
+        $this->userRegistrationMailer->sendEmail($userFormattedData, $user);
     }
 }

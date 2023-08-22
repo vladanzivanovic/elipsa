@@ -156,7 +156,7 @@
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                             {% endif %}
-                                                                                                            {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                                                                                                            {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
                                                                                                             <tr>
                                                                                                                 <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
                                                                                                                     class="mceBlockContainer"
@@ -169,22 +169,22 @@
                                                                                                                             <strong>{{ 'email.order.payment_details' | trans }}:</strong>
                                                                                                                         </p>
                                                                                                                         <p>
-                                                                                                                            {{ 'checkout.finish.auth_code' | trans }}: {{ auth_code }}
+                                                                                                                            {{ 'checkout.finish.auth_code' | trans }}: {{ payment.preauth.auth_code }}
                                                                                                                         </p>
                                                                                                                         <p>
-                                                                                                                            {{ 'checkout.finish.md_status' | trans }}: {{ md_status }}
+                                                                                                                            {{ 'checkout.finish.md_status' | trans }}: {{ payment.preauth.md_status }}
                                                                                                                         </p>
                                                                                                                         <p>
-                                                                                                                            {{ 'checkout.finish.proc_return_code' | trans }}: {{ proc_return_code }}
+                                                                                                                            {{ 'checkout.finish.proc_return_code' | trans }}: {{ payment.preauth.proc_return_code }}
                                                                                                                         </p>
                                                                                                                         <p>
-                                                                                                                            {{ 'checkout.finish.response' | trans }}: {{ payment_response | trans }}
+                                                                                                                            {{ 'checkout.finish.response' | trans }}: {{ payment.preauth.payment_response | trans }}
                                                                                                                         </p>
                                                                                                                         <p>
-                                                                                                                            {{ 'checkout.finish.transaction_id' | trans }}: {{ transaction_id }}
+                                                                                                                            {{ 'checkout.finish.transaction_id' | trans }}: {{ payment.preauth.transaction_id }}
                                                                                                                         </p>
                                                                                                                         <p class="last-child">
-                                                                                                                            {{ 'checkout.finish.transaction_date_time' | trans }}: {{ transaction_date_time | date('d.m.Y H:i:s') }}
+                                                                                                                            {{ 'checkout.finish.transaction_date_time' | trans }}: {{ payment.preauth.transaction_date_time | date('d.m.Y H:i:s') }}
                                                                                                                         </p>
                                                                                                                     </div>
                                                                                                                 </td>

@@ -39,9 +39,9 @@ final class OrderPaymentRequestView
         $orgClientId = $this->parameterBag->get('intesa_merchant_id');
         $oid = $order->getToken();
         $orgAmount = $order->getTotal().'.00';
-        $orgOkUrl = $this->router->generate('site.checkout_completed_successful_card', ['token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-        $orgFailUrl = $this->router->generate('site.checkout_failed', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $cancelUrl = $this->router->generate('site.checkout_page', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $orgOkUrl = $this->router->generate('site.checkout_completed_successful', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $orgFailUrl = $this->router->generate('site.checkout_failed', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $orgCancelUrl = $this->router->generate('site.checkout_page', ['_locale' => $locale, ], UrlGeneratorInterface::ABSOLUTE_URL);
         $orgTransactionType = "PreAuth";
         $orgCurrency = "941";
 
@@ -49,6 +49,7 @@ final class OrderPaymentRequestView
         $amount = str_replace("|", "\\|", str_replace("\\", "\\\\", number_format((float)$orgAmount, 2, '.', '')));
         $okUrl = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgOkUrl));
         $failUrl = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgFailUrl));
+        $cancelUrl = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgCancelUrl));
         $transactionType = str_replace("|", "\\|", str_replace("\\", "\\\\", $orgTransactionType));
         $rnd = strtoupper(str_replace("|", "\\|", str_replace("\\", "\\\\", bin2hex(openssl_random_pseudo_bytes(10)))));
 
@@ -72,7 +73,7 @@ final class OrderPaymentRequestView
             'oid' => $oid,
             'clientid' => $clientId ,
             'storetype' => '3d_pay_hosting',
-            'lang' => 'sr',
+            'lang' => $locale === 'rs' ? 'sr' : $locale,
             'hashAlgorithm' => 'ver2',
             'rnd' => $rnd,
             'encoding' => 'utf-8',

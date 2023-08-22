@@ -48,6 +48,8 @@ class CartHandler {
 
             this.#pageManipulator.updatePage(order);
 
+            $(document).trigger('cart:update', order);
+
         } catch (e) {
             let message = e.message;
 
@@ -88,6 +90,8 @@ class CartHandler {
 
             this.#pageManipulator.updatePage(order);
 
+            $(document).trigger('cart:update', order);
+
         } catch (e) {
             let message = e.message;
 
@@ -124,6 +128,8 @@ class CartHandler {
             }
 
             this.#pageManipulator.updatePage(order);
+
+            $(document).trigger('cart:update', order);
 
         } catch (e) {
             let message = e.message;

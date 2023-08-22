@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Formatter\Site;
 
 use App\Entity\Banner;
+use App\Entity\User;
 use App\View\BannerView;
 use App\View\SliderView;
 use Symfony\Component\Routing\RouterInterface;
@@ -33,7 +34,7 @@ final class HomePageResponseFormatter
         $this->productFormatter = $productFormatter;
     }
 
-    public function formatResponse(array $data, string $locale): array
+    public function formatResponse(array $data, string $locale, ?User $user = null): array
     {
         $data['sliders'] = array_map(function ($slider) use ($locale) {
 
@@ -42,7 +43,7 @@ final class HomePageResponseFormatter
 
         $data['banners'] = $this->formatBanners($data['banners'], $locale);
         $data['products'] = $this->formatProducts(
-            $this->productFormatter->getProducts($data['products'], $locale)
+            $this->productFormatter->getProducts($data['products'], $locale, $user)
         );
 
         return $data;
