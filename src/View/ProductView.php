@@ -6,8 +6,8 @@ namespace App\View;
 
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
+use App\Entity\User;
 use App\Factory\NumberFormatterFactory;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 final class ProductView
@@ -44,7 +44,7 @@ final class ProductView
         return $view;
     }
 
-    public function view(Product $product, string $locale): array
+    public function view(Product $product, string $locale, ?User $user = null): array
     {
         $discount = $product->getDiscount();
         $price = $product->getPrice();
@@ -57,6 +57,7 @@ final class ProductView
             'show_home_page' => $product->getShowHomePage(),
             'is_sold' => $product->isSold(),
             'discount' => null,
+            'is_wish' => null !== $user && $product->isUserWish($user),
         ];
 
         $view['translations'][$locale] = $this->getTranslationValues($trans);

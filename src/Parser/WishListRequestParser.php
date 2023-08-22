@@ -39,9 +39,9 @@ final class WishListRequestParser
      *
      * @return UserWishes
      */
-    public function parse(ParameterBag $bag, User $user): UserWishes
+    public function parse(int $productId, User $user): UserWishes
     {
-        $product = $this->productRepository->find($bag->get('product_id'));
+        $product = $this->productRepository->find($productId);
         $wish = $this->wishesRepository->findOneBy(['user' => $user, 'product' => $product]);
 
         if (null === $wish) {

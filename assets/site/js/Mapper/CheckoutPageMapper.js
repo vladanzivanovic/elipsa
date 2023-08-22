@@ -7,7 +7,7 @@ class CheckoutPageMapper {
             this.accountCreateChk = '#createAccount';
             this.accountCreateError = '#createAccountError';
             this.password = '#checkoutPassword';
-            this.btn = $('.checkout-page-button');
+            this.btn = '.checkout-page-button';
             this.productList = '.product-list';
             this.productsTotal = '#products-total';
             this.promoPrice = '#promo-price';

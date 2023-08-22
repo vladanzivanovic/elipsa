@@ -118,7 +118,7 @@ cart.continue_shopping: nastavi kupovinu
 cart.update: osveži korpu
 cart.next_step: sledeći korak
 cart.shipping: poštarina
-cart.empty: vaša korpa je prazna
+cart.empty: Vaša korpa je prazna
 cart.total_cost: iznos vaše korpe
 cart.promo_coupon: promotivni kod
 cart.promo_coupon_text: unesite promotivni kod ukoliko ga imate.
@@ -208,14 +208,23 @@ website: websajt
 position: pozicija
 about_company: podaci o kampaniji
 
-email.order.title: Narudžbenica #%orderId%
+email.order.title: Porudžbenica %orderId%
+email.order.text: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Zahvaljujemo se na porudžbini na sajtu %site_name%. Uskoro ćete biti kontaktirani radi potvrde Vaše porudžbine.</p>
+  <p>Ukoliko imate neka pitanja ili želite da izmenite porudžbinu, kliknite na dugme reply. Molimo vas da ne menjate naslov porudžbine, kako bi smo lakše pronašli vašu porudžbinu u sistemu. Hvala.</p>
+   <p class="last-child">Detalji porudžbine su prikazani ispod</p>'
+email.order.failedText: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Plaćanje nije uspelo.<br> Vaš račun nije zaduže, najcesci uzrok je pogrešano unet broj kartice, datum isteka ili sigurnosni kod. Pokušajte ponovo, u slucaju uzastopnih gresaka pozovite vašu banku.</p>
+  <p class="last-child">Ukoliko imate problema sa kupovinom molimo vas da nas kontaktirate putem email-a ili telefona. Hvala.</p>'
+email.order.overview: Pregled porudžbine
 email.order.seller: Prodavac
 email.order.seller.name: Naziv
 email.order.seller.account: Žiro račun
 email.order.seller.address: Adresa
 email.order.seller.telephone: Telefon
 email.order.seller.mobile: Mobilni telefon
-email.order.failed.message: Plaćanje nije uspešno.<br> Vas racun nije zaduze, najcesci uzrok je pogresano unet brtoj kartice, datum isteka ili sigurnosni kod. Pokusajte ponovo, u slucaju uzastopnih gresaka pozovite vasu banku.
+#email.order.failed.message: Plaćanje nije uspešno.<br> Vas racun nije zaduze, najcesci uzrok je pogresano unet brtoj kartice, datum isteka ili sigurnosni kod. Pokusajte ponovo, u slucaju uzastopnih gresaka pozovite vasu banku.
+email.order.thanks_text: Zahvaljujemo se na kupovini.
 
 email.order.buyer: Kupac
 email.order.buyer.full_name: Ime i prezime
@@ -230,12 +239,20 @@ email.order.table.size: Veličina
 email.order.table.color: Boja
 email.order.table.quantity: Količina
 email.order.table.shipping: Poštarina
-email.order.table.promo_coupon: Promotivni kod
+email.order.table.unit_price: Jedinična cena
+email.order.table.total_price: Ukupna cena
+email.order.table.promo_coupon: Promocija
 email.order.total_shipping: Ukupno sa poštarinom
+email.order.products_total_price: Međuzbir
+email.order.payment_info: Informacije o plaćanju
+email.order.payment_details: Podaci o plaćanju
+email.order.delivery_info: Informacije o dostavi
 
 email.registration.title: Registracija na sajtu %siteName%
-email.registration.success.text: Uspešno ste izvršili registraciju
-email.registration.message: Kako bi ste završili proces registracije neophodno je da akivirate nalog,<br>molimo vas kliknite na link u nastavku.
+email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
+  <p>uspešno ste izvršili registraciju.</p>
+  <p class="last-child">Kako bi ste završili proces registracije neophodno je da akivirate nalog, molimo vas kliknite na dugme u nastavku, ili prekopirajte link u pretraživač..</p>'
+email.registration.linkText: Potvrdite reigstraciju
 
 email.reset_password.title: Reset lozinke na sajtu %siteName%
 email.reset_password.headline.text: Zahtev za promenu lozinke

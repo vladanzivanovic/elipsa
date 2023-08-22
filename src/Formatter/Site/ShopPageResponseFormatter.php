@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
+use App\Entity\User;
 use App\View\TagView;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -47,11 +48,12 @@ final class ShopPageResponseFormatter
     public function formatResponse(
         array $data,
         string $locale,
-        string $routeName
+        string $routeName,
+        ?User $user = null
     ): array {
         $sortMapping = $this->bag->get('shop')['sort_mapping'];
 
-        $data['products']['data'] = $this->productFormatter->getProducts($data['products']['data'], $locale);
+        $data['products']['data'] = $this->productFormatter->getProducts($data['products']['data'], $locale, $user);
 
         if (null !== $data['search_criteria'] && $data['search_criteria']->has('sort')) {
             $data['search_criteria']->set('sort', [array_search($data['search_criteria']->get('sort'), $sortMapping)]);

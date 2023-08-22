@@ -69,6 +69,6 @@ final class ShopListController extends AbstractController
 
         $data = $this->collectors->collectForApi($locale, $page, $this->getUser(), $searchData);
 
-        return $this->json($this->formatter->formatResponse($data, $locale, 'site.shop_page'));
+        return $this->json($this->formatter->formatResponse($data, $locale, 'site.shop_page', $this->getUser()));
     }
 }

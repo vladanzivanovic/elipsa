@@ -1,0 +1,98 @@
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation" data-block-id="74">
+    <tbody>
+    {% for product in products %}
+        {% set isDiscounted = 0 < product.discount | length %}
+        <tr class="mceRow">
+            <td style="background-position:center;background-repeat:no-repeat;background-size:cover;padding-top:0px;padding-bottom:0px"
+                valign="top">
+                <table border="0" cellpadding="0" cellspacing="24" width="100%" style="table-layout:fixed"
+                       role="presentation">
+                    <colgroup>
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                        <col span="1" width="8.333333333333332%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td style="padding-top:0;padding-bottom:0" class="mceColumn" data-block-id="69" valign="top"
+                            colspan="4" width="33.33333333333333%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                <tbody>
+                                <tr>
+                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:0;padding-left:0" class="mceBlockContainer" align="center" valign="top">
+                                        <img data-block-id="76" width="188" height="auto"
+                                             style="width:188px;height:auto;max-width:100%;display:block"
+                                             alt="{{ default_alt_tag }}"
+                                             src="{{ product.image.file }}"
+                                             role="presentation" class="imageDropZone">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td style="padding-top:0;padding-bottom:0" class="mceColumn" data-block-id="71" valign="top"
+                            colspan="4" width="33.33333333333333%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                <tbody>
+                                <tr>
+                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
+                                        class="mceBlockContainer" valign="top">
+                                        <div data-block-id="75" class="mceText" id="dataBlockId-75" style="width:100%">
+                                            <p><strong>{{ product.translation.title }} x {{ product.quantity }}</strong></p>
+                                            <p>
+                                                <strong><span style="font-size: 12px">{{ 'email.order.table.color' | trans }}:</span></strong>
+                                                <span style="font-size: 12px"> {{ product.color.translations[locale].title }}, </span>
+                                                <strong><span style="font-size: 12px">{{ 'email.order.table.size' | trans }}:</span></strong>
+                                                <span style="font-size: 12px"> {{ product.size }}</span>
+                                            </p>
+                                            <p class="last-child">
+                                                <strong><span style="font-size: 12px">{{ 'email.order.table.unit_price' | trans }}:</span></strong>
+                                                <span style="font-size: 12px">
+                                                    {% if true == isDiscounted %}
+                                                        {{ product.discount.price.amount }} {{ product.discount.price.currency }}
+                                                    {% else %}
+                                                        {{ product.price.amount }} {{ product.price.currency }}
+                                                    {% endif %}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td style="padding-top:0;padding-bottom:0;margin-bottom:24px" class="mceColumn"
+                            data-block-id="73" valign="top" colspan="4" width="33.33333333333333%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                <tbody>
+                                <tr>
+                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
+                                        class="mceBlockContainer" valign="top">
+                                        <div data-block-id="77" class="mceText" id="dataBlockId-77" style="width:100%">
+                                            <p style="text-align: right;" class="last-child">
+                                                <strong><span style="font-size: 18px">{{ 'email.order.table.total_price' | trans }}: </span></strong>
+                                                {{ product.total.amount }} {{ product.total.currency }}
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

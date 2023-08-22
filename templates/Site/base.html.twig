@@ -1,4 +1,4 @@
-{% set locale = app.request.locale %}
+{% set locale = app.request.attributes.get('_locale') %}
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set siteSettings = site_settings(locale) %}

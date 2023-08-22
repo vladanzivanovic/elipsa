@@ -28,6 +28,8 @@ class ShopOrder
     public const CARD_TYPE_REFUND = 'Credit';
     public const CARD_TYPE_VOID = 'Void';
 
+    public const CART_TYPE_REJECT = 'Reject';
+
     public const CARD_STATUS_MAPPER = [
         self::CARD_TYPE_POST_AUTH => self::STATUS_COMPLETED,
         self::CARD_TYPE_REFUND => self::STATUS_REFUND,

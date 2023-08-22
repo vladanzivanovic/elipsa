@@ -42,8 +42,6 @@ class CartPageEvents {
             e.preventDefault();
             e.stopPropagation();
 
-            console.log(e);
-
             await this.#cartHandler.removeProduct(e);
         });
     }

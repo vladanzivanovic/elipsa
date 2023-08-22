@@ -35,37 +35,37 @@
                         <div class="checkout-billing-adress-box">
                             <input id="_csrf_token_checkout" type="hidden" name="_csrf_token" value="{{ csrf_token('order_complete') }}" />
                             <div class="billing-address-input clearfix">
-                                {{ form.input('country' | trans ~ ' *', 'country', address is not null ? address.country : '', 'country', '', 'text', null, '', 'text-uppercase') }}
+                                {{ form.input('country' | trans ~ ' *', 'country', address is not null ? address.country : '', 'billing_address[country]', '', 'text', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('first_name' | trans ~ ' *', 'firstName', user is not null ? user.firstName : '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                {{ form.input('first_name' | trans ~ ' *', 'firstName', user is not null ? user.firstName : '', 'billing_address[first_name]', '', 'text', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('last_name' | trans ~ ' *', 'lastName', user is not null ? user.lastName : '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                {{ form.input('last_name' | trans ~ ' *', 'lastName', user is not null ? user.lastName : '', 'billing_address[last_name]', '', 'text', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('address' | trans ~ ' *', 'address', address is not null ? address.address : '', 'address', '', 'text', null, '', 'text-uppercase') }}
+                                {{ form.input('address' | trans ~ ' *', 'address', address is not null ? address.address : '', 'billing_address[street]', '', 'text', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('city' | trans ~ ' *', 'city', address is not null ? address.city : '', 'city', '', 'text', null, '', 'text-uppercase') }}
+                                {{ form.input('city' | trans ~ ' *', 'city', address is not null ? address.city : '', 'billing_address[city]', '', 'text', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('zip_code' | trans ~ ' *', 'zipCode', address is not null ? address.zipCode : '', 'zip_code', '', 'text', null, '', 'text-uppercase') }}
+                                {{ form.input('zip_code' | trans ~ ' *', 'zipCode', address is not null ? address.zipCode : '', 'billing_address[zip_code]', '', 'text', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('email' | trans ~ ' *', 'email', user is not null ? user.email : '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                {{ form.input('email' | trans ~ ' *', 'email', user is not null ? user.email : '', 'billing_address[email]', '', 'email', null, '', 'text-uppercase') }}
                             </div>
                             <div class="billing-address-input clearfix">
-                                {{ form.input('mobile_telephone' | trans ~ ' *', 'mobilePhone', address is not null ? address.phone : '', 'mobile_phone', '', 'tel', null, '', 'text-uppercase') }}
+                                {{ form.input('mobile_telephone' | trans ~ ' *', 'mobilePhone', address is not null ? address.phone : '', 'billing_address[mobile_phone]', '', 'tel', null, '', 'text-uppercase') }}
                             </div>
                             <div class="cbab-create-account">
-                                {{ inputs.input('createAccount', '1', 'create_account', '', 'checkbox', '', user is not null ? 'disabled="disabled"' : null) }}
+                                {{ inputs.input('createAccount', '1', 'user[create_account]', '', 'checkbox', '', user is not null ? 'disabled="disabled"' : null) }}
                                 <label for="createAccount" class="letter-capitalize">{{ 'create_account' | trans }}?</label>
                                 <em id="createAccountError" class="error"></em>
                                 <p class="letter-capitalize">{{ 'checkout.login_text' | trans }}</p>
                             </div>
                             <div class="cbab-account-password clearfix">
-                                {{ form.input('password' | trans ~ ' *', 'checkoutPassword', '', 'password', '', 'password','disabled="disabled"', 'text-uppercase', 'text-uppercase') }}
+                                {{ form.input('password' | trans ~ ' *', 'checkoutPassword', '', 'user[password]', '', 'password', 'disabled="disabled"', 'text-uppercase', 'text-uppercase') }}
                             </div>
                             <div class="cbab-order-notes">
                                 <p class="text-uppercase">{{ 'checkout.order_notes' | trans }}</p>

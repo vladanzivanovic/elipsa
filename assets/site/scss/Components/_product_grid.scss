@@ -11,6 +11,11 @@
     }
 
     .sfi-img-banner {
+      &.product-discount {
+        left: 20px;
+        right: unset;
+      }
+
       &::before {
         border-left: 1.6vw solid #a70303;
       }

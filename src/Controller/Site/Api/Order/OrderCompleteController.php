@@ -48,7 +48,7 @@ final class OrderCompleteController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/complete/{token}", name="site_api.add_order_complete_code", methods={"POST"}, options={"expose": true})
+     * @Route("/api/order/complete/{token}", name="site_api.order_complete", methods={"POST"}, options={"expose": true})
      *
      * @return JsonResponse
      */

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Formatter\Site;
 
 use App\Entity\Product;
+use App\Entity\User;
 use App\Repository\TagsRepository;
 use App\View\CategoryView;
 use App\View\CleaningView;
@@ -64,12 +65,12 @@ final class ProductFormatter
         $this->youtubeView = $youtubeView;
     }
 
-    public function formatResponse(array $data, string $locale): array
+    public function formatResponse(array $data, string $locale, ?User $user = null): array
     {
         /** @var Product $product */
         $product = $data['product'];
 
-        $productView = $this->productView->view($product, $locale);
+        $productView = $this->productView->view($product, $locale, $user);
 
         $productView['categories'] = $this->getCategories($product, $locale);
         $productView['media']['images'] = $this->getImages($product);
@@ -89,12 +90,12 @@ final class ProductFormatter
      * @param array<int, Product> $relatedProducts
      * @return array<int, mixed>
      */
-    public function getProducts(array $relatedProducts, string $locale): array
+    public function getProducts(array $relatedProducts, string $locale, ?User $user = null): array
     {
         $products = [];
 
         foreach ($relatedProducts as $relatedProduct) {
-            $product = $this->productView->view($relatedProduct, $locale);
+            $product = $this->productView->view($relatedProduct, $locale, $user);
             $product['colors'] = $this->getColors($relatedProduct);
             $product['sizes'] = $this->getSizes($relatedProduct);
             $product['tags'] = $this->getTags($relatedProduct, $locale);
@@ -102,6 +103,8 @@ final class ProductFormatter
 
             $products[] = $product;
         }
+
+//        dd($products);
 
         return $products;
     }

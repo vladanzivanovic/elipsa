@@ -11,7 +11,7 @@
                     </div>
                 {% endif %}
                 {% if product.discount is not null %}
-                    <div class="sfi-img-banner">
+                    <div class="sfi-img-banner product-discount">
                         <span>-{{ product.discount.percentage }} %</span>
                     </div>
                 {% endif %}
@@ -37,7 +37,7 @@
             <div class="sfi-content">
                 <div class="sfi-buttons">
                     <ul class="clearfix">
-                        <li><a href="#" class="toggle-wish-list" data-product-id="{{ product.id }}" data-page="shop"><i class="fa {{ product.has_wish is defined and product.has_wish == 1 ? 'fa-heart' : 'fa-heart-o' }}"></i></a></li>
+                        <li><a href="#" class="toggle-wish-list" data-product-id="{{ product.id }}" data-page="shop"><i class="fa {{ product.is_wish == true ? 'fa-heart' : 'fa-heart-o' }}"></i></a></li>
                         <li><a href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}"><i class="fa fa-eye"></i></a></li>
                     </ul>
                 </div>

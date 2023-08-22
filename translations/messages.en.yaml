@@ -118,7 +118,7 @@ product.unavailable: Product is unavailable
 related_products: related products
 
 cart.name: cart
-cart.total_products: total cost
+cart.total_products: Subtotal
 cart.total_shipping: total with shipping
 cart.view: view cart
 cart.checkout: checkout
@@ -128,7 +128,7 @@ cart.continue_shopping: continue shopping
 cart.update: update cart
 cart.next_step: next step
 cart.shipping: shipping
-cart.empty: your cart is empty
+cart.empty: Your cart is empty
 cart.total_cost: cart total
 cart.promo_coupon: Discount code
 cart.promo_coupon_text: Enter your code if you have one.
@@ -218,14 +218,23 @@ website: website
 position: position
 about_company: about company
 
-email.order.title: Order #%orderId%
+email.order.title: Order %orderId%
+email.order.text: '<h3>Dear %first_name%,</h3>
+  <p>Thanks for your order on site %site_name%. We will contact you soon for confirmation of the order.</p>
+  <p>If you have any question or want to make changes on the order, make reply on this email. Please, do not change subject or title of this email, as it will be used to find the order in the system. Thanks</p>
+   <p class="last-child">Details about the order are displayed below</p>'
+email.order.failedText: '<h3>Dear %first_name%,</h3>
+  <p>Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.</p>
+  <p class="last-child">If you have any kind of problems ordering products please contact us via email or telephone. Thanks</p>'
+email.order.overview: Your orders
 email.order.seller: Seller
 email.order.seller.name: Company
 email.order.seller.account: Account number
 email.order.seller.address: Address
 email.order.seller.telephone: Telephone
 email.order.seller.mobile: Mobile phone
-email.order.failed.message: Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
+#email.order.failed.message: Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
+email.order.thanks_text: Thank you for your purchase.
 
 
 email.order.buyer: Buyer
@@ -235,8 +244,10 @@ email.order.buyer.street_number: Street and number
 email.order.buyer.payment_type: Payment
 
 email.registration.title: Account registration on site %siteName%
-email.registration.success.text: Your registration was successull
-email.registration.message: In order to complete registration process you need to activate account.<br/> Click on the link below.
+email.registration.success.text: '<h3>Dear %first_name%,</h3>
+  <p>Your registration was successful.</p>
+  <p class="last-child">In order to complete registration process you need to activate account.<br/> Click on the link below.</p>'
+email.registration.linkText: Confirm registration
 
 email.reset_password.title: Reset password on site %siteName%
 email.reset_password.headline.text: Change password request
@@ -249,8 +260,14 @@ email.order.table.size: Size
 email.order.table.color: Color
 email.order.table.quantity: Quantity
 email.order.table.shipping: Shipping
-email.order.table.promo_coupon: Promotion code
+email.order.table.unit_price: Unit price
+email.order.table.total_price: Total price
+email.order.table.promo_coupon: Promotion
 email.order.total_shipping: total with shipping
+email.order.products_total_price: Subtotal
+email.order.payment_info: Payment information
+email.order.payment_details: Payment details
+email.order.delivery_info: Delivery information
 
 payment_type.on_delivering: On delivering
 payment_type.credit_card: Credi card

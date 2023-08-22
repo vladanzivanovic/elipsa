@@ -9,24 +9,15 @@ use App\Parser\WishListRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class WishListEditController extends AbstractController
 {
-    /**
-     * @var WishListRequestParser
-     */
-    private $wishListRequestParser;
+    private WishListRequestParser $wishListRequestParser;
 
-    /**
-     * @var WishListHandler
-     */
-    private $wishListHandler;
+    private WishListHandler $wishListHandler;
 
-    /**
-     * @param WishListRequestParser $wishListRequestParser
-     * @param WishListHandler       $wishListHandler
-     */
     public function __construct(
         WishListRequestParser $wishListRequestParser,
         WishListHandler $wishListHandler
@@ -36,10 +27,7 @@ final class WishListEditController extends AbstractController
     }
 
     /**
-     * @Route({
-     *          "rs": "/api/toggle-wish/{id}",
-     *          "en": "/api/toggle-wish/{id}"
-     *     },
+     * @Route("/api/toggle-wish/{productId}",
      *     name="site_api.toggle_wish",
      *     methods={"POST"},
      *     options={"expose": true}
@@ -51,14 +39,18 @@ final class WishListEditController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function toggleItem(Request $request): JsonResponse
+    public function toggleItem(Request $request, int $productId): JsonResponse
     {
-        $wish = $this->wishListRequestParser->parse($request->request, $this->getUser());
+        $wish = $this->wishListRequestParser->parse($productId, $this->getUser());
 
         $isAdded = $wish->getId() === null;
 
         $this->wishListHandler->toggle($wish);
 
-        return $this->json(['is_added' => $isAdded]);
+        if (true === $isAdded) {
+            return $this->json(null, Response::HTTP_CREATED);
+        }
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 }

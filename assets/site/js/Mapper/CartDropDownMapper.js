@@ -4,6 +4,8 @@ class CartDropDownMapper {
             this.productList = $('.my-cart-products');
             this.productLength = $('.cart-length');
             this.total = $('.cost__number');
+            this.emptyCartWrapper = '.empty-cart';
+            this.cartWrapper = '.cart-wrapper';
 
             CartDropDownMapper.instance = this;
         }

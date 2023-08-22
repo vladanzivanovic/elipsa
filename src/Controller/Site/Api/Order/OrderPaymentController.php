@@ -6,7 +6,7 @@ namespace App\Controller\Site\Api\Order;
 
 use App\Parser\Site\Order\OrderRequestParser;
 use App\View\ExceptionView;
-use App\View\OrderPaymentView;
+use App\View\OrderPaymentRequestView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -20,12 +20,12 @@ final class OrderPaymentController extends AbstractController
 
     private ExceptionView $exceptionView;
 
-    private OrderPaymentView $orderPaymentView;
+    private OrderPaymentRequestView $orderPaymentView;
 
     public function __construct(
         OrderRequestParser $orderRequestParser,
         ExceptionView $exceptionView,
-        OrderPaymentView $orderPaymentView
+        OrderPaymentRequestView $orderPaymentView
     ) {
         $this->orderRequestParser = $orderRequestParser;
         $this->exceptionView = $exceptionView;

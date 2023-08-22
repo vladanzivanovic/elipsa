@@ -1,10 +1,9 @@
 import AppHelperService from "../../../js/Helper/AppHelperService";
+import orderStorageManipulator from "../Manipulator/OrderStorageManipulator";
 
 class OrderApiProvider {
-
     constructor() {
         if (!OrderApiProvider.instance) {
-
             OrderApiProvider.instance = this;
         }
 
@@ -14,6 +13,32 @@ class OrderApiProvider {
     async getOrder(token)
     {
         const urlRoute = AppHelperService.generateLocalizedUrl('site_api.get_order', {
+            token: token
+        });
+
+        let result;
+
+        try {
+            result = await $.ajax({
+                type: 'GET',
+                url: urlRoute,
+                data: null,
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    'Content-Language': LOCALE,
+                }
+            });
+        } catch (error) {
+            result = error;
+        }
+
+        return result;
+    }
+
+    async getPayment(token)
+    {
+        const urlRoute = Routing.generate('site_api.get_order_payment', {
             token: token
         });
 

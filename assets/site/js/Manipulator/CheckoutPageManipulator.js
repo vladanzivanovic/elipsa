@@ -1,17 +1,20 @@
 import cartPageMapper from "../Mapper/CartPageMapper";
 import orderApiProvider from "../Provider/OrderApiProvider";
 import checkoutPageDom from "../Dom/CheckoutPageDom";
+import orderStorageManipulator from "./OrderStorageManipulator";
 
 class CheckoutPageManipulator {
     #orderApiProvider;
     #pageMapper;
     #pageDom;
+    #orderStorageManipulator;
 
     constructor() {
         if(!CheckoutPageManipulator.instance) {
             this.#orderApiProvider = orderApiProvider;
             this.#pageMapper = cartPageMapper;
             this.#pageDom = checkoutPageDom;
+            this.#orderStorageManipulator = orderStorageManipulator;
 
             CheckoutPageManipulator.instance = this;
         }
@@ -21,11 +24,13 @@ class CheckoutPageManipulator {
 
     setPage()
     {
-        if (!localStorage.getItem('order')) {
+        const orderToken = this.#orderStorageManipulator.getOrderToken();
+
+        if (!orderToken) {
             return;
         }
 
-        this.#orderApiProvider.getOrder(localStorage.getItem('order'))
+        this.#orderApiProvider.getOrder(orderToken)
             .then(order => {
                 this.updatePage(order);
             });
@@ -33,26 +38,14 @@ class CheckoutPageManipulator {
 
     updatePage(order)
     {
-        if (null === order) {
+        if (null === order || null !== order.checkout_completed_at) {
+            this.#orderStorageManipulator.removeOrder();
+
             return;
         }
 
-        localStorage.setItem('orderData', JSON.stringify(order));
+        this.#orderStorageManipulator.setOrderData(order);
         this.#pageDom.manageOrderData(order)
-    }
-
-    completeOrder()
-    {
-        if (!localStorage.getItem('order')) {
-            return;
-        }
-
-        this.#orderApiProvider.completeOrder()
-            .then(order => {
-                if (order.payment_type === 1) {
-
-                }
-            });
     }
 }
 
