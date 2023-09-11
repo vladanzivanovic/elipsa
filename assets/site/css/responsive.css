@@ -832,9 +832,9 @@ Version      : 1.0
         text-align: center !important;
     }
     /*shop*/
-    .shop-sidebar-area {
-        margin-bottom: 60px !important;
-    }
+    /*.shop-sidebar-area {*/
+    /*    margin-bottom: 60px !important;*/
+    /*}*/
     .shop-menu > div {
         display: block !important;
         width: 100% !important;

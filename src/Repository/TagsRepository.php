@@ -143,10 +143,7 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param int    $type
-     * @param string $locale
-     *
-     * @return array
+     * @return array<int, Tags>
      */
     public function getForOptions(int $type = Tags::TYPE_PRODUCT, string $locale = 'rs'): array
     {
@@ -156,6 +153,23 @@ class TagsRepository extends ExtendedEntityRepository
             ->andWhere('t.relatedType = :relatedType')
             ->setParameter('locale', $locale)
             ->setParameter('relatedType', $type);
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @return array<int, Tags>
+     */
+    public function getByProductType(string $productType, string $locale = 'rs'): array
+    {
+        $query = $this->createQueryBuilder('t')
+            ->innerJoin('t.tagTranslations', 'tt')
+            ->where('tt.locale = :locale')
+            ->andWhere('t.productType = :productType')
+            ->andWhere('t.relatedType = :relatedType')
+            ->setParameter('locale', $locale)
+            ->setParameter('relatedType', Tags::TYPE_PRODUCT)
+            ->setParameter('productType', $productType);
 
         return $query->getQuery()->getResult();
     }

@@ -148,6 +148,9 @@
     "monolog/monolog": {
         "version": "2.1.1"
     },
+    "nelexa/request-dto-bundle": {
+        "version": "1.3.4"
+    },
     "nelmio/security-bundle": {
         "version": "2.4",
         "recipe": {

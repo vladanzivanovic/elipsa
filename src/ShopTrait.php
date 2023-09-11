@@ -6,12 +6,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait ShopTrait
 {
-
-    /**
-     * @param string $searchData
-     *
-     * @return ParameterBag
-     */
     private function parseSearchData(string $searchData): ParameterBag
     {
         $searchArray = explode('/', $searchData);

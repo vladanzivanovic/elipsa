@@ -74,6 +74,9 @@ final class ProductPageCollector
         $this->cleaningRepository = $cleaningRepository;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function collect(ProductTranslation $productTranslation, string $locale, ?User $user): array
     {
         $product = $productTranslation->getProduct();
@@ -91,6 +94,9 @@ final class ProductPageCollector
         ];
     }
 
+    /**
+     * @throws \Exception
+     */
     private function relatedProducts(Product $product, string $locale, ?User $user): array
     {
         $hasCategories = $product->getProductHasCategories();

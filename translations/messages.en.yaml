@@ -15,6 +15,7 @@ up: up
 
 season: Season
 collection: Collection
+attribute: Attribute
 
 choose: Choose
 
@@ -532,3 +533,41 @@ youtube:
   exists: Video already exits
   url_not_valid: Youtube url is not valid
   link_button: Watch product video
+
+filter:
+  sizes: sizes
+  colors: colors
+  collections: collections
+  seasons: seasons
+  attributes: attributes
+  categories: categories
+  price: price
+  search: search
+  limit: limit
+  sort: sort
+  velicine: sizes
+  boje: sizes
+  kolekcije: collections
+  sezone: seasons
+  osobine: attributes
+  kategorije: categories
+  cena: price
+  pretraga: search
+  broj_proizvoda: limit
+  sortiranje: sort
+
+filter_text:
+  sizes: Sizes
+  colors: Colors
+  collections: Collections
+  seasons: Seasons
+  attributes: Attributes
+  categories: Categories
+  price: Price
+  velicine: Sizes
+  boje: Colors
+  kolekcije: Collections
+  sezone: Seasons
+  osobine: Attributes
+  kategorije: Categories
+  cena: Price

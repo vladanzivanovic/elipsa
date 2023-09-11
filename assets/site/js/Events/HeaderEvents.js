@@ -86,13 +86,12 @@ class HeaderEvents {
             e.preventDefault();
             e.stopPropagation();
 
-            location.href = Routing.generate(`site.shop_page.${LOCALE}`) +
-                `/1/${Translator.trans(
-                    'search',
-                    null,
-                    'messages',
-                    LOCALE
-                )}/${$(this.#mapper.searchInput).val()}`;
+            const params = {};
+
+            params[Translator.trans('search', null, 'messages', LOCALE)] = $(this.#mapper.searchInput).val();
+
+            location.href = Routing.generate(
+                `site.shop_page.${LOCALE}`, params);
         })
     }
 

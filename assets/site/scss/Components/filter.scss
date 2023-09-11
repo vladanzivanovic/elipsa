@@ -1,5 +1,21 @@
 @import "../colors";
 
+.sidebar-accordion-button {
+  &::after {
+    content: "";
+    font-family: FontAwesome;
+    position: absolute;
+    right: 0;
+  }
+
+  &.collapsed::after {
+    content: "\f067";
+    font-family: FontAwesome;
+    position: absolute;
+    right: 0;
+  }
+}
+
 #filter-btn-open {
   background: $black-color;
   border-radius: 0;
@@ -50,7 +66,7 @@
 }
 
 /* The navigation links inside the overlay */
-.overlay #filter-btn-close {
+.overlay .filter-close-icon {
   padding: 8px;
   text-decoration: none;
   font-size: 36px;
@@ -60,7 +76,7 @@
 }
 
 /* When you mouse over the navigation links, change their color */
-.overlay #filter-btn-close:hover, .overlay #filter-btn-close:focus {
+.overlay .filter-close-icon:hover, .overlay .filter-close-icon:focus {
   color: #f1f1f1;
 }
 
@@ -70,6 +86,13 @@
   top: 20px;
   right: 45px;
   font-size: 60px;
+}
+
+.overlay .btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .mobile-view {

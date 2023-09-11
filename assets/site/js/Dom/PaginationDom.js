@@ -1,9 +1,9 @@
-import ShopPageMapper from "../Mapper/ShopPageMapper";
+import shopPageMapper from "../Mapper/ShopPageMapper";
 
 class PaginationDom {
     constructor() {
         if (!PaginationDom.instance) {
-            this.mapper = new ShopPageMapper();
+            this.mapper = shopPageMapper;
 
             PaginationDom.instance = this;
         }

@@ -3,15 +3,11 @@
 {% block bodyClass %}shop-page{% endblock %}
 {% block title %}{{ 'title.shop_page' | trans }}{% endblock %}
 
-{% block ogImage %}{{ products.data|length > 0 ? app.request.schemeAndHttpHost ~ products.data[0].image.file : defaultOgImage }}{% endblock %}
+{% block ogImage %}{{ products|length > 0 ? app.request.schemeAndHttpHost ~ products[0].image.file : defaultOgImage }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
-
-{% set search = search_criteria is not null ? search_criteria.all : [] %}
 
 {% block content %}
     {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': 'navi.shop' | trans }], 'activePage': 'title.shop_page' | trans}) }}
-
-    {% set pagination = products.pagination %}
 
     <!-- shop-left-sidebar-area-start -->
     <div class="shop-left-sidebar-area">
@@ -26,12 +22,12 @@
                     <div class="shop-grid">
                         <div class="shop-menu clearfix">
                             {% set shopOptions = app_params('shop') %}
-                            {% set sortOptions = shopOptions['list_sort'] %}
+                            {% set sortOptions = shopOptions['sort_mapping'] %}
                             <div class="deafult-sorting">
                                 <label class="letter-capitalize">{{ 'sort' | trans }}</label>
                                 <select class="sort-option">
-                                    {% for index, option in sortOptions %}
-                                        <option class="text-capitalize" value="{{ index }}" {{ search.sort is defined and search.sort[0] == index ? 'selected="selected" : ""' }}>{{ option | trans }}</option>
+                                    {% for key, option in sortOptions %}
+                                        <option class="text-capitalize" value="{{ key }}" {{ page_options.sort is not null and page_options.sort == key ? 'selected="selected" : ""' }}>{{ key | trans }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -40,7 +36,7 @@
                                 {% set showedItems = shopOptions['items_per_page'] %}
                                 <select class="limit-product">
                                     {% for showedItem in showedItems %}
-                                        <option value="{{ showedItem }}" {{ search.limit is defined and search.limit[0] == showedItem ? 'selected="selected" : ""' }}>{{ showedItem }}</option>
+                                        <option value="{{ showedItem }}" {{ page_options.limit is not null and page_options.limit == showedItem ? 'selected="selected" : ""' }}>{{ showedItem }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -53,9 +49,9 @@
                                         <div class="row">
                                             {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                                             {% set modusParams = is_mobile() ? 2 : 3 %}
-                                            {% for products in products.data | batch(modusParams) %}
+                                            {% for productsChunks in products | batch(modusParams) %}
                                                 <div class="row m-l-0 m-r-0">
-                                                    {% for product in products %}
+                                                    {% for product in productsChunks %}
                                                         {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale) }}
                                                     {% endfor %}
                                                 </div>
@@ -77,11 +73,15 @@
         <div id="myNav" class="overlay">
 
             <!-- Button to close the overlay navigation -->
-            <a href="javascript:void(0)" id="filter-btn-close">&times;</a>
+            <a href="javascript:void(0)" class="filter-close-icon filter-close">&times;</a>
 
             <!-- Overlay content -->
             <div class="overlay-content">
                 {% include'Site/Components/filter.html.twig' with {filterClass: 'mobile-view'} %}
+            </div>
+
+            <div class="btn-wrapper">
+                <button type="button" class="filter-close-button filter-close btn-danger">Zatvori</button>
             </div>
 
         </div>
@@ -97,6 +97,12 @@
         const IS_FIRST_PAGE = {{ app.request.attributes.get('page') == 1 ? 1 : 0 }};
 
         const SEARCH_CRITERIA = JSON.parse('{{ search | json_encode | raw }}');
-        const PRICES = [{{ prices.lowPrice }}, {{ prices.highPrice }}];
+        const PAGE_OPTIONS = JSON.parse('{{ page_options | json_encode | raw }}');
+        const PRICES = [{{ filters.price.lowPrice }}, {{ filters.price.highPrice }}];
+        const PAGE_OPTIONS_DEFAULT_VALUES = {
+            'sort': 'most_selled',
+            'limit': {{ app_params('shop')['items_per_page'][0] }},
+        };
+        const LINKS = JSON.parse('{{ _links | json_encode | raw }}');
     </script>
 {% endblock %}

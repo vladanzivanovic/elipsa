@@ -19,6 +19,7 @@
         "friendsofsymfony/jsrouting-bundle": "*",
         "gedmo/doctrine-extensions": "*",
         "liip/imagine-bundle": "*",
+        "nelexa/request-dto-bundle": "^1.3",
         "nelmio/security-bundle": "*",
         "presta/sitemap-bundle": "*",
         "ramsey/uuid-doctrine": "*",

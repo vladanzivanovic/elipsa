@@ -55,7 +55,7 @@ final class TagEditController extends AbstractController
     {
         $relatedType = $this->getRelatedType($request);
 
-        $tags = $this->requestParser->parse($request->request, $relatedType);
+        $tags = $this->requestParser->parse($request->request, $relatedType, null);
 
         $this->tagHandler->save($tags);
 

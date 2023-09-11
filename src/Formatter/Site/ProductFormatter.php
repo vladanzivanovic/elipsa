@@ -104,8 +104,6 @@ final class ProductFormatter
             $products[] = $product;
         }
 
-//        dd($products);
-
         return $products;
     }
 

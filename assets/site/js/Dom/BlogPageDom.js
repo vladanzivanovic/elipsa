@@ -1,10 +1,8 @@
-import ShopPageMapper from "../Mapper/ShopPageMapper";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 
 class BlogPageDom {
     constructor() {
         if (!BlogPageDom.instance) {
-            this.mapper = new ShopPageMapper();
 
             BlogPageDom.instance = this;
         }
