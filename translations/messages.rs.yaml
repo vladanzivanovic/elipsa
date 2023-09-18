@@ -566,3 +566,7 @@ filter_text:
   kategorije: Categories
   cena: Price
   pretraga: Search
+
+all_items_are_loaded: Svi proizvodi prema zadatim kriterijumima su učitani.
+load_more_products: Učitaj proizvode
+

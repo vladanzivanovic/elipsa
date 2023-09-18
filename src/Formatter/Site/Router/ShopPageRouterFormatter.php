@@ -90,7 +90,6 @@ final class ShopPageRouterFormatter
 
             $urlParams = [
                 '_locale' => $locale,
-                'page' => $shopPageOptionsDto->page,
             ];
 
             $translations[$locale] = $this->router->generate(

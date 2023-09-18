@@ -15,6 +15,9 @@ class ShopPageOptionsManipulator {
     #filterManipulator;
     #pageProvider;
     #headerDom;
+    #loadPageFinished = true;
+    #disableScroll = false;
+    #timeoutId = undefined;
 
     constructor() {
         if (!ShopPageOptionsManipulator.instance) {
@@ -50,9 +53,59 @@ class ShopPageOptionsManipulator {
             this.#optionCollection.setOption(name, null);
         }
 
+        this.#optionCollection.setOption('page', 1);
+
         await this.#update();
 
         loader.hide();
+    }
+
+    loadItems() {
+        const currentPage = this.#optionCollection.getOption('page');
+
+        this.#optionCollection.setOption('page', currentPage+1);
+
+        return this.#update();
+    }
+
+    loadItemsOnScroll()
+    {
+        if (true === this.#disableScroll) {
+            return;
+        }
+
+        const documentHeight = $(document).height();
+        const footerHeight = Math.floor($('.footer-top-area').height() + $('.footer-bottom-area').height());
+        const scrollTopPosition = $(window).scrollTop();
+        const scrollPos = Math.floor($(window).height() + scrollTopPosition);
+        const shouldTriggerAjax = documentHeight * 0.4 < scrollPos;
+
+        if (typeof this.#timeoutId !== undefined) {
+            clearTimeout(this.#timeoutId);
+        }
+
+        if (documentHeight - footerHeight <= scrollPos) {
+            this.#disableScroll = true;
+
+            return;
+        }
+
+        this.#timeoutId = setTimeout(() => {
+            if (this.#loadPageFinished && shouldTriggerAjax) {
+                this.#loadPageFinished = false;
+
+                const loadItemsPromise = this.loadItems();
+
+                loadItemsPromise.then(() => {
+                    this.#loadPageFinished = true;
+                });
+            }
+        }, 100);
+    }
+
+    setDisableScroll(disableScroll)
+    {
+        this.#disableScroll = disableScroll;
     }
 
     async #update()
@@ -61,9 +114,16 @@ class ShopPageOptionsManipulator {
             const data = await this.#pageProvider.getProducts(
                 {...this.#optionCollection.getOptions(), ...this.#filterCollection.getFilters()}
             );
+            const currentPage = this.#optionCollection.getOption('page');
 
-            this.#shopPageDom.generateProducts(data.products);
-            this.#pagination.generate(data.pagination);
+            this.#disableScroll = false;
+
+            this.#shopPageDom.generateProducts(
+                data.products,
+                1 === currentPage,
+                currentPage >= data.pagination.totalPages
+            );
+            // this.#pagination.generate(data.pagination);
 
             this.#setBrowserUrl(data._links[LOCALE]);
 

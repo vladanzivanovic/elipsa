@@ -112,6 +112,8 @@ class ShopFilterManipulator {
             filterCollection.price = price;
         }
 
+        this.#optionCollection.setOption('page', 1);
+
         await this.#updateFilters(filterCollection);
 
         loader.hide();
@@ -127,18 +129,28 @@ class ShopFilterManipulator {
 
         this.#filterCollection.setFilter(filter, []);
 
+        this.#optionCollection.setOption('page', 1);
+
         await this.#updateFilters(this.#filterCollection.getFilters());
     }
 
     async #updateFilters(filterCollection)
     {
         try {
+            const currentPage = this.#optionCollection.getOption('page');
+
             const filteredData = await this.#pageProvider.getProducts(
                 {...filterCollection, ...this.#optionCollection.getOptions()}
             );
 
-            this.#shopPageDom.generateProducts(filteredData.products);
-            this.#pagination.generate(filteredData.pagination);
+            $(window).trigger('disableScroll::off');
+
+            this.#shopPageDom.generateProducts(
+                filteredData.products,
+                1 === currentPage,
+                currentPage >= filteredData.pagination.totalPages
+            );
+            // this.#pagination.generate(filteredData.pagination);
 
             this.setFilters(filteredData.search);
 

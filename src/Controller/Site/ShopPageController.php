@@ -34,9 +34,9 @@ final class ShopPageController extends AbstractController
 
     /**
      * @Route({
-     *          "rs": "/proizvodi/{page}",
-     *          "en": "/products/{page}",
-     *          "ba": "/proizvodi/{page}"
+     *          "rs": "/proizvodi",
+     *          "en": "/products",
+     *          "ba": "/proizvodi"
      *     },
      *     name="site.shop_page",
      *     methods={"GET"},
@@ -45,19 +45,15 @@ final class ShopPageController extends AbstractController
      * )
      * @Template("Site/Pages/shop.html.twig")
      *
-     * @param Request     $request
-     * @param int         $page
-     *
      * @return array
      */
     public function index(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        Request $request,
-        int $page
+        Request $request
     ): array {
         $locale = $request->getSession()->get('_locale');
-        $data = $this->collectors->collect($locale, $page, $shopListRequestDto, $shopPageOptionsDto, $this->getUser());
+        $data = $this->collectors->collect($locale, $shopListRequestDto, $shopPageOptionsDto, $this->getUser());
         $filters = $this->filterCollector->collect($locale);
 
         return $this->formatter->formatResponse(

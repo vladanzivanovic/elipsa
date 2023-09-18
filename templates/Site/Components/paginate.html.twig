@@ -1,74 +1,80 @@
 {# src/SiteBundle/Resources/views/Site/paginate.html..twig #}
 
-{% if pagination['totalPages'] > 1 %}
+{#{% if pagination['totalPages'] > 1 %}#}
     <div class="shop-pagination-area clearfix">
         <div class="pagination-box">
-            <ul class="pagination clearfix">
-                {% set classFirst = '' %}
-                {% set classLast = '' %}
-                {% set query = app.request.query.all %}
-                {% set params = app.request.attributes.get('_route_params')|merge( query ) %}
-                {% if true == pagination['disableFirst'] %}
-                    {% set classFirst = 'disabled' %}
-                {% endif %}
-                {% set paramNumber = is_mobile() ? 2 : 3 %}
+            <p id="no-more-items-text" class="{{ pagination['currentPage'] < pagination['totalPages'] ? 'hide' : '' }}">{{ 'all_items_are_loaded' | trans }}</p>
+            <button
+                    type="button"
+                    id="load-more"
+                    class="{{ pagination['currentPage'] >= pagination['totalPages'] ? 'hide' : '' }} hvr-bs letter-capitalize"
+            >{{ 'load_more_products' | trans }}</button>
+{#            <ul class="pagination clearfix">#}
+{#                {% set classFirst = '' %}#}
+{#                {% set classLast = '' %}#}
+{#                {% set query = app.request.query.all %}#}
+{#                {% set params = app.request.attributes.get('_route_params')|merge( query ) %}#}
+{#                {% if true == pagination['disableFirst'] %}#}
+{#                    {% set classFirst = 'disabled' %}#}
+{#                {% endif %}#}
+{#                {% set paramNumber = is_mobile() ? 2 : 3 %}#}
 
-                <li class="first {{ classFirst }}">
-                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': 1} ) ) }}">
-                        <i class="fa fa-angle-double-left"></i>
-                        {% if false == is_mobile() %}
-                            {{ 'first_page' | trans }}
-                        {% endif %}
-                    </a>
-                </li>
-                <li class="prev {{ classFirst }}">
-                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['prevPage']} ) ) }}">
-                        <i class="fa fa-angle-left"></i>
-                        {% if false == is_mobile() %}
-                            {{ 'prev_page' | trans }}
-                        {% endif %}
-                    </a>
-                </li>
+{#                <li class="first {{ classFirst }}">#}
+{#                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': 1} ) ) }}">#}
+{#                        <i class="fa fa-angle-double-left"></i>#}
+{#                        {% if false == is_mobile() %}#}
+{#                            {{ 'first_page' | trans }}#}
+{#                        {% endif %}#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="prev {{ classFirst }}">#}
+{#                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['prevPage']} ) ) }}">#}
+{#                        <i class="fa fa-angle-left"></i>#}
+{#                        {% if false == is_mobile() %}#}
+{#                            {{ 'prev_page' | trans }}#}
+{#                        {% endif %}#}
+{#                    </a>#}
+{#                </li>#}
 
-                {% for prev in pagination['currentPage'] - paramNumber..pagination['currentPage'] - 1 %}
-                    {% if prev > 0 %}
-                        <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': prev} ) ) }}">{{ prev }}</a></li>
-                    {% endif %}
-                {% endfor %}
+{#                {% for prev in pagination['currentPage'] - paramNumber..pagination['currentPage'] - 1 %}#}
+{#                    {% if prev > 0 %}#}
+{#                        <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': prev} ) ) }}">{{ prev }}</a></li>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
 
-                <li class="pages active"><a href="#">{{ pagination['currentPage'] }}</a></li>
+{#                <li class="pages active"><a href="#">{{ pagination['currentPage'] }}</a></li>#}
 
-                {% for next in pagination['currentPage'] + 1..pagination['currentPage'] + paramNumber %}
-                    {% if next <= pagination['totalPages'] %}
-                        <li class="pages">
-                            <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': next} ) ) }}">
-                                {{ next }}
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
+{#                {% for next in pagination['currentPage'] + 1..pagination['currentPage'] + paramNumber %}#}
+{#                    {% if next <= pagination['totalPages'] %}#}
+{#                        <li class="pages">#}
+{#                            <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': next} ) ) }}">#}
+{#                                {{ next }}#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
 
-                {% if true == pagination['disableLast'] %}
-                    {% set classLast = 'disabled' %}
-                {% endif %}
+{#                {% if true == pagination['disableLast'] %}#}
+{#                    {% set classLast = 'disabled' %}#}
+{#                {% endif %}#}
 
-                <li class="next {{ classLast }}">
-                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['nextPage']} ) ) }}">
-                        {% if false == is_mobile() %}
-                            {{ 'next_page' | trans }}
-                        {% endif %}
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </li>
-                <li class="last {{ classLast }}">
-                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['totalPages']} ) ) }}">
-                        {% if false == is_mobile() %}
-                            {{ 'last_page' | trans }}
-                        {% endif %}
-                        <i class="fa fa-angle-double-right"></i>
-                    </a>
-                </li>
-            </ul>
+{#                <li class="next {{ classLast }}">#}
+{#                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['nextPage']} ) ) }}">#}
+{#                        {% if false == is_mobile() %}#}
+{#                            {{ 'next_page' | trans }}#}
+{#                        {% endif %}#}
+{#                        <i class="fa fa-angle-right"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="last {{ classLast }}">#}
+{#                    <a href="{{ path(app.request.attributes.get('_route'), params|merge( {'page': pagination['totalPages']} ) ) }}">#}
+{#                        {% if false == is_mobile() %}#}
+{#                            {{ 'last_page' | trans }}#}
+{#                        {% endif %}#}
+{#                        <i class="fa fa-angle-double-right"></i>#}
+{#                    </a>#}
+{#                </li>#}
+{#            </ul>#}
         </div>
     </div>
-{% endif %}
+{#{% endif %}#}

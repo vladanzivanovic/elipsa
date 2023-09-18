@@ -13,6 +13,8 @@ class ShopPageMapper {
             // this.amountPrice       = $('#shop-amount');
             this.filterBtnOpen = '#filter-btn-open';
             this.filterBtnClose = '.filter-close';
+            this.loadMore = '#load-more';
+            this.noMoreItemsText = '#no-more-items-text';
             // this.filterCounter = '.filter-counter';
 
             ShopPageMapper.instance = this;

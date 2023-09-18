@@ -4795,7 +4795,9 @@ footer {
     right: 8px;
 }
 
-.spd-add-cart .spd-add-to {
+.spd-add-cart .spd-add-to,
+.pagination-box #load-more
+{
     background: #a70303 none repeat scroll 0 0;
     border: 0 none;
     color: #e5e5e5;

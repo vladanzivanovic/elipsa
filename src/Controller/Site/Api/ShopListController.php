@@ -34,9 +34,9 @@ final class ShopListController extends AbstractController
 
     /**
      * @Route({
-     *          "rs": "/api/products/{page}",
-     *          "en": "/api/products/{page}",
-     *          "ba": "/api/products/{page}"
+     *          "rs": "/api/products",
+     *          "en": "/api/products",
+     *          "ba": "/api/products"
      *      },
      *     name="site_api.shop_page",
      *     methods={"POST"},
@@ -49,12 +49,11 @@ final class ShopListController extends AbstractController
     public function index(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        Request $request,
-        int $page
+        Request $request
     ): JsonResponse {
         $locale = $request->getLocale();
 
-        $data = $this->collectors->collectForApi($locale, $page, $shopListRequestDto, $shopPageOptionsDto, $this->getUser());
+        $data = $this->collectors->collectForApi($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
         $filters = $this->filterCollector->collect($locale);
 
 

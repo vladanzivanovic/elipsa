@@ -12,7 +12,7 @@ class ShopPageDom {
         return ShopPageDom.instance;
     }
 
-    generateProducts(products) {
+    generateProducts(products, removeItemsBeforeSetNew, noItems) {
         let html = '';
         const modusParam = IS_MOBILE ? 2 : 3;
         const closingRowModus = modusParam - 1;
@@ -61,9 +61,28 @@ class ShopPageDom {
             }
         }
 
-        $('.grid-items > .row').empty()
-            .append(html);
+        if (true === removeItemsBeforeSetNew) {
+            $('.grid-items > .row').empty();
+        }
+
+        $('.grid-items > .row').append(html);
+
+
+        true === noItems ? this.#hideLoadMore() : this.#showLoadMoreButton();
     };
+
+
+    #hideLoadMore()
+    {
+        $(this.mapper.loadMore).addClass('hide');
+        $(this.mapper.noMoreItemsText).removeClass('hide');
+    }
+
+    #showLoadMoreButton()
+    {
+        $(this.mapper.loadMore).removeClass('hide');
+        $(this.mapper.noMoreItemsText).addClass('hide');
+    }
 
     listData(data, type) {
         let html = '';
@@ -161,7 +180,7 @@ class ShopPageDom {
 
         if (product.discount !== null) {
             html += `
-                <div class="sfi-img-banner">
+                <div class="sfi-img-banner product-discount">
                     <span>-${product.discount.percentage} %</span>
                 </div>
             `;

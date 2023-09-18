@@ -26,15 +26,28 @@ class ShopPageEvents {
             this.#pageOptionManipulator.toggle(e, 'limit', e.currentTarget.value);
         });
 
-        $(this.#pageMapper.filterBtnOpen).on('click touchend', e => {
+        $(this.#pageMapper.filterBtnOpen).on('click', e => {
             $('body').addClass('disable-scroll');
             document.getElementById("myNav").style.height = "100%";
         });
 
-        $(this.#pageMapper.filterBtnClose).on('click touchend', e => {
+        $(this.#pageMapper.filterBtnClose).on('click', e => {
             $('body').removeClass('disable-scroll');
             document.getElementById("myNav").style.height = "0%";
         })
+
+        $(this.#pageMapper.loadMore).on('click', e => {
+            this.#pageOptionManipulator.loadItems();
+        });
+
+        $(window).scroll(() => {
+            this.#pageOptionManipulator.loadItemsOnScroll();
+            localStorage.setItem("shopPageScroll", $(window).scrollTop());
+        });
+
+        $(window).on('disableScroll::off', e => {
+            this.#pageOptionManipulator.setDisableScroll(false);
+        });
     }
 }
 

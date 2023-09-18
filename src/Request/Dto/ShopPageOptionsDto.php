@@ -31,7 +31,10 @@ final class ShopPageOptionsDto implements ConstructRequestObjectInterface
             $body = json_decode($request->getContent(), true);
         }
 
-        $this->page = $request->attributes->get('page');
+        if(isset($body['page'])) {
+            $this->page = $body['page'];
+        }
+
         $this->sort = $body['sort'] ?? null;
         $this->limit = isset($body['limit']) ? (int) $body['limit'] : self::DEFAULT_MAX_PRODUCT_NUMBERS;
     }

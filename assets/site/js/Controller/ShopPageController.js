@@ -26,6 +26,11 @@ class ShopPageController {
         this.#pageOptionManipulator.setPageOptions(PAGE_OPTIONS);
         this.#headerDom.updateLanguageDropDown(LINKS);
 
+        // todo need to find a way to set all previously loaded items
+        // if (localStorage.getItem('shopPageScroll') != null) {
+        //     $(window).scrollTop(localStorage.getItem('shopPageScroll'));
+        // }
+
         this.#filterEvents.registerEvents();
         this.#pageEvents.registerEvents();
     }

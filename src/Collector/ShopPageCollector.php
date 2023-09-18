@@ -67,9 +67,12 @@ final class ShopPageCollector
         $this->session = $session;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function collect(
         string $locale,
-        int $currentPage,
         ShopListRequestDto $shopListRequestDto,
         ShopPageOptionsDto $shopPageOptionsDto,
         ?UserInterface $user,
@@ -87,7 +90,7 @@ final class ShopPageCollector
             'prices'    => $prices[0],
         ];
 
-        return $this->collectForApi($locale, $currentPage, $shopListRequestDto, $shopPageOptionsDto, $user, $isTrendyPage);
+        return $this->collectForApi($shopListRequestDto, $shopPageOptionsDto, $user, $isTrendyPage);
     }
 
     /**
@@ -95,8 +98,6 @@ final class ShopPageCollector
      * @throws NoResultException
      */
     public function collectForApi(
-        string $locale,
-        int $currentPage,
         ShopListRequestDto $shopListRequestDto,
         ShopPageOptionsDto $shopPageOptionsDto,
         ?User $user,
@@ -122,7 +123,7 @@ final class ShopPageCollector
 //        $limit = $shopFilterDto->limit ?? 12;
 
         $productDql = $this->productRepository->getDqlForPaginationPage($shopListRequestDto, $shopPageOptionsDto, $user);
-        $data = $this->paginationService->pagination($productDql, $currentPage, $shopPageOptionsDto->limit);
+        $data = $this->paginationService->pagination($productDql, $shopPageOptionsDto->page, $shopPageOptionsDto->limit);
 
 //        if (null !== $searchData && $searchCriteria->has('tags_localized')) {
 //            $searchCriteria->remove('tags_localized');

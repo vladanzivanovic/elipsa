@@ -30,22 +30,22 @@ class ShopFilterEvents {
 
     registerEvents()
     {
-        $(this.#filterMapper.categories).on('click touchend', e => {
+        $(this.#filterMapper.categories).on('click', async e => {
             this.#filterManipulator.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.dataset.search);
         });
-        $(this.#filterMapper.colors).on('click touchend', async e => {
+        $(this.#filterMapper.colors).on('click', async e => {
             this.#filterManipulator.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.dataset.search);
         });
-        $(this.#filterMapper.collections).on('click touchend', async e => {
+        $(this.#filterMapper.collections).on('click', async e => {
             this.#filterManipulator.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.dataset.search);
         });
-        $(this.#filterMapper.seasons).on('click touchend', async e => {
+        $(this.#filterMapper.seasons).on('click', async e => {
             this.#filterManipulator.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.dataset.search);
         });
-        $(this.#filterMapper.attributes).on('click touchend', async e => {
+        $(this.#filterMapper.attributes).on('click', async e => {
             this.#filterManipulator.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.dataset.search);
         });
-        $(this.#filterMapper.sizes).on('click touchend', async e => {
+        $(this.#filterMapper.sizes).on('click', async e => {
             this.#filterManipulator.toggleFilter(e, e.currentTarget.dataset.searchName, e.currentTarget.innerText);
         });
         $(this.#filterMapper.priceRange).on('slidestop', (event, ui) => {
