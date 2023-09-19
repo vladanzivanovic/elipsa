@@ -139,7 +139,9 @@
                                     <p>{{ payload.translations[locale].cleaning }}</p>
                                 </div>
                                 <div id="size_table" class="tab-pane fade">
-                                    <img src="{{ asset('build/site/images/size_table_'~ locale ~'.jpg') }}">
+                                    <a href="{{ asset('build/site/images/size_table_'~ locale ~'.jpg') }}" data-fancybox="size_table" data-width="1300">
+                                        <img src="{{ asset('build/site/images/size_table_'~ locale ~'.jpg') }}">
+                                    </a>
                                 </div>
                             </div>
                         </div>

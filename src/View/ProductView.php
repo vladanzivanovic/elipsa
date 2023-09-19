@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Entity\User;
 use App\Factory\NumberFormatterFactory;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 final class ProductView
@@ -30,16 +31,11 @@ final class ProductView
 
     public function editView(Product $product): array
     {
-        $translations = [];
         $view = $this->view($product, 'rs');
-
-        foreach ($this->locales as $locale) {
-            $translations[$locale] = $this->getTranslationValues($product->getByLocale($locale));
-        }
 
         $view['price'] = $product->getPrice();
         $view['discount'] = $product->getDiscount();
-        $view['translations'] = $translations;
+        $view['translations'] = $this->getTranslationValues($product);
 
         return $view;
     }
@@ -48,7 +44,6 @@ final class ProductView
     {
         $discount = $product->getDiscount();
         $price = $product->getPrice();
-        $trans = $product->getByLocale($locale);
 
         $view = [
             'id' => $product->getId(),
@@ -60,7 +55,7 @@ final class ProductView
             'is_wish' => null !== $user && $product->isUserWish($user),
         ];
 
-        $view['translations'][$locale] = $this->getTranslationValues($trans);
+        $view['translations'] = $this->getTranslationValues($product);
 
         if (0 < $discount) {
             $percentage = (int) round(abs((100 - ($discount/$price) * 100)));
@@ -72,17 +67,44 @@ final class ProductView
             ];
         }
 
+        $view['_links'] = $this->getLinks($view['translations']);
+
         return $view;
     }
 
-    private function getTranslationValues(ProductTranslation $productTranslation): array
+    private function getTranslationValues(Product $product): array
     {
-        return [
-            'title' => $productTranslation->getTitle(),
-            'slug' => $productTranslation->getSlug(),
-            'short_description' => $productTranslation->getShortDescription(),
-            'description' => $productTranslation->getDescription(),
-            'cleaning' => $productTranslation->getCleaning(),
-        ];
+        $translations = [];
+
+        foreach ($this->locales as $locale) {
+            $productTranslation = $product->getByLocale($locale);
+
+            $translations[$locale] = [
+                'title' => $productTranslation->getTitle(),
+                'slug' => $productTranslation->getSlug(),
+                'short_description' => $productTranslation->getShortDescription(),
+                'description' => $productTranslation->getDescription(),
+                'cleaning' => $productTranslation->getCleaning(),
+            ];
+        }
+
+        return $translations;
+    }
+
+    private function getLinks(array $translations): array
+    {
+        $links = [];
+
+        foreach ($translations as $locale => $translation) {
+            $params = ['slug' => $translation['slug'], '_locale' => $locale];
+
+            $links[$locale] = $this->router->generate(
+                'site.product_page',
+                $params,
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
+        return $links;
     }
 }

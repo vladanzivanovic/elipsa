@@ -44,6 +44,10 @@ final class TagEditCollector
                     'value' => Tags::PRODUCT_TYPE_COLLECTION,
                     'title' => $this->translator->trans(Tags::PRODUCT_TYPE_COLLECTION),
                 ],
+                [
+                    'value' => Tags::PRODUCT_TYPE_ATTRIBUTE,
+                    'title' => $this->translator->trans(Tags::PRODUCT_TYPE_ATTRIBUTE),
+                ],
             ]
         ];
 

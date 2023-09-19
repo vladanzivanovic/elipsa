@@ -15,6 +15,7 @@ up: gore
 
 season: Sezona
 collection: Kolekcija
+attribute: Atributi
 
 choose: Izberite
 
@@ -525,3 +526,47 @@ youtube:
   exists: 'Video je već unešen.'
   url_not_valid: 'Youtube url nije validan'
   link_button: Pogledajte video proizvoda
+
+filter:
+  sizes: velicine
+  colors: boje
+  collections: kolekcije
+  seasons: sezone
+  attributes: osobine
+  categories: kategorije
+  price: cena
+  search: pretraga
+  sort: sortiranje
+  limit: broj_proizvoda
+  velicine: sizes
+  boje: colors
+  kolekcije: collections
+  sezone: seasons
+  osobine: attributes
+  kategorije: categories
+  cena: price
+  pretraga: search
+  broj_proizvoda: limit
+  sortiranje: sort
+
+filter_text:
+  sizes: Veličine
+  colors: Boje
+  collections: Kolekcije
+  seasons: Sezone
+  attributes: Osobine
+  categories: Kategorije
+  price: Cena
+  search: Pretraga
+  velicine: Sizes
+  boje: Colors
+  kolekcije: Collections
+  osobine: Attributes
+  sezone: Seasons
+  kategorije: Categories
+  cena: Price
+  pretraga: Search
+
+all_items_are_loaded: Svi proizvodi prema zadatim kriterijumima su učitani.
+load_more_products: Učitaj proizvode
+

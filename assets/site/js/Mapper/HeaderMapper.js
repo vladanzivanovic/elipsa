@@ -16,6 +16,7 @@ class HeaderMapper {
             this.searchArea = '.search-area';
             this.searchInput = '#search-input';
             this.searchForm = '.search-form';
+            this.localeDropDown = '#locale-dropdown';
 
             HeaderMapper.instance = this;
         }

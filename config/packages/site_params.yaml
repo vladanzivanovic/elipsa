@@ -14,11 +14,11 @@ parameters:
       - 36
       - 48
     sort_mapping:
-      1: ['p.id', 'DESC']
-      2: ['p.price', 'ASC']
-      3: ['p.price', 'DESC']
-      4: ['p.discount', 'ASC']
-      5: ['p.createdAt', 'DESC']
+      most_selled: ['p.id', 'DESC']
+      from_lowest_price: ['p.price', 'ASC']
+      from_highest_price: ['p.price', 'DESC']
+      on_sale: ['p.discount', 'ASC']
+      first_new: ['p.createdAt', 'DESC']
   badge:
     1: new
     2: discount

@@ -53,4 +53,34 @@
       }
     }
   }
+
+  @media only screen and (min-width: 240px) and (max-width: 480px) {
+    .sfi-price-rating {
+      .discount-price {
+        flex-direction: column;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 240px) and (max-width: 768px) {
+    .sfi-img {
+      .sfi-img-banner {
+        padding: 2px 5px;
+
+        &.product-discount {
+          left: 0;
+        }
+
+        &::before {
+          border-left: 1.5em solid #a70303;
+          bottom: -13px;
+        }
+
+        &::after {
+          border-right: 1.5em solid #a70303;
+          bottom: -13px;
+        }
+      }
+    }
+  }
 }

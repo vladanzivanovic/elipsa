@@ -20,4 +20,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Sentry\SentryBundle\SentryBundle::class => ['all' => true],
     MobileDetectBundle\MobileDetectBundle::class => ['all' => true],
+    Nelexa\RequestDtoBundle\RequestDtoBundle::class => ['all' => true],
 ];

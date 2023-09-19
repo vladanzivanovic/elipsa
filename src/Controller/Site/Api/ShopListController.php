@@ -4,71 +4,67 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Api;
 
+use App\Collector\ShopFilterCollector;
 use App\Collector\ShopPageCollector;
-use App\Formatter\Site\ShopPageResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Formatter\Site\ShopListResponseFormatter;
+use App\Request\Dto\ShopListRequestDto;
+use App\Request\Dto\ShopPageOptionsDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ShopListController extends AbstractController
 {
-    /**
-     * @var ShopPageCollector
-     */
-    private $collectors;
+    private ShopPageCollector $collectors;
 
-    /**
-     * @var ShopPageResponseFormatter
-     */
-    private $formatter;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private ShopListResponseFormatter $formatter;
 
-    /**
-     * @param ShopPageCollector         $collectors
-     * @param ShopPageResponseFormatter $formatter
-     * @param SessionInterface          $session
-     */
+    private ShopFilterCollector $filterCollector;
+
     public function __construct(
         ShopPageCollector $collectors,
-        ShopPageResponseFormatter $formatter,
-        SessionInterface $session
+        ShopListResponseFormatter $formatter,
+        ShopFilterCollector $filterCollector
     ) {
         $this->collectors = $collectors;
         $this->formatter = $formatter;
-        $this->session = $session;
+        $this->filterCollector = $filterCollector;
     }
 
     /**
      * @Route({
-     *          "rs": "/api/products/{page}/{searchData}",
-     *          "en": "/api/products/{page}/{searchData}",
-     *          "ba": "/api/products/{page}/{searchData}"
+     *          "rs": "/api/products",
+     *          "en": "/api/products",
+     *          "ba": "/api/products"
      *      },
      *     name="site_api.shop_page",
-     *     methods={"GET"},
-     *     defaults={"page": 1, "searchData": null},
-     *     requirements={"searchData": ".*"},
+     *     methods={"POST"},
+     *     defaults={"page": 1},
      *     options={"expose": true}
      * )
      *
-     * @param Request     $request
-     * @param int         $page
-     * @param string|null $searchData
-     *
      * @return JsonResponse
      */
-    public function index(Request $request, int $page, ?string $searchData): JsonResponse
-    {
+    public function index(
+        ShopPageOptionsDto $shopPageOptionsDto,
+        ShopListRequestDto $shopListRequestDto,
+        Request $request
+    ): JsonResponse {
         $locale = $request->getLocale();
 
-        $data = $this->collectors->collectForApi($locale, $page, $this->getUser(), $searchData);
+        $data = $this->collectors->collectForApi($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
+        $filters = $this->filterCollector->collect($locale);
 
-        return $this->json($this->formatter->formatResponse($data, $locale, 'site.shop_page', $this->getUser()));
+
+        return $this->json($this->formatter->formatResponse(
+            $data,
+            $locale,
+            'site.shop_page',
+            $shopListRequestDto,
+            $shopPageOptionsDto,
+            $filters,
+            $this->getUser())
+        );
     }
 }

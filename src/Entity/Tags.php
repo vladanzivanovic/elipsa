@@ -18,6 +18,8 @@ class Tags
 
     public const PRODUCT_TYPE_COLLECTION = 'collection';
 
+    public const PRODUCT_TYPE_ATTRIBUTE = 'attribute';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

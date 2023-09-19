@@ -7,7 +7,7 @@ namespace App\Controller\Site;
 use App\Collector\ShopPageCollector;
 use App\Entity\CareerDescriptionTranslation;
 use App\Formatter\Site\JobPageResponseFormatter;
-use App\Formatter\Site\ShopPageResponseFormatter;
+use App\Formatter\Site\ShopListResponseFormatter;
 use App\Repository\CareerDescriptionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

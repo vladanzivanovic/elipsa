@@ -1,10 +1,10 @@
-import ShopPageMapper from "../Mapper/ShopPageMapper";
 import AppHelperService from "../../../js/Helper/AppHelperService";
+import shopPageMapper from "../Mapper/ShopPageMapper";
 
 class ShopPageDom {
     constructor() {
         if (!ShopPageDom.instance) {
-            this.mapper = new ShopPageMapper();
+            this.mapper = shopPageMapper;
 
             ShopPageDom.instance = this;
         }
@@ -12,15 +12,15 @@ class ShopPageDom {
         return ShopPageDom.instance;
     }
 
-    generateProducts(data) {
+    generateProducts(products, removeItemsBeforeSetNew, noItems) {
         let html = '';
         const modusParam = IS_MOBILE ? 2 : 3;
         const closingRowModus = modusParam - 1;
 
-        for(let i in data.products.data) {
+        for(let i in products) {
 
-            let product = data.products.data[i];
-            const productLink = Routing.generate(`site.product_page.${LOCALE}`, {'slug': product.slug});
+            let product = products[i];
+            const productLink = products[i]._links[LOCALE];
             const wishListClass = product.has_wish == 1 ? 'fa-heart' : 'fa-heart-o';
 
             if ((i % modusParam) === 0) {
@@ -47,7 +47,7 @@ class ShopPageDom {
                                     </ul>
                                 </div>
                                 <div class="sfi-name-cat">
-                                    <a class="sfi-name" href="${productLink}">${product.title}</a>
+                                    <a class="sfi-name" href="${productLink}">${product.translations[LOCALE].title}</a>
                                 </div>
                                 <div class="sfi-price-rating">
                                     ${ this.#setPriceDom(product) }
@@ -61,8 +61,28 @@ class ShopPageDom {
             }
         }
 
-        return html;
+        if (true === removeItemsBeforeSetNew) {
+            $('.grid-items > .row').empty();
+        }
+
+        $('.grid-items > .row').append(html);
+
+
+        true === noItems ? this.#hideLoadMore() : this.#showLoadMoreButton();
     };
+
+
+    #hideLoadMore()
+    {
+        $(this.mapper.loadMore).addClass('hide');
+        $(this.mapper.noMoreItemsText).removeClass('hide');
+    }
+
+    #showLoadMoreButton()
+    {
+        $(this.mapper.loadMore).removeClass('hide');
+        $(this.mapper.noMoreItemsText).addClass('hide');
+    }
 
     listData(data, type) {
         let html = '';
@@ -103,6 +123,17 @@ class ShopPageDom {
         const criteria = `<a class="btn selected-filter-btn letter-capitalize" data-name="${name}" data-value="${value}">${text}<span class="close"></span></a>`;
 
         this.mapper.searchView.append(criteria);
+    }
+
+    setFilterCounter(elm, total)
+    {
+        let totalText = `(${total})`;
+
+        if (0 === total) {
+            totalText = '';
+        }
+
+        elm.parents('.sidebar-box').find('.sidebar-accordion-button').find(this.mapper.filterCounter).text(`${totalText}`);
     }
 
     toggleWish(elm, isAdded)
@@ -149,7 +180,7 @@ class ShopPageDom {
 
         if (product.discount !== null) {
             html += `
-                <div class="sfi-img-banner">
+                <div class="sfi-img-banner product-discount">
                     <span>-${product.discount.percentage} %</span>
                 </div>
             `;

@@ -22,6 +22,9 @@ export default (() => {
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'rs_name', name: 'rs_name', title: 'Naziv - srpski' },
                 { data: 'total_products', name: 'total_products', title: title},
+                { data: 'product_type', name: 'product_type', title: 'Tip', render: function(productType, type, row, meta) {
+                    return Translator.trans(productType, null, 'messages', LOCALE);
+                }},
                 { data: 'slug', orderable: false, render: function (data, type, row, meta) {
                         const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_page`, {slug: data})}">Izmeni</a> ` : '';
                         const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}" data-total-products="${row.total_products}">Ukloni</button>` : '';

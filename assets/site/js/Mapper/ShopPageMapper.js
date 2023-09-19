@@ -1,17 +1,31 @@
 class ShopPageMapper {
     constructor() {
-        this.category           = $('.category-btn');
-        this.color              = $('.color-btn');
-        this.size               = $('.size-btn');
-        this.sortOption         = $('.sort-option');
-        this.limit              = $('.limit-product');
-        this.searchView        = $('.search-criteria');
-        this.selectedCriteria  = $('.selected-filter-btn');
-        this.priceRange        = $('#shop-slider-range');
-        this.amountPrice       = $('#shop-amount');
-        this.filterBtnOpen     = $('#filter-btn-open');
-        this.filterBtnClose    = $('#filter-btn-close');
+        if(!ShopPageMapper.instance) {
+            // this.category           = $('.category-btn');
+            // this.color              = $('.color-btn');
+            // this.collection = $('a[data-search-name="collection"]');
+            // this.size               = $('.size-btn');
+            this.sortOption = '.sort-option';
+            this.limit = '.limit-product';
+            this.searchView = $('.search-criteria');
+            this.selectedCriteria = $('.selected-filter-btn');
+            // this.priceRange        = $('#shop-slider-range');
+            // this.amountPrice       = $('#shop-amount');
+            this.filterBtnOpen = '#filter-btn-open';
+            this.filterBtnClose = '.filter-close';
+            this.loadMore = '#load-more';
+            this.noMoreItemsText = '#no-more-items-text';
+            // this.filterCounter = '.filter-counter';
+
+            ShopPageMapper.instance = this;
+        }
+
+        return ShopPageMapper.instance;
     }
 }
 
-export default ShopPageMapper;
+const shopPageMapper = new ShopPageMapper();
+
+Object.freeze(shopPageMapper);
+
+export default shopPageMapper;

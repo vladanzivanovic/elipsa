@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
+use App\Collector\ShopFilterCollector;
 use App\Collector\ShopPageCollector;
-use App\Formatter\Site\ShopPageResponseFormatter;
+use App\Formatter\Site\ShopListResponseFormatter;
+use App\Request\Dto\ShopListRequestDto;
+use App\Request\Dto\ShopPageOptionsDto;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,41 +18,52 @@ final class ShopPageController extends AbstractController
 {
     private ShopPageCollector $collectors;
 
-    private ShopPageResponseFormatter $formatter;
+    private ShopListResponseFormatter $formatter;
+
+    private ShopFilterCollector $filterCollector;
 
     public function __construct(
         ShopPageCollector $collectors,
-        ShopPageResponseFormatter $formatter
+        ShopListResponseFormatter $formatter,
+        ShopFilterCollector $filterCollector
     ) {
         $this->collectors = $collectors;
         $this->formatter = $formatter;
+        $this->filterCollector = $filterCollector;
     }
 
     /**
      * @Route({
-     *          "rs": "/proizvodi/{page}/{searchData}",
-     *          "en": "/products/{page}/{searchData}",
-     *          "ba": "/proizvodi/{page}/{searchData}"
+     *          "rs": "/proizvodi",
+     *          "en": "/products",
+     *          "ba": "/proizvodi"
      *     },
      *     name="site.shop_page",
      *     methods={"GET"},
-     *     defaults={"page": 1, "searchData": null},
-     *     requirements={"searchData": ".*"},
+     *     defaults={"page": 1},
      *     options={"expose": true}
      * )
      * @Template("Site/Pages/shop.html.twig")
      *
-     * @param Request     $request
-     * @param int         $page
-     * @param string|null $searchData
-     *
      * @return array
      */
-    public function index(Request $request, int $page, ?string $searchData): array
-    {
+    public function index(
+        ShopPageOptionsDto $shopPageOptionsDto,
+        ShopListRequestDto $shopListRequestDto,
+        Request $request
+    ): array {
         $locale = $request->getSession()->get('_locale');
-        $data = $this->collectors->collect($locale, $page, $this->getUser(), $searchData);
+        $data = $this->collectors->collect($locale, $shopListRequestDto, $shopPageOptionsDto, $this->getUser());
+        $filters = $this->filterCollector->collect($locale);
 
-        return $this->formatter->formatResponse($data, $locale, $request->attributes->get('_route'), $this->getUser());
+        return $this->formatter->formatResponse(
+            $data,
+            $locale,
+            $request->attributes->get('_route'),
+            $shopListRequestDto,
+            $shopPageOptionsDto,
+            $filters,
+            $this->getUser()
+        );
     }
 }

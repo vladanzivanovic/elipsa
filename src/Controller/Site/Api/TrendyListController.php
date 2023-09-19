@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Site\Api;
 
 use App\Collector\ShopPageCollector;
-use App\Formatter\Site\ShopPageResponseFormatter;
+use App\Formatter\Site\ShopListResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,11 +16,11 @@ final class TrendyListController extends AbstractController
 {
     private ShopPageCollector $collectors;
 
-    private ShopPageResponseFormatter $formatter;
+    private ShopListResponseFormatter $formatter;
 
     public function __construct(
         ShopPageCollector $collectors,
-        ShopPageResponseFormatter $formatter
+        ShopListResponseFormatter $formatter
     ) {
         $this->collectors = $collectors;
         $this->formatter = $formatter;

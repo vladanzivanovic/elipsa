@@ -1,9 +1,9 @@
-import ShopPageMapper from "../Mapper/ShopPageMapper";
+import shopPageMapper from "../Mapper/ShopPageMapper";
 
 class PaginationDom {
     constructor() {
         if (!PaginationDom.instance) {
-            this.mapper = new ShopPageMapper();
+            this.mapper = shopPageMapper;
 
             PaginationDom.instance = this;
         }
@@ -15,16 +15,27 @@ class PaginationDom {
         let html = ``;
 
         $('.pagination .pages').remove();
+        $('.pagination .first').show();
+        $('.pagination .prev').show();
+        $('.pagination .next').show();
+        $('.pagination .last').show();
 
-        const prevElm = $('.pagination .prev');
+        if (0 === data.totalPages) {
+            $('.pagination .first').hide();
+            $('.pagination .prev').hide();
+            $('.pagination .next').hide();
+            $('.pagination .last').hide();
+
+            return;
+        }
 
         $('.pagination .first').addClass(data.disableFirst ? 'disabled' : '');
-        prevElm.addClass(data.disableFirst ? 'disabled' : '');
+        $('.pagination .prev').addClass(data.disableFirst ? 'disabled' : '');
         $('.pagination .next').addClass(data.disableLast ? 'disabled' : '');
         $('.pagination .last').addClass(data.disableLast ? 'disabled' : '');
 
-        let lastNextPage = data.currentPage + 3;
-        let nextPage = data.nextPage;
+        let lastNextPage = (data.currentPage + 3) > data.totalPages ? data.currentPage + 3 : data.totalPages;
+        // let nextPage = data.nextPage === data.totalPages ? ;
 
         while (nextPage <= lastNextPage) {
             let url = location.href.replace(/\/1/g, '/'+nextPage);
