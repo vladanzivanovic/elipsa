@@ -14,23 +14,28 @@ class ProductHasSizes
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductSize", inversedBy="productHasSizes")
      */
-    private $size;
+    private ProductSize $size;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productHasSizes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private Product $product;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isAvailable;
+    private bool $isAvailable;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $quantity = 0;
 
     public function getId(): ?int
     {
@@ -71,5 +76,15 @@ class ProductHasSizes
         $this->isAvailable = $isAvailable;
 
         return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
     }
 }
