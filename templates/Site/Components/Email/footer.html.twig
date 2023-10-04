@@ -1,0 +1,23 @@
+<p>
+    <span style="font-size: 12px">{{ settings.site_name.value }}</span>
+    <br class="empty-node">
+    <a href="{{ url('site.home_page') }}" target="_blank"><span style="font-size: 12px">{{ url('site.home_page') }}</span></a>
+</p>
+<p class="last-child">
+    <br>
+    &nbsp;<strong><span
+                style="font-size: 12px">{{ 'email.order.seller.account' | trans }}: </span></strong>
+    <span
+            style="font-size: 12px">
+        {{ settings.account_number.value }}
+    </span><br>
+    &nbsp;<strong><span
+                style="font-size: 12px">{{ 'email.order.seller.telephone' | trans }}:</span></strong><span
+            style="font-size: 12px"> {{ settings.telephone.value }}</span><br>
+    &nbsp;<strong><span
+                style="font-size: 12px">{{ 'email.order.seller.mobile' | trans }}:</span></strong><span
+            style="font-size: 12px"> {{ settings.mobile_phone.value }}</span><br>
+    &nbsp;<strong><span
+                style="font-size: 12px">E-mail:</span></strong><span
+            style="font-size: 12px"> {{ settings.main_email.value }}</span>
+</p>

@@ -1,6 +1,6 @@
 {% macro popup_banner(type, cookieName, locale, is_news_letter = false, expires = 30) %}
-    {% set bannerFilter = is_mobile() ? 'news_letter_banner_mobile' : 'news_letter_banner' %}
-{% set bannerArray = banner(type, bannerFilter, locale, is_mobile()) %}
+    {% set bannerFilter = is_mobile() ? cookieName ~ '_banner_mobile' : cookieName ~ '_banner' %}
+    {% set bannerArray = banner(type, bannerFilter, locale, is_mobile()) %}
     {% if bannerArray is not null %}
         {% set bannerNewsLink = "background: rgba(0, 0, 0, 0) url("~ bannerArray.image_link ~") no-repeat scroll left top / cover" %}
 
@@ -23,7 +23,7 @@
         {% else %}
             <div id="{{ cookieName }}" class="wd1-nlpopup" data-expires="{{ expires }}" data-delay="10" data-cookie-name="{{ cookieName }}" style="{{ bannerNewsLink }}">
                 <a href="#closepopup" class="wd1-nlpopup-close banner-close">x</a>
-                <a href="{{ bannerArray.link }}" class="wd1-nlpopup-link"></a>
+                <a href="{{ absolute_url(bannerArray.link) }}" class="wd1-nlpopup-link"></a>
             </div>
         {% endif %}
 

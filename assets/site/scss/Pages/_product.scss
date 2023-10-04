@@ -59,6 +59,27 @@
     span {
       display: inline-block;
     }
+    ul {
+      li {
+        a {
+          &.unavailable {
+            opacity: 0.5;
+            position: relative;
+
+            &:after {
+              content: '';
+              position: absolute;
+              border-bottom: 1px solid $site-color;
+              display: block;
+              width: 40px;
+              top: 44%;
+              left: -17%;
+              rotate: 135deg;
+            }
+          }
+        }
+      }
+    }
   }
 
   .spd-meta {

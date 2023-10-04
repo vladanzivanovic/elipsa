@@ -10,6 +10,7 @@
     {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena proizvoda' } %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+    {% import 'Admin/Macros/Inputs/input.html.twig' as inputs %}
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
@@ -78,11 +79,6 @@
                                     {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? payload['selectedTags'] : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.select('Veličine', 'sizes', 'sizes[]', IS_EDIT ? payload['selectedSizes'] : '', options.sizes, '', 'w-100', true) }}
-                                </div>
-                            </div><!-- Col -->
                         </div><!-- Row -->
                         <div class="row">
                             <div class="col-sm-6">
@@ -116,6 +112,36 @@
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title row">
+                            <div class="col-md-6">
+                                Veličine
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button class="btn btn-primary size-add-btn" type="button">Dodaj veličinu</button>
+                            </div>
+                        </h6>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover size-table">
+                                <thead>
+                                <tr>
+                                    <th>Veličina</th>
+                                    <th>Količina</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,10 +204,12 @@
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const COLORS = JSON.parse('{{ options.colors|json_encode|raw }}');
+        const SIZES = JSON.parse('{{ options.sizes | json_encode | raw }}');
 
         {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ payload['selectedImages']|json_encode()|raw }}');
             const YOUTUBES = JSON.parse('{{ payload['youtubes'] | json_encode | e('js') }}');
+            const PRODUCT_SIZES = JSON.parse('{{ payload.sizes | json_encode | raw }}');
         {% endif %}
 
     </script>

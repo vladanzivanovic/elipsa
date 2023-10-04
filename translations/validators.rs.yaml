@@ -13,6 +13,7 @@ product.quantity: 'Količina je obavezna.'
 product.quantity_positive_number: 'Količina mora biti veća od 0.'
 product.color: 'Boja je obavezna.'
 product.size: 'Veličina je obavezna.'
+product.size_unavailable: Veličina nije dostupna.
 product.is_sold: Proizvod je rasprodat.
 
 promo_coupon.not_active_yet: Promotivni kod još uvek nije aktivan.
@@ -24,3 +25,6 @@ order.already_completed: Porudžbina je već završena.
 order.promo_coupon_not_exists: Promotivni kod nije dodat u nardžbinu.
 
 generic_error: 'Došlo je do greške prilikom slanja zahteva.'
+
+notification.already_set_notification: Vi ste se već prijavili.
+notification.size_is_available: Veličina je dostupna. Molimo vas osvežite stranicu.

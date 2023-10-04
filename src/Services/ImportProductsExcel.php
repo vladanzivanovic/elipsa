@@ -253,7 +253,6 @@ final class ImportProductsExcel
         foreach ($sizeCollection as $size) {
             $hasSize = new ProductHasSizes();
             $hasSize->setSize($size);
-            $hasSize->setIsAvailable(true);
 
             $product->addProductHasSize($hasSize);
         }

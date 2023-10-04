@@ -13,6 +13,7 @@ product.quantity: 'Quantity is mandatory.'
 product.quantity_positive_number: 'Quantity must be greater then zero.'
 product.color: 'Color is mandatory.'
 product.size: 'Size is mandatory.'
+product.size_unavailable: Size is not available.
 product.is_sold: Product is sold out.
 
 promo_coupon.not_valid_yet: Promotion code is not active yet.
@@ -24,3 +25,7 @@ order.already_completed: Order is already completed.
 order.promo_coupon_not_exists: Promotion code is not set on the order.
 
 generic_error: 'An error has occurred.'
+
+notification.already_set_notification: You are already subscribed.
+notification.size_is_available: Size is available. Please reload the page.
+

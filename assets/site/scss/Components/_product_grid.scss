@@ -2,12 +2,13 @@
   .sfi-img {
     .product-sold {
       position: absolute;
-      top: 0;
-      right: 0;
-      background: $dark-gray-color;
-      padding: 0 5px;
-      font-size: 10px;
+      top: 44%;
+      right: -53%;
+      background: $site-color;
+      font-size: 20px;
       color: white;
+      rotate: 303deg;
+      padding: 0px 240px;
     }
 
     .sfi-img-banner {
@@ -26,6 +27,13 @@
 
       span {
         font-size: 12px;
+      }
+    }
+
+    .sizes {
+      .unavailable {
+        text-decoration: line-through;
+        opacity: 0.5;
       }
     }
   }

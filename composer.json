@@ -23,6 +23,7 @@
         "nelmio/security-bundle": "*",
         "presta/sitemap-bundle": "*",
         "ramsey/uuid-doctrine": "*",
+        "scienta/doctrine-json-functions": "*",
         "sensio/framework-extra-bundle": "*",
         "sentry/sentry-symfony": "^4.10",
         "shuchkin/simplexlsx": "*",

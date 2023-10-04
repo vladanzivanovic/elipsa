@@ -56,17 +56,26 @@
                             <span class="letter-capitalize">{{ 'select.size' | trans }}:</span>
                             <ul>
                                 {% for size in payload.sizes %}
-                                    <li><a href="#" class="size-btn">{{ size.size }}</a></li>
+                                    <li><a href="#" class="size-btn {{ size.quantity == 0 ? 'unavailable' : '' }}" data-quantity="{{ size.quantity }}">{{ size.size }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="spd-add-cart">
+                        <div class="spd-add-cart cart-btn-wrapper">
                             <p class="quantity cart-plus-minus">
                                 <input type="text" id="product-quantity" value="1" />
                             </p>
-                            <button type="button" class="spd-add-to hvr-bs letter-capitalize {{ true == payload.is_sold ? 'disabled' : '' }}" {{ true == payload.is_sold ? 'disabled="disabled"' : '' }}>
-                                {{ 'add_to_cart' | trans }}
+                            <button type="button" class="spd-add-to hvr-bs letter-capitalize add-to-cart {{ true == payload.is_sold ? 'disabled' : '' }}" {{ true == payload.is_sold ? 'disabled="disabled"' : '' }}>
+                                {{ 'product.add_to_cart' | trans }}
                             </button>
+                        </div>
+                        <div class="notify-me-wrapper hide">
+                            <p>{{ 'product.notify_me_text' | trans }}</p>
+                            <div>
+                                <input type="text" id="notify-email" value="" name="notify-email" />
+                                <button type="button" class="spd-add-to hvr-bs letter-capitalize notify-btn">
+                                    {{ 'product.notify_me' | trans }}
+                                </button>
+                            </div>
                         </div>
                         <div class="spd-meta">
                             <div class="spd-meta-type">
@@ -179,7 +188,9 @@
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
+        const PRODUCT_ID = '{{ payload.id }}';
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const MEDIA = JSON.parse('{{ payload.media | json_encode() | raw }}');
+        const SIZES = JSON.parse('{{ payload.sizes | json_encode | raw }}');
     </script>
 {% endblock %}

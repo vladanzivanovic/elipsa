@@ -205,27 +205,7 @@
     <!-- home3-newsletter-area-start -->
     {% set loyaltyBanner = banner(2, is_mobile() ? 'loyalty_banner_mobile' : 'loyalty_banner', locale, is_mobile()) %}
     {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ loyaltyBanner.image_link ~") no-repeat scroll left top / cover" %}
-    <div class="home3-newsletter-area" style="{{ bannerLink }}">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="h3-newsletter-left">
-                        <h3 class="h3-nl-title">Elipsa Elite Club</h3>
-                        <p class="h3-nl-text">Posebna si uz našu karticu</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="h3-newsletter-form">
-                        <form action="#">
-                            <div class="h3-newsletter-input">
-                                <a href="{{ path('site.loyalty', {'_locale': locale}) }}" class="hvr-bs">{{ 'login.btn' | trans }}</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <a href="{{ path('site.loyalty', {'_locale': locale}) }}" class="home3-newsletter-area" style="{{ bannerLink }}"></a>
     <!-- home3-newsletter-area-end -->
 {% endblock %}
 {% block pageStyleSheets %}

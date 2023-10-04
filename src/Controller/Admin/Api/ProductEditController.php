@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Handler\ProductEditHandler;
 use App\Helper\ConstantsHelper;
+use App\Mailer\SizeAvailableMailer;
 use App\Parser\ProductEditRequestParser;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,12 +23,16 @@ final class ProductEditController extends AbstractController
 
     private ProductEditHandler $editHandler;
 
+    private SizeAvailableMailer $sizeAvailableMailer;
+
     public function __construct(
         ProductEditRequestParser $requestParser,
-        ProductEditHandler $editHandler
+        ProductEditHandler $editHandler,
+        SizeAvailableMailer $sizeAvailableMailer
     ) {
         $this->requestParser = $requestParser;
         $this->editHandler = $editHandler;
+        $this->sizeAvailableMailer = $sizeAvailableMailer;
     }
 
     /**

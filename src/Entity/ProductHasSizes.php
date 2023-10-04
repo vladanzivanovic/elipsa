@@ -28,11 +28,6 @@ class ProductHasSizes
     private Product $product;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $isAvailable;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private int $quantity = 0;
@@ -62,18 +57,6 @@ class ProductHasSizes
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
-
-        return $this;
-    }
-
-    public function getIsAvailable(): ?bool
-    {
-        return $this->isAvailable;
-    }
-
-    public function setIsAvailable(bool $isAvailable): self
-    {
-        $this->isAvailable = $isAvailable;
 
         return $this;
     }

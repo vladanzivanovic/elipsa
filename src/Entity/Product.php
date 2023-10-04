@@ -352,19 +352,21 @@ class Product
     }
 
     /**
-     * @return array<int, ProductSize>
+     * @return array<int, ProductHasSizes>
      */
     public function getAvailableSizes(): array
     {
         $sizes = [];
 
         foreach ($this->productHasSizes as $productHasSize) {
-            if (false === $productHasSize->getIsAvailable()) {
+            if (0 === $productHasSize->getQuantity()) {
                 continue;
             }
 
-            $sizes[] = $productHasSize->getSize();
+            $sizes[$productHasSize->getSize()->getSize()] = $productHasSize;
         }
+
+        ksort($sizes);
 
         return $sizes;
     }
@@ -372,7 +374,7 @@ class Product
     public function isSizeAvailable(string $size): bool
     {
         foreach ($this->getAvailableSizes() as $availableSize) {
-            if ($availableSize->getSize() === $size) {
+            if ($availableSize->getSize()->getSize() === $size) {
                 return true;
             }
         }

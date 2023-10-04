@@ -20,15 +20,15 @@
                     <ul class="sfi-data-color">
                         {% for hex, color in product.colors %}
                             <li>
-                                <a style="background-color: {{ hex }}" href="#"></a>
+                                <a style="background-color: {{ hex }}" href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}"></a>
                             </li>
                         {% endfor %}
                     </ul>
                     <p class="letter-capitalize">{{ 'available_sizes' | trans }}:</p>
-                    <ul>
+                    <ul class="sizes">
                         {% for productSize in product.sizes %}
                             <li>
-                                <a href="#">{{ productSize.size }}</a>
+                                <a href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}" class="{{ productSize.quantity <= 0 ? 'unavailable' : '' }}">{{ productSize.size }}</a>
                             </li>
                         {% endfor %}
                     </ul>

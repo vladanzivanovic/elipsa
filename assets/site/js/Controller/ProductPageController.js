@@ -1,44 +1,19 @@
-import ProductPageHandler from "../Handler/ProductPageHandler";
-import Tipped from "@staaky/tipped";
+import productPageEvents from "../Events/ProductPageEvents";
+import productPageService from "../Service/ProductPageService";
+
 require('@fancyapps/fancybox');
 
-import ProductPageMapper from "../Mapper/ProductPageMapper";
-import ProductPageService from "../Service/ProductPageService";
-import Fotorama from "../Service/Fotorama";
-
 class ProductPageController {
-    #mapper
+    #productPageEvents;
+    #productPageService;
 
     constructor() {
-        this.#mapper = ProductPageMapper;
-        this.service = new ProductPageService();
-        this.handler = new ProductPageHandler();
+        this.#productPageService = productPageService;
+        this.#productPageEvents = productPageEvents;
 
-        this.service.showImagesByColor($('.color-btn.active'));
+        this.#productPageService.init();
 
-        Tipped.create('.cleaning-icons');
-
-        this.registerEvents();
-    }
-
-    registerEvents() {
-        this.#mapper.color.on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.service.showImagesByColor($(e.currentTarget));
-        });
-
-        this.#mapper.size.on('click touchend', e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            this.service.toggleActiveSize(e.currentTarget);
-        });
-
-        this.#mapper.addBtn.on('click touchend', e => {
-            this.handler.save();
-        });
+        this.#productPageEvents.registerEvents();
     }
 }
 

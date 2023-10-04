@@ -16,75 +16,38 @@ class EmailModel
     public const SCRIPT_COLLABORATOR = 'COLLABORATOR';
     public const SCRIPT_CAREER = 'CAREER';
 
-    /**
-     * @var string
-     */
-    private $to;
+    public const SCRIPT_PRODUCT_SIZE_AVAILABLE = 'PRODUCT_SIZE_AVAILABLE';
 
-    /**
-     * @var string|null
-     */
-    private $toName = null;
+    private string $to;
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $toName = '';
 
-    /**
-     * @var string
-     */
-    private $replyTo;
+    private string $template;
 
-    /**
-     * @var string|null
-     */
-    private $replyToName = null;
+    private string $replyTo;
 
-    /**
-     * @var string|null
-     */
-    private $subject = null;
+    private string $replyToName = '';
 
-    /**
-     * @var array
-     */
-    private $templateData;
+    private ?string $subject = null;
+
+    private array $templateData;
 
     /**
      * @var Swift_FileStream[]|null
      */
-    private $attachments = null;
+    private ?array $attachments = null;
 
-    /**
-     * @var string
-     */
-    private $status;
+    private string $status;
 
-    /**
-     * @var string
-     */
-    private $code;
+    private string $code;
 
-    /**
-     * @var string
-     */
-    private $script;
+    private string $script;
 
-    /**
-     * @var string|null
-     */
-    private $errorMsg = null;
+    private ?string $errorMsg = null;
 
-    /**
-     * @var string
-     */
-    private $from;
+    private string $from;
 
-    /**
-     * @var string
-     */
-    private $fromName;
+    private string $fromName;
 
     /**
      * @param string $to
@@ -111,9 +74,9 @@ class EmailModel
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getToName(): ?string
+    public function getToName(): string
     {
         return $this->toName;
     }
@@ -159,9 +122,9 @@ class EmailModel
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReplyToName(): ?string
+    public function getReplyToName(): string
     {
         return $this->replyToName;
     }

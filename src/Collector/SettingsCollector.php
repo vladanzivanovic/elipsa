@@ -41,7 +41,6 @@ final class SettingsCollector
         switch ($type) {
             case 'email':
                 $fields = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'ZIP_CODE', 'CITY'];
-
                 break;
         }
 

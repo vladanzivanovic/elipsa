@@ -11,6 +11,7 @@ use App\View\CategoryView;
 use App\View\CleaningView;
 use App\View\ColorView;
 use App\View\ImageView;
+use App\View\ProductSizeView;
 use App\View\ProductView;
 use App\View\SizeView;
 use App\View\TagView;
@@ -29,8 +30,6 @@ final class ProductFormatter
 
     private ColorView $colorView;
 
-    private SizeView $sizeView;
-
     private CategoryView $categoryView;
 
     private CleaningView $cleaningView;
@@ -41,28 +40,30 @@ final class ProductFormatter
 
     private YoutubeView $youtubeView;
 
+    private ProductSizeView $productSizeView;
+
     public function __construct(
         RouterInterface $router,
         ProductView $productView,
         ImageView $imageView,
         ColorView $colorView,
-        SizeView $sizeView,
         CategoryView $categoryView,
         CleaningView $cleaningView,
         TagsRepository $tagsRepository,
         TagView $tagView,
-        YoutubeView $youtubeView
+        YoutubeView $youtubeView,
+        ProductSizeView $productSizeView
     ) {
         $this->router = $router;
         $this->productView = $productView;
         $this->imageView = $imageView;
         $this->colorView = $colorView;
-        $this->sizeView = $sizeView;
         $this->categoryView = $categoryView;
         $this->cleaningView = $cleaningView;
         $this->tagsRepository = $tagsRepository;
         $this->tagView = $tagView;
         $this->youtubeView = $youtubeView;
+        $this->productSizeView = $productSizeView;
     }
 
     public function formatResponse(array $data, string $locale, ?User $user = null): array
@@ -133,8 +134,8 @@ final class ProductFormatter
     {
         $sizes = [];
 
-        foreach ($product->getAvailableSizes() as $availableSize) {
-            $sizes[] = $this->sizeView->productPageView($availableSize);
+        foreach ($product->getProductHasSizes() as $productHasSize) {
+            $sizes[] = $this->productSizeView->view($productHasSize);
         }
 
         return $sizes;

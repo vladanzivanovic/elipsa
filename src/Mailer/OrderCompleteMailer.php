@@ -33,6 +33,7 @@ final class OrderCompleteMailer
         $this->userRegistrationFormatter = $userRegistrationFormatter;
         $this->userRegistrationMailer = $userRegistrationMailer;
     }
+
     public function sendEmail(
         array $viewData,
         ShopOrder $order,

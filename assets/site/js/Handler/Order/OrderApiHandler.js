@@ -53,6 +53,7 @@ class OrderApiHandler {
 
         try {
             this.#checker.checkManageProduct(data);
+            this.#checker.isSizeAvailable(size);
 
             result = await $.ajax({
                 type: 'POST',

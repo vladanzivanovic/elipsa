@@ -15,18 +15,22 @@ final class ProductView
 {
     private PriceView $priceView;
 
+    private ProductSizeView $productSizeView;
+
     private RouterInterface $router;
 
     private array $locales;
 
     public function __construct(
         PriceView $priceView,
+        ProductSizeView $productSizeView,
         RouterInterface $router,
         string $locales
     ) {
         $this->locales = explode('|', $locales);
         $this->priceView = $priceView;
         $this->router = $router;
+        $this->productSizeView = $productSizeView;
     }
 
     public function editView(Product $product): array
@@ -53,6 +57,7 @@ final class ProductView
             'is_sold' => $product->isSold(),
             'discount' => null,
             'is_wish' => null !== $user && $product->isUserWish($user),
+            'sizes' => $this->getSizes($product),
         ];
 
         $view['translations'] = $this->getTranslationValues($product);
@@ -106,5 +111,16 @@ final class ProductView
         }
 
         return $links;
+    }
+
+    private function getSizes(Product $product): array
+    {
+        $sizes = [];
+
+        foreach ($product->getProductHasSizes() as $productHasSize) {
+            $sizes[] = $this->productSizeView->view($productHasSize);
+        }
+
+        return $sizes;
     }
 }

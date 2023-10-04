@@ -104,7 +104,9 @@ saving: Saving
 select.color: select color
 select.size: select size
 
-add_to_cart: add to cart
+product.add_to_cart: add to cart
+product.notify_me: Notify me
+product.notify_me_text: Size is not available. Send us your email address and we will notify you once size is available again.
 
 tags: tags
 
@@ -269,6 +271,21 @@ email.order.products_total_price: Subtotal
 email.order.payment_info: Payment information
 email.order.payment_details: Payment details
 email.order.delivery_info: Delivery information
+email.order.note_title: Order additional text
+
+email.notification.size.subject: Product is available again
+email.notification.size.title: Product %product_name% is available again
+
+email.notification.size.text: '<div>
+                                  <div contenteditable="true"
+                                       translate="no" tabindex="-1"
+                                       class="ProseMirror"><h3>
+                                          Dear,</h3>
+                                      <p>We are informing you that size %size% of product %product_name% is available again.</p>
+                                      <p>If you still want to order,</p>
+                                      <p>you can do that by clicking on the link <a href="%link%"%link%</a>, and you will be redirected to product page.</p></div>
+                              </div>'
+
 
 payment_type.on_delivering: On delivering
 payment_type.credit_card: Credi card
@@ -574,3 +591,5 @@ filter_text:
 
 all_items_are_loaded: All products are loaded by given filters
 load_more_products: Load more products
+
+notification.success: Notification is successfully sent. As soon when size is available again we will inform you via email.
