@@ -154,6 +154,18 @@ liip_imagine :
             filters :
                 thumbnail: { size: [600, 800], mode: outbound }
                 background: { size: [600, 800], position: center, color: '#ffffff' }
+        pop_up_banner :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail: { size: [1500, 735], mode: outbound }
+                background: { size: [1500, 735], position: center, color: '#ffffff' }
+        pop_up_banner_mobile :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail: { size: [600, 800], mode: outbound }
+                background: { size: [600, 800], position: center, color: '#ffffff' }
         menu_banner :
             cache: ads_photos
             quality : 100

@@ -108,9 +108,9 @@
 
     {% import 'Site/Macros/newsletterPopup.html.twig' as popup %}
 
-    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_NEWS_LETTER'), 'newsLetter', locale, true, 30) }}
+    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_NEWS_LETTER'), 'news_letter', locale, true, 30) }}
 
-    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'popUpBanner', locale, false, 1) }}
+    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, false, 1) }}
     <!-- footer-end -->
     {% block javascripts %}
         <script nonce="{{ csp_nonce('script') }}" type="text/javascript">
@@ -120,6 +120,8 @@
             const GOOGLE_RECAPTCHA_KEY_SITE  = '{{ 'GOOGLE_RECAPTCHA_KEY_SITE' | getenv }}';
             const APP_ENV = '{{ 'APP_ENV' | getenv }}';
             const SENTRY_DSN = '{{ 'SENTRY_JAVASCRIPT_DSN' | getenv }}';
+            const NOTIFICATION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Notification') | json_encode() | raw }}');
+
             window.USER = null;
 
             {% if user is not null %}
