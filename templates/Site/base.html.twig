@@ -112,7 +112,7 @@
 
     {{ popup.news_letter('news_letter', locale, langOptions) }}
 
-{#    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, false, 1) }}#}
+    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, 1) }}
     <!-- footer-end -->
     {% block javascripts %}
         <script nonce="{{ csp_nonce('script') }}" type="text/javascript">
