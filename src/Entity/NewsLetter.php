@@ -14,37 +14,47 @@ class NewsLetter
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lastError;
+    private ?string $lastError = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="newsLetters")
      */
-    private $user;
+    private ?User $user = null;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $links = [];
+    private array $links = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $chimpId;
+    private ?string $chimpId = null;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $gender;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    private $locale;
 
     public function getId(): ?int
     {
@@ -119,6 +129,30 @@ class NewsLetter
     public function setStatus(?string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }

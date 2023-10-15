@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Handler\Site;
 
 use App\Entity\NewsLetter;
-use App\Entity\User;
 use App\Event\NewsLetterEvent;
 use App\Helper\ValidatorHelper;
 use App\Repository\LoyaltyRepository;
@@ -15,31 +14,14 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class NewsLetterHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
-    /**
-     * @var NewsLetterRepository
-     */
-    private $newsLetterRepository;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-    /**
-     * @var LoyaltyRepository
-     */
-    private $loyaltyRepository;
+    private ValidatorHelper $validator;
 
-    /**
-     * NewsLetterHandler constructor.
-     *
-     * @param ValidatorHelper          $validator
-     * @param NewsLetterRepository     $newsLetterRepository
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoyaltyRepository        $loyaltyRepository
-     */
+    private NewsLetterRepository $newsLetterRepository;
+
+    private EventDispatcherInterface $dispatcher;
+
+    private LoyaltyRepository $loyaltyRepository;
+
     public function __construct(
         ValidatorHelper $validator,
         NewsLetterRepository $newsLetterRepository,

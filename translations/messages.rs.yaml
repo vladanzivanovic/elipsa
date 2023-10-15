@@ -17,7 +17,9 @@ season: Sezona
 collection: Kolekcija
 attribute: Atributi
 
-choose: Izberite
+choose: Izaberite
+choose_gender: Izaberite pol
+choose_language: Izaberite jezik
 
 data:
   success_send: 'Podaci su uspešno poslati.'
@@ -593,3 +595,5 @@ load_more_products: Učitaj proizvode
 
 notification.success: Vaša prijava je uspešno poslata. Obavesti ćemo vas putem email-a kada veličina bude ponovo dostupna.
 
+male: Muški
+female: Ženski

@@ -112,11 +112,13 @@ parameters:
       code: rs
       currencyCode: RSD
       locale: sr_RS
+      translation: serbian
     en:
       name: Engleski
       code: en
       currencyCode: RSD
       locale: en_AT
+      translation: english
 #    ba:
 #      name: Bosanski
 #      code: ba

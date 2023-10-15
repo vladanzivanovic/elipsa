@@ -1,31 +1,43 @@
 import NotificationService from "../../../js/NotificationService";
 import loader from "../Dom/LoaderDom";
 import coreMapper from "../Mapper/CoreMapper";
+import FormHelperService from "../../../js/Helper/FormHelperService";
+import newsLetterMapper from "../Mapper/NewsLetterMapper";
+import toastrService from "../../../js/Services/ToastrService";
 
 class NewsLetterHandler {
+    #mapper;
+    #notification;
+
     constructor() {
-        this.mapper = coreMapper;
-        this.notification = NotificationService();
+        this.#mapper = newsLetterMapper;
+        this.#notification = toastrService;
     }
 
-    addUser(form, isModal) {
-        let urlRoute = Routing.generate(`site_api.news_letter_add_user.${LOCALE}`);
+    addUser(form) {
+        let urlRoute = Routing.generate(`site_api.news_letter_add_user`);
         let type = 'POST';
-        const data = $(form).serializeArray();
+        const data = FormHelperService.formToJson($(form));
+
+        if (! $(form).valid()) {
+            return false;
+        }
 
         loader.show();
 
         $.ajax({
             type,
             url: urlRoute,
-            data,
+            data: JSON.stringify(data),
             dataType: 'json',
+            contentType: 'application/json',
+            headers: {
+                'Content-Language': LOCALE,
+            },
             success: (response) => {
-                this.notification.show('success', Translator.trans(`newsletter.success.add.message`, null, 'messages', LOCALE), true);
+                this.#notification.success(Translator.trans(`newsletter.success.add.message`, null, 'messages', LOCALE));
 
-                if (isModal) {
-                    $(this.mapper.newsLetterCloseBtn).click();
-                }
+                $(this.#mapper.newsLetterCloseBtn).click();
 
                 $(form)[0].reset();
 
@@ -40,7 +52,7 @@ class NewsLetterHandler {
                 loader.hide();
 
                 if (errors.hasOwnProperty('message')) {
-                    this.notification.show('error', errors.message, true);
+                    this.#notification.error(errors.message);
 
                     return;
                 }

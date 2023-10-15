@@ -35,7 +35,25 @@
   }
 }
 
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .m-t-2-sm {
+    margin-top: 2rem;
+  }
+
+  .m-bt-2-sm {
+    margin-bottom: 2rem;
+  }
+
+  .m-bt-3-sm {
+    margin-bottom: 3rem;
+  }
+}
+
 @media only screen and (max-width: 767px) {
+  .m-t-2-xs {
+    margin-top: 2rem;
+  }
+
   .m-bt-2-xs {
     margin-bottom: 2rem;
   }
@@ -46,6 +64,10 @@
 }
 
 @media only screen and (min-width: 240px) and (max-width: 480px) {
+  .m-t-2-xss {
+    margin-top: 2rem;
+  }
+
   .m-bt-2-xss {
     margin-bottom: 2rem;
   }

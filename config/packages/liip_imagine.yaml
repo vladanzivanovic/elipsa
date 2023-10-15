@@ -146,8 +146,8 @@ liip_imagine :
             cache: ads_photos
             quality : 100
             filters :
-                thumbnail: { size: [1920, 533], mode: outbound }
-                background: { size: [1920, 533], position: center, color: '#ffffff' }
+                thumbnail: { size: [1500, 1785], mode: outbound }
+                background: { size: [1500, 1785], position: center, color: '#ffffff' }
         news_letter_banner_mobile :
             cache: ads_photos
             quality : 100

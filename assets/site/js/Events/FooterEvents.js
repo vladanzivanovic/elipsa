@@ -2,6 +2,7 @@ import footerMapper from "../Mapper/FooterMapper";
 
 class FooterEvents {
     #mapper;
+    #newsLetterMapper;
 
     constructor() {
         this.#mapper = footerMapper;

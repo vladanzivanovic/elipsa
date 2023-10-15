@@ -615,6 +615,11 @@ Version      : 1.0
     .coming .timer-area .cdown {
         margin: 0 5px !important;
     }
+
+    .h3-newsletter-left {
+        margin-bottom: 30px !important;
+        text-align: center;
+    }
 }
 
 
@@ -818,8 +823,8 @@ Version      : 1.0
         line-height: 20px !important;
     }
     .h3-newsletter-left {
-        margin-bottom: 60px !important;
-        padding-left: 40px !important;
+        margin-bottom: 30px !important;
+        text-align: center;
     }
     .h3-newsletter-input input[type="text"] {
         padding: 0 10px !important;

@@ -13,13 +13,59 @@
                             </a>
                         {% endfor %}
 
+                        <div class="footer-newsletter-area">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-8 col-xs-12">
+                                        <div class="h3-newsletter-left">
+                                            <h3 class="h3-nl-title">newsletter</h3>
+                                            <p class="h3-nl-text text-uppercase">{{ 'newsletter.text' | trans }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 col-sm-4 col-xs-12">
+                                        <div class="h3-newsletter-form">
+                                            {% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+                                            <form id="news_letter" class="news-letter-form regular-form">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        {{ inputs.input('newsletter_email', '', 'newsletter_email', 'Email *', 'email') }}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-md-4 m-bt-2-xs m-bt-2-sm">
+                                                        {% set genderOptions = [
+                                                            {'title': 'male' | trans , 'value': 'male' },
+                                                            {'title': 'female' | trans , 'value': 'female' },
+                                                        ]
+                                                        %}
+                                                        {{ inputs.selectbox('gender', 'newsletter_gender', '', genderOptions, '', '', false, 'choose_gender') }}
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-4">
+                                                        {{ inputs.selectbox('language', 'newsletter_language', '', langOptions, '', '', false, 'choose_language') }}
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-4 m-t-2-xs m-t-2-sm">
+                                                        <button class="news_letter_btn submit-btn full-width hvr-bs text-uppercase" type="button">{{ 'submit' | trans }}</button>
+                                                    </div>
+                                                </div>
+{#                                                <div class="row news-letter-submit">#}
+{#                                                    <div class="col-xs-12">#}
+{#                                                        <button class="news_letter_btn submit-btn" type="button">{{ 'submit' | trans }}</button>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 {#                        <div class="logo-footer text-center">#}
 {#                        <img src="{{ asset('build/site/images/logo/logo_bottom.png') }}" alt="{{ default_alt_tag }}">#}
 {#                        </div>#}
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="footer-links">
                         <h4 class="footer-title">{{ 'navi.account' | trans }}</h4>
                         <ul class="clearfix account">
@@ -30,7 +76,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="footer-links">
                         <h4 class="footer-title">{{ 'shopping' | trans }}</h4>
                         <ul class="clearfix">
@@ -42,7 +88,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="footer-links">
                         <h4 class="footer-title">{{ 'info' | trans }}</h4>
                         <ul class="clearfix">
@@ -75,27 +121,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="popular-tag">
-                        <h4 class="footer-title">newsletter</h4>
-                        <form id="newsletter_form_footer">
-                            {% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{#                <div class="col-md-3 col-sm-6 col-xs-12">#}
+{#                    <div class="popular-tag">#}
+{#                        <h4 class="footer-title">newsletter</h4>#}
+{#                        <form id="newsletter_form_footer">#}
+{#                            {% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}#}
 
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="cfc-input-box">
-                                        {{ form.input('email' | trans ~ ' *', 'newsletterEmail', '', 'newsletter_email', '', 'email', null, '', 'text-uppercase') }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <button id="newsletter_submit" class="submit hvr-bs" data-animation-type="bounce" data-animation-duration="1" style="animation-duration: 1s; visibility: visible;" type="button">{{ 'submit' | trans }}</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+{#                            <div class="row">#}
+{#                                <div class="col-xs-12">#}
+{#                                    <div class="cfc-input-box">#}
+{#                                        {{ form.input('email' | trans ~ ' *', 'newsletterEmail', '', 'newsletter_email', '', 'email', null, '', 'text-uppercase') }}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="row">#}
+{#                                <div class="col-xs-12">#}
+{#                                    <button id="newsletter_submit" class="submit hvr-bs" data-animation-type="bounce" data-animation-duration="1" style="animation-duration: 1s; visibility: visible;" type="button">{{ 'submit' | trans }}</button>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
             <div class="row">
 

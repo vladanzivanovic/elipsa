@@ -1,0 +1,21 @@
+.regular-form {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    color: #474747;
+    font-size: 14px;
+    height: 38px;
+    letter-spacing: 0;
+    margin-bottom: 21px;
+    padding: 0 10px;
+    width: 100%;
+  }
+
+  .submit-btn {
+    background: #a70303 none repeat scroll 0 0;
+    border: 0 none;
+    color: #fff;
+    padding: 8px 45px;
+    transition: all 0.3s ease 0s;
+  }
+}

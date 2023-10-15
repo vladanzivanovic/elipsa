@@ -5606,7 +5606,7 @@ p.cart_product_name a {
     border: 1px solid #ecedee;
 }
 
-.checkout-billing-adress-box {
+.checkout-billing-address-box {
     padding: 21px 35px 50px 25px;
 }
 
@@ -7919,18 +7919,21 @@ button.accordion.active {
     left: 0;
 }
 
-.wd1-nlpopup > .popup-subscribe-box {
+.wd1-nlpopup > .popup-subscribe-box,
+.wd1-nlpopup .form > .popup-subscribe-box {
     margin: 50px 0 30px;
 }
 
-.wd1-nlpopup > .popup-subscribe-box input[type="email"] {
+.wd1-nlpopup > .popup-subscribe-box input[type="email"],
+.wd1-nlpopup .form > .popup-subscribe-box input[type="email"] {
     background: #fff none repeat scroll 0 0;
     border: 2px solid #e7e7e7;
     height: 50px;
     width: 395px;
 }
 
-.wd1-nlpopup > .popup-subscribe-box input[type="button"] {
+.wd1-nlpopup > .popup-subscribe-box input[type="button"],
+.wd1-nlpopup .form > .popup-subscribe-box input[type="button"] {
     display: inline-block;
     background: #a70303;
     height: 50px;

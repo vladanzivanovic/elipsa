@@ -3,7 +3,10 @@
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~toastr/toastr";
 @import "~owl.carousel";
+@import "~select2";
+@import "./Components/select2";
 
+@import "./Components/form_inputs";
 @import "../../scss/base";
 @import "colors";
 @import "../css/animate.css";
@@ -17,6 +20,7 @@
 @import "./Components/menu";
 @import "./Components/footer";
 @import "./Components/product_grid";
+@import "./Components/pop_up";
 @import "responsive";
 
 
@@ -30,6 +34,18 @@
 
 .m-t-2 {
   margin-top: 2rem;
+}
+
+.m-t-2-xs {
+  @media only screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
+}
+
+.m-t-2-sm {
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    margin-top: 2rem;
+  }
 }
 
 .p-l-10 {
@@ -46,6 +62,10 @@
 
 .m-r-0 {
   margin-right: 0;
+}
+
+.full-width {
+  width: 100% !important;
 }
 
 div#page-loader {
@@ -137,6 +157,14 @@ div#page-loader {
   text-transform: uppercase;
   * {
     color: inherit !important;
+  }
+}
+
+.select2-container {
+  &--open {
+    .select2-dropdown {
+      z-index: 100000 !important;
+    }
   }
 }
 

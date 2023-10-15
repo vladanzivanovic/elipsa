@@ -1,0 +1,119 @@
+.wd1-nlpopup {
+
+  height: auto;
+
+  .news-letter-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    .news-letter-header-text {
+      > h2 {
+        color: #363738;
+        font-size: 50px;
+        letter-spacing: 3px;
+        line-height: 52px;
+        text-transform: uppercase;
+        margin: 0 0 26px;
+
+        @media only screen and (max-width: 780px) {
+          font-size: 6vw;
+          line-height: normal;
+        }
+      }
+
+      > p {
+        color: #363738;
+        font-size: 16px;
+        line-height: 26px;
+        position: relative;
+        margin: 0 0 16px;
+
+        @media only screen and (max-width: 780px) {
+          font-size: 3.6vw;
+          line-height: normal;
+        }
+
+        &:after {
+          background: #a70303 none repeat scroll 0 0;
+          bottom: -16px;
+          content: "";
+          height: 2px;
+          left: 0;
+          position: absolute;
+          width: 53px;
+          z-index: 1;
+        }
+      }
+    }
+
+    .news-letter-form {
+      padding-top: 60px;
+
+      @media only screen and (max-width: 780px) {
+        padding-top: 30px;
+        max-height: 500px;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        height: 58px;
+
+        @media only screen and (max-width: 780px) {
+          height: 40px;
+        }
+      }
+
+      .select2-container {
+        .select2-selection--single {
+          height: 58px;
+
+          @media only screen and (max-width: 780px) {
+            height: 40px;
+          }
+
+          .select2-selection__rendered {
+            line-height: 48px;
+
+            @media only screen and (max-width: 780px) {
+              line-height: 40px;
+            }
+          }
+
+          .select2-selection__arrow {
+            height: 58px;
+
+            @media only screen and (max-width: 780px) {
+              height: 40px;
+            }
+          }
+        }
+      }
+
+      .news-letter-submit {
+        padding-top: 30px;
+        text-align: center;
+
+        @media only screen and (max-width: 780px) {
+          padding-top: 15px;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+
+      .dont-show-news-letter {
+        padding-top: 60px;
+
+        @media only screen and (max-width: 780px) {
+          padding-top: 30px;
+        }
+
+        label {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}

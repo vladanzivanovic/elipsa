@@ -3,6 +3,7 @@
 {% set routeName = app.request.attributes.get('_route') %}
 {% set siteSettings = site_settings(locale) %}
 {% set transUrls = languages %}
+{% set langOptions = [] %}
 
 {% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') %}
 
@@ -20,6 +21,7 @@
 {% for language in languages %}
     {% set language = language|merge({'url': url_locale(routeName, routeParams, locale, language.code)}) %}
     {% set transUrls = transUrls|merge({(language.code): language}) %}
+    {% set langOptions = langOptions|merge([{'title': language.translation | trans, 'value': language.code }]) %}
 {% endfor %}
 
 {% import 'Site/Macros/externalServices.html.twig' as externals %}
@@ -106,11 +108,11 @@
         {{ include('Site/Components/footerBottom.html.twig') }}
     </footer>
 
-    {% import 'Site/Macros/newsletterPopup.html.twig' as popup %}
+    {% import 'Site/Macros/popUp.html.twig' as popup %}
 
-    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_NEWS_LETTER'), 'news_letter', locale, true, 30) }}
+    {{ popup.news_letter('news_letter', locale, langOptions) }}
 
-    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, false, 1) }}
+{#    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, false, 1) }}#}
     <!-- footer-end -->
     {% block javascripts %}
         <script nonce="{{ csp_nonce('script') }}" type="text/javascript">

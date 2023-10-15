@@ -2,12 +2,12 @@ import BaseCoreController from "../../js/CoreController";
 import CartHandler from "./Handler/CartHandler";
 import loader from "./Dom/LoaderDom";
 import coreMapper from "./Mapper/CoreMapper";
-import WishListHandler from "./Handler/WishListHandler";
 import NewsLetterHandler from "./Handler/NewsLetterHandler";
 import FooterEvents from "./Events/FooterEvents";
 import HeaderEvents from "./Events/HeaderEvents";
 import CartDropDownEvents from "./Events/CartDropDownEvents";
 import ProductsEvents from "./Events/ProductsEvents";
+import NewsLetterEvents from "./Events/NewsLetterEvents";
 
 require('jquery-eu-cookie-law-popup/js/jquery-eu-cookie-law-popup');
 
@@ -28,6 +28,7 @@ class CoreController {
         new FooterEvents();
         new CartDropDownEvents();
         new ProductsEvents();
+        new NewsLetterEvents();
     }
 
     siteMobileMenu() {
@@ -70,23 +71,15 @@ class CoreController {
     }
 
     registerEvents() {
-        // $(document).on('click touchend', this.#mapper.toggleWishListBtn, e => {
+
+        // $(document).on('click touchend', this.#mapper.newsLetterSubmitBtn, e => {
         //     e.preventDefault();
         //     e.stopPropagation();
         //
-        //     const handler = new WishListHandler();
+        //     const handler = new NewsLetterHandler();
         //
-        //     handler.toggle($(e.currentTarget));
+        //     handler.addUser(this.#mapper.newsLetterForm, true);
         // });
-
-        $(document).on('click touchend', this.#mapper.newsLetterSubmitBtn, e => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const handler = new NewsLetterHandler();
-
-            handler.addUser(this.#mapper.newsLetterForm, true);
-        });
 
         $(document).on('click touchend', this.#mapper.newsLetterSubmitBtnFooter, e => {
             e.preventDefault();
