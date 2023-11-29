@@ -28,7 +28,7 @@ final class LocationEditPageController extends AbstractController
      */
     public function insert(): array
     {
-        return [];
+        return $this->responseFormatter->formatResponse();
     }
 
     /**

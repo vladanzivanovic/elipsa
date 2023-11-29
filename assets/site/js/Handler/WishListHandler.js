@@ -13,11 +13,6 @@ class WishListHandler {
             type,
             url: urlRoute,
             data: null,
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                'Content-Language': LOCALE,
-            },
             // success: (response) => {
             //     console.log(response);
             //     const action = response.is_added ? 'add' : 'remove';

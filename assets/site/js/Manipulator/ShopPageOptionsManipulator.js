@@ -78,7 +78,7 @@ class ShopPageOptionsManipulator {
         const footerHeight = Math.floor($('.footer-top-area').height() + $('.footer-bottom-area').height());
         const scrollTopPosition = $(window).scrollTop();
         const scrollPos = Math.floor($(window).height() + scrollTopPosition);
-        const shouldTriggerAjax = documentHeight * 0.4 < scrollPos;
+        const shouldTriggerAjax = documentHeight * 0.2 < scrollPos;
 
         if (typeof this.#timeoutId !== undefined) {
             clearTimeout(this.#timeoutId);
@@ -125,9 +125,9 @@ class ShopPageOptionsManipulator {
             );
             // this.#pagination.generate(data.pagination);
 
-            this.#setBrowserUrl(data._links[LOCALE]);
+            this.#setBrowserUrl(data._web_links[LOCALE][ROUTE_NAME]);
 
-            this.#headerDom.updateLanguageDropDown(data._links);
+            this.#headerDom.updateLanguageDropDown(data._web_links);
         } catch (e) {
             console.log(e);
         }

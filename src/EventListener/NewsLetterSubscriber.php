@@ -8,41 +8,31 @@ use DrewM\MailChimp\MailChimp;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class NewsLetterSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var NewsLetterRepository
-     */
-    private $newsLetterRepository;
+    private ParameterBagInterface $parameterBag;
 
-    /**
-     * @var string
-     */
-    private $apiKey;
+    private NewsLetterRepository $newsLetterRepository;
 
-    /**
-     * @var string
-     */
-    private $listId;
+    private TranslatorInterface $translator;
 
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param NewsLetterRepository  $newsLetterRepository
-     */
+    private string $apiKey;
+
+    private string $listId;
+
     public function __construct(
         ParameterBagInterface $parameterBag,
-        NewsLetterRepository $newsLetterRepository
+        NewsLetterRepository $newsLetterRepository,
+        TranslatorInterface $translator
     ) {
         $this->parameterBag = $parameterBag;
         $this->newsLetterRepository = $newsLetterRepository;
 
         $this->apiKey = $this->parameterBag->get('api_key');
         $this->listId = $this->parameterBag->get('list_id');
+        $this->translator = $translator;
     }
 
     /**
@@ -79,15 +69,18 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
             'status' => 'subscribed',
         ];
 
+        $mergeFields = [
+            'LANGUAGE' => $newsLetter->getLocale(),
+            'GENDER' => $this->translator->trans($newsLetter->getGender(), [], null, $newsLetter->getLocale()),
+        ];
+
         if (null !== $loyalty) {
-            $userRequestInfo = [
-                'merge_fields' => [
-                    'FNAME' => $loyalty->getFirstName(),
-                    'LNAME' => $loyalty->getLastName(),
-                    'PHONE' => $loyalty->getMobilePhone(),
-                ],
-            ];
+            $mergeFields['FNAME'] = $loyalty->getFirstName();
+            $mergeFields['LNAME'] = $loyalty->getLastName();
+            $mergeFields['PHONE'] = $loyalty->getMobilePhone();
         }
+
+        $userRequestInfo = ['merge_fields' => $mergeFields];
 
         $result = $mailChimp->post('/lists/'.$this->listId.'/members', $request + $userRequestInfo);
 

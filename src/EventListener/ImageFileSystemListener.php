@@ -13,16 +13,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final class ImageFileSystemListener
 {
-    private $imageService;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private ImageService $imageService;
 
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     */
+    private ParameterBagInterface $bag;
+
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $bag
@@ -52,6 +46,16 @@ final class ImageFileSystemListener
     }
 
     /**
+     * @param LifecycleEventArgs $args
+     */
+    public function postRemove(LifecycleEventArgs $args): void
+    {
+        $entity = $args->getEntity();
+
+        $this->manageFile($entity);
+    }
+
+    /**
      * @param $entity
      */
     private function manageFile($entity): void
@@ -65,7 +69,7 @@ final class ImageFileSystemListener
         }
 
         if(true === $entity->isDeleted()) {
-            $this->imageService->deleteImages([$entity->getFile()]);
+            $this->imageService->deleteImages([$entity]);
 
             return;
         }

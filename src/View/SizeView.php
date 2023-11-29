@@ -12,6 +12,7 @@ final class SizeView
     {
         return [
             'size' => $size->getSize(),
+            'slug' => $size->getSlug(),
         ];
     }
 }

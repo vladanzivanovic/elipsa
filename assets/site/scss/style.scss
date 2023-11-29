@@ -3,9 +3,14 @@
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~toastr/toastr";
 @import "~owl.carousel";
+@import "~select2";
+@import "~flexslider/flexslider.css";
+@import "./Components/select2";
 
+@import "./Components/form_inputs";
 @import "../../scss/base";
 @import "colors";
+@import "../../scss/media-queries";
 @import "../css/animate.css";
 @import "../css/meanmenu.css";
 @import "../css/responsive.css";
@@ -17,7 +22,9 @@
 @import "./Components/menu";
 @import "./Components/footer";
 @import "./Components/product_grid";
+@import "./Components/pop_up";
 @import "responsive";
+
 
 
 .m-bt-2 {
@@ -30,6 +37,18 @@
 
 .m-t-2 {
   margin-top: 2rem;
+}
+
+.m-t-2-xs {
+  @media only screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
+}
+
+.m-t-2-sm {
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    margin-top: 2rem;
+  }
 }
 
 .p-l-10 {
@@ -46,6 +65,10 @@
 
 .m-r-0 {
   margin-right: 0;
+}
+
+.full-width {
+  width: 100% !important;
 }
 
 div#page-loader {
@@ -138,6 +161,26 @@ div#page-loader {
   * {
     color: inherit !important;
   }
+}
+
+.select2-container {
+  &--open {
+    .select2-dropdown {
+      z-index: 100000 !important;
+    }
+  }
+}
+
+.img-with-fade::after {
+  background: #000 none repeat scroll 0 0;
+  content: "";
+  height: 100%;
+  left: 0;
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 0;
 }
 
 @media only screen and (max-width: 950px) {

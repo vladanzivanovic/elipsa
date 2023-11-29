@@ -4,6 +4,7 @@ class ToastrService {
     #defaultOptions = {
         progressBar: true,
         newestOnTop: true,
+        preventDuplicates: true,
         timeOut: 5000
     }
 

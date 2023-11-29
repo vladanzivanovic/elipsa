@@ -68,14 +68,15 @@ class CategoryRepository extends ExtendedEntityRepository
      *
      * @return array
      */
-    public function getAll(?Category $category = null): array
+    public function getAll(?Category $category = null, string $locale = 'rs'): array
     {
         $query = $this->createQueryBuilder('c')
             ->select(
                 'ct.title',
-                'ct.slug as value'
+                'ct.slug as value',
+                'c.id as id',
             )
-            ->innerJoin(CategoryTranslation::class, 'ct', 'WITH', 'ct.category = c AND ct.locale = \'rs\'');
+            ->innerJoin(CategoryTranslation::class, 'ct', 'WITH', 'ct.category = c AND ct.locale = \''.$locale.'\'');
 
         if ($category instanceof Category) {
             $query->where('c != :category')

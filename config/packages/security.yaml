@@ -1,7 +1,12 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
+    enable_authenticator_manager: true
+#    encoders:
+#        App\Entity\User:
+#            algorithm: auto
+
+    password_hashers:
+#        App\Entity\User: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -17,26 +22,34 @@ security:
 
         admin:
             pattern: ^/admin
-            anonymous: lazy
+            lazy: true
             provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+            entry_point: App\Security\AuthenticationEntryPoint
+#            guard:
+#                authenticators:
+#                    - App\Security\LoginFormAuthenticator
             json_login:
                 check_path: admin_api.login
-            access_denied_handler: App\Handler\AccessDeniedHandler
+                login_path: admin.login
+#            access_denied_handler: App\Handler\AuthenticationEntryPoint
             logout:
                 path:   admin.logout
 
         main:
-            anonymous: lazy
+#            anonymous: true
+            lazy: true
             provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+#            custom_authenticators:
+
+#            guard:
+#                authenticators:
+#                    - App\Security\LoginFormAuthenticator
             json_login:
                 check_path: site_api.login
-            access_denied_handler: App\Handler\AccessDeniedHandler
+#                username_path: email
+#                password_path: password
+#            access_denied_handler: App\Handler\AccessDeniedHandler
+            user_checker: App\Checker\AuthenticationChecker
 
             logout:
                 path:   site.logout

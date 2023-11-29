@@ -32,6 +32,8 @@ final class OrderProductView
         $quantity = $orderProduct->getQuantity();
         $product = $orderProduct->getProduct();
 
+        $isSizeAvailable = $product->isSizeAvailable($orderProduct->getSize());
+
         $view = [
             'id' => $orderProduct->getId(),
             'quantity' => $quantity,
@@ -45,8 +47,9 @@ final class OrderProductView
                 'product',
                 'cart_thumb'
             ),
-            'is_sold' => $product->isSold(),
+            'is_sold' => $product->isSold() || false === $isSizeAvailable,
             'color' => $this->colorView->productPageView($orderProduct->getColor()),
+            'promotion_price' => null,
         ];
 
         if (0 < $discount) {

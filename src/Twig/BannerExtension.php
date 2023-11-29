@@ -16,53 +16,23 @@ use Twig\TwigFunction;
 
 final class BannerExtension extends AbstractExtension
 {
-    /**
-     * @var CartPageFormatter
-     */
-    private $pageFormatter;
+    private BannerRepository $bannerRepository;
 
-    /**
-     * @var CartPageCollector
-     */
-    private $pageCollector;
-    /**
-     * @var BannerRepository
-     */
-    private $bannerRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private RouterInterface $router;
 
-    /**
-     * @param CartPageCollector $pageCollector
-     * @param CartPageFormatter $pageFormatter
-     * @param BannerRepository  $bannerRepository
-     * @param RouterInterface   $router
-     * @param ImageRepository   $imageRepository
-     */
+    private ImageRepository $imageRepository;
+
     public function __construct(
-        CartPageCollector $pageCollector,
-        CartPageFormatter $pageFormatter,
         BannerRepository $bannerRepository,
         RouterInterface $router,
         ImageRepository $imageRepository
     ) {
-        $this->pageFormatter = $pageFormatter;
-        $this->pageCollector = $pageCollector;
         $this->bannerRepository = $bannerRepository;
         $this->router = $router;
         $this->imageRepository = $imageRepository;
     }
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('banner', [$this, 'getBanner']),

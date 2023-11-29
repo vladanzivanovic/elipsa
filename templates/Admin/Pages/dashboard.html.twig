@@ -1,6 +1,8 @@
 {% extends('Admin/base.html.twig') %}
 
 {% block content %}
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
             <h4 class="mb-3 mb-md-0">Proizvodi</h4>
@@ -14,6 +16,103 @@
     </div>
 
     <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Filter</h4>
+                    <form id="product_filter_form">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {{ form.input('Naziv', 'title', '', 'title') }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {{ form.input('Šifra', 'code', '', 'code') }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {% set defaultSelection = constant('App\\Entity\\Product::STATUS_ACTIVE') ~','~
+                                        constant('App\\Entity\\Product::STATUS_PENDING') %}
+                                    {%
+                                        set productStatusOptions = [
+                                        {
+                                            'title': 'Svi',
+                                            'value':
+                                            constant('App\\Entity\\Product::STATUS_ACTIVE') ~','~
+                                            constant('App\\Entity\\Product::STATUS_PENDING') ~','~
+                                            constant('App\\Entity\\Product::STATUS_ARCHIVED')
+                                        },
+                                        {
+                                            'title': 'Aktivni i na čekanju',
+                                            'value': defaultSelection
+                                        },
+                                        {
+                                            'title': 'Aktivni',
+                                            'value': constant('App\\Entity\\Product::STATUS_ACTIVE')
+                                        },
+                                        {
+                                            'title': 'Na čekanju',
+                                            'value': constant('App\\Entity\\Product::STATUS_PENDING')
+                                        },
+                                        {
+                                            'title': 'Arhivirani',
+                                            'value': constant('App\\Entity\\Product::STATUS_ARCHIVED')
+                                        }
+                                    ]
+                                    %}
+                                    {{ form.select('Prikaz proizvoda po statusu', 'product_status', 'product_status', defaultSelection, productStatusOptions, '', 'w-100') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {{ form.select('Tagovi', 'tags', 'tags[]', '', options.tags, '', 'w-100', true) }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {{ form.select('Kategorije', 'categories', 'categories[]', '', options.categories, '', 'w-100', true) }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {%
+                                        set homePageOptions = [
+                                        {'title': 'Sve pozicije', 'value': 'all'},
+                                        {'title': 'Gore', 'value': constant('App\\Entity\\Product::HOME_PAGE_UP')},
+                                        {'title': 'Dole', 'value': constant('App\\Entity\\Product::HOME_PAGE_DOWN')}
+                                    ]
+                                    %}
+                                    {{ form.select('Prikaz na početnoj stranici', 'home_page_show', 'home_page_show', '', homePageOptions, '', 'w-100') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <p>&nbsp;</p>
+                                    <div class="form-check form-check-flat form-check-primary">
+                                        {{ form.checkbox('Rasprodato', 'sold', 1, 'sold', 'form-check-label', 'form-check-input' ) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Filtriraj', 'button') }}
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                {{ form.button('reset_btn', 'btn btn-outline-warning reset', 'Reset', 'button') }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
@@ -31,5 +130,8 @@
         const CAN_VIEW = true;
         const CAN_EDIT = true;
         const CAN_REMOVE = true;
+
+        const PRODUCT_CONSTANTS = JSON.parse('{{ get_class_constants('App\\Entity\\Product') | json_encode() | raw }}');
+
     </script>
 {% endblock %}

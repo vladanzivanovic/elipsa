@@ -7,51 +7,27 @@ use App\Event\EmailEvent;
 use App\Helper\RandomCodeGenerator;
 use App\Model\EmailModel;
 use App\Repository\EmailRepository;
-use App\Repository\SettingsRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
 final class EmailSubscriber implements EventSubscriberInterface
 {
-    private $codeGenerator;
-    private $parameterBag;
+    private RandomCodeGenerator $codeGenerator;
 
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
-    /**
-     * @var EmailRepository
-     */
-    private $emailRepository;
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private MailerInterface $mailer;
 
-    /**
-     * @param RandomCodeGenerator   $codeGenerator
-     * @param ParameterBagInterface $parameterBag
-     * @param MailerInterface       $mailer
-     * @param EmailRepository       $emailRepository
-     * @param SettingsRepository    $settingsRepository
-     */
+    private EmailRepository $emailRepository;
+
     public function __construct(
         RandomCodeGenerator $codeGenerator,
-        ParameterBagInterface $parameterBag,
         MailerInterface $mailer,
-        EmailRepository $emailRepository,
-        SettingsRepository $settingsRepository
-    )
-    {
+        EmailRepository $emailRepository
+    ) {
         $this->codeGenerator = $codeGenerator;
-        $this->parameterBag = $parameterBag;
         $this->mailer = $mailer;
         $this->emailRepository = $emailRepository;
-        $this->settingsRepository = $settingsRepository;
     }
 
     /**

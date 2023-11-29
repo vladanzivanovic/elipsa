@@ -2,6 +2,7 @@
 
 @import "../colors";
 @import "../Components/flexslider";
+@import "../../../scss/media-queries";
 
 .location-page {
   .sidebar-box {
@@ -81,7 +82,87 @@
   }
 
   .sidebar-widget-body {
-    max-height: 500px;
-    overflow-y: scroll;
+
+    .location-list {
+      max-height: 500px;
+      overflow-y: scroll;
+
+      .location-place {
+        font-size: 20px;
+        font-weight: 600;
+        color: #000;
+        margin-top: 30px;
+      }
+    }
+
+    .location-search {
+      position: relative;
+      padding: 20px 0;
+
+      input[type="text"] {
+        border: 1px solid #d2d2d2;
+        color: #d2d2d2;
+        font-size: 12px;
+        height: 33px;
+        letter-spacing: 0;
+        padding: 0 12px;
+        width: 100%;
+      }
+
+      button {
+        background: transparent none repeat scroll 0 0;
+        border: 0 none;
+        color: #272626;
+        position: absolute;
+        top: 50%;
+        right: 5%;
+        transform: translate(50%, -50%);
+
+        &:hover {
+          color: $site-color;
+        }
+      }
+    }
+  }
+
+  .location-map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+    max-width: 400px;
+
+    img {
+      height: 200px;
+    }
+
+    .location-details {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: #000;
+      font-weight: 500;
+
+      li {
+        @include xs {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+
+  .location-list-title {
+    @include xs {
+      color: #222222;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 22px;
+      margin: 0 0 18px;
+      position: relative;
+      text-transform: uppercase;
+    }
   }
 }

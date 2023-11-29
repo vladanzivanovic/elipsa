@@ -7,6 +7,7 @@ namespace App\Parser\Site;
 use App\Entity\NewsLetter;
 use App\Repository\NewsLetterRepository;
 use App\Repository\UserRepository;
+use App\Request\Dto\NewsLetterRequestDto;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,24 +43,26 @@ final class NewsLetterRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
-     *
+     * @param NewsLetterRequestDto $newsLetterRequestDto
      * @return NewsLetter
      */
-    public function parse(ParameterBag $bag): NewsLetter
+    public function parse(NewsLetterRequestDto $newsLetterRequestDto): NewsLetter
     {
-        $email = $bag->get('newsletter_email');
+        $email = $newsLetterRequestDto->email;
 
         $existing = $this->letterRepository->findOneBy(['email' => $email]);
-        $user = $this->userRepository->findOneBy(['email' => $email]);
 
         if (null !== $existing) {
-            throw new BadRequestHttpException($this->translator->trans('newsletter.existingUser'));
+            throw new BadRequestHttpException($this->translator->trans('newsletter.existingUser', [], null, $newsLetterRequestDto->locale));
         }
 
+        $user = $this->userRepository->findOneBy(['email' => $email]);
+
         $newsLetter = new NewsLetter();
-        $newsLetter->setEmail($email)
-            ->setUser($user);
+        $newsLetter->setEmail($email);
+        $newsLetter->setUser($user);
+        $newsLetter->setGender($newsLetterRequestDto->gender);
+        $newsLetter->setLocale($newsLetterRequestDto->locale);
 
         return $newsLetter;
     }

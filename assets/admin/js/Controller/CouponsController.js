@@ -1,8 +1,7 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import NotificationService from "../../../js/NotificationService";
-import BannerHandler from "../Handler/BannerHandler";
 import CouponsDataTables from "../Services/DataTables/CouponsDataTables";
-import CouponHandler from "../Handler/CouponHandler";
+import CouponHandler from "../Handler/Coupon/CouponHandler";
 
 const Private = Symbol('private');
 

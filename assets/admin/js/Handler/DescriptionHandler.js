@@ -2,6 +2,7 @@ import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import DescriptionDataTables from "../Services/DataTables/DescriptionDataTables";
 import descriptionEditMapper from "../Mapper/DescriptionEditMapper";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class DescriptionHandler {
     constructor() {
@@ -12,7 +13,7 @@ class DescriptionHandler {
     save() {
         let urlRoute = Routing.generate('admin.set_description_api');
         let type = 'POST';
-        const data = $(this.mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.mapper.form));
 
         if (IS_EDIT) {
             type = 'PUT';
@@ -23,8 +24,12 @@ class DescriptionHandler {
         $.ajax({
             type,
             url: urlRoute,
-            data,
+            data: JSON.stringify(data),
             dataType: 'json',
+            contentType: 'application/json',
+            headers: {
+                'Content-Language': LOCALE,
+            },
             success: response => {
                 AppHelperService.redirect(Routing.generate('admin.descriptions'));
             },

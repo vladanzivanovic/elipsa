@@ -47,19 +47,61 @@ final class ShopPageController extends AbstractController
      *
      * @return array
      */
-    public function index(
+    public function shopPage(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
         Request $request
     ): array {
-        $locale = $request->getSession()->get('_locale');
-        $data = $this->collectors->collect($locale, $shopListRequestDto, $shopPageOptionsDto, $this->getUser());
-        $filters = $this->filterCollector->collect($locale);
+        return $this->generate(
+            $shopPageOptionsDto,
+            $shopListRequestDto,
+            $request
+        );
+    }
+
+    /**
+     * @Route({
+     *          "rs": "/trendovi",
+     *          "en": "/trends",
+     *          "ba": "/trendovi"
+     *     },
+     *     name="site.trendy_page",
+     *     methods={"GET"},
+     *     defaults={"page": 1},
+     *     options={"expose": true}
+     * )
+     * @Template("Site/Pages/shop.html.twig")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function trendyPage(
+        ShopPageOptionsDto $shopPageOptionsDto,
+        ShopListRequestDto $shopListRequestDto,
+        Request $request
+    ): array {
+        return $this->generate(
+            $shopPageOptionsDto,
+            $shopListRequestDto,
+            $request,
+            true
+        );
+    }
+
+    private function generate(
+        ShopPageOptionsDto $shopPageOptionsDto,
+        ShopListRequestDto $shopListRequestDto,
+        Request $request,
+        bool $isTrendyPage = false
+    ): array {
+        $data = $this->collectors->collect($shopPageOptionsDto->locale, $shopListRequestDto, $shopPageOptionsDto, $this->getUser(), $isTrendyPage);
+        $filters = $this->filterCollector->collect($shopPageOptionsDto->locale);
 
         return $this->formatter->formatResponse(
             $data,
-            $locale,
-            $request->attributes->get('_route'),
+            $shopPageOptionsDto->locale,
+            [$request->attributes->get('_route')],
             $shopListRequestDto,
             $shopPageOptionsDto,
             $filters,

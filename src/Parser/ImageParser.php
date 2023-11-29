@@ -45,8 +45,12 @@ final class ImageParser
     /**
      * @throws ORMException
      */
-    public function parse(array $payload, int $device, bool $fromImport = false): Image
-    {
+    public function parse(
+        array $payload,
+        int $device = null,
+        bool $fromImport = false,
+        int $relatedTo = Image::RELATED_TYPE_PRODUCT
+    ): Image {
         $image = $this->create();
 
         $imageName = $payload['fileName'];
@@ -64,10 +68,11 @@ final class ImageParser
         $image->setFile($file);
 
         if(isset($payload['deleted']) && true === $payload['deleted']) {
+            // don't want to set for removal implicitly, because if product is used by order then we want to keep main image
             return $image;
         }
 
-        $image->setRelatedToType(Image::RELATED_TYPE_PRODUCT);
+        $image->setRelatedToType($relatedTo);
         $image->setIsmain($payload['isMain']);
         $image->setDevice($device);
 

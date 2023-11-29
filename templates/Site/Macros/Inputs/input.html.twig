@@ -6,10 +6,10 @@
     <textarea name="{{ name }}" id="{{ id }}" class="{{ class }}" rows="{{ rows }}" placeholder="{{ placeholder }}">{{ value }}</textarea>
 {% endmacro %}
 
-{% macro selectbox(id, name, selected, options, placeholder = "", class = "", multiple = false) %}
+{% macro selectbox(id, name, selected, options, placeholder = "", class = "", multiple = false, defaultValue = 'choose') %}
     <select id="{{ id }}" name="{{ name }}" class="{{ class }}" {{ true == multiple ? 'multiple="multiple"' }}>
-        {% if multiple == false %}
-            <option value="-1">{{ 'choose' | trans }}...</option>
+        {% if false == multiple %}
+            <option value="-1">{{ defaultValue | trans }}...</option>
         {% endif %}
         {% for option in options %}
             {% set isSelected = multiple == true ? option.value in selected : option.value == selected %}

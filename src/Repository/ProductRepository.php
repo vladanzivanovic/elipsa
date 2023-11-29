@@ -60,9 +60,7 @@ class ProductRepository extends ExtendedEntityRepository
             ->setParameter('locale', 'rs')
         ;
 
-        if (!empty($tableModel->getSearch())) {
-            $this->dataTableSearchPart($query, $tableModel);
-        }
+        $this->dataTableSearchPart($query, $tableModel);
 
         return $query->getQuery()->getSingleScalarResult();
     }
@@ -96,9 +94,7 @@ class ProductRepository extends ExtendedEntityRepository
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
-        if (!empty($tableModel->getSearch())) {
-            $this->dataTableSearchPart($query, $tableModel);
-        }
+        $this->dataTableSearchPart($query, $tableModel);
 
         return $query->getQuery()->getArrayResult();
     }
@@ -142,15 +138,7 @@ class ProductRepository extends ExtendedEntityRepository
         }
 
         if ($shopListRequestDto->categories) {
-            $categoryQuery = $this->_em->createQueryBuilder()
-                ->select('1')
-                ->from(ProductHasCategories::class, 'phc')
-                ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category')
-                ->where('ct.slug IN (:categorySlugs)')
-                ->andWhere('phc.product = p');
-
-            $query->andWhere('EXISTS ('.$categoryQuery->getDQL().')')
-                ->setParameter('categorySlugs', $shopListRequestDto->categories);
+            $this->createCategoriesQuery($query, $shopListRequestDto->categories);
         }
 
         if ($shopListRequestDto->attribute) {
@@ -211,21 +199,15 @@ class ProductRepository extends ExtendedEntityRepository
         }
 
         if($shopListRequestDto->search) {
-            $search = $this->getSearchString($shopListRequestDto->search);
+            $query->innerJoin('p.productTranslations', 'pt');
 
-            $query
-                ->innerJoin('p.productTranslations', 'pt')
-                ->andWhere('
-                (match(pt.title) against(:search BOOLEAN) > 0)
-            ')
-                ->setParameter('search', $search);
+            $this->createSearchString($query, $shopListRequestDto->search);
         }
 
         return $query;
     }
 
     /**
-     * @param string  $locale
      * @param array   $categories
      * @param Product $product
      *
@@ -245,7 +227,6 @@ class ProductRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string    $locale
      * @param User|null $user
      *
      * @return array
@@ -262,26 +243,14 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param Product $product
-     *
-     * @return Image
-     * @throws NonUniqueResultException
-     */
-    public function getMainImage(Product $product): Image
+    public function getProductsByQueryString(string $queryString): array
     {
         $query = $this->createQueryBuilder('p')
-            ->select(
-                'image'
-            )
-            ->innerJoin('p.productHasImages', 'phi')
-            ->innerJoin('phi.image', 'image')
-            ->where('p = :product')
-            ->andWhere('image.isMain = :isMain')
-            ->setParameter('product', $product)
-            ->setParameter('isMain', true);
+            ->innerJoin('p.productTranslations', 'pt');
 
-        return $query->getQuery()->getOneOrNullResult();
+        $this->createSearchString($query, $queryString);
+
+        return $query->getQuery()->getResult();
     }
 
     /**
@@ -344,54 +313,99 @@ class ProductRepository extends ExtendedEntityRepository
      */
     public function dataTableSearchPart(QueryBuilder $query, DataTableModel $tableModel): void
     {
-        $colorQuery = $this->_em->createQueryBuilder()
-            ->select('1')
-            ->from(ProductHasImages::class, 'phiColor')
-            ->innerJoin(ColorTranslation::class, 'colort', 'WITH', 'phiColor.color = colort.color AND colort.locale = :locale')
-            ->where('REGEXP(colort.slug, :regex) = true')
-            ->andWhere('phiColor.product = p');
+        $searchParams = $tableModel->getSearch();
 
-        $tagsQuery = $this->_em->createQueryBuilder()
-            ->select('1')
-            ->from(TagTranslation::class, 'tt')
-            ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = tt.tag')
-            ->where('REGEXP(tt.slug, :regex) = true')
-            ->andWhere('pht.product = p');
+        if (isset($searchParams['tags'])) {
+            $this->createTagQueryForSearch($query, $searchParams['tags']);
+        }
 
-        $categoryQuery = $this->_em->createQueryBuilder()
-            ->select('1')
-            ->from(ProductHasCategories::class, 'phc')
-            ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category AND ct.locale = :locale')
-            ->where('REGEXP(ct.slug, :regex) = true')
-            ->andWhere('phc.product = p');
+        if (isset($searchParams['categories'])) {
+            $this->createCategoriesQuery($query, $searchParams['categories']);
+        }
 
-        $query->andWhere('
-                pt.title LIKE :search or
-                p.code LIKE :search or
-                EXISTS (' . $colorQuery->getDQL() . ') or 
-                EXISTS (' . $tagsQuery->getDQL() . ') or 
-                EXISTS (' . $categoryQuery->getDQL() . ')
-            ')
-            ->setParameter('search', '%' . $tableModel->getSearch() . '%')
-            ->setParameter('regex', $tableModel->getSearch());
+        if (isset($searchParams['title'])) {
+            $this->createSearchString($query, $searchParams['title']);
+        }
+
+        if (isset($searchParams['code'])) {
+            $query
+                ->andWhere('p.code LIKE :searchCode')
+                ->setParameter('searchCode', $searchParams['code']);
+        }
+
+        if (isset($searchParams['sold'])) {
+            $query
+                ->andWhere('p.sold = :isSold')
+                ->setParameter('isSold', true);
+        }
+
+        if (isset($searchParams['home_page_show'])) {
+
+            if ('all' === $searchParams['home_page_show']) {
+                $query
+                    ->andWhere('p.showHomePage IN (:showHomePage)')
+                    ->setParameter('showHomePage', [Product::HOME_PAGE_UP, Product::HOME_PAGE_DOWN]);
+            } else {
+                $query
+                    ->andWhere('p.showHomePage = (:showHomePage)')
+                    ->setParameter('showHomePage', $searchParams['home_page_show']);
+            }
+        }
+
+        $statuses = [Product::STATUS_ACTIVE, Product::STATUS_PENDING];
+
+        if (isset($searchParams['product_status'])) {
+            $statuses = explode(',', $searchParams['product_status']);
+        }
+
+        $query->andWhere('p.status IN (:statuses)')
+            ->setParameter('statuses', $statuses);
     }
 
     private function createTagQueryForSearch(
         QueryBuilder $query,
         array $tags,
-        string $productType
+        string $productType = null
     ): void {
         $tagQuery = $this->_em->createQueryBuilder()
             ->select('1')
             ->from(TagTranslation::class, 'tt')
             ->innerJoin('tt.tag', 't')
             ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = tt.tag')
-            ->where('t.productType = :productType')
-            ->andWhere('tt.slug IN (:tagsSlug)')
+            ->where('tt.slug IN (:tagsSlug)')
             ->andWhere('pht.product = p');
 
+        if (null !== $productType) {
+            $tagQuery->andWhere('t.productType = :productType');
+
+            $query->setParameter('productType', $productType);
+        }
+
         $query->andWhere('EXISTS ('.$tagQuery->getDQL().')')
-            ->setParameter('tagsSlug', $tags)
-            ->setParameter('productType', $productType);
+            ->setParameter('tagsSlug', $tags);
+    }
+
+    private function createCategoriesQuery(QueryBuilder $query, array $categories): void
+    {
+        $categoryQuery = $this->_em->createQueryBuilder()
+            ->select('1')
+            ->from(ProductHasCategories::class, 'phc')
+            ->leftJoin(CategoryTranslation::class, 'ct', 'WITH', 'phc.category = ct.category')
+            ->where('ct.slug IN (:categorySlugs)')
+            ->andWhere('phc.product = p');
+
+        $query->andWhere('EXISTS (' . $categoryQuery->getDQL() . ')')
+            ->setParameter('categorySlugs', $categories);
+    }
+
+    private function createSearchString(QueryBuilder $query, string $searchString): void
+    {
+        $search = $this->getSearchString($searchString);
+
+        $query
+            ->andWhere('
+                (match(pt.title) against(:searchTitle BOOLEAN) > 0)
+            ')
+            ->setParameter('searchTitle', $search);
     }
 }

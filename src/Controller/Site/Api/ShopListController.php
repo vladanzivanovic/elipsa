@@ -33,14 +33,9 @@ final class ShopListController extends AbstractController
     }
 
     /**
-     * @Route({
-     *          "rs": "/api/products",
-     *          "en": "/api/products",
-     *          "ba": "/api/products"
-     *      },
+     * @Route("/api/products",
      *     name="site_api.shop_page",
      *     methods={"POST"},
-     *     defaults={"page": 1},
      *     options={"expose": true}
      * )
      *
@@ -56,11 +51,10 @@ final class ShopListController extends AbstractController
         $data = $this->collectors->collectForApi($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
         $filters = $this->filterCollector->collect($locale);
 
-
         return $this->json($this->formatter->formatResponse(
             $data,
             $locale,
-            'site.shop_page',
+            ['site.shop_page', 'site.trendy_page'],
             $shopListRequestDto,
             $shopPageOptionsDto,
             $filters,

@@ -43,6 +43,7 @@ class CartDropDownDom {
         orderProduct.product_id = orderProduct.id;
         orderProduct.link = Routing.generate(`site.product_page.${LOCALE}`, {'slug': orderProduct.translation.slug});
         orderProduct.slug = orderProduct.translation.slug;
+        orderProduct.size = orderProduct.size !== NO_SIZE ? `(${orderProduct.size})` : '';
 
         productDom = productDom.replace(/image_link|product_id|title|quantity|amount|currency|size|link/gi, search => {
             return orderProduct[search];
@@ -126,7 +127,7 @@ class CartDropDownDom {
                         <img src="image_link" alt="">
                     </div>
                     <div class="single-mcp-content">
-                        <a class="mcp-product-name" href="link">title (size)</a>
+                        <a class="mcp-product-name" href="link">title size</a>
                         <span class="mcp-pro-quantity"><span class="quantity-number">quantity</span> x <span class="mcp-pro-price">amount currency</span></span>
                     </div>
                     <a href="javascript:void(0)" class="mcp-pro-delete"><i class="fa fa-times"></i></a>

@@ -78,17 +78,17 @@ final class ShopPageCollector
         ?UserInterface $user,
         bool $isTrendyPage = false
     ): array {
-        $sizes = $this->sizeRepository->getForOptions();
-        $prices = $this->productRepository->getLowestAndHighestPrice();
+//        $sizes = $this->sizeRepository->getForOptions();
+//        $prices = $this->productRepository->getLowestAndHighestPrice();
 
-        $filters = [
-            'sizes'     => $sizes,
-            'colors' => $this->colorRepository->getByLocale($locale),
-            'collection' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_COLLECTION),
-            'season' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_SEASON),
-            'attributes' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_ATTRIBUTE),
-            'prices'    => $prices[0],
-        ];
+//        $filters = [
+//            'sizes'     => $sizes,
+//            'colors' => $this->colorRepository->getByLocale($locale),
+//            'collection' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_COLLECTION),
+//            'season' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_SEASON),
+//            'attributes' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_ATTRIBUTE),
+//            'prices'    => $prices[0],
+//        ];
 
         return $this->collectForApi($shopListRequestDto, $shopPageOptionsDto, $user, $isTrendyPage);
     }

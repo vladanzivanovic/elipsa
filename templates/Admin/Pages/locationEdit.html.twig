@@ -1,12 +1,21 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Dodavanje/Izmena loakcije{% endblock %}
-{% block bodyClass %}location-edit{% endblock %}
 {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_location_page' %}
+{% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
+{% set title = titlePrefix ~ ' prodavnice' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block bodyClass %}location-edit{% endblock %}
+
+
 {% block content %}
 
-
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena lokacije' } %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {
+        activePage: title,
+        pages: [
+            {routeName: 'admin.locations', name: 'navi.locations' | trans}
+        ]
+    } %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
     {% import 'Admin/Macros/Inputs/input.html.twig' as inputs %}
@@ -14,122 +23,89 @@
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Lokacija - 1060x1580</h4>
+            <h4 class="mb-3 mb-md-0">Prodavnica - 1060x1580</h4>
         </div>
     </div>
 
     <form id="edit_form" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Srpski</h6>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Naziv', 'title_rs', IS_EDIT ? rs_title : '', 'rs_title') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Ulica i broj', 'street_rs', IS_EDIT ? rs_street : '', 'rs_street') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Mesto', 'city_rs', IS_EDIT ? rs_city : '', 'rs_city') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Poštanski broj', 'zip_code', IS_EDIT ? zip_code : '', 'zip_code') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Država', 'country_rs', IS_EDIT ? rs_country : '', 'rs_country') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'description_rs', IS_EDIT ? rs_description : '', 'rs_description', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
+        {% for locale, lang in app_params('languages') %}
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ lang.name }}</h6>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale].title : '', locale~'[title]') }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {{ form.input('Ulica i broj', 'street_'~locale, IS_EDIT ? payload.translations[locale].street : '', locale~'[street]') }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {{ form.input('Mesto', 'city_'~locale, IS_EDIT ? payload.translations[locale].city : '', locale~'[city]') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {{ form.input('Poštanski broj', 'zip_code', IS_EDIT ? payload.zip_code : '', 'zip_code') }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {{ form.input('Država', 'country_'~locale, IS_EDIT ? payload.translations[locale].country : '', locale~'[country]') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        {{ form.textarea('Kratak opis', 'description_'~locale, IS_EDIT ? payload.translations[locale].short_description : '', locale~'[description]', 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Engleski</h6>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Naziv', 'title_en', IS_EDIT ? en_title : '', 'en_title') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Ulica i broj', 'street_en', IS_EDIT ? en_street : '', 'en_street') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Mesto', 'city_en', IS_EDIT ? en_city : '', 'en_city') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    {{ form.input('Država', 'country_en', IS_EDIT ? en_country : '', 'en_country') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'description_en', IS_EDIT ? en_description : '', 'en_description', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
         <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title">Dodatni podaci</h6>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    {{ form.input('Radno vreme radnim danima', 'working_hours', IS_EDIT ? working_hours : '', 'working_hours') }}
+                                    {{ form.input('Radno vreme radnim danima', 'working_hours', IS_EDIT ? payload.work_time.work_days : '', 'working_hours') }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    {{ form.input('Radno vreme vikendom', 'working_hours_weekend', IS_EDIT ? working_hours_weekend : '', 'working_hours_weekend') }}
+                                    {{ form.input('Radno vreme subotom', 'working_hours_saturday', IS_EDIT ? payload.work_time.saturday : '', 'working_hours_saturday') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    {{ form.input('Radno vreme nedeljom', 'working_hours_sunday', IS_EDIT ? payload.work_time.sunday : '', 'working_hours_sunday') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Email', 'email', IS_EDIT ? email : '', 'email') }}
+                                    {{ form.input('Email', 'email', IS_EDIT ? payload.email : '', 'email') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Telefon', 'telephone', IS_EDIT ? telephone : '', 'telephone') }}
+                                    {{ form.input('Telefon', 'telephone', IS_EDIT ? payload.telephone : '', 'telephone') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -176,9 +152,9 @@
 
 
         {% if IS_EDIT %}
-        const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
-        const LAT = {{ lat }};
-        const LNG = {{ lng }};
+        const IMAGES = JSON.parse('{{ payload.selected_images|json_encode()|raw }}');
+        const LAT = {{ payload.coordinates.lat }};
+        const LNG = {{ payload.coordinates.lng }};
         {% endif %}
     </script>
 {% endblock %}

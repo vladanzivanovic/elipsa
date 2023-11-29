@@ -1,8 +1,9 @@
 class LocationPageMapper {
     constructor() {
         if(!LocationPageMapper.instance) {
-            this.countryOptions = '#country-list';
             this.locationBtn = '.location-btn';
+            this.searchInput = '.location-search-input';
+            this.locationItem = '.location-item';
             this.fullImageWrapper = '#sliders';
             this.thumbImageWrapper = '#carousel';
             this.sliders = '.slides';
@@ -16,6 +17,7 @@ class LocationPageMapper {
             this.mobileTitle = '#mobile-title';
             this.imagesWrapper = '.images-wrapper';
             this.mobileDropDown = '.location-drop-down';
+            this.resetSearchBtn = '.reset-search';
 
             LocationPageMapper.instance = this;
         }

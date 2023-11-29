@@ -553,7 +553,7 @@ require('webpack-jquery-ui');
             $('.wd1-nlpopup-close', $(elm)).on('click', function(e) {
                 $.cookie(wd1_nlpopup_cookie_name, 'closed', { expires: wd1_nlpopup_expires, path: '/' });
                 $(elm).fadeOut(200);
-                $('.wd1_nlpopup_overlay', elm).fadeOut(200);
+                $(elm).prev('.wd1_nlpopup_overlay').fadeOut(200);
                 e.preventDefault();
             });
 
@@ -580,7 +580,7 @@ require('webpack-jquery-ui');
 
             $popup.css('top', calculatedOffset);
             $(elm).fadeIn(200);
-            $('.wd1_nlpopup_overlay', $(elm)).fadeIn(500);
+            $(elm).prev('.wd1_nlpopup_overlay').fadeIn(500);
         }
     });
 

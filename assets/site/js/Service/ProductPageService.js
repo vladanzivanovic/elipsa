@@ -1,13 +1,32 @@
-import ProductPageMapper from "../Mapper/ProductPageMapper";
+import productPageMapper from "../Mapper/ProductPageMapper";
 import Fotorama from "./Fotorama";
+import Tipped from "@staaky/tipped";
+import FlexSliderService from "./FlexSliderService";
+
+require('flexslider');
+
 
 class ProductPageService {
     #mapper;
     #fotorama;
 
     constructor() {
-        this.#mapper = ProductPageMapper;
-        this.#fotorama = new Fotorama($('.photo-gallery'));
+        if (!ProductPageService.instance) {
+            this.#mapper = productPageMapper;
+            this.#fotorama = new Fotorama($('.photo-gallery'), 'vertical');
+
+            ProductPageService.instance = this;
+        }
+
+        return ProductPageService.instance;
+    }
+
+    init() {
+        this.showImagesByColor($(this.#mapper.colorActive));
+
+        Tipped.create('.cleaning-icons');
+
+        this.#fotorama.registerEvents();
     }
 
     showImagesByColor(colorElm) {
@@ -19,7 +38,7 @@ class ProductPageService {
                 data.push({
                     img: image.file,
                     thumb: image.file_thumb,
-                    full: image.file,
+                    full: image.file_full,
                 });
             }
         }
@@ -35,29 +54,35 @@ class ProductPageService {
 
         this.#fotorama.load(data);
 
-        $('.color-btn.active').removeClass('active');
+        $(this.#mapper.colorActive).removeClass('active');
         colorElm.addClass('active');
     }
 
     toggleActiveSize(elm) {
-        $('.size-btn.active').removeClass('active');
+        const selectedSize = $(elm);
 
-        $(elm).addClass('active');
-    }
+        $(this.#mapper.sizeActive).removeClass('active');
 
-    toggleActivationShopButton() {
-        const color = $('.color-btn.active');
-        const size = $('.size-btn.active');
-        const quantity = this.#mapper.quantity.val();
+        selectedSize.addClass('active');
 
-        if (color.length > 0 && size.length > 0 && quantity > 0) {
-            this.#mapper.addBtn.removeClass('disabled');
+        if (selectedSize.data('quantity') === 0) {
+            $(this.#mapper.cartBtnWrapper).addClass('hide');
 
-            return true;
+            $(this.#mapper.notifyMeBtnWrapper).removeClass('hide');
+
+            $(this.#mapper.notifyMeInput).val('');
+
+            return;
         }
 
-        this.mapper.addBtn.addClass('disabled');
+        $(this.#mapper.cartBtnWrapper).removeClass('hide');
+
+        $(this.#mapper.notifyMeBtnWrapper).addClass('hide');
     }
 }
 
-export default ProductPageService;
+const productPageService = new ProductPageService();
+
+Object.freeze(productPageService);
+
+export default productPageService;

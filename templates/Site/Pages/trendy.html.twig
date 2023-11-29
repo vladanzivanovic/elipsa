@@ -6,7 +6,7 @@
 {% block ogImage %}{{ products.data|length > 0 ? app.request.schemeAndHttpHost ~ products.data[0].image.file : defaultOgImage }}{% endblock %}
 {% block ogUrl %}{{ app.request.schemeAndHttpHost ~ path(routeName, routeParams) }}{% endblock %}
 
-{% set search = search_criteria is not null ? search_criteria.all : [] %}
+{#{% set search = search_criteria is not null ? search_criteria.all : [] %}#}
 
 {% block content %}
     <div id="page-loader" class="hide"></div>

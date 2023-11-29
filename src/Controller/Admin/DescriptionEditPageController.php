@@ -34,11 +34,9 @@ final class DescriptionEditPageController extends AbstractController
      * @Route("/edit-description/{type}", name="admin.edit_description_page", methods={"GET"})
      * @Template("Admin/Pages/descriptionEdit.html.twig")
      *
-     * @param int $type
-     *
      * @return array
      */
-    public function update(int $type): array
+    public function update(string $type): array
     {
         return $this->responseFormatter->formatResponse($type);
     }

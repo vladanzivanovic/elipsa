@@ -6,29 +6,21 @@ namespace App\Controller\Admin\Api;
 
 use App\Parser\DescriptionRequestParser;
 use App\Repository\DescriptionRepository;
+use App\Request\Dto\DescriptionRequestDto;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DescriptionEditController extends AbstractController
 {
-    /**
-     * @var DescriptionRequestParser
-     */
-    private $requestParser;
+    private DescriptionRequestParser $requestParser;
 
-    /**
-     * @var DescriptionRepository
-     */
-    private $repository;
+    private DescriptionRepository $repository;
 
-    /**
-     * @param DescriptionRequestParser $requestParser
-     * @param DescriptionRepository    $repository
-     */
     public function __construct(
         DescriptionRequestParser $requestParser,
         DescriptionRepository $repository
@@ -46,25 +38,25 @@ class DescriptionEditController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function set(Request $request): JsonResponse
+    public function set(DescriptionRequestDto $descriptionRequestDto): JsonResponse
     {
-        $this->requestParser->parse($request->request);
+        $this->requestParser->parse($descriptionRequestDto);
 
         $this->repository->flush();
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
      * @Route("/api/description-remove/{type}", name="admin.remove_description_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param int $type
+     * @param string $type
      *
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(int $type): JsonResponse
+    public function remove(string $type): JsonResponse
     {
         $descriptions = $this->repository->findBy(['type' => $type]);
 

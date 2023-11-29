@@ -56,4 +56,20 @@ footer {
       color: $light-gray-color;
     }
   }
+
+  .footer-top-area {
+    .footer-newsletter-area {
+      flex: 1;
+
+      .h3-newsletter-left {
+        padding: 0;
+      }
+
+      .news-letter-form {
+        .news_letter_btn {
+          padding: 4px 0;
+        }
+      }
+    }
+  }
 }

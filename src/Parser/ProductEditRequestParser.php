@@ -184,12 +184,12 @@ final class ProductEditRequestParser
             $hasTags->clear();
         }
 
-        $sizeCollection = $this->sizeRepository->findBy(['slug' => $sizes]);
+        foreach ($sizes['slug'] as $index => $sizeSlug) {
+            $size = $this->sizeRepository->findOneBy(['slug' => $sizeSlug]);
 
-        foreach ($sizeCollection as $size) {
             $hasSize = new ProductHasSizes();
             $hasSize->setSize($size);
-            $hasSize->setIsAvailable(true);
+            $hasSize->setQuantity((int) $sizes['quantity'][$index]);
 
             $product->addProductHasSize($hasSize);
         }

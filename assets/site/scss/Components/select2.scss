@@ -1,0 +1,33 @@
+@import "../colors";
+
+.select2-container {
+  width: 100% !important;
+
+  &--default {
+    .select2-results__option--highlighted[aria-selected] {
+      background-color: $site-color;
+      font-size: 14px;
+    }
+
+    .select2-selection--single {
+      border-radius: 0;
+      border: 1px solid #686868;
+      height: 38px;
+
+      .select2-selection__rendered {
+        font-size: 14px;
+        line-height: 38px;
+        color: #474747;
+      }
+
+      .select2-results__option {
+        font-size: 14px;
+        color: #474747;
+      }
+
+      .select2-selection__arrow {
+        height: 38px;
+      }
+    }
+  }
+}

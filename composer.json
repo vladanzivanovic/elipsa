@@ -23,6 +23,7 @@
         "nelmio/security-bundle": "*",
         "presta/sitemap-bundle": "*",
         "ramsey/uuid-doctrine": "*",
+        "scienta/doctrine-json-functions": "*",
         "sensio/framework-extra-bundle": "*",
         "sentry/sentry-symfony": "^4.10",
         "shuchkin/simplexlsx": "*",
@@ -38,6 +39,7 @@
         "symfony/web-link": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.16",
         "tattali/mobile-detect-bundle": "*",
+        "turanjanin/serbian-transliterator": "^1.0",
         "twig/extra-bundle": "*",
         "webmozart/assert": "^1.11",
         "willdurand/js-translation-bundle": "*"

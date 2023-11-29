@@ -1,10 +1,11 @@
-pending: 'pending'
-active: 'active'
-disabled: 'disabled'
+pending: Pending
+active: Active
+archived: Archived
+disabled: Disabled
 
-scroll_top_page: 'Page top'
+scroll_top_page: Page top
 
-view: 'view'
+view: view
 
 default_title: Fashion House Elipsa
 
@@ -18,6 +19,8 @@ collection: Collection
 attribute: Attribute
 
 choose: Choose
+choose_gender: Choose gender
+choose_language: Choose language
 
 data:
   success_send: 'Data are successfully sent.'
@@ -36,7 +39,7 @@ price: price
 navi:
   home: Home
   about_us: About us
-  locations: Locations
+  locations: Stores
   loyalty: Loyalty
   catalogue: Catalogue
   shop: Online Shop
@@ -104,7 +107,9 @@ saving: Saving
 select.color: select color
 select.size: select size
 
-add_to_cart: add to cart
+product.add_to_cart: add to cart
+product.notify_me: Notify me
+product.notify_me_text: Size is not available. Send us your email address and we will notify you once size is available again.
 
 tags: tags
 
@@ -146,7 +151,7 @@ title.your_cart: Your cart
 title.cart_personal_data: Your cart - personal information
 title.checkout_completed_successful: Checkout completed
 title.checkout_completed_unsuccessful: Unsuccessful order
-title.location: Location
+title.location: Store
 title.blog_detailed_page: Blog page
 title.shop_page: Shop
 title.account_activation_page: Account activation
@@ -254,8 +259,8 @@ email.reset_password.title: Reset password on site %siteName%
 email.reset_password.headline.text: Change password request
 email.reset_password.message: In order to change password please follow the link below.
 
-email.order.data.title: Order data
-email.order.data.title_unsucessfull: Unsucessfull order
+email.order.data.title: Pending order %orderId%
+email.order.data.title_unsuccessful: Unsuccessful order %orderId%
 email.order.table.product_name: Product name
 email.order.table.size: Size
 email.order.table.color: Color
@@ -269,14 +274,32 @@ email.order.products_total_price: Subtotal
 email.order.payment_info: Payment information
 email.order.payment_details: Payment details
 email.order.delivery_info: Delivery information
+email.order.note_title: Order additional text
+
+email.notification.size.subject: Product is available again
+email.notification.size.title: Product %product_name% is available again
+
+email.notification.size.text: '<div>
+                                  <div contenteditable="true"
+                                       translate="no" tabindex="-1"
+                                       class="ProseMirror"><h3>
+                                          Dear,</h3>
+                                      <p>We are informing you that size %size% of product %product_name% is available again.</p>
+                                      <p>If you still want to order,</p>
+                                      <p>you can do that by clicking on the link <a href="%link%"%link%</a>, and you will be redirected to product page.</p></div>
+                              </div>'
+
 
 payment_type.on_delivering: On delivering
 payment_type.credit_card: Credi card
 
 location.modal.work_time: Working time
-location.modal.work_time_weekend: Saturday
-location.look_btn: view location
+location.modal.work_time_saturday: Saturday
+location.modal.work_time_sunday: Sunday
+location.look_btn: view store
 location.map: map
+location.search_text: Search store
+
 
 all: all
 
@@ -355,7 +378,7 @@ ask_us.message.success: You are successfuly send the question.
 
 newsletter.text: Be the first informed about everything.
 newsletter.notShowBtn: don't show anymore.
-newsletter.existingUser: You already subscribed on newsletter
+newsletter.existingUser: You are already subscribed on newsletter
 newsletter.success.add.message: You are successfully subscribed on newsletter
 
 contact.telephone.main: Main
@@ -574,3 +597,13 @@ filter_text:
 
 all_items_are_loaded: All products are loaded by given filters
 load_more_products: Load more products
+
+notification.success: Notification is successfully sent. As soon when size is available again we will inform you via email.
+
+male: Male
+female: Female
+
+closed: Closed
+
+product.is_archived: Product "%item%" is archived
+product.is_deleted: Product "%item%" is deleted

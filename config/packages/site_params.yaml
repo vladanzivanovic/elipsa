@@ -112,15 +112,21 @@ parameters:
       code: rs
       currencyCode: RSD
       locale: sr_RS
+      translation: serbian
     en:
       name: Engleski
       code: en
       currencyCode: RSD
       locale: en_AT
+      translation: english
 #    ba:
 #      name: Bosanski
 #      code: ba
 #      currencyCode: BAM
+  countries:
+    rs:
+      name: serbia
+      code: rs
   site_info_texts:
     cookie_policy:
       title: navi.cookie_policy
@@ -135,8 +141,6 @@ parameters:
       slug:
         rs: politika-privatnosti
         en: privacy-policy
-
-
     use_conditions:
       title: navi.use_conditions
       type: use_conditions

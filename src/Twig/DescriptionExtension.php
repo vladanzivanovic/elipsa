@@ -11,19 +11,10 @@ use Twig\TwigFunction;
 
 final class DescriptionExtension extends AbstractExtension
 {
-    /**
-     * @var DescriptionRepository
-     */
-    private $repository;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private DescriptionRepository $repository;
 
-    /**
-     * @param DescriptionRepository $repository
-     * @param SessionInterface      $session
-     */
+    private SessionInterface $session;
+
     public function __construct(
         DescriptionRepository $repository,
         SessionInterface $session
@@ -35,32 +26,21 @@ final class DescriptionExtension extends AbstractExtension
     /**
      * @return array
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('description', [$this, 'getDescription']),
         ];
     }
 
-    /**
-     * @param int    $type
-     * @param string $filter
-     * @param string $locale
-     * @param bool   $isMobile
-     *
-     * @return string|null
-     */
-    public function getDescription(int $type): ?string
+    public function getDescription(string $type): ?string
     {
         $description = $this->repository->findOneBy(['type' => $type, 'locale' => $this->session->get('_locale')]);
 
         return null !== $description ? $description->getDescription() : null;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'banner_extension';
     }

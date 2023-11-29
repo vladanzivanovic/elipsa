@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 
+/**
+ * @deprecated
+ */
 final class UserCheckController extends AbstractController
 {
     /**

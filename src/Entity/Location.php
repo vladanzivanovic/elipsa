@@ -16,52 +16,57 @@ class Location
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $lat;
+    private string $lat;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $lng;
+    private string $lng;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="string", length=15, nullable=true)
      */
-    private $telephone;
+    private ?string $telephone = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $workingTime;
+    private string $workingTime;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $workingTimeWeekend;
+    private ?string $saturday = null;
 
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $zipCode;
+    private string $zipCode;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\LocationTranslation", mappedBy="location", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $locationTranslations;
+    private Collection $locationTranslations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\LocationHasImages", mappedBy="location", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $locationHasImages;
+    private Collection $locationHasImages;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $sunday = null;
 
     public function __construct()
     {
@@ -134,14 +139,14 @@ class Location
         return $this;
     }
 
-    public function getWorkingTimeWeekend(): ?string
+    public function getSaturday(): ?string
     {
-        return $this->workingTimeWeekend;
+        return $this->saturday;
     }
 
-    public function setWorkingTimeWeekend(string $workingTimeWeekend): self
+    public function setSaturday(string $saturday): self
     {
-        $this->workingTimeWeekend = $workingTimeWeekend;
+        $this->saturday = $saturday;
 
         return $this;
     }
@@ -233,6 +238,18 @@ class Location
                 $locationHasImage->setLocation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSunday(): ?string
+    {
+        return $this->sunday;
+    }
+
+    public function setSunday(?string $sunday): self
+    {
+        $this->sunday = $sunday;
 
         return $this;
     }

@@ -12,6 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class ProductSize
 {
+    public const NO_SIZE = 'no-sizes';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -20,7 +22,7 @@ class ProductSize
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string")
      */
     private $size;
 

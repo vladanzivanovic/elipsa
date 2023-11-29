@@ -8,6 +8,8 @@ Sentry.init({
 
 require('../../js/Routing');
 
+require ('select2/dist/js/select2.full.min');
+
 import '../vendors/core/core';
 import '../vendors/feather-icons/feather';
 

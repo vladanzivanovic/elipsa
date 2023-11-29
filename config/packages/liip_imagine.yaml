@@ -38,29 +38,47 @@ liip_imagine :
             cache: ads_photos
             quality : 100
             filters :
-                thumbnail  : { size : [428, 547], mode : outbound }
-                background : { size : [428, 547], position : center, color : '#ffffff' }
+                thumbnail  : { size : [500, 746], mode : outbound }
+                background : { size : [500, 746], position : center, color : '#ffffff' }
+        product_image_full :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [1920, 2865], mode : outbound }
+                background : { size : [1920, 2865], position : center, color : '#ffffff' }
         product_image_thumb :
             cache: ads_photos
             quality : 100
             filters :
-                thumbnail  : { size : [111, 140], mode : outbound }
-                background : { size : [111, 140], position : center, color : '#ffffff' }
+                thumbnail  : { size : [94, 140], mode : outbound }
+                background : { size : [94, 140], position : center, color : '#ffffff' }
+        location :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [1060, 1580], mode : outbound }
+                background : { size : [1060, 1580], position : center, color : '#ffffff' }
+        location_thumb :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [157, 200], mode : outbound }
+                background : { size : [157, 200], position : center, color : '#ffffff' }
         grid_thumb :
             cache: ads_photos
-            quality : 90
+            quality : 100
             filters :
                 thumbnail  : { size : [256, 381], mode : outbound }
                 background : { size : [256, 381], position : center, color : '#ffffff' }
         index_thumb_recommended :
             cache: ads_photos
-            quality : 90
+            quality : 100
             filters :
                 thumbnail  : { size : [370, 200], mode : outbound }
                 background : { size : [370, 200], position : center, color : '#ffffff' }
         cart_thumb :
             cache: ads_photos
-            quality : 90
+            quality : 100
             filters :
                 thumbnail: { size: [96, 107], mode: outbound }
                 background: { size: [96, 107], position: center, color: '#ffffff' }
@@ -146,9 +164,21 @@ liip_imagine :
             cache: ads_photos
             quality : 100
             filters :
-                thumbnail: { size: [1920, 533], mode: outbound }
-                background: { size: [1920, 533], position: center, color: '#ffffff' }
+                thumbnail: { size: [1500, 1785], mode: outbound }
+                background: { size: [1500, 1785], position: center, color: '#ffffff' }
         news_letter_banner_mobile :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail: { size: [600, 800], mode: outbound }
+                background: { size: [600, 800], position: center, color: '#ffffff' }
+        pop_up_banner :
+            cache: ads_photos
+            quality : 100
+            filters :
+                thumbnail: { size: [1500, 735], mode: outbound }
+                background: { size: [1500, 735], position: center, color: '#ffffff' }
+        pop_up_banner_mobile :
             cache: ads_photos
             quality : 100
             filters :

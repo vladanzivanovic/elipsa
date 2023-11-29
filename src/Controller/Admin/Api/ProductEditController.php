@@ -67,4 +67,18 @@ final class ProductEditController extends AbstractController
 
         return $this->json(['text' => $statusText]);
     }
+
+    /**
+     * @Route("/api/product-home-page-position/{slug}/{status}",
+     *     name="admin.api_product_home_page_position",
+     *     methods={"PATCH"},
+     *     options={"expose": true}
+     * )
+     */
+    public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
+    {
+        $this->editHandler->setHomePagePosition($productTranslation->getProduct(), $status);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
+    }
 }

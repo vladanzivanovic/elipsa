@@ -7,6 +7,7 @@ namespace App\Formatter\Admin;
 use App\Entity\Description;
 use App\Helper\ConstantsHelper;
 use App\Repository\DescriptionRepository;
+use App\View\DescriptionView;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class DescriptionEditResponseFormatter
@@ -17,22 +18,21 @@ final class DescriptionEditResponseFormatter
 
     private TranslatorInterface $translator;
 
+    private DescriptionView $descriptionView;
+
     public function __construct(
         DescriptionRepository $repository,
         ConstantsHelper $constantsHelper,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        DescriptionView $descriptionView
     ) {
         $this->repository = $repository;
         $this->constantsHelper = $constantsHelper;
         $this->translator = $translator;
+        $this->descriptionView = $descriptionView;
     }
 
-    /**
-     * @param int|null $type
-     *
-     * @return array
-     */
-    public function formatResponse(?int $type = null): array
+    public function formatResponse(?string $type = null): array
     {
         $response = [
           'typeOptions' => $this->getTypesForOptions(),
@@ -42,11 +42,13 @@ final class DescriptionEditResponseFormatter
 
             $descriptions = $this->repository->findBy(['type' => $type]);
 
-            foreach ($descriptions as $description) {
-                $response[$description->getLocale() . '_description'] = $description->getDescription();
-            }
+            $response['payload'] = $this->descriptionView->view($descriptions);
 
-            $response['type'] = $type;
+//            foreach ($descriptions as $description) {
+//                $response[$description->getLocale() . '_description'] = $description->getDescription();
+//            }
+//
+//            $response['type'] = $type;
         }
 
         return $response;
@@ -61,7 +63,7 @@ final class DescriptionEditResponseFormatter
         foreach ($constants as $constant => $value) {
             $options[] = [
                 'title' => $this->translator->trans('navi.'.$value),
-                'value' => $constant,
+                'value' => $value,
             ];
         }
 

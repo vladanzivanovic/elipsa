@@ -1,6 +1,10 @@
 import MapsMapper from "../Mapper/MapsMapper";
 
 class MapsService {
+    #map;
+    #marker;
+    #bounds;
+    #infoWindow;
     constructor(mapOptions, panoramaOptions) {
         this.mapper = new MapsMapper();
         this.GEOLOCATION_JSON = 'http://maps.google.com/maps/api/geocode/json';
@@ -36,7 +40,11 @@ class MapsService {
                     ]
                 },
             ],
+            marker: {
+                draggable: true,
+            },
         };
+
         this.defaultPanoramaOptions = {
             pov: {
                 heading: 34,
@@ -87,7 +95,6 @@ class MapsService {
                     script.src = `//maps.googleapis.com/maps/api/js?key=${window.mapsApiKey}&callback=${this.callbackName}&libraries=geometry`;
                     script.async = true;
                     document.body.append(script);
-
                 } else {
                     this.resolve();
                 }
@@ -125,25 +132,38 @@ class MapsService {
         return google.maps.geometry.spherical.computeDistanceBetween(this.getLatLng(), new google.maps.LatLng(lat, lng));
     }
 
-    showMap(mapContainer)
+    showMap(mapContainer, infoWindowDom = null)
     {
         mapContainer = mapContainer ? mapContainer : this.mapper.map.get(0);
 
-        if (!this.map) {
-            this.map = new google.maps.Map(mapContainer, this.mapOptions);
-        }
-
         this.mapOptions.center = this.panoramaOptions.position = this.getLatLng();
 
-        this.myMarker = new google.maps.Marker({
-            position: this.mapOptions.center,
-            draggable: true,
-            map: this.map,
-        });
+        this.#init(mapContainer);
+
+        // if (!this.map) {
+        //     this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        // }
+
+        // this.map.
+
+        // this.myMarker = new google.maps.Marker({
+        //     position: this.mapOptions.center,
+        //     draggable: this.mapOptions.marker.draggable,
+        //     map: this.map,
+        // });
+
+        this.#marker.setPosition(this.mapOptions.center);
+        this.#marker.setDraggable(this.mapOptions.marker.draggable);
+        this.#marker.setMap(this.map);
 
         google.maps.event.trigger(this.map, "resize");
 
         this.map.setCenter(this.mapOptions.center);
+
+        if (null !== infoWindowDom) {
+            const windowDom = infoWindowDom.getContent();
+            this.#setInfoWindow(windowDom.title, windowDom.html);
+        }
     };
 
     showMapWitMultipleMarkersWithPopupCallback(locations, callback)
@@ -157,7 +177,7 @@ class MapsService {
 
         const bounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(locations[0].country_st_lat, locations[0].country_st_lng),
-            new google.maps.LatLng(locations[0].country_nt_lat, locations[0].country_nt_lng) );
+            new google.maps.LatLng(locations[0].country_nt_lat, locations[0].country_nt_lng));
 
         for(let i = 0; i < locations.length; i++) {
             this.setCoordinates(locations[i].lat, locations[i].lng);
@@ -214,16 +234,50 @@ class MapsService {
         });
     };
 
+    triggerInfoWindowOpen()
+    {
+        google.maps.event.trigger(this.#marker, 'click');
+    }
 
     registerEvents() {
-        google.maps.event.addListener(this.myMarker, 'dragend', evt => {
+        if (typeof google === 'undefined') {
+
+        }
+        google.maps.event.addListener(this.#marker, 'dragend', evt => {
             this.mapper.latInput.val(evt.latLng.lat().toFixed(3));
             this.mapper.lngInput.val(evt.latLng.lng().toFixed(3));
         });
 
-        google.maps.event.addListener(this.myMarker, 'dragstart', function(evt){
+        google.maps.event.addListener(this.#marker, 'dragstart', function(evt){
             console.log(evt);
         });
+    }
+
+    #setInfoWindow(title, htmlContent)
+    {
+        this.#infoWindow.close();
+
+        this.#infoWindow.setPosition(this.getLatLng());
+        this.#infoWindow.setContent(htmlContent);
+
+        google.maps.event.addListener(this.#marker, 'click', (evt) => {
+            this.#infoWindow.open({
+                anchor: this.#marker,
+                map: this.map,
+            });
+        });
+    }
+
+    #init(mapContainer)
+    {
+        if (typeof this.map === 'object') {
+            return;
+        }
+
+        this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        this.#marker = new google.maps.Marker();
+        this.#infoWindow = new google.maps.InfoWindow();
+        this.#bounds = new google.maps.LatLngBounds();
     }
 }
 

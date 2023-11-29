@@ -3,11 +3,12 @@ import loyaltyPageMapper from "../Mapper/LoyaltyPageMapper";
 import loader from "../Dom/LoaderDom";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import FormHelperService from "../../../js/Helper/FormHelperService";
+import toastrService from "../../../js/Services/ToastrService";
 
 class UserHandler {
     constructor() {
         this.mapper = loyaltyPageMapper;
-        this.notification = NotificationService();
+        this.notification = toastrService;
     }
 
     doRegistration(form) {
@@ -28,11 +29,11 @@ class UserHandler {
             dataType: 'json',
             success: (response) => {
                 AppHelperService.redirect('reload');
-                this.notification.show('success', Translator.trans(`registration.success.message`, null, 'messages', LOCALE), true);
+                this.notification.success(Translator.trans(`registration.success.message`, null, 'messages', LOCALE));
                 loader.hide();
             },
             error: (error) => {
-                this.notification.show('error', Translator.trans(`registration.error.user_exists`, null, 'messages', LOCALE), true);
+                this.notification.error(Translator.trans(`registration.error.user_exists`, null, 'messages', LOCALE));
                 loader.hide();
             }
         })
@@ -47,13 +48,12 @@ class UserHandler {
         $.ajax({
             type,
             url: urlRoute,
-            data: $(mapper.loginForm).serializeArray(),
-            dataType: 'json',
+            data: JSON.stringify(FormHelperService.formToJson($(mapper.loginForm))),
             success: (response) => {
                 AppHelperService.redirect(Routing.generate('site.home_page'));
             },
             error: (error) => {
-                this.notification.show('error', Translator.trans(error.responseJSON.message, null, 'messages', LOCALE), true);
+                this.notification.error(error.responseJSON.error);
                 loader.hide();
             }
         })
@@ -74,7 +74,6 @@ class UserHandler {
             type,
             url: urlRoute,
             data,
-            dataType: 'json',
             success: (response) => {
                 AppHelperService.redirect('reload');
             },

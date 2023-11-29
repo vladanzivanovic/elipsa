@@ -33,6 +33,7 @@ final class OrderCompleteMailer
         $this->userRegistrationFormatter = $userRegistrationFormatter;
         $this->userRegistrationMailer = $userRegistrationMailer;
     }
+
     public function sendEmail(
         array $viewData,
         ShopOrder $order,
@@ -70,15 +71,15 @@ final class OrderCompleteMailer
         $isSuccessfulTransaction = $viewData['is_successful_transaction'];
 
         $subject = true === $isSuccessfulTransaction ?
-            $this->translator->trans('email.order.data.title', ['orderId' => $order->getId()]) :
-            $this->translator->trans('email.order.data.title_unsucessfull', ['orderId' => $order->getId()]);
+            $this->translator->trans('email.order.data.title', ['%orderId%' => '#'. $order->getId()]) :
+            $this->translator->trans('email.order.data.title_unsuccessful', ['%orderId%' => '#'. $order->getId()]);
 
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_USER_ORDERED);
         $model->setTemplate(true === $isSuccessfulTransaction ? 'order' : 'failedOrder');
         $model->setTo($user->getEmail());
         $model->setToName($user->getFirstName().' '.$user->getLastName());
-        $model->setSubject($subject);
+        $model->setSubject($settings['site_name']->getValue() .' - '. $subject);
         $model->setFrom($settings['main_email']->getValue());
         $model->setFromName($settings['site_name']->getValue());
         $model->setReplyTo($settings['main_email']->getValue());

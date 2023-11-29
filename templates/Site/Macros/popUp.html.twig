@@ -1,0 +1,75 @@
+{% macro popup_banner(type, cookieName, locale, expires = 30) %}
+    {% set bannerFilter = is_mobile() ? cookieName ~ '_banner_mobile' : cookieName ~ '_banner' %}
+    {% set bannerArray = banner(type, bannerFilter, locale, is_mobile()) %}
+    {% if bannerArray is not null %}
+        {% set bannerNewsLink = "background: rgba(0, 0, 0, 0) url("~ bannerArray.image_link ~") no-repeat scroll left top / cover" %}
+
+        <!-- regular-popup-start -->
+        <div class="wd1-nlpopup-overlay"></div>
+        <div id="{{ cookieName }}" class="wd1-nlpopup" data-expires="{{ expires }}" data-delay="10" data-cookie-name="{{ cookieName }}" style="{{ bannerNewsLink }}">
+            <a href="#closepopup" class="wd1-nlpopup-close banner-close">x</a>
+            <a href="{{ absolute_url(bannerArray.link) }}" class="wd1-nlpopup-link"></a>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro news_letter(cookieName, locale, langOptions) %}
+    {% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+    {% set imageFilter = is_mobile() ? 'news_letter_banner_mobile' : 'news_letter_banner' %}
+    {% set bannerArray = banner(constant('App\\Entity\\Banner::TYPE_NEWS_LETTER'), imageFilter, locale, is_mobile()) %}
+    {% if bannerArray is not null %}
+        {% set bannerNewsLink = "background: rgba(0, 0, 0, 0) url("~ bannerArray.image_link ~") no-repeat scroll left top / cover" %}
+
+        <!-- newsletter-popup-start -->
+        <div class="wd1_nlpopup_overlay wd1-nlpopup-overlay newsletter-pop-up-overlay"></div>
+        <div class="wd1-nlpopup newsletter-pop-up-body" style="background: #fff; padding: 20px !important;" data-expires="30" data-delay="0" data-cookie-name="{{ cookieName }}">
+            <a href="#closepopup" id="wd1_nlpopup_close" class="wd1-nlpopup-close newsletter-close">x</a>
+            <div class="row">
+                <div class="col-md-5 hidden-xs hidden-sm">
+                    <img src="{{ bannerArray.image_link }}" alt="">
+                </div>
+                <div class="col-xs-12 col-md-7 news-letter-content">
+                    <div class="news-letter-header-text">
+                        <h2>newsletter</h2>
+                        <p class="text-uppercase">{{ 'newsletter.text' | trans }}</p>
+                    </div>
+                    <form id="{{ cookieName }}_pop_up" class="news-letter-form regular-form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ inputs.input('newsletter_popup_email', '', 'newsletter_email', 'Email *', 'email') }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 m-bt-2-xs">
+                                {% set genderOptions = [
+                                    {'title': 'male' | trans , 'value': 'male' },
+                                    {'title': 'female' | trans , 'value': 'female' },
+                                    ]
+                                %}
+                                {{ inputs.selectbox('newsletter_popup_gender', 'newsletter_gender', '', genderOptions, '', '', false, 'choose_gender') }}
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                {{ inputs.selectbox('newsletter_popup_language', 'newsletter_language', '', langOptions, '', '', false, 'choose_language') }}
+                            </div>
+                        </div>
+                        <div class="row news-letter-submit">
+                            <div class="col-xs-12">
+                                <button class="news_letter_btn submit-btn" type="button">{{ 'submit' | trans }}</button>
+                            </div>
+                        </div>
+{#                        <div class="row dont-show-news-letter">#}
+{#                            <div class="col-xs-12">#}
+{#                                <label>#}
+{#                                    <input type="checkbox">#}
+{#                                    <span class="d-inline-block letter-capitalize">{{ 'newsletter.notShowBtn' | trans }}</span>#}
+{#                                </label>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    {% endif %}
+{% endmacro %}

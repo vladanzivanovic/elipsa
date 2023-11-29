@@ -708,7 +708,7 @@
                                                                                 <tr class="mceStandardButton">
                                                                                     <td style="background-color:#000000;border-radius:0;text-align:center"
                                                                                         class="mceButton" valign="top">
-                                                                                        <a href="" target="_blank"
+                                                                                        <a href="{{ absolute_url(path('site.order_overview', {'token' : token})) }}" target="_blank"
                                                                                            style="background-color:#000000;border-radius:0;border:2px solid #000000;color:#ffffff;display:block;font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;font-size:16px;font-weight:normal;font-style:normal;padding:16px 28px;text-decoration:none;min-width:30px;text-align:center;direction:ltr;letter-spacing:0px">{{ 'email.order.overview' | trans }}</a>
                                                                                     </td>
                                                                                 </tr>
@@ -867,6 +867,161 @@
                                                                     <!-- total end -->
                                                                     {{ include('Site/Components/Email/orderPaymentInfo.html.twig') }}
                                                                     <tr>
+                                                                        <td class="mceLayoutContainer" valign="top"
+                                                                            style="padding: 12px 0px;">
+                                                                            <table align="center" border="0"
+                                                                                   cellpadding="0" cellspacing="0"
+                                                                                   width="100%" role="presentation"
+                                                                                   data-block-id="129"
+                                                                                   id="section_7a2232e783f4acf76828e9177d4701da"
+                                                                                   class="mceLayout">
+                                                                                <tbody>
+                                                                                <tr class="mceRow">
+                                                                                    <td valign="top"
+                                                                                        style="background-position: center center; background-repeat: no-repeat; background-size: cover;">
+                                                                                        <table border="0"
+                                                                                               cellpadding="0"
+                                                                                               cellspacing="0"
+                                                                                               width="100%"
+                                                                                               role="presentation">
+                                                                                            <tbody>
+                                                                                            <tr>
+                                                                                                <td class="mceColumn"
+                                                                                                    data-block-id="-28"
+                                                                                                    valign="top"
+                                                                                                    colspan="12"
+                                                                                                    width="100%">
+                                                                                                    <table border="0"
+                                                                                                           cellpadding="0"
+                                                                                                           cellspacing="0"
+                                                                                                           width="100%"
+                                                                                                           role="presentation">
+                                                                                                        <tbody>
+                                                                                                        <tr>
+                                                                                                            <td align="center"
+                                                                                                                valign="top">
+                                                                                                                <table align="center"
+                                                                                                                       border="0"
+                                                                                                                       cellpadding="0"
+                                                                                                                       cellspacing="0"
+                                                                                                                       width="100%"
+                                                                                                                       role="presentation"
+                                                                                                                       data-block-id="-19">
+                                                                                                                    <tbody>
+                                                                                                                    <tr class="mceRow">
+                                                                                                                        <td valign="top"
+                                                                                                                            style="background-position: center center; background-repeat: no-repeat; background-size: cover;">
+                                                                                                                            <table border="0"
+                                                                                                                                   cellpadding="0"
+                                                                                                                                   cellspacing="0"
+                                                                                                                                   width="100%"
+                                                                                                                                   role="presentation">
+                                                                                                                                <tbody>
+                                                                                                                                <tr>
+                                                                                                                                    <td class="mceColumn"
+                                                                                                                                        data-block-id="-37"
+                                                                                                                                        valign="top"
+                                                                                                                                        colspan="12"
+                                                                                                                                        width="100%">
+                                                                                                                                        <table border="0"
+                                                                                                                                               cellpadding="0"
+                                                                                                                                               cellspacing="0"
+                                                                                                                                               width="100%"
+                                                                                                                                               role="presentation">
+                                                                                                                                            <tbody>
+                                                                                                                                            <tr>
+                                                                                                                                                <td valign="top">
+                                                                                                                                                    <table align="center"
+                                                                                                                                                           border="0"
+                                                                                                                                                           cellpadding="0"
+                                                                                                                                                           cellspacing="0"
+                                                                                                                                                           width="100%"
+                                                                                                                                                           role="presentation"
+                                                                                                                                                           data-block-id="132">
+                                                                                                                                                        <tbody>
+                                                                                                                                                        <tr class="mceRow">
+                                                                                                                                                            <td valign="top"
+                                                                                                                                                                style="background-position: center center; background-repeat: no-repeat; background-size: cover;">
+                                                                                                                                                                <table border="0"
+                                                                                                                                                                       cellpadding="0"
+                                                                                                                                                                       cellspacing="24"
+                                                                                                                                                                       width="100%"
+                                                                                                                                                                       role="presentation">
+                                                                                                                                                                    <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mceColumn"
+                                                                                                                                                                            data-block-id="131"
+                                                                                                                                                                            valign="top"
+                                                                                                                                                                            colspan="12"
+                                                                                                                                                                            width="100%"
+                                                                                                                                                                            style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 24px;">
+                                                                                                                                                                            <table border="0"
+                                                                                                                                                                                   cellpadding="0"
+                                                                                                                                                                                   cellspacing="0"
+                                                                                                                                                                                   width="100%"
+                                                                                                                                                                                   role="presentation">
+                                                                                                                                                                                <tbody>
+                                                                                                                                                                                <tr>
+                                                                                                                                                                                    <td class="mceBlockContainer"
+                                                                                                                                                                                        valign="top"
+                                                                                                                                                                                        style="padding: 12px 24px;">
+                                                                                                                                                                                        <div data-block-id="133"
+                                                                                                                                                                                             data-rich-text="true"
+                                                                                                                                                                                             class="mceText"
+                                                                                                                                                                                             id="dataBlockId-133"
+                                                                                                                                                                                             style="width: 100%;">
+                                                                                                                                                                                            <div>
+                                                                                                                                                                                                <div contenteditable="true"
+                                                                                                                                                                                                     translate="no"
+                                                                                                                                                                                                     tabindex="-1"
+                                                                                                                                                                                                     class="ProseMirror">
+                                                                                                                                                                                                    <p>
+                                                                                                                                                                                                        <strong>{{ 'email.order.note_title' | trans }}:</strong>
+                                                                                                                                                                                                    </p>
+                                                                                                                                                                                                    <p>
+                                                                                                                                                                                                        {{ note }}</p>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                    </td>
+                                                                                                                                                                                </tr>
+                                                                                                                                                                                </tbody>
+                                                                                                                                                                            </table>
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                    </tbody>
+                                                                                                                                                                </table>
+                                                                                                                                                            </td>
+                                                                                                                                                        </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </td>
+                                                                                                                                            </tr>
+                                                                                                                                            </tbody>
+                                                                                                                                        </table>
+                                                                                                                                    </td>
+                                                                                                                                </tr>
+                                                                                                                                </tbody>
+                                                                                                                            </table>
+                                                                                                                        </td>
+                                                                                                                    </tr>
+                                                                                                                    </tbody>
+                                                                                                                </table>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td style="padding-top:8px;padding-bottom:8px;padding-right:8px;padding-left:8px"
                                                                             class="mceLayoutContainer" valign="top">
                                                                             <table align="center" border="0"
@@ -911,36 +1066,9 @@
                                                                                                                         <em><strong><span
                                                                                                                                         style="font-size: 13px">
                                                                                                                                     {{ 'email.order.thanks_text' | trans }}
-                                                                                                                                </span></strong></em><br>
-                                                                                                                        &nbsp;<span
-                                                                                                                                style="font-size: 12px">
-                                                                                                                            {{ settings.site_name.value }}
-                                                                                                                        </span><br>
-                                                                                                                        &nbsp;<a
-                                                                                                                                href="https://elipsa.rs"
-                                                                                                                                target="_blank"><span
-                                                                                                                                    style="font-size: 12px">
-                                                                                                                                {{ url('site.home_page') }}
-                                                                                                                            </span></a>
+                                                                                                                                </span></strong></em>
                                                                                                                     </p>
-                                                                                                                    <p class="last-child">
-                                                                                                                        <br>
-                                                                                                                        &nbsp;<strong><span
-                                                                                                                                    style="font-size: 12px">{{ 'email.order.seller.account' | trans }}: </span></strong>
-                                                                                                                        <span
-                                                                                                                                style="font-size: 12px">
-                                                                                                                            {{ settings.account_number.value }}
-                                                                                                                        </span><br>
-                                                                                                                        &nbsp;<strong><span
-                                                                                                                                    style="font-size: 12px">{{ 'email.order.seller.telephone' | trans }}:</span></strong><span
-                                                                                                                                style="font-size: 12px"> {{ settings.telephone.value }}</span><br>
-                                                                                                                        &nbsp;<strong><span
-                                                                                                                                    style="font-size: 12px">{{ 'email.order.seller.mobile' | trans }}:</span></strong><span
-                                                                                                                                style="font-size: 12px"> {{ settings.mobile_phone.value }}</span><br>
-                                                                                                                        &nbsp;<strong><span
-                                                                                                                                    style="font-size: 12px">E-mail:</span></strong><span
-                                                                                                                                style="font-size: 12px"> {{ settings.main_email.value }}</span>
-                                                                                                                    </p>
+                                                                                                                    {{ include('Site/Components/Email/footer.html.twig') }}
                                                                                                                 </div>
                                                                                                             </td>
                                                                                                         </tr>

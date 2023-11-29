@@ -13,14 +13,22 @@ class OrderApiChecker {
         return OrderApiChecker.instance;
     }
 
-    checkManageProduct(productData) {
+    checkManageProduct(productData)
+    {
         for (let prop in productData) {
             const value = productData[prop];
 
             if (!value || value < 1) {
-                this.#notification.show('error', Translator.trans(`product.${prop}`, null, 'validators', LOCALE), true);
+                this.#showErrorAndThrowException(`product.${prop}`);
+            }
+        }
+    }
 
-                throw 'Validation failed.';
+    isSizeAvailable(size)
+    {
+        for (const productSize of SIZES) {
+            if (size === productSize.slug && productSize.quantity <= 0) {
+                this.#showErrorAndThrowException('product.size_unavailable');
             }
         }
     }
@@ -38,6 +46,13 @@ class OrderApiChecker {
         }
 
         return 0 < productsCounter;
+    }
+
+    #showErrorAndThrowException(key)
+    {
+        this.#notification.show('error', Translator.trans(key, null, 'validators', LOCALE), true);
+
+        throw Error('Validation failed.');
     }
 }
 

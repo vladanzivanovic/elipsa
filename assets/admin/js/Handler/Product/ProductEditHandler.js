@@ -1,18 +1,20 @@
 import DropZoneService from "../../../../js/Services/DropZoneService";
 import AppHelperService from "../../../../js/Helper/AppHelperService";
-import ProductDataTables from "../../Services/DataTables/ProductDataTables";
 import toastrService from "../../../../js/Services/ToastrService";
 import productEditMapper from "../../Mapper/ProductEditMapper";
+import productDataTables from "../../Services/DataTables/ProductDataTables";
 
 class ProductEditHandler {
     #mapper;
     #notification;
     #youtube;
+    #dataTable;
 
     constructor(youtube) {
         this.#mapper = productEditMapper;
         this.#notification = toastrService;
         this.#youtube = youtube;
+        this.#dataTable = productDataTables;
     }
 
     save() {
@@ -63,15 +65,29 @@ class ProductEditHandler {
         })
     }
 
-    changeStatus(checkbox, slug, status) {
+    changeStatus(slug, status) {
         $.ajax({
             type: 'PATCH',
             'url': Routing.generate('admin.api_product_change_status', {slug, status}),
             dataType: 'json',
             success: (response) => {
-                checkbox.parentElement.firstElementChild.innerText = Translator.trans(response.text, null, 'messages', LOCALE);
+                this.#dataTable.reload();
             },
             error: () => {
+                this.#notification.error(Translator.trans('generic_error', null, 'message', LOCALE));
+            }
+        })
+    }
+
+    changeHomePagePosition(checkbox, slug, status) {
+        $.ajax({
+            type: 'PATCH',
+            'url': Routing.generate('admin.api_product_home_page_position', {slug, status}),
+            dataType: 'json',
+            success: (response) => {},
+            error: () => {
+                checkbox.prop('checked', false);
+
                 this.#notification.error(Translator.trans('generic_error', null, 'message', LOCALE));
             }
         })
@@ -84,7 +100,7 @@ class ProductEditHandler {
             type: 'DELETE',
             url: Routing.generate(`admin.remove_product_api`, {slug}),
             success: () => {
-                ProductDataTables().reload();
+                this.#dataTable.reload();
                 this.#notification.remove();
             },
             error: (error) => {

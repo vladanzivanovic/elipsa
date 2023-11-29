@@ -5,6 +5,8 @@ import productEditValidator from "../Validators/ProductEditValidator";
 import Tipped from "@staaky/tipped";
 import YoutubeService from "../Services/YouTubeService";
 import productEditMapper from "../Mapper/ProductEditMapper";
+import productEditEvents from "../Event/ProductEditEvents";
+import productEditManipulator from "../Manipulator/ProductEditManipulator";
 require ('select2/dist/js/select2.full.min');
 
 class ProductEditController {
@@ -13,16 +15,21 @@ class ProductEditController {
     #validator;
     #youtube;
     #handler;
+    #productEditEvents;
+    #productEditManipulator;
+
     constructor() {
         this.#mapper = productEditMapper;
         this.#dropZone = new ProductDropZoneService(DropZoneService());
         this.#validator = productEditValidator;
         this.#youtube = new YoutubeService();
         this.#handler = new ProductEditHandler(this.#youtube);
+        this.#productEditEvents = productEditEvents;
+        this.#productEditManipulator = productEditManipulator;
 
         this.initializeForm();
 
-        this.registerEvents();
+        this.#productEditEvents.registerEvents();
     }
 
     initializeForm()
@@ -39,18 +46,14 @@ class ProductEditController {
         this.#mapper.tags.select2();
         this.#mapper.category.select2();
         this.#mapper.badge.select2();
-        this.#mapper.sizes.select2();
+        $(`${this.#mapper.sizes} tbody td select`).select2();
 
         if (IS_EDIT) {
             this.#dropZone.setFiles(IMAGES, 'mainImages');
             this.#youtube.setFromArray(YOUTUBES);
-        }
-    }
 
-    registerEvents() {
-        $(this.#mapper.submitBtn).on('click touchend', e => {
-            this.#handler.save();
-        })
+            this.#productEditManipulator.setOnEdit();
+        }
     }
 }
 

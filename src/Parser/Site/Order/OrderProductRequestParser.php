@@ -7,15 +7,12 @@ namespace App\Parser\Site\Order;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
 use App\Entity\ProductColor;
-use App\Entity\ProductTranslation;
 use App\Entity\ShopOrder;
 use App\Exception\ProductManipulationException;
 use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductTranslationRepository;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
+use App\Request\Dto\OrderProductRequestDto;
 use Webmozart\Assert\Assert;
 
 final class OrderProductRequestParser
@@ -47,21 +44,18 @@ final class OrderProductRequestParser
         $this->orderCouponParser = $orderCouponParser;
         $this->orderRequestParser = $orderRequestParser;
     }
-    public function parse(
-        Request $request,
-        string $orderToken,
-        string $productTranslationSlug
-    ): ShopOrder {
-        $order = $this->getOrder($orderToken);
 
-        $body = json_decode($request->getContent(), true);
-        $requestBag = new ParameterBag($body);
-        $size = $requestBag->get('size');
-        $color = $this->colorRepository->find($requestBag->getInt('color'));
+    public function parse(
+        OrderProductRequestDto $orderProductRequestDto
+    ): ShopOrder {
+        $order = $this->getOrder($orderProductRequestDto->token);
+
+        $size = $orderProductRequestDto->size;
+        $color = $this->colorRepository->find($orderProductRequestDto->color);
 
         $orderProduct = $this->findOrCreate(
             $order,
-            $productTranslationSlug,
+            $orderProductRequestDto->productSlug,
             $size,
             $color
         );
@@ -73,7 +67,7 @@ final class OrderProductRequestParser
 
         $orderProduct->setColor($color);
         $orderProduct->setSize($size);
-        $orderProduct->setQuantity($requestBag->getInt('quantity'));
+        $orderProduct->setQuantity($orderProductRequestDto->quantity);
         $orderProduct->setImage($this->imageRepository->getMainByProduct($product));
         $orderProduct->setPrice($product->getPrice());
         $orderProduct->setCode($product->getCode());
@@ -95,6 +89,9 @@ final class OrderProductRequestParser
         return $this->orderRequestParser->findOrder($orderToken);
     }
 
+    /**
+     * @throws ProductManipulationException
+     */
     private function findOrCreate(
         ShopOrder $order,
         string $productTranslationSlug,

@@ -1,12 +1,19 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class CouponsEditMapper {
     constructor() {
         if (!CouponsEditMapper.instance) {
-            this.form = $('#edit_form');
-            this.validFrom = $('#datePicker_valid_from');
-            this.validTo = $('#datePicker_valid_to');
-            this.submitBtn = $('#coupon_submit');
+            const defaultMapping = Object.assign(this, baseFormMapper);
 
-            CouponsEditMapper.instance = this;
+            this.fields = {
+                validFrom: '#datePicker_valid_from',
+                validTo: '#datePicker_valid_to',
+                categories: '#categories',
+                tags: '#tags',
+                products: '#products',
+            };
+
+            CouponsEditMapper.instance = defaultMapping;
         }
 
         return CouponsEditMapper.instance;

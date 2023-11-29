@@ -29,13 +29,14 @@ final class TagView
         return $view;
     }
 
-    public function getForOptions(Tags $tags, string $locale): array
+    public function getForOptions(Tags $tags, string $locale ): array
     {
         $trans = $tags->getByLocale($locale);
 
         return [
             'title' => $trans->getTitle(),
             'value' => $tags->getId(),
+            'slug' => $trans->getSlug(),
         ];
     }
 

@@ -36,12 +36,15 @@ final class ImageView
 
         $imageView = $this->editProductView($productHasImages, 'product', 'product_image');
         $imageView['file_thumb'] = $this->generateImageLink($image->getName(), 'product', 'product_image_thumb');
+        $imageView['file_full'] = $this->generateImageLink($image->getName(), 'product', 'product_image_full');
 
         return $imageView;
     }
 
-    public function view(Image $image, string $entity, string $filter = 'tmp_image_thumb'): array
+    public function view(Image $image, string $entity, string $filter = null): array
     {
+        $filter = $filter ?? 'tmp_image_thumb';
+
         $link = $this->generateImageLink($image->getName(), $entity, $filter);
 
         return [

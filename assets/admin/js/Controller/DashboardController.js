@@ -1,50 +1,69 @@
-import ProductDataTables from "../Services/DataTables/ProductDataTables";
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
-
-const Private = Symbol('private');
+import productListPageFilter from "../Filter/ProductListPageFilter";
+import ProductDataTableEvents from "../Event/ProductDataTableEvents";
+import productListFilterEvents from "../Event/ProductListFilterEvents";
+import productListModal from "../Dom/ProductListModal";
 
 class DashboardController {
+    #filter;
+    #productDataTable;
+    #filterEvents;
+    #productEditHandler;
+    #productModal;
+
     constructor() {
+        this.#filter = productListPageFilter;
+
         if (CAN_VIEW) {
-            ProductDataTables().init();
+            this.#productDataTable = new ProductDataTableEvents();
+            this.#filterEvents = productListFilterEvents;
+            this.#productEditHandler = new ProductEditHandler();
+            this.#productModal = productListModal;
+
+            this.#productDataTable.registerEvents();
+            this.#filterEvents.registerEvents();
         }
-        this[Private]().registerEvents();
+
+        this.#registerEvents();
     }
 
-    [Private]() {
-        let Private = {};
+    #registerEvents()
+    {
+        $(document).on('click', '.remove-item-button', e => {
+            const productSlug = e.currentTarget.dataset.alias;
+            const productTitle = e.currentTarget.dataset.title;
 
-         Private.registerEvents = () => {
-             $(document).on('click touchend', '.remove-item-button', e => {
-                 const alias = e.currentTarget.dataset.alias;
-                 const buttons = [
-                     {type: 'button', text: 'Obriši', 'class': 'btn btn-primary remove-product', 'data-alias': alias, 'data-dismiss': "modal"},
-                 ];
-                 const title = 'Da li ste sigurni da želite obrišete proizvoda?';
-                 const confirmModal = new ConfirmationModalService(title, buttons);
+            this.#productModal.removeProduct(productSlug, productTitle);
+        });
 
-                 confirmModal.trigger('show');
-             });
+        $(document).on('click', '.change-product-status', e => {
+            const slug = e.currentTarget.dataset.slug;
+            const status = e.currentTarget.dataset.status;
 
-             $(document).on('change', '.set-active-product', e => {
-                 const slug = e.currentTarget.dataset.slug;
-                 const status = e.currentTarget.checked ? 2 : 1;
-                 const handler = new ProductEditHandler();
+            this.#productEditHandler.changeStatus(slug, status);
+        });
 
-                 handler.changeStatus(e.currentTarget, slug, status);
-             });
+        $(document).on('change', '.set-home-page', e => {
+            const slug = e.currentTarget.dataset.slug;
+            const value = e.currentTarget.value;
+            const status = e.currentTarget.checked ? value  : 0;
 
-             $(document).on('click touchend', '.remove-product', e => {
-                 const alias = e.currentTarget.dataset.alias;
-                 const handler = new ProductEditHandler();
+            for (const checkbox of $('.set-home-page', $(e.currentTarget).parent().parent())) {
+                if (value !== $(checkbox).val()) {
+                    $(checkbox).prop('checked', false);
+                }
+            }
 
-                 handler.remove(alias);
-             });
-         }
+            this.#productEditHandler.changeHomePagePosition($(e.currentTarget), slug, status);
+        });
 
-         return Private;
+        $(document).on('click', '.remove-product', e => {
+            const alias = e.currentTarget.dataset.alias;
+
+            this.#productEditHandler.remove(alias);
+        });
     }
-};
+}
 
 export default DashboardController;

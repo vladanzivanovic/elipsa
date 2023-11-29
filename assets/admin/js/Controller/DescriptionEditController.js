@@ -1,8 +1,4 @@
-import BlogEditMapper from "../Mapper/BlogEditMapper";
 import SummerNote from "../Services/SummerNote";
-import BlogEditService from "../Services/BlogEditService";
-import BlogEditHandler from "../Handler/BlogEditHandler";
-import DropZone from "../../../js/Services/DropZoneService";
 import descriptionEditMapper from "../Mapper/DescriptionEditMapper";
 import DescriptionHandler from "../Handler/DescriptionHandler";
 require ('select2/dist/js/select2.full.min');

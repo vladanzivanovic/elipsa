@@ -2,11 +2,11 @@ class CoreMapper {
     constructor() {
         if(!CoreMapper.instance) {
             this.toggleWishListBtn = '.toggle-wish-list';
-            this.newsLetterForm = '#newsLetter';
+            this.newsLetterForm = '#news_letter';
             this.newsLetterFormFooter = '#newsletter_form_footer';
-            this.newsLetterSubmitBtn = '#news_letter_btn';
+            // this.newsLetterSubmitBtn = '#news_letter_btn';
             this.newsLetterSubmitBtnFooter = '#newsletter_submit';
-            this.newsLetterCloseBtn = '#wd1_nlpopup_close';
+            // this.newsLetterCloseBtn = '#wd1_nlpopup_close';
 
             CoreMapper.instance = this;
         }
