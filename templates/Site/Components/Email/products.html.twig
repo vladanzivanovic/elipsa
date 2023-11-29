@@ -50,9 +50,11 @@
                                             <p><strong>{{ product.translation.title }} x {{ product.quantity }}</strong></p>
                                             <p>
                                                 <strong><span style="font-size: 12px">{{ 'email.order.table.color' | trans }}:</span></strong>
-                                                <span style="font-size: 12px"> {{ product.color.translations[locale].title }}, </span>
-                                                <strong><span style="font-size: 12px">{{ 'email.order.table.size' | trans }}:</span></strong>
+                                                <span style="font-size: 12px"> {{ product.color.translations[locale].title }}</span>
+                                                {% if product.size != constant('App\\Entity\\ProductSize::NO_SIZE') %}
+                                                    , <strong><span style="font-size: 12px">{{ 'email.order.table.size' | trans }}:</span></strong>
                                                 <span style="font-size: 12px"> {{ product.size }}</span>
+                                                {% endif %}
                                             </p>
                                             <p class="last-child">
                                                 <strong><span style="font-size: 12px">{{ 'email.order.table.unit_price' | trans }}:</span></strong>

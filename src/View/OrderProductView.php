@@ -49,6 +49,7 @@ final class OrderProductView
             ),
             'is_sold' => $product->isSold() || false === $isSizeAvailable,
             'color' => $this->colorView->productPageView($orderProduct->getColor()),
+            'promotion_price' => null,
         ];
 
         if (0 < $discount) {

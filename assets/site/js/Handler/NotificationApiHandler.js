@@ -16,11 +16,6 @@ class NotificationApiHandler {
             type: 'POST',
             url: AppHelperService.generateLocalizedUrl('site_api.set_notification'),
             data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                'Content-Language': LOCALE,
-            }
         })
     }
 }

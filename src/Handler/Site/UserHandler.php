@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -56,6 +57,8 @@ final class UserHandler
      */
     private $passwordEncoder;
 
+    private UserPasswordHasherInterface $userPasswordHasher;
+
     /**
      * @param ValidatorHelper              $validator
      * @param TranslatorInterface          $translator
@@ -70,7 +73,8 @@ final class UserHandler
         SettingsRepository $settingsRepository,
         EventDispatcherInterface $dispatcher,
         UserRepository $userRepository,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $userPasswordHasher
     ) {
         $this->validator = $validator;
         $this->translator = $translator;
@@ -78,6 +82,7 @@ final class UserHandler
         $this->dispatcher = $dispatcher;
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     /**
@@ -102,7 +107,7 @@ final class UserHandler
         }
 
         if (true === $shouldUpdatePassword) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
         }
 
         if (null == $user->getId()) {
@@ -112,9 +117,9 @@ final class UserHandler
         $this->userRepository->flush();
 
         if (true === $shouldSendEmail) {
-            $emailModelCustomer = $this->prepareEmail($user, $locale);
-            $event = new EmailEvent($emailModelCustomer);
-            $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
+//            $emailModelCustomer = $this->prepareEmail($user, $locale);
+//            $event = new EmailEvent($emailModelCustomer);
+//            $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
         }
     }
 

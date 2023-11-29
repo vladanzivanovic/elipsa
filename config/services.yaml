@@ -39,10 +39,16 @@ services:
             $languages: '%languages%'
             $googleRecaptchaSecret: '%env(GOOGLE_RECAPTCHA_KEY_SECRET)%'
             $shopOptions: '%shop%'
+            $countries: '%countries%'
+            $googleApiKey: '%env(GOOGLE_MAPS_API)%'
 
     _instanceof:
         App\Checker\NotificationCheckerInterface:
             tags: ['app.checker.notification']
+        App\Checker\PromotionCheckerInterface:
+            tags: ['app.checker.promotion']
+        App\Checker\PromotionOptionCheckerInterface:
+            tags: ['app.checker.promotion']
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -66,6 +72,8 @@ services:
     Liip\ImagineBundle\Service\FilterService:
         alias: 'liip_imagine.service.filter'
 
+    Turanjanin\SerbianTransliterator\Transliterator: ~
+
     gedmo.listener.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:
@@ -85,6 +93,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
 
     App\EventListener\RequestListener:
         class: App\EventListener\RequestListener
@@ -124,3 +133,7 @@ services:
     App\Parser\Site\NotificationRequestParser:
         arguments:
             $checkers: !tagged_iterator app.checker.notification
+
+    App\Parser\Site\Order\OrderCouponParser:
+        arguments:
+            $promotionCheckers: !tagged_iterator app.checker.promotion

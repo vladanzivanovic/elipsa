@@ -39,6 +39,7 @@
         "symfony/web-link": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.16",
         "tattali/mobile-detect-bundle": "*",
+        "turanjanin/serbian-transliterator": "^1.0",
         "twig/extra-bundle": "*",
         "webmozart/assert": "^1.11",
         "willdurand/js-translation-bundle": "*"

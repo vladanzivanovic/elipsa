@@ -103,6 +103,6 @@
             'sort': 'most_selled',
             'limit': {{ app_params('shop')['items_per_page'][0] }},
         };
-        const LINKS = JSON.parse('{{ _links | json_encode | raw }}');
+        const LINKS = JSON.parse('{{ _web_links | json_encode | raw }}');
     </script>
 {% endblock %}

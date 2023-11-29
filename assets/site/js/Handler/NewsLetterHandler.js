@@ -29,11 +29,6 @@ class NewsLetterHandler {
             type,
             url: urlRoute,
             data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                'Content-Language': LOCALE,
-            },
             success: (response) => {
                 this.#notification.success(Translator.trans(`newsletter.success.add.message`, null, 'messages', LOCALE));
 

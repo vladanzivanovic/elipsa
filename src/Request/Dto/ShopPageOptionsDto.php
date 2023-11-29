@@ -7,7 +7,7 @@ namespace App\Request\Dto;
 use Nelexa\RequestDtoBundle\Dto\ConstructRequestObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class ShopPageOptionsDto implements ConstructRequestObjectInterface
+final class ShopPageOptionsDto extends AbstractRequestDto
 {
     public const DEFAULT_MAX_PRODUCT_NUMBERS = 12;
 
@@ -37,6 +37,8 @@ final class ShopPageOptionsDto implements ConstructRequestObjectInterface
 
         $this->sort = $body['sort'] ?? null;
         $this->limit = isset($body['limit']) ? (int) $body['limit'] : self::DEFAULT_MAX_PRODUCT_NUMBERS;
+
+        parent::__construct($request);
     }
 
     public function toArray(): array

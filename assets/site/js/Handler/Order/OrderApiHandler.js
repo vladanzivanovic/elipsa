@@ -26,11 +26,6 @@ class OrderApiHandler {
                 type: 'POST',
                 url: AppHelperService.generateLocalizedUrl('site_api.create_order'),
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
             // localStorage.setItem('order', result.token);
@@ -59,11 +54,6 @@ class OrderApiHandler {
                 type: 'POST',
                 url: urlRoute,
                 data: JSON.stringify(data),
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
         } catch (error) {
@@ -91,11 +81,6 @@ class OrderApiHandler {
                 type: 'POST',
                 url: urlRoute,
                 data: JSON.stringify(formData),
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
         } catch (error) {
@@ -118,11 +103,6 @@ class OrderApiHandler {
                 type: 'DELETE',
                 url: urlRoute,
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
         } catch (error) {
             result = error;
@@ -145,11 +125,6 @@ class OrderApiHandler {
                 type: 'DELETE',
                 url: urlRoute,
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
         } catch (error) {
@@ -173,11 +148,6 @@ class OrderApiHandler {
                 type: 'PUT',
                 url: urlRoute,
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
         } catch (error) {
@@ -201,11 +171,6 @@ class OrderApiHandler {
                 type: 'DELETE',
                 url: urlRoute,
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
         } catch (error) {

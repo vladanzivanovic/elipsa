@@ -1,87 +1,90 @@
-import AppHelperService from "../../../js/Helper/AppHelperService";
 import FlexSliderService from "./FlexSliderService";
 import locationPageMapper from "../Mapper/LocationPageMapper";
+import locationInfoWindowDom from "../../../js/Services/Dom/LocationInfoWindowDom";
+import * as JsSearch from 'js-search';
 
 class LocationPageService {
+    #infoWindowDom;
+    #searcher;
+    #locations;
+
     constructor() {
         this.mapper = locationPageMapper;
+        this.#infoWindowDom = locationInfoWindowDom;
+        this.#searcher = new JsSearch.Search('id');
+        this.#locations = this.remapLocations();
+
+        this.#searcher.addDocuments(this.#locations);
+        this.#searcher.addIndex(['translations', LOCALE, 'title']);
+        this.#searcher.addIndex(['translations', LOCALE, 'slug']);
+        this.#searcher.addIndex(['translations', LOCALE, 'city']);
+        this.#searcher.addIndex(['translations', LOCALE, 'country']);
+        this.#searcher.addIndex(['translations', LOCALE, 'street']);
+        this.#searcher.addIndex('zip_code');
+    }
+
+    getFormattedLocations()
+    {
+        return this.#locations;
+    }
+
+    searchLocations(searchQuery, gmapApi)
+    {
+        $(this.mapper.locationItem).addClass('hide');
+        $(this.mapper.locationBtn).removeClass('active');
+
+        if ('' === searchQuery) {
+            $(this.mapper.locationItem).removeClass('hide');
+            $(`${this.mapper.locationBtn}:visible`).eq(0).addClass('active');
+
+            this.showLocationDetails(this.#locations[0], gmapApi);
+
+            return;
+        }
+
+        const searchedLocationResults = this.#searcher.search(searchQuery);
+
+        $(this.mapper.locationItem).addClass('hide');
+
+        for (const index in searchedLocationResults) {
+            $(`${this.mapper.locationItem}[data-id="${searchedLocationResults[index].id}"]`).removeClass('hide');
+        }
+
+        $(`${this.mapper.locationBtn}:visible`).eq(0).addClass('active');
+
+        const firstItemId = $(`${this.mapper.locationItem}:visible`).eq(0).data('id');
+        const firstVisibleItemIndex = searchedLocationResults.findIndex(location => location.id === firstItemId);
+
+        this.showLocationDetails(searchedLocationResults[firstVisibleItemIndex], gmapApi);
     }
 
     showLocationDetails(location, gmapApi) {
-        const fullImageWrapper = `${this.mapper.fullImageWrapper} ${this.mapper.sliders}`;
-        const thumbImageWrapper = `${this.mapper.thumbImageWrapper} ${this.mapper.sliders}`;
+        gmapApi.setCoordinates(location.coordinates.lat, location.coordinates.lng);
 
-        $(this.mapper.email).empty();
-        $(this.mapper.address).empty();
-        $(this.mapper.workTimeWeekend).empty();
-        $(this.mapper.workTime).empty();
-        $(this.mapper.description).empty();
-        $(this.mapper.title).empty();
-        $(this.mapper.thumbImageWrapper).remove();
-        $(this.mapper.fullImageWrapper).remove();
+        this.#infoWindowDom.setParameters(location);
 
-        if (IS_MOBILE) {
-            $(this.mapper.mobileTitle).addClass('hide');
-            $(this.mapper.mobileTitle).empty();
+        gmapApi.showMap(null, this.#infoWindowDom);
+
+        setTimeout(() => {
+            gmapApi.triggerInfoWindowOpen();
+        }, 350);
+
+    }
+
+    remapLocations()
+    {
+        let locationArray = [];
+
+        for (const city in LOCATIONS) {
+            locationArray = locationArray.concat(LOCATIONS[city]);
         }
 
-        $('.product-tab-area > div').append(`
-            <div id="sliders" class="product-tab-content tab-content flexslider">
-                <ul class="slides"></ul>
-            </div>
-        `);
+        return locationArray;
+    }
 
-        if (!IS_MOBILE) {
-            $('.product-tab-area > div').append(`
-                 <div id="carousel" class="product-tab-menu flexslider">
-                    <ul class="product-tab slides"></ul>
-                 </div>
-            `);
-        }
-
-        $(this.mapper.imagesWrapper).addClass('hide');
-
-        if (location.images.length > 0) {
-            $(this.mapper.imagesWrapper).removeClass('hide');
-        }
-
-        for (let i = 0; i < location.images.length; i++) {
-            let image = location.images[i];
-
-            $(fullImageWrapper).append(
-                `<li>
-                    <img src="${image.image_link}" alt="Elipsa lokacija - ${location.title}">
-                </li>`
-            )
-
-            if (!IS_MOBILE) {
-                $(thumbImageWrapper).append(
-                    ` <li>
-                   <a href="#"><img src="${image.image_link_thumb}" alt="Elipsa lokacija - ${location.title}"></a>
-                </li>`
-                )
-            }
-        }
-
-        if (IS_MOBILE) {
-            $(this.mapper.mobileTitle).removeClass('hide');
-            $(this.mapper.mobileTitle).text(location.title);
-        } else {
-            $(this.mapper.title).text(location.title);
-        }
-
-        $(this.mapper.description).html(location.short_description);
-        $(this.mapper.workTime).text(location.working_time);
-        $(this.mapper.workTimeWeekend).text(location.weekend);
-        $(this.mapper.address).text(location.address);
-        $(this.mapper.email).text(location.email);
-        $(this.mapper.telephone).text(location.telephone);
-
-        FlexSliderService.setProductSlider($(this.mapper.thumbImageWrapper), $(this.mapper.fullImageWrapper));
-
-        gmapApi.setCoordinates(location.lat, location.lng);
-
-        gmapApi.showMap();
+    getLocationPositionInArray(locationId)
+    {
+        return this.#locations.findIndex(location => location.id === parseInt(locationId));
     }
 }
 

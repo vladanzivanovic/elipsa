@@ -9,6 +9,14 @@ Sentry.init({
 });
 require('../../js/Routing');
 
+$.ajaxSetup({
+    dataType: 'json',
+    contentType: 'application/json',
+    headers: {
+        'Content-Language': LOCALE,
+    },
+})
+
 // import Core files
 import './Core/jquery.counterup.min'
 import './Core/jquery.meanmenu'

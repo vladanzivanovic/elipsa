@@ -1,6 +1,10 @@
 import productPageMapper from "../Mapper/ProductPageMapper";
 import Fotorama from "./Fotorama";
 import Tipped from "@staaky/tipped";
+import FlexSliderService from "./FlexSliderService";
+
+require('flexslider');
+
 
 class ProductPageService {
     #mapper;
@@ -9,7 +13,7 @@ class ProductPageService {
     constructor() {
         if (!ProductPageService.instance) {
             this.#mapper = productPageMapper;
-            this.#fotorama = new Fotorama($('.photo-gallery'));
+            this.#fotorama = new Fotorama($('.photo-gallery'), 'vertical');
 
             ProductPageService.instance = this;
         }
@@ -21,6 +25,8 @@ class ProductPageService {
         this.showImagesByColor($(this.#mapper.colorActive));
 
         Tipped.create('.cleaning-icons');
+
+        this.#fotorama.registerEvents();
     }
 
     showImagesByColor(colorElm) {
@@ -32,7 +38,7 @@ class ProductPageService {
                 data.push({
                     img: image.file,
                     thumb: image.file_thumb,
-                    full: image.file,
+                    full: image.file_full,
                 });
             }
         }

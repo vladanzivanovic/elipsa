@@ -41,15 +41,16 @@ final class ProductListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
+
         $total = $this->productRepository->countData($formattedRequest);
 
         $data = $this->productRepository->getAdminList($formattedRequest);
 
         $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
 
-        return new JsonResponse($response);
+        return $this->json($response);
     }
 }

@@ -41,7 +41,8 @@ class CheckoutValidation {
                 },
                 'billing_address[email]': {
                     required: true,
-                    email   : true
+                    email   : true,
+                    checkEmail: true,
                 },
                 'billing_address[mobile_phone]': {
                     required: true,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser\Site\Order;
 
-use App\Checker\OrderPromotionChecker;
+use App\Checker\PromotionValidityChecker;
 use App\Entity\OrderProduct;
 use App\Entity\PromotionCoupon;
 use App\Entity\ShopOrder;
@@ -16,19 +16,21 @@ final class OrderCouponParser
 {
     private PromotionCouponRepository $promotionCouponRepository;
 
-    private OrderPromotionChecker $orderPromotionChecker;
-
     private OrderRequestParser $orderRequestParser;
+
+    /**
+     * @var array[int, PromotionCheckerInterface]
+     */
+    private array $promotionCheckers;
 
     public function __construct(
         PromotionCouponRepository $promotionCouponRepository,
-        OrderPromotionChecker $orderPromotionChecker,
-        OrderRequestParser $orderRequestParser
+        OrderRequestParser $orderRequestParser,
+        iterable $promotionCheckers
     ) {
-
         $this->promotionCouponRepository = $promotionCouponRepository;
-        $this->orderPromotionChecker = $orderPromotionChecker;
         $this->orderRequestParser = $orderRequestParser;
+        $this->promotionCheckers = iterator_to_array($promotionCheckers);
     }
 
     /**
@@ -54,11 +56,9 @@ final class OrderCouponParser
     public function setPromotionPriceOnOrderItems(
         PromotionCoupon $coupon,
         OrderProduct $orderProduct
-    ): void {
-        $isEligibleOnDiscountedProducts = $coupon->isUseOnDiscountedProducts();
-
-        if (0 < $orderProduct->getDiscount() && false === $isEligibleOnDiscountedProducts) {
-            return;
+    ): bool {
+        if (false === $this->checkCouponOptionsAreEligible($orderProduct, $coupon)) {
+            return false;
         }
 
         $couponPrice = $coupon->getDiscount() / 100;
@@ -67,6 +67,8 @@ final class OrderCouponParser
         $promotionPrice = $price * $couponPrice;
 
         $orderProduct->setPromotionPrice((int) -$promotionPrice);
+
+        return true;
     }
 
     /**
@@ -80,13 +82,21 @@ final class OrderCouponParser
             throw new OrderException('promo_coupon.not_found');
         }
 
-        $this->orderPromotionChecker->checkCoupon($promotionCoupon, $order);
+        $this->checkCouponIsEligible($order, $promotionCoupon);
 
-        $order->setCoupon($promotionCoupon);
+        $isPromotionApplied = false;
 
         foreach ($order->getOrderProducts() as $orderProduct) {
-            $this->setPromotionPriceOnOrderItems($promotionCoupon, $orderProduct);
+            $isPromotionApplied = $this->setPromotionPriceOnOrderItems($promotionCoupon, $orderProduct);
         }
+
+        if (true === $isPromotionApplied) {
+            $order->setCoupon($promotionCoupon);
+
+            return;
+        }
+
+        throw new OrderException('promo_coupon.not_applicable');
     }
 
     /**
@@ -107,5 +117,39 @@ final class OrderCouponParser
         foreach ($order->getOrderProducts() as $orderProduct) {
             $orderProduct->setPromotionPrice(null);
         }
+    }
+
+    private function checkCouponIsEligible(ShopOrder $order, PromotionCoupon $promotionCoupon)
+    {
+        $checkerTypes = [PromotionCoupon::TYPE_VALIDITY];
+
+        foreach ($this->promotionCheckers as $promotionChecker) {
+            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+                $promotionChecker->isEligible($order, $promotionCoupon);
+            }
+        }
+    }
+
+    private function checkCouponOptionsAreEligible(OrderProduct $orderProduct, PromotionCoupon $promotionCoupon): bool
+    {
+        $checkerTypes = $promotionCoupon->getOptionTypes();
+
+        if (null === $checkerTypes) {
+            return true;
+        }
+
+        $isOptionApplicable = false;
+
+        foreach ($this->promotionCheckers as $promotionChecker) {
+            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+                $isOptionApplicable = $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType($promotionChecker->getType()));
+
+                if (false === $isOptionApplicable) {
+                    return false;
+                }
+            }
+        }
+
+        return $isOptionApplicable;
     }
 }

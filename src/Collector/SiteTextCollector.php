@@ -6,24 +6,18 @@ namespace App\Collector;
 
 use App\Entity\Description;
 use App\Repository\DescriptionRepository;
-use Symfony\Component\Translation\Translator;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SiteTextCollector
 {
     private DescriptionRepository $descriptionRepository;
 
-    private TranslatorInterface $translator;
-
     private array $siteInfoText;
 
     public function __construct(
         DescriptionRepository $descriptionRepository,
-        TranslatorInterface $translator,
         array $siteInfoText
     ) {
         $this->descriptionRepository = $descriptionRepository;
-        $this->translator = $translator;
         $this->siteInfoText = $siteInfoText;
     }
     public function collect(string $type, string $locale): Description

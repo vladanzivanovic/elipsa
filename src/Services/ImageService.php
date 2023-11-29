@@ -137,7 +137,7 @@ class ImageService
 
         /** @var Image $image */
         foreach ($images as $image) {
-            $this->deleteImage($this->setFileObject(['file' => $rootDir.$imageDir.$image->getName(), 'fileName' => $image->getName()]));
+            $this->deleteImage($image->getFile());
         }
     }
 

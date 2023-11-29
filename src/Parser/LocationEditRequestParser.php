@@ -30,6 +30,8 @@ final class LocationEditRequestParser
      */
     private $bannerRepository;
 
+    private array $locales;
+
     /**
      * @param ParameterBagInterface $parameterBag
      * @param LocationImageService  $imageService
@@ -38,11 +40,13 @@ final class LocationEditRequestParser
     public function __construct(
         ParameterBagInterface $parameterBag,
         LocationImageService $imageService,
-        BannerRepository $bannerRepository
+        BannerRepository $bannerRepository,
+        string $locales
     ) {
         $this->parameterBag = $parameterBag;
         $this->imageService = $imageService;
         $this->bannerRepository = $bannerRepository;
+        $this->locales = explode('|', $locales);
     }
 
     /**
@@ -64,7 +68,8 @@ final class LocationEditRequestParser
             ->setLat($bag->get('lat'))
             ->setLng($bag->get('lng'))
             ->setWorkingTime($bag->get('working_hours'))
-            ->setWorkingTimeWeekend($bag->get('working_hours_weekend'));
+            ->setSaturday($bag->get('working_hours_saturday'))
+            ->setSunday($bag->get('working_hours_sunday'));
 
         $this->setLocale($bag, $location);
 
@@ -73,29 +78,22 @@ final class LocationEditRequestParser
         return $location;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param Location     $location
-     *
-     * @return void
-     */
     private function setLocale(ParameterBag $bag, Location $location): void
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
-
-        foreach ($locales as $locale => $lagBag) {
+        foreach ($this->locales as $locale) {
+            $transCollection = $bag->get($locale);
             $trans = new LocationTranslation();
 
             if (null !== $location->getId()) {
                 $trans = $location->getByLocale($locale);
             }
 
-            $trans->setStreet($lagBag->get('street'))
-                ->setCity($lagBag->get('city'))
-                ->setCountry($lagBag->get('country'))
+            $trans->setStreet($transCollection['street'])
+                ->setCity($transCollection['city'])
+                ->setCountry($transCollection['country'])
                 ->setLocale($locale)
-                ->setTitle($lagBag->get('title'))
-                ->setShortDescription($lagBag->get('description'));
+                ->setTitle($transCollection['title'])
+                ->setShortDescription($transCollection['description']);
 
             $location->addLocationTranslation($trans);
         }

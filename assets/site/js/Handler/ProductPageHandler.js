@@ -42,7 +42,7 @@ class ProductPageHandler {
         try {
             const order = await this.#orderApiHandler.manageProduct(
                 $(this.#productPageMapper.colorActive).data('color'),
-                $(this.#productPageMapper.sizeActive).text(),
+                $(this.#productPageMapper.sizeActive).data('slug'),
                 $(this.#productPageMapper.quantity).val()
             )
 

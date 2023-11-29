@@ -20,6 +20,7 @@ promo_coupon.not_valid_yet: Promotion code is not active yet.
 promo_coupon.expired: Promotion code is expired.
 promo_coupon.used: Promotion code is already used.
 promo_coupon.not_found: Promotion code not found.
+promo_coupon.not_applicable: Promotion code is not applicable to select items.
 
 order.already_completed: Order is already completed.
 order.promo_coupon_not_exists: Promotion code is not set on the order.

@@ -68,6 +68,15 @@ final class ProductFormatter
 
     public function formatResponse(array $data, string $locale, ?User $user = null): array
     {
+
+        return
+            ['payload' => $this->formatApiResponse($data, $locale, $user)] +
+            ['relatedProducts' => $this->getProducts($data['related_products'], $locale)]
+        ;
+    }
+
+    public function formatApiResponse(array $data, string $locale, ?User $user = null): array
+    {
         /** @var Product $product */
         $product = $data['product'];
 
@@ -81,10 +90,7 @@ final class ProductFormatter
         $productView['media']['youtubes'] = $this->getYoutubes($product);
         $productView['tags'] = $this->getTags($product, $locale);
 
-        return
-            ['payload' => $productView] +
-            ['relatedProducts' => $this->getProducts($data['related_products'], $locale)]
-        ;
+        return $productView;
     }
 
     /**

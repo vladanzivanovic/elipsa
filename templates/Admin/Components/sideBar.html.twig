@@ -21,7 +21,7 @@
             <li class="nav-item {{ routeName() == 'admin.locations' ? 'active' : '' }}">
                 <a href="{{ path('admin.locations') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">Lokacije</span>
+                    <span class="link-title">{{ 'navi.locations' | trans }}</span>
                 </a>
             </li>
             <li class="nav-item {{ routeName() == 'admin.blog' ? 'active' : '' }}">
@@ -158,6 +158,21 @@
                     <span class="link-title">Veličine</span>
                 </a>
             </li>
+            {% if 'vladapoz85@gmail.com' == app.token.user.email %}
+                <li class="nav-item nav-category">Sistem</li>
+                <li class="nav-item">
+                    <a href="{{ path('admin.command.doctrine_migrations_migrate') }}" class="nav-link" target="_blank">
+                        <i class="link-icon" data-feather="calendar"></i>
+                        <span class="link-title">Migrations migrate</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('admin.command.clear_cache_image') }}" class="nav-link" target="_blank">
+                        <i class="link-icon" data-feather="calendar"></i>
+                        <span class="link-title">Clear image cache</span>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

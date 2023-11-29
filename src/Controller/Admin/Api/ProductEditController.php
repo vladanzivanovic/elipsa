@@ -8,7 +8,6 @@ use App\Entity\Product;
 use App\Entity\ProductTranslation;
 use App\Handler\ProductEditHandler;
 use App\Helper\ConstantsHelper;
-use App\Mailer\SizeAvailableMailer;
 use App\Parser\ProductEditRequestParser;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,16 +22,12 @@ final class ProductEditController extends AbstractController
 
     private ProductEditHandler $editHandler;
 
-    private SizeAvailableMailer $sizeAvailableMailer;
-
     public function __construct(
         ProductEditRequestParser $requestParser,
-        ProductEditHandler $editHandler,
-        SizeAvailableMailer $sizeAvailableMailer
+        ProductEditHandler $editHandler
     ) {
         $this->requestParser = $requestParser;
         $this->editHandler = $editHandler;
-        $this->sizeAvailableMailer = $sizeAvailableMailer;
     }
 
     /**
@@ -71,5 +66,19 @@ final class ProductEditController extends AbstractController
         $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', Product::class);
 
         return $this->json(['text' => $statusText]);
+    }
+
+    /**
+     * @Route("/api/product-home-page-position/{slug}/{status}",
+     *     name="admin.api_product_home_page_position",
+     *     methods={"PATCH"},
+     *     options={"expose": true}
+     * )
+     */
+    public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
+    {
+        $this->editHandler->setHomePagePosition($productTranslation->getProduct(), $status);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 }

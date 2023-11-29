@@ -371,10 +371,10 @@ class Product
         return $sizes;
     }
 
-    public function isSizeAvailable(string $size): bool
+    public function isSizeAvailable(string $sizeSlug): bool
     {
         foreach ($this->getAvailableSizes() as $availableSize) {
-            if ($availableSize->getSize()->getSize() === $size) {
+            if ($availableSize->getSize()->getSlug() === $sizeSlug) {
                 return true;
             }
         }

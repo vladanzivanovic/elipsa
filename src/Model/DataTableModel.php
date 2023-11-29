@@ -8,50 +8,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class DataTableModel
 {
-    /**
-     * @var int
-     */
-    private $draw;
+    private int $draw;
+
+    private int $offset;
+
+    private int $limit;
+
+    private ArrayCollection $columns;
+
+    private string $orderColumn;
+
+    private string $orderDirection;
 
     /**
-     * @var int
+     * @var array|string|null
      */
-    private $offset;
+    private $search = null;
 
-    /**
-     * @var int
-     */
-    private $limit;
-
-    /**
-     * @var ArrayCollection
-     */
-    private $columns;
-
-    /**
-     * @var string
-     */
-    private $orderColumn;
-
-    /**
-     * @var string
-     */
-    private $orderDirection;
-
-    /**
-     * @var string|null
-     */
-    private $search;
-
-    /**
-     * @param int         $draw
-     * @param int         $offset
-     * @param int         $limit
-     * @param array       $columns
-     * @param int         $orderColumn
-     * @param string      $orderDirection
-     * @param string|null $search
-     */
     public function __construct(
         int $draw,
         int $offset,
@@ -67,12 +40,47 @@ class DataTableModel
         $this->setColumns($columns);
         $this->setOrderColumn($orderColumn);
         $this->orderDirection = $orderDirection;
-        $this->search = $search;
+        $this->search = $this->setSearch($search);
+    }
+
+    public function getDraw(): int
+    {
+        return $this->draw;
+    }
+
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    public function getColumns(): ArrayCollection
+    {
+        return $this->columns;
+    }
+
+    public function getOrderColumn(): string
+    {
+        return $this->orderColumn;
+    }
+
+    public function getOrderDirection(): string
+    {
+        return $this->orderDirection;
     }
 
     /**
-     * @param array $columns
+     * @return array|string|null
      */
+    public function getSearch()
+    {
+        return $this->search;
+    }
+
     private function setColumns(array $columns): void
     {
         $this->columns = new ArrayCollection();
@@ -98,58 +106,16 @@ class DataTableModel
     }
 
     /**
-     * @return int
+     * @return array|string|null
      */
-    public function getDraw(): int
+    private function setSearch(?string $search)
     {
-        return $this->draw;
-    }
+        $decodedSearch = json_decode($search, true);
 
-    /**
-     * @return int
-     */
-    public function getLimit(): int
-    {
-        return $this->limit;
-    }
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $search;
+        }
 
-    /**
-     * @return int
-     */
-    public function getOffset(): int
-    {
-        return $this->offset;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getColumns(): ArrayCollection
-    {
-        return $this->columns;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderColumn(): string
-    {
-        return $this->orderColumn;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderDirection(): string
-    {
-        return $this->orderDirection;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSearch(): ?string
-    {
-        return $this->search;
+        return $decodedSearch;
     }
 }

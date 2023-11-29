@@ -3419,17 +3419,6 @@ footer {
 
 .h3b-single-banner-4 {}
 
-.h3b-single-banner-4::after {
-    background: #000 none repeat scroll 0 0;
-    content: "";
-    height: 100%;
-    left: 0;
-    opacity: 0.3;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 0;
-}
 
 .h3b-single-banner-4 .h3b-img {
     position: relative;
@@ -3860,32 +3849,10 @@ footer {
     align-items: center;
 }
 
-.home3-newsletter-area::before {
-    background: #000 none repeat scroll 0 0;
-    content: "";
-    height: 100%;
-    left: 0;
-    opacity: 0.3;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
-
 .h3-newsletter-left {
     padding-left: 80px;
     position: relative;
 }
-
-/*.h3-newsletter-left::before {*/
-/*    color: #fff;*/
-/*    content: "";*/
-/*    font-family: FontAwesome;*/
-/*    font-size: 50px;*/
-/*    left: 0;*/
-/*    line-height: 50px;*/
-/*    position: absolute;*/
-/*    top: 17px;*/
-/*}*/
 
 .h3-newsletter-left .h3-nl-title {
     color: #ffffff;

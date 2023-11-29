@@ -165,9 +165,9 @@ class ShopFilterManipulator {
 
             this.setFilterPrice(this.#filterCollection.getFilter('price'));
 
-            this.#setBrowserUrl(filteredData._links[LOCALE]);
+            this.#setBrowserUrl(filteredData._web_links[LOCALE][ROUTE_NAME]);
 
-            this.#headerDom.updateLanguageDropDown(filteredData._links);
+            this.#headerDom.updateLanguageDropDown(filteredData._web_links);
         } catch (e) {
             console.log(e);
         }

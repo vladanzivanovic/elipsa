@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
-use App\Entity\Product;
 use App\Entity\User;
-use App\Formatter\Admin\TagOptionsFormatter;
+use App\Formatter\Options\TagOptionsFormatter;
 use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\Request\Dto\ShopListRequestDto;
 use App\Request\Dto\ShopPageOptionsDto;
@@ -58,7 +57,7 @@ final class ShopListResponseFormatter
     public function formatResponse(
         array $data,
         string $locale,
-        string $routeName,
+        array $routeNames,
         ShopListRequestDto $shopListRequestDto,
         ShopPageOptionsDto $shopPageOptionsDto,
         array $filters,
@@ -69,7 +68,7 @@ final class ShopListResponseFormatter
         $localizedUrls = $this->shopPageRouterFormatter->createLocalizedLinks(
             $shopPageOptionsDto,
             $shopListRequestDto,
-            $routeName
+            $routeNames
         );
 
         return [
@@ -78,7 +77,7 @@ final class ShopListResponseFormatter
             'filters' => $this->shopFilterFormatter->format($filters),
             'search' => $shopListRequestDto->toArray(),
             'page_options' => $shopPageOptionsDto->toArray(),
-            '_links' => $localizedUrls,
+            '_web_links' => $localizedUrls,
         ];
     }
 }

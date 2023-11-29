@@ -10,25 +10,16 @@ use App\Parser\LocationEditRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class LocationEditController extends AbstractController
 {
-    /**
-     * @var LocationEditRequestParser
-     */
-    private $requestParser;
+    private LocationEditRequestParser $requestParser;
 
-    /**
-     * @var LocationHandler
-     */
-    private $locationHandler;
+    private LocationHandler $locationHandler;
 
-    /**
-     * @param LocationEditRequestParser $requestParser
-     * @param LocationHandler           $locationHandler
-     */
     public function __construct(
         LocationEditRequestParser $requestParser,
         LocationHandler $locationHandler
@@ -52,7 +43,7 @@ final class LocationEditController extends AbstractController
 
         $this->locationHandler->save($banner);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -69,6 +60,6 @@ final class LocationEditController extends AbstractController
 
         $this->locationHandler->save($location);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 }

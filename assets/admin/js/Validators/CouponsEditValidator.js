@@ -1,15 +1,21 @@
+import couponsEditMapper from "../Mapper/CouponsEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class CouponsEditValidator {
+    #mapper;
+
     constructor() {
         if (!CouponsEditValidator.instance) {
+            this.#mapper = couponsEditMapper;
+
             CouponsEditValidator.instance = this;
         }
 
         return CouponsEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
         options = {
@@ -23,7 +29,7 @@ class CouponsEditValidator {
 
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

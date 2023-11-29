@@ -20,7 +20,7 @@ class ProductEditManipulator {
     setOnEdit()
     {
         for (const size of PRODUCT_SIZES) {
-            this.addSizeRow(size.size, size.quantity);
+            this.addSizeRow(size.slug, size.quantity);
         }
     }
 

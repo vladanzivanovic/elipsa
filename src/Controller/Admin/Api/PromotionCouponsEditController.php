@@ -9,27 +9,19 @@ use App\Entity\PromotionCoupon;
 use App\Handler\CouponHandler;
 use App\Helper\ConstantsHelper;
 use App\Parser\CouponsEditRequestParser;
+use App\Request\Dto\PromotionCouponRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class CouponsEditController extends AbstractController
+final class PromotionCouponsEditController extends AbstractController
 {
-    /**
-     * @var CouponsEditRequestParser
-     */
-    private $requestParser;
+    private CouponsEditRequestParser $requestParser;
 
-    /**
-     * @var CouponHandler
-     */
-    private $couponHandler;
+    private CouponHandler $couponHandler;
 
-    /**
-     * @param CouponsEditRequestParser $requestParser
-     * @param CouponHandler            $couponHandler
-     */
     public function __construct(
         CouponsEditRequestParser $requestParser,
         CouponHandler $couponHandler
@@ -41,35 +33,34 @@ final class CouponsEditController extends AbstractController
     /**
      * @Route("/api/add-coupon", name="admin.add_coupon_api", methods={"POST"})
      *
-     * @param Request $request
-     *
+     * @param PromotionCouponRequestDto $promotionCouponRequestDto
      * @return JsonResponse
      * @throws \Exception
      */
-    public function insert(Request $request): JsonResponse
+    public function insert(PromotionCouponRequestDto $promotionCouponRequestDto): JsonResponse
     {
-        $coupon = $this->requestParser->parse($request->request);
+        $coupon = $this->requestParser->parse($promotionCouponRequestDto);
 
         $this->couponHandler->save($coupon);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
      * @Route("/api/edit-coupon/{id}", name="admin.edit_coupon_api", methods={"PUT"}, options={"expose": true})
      *
-     * @param Request         $request
+     * @param PromotionCouponRequestDto $promotionCouponRequestDto
      * @param PromotionCoupon $coupon
      *
      * @return JsonResponse
      * @throws \Exception
      */
-    public function update(Request $request, PromotionCoupon $coupon): JsonResponse
+    public function update(PromotionCouponRequestDto $promotionCouponRequestDto, PromotionCoupon $coupon): JsonResponse
     {
-        $coupon = $this->requestParser->parse($request->request, $coupon);
+        $coupon = $this->requestParser->parse($promotionCouponRequestDto, $coupon);
 
         $this->couponHandler->save($coupon);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 }

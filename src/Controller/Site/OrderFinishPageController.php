@@ -155,18 +155,5 @@ final class OrderFinishPageController extends AbstractController
         $this->orderCompleteMailer->sendEmail($viewData, $order, $locale);
 
         return $viewData;
-
-//        $orderToken = $request->getMethod() === Request::METHOD_POST ?
-//            $request->request->get('oid') : $request->getSession()->get('order');
-//
-//        $data = $this->handler->completeCheckoutOnFail($orderToken, $locale, $request->request);
-//
-//        $data['order']->setToken();
-//
-//        $this->handler->save($data['order']);
-//
-//        $request->getSession()->set('order', $data['order']->getToken());
-//
-//        return $this->pageFormatter->formatResponse($data, $locale, $request->request);
     }
 }

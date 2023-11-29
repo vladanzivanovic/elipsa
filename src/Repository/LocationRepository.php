@@ -110,7 +110,8 @@ class LocationRepository extends ExtendedEntityRepository
                 'l.telephone as telephone',
                 'l.email as email',
                 'l.workingTime as working_time',
-                'l.workingTimeWeekend as weekend'
+                'l.saturday as saturday',
+                'l.sunday as sunday'
             )
             ->innerJoin('l.locationTranslations', 'lt')
             ->where('lt.locale = :locale')

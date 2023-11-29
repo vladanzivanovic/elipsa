@@ -26,7 +26,7 @@ class OrderProduct
     private ShopOrder $orderId;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string")
      *
      * @Assert\NotBlank(message="product.size")
      */
@@ -301,5 +301,4 @@ class OrderProduct
 
         $this->total = $price * $this->quantity;
     }
-
 }

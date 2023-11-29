@@ -1,10 +1,11 @@
-pending: 'na čekanju'
-active: 'aktivan'
-disabled: 'zaključan'
+pending: Na čekanju
+active: Aktivan
+archived: Arhiviran
+disabled: Zaključan
 
-scroll_top_page: 'Vrh stranice'
+scroll_top_page: Vrh stranice
 
-view: 'pogledaj'
+view: pogledaj
 
 default_title: Modna Kuća Elipsa
 
@@ -38,7 +39,7 @@ price: cena
 navi:
   home: Početna
   about_us: O nama
-  locations: Prodajna mesta
+  locations: Prodavnice
   loyalty: Loyalty
   catalogue: Katalog
   shop: Online Shop
@@ -118,7 +119,7 @@ cart.total_shipping: Ukupno sa poštarinom
 cart.view: Pogledaj korpu
 cart.checkout: Naruči
 cart.personal_data: vaši podaci
-cart.order_completed_successful: uspešna narudžbina
+cart.order_completed_successful: uspešna porudžbina
 cart.continue_shopping: nastavi kupovinu
 cart.update: osveži korpu
 cart.next_step: sledeći korak
@@ -138,8 +139,8 @@ cart.table.total: ukupno
 
 title.your_cart: Vaša korpa
 title.cart_personal_data: Vaša korpa - unos ličnih podataka
-title.checkout_completed_successful: Uspešna narudžbina
-title.checkout_completed_unsuccessful: Neuspešna narudžbina
+title.checkout_completed_successful: Uspešna porudžbina
+title.checkout_completed_unsuccessful: Neuspešna porudžbina
 title.location: Lokacije
 title.blog_detailed_page: Blog stranica
 title.shop_page: Proizvodi
@@ -159,7 +160,7 @@ checkout.have_account: Da li ste već registrovani? <a href="#" class="open-logi
 checkout.billing_address: podaci o platiocu
 checkout.order_notes: dodatni tekst o naružbini
 checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
-checkout.your_order: vaša narudžbina
+checkout.your_order: vaša porudžbina
 checkout.product_total: proizvodi <span>ukupno</span>
 checkout.create_account: kreirajte nalog
 checkout.payment.by_taking: pouzećem
@@ -183,8 +184,8 @@ checkout.finish.credit_card_no: Broj platne kartice
 checkout.checkbox.terms_and_conditions: Klikom na dugme prihvatate naše <a href="%link%">Opšte uslove korišćenja i prodaje.</a>
 
 checkout_completed.title: uspešno ste naručili proizvode.
-checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
-checkout_fail.title: Neuspešna narudžbina.
+checkout_completed.details: detalji vaše porudžbine su vam poslati na email.
+checkout_fail.title: Neuspešna porudžbina.
 
 Approved: Odobreno
 Declined: Odbijeno
@@ -237,8 +238,8 @@ email.order.buyer.city: Grad
 email.order.buyer.street_number: Ulica i broj
 email.order.buyer.payment_type: Plaćanje
 
-email.order.data.title: Podaci o porudžbini
-email.order.data.title_unsucessfull: Neuspešna porudžbina
+email.order.data.title: Porudžbina na čekanju %orderId%
+email.order.data.title_unsuccessful: Neuspešna porudžbina %orderId%
 email.order.table.product_name: Naziv proizvoda
 email.order.table.size: Veličina
 email.order.table.color: Boja
@@ -252,7 +253,7 @@ email.order.products_total_price: Međuzbir
 email.order.payment_info: Informacije o plaćanju
 email.order.payment_details: Podaci o plaćanju
 email.order.delivery_info: Informacije o dostavi
-email.order.note_title: Dodatni tekst o porudžbini
+email.order.note_title: O porudžbini
 
 email.registration.title: Registracija na sajtu %siteName%
 email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
@@ -286,9 +287,11 @@ payment_type.on_delivering: Pouzećem
 payment_type.credit_card: Platna kartica
 
 location.modal.work_time: Radno vreme
-location.modal.work_time_weekend: Subota
+location.modal.work_time_saturday: Subota
+location.modal.work_time_sunday: Nedelja
 location.look_btn: pogledaj
 location.map: mapa
+location.search_text: Pretražite prodavnice
 
 all: sve
 
@@ -347,7 +350,7 @@ my_account.personal_info.text: lični podaci
 my_account.personal_info.success.message: podaci su uspešno izmenjeni
 my_account.address_info: podaci o adresi
 my_account.wish_list: lista želja
-my_account.order_list: lista narudžbina
+my_account.order_list: lista porudžbina
 my_account.order_table.image: slika
 my_account.order_table.name: proizvod
 my_account.order_table.description: opis
@@ -529,12 +532,12 @@ intesa.already_payed: Transakcija je već naplaćena.
 intesa.already_refunded: Transakcija je već refudirana.
 intesa.already_void: Transakcija je već otkazana.
 
-order.status.new: Nova narudžbina
+order.status.new: Nova porudžbina
 order.status.awaiting_authorization: Račun zadužen
 order.status.post_auth: Naplaćeno
 order.status.completed: Naplaćeno
 order.status.refund: Sredstva su vraćena
-order.status.void: Narudžbina je otkazana
+order.status.void: Porudžbina je otkazana
 order.status.failed: Greška prilikom naručivanja
 order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
@@ -597,3 +600,8 @@ notification.success: Vaša prijava je uspešno poslata. Obavesti ćemo vas pute
 
 male: Muški
 female: Ženski
+
+closed: Zatvoreno
+
+product.is_archived: Proizvod "%item%" je arhiviran
+product.is_deleted: Proizvod "%item%" je obrisan

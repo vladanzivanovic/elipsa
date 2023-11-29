@@ -6,56 +6,37 @@ namespace App\Parser;
 
 use App\Entity\Description;
 use App\Repository\DescriptionRepository;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Request\Dto\DescriptionRequestDto;
 
 class DescriptionRequestParser
 {
-    use ParserTrait;
+    private DescriptionRepository $descriptionRepository;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private array $locales;
 
-    /**
-     * @var DescriptionRepository
-     */
-    private $descriptionRepository;
-
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param DescriptionRepository $descriptionRepository
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        DescriptionRepository $descriptionRepository
+        DescriptionRepository $descriptionRepository,
+        string $locales
     ) {
-        $this->parameterBag = $parameterBag;
         $this->descriptionRepository = $descriptionRepository;
+        $this->locales = explode('|', $locales);
     }
 
-    /**
-     * @param ParameterBag $bag
-     *
-     * @return void
-     * @throws \Doctrine\ORM\ORMException
-     */
-    public function parse(ParameterBag $bag): void
+    public function parse(DescriptionRequestDto $descriptionRequestDto): void
     {
-        $languages = $this->setLanguageArray($this->parameterBag, $bag);
+        foreach ($this->locales as $locale) {
+            $translation = $descriptionRequestDto->translations[$locale];
 
-        foreach ($languages as $locale => $langBag) {
-            $description = $this->descriptionRepository->findOneBy(['type' => $bag->get('type'), 'locale' => $locale]);
+            $description = $this->descriptionRepository->findOneBy(['type' => $descriptionRequestDto->type, 'locale' => $locale]);
 
             if (!$description instanceof Description) {
                 $description = new Description();
                 $this->descriptionRepository->persist($description);
             }
 
-            $description->setDescription($bag->get($locale.'_description'))
+            $description->setDescription($translation->description)
                 ->setLocale($locale)
-                ->setType((int) $bag->get('type'));
+                ->setType($descriptionRequestDto->type);
         }
     }
 }

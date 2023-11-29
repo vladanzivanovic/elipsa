@@ -4,11 +4,13 @@
 @import "~toastr/toastr";
 @import "~owl.carousel";
 @import "~select2";
+@import "~flexslider/flexslider.css";
 @import "./Components/select2";
 
 @import "./Components/form_inputs";
 @import "../../scss/base";
 @import "colors";
+@import "../../scss/media-queries";
 @import "../css/animate.css";
 @import "../css/meanmenu.css";
 @import "../css/responsive.css";
@@ -22,6 +24,7 @@
 @import "./Components/product_grid";
 @import "./Components/pop_up";
 @import "responsive";
+
 
 
 .m-bt-2 {
@@ -166,6 +169,18 @@ div#page-loader {
       z-index: 100000 !important;
     }
   }
+}
+
+.img-with-fade::after {
+  background: #000 none repeat scroll 0 0;
+  content: "";
+  height: 100%;
+  left: 0;
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 0;
 }
 
 @media only screen and (max-width: 950px) {

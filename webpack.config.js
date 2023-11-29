@@ -6,7 +6,7 @@ Encore
     // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
     .cleanupOutputBeforeBuild()
-    .enableSourceMaps()
+    .enableSourceMaps(!Encore.isProduction())
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
@@ -73,8 +73,11 @@ Encore
         //pattern: /\.(png|jpg|jpeg)$/
     })
     .configureTerserPlugin((options) => {
-        options.extractComments = 'all';
+        options.cache = true;
         options.terserOptions = {
+            output: {
+                comments: false
+            },
             sourceMap: true,
         }
     })

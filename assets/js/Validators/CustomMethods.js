@@ -89,6 +89,15 @@ $.validator.addMethod(
 );
 
 $.validator.addMethod(
+    'checkEmail',
+    function (val, elm, params) {
+        var regEx = /^[\w\+-\.]+@([\w-]+\.)[\w-]{2,4}$/g;
+        return regEx.test(val);
+
+    }, Translator.trans('field.email', null, 'validators', LOCALE)
+);
+
+$.validator.addMethod(
     'checkWebInText',
     function (val, elm, params) {
         var regEx = /(:\/\/|(http):\/\/www\.|https:\/\/www\.|(htt)(:\/\/)|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?/gm;

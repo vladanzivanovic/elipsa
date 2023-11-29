@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Entity\Image;
 use App\Entity\Notification;
 use App\Entity\Product;
 use App\Helper\ValidatorHelper;
 use App\Mailer\SizeAvailableMailer;
+use App\Parser\ImageParser;
 use App\Repository\NotificationRepository;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class ProductEditHandler
@@ -24,18 +28,22 @@ final class ProductEditHandler
 
     private SizeAvailableMailer $sizeAvailableMailer;
 
+    private ImageParser $imageParser;
+
     public function __construct(
         ValidatorHelper $validator,
         ProductRepository $productRepository,
         NotificationRepository $notificationRepository,
         NotificationHandler $notificationHandler,
-        SizeAvailableMailer $sizeAvailableMailer
+        SizeAvailableMailer $sizeAvailableMailer,
+        ImageParser $imageParser
     ) {
         $this->validator = $validator;
         $this->productRepository = $productRepository;
         $this->notificationRepository = $notificationRepository;
         $this->notificationHandler = $notificationHandler;
         $this->sizeAvailableMailer = $sizeAvailableMailer;
+        $this->imageParser = $imageParser;
     }
 
     /**
@@ -79,11 +87,33 @@ final class ProductEditHandler
         $this->productRepository->flush();
     }
 
+    public function setHomePagePosition(Product $product, int $status): void
+    {
+        $product->setShowHomePage($status);
+
+        $this->productRepository->flush();
+    }
+
     /**
-     * @param Product $product
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
     public function remove(Product $product): void
     {
+        foreach ($product->getProductHasImages() as $productHasImage) {
+            $image = $productHasImage->getImage();
+
+            $imageArray = [
+                'id' => $image->getId(),
+                'fileName' => $image->getOriginalName(),
+                'deleted' => true,
+            ];
+
+            $image = $this->imageParser->parse($imageArray);
+
+            $this->imageParser->delete($image);
+        }
+
         $this->productRepository->delete($product);
         $this->productRepository->flush();
     }

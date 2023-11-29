@@ -4,66 +4,51 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
-use App\Entity\Banner;
 use App\Entity\Location;
+use App\Formatter\Options\CountryOptionsFormatter;
 use App\Repository\ImageRepository;
+use App\View\LocationView;
 use Symfony\Component\Routing\RouterInterface;
 
 final class LocationEditResponseFormatter
 {
     use ImageTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private ImageRepository $imageRepository;
 
-    /**
-     * @param RouterInterface $router
-     * @param ImageRepository $imageRepository
-     */
+    private LocationView $locationView;
+
+    private CountryOptionsFormatter $countryOptionsFormatter;
+
     public function __construct(
         RouterInterface $router,
-        ImageRepository $imageRepository
+        ImageRepository $imageRepository,
+        LocationView $locationView,
+        CountryOptionsFormatter $countryOptionsFormatter
     ) {
         $this->router = $router;
         $this->imageRepository = $imageRepository;
+        $this->locationView = $locationView;
+        $this->countryOptionsFormatter = $countryOptionsFormatter;
     }
 
-    /**
-     * @param Location $location
-     *
-     * @return array
-     */
-    public function formatResponse(Location $location): array
+    public function formatResponse(?Location $location = null): array
     {
-        $rsTrans = $location->getByLocale('rs');
-        $enTrans = $location->getByLocale('en');
+        $payload = [];
+
+        $options = [
+            'countries' => $this->countryOptionsFormatter->format(),
+        ];
+
+        if (null !== $location) {
+            $payload = $this->locationView->editView($location);
+        }
 
         return [
-            'rs_title' => $rsTrans->getTitle(),
-            'rs_street' => $rsTrans->getStreet(),
-            'rs_city' => $rsTrans->getCity(),
-            'rs_country' => $rsTrans->getCountry(),
-            'zip_code' => $location->getZipCode(),
-            'rs_description' => $rsTrans->getShortDescription(),
-            'en_description' => $enTrans->getShortDescription(),
-            'en_title' => $enTrans->getTitle(),
-            'en_street' => $enTrans->getStreet(),
-            'en_city' => $enTrans->getCity(),
-            'en_country' => $enTrans->getCountry(),
-            'working_hours' => $location->getWorkingTime(),
-            'working_hours_weekend' => $location->getWorkingTimeWeekend(),
-            'email' => $location->getEmail(),
-            'telephone' => $location->getTelephone(),
-            'lat' => $location->getLat(),
-            'lng' => $location->getLng(),
-            'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByLocation($location), 'location'),
+            'payload' => $payload,
+            'options' => $options,
         ];
     }
 }

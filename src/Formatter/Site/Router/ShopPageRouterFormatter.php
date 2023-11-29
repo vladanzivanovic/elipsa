@@ -69,7 +69,7 @@ final class ShopPageRouterFormatter
     public function createLocalizedLinks(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        string $routerName
+        array $routerNames
     ): array {
         $translations = [];
 
@@ -92,13 +92,13 @@ final class ShopPageRouterFormatter
                 '_locale' => $locale,
             ];
 
-            $translations[$locale] = $this->router->generate(
-                $routerName,
-                $urlParams + $searchCriteria,
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-
-
+            foreach ($routerNames as $routerName) {
+                $translations[$locale][$routerName] = $this->router->generate(
+                    $routerName,
+                    $urlParams + $searchCriteria,
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+            }
         }
 
         return $translations;

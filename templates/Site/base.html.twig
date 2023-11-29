@@ -123,6 +123,7 @@
             const APP_ENV = '{{ 'APP_ENV' | getenv }}';
             const SENTRY_DSN = '{{ 'SENTRY_JAVASCRIPT_DSN' | getenv }}';
             const NOTIFICATION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Notification') | json_encode() | raw }}');
+            const NO_SIZE = '{{ constant('App\\Entity\\ProductSize::NO_SIZE') }}';
 
             window.USER = null;
 

@@ -6,9 +6,12 @@
                     <img src="{{ product.image.file }}" alt="{{ default_alt_tag }}">
                 </a>
                 {% if product.is_sold == true %}
-                    <div class="product-sold">
-                        <span>{{ 'sold' | trans }}</span>
-                    </div>
+                <a href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}">
+                    <svg class='svg-stroke product-sold' viewBox='0 -0.2 6.5 15' preserveAspectRatio='none'>
+                        <line x1="7" y1="-1" x2="-1" y2="11" stroke="#a70303" stroke-width=".6" stroke-opacity="1"></line>
+                        <text x="0" y="8" font-size="0.04em" textLength="9em" transform="translate(-4.25, 1.8) rotate(303)" font-family="'Montserrat', sans-serif" fill="white">{{ 'sold' | trans }}</text>
+                    </svg>
+                </a>
                 {% endif %}
                 {% if product.discount is not null %}
                     <div class="sfi-img-banner product-discount">

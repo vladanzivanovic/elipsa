@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Parser\Site;
 
-use App\Checker\NotificationCheckerInterface;
 use App\Entity\Notification;
 use App\Exception\NotificationException;
 use App\Repository\NotificationRepository;

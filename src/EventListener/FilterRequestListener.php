@@ -21,7 +21,7 @@ final class FilterRequestListener
     {
         $request = $event->getRequest();
 
-        if ('site.shop_page' === $request->attributes->get('_route')) {
+        if (true === in_array($request->attributes->get('_route'), ['site.shop_page', 'site.trendy_page'])) {
             if (0 < $request->query->count()) {
                 foreach ($request->query->all() as $name => $value) {
                     $request->query->remove($name);

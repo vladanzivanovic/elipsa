@@ -22,7 +22,7 @@ export default (() => {
                 { data: 'telephone', name: 'telephone', title: 'Telefon' },
                 { data: 'email', name: 'email', title: 'Email' },
                 { data: 'working_time', name: 'working_time', title: 'Radno vreme', width: '200px', render: function (data, type, row, meta) {
-                        let html = `<p class="status-text">Radnim danom: ${data}</p><p>Subotom: ${row.weekend}</p>`;
+                        let html = `<p class="status-text">Radnim danom: ${data}</p><p>Subotom: ${row.saturday}</p><p>Nedeljom: ${row.sunday ?? '' }</p>`;
 
                         return type === 'display' ? html : data;
                     } },

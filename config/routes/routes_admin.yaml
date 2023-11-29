@@ -1,8 +1,8 @@
-admin.dashboard:
-  path: /
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Admin/Pages/dashboard.html.twig
+#admin.dashboard:
+#  path: /
+#  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+#  defaults:
+#    template: Admin/Pages/dashboard.html.twig
 
 admin.colors:
   path: /colors

@@ -16,14 +16,27 @@
                             <div class="sidebar-widget widget-categories">
                                 <h4 class="sidebar-title">{{ 'title.location' | trans }}</h4>
                                 <div class="sidebar-widget-body">
-                                    {% for location in locations %}
-                                        <div class="sidebar-box">
-                                            <button class="sidebar-location-button location-btn {{ loop.first ? 'active' : '' }}" data-index="{{ loop.index - 1 }}">
-                                                <span class="location-title">{{ location.title }}</span>
-                                                <p class="location-address">{{ location.address }}</p>
-                                            </button>
-                                        </div>
-                                    {% endfor %}
+                                    <div class="location-search">
+                                        <input class="location-search-input" type="text" placeholder="{{ 'location.search_text' | trans }}..." />
+                                        <button type="button" class="reset-search hide">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="location-list">
+                                        {% for place, locations in payload %}
+                                            <p class="location-place">{{ place }}</p>
+                                            {% for location in locations  %}
+                                                {% set trans = location.translations[locale] %}
+                                                <div class="sidebar-box location-item" data-id="{{ location.id }}">
+                                                    <button class="sidebar-location-button location-btn">
+                                                        <p class="location-address">
+                                                            {{ place != 'Beograd' and place != 'Belgrade' ? trans.title_text : trans.street }}
+                                                        </p>
+                                                    </button>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -33,53 +46,23 @@
                     <div class="row">
                         {% if is_mobile() or is_tablet() %}
                             <div class="deafult-sorting col-xs-12">
-                                <label>{{ 'title.location' | trans }}</label>
+                                <label class="location-list-title">{{ 'title.location' | trans }}</label>
                                 <select class="sort-option location-drop-down">
-                                    {% for location in locations %}
-                                        <option class="text-capitalize" value="{{ loop.index - 1 }}" >{{ location.title ~ ' - ' ~ location.address }}</option>
+                                    {% for place, locations in payload %}
+                                        <optgroup label="{{ place }}">
+                                            {% for location in locations %}
+                                                {% set trans = location.translations[locale] %}
+                                                <option class="text-capitalize" value="{{ location.id }}">
+                                                    {{ place != 'Beograd' and place != 'Belgrade' ? trans.title_text : trans.street }}
+                                                </option>
+                                            {% endfor %}
+                                        </optgroup>
                                     {% endfor %}
                                 </select>
                             </div>
                         {% endif %}
-                        <div class="col-md-6 col-sm-12 col-xs-12 hide images-wrapper">
-                            <div class="product-tab-area">
-                                <div class="clearfix">
-                                    <div id="sliders" class="product-tab-content tab-content flexslider">
-                                        <ul class="slides"></ul>
-                                    </div>
-                                    <div id="carousel" class="product-tab-menu flexslider">
-                                        <ul class="product-tab slides"></ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 col-xs-12">
-                            <div class="single-product-description-area">
-                                <h2 class="spd-title"></h2>
-                                <p class="spd-text"></p>
-                                <ul class="spd-list">
-                                    <li class="letter-capitalize">{{ 'address' | trans }}: <span class="address-info"></span></li>
-                                    <li class="letter-capitalize">{{ 'email' | trans }}: <span class="email-info"></span></li>
-                                    <li class="letter-capitalize">{{ 'email.order.seller.telephone' | trans }}: <span class="telephone-info"></span></li>
-                                </ul>
-                                <div class="spd-meta">
-                                    <div class="spd-meta-cat">
-                                        <span class="letter-capitalize">{{ 'location.modal.work_time' | trans }}:</span>
-                                        <ul>
-                                            <li class="work-time"></li>
-                                        </ul>
-                                    </div>
-                                    <div class="spd-meta-tags">
-                                        <span class="letter-capitalize">{{ 'location.modal.work_time_weekend' | trans }}:</span>
-                                        <ul>
-                                            <li class="work-time-weekend"></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="related-product-area">
+                    <div class="related-product-area m-t-2-xss">
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="related-product-head">
@@ -107,6 +90,6 @@
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const LOCATIONS = JSON.parse('{{ locations | json_encode | raw }}');
+        const LOCATIONS = JSON.parse('{{ payload | json_encode | raw }}');
     </script>
 {% endblock %}

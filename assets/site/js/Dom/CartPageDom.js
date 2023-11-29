@@ -75,6 +75,7 @@ class CartPageDom {
     {
         let isSoldHtml = '';
         let discountPriceHtml = '';
+        let $sizeHtml = '';
 
         const isDiscounted = 0 < Object.keys(orderProduct.discount).length;
 
@@ -89,6 +90,14 @@ class CartPageDom {
                     </span>`;
         }
 
+        if (orderProduct.size !== NO_SIZE) {
+            $sizeHtml = `<p className="cart_product_size">
+                <span
+                    className="text-label">${Translator.trans('email.order.table.size', null, 'messages', LOCALE)}:</span>
+                ${orderProduct.size}
+            </p>`;
+        }
+
         return `
             <tr class="table-row1 ${orderProduct.is_sold ? 'product-sold' : ''}" data-id="${ orderProduct.id }">
                 <td class="cart_product_image_value">
@@ -100,10 +109,7 @@ class CartPageDom {
                     <p class="cart_product_name">
                         <a href="#" class="product-title">${ orderProduct.translation.title }</a>
                     </p>
-                    <p class="cart_product_size">
-                        <span class="text-label">${Translator.trans('email.order.table.size', null, 'messages', LOCALE)}:</span>
-                        ${orderProduct.size}
-                    </p>
+                    ${$sizeHtml}
                     ${isSoldHtml}
                 </td>
                 <td class="cart_product_price_value">

@@ -10,3 +10,4 @@ twig:
         intesa_store_key: '%env(resolve:STORE_KEY)%'
         languages: '%languages%'
         siteInfoText: '%site_info_texts%'
+        countries: '%countries%'

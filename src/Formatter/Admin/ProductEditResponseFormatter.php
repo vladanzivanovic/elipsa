@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Formatter\Admin;
 
 use App\Entity\Product;
+use App\Formatter\Options\TagOptionsFormatter;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductCleaningRepository;
 use App\Repository\TagsRepository;
@@ -70,7 +71,7 @@ final class ProductEditResponseFormatter
         }
 
         $formattedOptions = [
-            'tags' => $this->tagOptionsFormatter->formatTagOptions($options['tags']),
+            'tags' => $this->tagOptionsFormatter->formatTagOptions(),
             'categories' => $options['categories'],
             'sizes' => $options['sizes'],
             'colors' => $options['colors'],

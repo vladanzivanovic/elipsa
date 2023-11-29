@@ -1,6 +1,7 @@
 import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import loginPageMapper from "../Mapper/LoginPageMapper";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class LoginHandler {
     constructor() {
@@ -18,8 +19,12 @@ class LoginHandler {
         $.ajax({
             type,
             url: urlRoute,
-            data,
+            data: JSON.stringify(FormHelperService.formToJson($(this.mapper.form))),
             dataType: 'json',
+            contentType: 'application/json',
+            headers: {
+                'Content-Language': LOCALE,
+            },
             success: (response) => {
                 AppHelperService.redirect(Routing.generate('admin.dashboard'));
             },

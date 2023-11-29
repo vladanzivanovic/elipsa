@@ -8,6 +8,7 @@ use App\Formatter\Site\OrderEditResponseFormatter;
 use App\Handler\Site\OrderHandler;
 use App\Handler\Site\OrderProductHandler;
 use App\Parser\Site\Order\OrderProductRequestParser;
+use App\Request\Dto\OrderProductRequestDto;
 use App\View\ExceptionView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,22 +46,23 @@ final class OrderProductController extends AbstractController
     /**
      * @Route("/api/order/product/{token}/{slug}", name="site_api.set_product_order", methods={"POST"}, options={"expose": true})
      *
+     * @param OrderProductRequestDto $orderProductRequestDto
      * @return JsonResponse
      */
-    public function manage(Request $request, string $token, string $slug): JsonResponse
+    public function manage(OrderProductRequestDto $orderProductRequestDto): JsonResponse
     {
         try {
-            $order = $this->orderProductRequestParser->parse($request, $token, $slug);
+            $order = $this->orderProductRequestParser->parse($orderProductRequestDto);
 
             $this->orderHandler->save($order, 'SetProduct');
 
             return $this->json($this->responseFormatter->formatResponse(
                 $order,
-                $request->getLocale()
+                $orderProductRequestDto->locale
             ), Response::HTTP_CREATED);
         } catch (\Throwable $throwable) {
             return $this->json(
-                ['error' => $this->exceptionView->view($throwable, $request->getLocale())],
+                ['error' => $this->exceptionView->view($throwable, $orderProductRequestDto->locale)],
                 Response::HTTP_BAD_REQUEST
             );
         }

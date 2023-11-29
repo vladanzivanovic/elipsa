@@ -13,19 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class LocationPageController extends AbstractController
 {
-    /**
-     * @var LocationPageCollector
-     */
-    private $pageCollector;
-    /**
-     * @var LocationPageResponseFormatter
-     */
-    private $responseFormatter;
+    private LocationPageCollector $pageCollector;
 
-    /**
-     * @param LocationPageCollector         $pageCollector
-     * @param LocationPageResponseFormatter $responseFormatter
-     */
+    private LocationPageResponseFormatter $responseFormatter;
+
     public function __construct(
         LocationPageCollector $pageCollector,
         LocationPageResponseFormatter $responseFormatter
@@ -36,8 +27,8 @@ final class LocationPageController extends AbstractController
 
     /**
      * @Route({
-     *          "rs": "/lokacije-prodavnica",
-     *          "en": "/store-locations",
+     *          "rs": "/prodavnica",
+     *          "en": "/stores",
      *      },
      *     name="site.location_page",
      *     methods={"GET"}
@@ -52,6 +43,6 @@ final class LocationPageController extends AbstractController
     {
         $collections = $this->pageCollector->collect($request->getLocale());
 
-        return $this->responseFormatter->formatResponse($collections);
+        return $this->responseFormatter->formatResponse($collections, $request->getLocale());
     }
 }

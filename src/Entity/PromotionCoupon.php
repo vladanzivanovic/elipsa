@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PromotionCoupon
 {
+    const TYPE_VALIDITY = 'date_valid';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -19,7 +21,7 @@ class PromotionCoupon
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string")
      */
     private string $code;
 
@@ -44,13 +46,20 @@ class PromotionCoupon
     private Collection $shopOrders;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\OneToMany(targetEntity=PromotionOption::class, mappedBy="promotionId", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private bool $useOnDiscountedProducts = false;
+    private Collection $promotionOptions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="promoCoupon")
+     */
+    private Collection $orderProducts;
 
     public function __construct()
     {
         $this->shopOrders = new ArrayCollection();
+        $this->promotionOptions = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,14 +146,86 @@ class PromotionCoupon
         return $this;
     }
 
-    public function isUseOnDiscountedProducts(): ?bool
+    /**
+     * @return Collection<int, PromotionOption>
+     */
+    public function getPromotionOptions(): Collection
     {
-        return $this->useOnDiscountedProducts;
+        return $this->promotionOptions;
     }
 
-    public function setUseOnDiscountedProducts(bool $useOnDiscountedProducts): self
+    public function addPromotionOption(PromotionOption $promotionOption): self
     {
-        $this->useOnDiscountedProducts = $useOnDiscountedProducts;
+        if (!$this->promotionOptions->contains($promotionOption)) {
+            $this->promotionOptions[] = $promotionOption;
+            $promotionOption->setPromotionId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePromotionOption(PromotionOption $promotionOption): self
+    {
+        if ($this->promotionOptions->removeElement($promotionOption)) {
+            // set the owning side to null (unless already changed)
+            if ($promotionOption->getPromotionId() === $this) {
+                $promotionOption->setPromotionId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOptionTypes(): ?array
+    {
+        if (true === $this->promotionOptions->isEmpty()) {
+            return null;
+        }
+
+        $types = [];
+
+        foreach ($this->promotionOptions as $promotionOption) {
+            $types[] = $promotionOption->getType();
+        }
+
+        return $types;
+    }
+
+    public function getOptionByType(string $type): ?PromotionOption
+    {
+        $filteredCollection = $this->promotionOptions->filter(function (PromotionOption $promotionOption) use ($type) : bool {
+            return $promotionOption->getType() === $type;
+        });
+
+        return $filteredCollection->first() ?? null;
+    }
+
+    /**
+     * @return Collection<int, OrderProduct>
+     */
+    public function getOrderProducts(): Collection
+    {
+        return $this->orderProducts;
+    }
+
+    public function addOrderProduct(OrderProduct $orderProduct): self
+    {
+        if (!$this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts[] = $orderProduct;
+            $orderProduct->setPromoCoupon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderProduct(OrderProduct $orderProduct): self
+    {
+        if ($this->orderProducts->removeElement($orderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getPromoCoupon() === $this) {
+                $orderProduct->setPromoCoupon(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Request\Dto;
+
+use Nelexa\RequestDtoBundle\Dto\ConstructRequestObjectInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+class ProductsBulkRequestDto implements ConstructRequestObjectInterface
+{
+    public array $products;
+
+    public ?int $discount = null;
+
+    public function __construct(Request $request = null)
+    {
+        if (null === $request) {
+            return;
+        }
+
+        $body = json_decode($request->getContent(), true);
+
+        $this->products = $body['ids'];
+
+        if (isset($body['discount'])) {
+            $this->discount = $body['discount'];
+        }
+    }
+}

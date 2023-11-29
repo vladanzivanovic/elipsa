@@ -16,11 +16,6 @@ class ShopFilterHandler {
             type: 'POST',
             url: Routing.generate(`site_api.shop_page.${LOCALE}`),
             data: JSON.stringify(postParams),
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                'Content-Language': LOCALE,
-            },
             // success: response => {
             //     $('.grid-items > .row').empty()
             //         .append(this.dom.generateProducts(response));

@@ -15,49 +15,49 @@ class LocationTranslation
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="string", length=100)
      * @Gedmo\Slug(fields={"title"}, updatable=false)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $street;
+    private string $street;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $city;
+    private string $city;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $country;
+    private string $country;
 
     /**
      * @ORM\Column(type="string", length=2)
      */
-    private $locale;
+    private string $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="locationTranslations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $location;
+    private Location $location;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $shortDescription;
+    private ?string $shortDescription = null;
 
     public function getId(): ?int
     {

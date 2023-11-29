@@ -35,7 +35,36 @@
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
+@include xl {
+  .m-t-2-xl {
+    margin-top: 2rem;
+  }
+
+  .m-bt-2-xl {
+    margin-bottom: 2rem;
+  }
+
+  .m-bt-3-xl {
+    margin-bottom: 3rem;
+  }
+}
+
+@include lg {
+  .m-t-2-lg {
+    margin-top: 2rem;
+  }
+
+  .m-bt-2-lg {
+    margin-bottom: 2rem;
+  }
+
+  .m-bt-3-lg {
+    margin-bottom: 3rem;
+  }
+}
+
+@include sm {
+//@media only screen and (min-width: 768px) and (max-width: 1024px) {
   .m-t-2-sm {
     margin-top: 2rem;
   }
@@ -74,5 +103,26 @@
 
   .m-bt-3-xss {
     margin-bottom: 3rem;
+  }
+}
+
+// foldable devices - only for samsung
+@media only screen and (min-resolution: 2.0dppx) and (min-width: 717px) {
+  .col-fold-6,
+  .col-fold-12 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: left;
+    width: 100%;
+  }
+  .col-fold {
+    &-12 {
+      width: 100%;
+    }
+    &-6 {
+      width: 50%;
+    }
   }
 }

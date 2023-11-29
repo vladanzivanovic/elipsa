@@ -23,11 +23,6 @@ class OrderApiProvider {
                 type: 'GET',
                 url: urlRoute,
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
         } catch (error) {
             result = error;
@@ -49,11 +44,6 @@ class OrderApiProvider {
                 type: 'GET',
                 url: urlRoute,
                 data: null,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             });
 
         } catch (error) {

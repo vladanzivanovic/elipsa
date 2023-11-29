@@ -1,14 +1,33 @@
+@import "../../../scss/media-queries";
+
 .single-featured-item {
   .sfi-img {
+    position: relative;
+
     .product-sold {
       position: absolute;
-      top: 44%;
-      right: -53%;
-      background: $site-color;
-      font-size: 20px;
-      color: white;
-      rotate: 303deg;
-      padding: 0px 240px;
+      top: 0;
+      left: 0;
+      //top: 44%;
+      //right: -53%;
+      //background: $site-color;
+      //font-size: 20px;
+      //color: white;
+      //rotate: 303deg;
+      //padding: 0 19vh;
+      //
+      //@include xs {
+      //  padding: 0 11vh;
+      //}
+      //
+      //@include xss {
+      //  font-size: 13px;
+      //  padding: 0 10vh;
+      //}
+      //
+      //@include sm {
+      //  padding: 0 49vh;
+      //}
     }
 
     .sfi-img-banner {

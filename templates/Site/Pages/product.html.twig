@@ -19,6 +19,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-xs-12">
+{#                    {{ dump(payload.media) }}#}
+{#                    <div class="product-tab-area">#}
+{#                        <div class="clearfix">#}
+{#                            <div class="product-tab-content tab-content">#}
+{#                                {% for image in payload.media.images %}#}
+{#                                    <div id="images-{{ image.fileName }}" data-color="{{ image.color_id }}" class="large-image tab-pane fade {{ loop.first ? 'in active' : '' }}">#}
+{#                                        <a href="{{ image.file_full }}" data-fancybox="images-{{ image.color_id }}">#}
+{#                                            <i class="fa fa-search-plus"></i>#}
+{#                                            <img src="{{ image.file }}" alt="{{ default_alt_tag }}">#}
+{#                                        </a>#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                            <div class="product-tab-menu">#}
+{#                                <ul class="product-tab">#}
+{#                                    {% for image in payload.media.images %}#}
+{#                                        <li class="thumb-image {{ loop.first ? 'active' : '' }}" data-color="{{ image.color_id }}" data-image="{{ image.fileName }}">#}
+{#                                            <a data-toggle="tab" href="#images-{{ image.fileName }}"><img src="{{ image.file_thumb }}" alt="{{ default_alt_tag }}"></a>#}
+{#                                        </li>#}
+{#                                    {% endfor %}#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                     <div class="product-tab-area">
                         <div class="clearfix">
                             <div class="photo-gallery style1 fotorama" data-allowfullscreen="native" data-nav="thumbs" data-auto="false"></div>
@@ -52,11 +76,11 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="spd-select-size">
+                        <div class="spd-select-size {{ payload.sizes[0].slug == constant('App\\Entity\\ProductSize::NO_SIZE') ? 'hide' : '' }}">
                             <span class="letter-capitalize">{{ 'select.size' | trans }}:</span>
                             <ul>
                                 {% for size in payload.sizes %}
-                                    <li><a href="#" class="size-btn {{ size.quantity == 0 ? 'unavailable' : '' }}" data-quantity="{{ size.quantity }}">{{ size.size }}</a></li>
+                                    <li><a href="#" class="size-btn {{ payload.sizes | length == 1 ? 'active' : '' }} {{ size.quantity == 0 ? 'unavailable' : '' }}" data-slug="{{ size.slug }}" data-quantity="{{ size.quantity }}">{{ size.size }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>

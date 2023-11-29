@@ -1,5 +1,3 @@
-// import DateTimePicker from "../Inputs/DateTimePicker";
-
 class AppHelperService {
 
     static isArray(data){

@@ -37,12 +37,12 @@ final class ShopFilterCollector
         $prices = $this->productRepository->getLowestAndHighestPrice();
 
         $data = [
-            'sizes'     => $sizes,
+            'sizes' => $sizes,
             'colors' => $this->colorRepository->getByLocale($locale),
             'collection' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_COLLECTION),
             'season' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_SEASON),
             'attributes' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_ATTRIBUTE),
-            'price'    => $prices[0],
+            'price' => $prices[0],
         ];
 
         return $data;

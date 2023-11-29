@@ -2,31 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Security;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Http\Authorization\AccessDeniedHandlerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-class AccessDeniedHandler implements AccessDeniedHandlerInterface
+class AuthenticationEntryPoint implements AuthenticationEntryPointInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(
         RouterInterface $router
     ) {
         $this->router = $router;
     }
 
-    public function handle(Request $request, AccessDeniedException $accessDeniedException)
+    public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {
         if (false !== strpos($request->attributes->get('_route'), 'admin')) {
             return new RedirectResponse($this->router->generate('admin.login'));

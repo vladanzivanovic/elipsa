@@ -15,14 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class PromotionCouponsEditPageController extends AbstractController
 {
-    /**
-     * @var CouponEditResponseFormatter
-     */
-    private $responseFormatter;
+    private CouponEditResponseFormatter $responseFormatter;
 
-    /**
-     * @param CouponEditResponseFormatter $responseFormatter
-     */
     public function __construct(
         CouponEditResponseFormatter $responseFormatter
     ) {
@@ -37,7 +31,7 @@ final class PromotionCouponsEditPageController extends AbstractController
      */
     public function insert(): array
     {
-        return [];
+        return $this->responseFormatter->formatResponse();
     }
 
     /**
@@ -50,6 +44,7 @@ final class PromotionCouponsEditPageController extends AbstractController
      */
     public function update(PromotionCoupon $coupon): array
     {
+//        dd($this->responseFormatter->formatResponse($coupon));
         return $this->responseFormatter->formatResponse($coupon);
     }
 }

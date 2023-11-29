@@ -27,7 +27,7 @@ class OrderApiChecker {
     isSizeAvailable(size)
     {
         for (const productSize of SIZES) {
-            if (size === productSize.size && productSize.quantity <= 0) {
+            if (size === productSize.slug && productSize.quantity <= 0) {
                 this.#showErrorAndThrowException('product.size_unavailable');
             }
         }

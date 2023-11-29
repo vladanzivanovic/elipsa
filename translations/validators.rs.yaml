@@ -20,6 +20,7 @@ promo_coupon.not_active_yet: Promotivni kod još uvek nije aktivan.
 promo_coupon.expired: Promotivni kod je istekao.
 promo_coupon.used: Vi ste već upotrebili promo kod.
 promo_coupon.not_found: Promotivni kod nije pronađen.
+promo_coupon.not_applicable: Promotivni kod nije primenljiv na izabrane proizvode.
 
 order.already_completed: Porudžbina je već završena.
 order.promo_coupon_not_exists: Promotivni kod nije dodat u nardžbinu.
