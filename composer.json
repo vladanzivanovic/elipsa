@@ -119,7 +119,7 @@
             "Composer\\Config::disableProcessTimeout",
             "rm -f public/sitemap.*",
             "rm prod.zip",
-            "zip -r prod.zip ./vendor ./config/ ./src ./public ./templates ./translations ./node_modules ./package.json ./composer.json ./composer.lock ./symfony.lock ./bin ./.env.dist"
+            "zip -r prod.zip ./vendor ./config/ ./src ./public ./templates ./translations"
         ],
         "cache:clear": [
             "php bin/console cache:clear --no-warmup --ansi",

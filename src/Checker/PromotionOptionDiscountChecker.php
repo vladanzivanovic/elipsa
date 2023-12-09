@@ -12,20 +12,23 @@ final class PromotionOptionDiscountChecker implements PromotionOptionCheckerInte
 {
     public function isEligible(OrderProduct $orderProduct, PromotionOption $promotionOption): bool
     {
-        $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
-
-        return ($orderProduct->getDiscount() === 0) || ($orderProduct->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
+        return $this->check($orderProduct->getProduct(), $promotionOption);
     }
 
     public function isProductEligible(Product $product, PromotionOption $promotionOption): bool
     {
-        $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
-
-        return ($product->getDiscount() === 0) || ($product->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
+        return $this->check($product, $promotionOption);
     }
 
     public function getType(): string
     {
         return PromotionOption::OPTION_ALL_PRODUCTS;
+    }
+
+    public function check(Product $product, PromotionOption $promotionOption): bool
+    {
+        $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
+
+        return ($product->getDiscount() === 0) || ($product->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
     }
 }
