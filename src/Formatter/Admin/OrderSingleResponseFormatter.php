@@ -7,7 +7,7 @@ namespace App\Formatter\Admin;
 use App\Entity\Banner;
 use App\Entity\Location;
 use App\Entity\OrderProduct;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Helper\ConstantsHelper;
 use App\Repository\ImageRepository;
@@ -50,7 +50,7 @@ final class OrderSingleResponseFormatter
         $total = 0;
         $hasShippingPrice = false;
 
-        /** @var PromotionCoupon $promoCode */
+        /** @var Promotion $promoCode */
         $promoCode = $order->getCoupon();
 
         $freeShippingPrice = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING'])->getValue();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Banner;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Formatter\Admin\BannerEditResponseFormatter;
 use App\Formatter\Admin\CouponEditResponseFormatter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class PromotionCouponsEditPageController extends AbstractController
+final class PromotionEditPageController extends AbstractController
 {
     private CouponEditResponseFormatter $responseFormatter;
 
@@ -24,8 +24,9 @@ final class PromotionCouponsEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/add-coupon", name="admin.add_coupon_page", methods={"GET"})
-     * @Template("Admin/Pages/couponsEdit.html.twig")
+     * @Route("/promotion/coupon/add", name="admin.add_promotion_coupon_page", methods={"GET"})
+     * @Route("/promotion/products/add", name="admin.add_promotion_product_page", methods={"GET"})
+     * @Template("Admin/Pages/promotionEdit.html.twig")
      *
      * @return array
      */
@@ -35,16 +36,16 @@ final class PromotionCouponsEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/edit-coupon/{id}", name="admin.edit_coupon_page", methods={"GET"}, options={"exponse": true})
-     * @Template("Admin/Pages/couponsEdit.html.twig")
+     * @Route("/promotion/coupon/{id}", name="admin.edit_promotion_coupon_page", methods={"GET"})
+     * @Route("/promotion/products/{id}", name="admin.edit_promotion_product_page", methods={"GET"})
+     * @Template("Admin/Pages/promotionEdit.html.twig")
      *
-     * @param PromotionCoupon $coupon
+     * @param Promotion $coupon
      *
      * @return array
      */
-    public function update(PromotionCoupon $coupon): array
+    public function update(Promotion $coupon): array
     {
-//        dd($this->responseFormatter->formatResponse($coupon));
         return $this->responseFormatter->formatResponse($coupon);
     }
 }

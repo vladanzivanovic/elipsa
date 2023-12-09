@@ -7,11 +7,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PromotionCouponRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PromotionRepository")
+ * @ORM\Table(name="promotion", uniqueConstraints={@ORM\UniqueConstraint(name="promo_code", columns={"code"})})
  */
-class PromotionCoupon
+class Promotion
 {
-    const TYPE_VALIDITY = 'date_valid';
+    const CHECKER_TYPE_VALIDITY = 'date_valid';
+
+    const TYPE_COUPON = 'coupon';
+
+    const TYPE_PRODUCT = 'product';
 
     /**
      * @ORM\Id()
@@ -47,13 +52,19 @@ class PromotionCoupon
 
     /**
      * @ORM\OneToMany(targetEntity=PromotionOption::class, mappedBy="promotionId", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
      */
     private Collection $promotionOptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="promoCoupon")
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="promotion")
      */
     private Collection $orderProducts;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $type;
 
     public function __construct()
     {
@@ -226,6 +237,18 @@ class PromotionCoupon
                 $orderProduct->setPromoCoupon(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

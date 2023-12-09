@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Api;
 use App\Entity\Banner;
 use App\Entity\ProductColor;
 use App\Entity\Tags;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\Slider;
 use App\Handler\BannerHandler;
 use App\Handler\CouponHandler;
@@ -22,16 +22,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class CouponRemoveController extends AbstractController
+final class PromotionRemoveController extends AbstractController
 {
-    /**
-     * @var CouponHandler
-     */
-    private $couponHandler;
+    private CouponHandler $couponHandler;
 
-    /**
-     * @param CouponHandler $couponHandler
-     */
     public function __construct(
         CouponHandler $couponHandler
     ) {
@@ -39,15 +33,15 @@ final class CouponRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-coupon/{id}", name="admin.remove_coupon_api", methods={"DELETE"}, options={"expose": true})
+     * @Route("/api/promotion/remove/{id}", name="admin.remove_promotion_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param PromotionCoupon $coupon
+     * @param Promotion $coupon
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function remove(PromotionCoupon $coupon): JsonResponse
+    public function remove(Promotion $coupon): JsonResponse
     {
         $this->couponHandler->remove($coupon);
 

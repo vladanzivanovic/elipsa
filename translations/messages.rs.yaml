@@ -404,6 +404,8 @@ text.type.career_form: Zaposlenje Forma
 text.type.career: Radna mesta
 text.type.cookie_policy: Politika kolačića
 text.type.about_us: O nama
+text.type.delivery: Dostava
+text.type.in_store_pickup: Dostava
 
 collaborator.form.basic_data: osnovni podaci
 collaborator.form.where_open_store: gde ste zainteresovani da otvorite franšiznu radnju?

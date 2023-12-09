@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Entity\Banner;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\Slider;
 use App\Helper\ValidatorHelper;
 use App\Repository\BannerRepository;
 use App\Repository\ImageRepository;
-use App\Repository\PromotionCouponRepository;
+use App\Repository\PromotionRepository;
 use App\Repository\SliderRepository;
 use App\Services\ImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -30,17 +30,17 @@ final class CouponHandler
     private $bag;
 
     /**
-     * @var PromotionCouponRepository
+     * @var PromotionRepository
      */
     private $couponRepository;
 
     /**
-     * @param PromotionCouponRepository $couponRepository
+     * @param PromotionRepository $couponRepository
      * @param ValidatorHelper           $validator
      * @param ParameterBagInterface     $bag
      */
     public function __construct(
-        PromotionCouponRepository $couponRepository,
+        PromotionRepository $couponRepository,
         ValidatorHelper $validator,
         ParameterBagInterface $bag
     ) {
@@ -50,38 +50,38 @@ final class CouponHandler
     }
 
     /**
-     * @param PromotionCoupon $coupon
+     * @param Promotion $promotion
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function save(PromotionCoupon $coupon): void
+    public function save(Promotion $promotion): void
     {
-        $errors = $this->validator->validate($coupon, null, "SetCoupon");
+        $errors = $this->validator->validate($promotion, null, "SetCoupon");
 
         if ($errors->count() > 0) {
             throw new UnprocessableEntityHttpException(json_encode($this->validator->parseErrors($errors)));
         }
 
-        if (null === $coupon->getId()) {
-            $this->couponRepository->persist($coupon);
+        if (null === $promotion->getId()) {
+            $this->couponRepository->persist($promotion);
         }
 
         $this->couponRepository->flush();
     }
 
     /**
-     * @param PromotionCoupon $coupon
+     * @param Promotion $promotion
      *
      * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function remove(PromotionCoupon $coupon): void
+    public function remove(Promotion $promotion): void
     {
-        $this->couponRepository->delete($coupon);
+        $this->couponRepository->delete($promotion);
 
         $this->couponRepository->flush();
     }

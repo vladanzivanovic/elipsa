@@ -111,6 +111,8 @@ class Product
      */
     private bool $sold;
 
+    private ?int $promoDiscount = null;
+
     public function __construct()
     {
         $this->productTranslations = new ArrayCollection();
@@ -551,5 +553,15 @@ class Product
         }
 
         return false;
+    }
+
+    public function getPromoDiscount(): ?int
+    {
+        return $this->promoDiscount;
+    }
+
+    public function setPromoDiscount(?int $promoDiscount): void
+    {
+        $this->promoDiscount = $promoDiscount;
     }
 }

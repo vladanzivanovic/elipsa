@@ -22,6 +22,9 @@ promo_coupon.used: Promotion code is already used.
 promo_coupon.not_found: Promotion code not found.
 promo_coupon.not_applicable: Promotion code is not applicable to select items.
 
+promotion:
+  code_exists: Promotion with given code exists.
+
 order.already_completed: Order is already completed.
 order.promo_coupon_not_exists: Promotion code is not set on the order.
 

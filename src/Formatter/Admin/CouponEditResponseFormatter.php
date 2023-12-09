@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Formatter\Admin;
 
 use App\Entity\Banner;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Formatter\Options\CategoryOptionsFormatter;
 use App\Formatter\Options\TagOptionsFormatter;
 use App\View\PromotionCouponView;
@@ -33,7 +33,7 @@ final class CouponEditResponseFormatter
         $this->tagOptionsFormatter = $tagOptionsFormatter;
     }
 
-    public function formatResponse(PromotionCoupon $coupon = null): array
+    public function formatResponse(Promotion $coupon = null): array
     {
         $payload = [];
 

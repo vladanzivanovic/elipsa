@@ -17,47 +17,48 @@ class PromotionOption
     const OPTION_PRODUCTS = 'products';
 
     const OPTION_ALL_PRODUCTS = 'applicable_all_products';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PromotionCoupon::class, inversedBy="promotionOptions")
+     * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="promotionOptions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $promotionId;
+    private Promotion $promotionId;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private string $type;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $configuration = [];
+    private array $configuration = [];
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPromotionId(): ?PromotionCoupon
+    public function getPromotionId(): Promotion
     {
         return $this->promotionId;
     }
 
-    public function setPromotionId(?PromotionCoupon $promotionId): self
+    public function setPromotionId(Promotion $promotionId): self
     {
         $this->promotionId = $promotionId;
 
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -69,7 +70,7 @@ class PromotionOption
         return $this;
     }
 
-    public function getConfiguration(): ?array
+    public function getConfiguration(): array
     {
         return $this->configuration;
     }

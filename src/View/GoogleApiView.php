@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\View;
+namespace App\View;
 
 use Turanjanin\SerbianTransliterator\Transliterator;
 

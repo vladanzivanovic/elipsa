@@ -46,7 +46,7 @@ final class ProductView
 
     public function view(Product $product, string $locale, ?User $user = null): array
     {
-        $discount = $product->getDiscount();
+        $discount = $product->getPromoDiscount() ?? $product->getDiscount();
         $price = $product->getPrice();
 
         $view = [

@@ -28,7 +28,7 @@ class CartHandler {
     {
         loader.show();
 
-        try {
+        // try {
             let order;
 
             const productRow = $(event.currentTarget).parents('tr');
@@ -50,15 +50,15 @@ class CartHandler {
 
             $(document).trigger('cart:update', order);
 
-        } catch (e) {
-            let message = e.message;
-
-            if (e.responseJSON.error) {
-                message = e.responseJSON.error.message;
-            }
-
-            this.#pageManipulator.showError(message, 'coupon');
-        }
+        // } catch (e) {
+        //     let message = e.message;
+        //
+        //     if (e.responseJSON !== undefined && e.responseJSON.error !== undefined) {
+        //         message = e.responseJSON.error.message;
+        //     }
+        //
+        //     this.#pageManipulator.showError(message, 'coupon');
+        // }
 
         loader.hide();
     }
@@ -95,7 +95,7 @@ class CartHandler {
         } catch (e) {
             let message = e.message;
 
-            if (e?.responseJSON?.error) {
+            if (e.responseJSON !== undefined && e.responseJSON.error !== undefined) {
                 message = e.responseJSON.error.message;
             }
 
@@ -134,7 +134,7 @@ class CartHandler {
         } catch (e) {
             let message = e.message;
 
-            if (e.responseJSON.error) {
+            if (e.responseJSON !== undefined && e.responseJSON.error !== undefined) {
                 message = e.responseJSON.error.message;
             }
 

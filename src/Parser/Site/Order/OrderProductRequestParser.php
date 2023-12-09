@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Entity\ProductColor;
 use App\Entity\ShopOrder;
 use App\Exception\ProductManipulationException;
+use App\Parser\ProductPromotionParser;
 use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductTranslationRepository;
@@ -29,13 +30,16 @@ final class OrderProductRequestParser
 
     private OrderRequestParser $orderRequestParser;
 
+    private ProductPromotionParser $productPromotionParser;
+
     public function __construct(
         ProductColorRepository $colorRepository,
         ImageRepository $imageRepository,
         ProductTranslationRepository $productTranslationRepository,
         OrderProductTranslationParser $orderProductTranslationParser,
         OrderCouponParser $orderCouponParser,
-        OrderRequestParser $orderRequestParser
+        OrderRequestParser $orderRequestParser,
+        ProductPromotionParser $productPromotionParser
     ) {
         $this->colorRepository = $colorRepository;
         $this->imageRepository = $imageRepository;
@@ -43,6 +47,7 @@ final class OrderProductRequestParser
         $this->orderProductTranslationParser = $orderProductTranslationParser;
         $this->orderCouponParser = $orderCouponParser;
         $this->orderRequestParser = $orderRequestParser;
+        $this->productPromotionParser = $productPromotionParser;
     }
 
     public function parse(
@@ -62,6 +67,8 @@ final class OrderProductRequestParser
 
         $product = $orderProduct->getProduct();
 
+        $promotion = $this->productPromotionParser->setProductPromotion($product);
+
         Assert::notFalse($product->hasColor($color));
         Assert::notFalse($product->isSizeAvailable($size));
 
@@ -71,7 +78,11 @@ final class OrderProductRequestParser
         $orderProduct->setImage($this->imageRepository->getMainByProduct($product));
         $orderProduct->setPrice($product->getPrice());
         $orderProduct->setCode($product->getCode());
-        $orderProduct->setDiscount($product->getDiscount());
+        $orderProduct->setDiscount($product->getPromoDiscount() ?? $product->getDiscount());
+
+        if (null !== $promotion) {
+            $orderProduct->setPromotion($promotion);
+        }
 
         if (null !== $order->getCoupon()) {
             $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\View;
 
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Repository\ProductRepository;
 
 final class PromotionCouponView
@@ -21,7 +21,7 @@ final class PromotionCouponView
         $this->productRepository = $productRepository;
     }
 
-    public function editView(PromotionCoupon $promotionCoupon): array
+    public function editView(Promotion $promotionCoupon): array
     {
         $view = $this->view($promotionCoupon);
 
@@ -48,7 +48,7 @@ final class PromotionCouponView
         return $view;
     }
 
-    public function view(PromotionCoupon $coupon): array
+    public function view(Promotion $coupon): array
     {
         $view = [
             'code' => $coupon->getCode(),

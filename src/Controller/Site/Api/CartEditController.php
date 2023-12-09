@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Api;
 
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Handler\Site\OrderHandler;
 use App\Parser\Site\CartEditRequestParser;
 use App\Repository\ShopOrderRepository;
@@ -66,13 +66,13 @@ final class CartEditController extends AbstractController
     /**
      * @Route("/api/order/set-coupon/{code}", name="site_api.set_order_coupon", methods={"PATCH"}, options={"expose": true})
      *
-     * @param PromotionCoupon $coupon
+     * @param Promotion $coupon
      * @param Request         $request
      *
      * @return JsonResponse
      * @throws \Exception
      */
-    public function setPromoCoupon(PromotionCoupon $coupon, Request $request): JsonResponse
+    public function setPromoCoupon(Promotion $coupon, Request $request): JsonResponse
     {
         $order = $this->orderRepository->getByToken($request->getSession()->get('order'));
 

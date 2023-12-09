@@ -39,8 +39,6 @@ final class OrderView
     public function view(ShopOrder $order, string $locale): array
     {
         $total = 0;
-        $freeShippingPrice = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING']);
-        $shippingPrice = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE']);
 
         $view = [
             'id' => $order->getId(),
@@ -48,9 +46,6 @@ final class OrderView
             'status' => $order->getStatus(),
             'products' => [],
             'promotion' => [],
-            'total' => $total,
-            'total_with_shipping' => $total,
-            'shipping_price' => $this->priceView->view((int) $shippingPrice->getValue(), $locale),
             'payment' => null,
             'note' => $order->getNote(),
             'checkout_completed_at' => null !== $order->getCompletedAt() ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
@@ -76,9 +71,7 @@ final class OrderView
 
         $view['total'] = $this->priceView->view($total, $locale);
 
-        $totalWithShipping = $total >= $freeShippingPrice->getValue() ? $total : $total + $shippingPrice->getValue();
-
-        $view['total_with_shipping'] = $this->priceView->view($totalWithShipping, $locale);
+        $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
 
         if (ShopOrder::STATUS_NEW < $order->getStatus()) {
             $view += $this->addCheckoutInformation($order);
@@ -98,5 +91,24 @@ final class OrderView
             'shipping_address' => $this->addressView->view($order->getShippingAddress()),
             'billing_address' => $this->addressView->view($order->getBillingAddress()),
         ];
+    }
+
+    private function setShippingPriceAndUpdateTotal(array $orderView, int $total, $locale): array
+    {
+        $freeShippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING']);
+        $shippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE']);
+
+        $shippingPrice = (int) $shippingPriceConfig->getValue();
+        $totalWithShipping = $total + $shippingPriceConfig->getValue();
+
+        if ($total >= $freeShippingPriceConfig->getValue()) {
+            $totalWithShipping = $total;
+            $shippingPrice = 0;
+        }
+
+        $orderView['total_with_shipping'] = $this->priceView->view($totalWithShipping, $locale);
+        $orderView['shipping_price'] = $this->priceView->view($shippingPrice, $locale);
+
+        return $orderView;
     }
 }

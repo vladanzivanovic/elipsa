@@ -86,6 +86,11 @@ class OrderProduct
 
     private int $total = 0;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="orderProducts")
+     */
+    private ?Promotion $promotion = null;
+
     public function __construct()
     {
         $this->orderProductTranslations = new ArrayCollection();
@@ -300,5 +305,17 @@ class OrderProduct
         }
 
         $this->total = $price * $this->quantity;
+    }
+
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?Promotion $promotion): self
+    {
+        $this->promotion = $promotion;
+
+        return $this;
     }
 }

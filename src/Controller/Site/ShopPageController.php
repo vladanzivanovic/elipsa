@@ -84,18 +84,16 @@ final class ShopPageController extends AbstractController
         return $this->generate(
             $shopPageOptionsDto,
             $shopListRequestDto,
-            $request,
-            true
+            $request
         );
     }
 
     private function generate(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        Request $request,
-        bool $isTrendyPage = false
+        Request $request
     ): array {
-        $data = $this->collectors->collect($shopPageOptionsDto->locale, $shopListRequestDto, $shopPageOptionsDto, $this->getUser(), $isTrendyPage);
+        $data = $this->collectors->collect($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
         $filters = $this->filterCollector->collect($shopPageOptionsDto->locale);
 
         return $this->formatter->formatResponse(

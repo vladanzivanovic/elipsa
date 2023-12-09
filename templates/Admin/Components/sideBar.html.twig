@@ -102,12 +102,6 @@
                     <span class="link-title">Podešavanje sajta</span>
                 </a>
             </li>
-            <li class="nav-item {{ routeName() == 'admin.coupons' ? 'active' : '' }}">
-                <a href="{{ path('admin.coupons') }}" class="nav-link">
-                    <i class="link-icon mdi mdi-format-color-fill"></i>
-                    <span class="link-title">Promotivni kuponi</span>
-                </a>
-            </li>
             <li class="nav-item {{ routeName() == 'admin.users' ? 'active' : '' }}">
                 <a href="{{ path('admin.users') }}" class="nav-link">
                     <i class="link-icon mdi mdi-format-color-fill"></i>
@@ -127,6 +121,19 @@
                 </a>
             </li>
 
+            <li class="nav-item nav-category">Promocije</li>
+            <li class="nav-item {{ routeName() == 'admin.promotion_coupons' ? 'active' : '' }}">
+                <a href="{{ path('admin.promotion_coupons') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Promotivni kuponi</span>
+                </a>
+            </li>
+            <li class="nav-item {{ routeName() == 'admin.promotion_products' ? 'active' : '' }}">
+                <a href="{{ path('admin.promotion_products') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Promocije proizvoda</span>
+                </a>
+            </li>
             <li class="nav-item nav-category">šifarnik</li>
             <li class="nav-item {{ routeName() == 'admin.colors' ? 'active' : '' }}">
                 <a href="{{ path('admin.colors') }}" class="nav-link">

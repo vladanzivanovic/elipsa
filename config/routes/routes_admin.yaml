@@ -40,11 +40,27 @@ admin.home_banners:
   defaults:
     template: Admin/Pages/homeBanners.html.twig
 
-admin.coupons:
-  path: /promo-coupons
+admin.promotion_coupons:
+  path: /promotion/coupons
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
-    template: Admin/Pages/coupons.html.twig
+    template: Admin/Pages/promotions.html.twig
+    context:
+      title: Promotivni kuponi
+      add_promotion_page_name: admin.add_promotion_coupon_page
+      edit_promotion_page_name: admin.edit_promotion_coupon_page
+      list_api_url: admin.get_promotion_coupons_list
+
+admin.promotion_products:
+  path: /promotion/products
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Admin/Pages/promotions.html.twig
+    context:
+      title: Promocije proizvoda
+      add_promotion_page_name: admin.add_promotion_product_page
+      edit_promotion_page_name: admin.edit_promotion_product_page
+      list_api_url: admin.get_promotion_products_list
 
 admin.locations:
   path: /locations

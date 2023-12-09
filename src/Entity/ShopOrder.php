@@ -89,9 +89,9 @@ class ShopOrder
     private ?string $note = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PromotionCoupon", inversedBy="shopOrders")
+     * @ORM\ManyToOne(targetEntity="Promotion", inversedBy="shopOrders")
      */
-    private ?PromotionCoupon $coupon = null;
+    private ?Promotion $coupon = null;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -276,12 +276,12 @@ class ShopOrder
         return $this;
     }
 
-    public function getCoupon(): ?PromotionCoupon
+    public function getCoupon(): ?Promotion
     {
         return $this->coupon;
     }
 
-    public function setCoupon(?PromotionCoupon $coupon): self
+    public function setCoupon(?Promotion $coupon): self
     {
         $this->coupon = $coupon;
 

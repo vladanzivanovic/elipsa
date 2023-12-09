@@ -58,6 +58,7 @@ class CartDropDownDom {
 
     removeOrderData()
     {
+        this.#mapper.productLength.text(0);
         $(this.#mapper.emptyCartWrapper).removeClass('hide');
         $(this.#mapper.cartWrapper).addClass('hide');
     }

@@ -20,10 +20,21 @@ class CouponsEditValidator {
 
         options = {
             rules: {
-                code: 'required',
-                valid_from: 'required',
-                valid_to: 'required',
-                discount: 'required',
+                code: {
+                    required: true,
+                    remote: () => {
+                            return Routing.generate('admin.promotion_code_checker_api', {id: ID})
+                        },
+                },
+                valid_from: {
+                    required: true,
+                },
+                valid_to: {
+                    required: true,
+                },
+                discount: {
+                    required: true,
+                },
             },
         };
 

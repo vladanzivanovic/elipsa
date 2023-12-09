@@ -1,16 +1,16 @@
 {% extends('Admin/base.html.twig') %}
 
 {% block content %}
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Promitvni kuponi' } %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: title } %}
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Promotivni kuponi</h4>
+            <h4 class="mb-3 mb-md-0">{{ title }}</h4>
         </div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <a href="{{ path('admin.add_coupon_page') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+            <a href="{{ path(add_promotion_page_name) }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-                Dodaj kupon
+                Dodaj promociju
             </a>
         </div>
     </div>
@@ -33,5 +33,8 @@
         const CAN_VIEW = true;
         const CAN_EDIT = true;
         const CAN_REMOVE = true;
+
+        const TABLE_URL = '{{ list_api_url }}';
+        const EDIT_PAGE_NAME = '{{ edit_promotion_page_name }}'
     </script>
 {% endblock %}

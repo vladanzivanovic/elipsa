@@ -20,19 +20,11 @@ class OrderApiHandler {
 
     create()
     {
-        // let result;
-        // try {
-            return $.ajax({
-                type: 'POST',
-                url: AppHelperService.generateLocalizedUrl('site_api.create_order'),
-                data: null,
-            });
-
-            // localStorage.setItem('order', result.token);
-
-        // } catch (error) {
-        //     return error;
-        // }
+        return $.ajax({
+            type: 'POST',
+            url: AppHelperService.generateLocalizedUrl('site_api.create_order'),
+            data: null,
+        });
     }
 
     async manageProduct(color, size, quantity, slug = SLUG)

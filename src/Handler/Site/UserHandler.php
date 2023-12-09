@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\Site;
 
 use App\Entity\OrderProduct;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Entity\User;
 use App\Event\EmailEvent;

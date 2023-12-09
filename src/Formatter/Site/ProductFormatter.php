@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
+use App\Checker\PromotionCheckerTrait;
+use App\Collector\PromotionCollector;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Parser\ProductPromotionParser;
+use App\Repository\PromotionRepository;
 use App\Repository\TagsRepository;
 use App\View\CategoryView;
 use App\View\CleaningView;
@@ -13,7 +17,6 @@ use App\View\ColorView;
 use App\View\ImageView;
 use App\View\ProductSizeView;
 use App\View\ProductView;
-use App\View\SizeView;
 use App\View\TagView;
 use App\View\YoutubeView;
 use Symfony\Component\Routing\RouterInterface;
@@ -21,6 +24,7 @@ use Symfony\Component\Routing\RouterInterface;
 final class ProductFormatter
 {
     use FormatterTrait;
+    use PromotionCheckerTrait;
 
     private RouterInterface $router;
 
@@ -42,6 +46,12 @@ final class ProductFormatter
 
     private ProductSizeView $productSizeView;
 
+    private PromotionRepository $promotionRepository;
+
+    private ProductPromotionParser $productPromotionParser;
+
+    private PromotionCollector $promotionCollector;
+
     public function __construct(
         RouterInterface $router,
         ProductView $productView,
@@ -52,7 +62,10 @@ final class ProductFormatter
         TagsRepository $tagsRepository,
         TagView $tagView,
         YoutubeView $youtubeView,
-        ProductSizeView $productSizeView
+        ProductSizeView $productSizeView,
+        PromotionRepository $promotionRepository,
+        ProductPromotionParser $productPromotionParser,
+        PromotionCollector $promotionCollector
     ) {
         $this->router = $router;
         $this->productView = $productView;
@@ -64,11 +77,13 @@ final class ProductFormatter
         $this->tagView = $tagView;
         $this->youtubeView = $youtubeView;
         $this->productSizeView = $productSizeView;
+        $this->promotionRepository = $promotionRepository;
+        $this->productPromotionParser = $productPromotionParser;
+        $this->promotionCollector = $promotionCollector;
     }
 
     public function formatResponse(array $data, string $locale, ?User $user = null): array
     {
-
         return
             ['payload' => $this->formatApiResponse($data, $locale, $user)] +
             ['relatedProducts' => $this->getProducts($data['related_products'], $locale)]
@@ -79,6 +94,8 @@ final class ProductFormatter
     {
         /** @var Product $product */
         $product = $data['product'];
+
+        $this->productPromotionParser->setProductPromotion($product);
 
         $productView = $this->productView->view($product, $locale, $user);
 
@@ -94,24 +111,28 @@ final class ProductFormatter
     }
 
     /**
-     * @param array<int, Product> $relatedProducts
+     * @param array<int, Product> $products
      * @return array<int, mixed>
      */
-    public function getProducts(array $relatedProducts, string $locale, ?User $user = null): array
+    public function getProducts(array $products, string $locale, ?User $user = null): array
     {
-        $products = [];
+        $productsView = [];
 
-        foreach ($relatedProducts as $relatedProduct) {
-            $product = $this->productView->view($relatedProduct, $locale, $user);
-            $product['colors'] = $this->getColors($relatedProduct);
-            $product['sizes'] = $this->getSizes($relatedProduct);
-            $product['tags'] = $this->getTags($relatedProduct, $locale);
-            $product['image'] = $this->imageView->view($relatedProduct->getMainImage(), 'product', 'list_thumb');
+        $productPromotions = $this->promotionCollector->collectProductPromotions();
 
-            $products[] = $product;
+        foreach ($products as $product) {
+            $this->productPromotionParser->setProductPromotion($product, $productPromotions);
+
+            $productView = $this->productView->view($product, $locale, $user);
+            $productView['colors'] = $this->getColors($product);
+            $productView['sizes'] = $this->getSizes($product);
+            $productView['tags'] = $this->getTags($product, $locale);
+            $productView['image'] = $this->imageView->view($product->getMainImage(), 'product', 'list_thumb');
+
+            $productsView[] = $productView;
         }
 
-        return $products;
+        return $productsView;
     }
 
     private function getImages(Product $product): array

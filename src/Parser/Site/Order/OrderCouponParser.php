@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Parser\Site\Order;
 
+use App\Checker\PromotionCheckerTrait;
 use App\Checker\PromotionValidityChecker;
 use App\Entity\OrderProduct;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Exception\OrderException;
-use App\Repository\PromotionCouponRepository;
+use App\Repository\PromotionRepository;
 use Webmozart\Assert\Assert;
 
 final class OrderCouponParser
 {
-    private PromotionCouponRepository $promotionCouponRepository;
+    use PromotionCheckerTrait;
+
+    private PromotionRepository $promotionCouponRepository;
 
     private OrderRequestParser $orderRequestParser;
 
@@ -24,7 +27,7 @@ final class OrderCouponParser
     private array $promotionCheckers;
 
     public function __construct(
-        PromotionCouponRepository $promotionCouponRepository,
+        PromotionRepository $promotionCouponRepository,
         OrderRequestParser $orderRequestParser,
         iterable $promotionCheckers
     ) {
@@ -54,10 +57,10 @@ final class OrderCouponParser
     }
 
     public function setPromotionPriceOnOrderItems(
-        PromotionCoupon $coupon,
+        Promotion $coupon,
         OrderProduct $orderProduct
     ): bool {
-        if (false === $this->checkCouponOptionsAreEligible($orderProduct, $coupon)) {
+        if (false === $this->checkCouponOptionsAreEligibleForOrderProduct($orderProduct, $coupon)) {
             return false;
         }
 
@@ -76,13 +79,13 @@ final class OrderCouponParser
      */
     private function addPromotion(
         ShopOrder $order,
-        ?PromotionCoupon $promotionCoupon
+        ?Promotion $promotionCoupon
     ): void {
         if (null === $promotionCoupon) {
             throw new OrderException('promo_coupon.not_found');
         }
 
-        $this->checkCouponIsEligible($order, $promotionCoupon);
+        $this->checkCouponIsEligible($promotionCoupon);
 
         $isPromotionApplied = false;
 
@@ -104,7 +107,7 @@ final class OrderCouponParser
      */
     private function removePromotion(
         ShopOrder $order,
-        PromotionCoupon $promotionCoupon
+        Promotion $promotionCoupon
     ): void {
         if(null === $order->getCoupon()) {
             throw new OrderException('order.promo_coupon_not_exists');
@@ -117,39 +120,5 @@ final class OrderCouponParser
         foreach ($order->getOrderProducts() as $orderProduct) {
             $orderProduct->setPromotionPrice(null);
         }
-    }
-
-    private function checkCouponIsEligible(ShopOrder $order, PromotionCoupon $promotionCoupon)
-    {
-        $checkerTypes = [PromotionCoupon::TYPE_VALIDITY];
-
-        foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
-                $promotionChecker->isEligible($order, $promotionCoupon);
-            }
-        }
-    }
-
-    private function checkCouponOptionsAreEligible(OrderProduct $orderProduct, PromotionCoupon $promotionCoupon): bool
-    {
-        $checkerTypes = $promotionCoupon->getOptionTypes();
-
-        if (null === $checkerTypes) {
-            return true;
-        }
-
-        $isOptionApplicable = false;
-
-        foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
-                $isOptionApplicable = $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType($promotionChecker->getType()));
-
-                if (false === $isOptionApplicable) {
-                    return false;
-                }
-            }
-        }
-
-        return $isOptionApplicable;
     }
 }

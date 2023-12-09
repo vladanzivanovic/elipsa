@@ -148,8 +148,8 @@ parameters:
         rs: uslovi-koriscenja
         en: use-conditions
     withdraw_policy:
-      title: navi.cancellation_rights
-      type: cancellation_rights
+      title: navi.withdraw_policy
+      type: withdraw_policy
       slug:
         rs: pravo-na-odustajanje
         en: withdraw-policy

@@ -6,10 +6,10 @@ namespace App\Parser;
 
 use App\Entity\Banner;
 use App\Entity\BannerTranslation;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\PromotionOption;
 use App\Repository\BannerRepository;
-use App\Repository\PromotionCouponRepository;
+use App\Repository\PromotionRepository;
 use App\Request\Dto\PromotionCouponRequestDto;
 use App\Request\Dto\PromotionOptionRequestDto;
 use App\Services\BannerImageService;
@@ -18,27 +18,28 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class CouponsEditRequestParser
 {
-    public function parse(PromotionCouponRequestDto $promotionCouponRequestDto, PromotionCoupon $coupon = null): PromotionCoupon
+    public function parse(PromotionCouponRequestDto $promotionCouponRequestDto, Promotion $promotion = null): Promotion
     {
-        if (!$coupon instanceof PromotionCoupon) {
-            $coupon = new PromotionCoupon();
+        if (!$promotion instanceof Promotion) {
+            $promotion = new Promotion();
         }
 
-        $coupon->setCode($promotionCouponRequestDto->code);
-        $coupon->setValidFrom($promotionCouponRequestDto->validFrom);
-        $coupon->setValidTo($promotionCouponRequestDto->validTo);
-        $coupon->setDiscount($promotionCouponRequestDto->discount);
+        $promotion->setCode($promotionCouponRequestDto->code);
+        $promotion->setValidFrom($promotionCouponRequestDto->validFrom);
+        $promotion->setValidTo($promotionCouponRequestDto->validTo);
+        $promotion->setDiscount($promotionCouponRequestDto->discount);
+        $promotion->setType($promotionCouponRequestDto->type);
 
-        $this->parseOptionData($promotionCouponRequestDto->options, $coupon);
+        $this->parseOptionData($promotionCouponRequestDto->options, $promotion);
 
-        return $coupon;
+        return $promotion;
     }
 
     private function parseOptionData(
         ?PromotionOptionRequestDto $promotionOptionRequestDto,
-        PromotionCoupon $promotionCoupon
+        Promotion $promotion
     ): void {
-        $promotionCoupon->getPromotionOptions()->clear();
+        $promotion->getPromotionOptions()->clear();
 
         foreach ($promotionOptionRequestDto->toArray() as $type => $values) {
             if (null === $values) {
@@ -49,7 +50,7 @@ final class CouponsEditRequestParser
             $option->setType($type);
             $option->setConfiguration(!is_array($values) ? [$values] : $values);
 
-            $promotionCoupon->addPromotionOption($option);
+            $promotion->addPromotionOption($option);
         }
     }
 }

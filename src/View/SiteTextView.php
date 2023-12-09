@@ -22,7 +22,7 @@ final class SiteTextView
     {
         $data = [
             'description' => $description->getDescription(),
-            'title' => $this->translator->trans('text.type.'.$description->getType()),
+            'title' => $this->translator->trans('navi.'.$description->getType()),
         ];
 
         return ['payload' => $data];

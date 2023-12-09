@@ -9,7 +9,7 @@ use App\Entity\Career;
 use App\Entity\CareerDescription;
 use App\Entity\Location;
 use App\Entity\OrderProduct;
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Repository\ImageRepository;
 use App\Repository\SettingsRepository;

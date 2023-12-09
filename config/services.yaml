@@ -41,6 +41,7 @@ services:
             $shopOptions: '%shop%'
             $countries: '%countries%'
             $googleApiKey: '%env(GOOGLE_MAPS_API)%'
+            $adminLocale: 'rs'
 
     _instanceof:
         App\Checker\NotificationCheckerInterface:
@@ -135,5 +136,9 @@ services:
             $checkers: !tagged_iterator app.checker.notification
 
     App\Parser\Site\Order\OrderCouponParser:
+        arguments:
+            $promotionCheckers: !tagged_iterator app.checker.promotion
+
+    App\Parser\ProductPromotionParser:
         arguments:
             $promotionCheckers: !tagged_iterator app.checker.promotion

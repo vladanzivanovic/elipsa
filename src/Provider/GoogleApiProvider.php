@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Provider;
 
-use App\Controller\View\GoogleApiView;
+use App\View\GoogleApiView;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Turanjanin\SerbianTransliterator\Transliterator;

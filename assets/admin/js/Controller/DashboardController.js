@@ -1,4 +1,3 @@
-import ConfirmationModalService from "../Services/ConfirmationModalService";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 import productListPageFilter from "../Filter/ProductListPageFilter";
 import ProductDataTableEvents from "../Event/ProductDataTableEvents";

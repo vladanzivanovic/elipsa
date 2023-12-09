@@ -41,7 +41,13 @@ class CartDropDownEvents {
         });
 
         $(document).on('cart:update', (e, order) => {
-            this.#cartDom.setOrderData(order);
+            if (order !== undefined) {
+                this.#cartDom.setOrderData(order);
+
+                return;
+            }
+
+            this.#cartDom.removeOrderData();
         })
     }
 

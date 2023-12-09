@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\View;
 
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\PromotionOption;
 
 final class PromotionOptionView

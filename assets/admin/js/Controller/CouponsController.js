@@ -1,14 +1,20 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import NotificationService from "../../../js/NotificationService";
-import CouponsDataTables from "../Services/DataTables/CouponsDataTables";
+import CouponsDataTables from "../Services/DataTables/PromotionDataTables";
 import CouponHandler from "../Handler/Coupon/CouponHandler";
+import PromotionDataTableEvents from "../Event/PromotionDataTableEvents";
 
 const Private = Symbol('private');
 
 class CouponsController {
+    #dataTableEvent;
+
     constructor() {
         if (CAN_VIEW) {
-            CouponsDataTables().init();
+            this.#dataTableEvent = new PromotionDataTableEvents();
+
+            this.#dataTableEvent.registerEvents();
+
         }
         this.notification = NotificationService();
 

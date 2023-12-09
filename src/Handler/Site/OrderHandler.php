@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\Site;
 
-use App\Entity\PromotionCoupon;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Helper\ValidatorHelper;
 use App\Repository\ShopOrderRepository;
@@ -65,14 +65,14 @@ final class OrderHandler
     }
 
     /**
-     * @param PromotionCoupon $coupon
+     * @param Promotion $coupon
      *
      * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function setCoupon(PromotionCoupon $coupon): void
+    public function setCoupon(Promotion $coupon): void
     {
         $order = $this->orderRepository->getByToken($this->session->get('order'));
         $order->setCoupon($coupon);

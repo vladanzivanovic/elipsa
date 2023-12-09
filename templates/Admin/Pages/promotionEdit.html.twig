@@ -1,18 +1,22 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_coupon_page' %}
+{% set IS_EDIT = 'admin.edit_promotion' in app.request.attributes.get('_route') %}
 {% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
-{% set title = titlePrefix ~ ' promotivnih kupona' %}
+{% set title = titlePrefix ~ ' promocija' %}
 {% set OPTION_TYPES = get_class_constants('App\\Entity\\PromotionOption') %}
+
+{% set parentPageRouteName = 'promotion_product_page' in routeName() ? 'admin.promotion_products' : 'admin.promotion_coupons' %}
+{% set parentPageTitle = 'promotion_product_page' in routeName() ? 'Promocije proizvoda' : 'Promotivni kuponi' %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
 
+
     {% include 'Admin/Components/breadcrumbs.html.twig' with {
         activePage: title,
         pages: [
-            {routeName: 'admin.coupons', name: 'Promotivni kuponi'}
+            {routeName: parentPageRouteName, name: parentPageTitle}
         ]
     } %}
 
@@ -99,5 +103,9 @@
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = {{ IS_EDIT ? app.request.attributes.get('id') : 0 }};
         const PRODUCTS = {{ IS_EDIT and payload.options[OPTION_TYPES.OPTION_PRODUCTS] is defined ? payload.options[OPTION_TYPES.OPTION_PRODUCTS].configuration | json_encode | raw : '[]' }};
+
+        const PROMOTION_TYPE = '{{ 'promotion_product_page' in routeName ? constant('App\\Entity\\Promotion::TYPE_PRODUCT') : constant('App\\Entity\\Promotion::TYPE_COUPON') }}';
+
+        const PARENT_ROUTE_NAME = '{{ parentPageRouteName }}';
     </script>
 {% endblock %}

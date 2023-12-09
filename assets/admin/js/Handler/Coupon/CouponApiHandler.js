@@ -17,13 +17,13 @@ class CouponApiHandler {
     async save()
     {
         let result;
-        let route = Routing.generate('admin.add_coupon_api');
+        let route = Routing.generate('admin.add_promotion_api', {type: PROMOTION_TYPE});
         let type = 'POST';
 
         const data = FormHelperService.formToJson($(this.#mapper.form));
 
         if (1 === IS_EDIT) {
-            route = Routing.generate('admin.edit_coupon_api', {id: ID});
+            route = Routing.generate('admin.edit_promotion_api', {type: PROMOTION_TYPE, id: ID});
             type = 'PUT';
         }
 
@@ -40,7 +40,6 @@ class CouponApiHandler {
                 }
             })
         }catch (error) {
-            console.log(error);
             result = error;
         }
 

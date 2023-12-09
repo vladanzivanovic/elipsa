@@ -4,31 +4,29 @@ declare(strict_types=1);
 
 namespace App\Checker;
 
-use App\Entity\PromotionCoupon;
-use App\Entity\ShopOrder;
-use App\Exception\OrderException;
+use App\Entity\Promotion;
+use App\Exception\CouponCheckerException;
 
 final class PromotionValidityChecker implements PromotionCheckerInterface
 {
     /**
-     * @throws OrderException
+     * @throws CouponCheckerException
      */
     public function isEligible(
-        ShopOrder $order,
-        PromotionCoupon $promotionCoupon
+        Promotion $promotionCoupon
     ): void {
         $this->throwExceptionIfExpired($promotionCoupon);
     }
 
     public function getType(): string
     {
-        return PromotionCoupon::TYPE_VALIDITY;
+        return Promotion::CHECKER_TYPE_VALIDITY;
     }
 
     /**
-     * @throws OrderException
+     * @throws CouponCheckerException
      */
-    private function throwExceptionIfExpired(PromotionCoupon $coupon): void
+    private function throwExceptionIfExpired(Promotion $coupon): void
     {
         $now = new \DateTimeImmutable();
 
@@ -36,7 +34,7 @@ final class PromotionValidityChecker implements PromotionCheckerInterface
             return;
         }
 
-        throw new OrderException(
+        throw new CouponCheckerException(
             'promo_coupon.expired'
         );
     }
