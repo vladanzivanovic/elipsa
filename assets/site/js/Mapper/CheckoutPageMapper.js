@@ -14,6 +14,12 @@ class CheckoutPageMapper {
             this.shippingPrice = '#shipping-price';
             this.totalWithShipping = '#total-with-shipping';
 
+            this.billingFields = {
+                address: '#address',
+                city: '#city',
+                country: '#country',
+            };
+
             CheckoutPageMapper.instance = this;
         }
 

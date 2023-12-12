@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Unique;
 
 use App\Provider\GoogleApiProvider;
+use App\Request\Dto\GoogleApiRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ final class GoogleApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/place/{query}",
+     * @Route("/api/place/autocomplete",
      *     name="app_api.place_search",
      *     methods={"GET"},
      *     options={"expose": true}
@@ -29,9 +30,9 @@ final class GoogleApiController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function placeSearch(string $query): Response
+    public function placeSearch(GoogleApiRequestDto $googleApiRequestDto): Response
     {
-        $places = $this->googleApiProvider->getAddresses($query);
+        $places = $this->googleApiProvider->getAddresses($googleApiRequestDto);
 
         return $this->json($places, Response::HTTP_OK);
     }
