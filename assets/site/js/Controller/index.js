@@ -15,6 +15,7 @@ import CollaboratorPageController from "./CollaboratorPageController";
 import CareerPageController from "./CareerPageController";
 import ResetPasswordPageController from "./ResetPasswordPageController";
 import OrderFinishPage from "./OrderFinishPage";
+import RegistrationController from "./RegistrationController";
 
 let routes = [
     {
@@ -80,6 +81,10 @@ let routes = [
     {
         name: 'site.reset_password_page',
         controller: ResetPasswordPageController,
+    },
+    {
+        name: 'site.registration',
+        controller: RegistrationController,
     },
     {
         name: 'site.checkout_completed_successful',

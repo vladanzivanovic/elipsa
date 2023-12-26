@@ -27,11 +27,11 @@ class HeaderEvents {
             this.#userHandler.doRegistration(this.#mapper.registrationForm);
         });
 
-        $(document).on('click touchend', this.#mapper.loginSubmitBtn, e => {
+        $(document).on('click touchend', this.#mapper.login.loginSubmitBtn, e => {
             this.#userHandler.doLogin(this.#mapper);
         });
 
-        $(this.#mapper.resetPasswordBtn).on('click touchend', e => {
+        $(this.#mapper.reset.resetPasswordBtn).on('click touchend', e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -39,11 +39,11 @@ class HeaderEvents {
             $('.lrc-register').fadeOut();
             $('#reset_password').fadeOut();
 
-            $(this.#mapper.resetPwdFormWrapper).fadeIn();
-            $(this.#mapper.loginRegistrationFormWraper).fadeIn();
+            $(this.#mapper.reset.resetPwdFormWrapper).fadeIn();
+            $(this.#mapper.login.loginShowWrapper).fadeIn();
         });
 
-        $(this.#mapper.loginRegistrationBtn).on('click touchend', e => {
+        $(this.#mapper.login.loginShowBtn).on('click touchend', e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -51,44 +51,44 @@ class HeaderEvents {
             $('.lrc-register').fadeIn();
             $('#reset_password').fadeIn();
 
-            $(this.#mapper.resetPwdFormWrapper).fadeOut();
-            $(this.#mapper.loginRegistrationFormWraper).fadeOut();
+            $(this.#mapper.reset.resetPwdFormWrapper).fadeOut();
+            $(this.#mapper.login.loginShowWrapper).fadeOut();
         });
 
-        $(document).on('click touchend', this.#mapper.resetPasswordSubmitBtn, e => {
+        $(document).on('click touchend', this.#mapper.reset.resetPasswordSubmitBtn, e => {
 
-            $(this.#mapper.resetForm).valid();
+            $(this.#mapper.reset.form).valid();
 
             this.#userHandler.doResetPassword(this.#mapper);
         });
 
-        $(document).on('click touchend', this.#mapper.searchOpener, e => {
+        $(document).on('click touchend', this.#mapper.search.opener, e => {
             e.preventDefault();
             e.stopPropagation();
 
-            if (!$(this.#mapper.searchArea).hasClass('show')) {
-                $(this.#mapper.searchArea).fadeIn(500);
-                $(this.#mapper.searchArea).addClass('show');
+            if (!$(this.#mapper.search.area).hasClass('show')) {
+                $(this.#mapper.search.area).fadeIn(500);
+                $(this.#mapper.search.area).addClass('show');
             }
         })
 
-        $(document).on('click touchend', this.#mapper.searchClose, e => {
+        $(document).on('click touchend', this.#mapper.search.close, e => {
             e.preventDefault();
             e.stopPropagation();
 
-            if ($(this.#mapper.searchArea).hasClass('show')) {
-                $(this.#mapper.searchArea).fadeOut(500);
-                $(this.#mapper.searchArea).removeClass('show');
+            if ($(this.#mapper.search.area).hasClass('show')) {
+                $(this.#mapper.search.area).fadeOut(500);
+                $(this.#mapper.search.area).removeClass('show');
             }
         })
 
-        $(document).on('submit', this.#mapper.searchForm, e => {
+        $(document).on('submit', this.#mapper.search.form, e => {
             e.preventDefault();
             e.stopPropagation();
 
             const params = {};
 
-            params[Translator.trans('search', null, 'messages', LOCALE)] = $(this.#mapper.searchInput).val();
+            params[Translator.trans('search', null, 'messages', LOCALE)] = $(this.#mapper.search.input).val();
 
             location.href = Routing.generate(
                 `site.shop_page.${LOCALE}`, params);
@@ -101,7 +101,7 @@ class HeaderEvents {
         this.#resetPasswordValidator = resetPasswordValidator;
 
         this.#registrationValidator.validate(this.#mapper.registrationForm);
-        this.#resetPasswordValidator.validate(this.#mapper.resetForm);
+        this.#resetPasswordValidator.validate(this.#mapper.reset.form);
 
     }
 }

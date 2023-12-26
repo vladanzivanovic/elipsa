@@ -40,17 +40,4 @@ final class OrderFinishView
 
         return $view;
     }
-
-    private function getUserRegistrationData(User $user, string $locale): array
-    {
-
-        if (null === $user->getResetToken()) {
-            return [];
-        }
-
-        return [
-            'registration_token' => $user->getResetToken(),
-            'locale' => $locale
-        ];
-    }
 }

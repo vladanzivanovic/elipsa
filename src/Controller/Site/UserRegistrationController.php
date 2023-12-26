@@ -57,7 +57,7 @@ final class UserRegistrationController extends AbstractController
         $user->setResetRequestAt(null);
         $user->setResetToken(null);
 
-        $this->handler->save($user, $request->getLocale());
+        $this->handler->save($user);
 
         return [];
     }

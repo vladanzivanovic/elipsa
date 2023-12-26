@@ -7,8 +7,12 @@ namespace App\Parser\Site;
 use App\Entity\Address;
 use App\Entity\Loyalty;
 use App\Entity\User;
+use App\Exception\UserException;
 use App\Repository\LoyaltyRepository;
 use App\Repository\UserRepository;
+use App\Request\Dto\AddressRequestDto;
+use App\Request\Dto\RegistrationRequestDto;
+use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -36,51 +40,62 @@ final class RegistrationRequestParser
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param ParameterBag $bag
-     *
-     * @param User|null    $user
-     *
-     * @return User
-     */
-    public function parse(ParameterBag $bag, User $user = null): User
+    public function parse(RegistrationRequestDto $registrationRequestDto, User $user = null): User
     {
-        $countUsers = $this->userRepository->countByEmail($bag->get('registration_email'), $user);
+        $countUsers = $this->userRepository->countByEmail($registrationRequestDto->email, $user);
 
         if ($countUsers > 0) {
-            throw new BadRequestHttpException('registration.error.user_exists');
+            $userException = new UserException('registration.error.user_exists');
+            $userException->setDomain('messages');
+
+            throw $userException;
         }
 
         if (null === $user) {
             $token = bin2hex(openssl_random_pseudo_bytes(10));
 
-            $user = new User();
-            $user->setPassword($bag->get('registration_password'))
-                ->setRePassword($bag->get('registration_re_password'))
-                ->setStatus(User::STATUS_PENDING)
+            $user = $this->create();
+            $user->setPassword($registrationRequestDto->password)
+                ->setRePassword($registrationRequestDto->rePassword)
                 ->setResetToken($token)
                 ->setRoles(['ROLE_USER'])
                 ->setResetRequestAt(new \DateTime());
         }
 
-        $user->setFirstName($bag->get('registration_first_name'))
-            ->setLastName($bag->get('registration_last_name'))
-            ->setEmail($bag->get('registration_email'));
+        $user->setFirstName($registrationRequestDto->firstName)
+            ->setLastName($registrationRequestDto->lastName)
+            ->setEmail($registrationRequestDto->email);
 
-        if (null !== $bag->get('registration_password') && null !== $user->getId()) {
-            $user->setPassword($bag->get('registration_password'));
-        }
+//        if (null !== $bag->get('registration_password') && null !== $user->getId()) {
+//            $user->setPassword($bag->get('registration_password'));
+//        }
+
+        $this->parseAddress($registrationRequestDto->addressRequestDto, $user);
 
         return $user;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param User         $user
-     *
-     * @return void
-     */
-    public function parseAddress(ParameterBag $bag, User $user): void
+    public function parseFromSocial(UserResponseInterface $userResponse): User
+    {
+        $user = $this->userRepository->findOneBy(['email' => $userResponse->getEmail()]);
+
+        if (null === $user) {
+            $user = $this->create();
+
+            $user->setFirstName($userResponse->getFirstName())
+                ->setLastName($userResponse->getLastName())
+                ->setEmail($userResponse->getEmail())
+                ->setRoles(['ROLE_USER'])
+                ->setStatus(User::STATUS_ACTIVE);
+        }
+
+        $user->setLoginType($userResponse->getResourceOwner()->getName())
+            ->setSocialId($userResponse->getUserIdentifier());
+
+        return $user;
+    }
+
+    public function parseAddress(AddressRequestDto $addressRequestDto, User $user): void
     {
         $address = $user->getAddress();
 
@@ -91,12 +106,17 @@ final class RegistrationRequestParser
         $address->setEmail($user->getEmail())
             ->setLastName($user->getLastName())
             ->setFirstName($user->getFirstName())
-            ->setAddress($bag->get('address'))
-            ->setCity($bag->get('city'))
-            ->setCountry($bag->get('country'))
-            ->setPhone($bag->get('phone'))
-            ->setZipCode((int) $bag->get('zipCode'));
+            ->setAddress($addressRequestDto->street)
+            ->setCity($addressRequestDto->city)
+            ->setCountry($addressRequestDto->country)
+            ->setPhone($addressRequestDto->mobilePhone)
+            ->setZipCode($addressRequestDto->zipCode);
 
         $user->setAddress($address);
+    }
+
+    public function create(): User
+    {
+        return new User();
     }
 }

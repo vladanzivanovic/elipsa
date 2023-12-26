@@ -82,6 +82,7 @@ class ProductRepository extends ExtendedEntityRepository
                 'pt.title as title',
                 'pt.slug',
                 'p.showHomePage as show_home_page',
+                'p.sold as is_sold',
                 'GROUP_CONCAT(s.size ORDER BY s.size ASC SEPARATOR \', \') as sizes'
             )
             ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')

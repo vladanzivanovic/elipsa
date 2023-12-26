@@ -22,6 +22,11 @@ choose: Izaberite
 choose_gender: Izaberite pol
 choose_language: Izaberite jezik
 
+information:
+  basic: Osnovne informacije
+  additional: Dodatne informacije
+  contact: Kontakt podaci
+
 data:
   success_send: 'Podaci su uspešno poslati.'
   success_deleted: 'Podaci su uspešno obrisani.'
@@ -155,6 +160,7 @@ title.reset_password: Promena lozinke
 title.not_exits_page: Nepostojeća stranica
 title.career: Radna mesta
 title.trends: Trendovi
+title.registration_confirmation: Potvrda registracije
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -197,6 +203,7 @@ First_name: Ime
 Last_name: Prezime
 last_name: prezime
 address: adresa
+street_and_number: Ulica i broj
 city: mesto
 zip_code: poštanski broj
 email: Email adresa
@@ -324,6 +331,7 @@ login.text: Prijava
 login.btn: Prijavi se
 login.remember_me: zapamti me
 login.successful: Uspešno ste se ulogovali
+login.via: Ulogijte se putem
 
 reset_password.text: zaboravili ste lozinku?
 reset_password.label: resetovanje lozinke
@@ -337,11 +345,15 @@ logout.text: odjavite se
 
 registration.text: Registracija
 registration.btn: Registruj se
-registration.via: registracija putem
+registration.via: Registracija putem
 registration.error.user_exists: Vi ste već registrovani
-registration.success.message: Uspešno ste se registrovali.<br/> Na vašu email adresu je poslat email za potvrdu registracije
+registration.success.title: Uspešno ste se registrovali.
+registration.success.message: Na vašu email adresu je poslat email za potvrdu registracije. Pratite link u email-u kako bi ste aktivirali vaš nalog
 registration.activation.title: Vaš nalog je aktiviran
 registration.activation.message: Sada se možete ulogovati
+registration.dont_have_account: Nemate nalog
+registration.page.title: Kreirajte Vaš Elipsa nalog
+registration.page.text: Registrujte se i uživajte u posebnim pogodnostima koje Vam donosi online kupovina
 
 user.inactive_user: Vaša email adresa nije aktivirana.<br/> Molimo vas da pratite link iz email kako bi ste aktivirali nalog.
 

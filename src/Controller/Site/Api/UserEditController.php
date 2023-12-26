@@ -49,43 +49,6 @@ final class UserEditController extends AbstractController
 
     /**
      * @Route({
-     *          "rs": "/api/add-user",
-     *          "en": "/api/add-user"
-     *      },
-     *     name="site_api.user_registration",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \ReflectionException
-     */
-    public function add(Request $request): JsonResponse
-    {
-        $csrf = $request->request->get('_csrf_token');
-
-        if (false === $this->isCsrfTokenValid('user_registration', $csrf)) {
-            $this->createAccessDeniedException();
-        }
-
-        try {
-            $user = $this->requestParser->parse($request->request);
-
-            $this->handler->save($user, $request->getLocale(), 'SetUser', true, true);
-            $request->getSession()->getFlashBag()->add('message', $this->translator->trans('registration.success.message'));
-
-        } catch (BadRequestHttpException $httpException) {
-            return $this->json(['error' => $httpException->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        return $this->json(null, JsonResponse::HTTP_CREATED);
-    }
-
-    /**
-     * @Route({
      *          "rs": "/api/update-user/{id}",
      *          "en": "/api/update-user/{id}"
      *      },
@@ -116,7 +79,7 @@ final class UserEditController extends AbstractController
                 $this->requestParser->parseAddress($bag, $user);
             }
 
-            $this->handler->save($user, $request->getLocale(), 'UpdateUser', false, $bag->get('password') !== null);
+            $this->handler->save($user, 'UpdateUser', $bag->get('password') !== null);
             $request->getSession()->getFlashBag()->add('message', $this->translator->trans('my_account.personal_info.success.message'));
 
         } catch (BadRequestHttpException $httpException) {

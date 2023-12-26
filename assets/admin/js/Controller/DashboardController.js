@@ -57,6 +57,12 @@ class DashboardController {
             this.#productEditHandler.changeHomePagePosition($(e.currentTarget), slug, status);
         });
 
+        $(document).on('change', '.toggle-product-is-sold', e => {
+            const slug = e.currentTarget.dataset.slug;
+
+            this.#productEditHandler.toggleIsSold($(e.currentTarget), slug);
+        });
+
         $(document).on('click', '.remove-product', e => {
             const alias = e.currentTarget.dataset.alias;
 

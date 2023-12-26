@@ -1,0 +1,113 @@
+{% extends 'Site/base.html.twig' %}
+
+{% set title = 'registration.page.title' | trans %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block bodyClass %}registration-page{% endblock %}
+
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+
+{% block content %}
+    {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': title }], 'activePage': ''}) }}
+
+    <div class="contact-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="contact-form-area">
+                        <div class="contact-form-head">
+                            <h2>{{ title }}</h2>
+                            <p class="contact-form-head-post-text">{{ 'registration.page.text' | trans }}</p>
+                        </div>
+                        <div class="contact-form-content">
+                            <div class="cf-msg"></div>
+                            <form id="registration_form" enctype="multipart/form-data">
+                                {{ inputs.input('_csrf_token_registration', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-xs-12 m-bt-3">
+                                            <h4 class="my-account-title">{{ 'information.basic' | trans }}</h4>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('first_name' | trans ~ ' *', 'first_name', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('last_name' | trans ~ ' *', 'last_name', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('Password' | trans ~ ' *', 'password', '', 'password', '', 'password', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('Re_password' | trans ~ ' *', 're_password', '', 're_password', '', 'password', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="col-xs-12 m-bt-3">
+                                            <h4 class="my-account-title">{{ 'information.contact' | trans }}</h4>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('street_and_number' | trans ~ ' *', 'street', '', 'address[street]', '', 'text', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('city' | trans ~ ' *', 'city', '', 'address[city]', '', 'text', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('zip_code' | trans ~ ' *', 'zip-code', '', 'address[zip_code]', '', 'text', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('country' | trans ~ ' *', 'country', '', 'address[country]', '', 'text', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="cfc-input-box">
+                                                {{ form.input('mobile_telephone' | trans ~ ' *', 'mobile_phone', '', 'address[mobile_phone]', '', 'tel', null, '', 'text-uppercase') }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row submit-register-via-social">
+                                    <div class="col-md-6 col-xs-12 or-register-to">
+                                        <p class="or-register-to-text">{{ 'registration.via' | trans }}</p>
+                                        <ul>
+                                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12 submit-wrapper cfc-input-box">
+                                        {{ form.button('submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageStyleSheets %}
+    {{ encore_entry_link_tags('css/site/pages/registration') }}
+{% endblock %}

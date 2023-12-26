@@ -33,7 +33,7 @@ class Tags
     private int $relatedType;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private string $productType;
 

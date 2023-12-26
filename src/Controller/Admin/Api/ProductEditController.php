@@ -31,7 +31,7 @@ final class ProductEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-product", name="admin.add_product_api", methods={"POST"}, options={"expose": true})
+     * @Route("/api/product/add", name="admin.add_product_api", methods={"POST"}, options={"expose": true})
      * @throws ORMException
      */
     public function insert(Request $request): JsonResponse
@@ -44,7 +44,7 @@ final class ProductEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-product/{slug}", name="admin.edit_product_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/product/{slug}", name="admin.edit_product_api", methods={"PUT"}, options={"expose": true})
      * @throws ORMException
      */
     public function update(Request $request, ProductTranslation $productTranslation): JsonResponse
@@ -57,11 +57,13 @@ final class ProductEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/product-change-status/{slug}/{status}", name="admin.api_product_change_status", methods={"PATCH"}, options={"expose": true})
+     * @Route("/api/product/status/{slug}/{status}", name="admin.api_product_change_status", methods={"PATCH"}, options={"expose": true})
      */
     public function changeStatus(ProductTranslation $productTranslation, int $status): JsonResponse
     {
-        $this->editHandler->changeStatus($productTranslation->getProduct(), $status);
+        $productTranslation->getProduct()->setStatus($status);
+
+        $this->editHandler->save($productTranslation->getProduct());
 
         $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', Product::class);
 
@@ -69,7 +71,7 @@ final class ProductEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/product-home-page-position/{slug}/{status}",
+     * @Route("/api/product/home-page-position/{slug}/{status}",
      *     name="admin.api_product_home_page_position",
      *     methods={"PATCH"},
      *     options={"expose": true}
@@ -77,7 +79,28 @@ final class ProductEditController extends AbstractController
      */
     public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
     {
-        $this->editHandler->setHomePagePosition($productTranslation->getProduct(), $status);
+        $productTranslation->getProduct()->setShowHomePage($status);
+
+        $this->editHandler->save($productTranslation->getProduct());
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @Route("/api/product/sold/{slug}",
+     *     name="admin.api_product_is_sold",
+     *     methods={"PATCH"},
+     *     options={"expose": true}
+     * )
+     */
+    public function toggleProductIsSold(ProductTranslation $productTranslation): JsonResponse
+    {
+        $product = $productTranslation->getProduct();
+        $isSold = $product->isSold();
+
+        $product->setSold(!$isSold);
+
+        $this->editHandler->save($productTranslation->getProduct());
 
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }

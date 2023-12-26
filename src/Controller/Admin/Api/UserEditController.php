@@ -12,6 +12,7 @@ use App\Parser\UserEditRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -77,14 +78,14 @@ final class UserEditController extends AbstractController
                 $this->requestParser->parseAddress($bag, $user);
             }
 
-            $this->handler->save($user, $request->getLocale(), 'SetUserAdmin', false, true);
+            $this->handler->save($user, 'SetUserAdmin', true);
             $request->getSession()->getFlashBag()->add('message', $this->translator->trans('my_account.personal_info.success.message'));
 
         } catch (BadRequestHttpException $httpException) {
-            return $this->json(['error' => $httpException->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['error' => $httpException->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -116,14 +117,14 @@ final class UserEditController extends AbstractController
                 $this->requestParser->parseAddress($bag, $user);
             }
 
-            $this->handler->save($user, $request->getLocale(), 'UpdateUser', false, $bag->get('password') !== null);
+            $this->handler->save($user, 'UpdateUser', $bag->get('password') !== null);
             $request->getSession()->getFlashBag()->add('message', $this->translator->trans('my_account.personal_info.success.message'));
 
         } catch (BadRequestHttpException $httpException) {
-            return $this->json(['error' => $httpException->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['error' => $httpException->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -140,7 +141,7 @@ final class UserEditController extends AbstractController
     {
         $user->setStatus((int) $status);
 
-        $this->handler->save($user, 'rs', 'UpdateUser', false, false);
+        $this->handler->save($user, 'UpdateUser');
 
         $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', User::class);
 
@@ -158,7 +159,7 @@ final class UserEditController extends AbstractController
     {
         $user->setStatus(User::STATUS_DISABLED);
 
-        $this->handler->save($user, 'rs', 'UpdateUser', false, false);
+        $this->handler->save($user, 'UpdateUser');
 
 
         return $this->json(['text' => $statusText]);

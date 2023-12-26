@@ -23,7 +23,6 @@ class ProductBulkApiHandler {
                 }
             })
         }catch (error) {
-            console.log(error);
             result = error;
         }
 
@@ -46,7 +45,6 @@ class ProductBulkApiHandler {
                 }
             })
         }catch (error) {
-            console.log(error);
             result = error;
         }
 

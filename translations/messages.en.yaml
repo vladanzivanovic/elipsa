@@ -22,6 +22,11 @@ choose: Choose
 choose_gender: Choose gender
 choose_language: Choose language
 
+information:
+  basic: Basic information
+  additional: Additional information
+  contact: Contact information
+
 data:
   success_send: 'Data are successfully sent.'
   success_deleted: 'Data are successfully deleted.'
@@ -165,6 +170,7 @@ title.reset_password: Reset password
 title.not_exits_page: Page doesn't exists
 title.career: Creers
 title.trends: Trends
+title.registration_confirmation: Registration confirmation
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -207,6 +213,7 @@ First_name: First name
 Last_name: Last name
 last_name: last name
 address: address
+street_and_number: Street and number
 city: city
 zip_code: postal code
 email: Email address
@@ -291,7 +298,7 @@ email.notification.size.text: '<div>
 
 
 payment_type.on_delivering: On delivering
-payment_type.credit_card: Credi card
+payment_type.credit_card: Credit card
 
 location.modal.work_time: Working time
 location.modal.work_time_saturday: Saturday
@@ -311,7 +318,7 @@ form: form
 submit: Submit
 
 loyalty.rate: Rate the ELIPSA brand from 1-5
-loyalty.message.success: You are successfuly register in loyalty program.
+loyalty.message.success: You are successfully register in loyalty program.
 loyalty.message.user_exists: You are already registered in loyalty program.
 
 January: Januar
@@ -331,14 +338,15 @@ login.text: Login
 login.btn: Submit login
 login.remember_me: remember me
 login.successfull: Login was successful
+login.via: Login via
 
 reset_password.text: Did you forgot password?
-reset_password.label: Reset pssword
-reset_password.successful:  You will receive email with link to change pssword
+reset_password.label: Reset password
+reset_password.successful:  You will receive email with link to change password
 reset_password.user_not_exists: User not exits.
-reset_password.page.text: Enter new pssword.
+reset_password.page.text: Enter new password.
 reset_password.page.error.expired_token: Your request to change password has expired. Please request new one.
-reset_password.page.success: You are successfuly changed password.
+reset_password.page.success: You are successfully changed password.
 
 logout.text: logout
 
@@ -346,9 +354,13 @@ registration.text: Registration
 registration.btn: Submit registration
 registration.via: register via
 registration.error.user_exists: You are already registered
-registration.success.message: Registration was successfull.<br/> We send you confirmation email
+registration.success.title: Registration was successful.
+registration.success.message: We sent you the confirmation email. Follow the link in the email in order to activate your account.
 registration.activation.title: Your account is active
 registration.activation.message: You can continue to login
+registration.dont_have_account: Don't have account
+registration.page.title: Create Your Elipsa account
+registration.page.text: Sign up and enjoy special benefits with online shopping
 
 user.inactive_user: Your email address is not confirmed yet.<br/> Please folow the link in email in order to activate account.
 

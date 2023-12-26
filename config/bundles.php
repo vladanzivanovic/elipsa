@@ -21,4 +21,5 @@ return [
     Sentry\SentryBundle\SentryBundle::class => ['all' => true],
     MobileDetectBundle\MobileDetectBundle::class => ['all' => true],
     Nelexa\RequestDtoBundle\RequestDtoBundle::class => ['all' => true],
+    HWI\Bundle\OAuthBundle\HWIOAuthBundle::class => ['all' => true],
 ];

@@ -1,11 +1,7 @@
 security:
     enable_authenticator_manager: true
-#    encoders:
-#        App\Entity\User:
-#            algorithm: auto
 
     password_hashers:
-#        App\Entity\User: 'auto'
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
@@ -25,30 +21,31 @@ security:
             lazy: true
             provider: app_user_provider
             entry_point: App\Security\AuthenticationEntryPoint
-#            guard:
-#                authenticators:
-#                    - App\Security\LoginFormAuthenticator
             json_login:
                 check_path: admin_api.login
                 login_path: admin.login
-#            access_denied_handler: App\Handler\AuthenticationEntryPoint
             logout:
                 path:   admin.logout
 
         main:
-#            anonymous: true
             lazy: true
             provider: app_user_provider
-#            custom_authenticators:
 
-#            guard:
-#                authenticators:
-#                    - App\Security\LoginFormAuthenticator
             json_login:
                 check_path: site_api.login
-#                username_path: email
-#                password_path: password
-#            access_denied_handler: App\Handler\AccessDeniedHandler
+
+            oauth:
+                resource_owners:
+                    facebook: site.facebook_login
+                    google: site.google_login
+                login_path: /
+                use_forward: false
+                failure_path: /
+
+                oauth_user_provider:
+                    service: App\Provider\UserProvider
+                provider: app_user_provider
+
             user_checker: App\Checker\AuthenticationChecker
 
             logout:

@@ -8,6 +8,26 @@ site.loyalty:
   options:
     expose: true
 
+site.registration:
+  path:
+    rs: /registracija
+    en: /en/registration
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/registration.html.twig
+  options:
+    expose: true
+
+site.registration_confirmation:
+  path:
+    rs: /uspesna-registracija
+    en: /en/success-registration
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: Site/Pages/registrationSuccess.html.twig
+  options:
+    expose: true
+
 site.collaborator:
   path:
     rs: /saradnici
@@ -65,6 +85,12 @@ site.checkout_page:
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/checkout.html.twig
+
+site.facebook_login:
+  path: /login/check/facebook
+
+site.google_login:
+  path: /login/check/google
 
 site.logout:
   path: /logout

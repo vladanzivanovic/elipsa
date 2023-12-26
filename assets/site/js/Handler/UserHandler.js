@@ -1,4 +1,3 @@
-import NotificationService from "../../../js/NotificationService";
 import loyaltyPageMapper from "../Mapper/LoyaltyPageMapper";
 import loader from "../Dom/LoaderDom";
 import AppHelperService from "../../../js/Helper/AppHelperService";
@@ -11,34 +10,6 @@ class UserHandler {
         this.notification = toastrService;
     }
 
-    doRegistration(form) {
-        let urlRoute = Routing.generate(`site_api.user_registration.${LOCALE}`);
-        let type = 'POST';
-        const data = $(form).serializeArray();
-
-        if (! $(form).valid()) {
-            return false;
-        }
-
-        loader.show();
-
-        $.ajax({
-            type,
-            url: urlRoute,
-            data,
-            dataType: 'json',
-            success: (response) => {
-                AppHelperService.redirect('reload');
-                this.notification.success(Translator.trans(`registration.success.message`, null, 'messages', LOCALE));
-                loader.hide();
-            },
-            error: (error) => {
-                this.notification.error(Translator.trans(`registration.error.user_exists`, null, 'messages', LOCALE));
-                loader.hide();
-            }
-        })
-    }
-
     doLogin(mapper) {
         const urlRoute = Routing.generate(`site_api.login`);
         const type = 'POST';
@@ -48,7 +19,7 @@ class UserHandler {
         $.ajax({
             type,
             url: urlRoute,
-            data: JSON.stringify(FormHelperService.formToJson($(mapper.loginForm))),
+            data: JSON.stringify(FormHelperService.formToJson($(mapper.login.loginForm))),
             success: (response) => {
                 AppHelperService.redirect(Routing.generate('site.home_page'));
             },
@@ -62,7 +33,7 @@ class UserHandler {
     doResetPassword(mapper) {
         const urlRoute = Routing.generate(`site_api.user_ask_for_reset_password`);
         const type = 'PATCH';
-        const data = $(mapper.resetForm).serializeArray();
+        const data = $(mapper.reset.form).serializeArray();
 
         if (! $(mapper.resetForm).valid()) {
             return false;
