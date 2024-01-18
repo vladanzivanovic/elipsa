@@ -14,9 +14,9 @@ final class SiteTextFormatter
     public function __construct(
         SiteTextView $siteTextView
     ) {
-
         $this->siteTextView = $siteTextView;
     }
+
     public function format(Description $description): array
     {
         return $this->siteTextView->pageView($description);

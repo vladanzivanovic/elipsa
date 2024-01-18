@@ -80,8 +80,8 @@ liip_imagine :
             cache: ads_photos
             quality : 100
             filters :
-                thumbnail: { size: [96, 107], mode: outbound }
-                background: { size: [96, 107], position: center, color: '#ffffff' }
+                thumbnail: { size: [96, 143], mode: outbound }
+                background: { size: [96, 143], position: center, color: '#ffffff' }
         category_single:
             cache: ads_photos
             quality : 100

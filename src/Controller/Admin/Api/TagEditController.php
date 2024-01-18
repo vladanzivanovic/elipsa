@@ -43,8 +43,8 @@ final class TagEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-product-tag", name="admin.add_product_tag_api", methods={"POST"}, options={"expose": true})
-     * @Route("/api/add-blog-tag", name="admin.add_blog_tag_api", methods={"POST"}, options={"expose": true})
+     * @Route("/api/tag/product/add", name="admin.add_product_tag_api", methods={"POST"}, options={"expose": true})
+     * @Route("/api/tag/blog/add", name="admin.add_blog_tag_api", methods={"POST"}, options={"expose": true})
      *
      * @param Request $request
      *
@@ -65,8 +65,8 @@ final class TagEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-product-tag/{slug}", name="admin.edit_product_tag_api", methods={"PUT"}, options={"expose": true})
-     * @Route("/api/edit-blog-tag/{slug}", name="admin.edit_blog_tag_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/tag/product/{slug}", name="admin.edit_product_tag_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/tag/blog/{slug}", name="admin.edit_blog_tag_api", methods={"PUT"}, options={"expose": true})
      *
      * @return JsonResponse
      * @throws \Exception
@@ -90,7 +90,7 @@ final class TagEditController extends AbstractController
      */
     public function getRelatedType(Request $request): int
     {
-        return $request->attributes->get('_route') === 'admin.edit_blog_tag_api' ?
-            Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
+        return false === strpos($request->attributes->get('_route'), 'blog_tag_api') ?
+            Tags::TYPE_PRODUCT : Tags::TYPE_BLOG;
     }
 }

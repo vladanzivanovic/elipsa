@@ -1,24 +1,24 @@
 import resetPasswordPageMapper from "../Mapper/ResetPasswordPageMapper";
-import ResetPasswordPageHandler from "../Handler/ResetPasswordPageHandler";
 import resetPasswordPageValidation from "../Validators/ResetPasswordPageValidation";
+import resetPasswordHandler from "../Handler/ResetPassword/ResetPasswordHandler";
 
 class ResetPasswordPageController {
-    constructor() {
-        this.mapper = resetPasswordPageMapper;
-        this.validator = resetPasswordPageValidation;
-        this.handler = new ResetPasswordPageHandler();
+    #mapper;
 
-        this.validator.validate(this.mapper.form);
+    constructor() {
+        this.#mapper = resetPasswordPageMapper;
+
+        resetPasswordPageValidation.validate();
 
         this.registerEvents();
     }
 
     registerEvents() {
-        $(this.mapper.submitBtn).on('click touchend', e => {
+        $(this.#mapper.submitBtn).on('click touchend', async e => {
             e.preventDefault();
             e.stopPropagation();
 
-            this.handler.save();
+            await resetPasswordHandler.setNewPassword();
         });
     }
 }

@@ -78,7 +78,7 @@ class CheckoutHandler {
                     .catch(e => {
                         let message = e.message;
 
-                        if (e.responseJSON.error) {
+                        if (e.responseJSON !== undefined && e.responseJSON.error !== undefined) {
                             message = e.responseJSON.error.message;
                         }
 

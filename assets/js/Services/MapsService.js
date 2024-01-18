@@ -70,7 +70,7 @@ class MapsService {
         //     $mapTab.height($($mapTab.data('parent')).width() * 0.6);
         // }
         // this.mapOptions.center = this.panoramaOptions.position = this.getLatLng();
-        // this.map = new google.maps.Map($mapTab[0], this.mapOptions);
+        // this.#map = new google.maps.Map($mapTab[0], this.mapOptions);
 
         // if($streetTab) {
         //     $panorama = new google.maps.StreetViewPanorama($streetTab[0], this.panoramaOptions);
@@ -132,7 +132,7 @@ class MapsService {
         return google.maps.geometry.spherical.computeDistanceBetween(this.getLatLng(), new google.maps.LatLng(lat, lng));
     }
 
-    showMap(mapContainer, infoWindowDom = null)
+    showMap(mapContainer = null, infoWindowDom = null)
     {
         mapContainer = mapContainer ? mapContainer : this.mapper.map.get(0);
 
@@ -140,25 +140,25 @@ class MapsService {
 
         this.#init(mapContainer);
 
-        // if (!this.map) {
-        //     this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        // if (!this.#map) {
+        //     this.#map = new google.maps.Map(mapContainer, this.mapOptions);
         // }
 
-        // this.map.
+        // this.#map.
 
         // this.myMarker = new google.maps.Marker({
         //     position: this.mapOptions.center,
         //     draggable: this.mapOptions.marker.draggable,
-        //     map: this.map,
+        //     map: this.#map,
         // });
 
         this.#marker.setPosition(this.mapOptions.center);
         this.#marker.setDraggable(this.mapOptions.marker.draggable);
-        this.#marker.setMap(this.map);
+        this.#marker.setMap(this.#map);
 
-        google.maps.event.trigger(this.map, "resize");
+        google.maps.event.trigger(this.#map, "resize");
 
-        this.map.setCenter(this.mapOptions.center);
+        this.#map.setCenter(this.mapOptions.center);
 
         if (null !== infoWindowDom) {
             const windowDom = infoWindowDom.getContent();
@@ -170,7 +170,7 @@ class MapsService {
     {
         const mapContainer = this.mapper.map.get(0);
 
-        this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        this.#map = new google.maps.Map(mapContainer, this.mapOptions);
 
         this.setCoordinates(locations[0].country_lat, locations[0].country_lng);
         this.mapOptions.center = this.panoramaOptions.position = this.getLatLng();
@@ -185,17 +185,17 @@ class MapsService {
             let marker = new google.maps.Marker({
                 position: this.getLatLng(),
                 draggable: false,
-                map: this.map,
+                map: this.#map,
             });
 
             marker.addListener('click', e => callback(locations[i]));
         }
 
-        google.maps.event.trigger(this.map, "resize");
+        google.maps.event.trigger(this.#map, "resize");
 
-        this.map.setCenter(this.mapOptions.center);
+        this.#map.setCenter(this.mapOptions.center);
 
-        this.map.fitBounds(bounds);
+        this.#map.fitBounds(bounds);
     };
 
     /**
@@ -217,8 +217,7 @@ class MapsService {
 
                         const position = this.getLatLng();
 
-                        this.map.setCenter(position);
-                        this.myMarker.setPosition(position);
+                        this.#map.setCenter(position);
                         this.mapper.latInput.val(this.coordinates[0]);
                         this.mapper.lngInput.val(this.coordinates[1]);
                     }
@@ -263,18 +262,18 @@ class MapsService {
         google.maps.event.addListener(this.#marker, 'click', (evt) => {
             this.#infoWindow.open({
                 anchor: this.#marker,
-                map: this.map,
+                map: this.#map,
             });
         });
     }
 
     #init(mapContainer)
     {
-        if (typeof this.map === 'object') {
+        if (typeof this.#map === 'object') {
             return;
         }
 
-        this.map = new google.maps.Map(mapContainer, this.mapOptions);
+        this.#map = new google.maps.Map(mapContainer, this.mapOptions);
         this.#marker = new google.maps.Marker();
         this.#infoWindow = new google.maps.InfoWindow();
         this.#bounds = new google.maps.LatLngBounds();

@@ -17,25 +17,15 @@ use App\Parser\BlogRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BlogEditController extends AbstractController
+final class BlogEditController extends AbstractController
 {
-    /**
-     * @var BlogRequestParser
-     */
-    private $blogRequestParser;
-    /**
-     * @var BlogHandler
-     */
-    private $blogHandler;
+    private BlogRequestParser $blogRequestParser;
 
-    /**
-     * BlogEditController constructor.
-     *
-     * @param BlogRequestParser $blogRequestParser
-     * @param BlogHandler       $blogHandler
-     */
+    private BlogHandler $blogHandler;
+
     public function __construct(
         BlogRequestParser $blogRequestParser,
         BlogHandler $blogHandler
@@ -45,7 +35,7 @@ class BlogEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/blog-create", name="admin.add_blog_api", methods={"POST"}, options={"expose": true})
+     * @Route("/api/blog/add", name="admin.add_blog_api", methods={"POST"}, options={"expose": true})
      *
      * @param Request $request
      *
@@ -59,11 +49,11 @@ class BlogEditController extends AbstractController
 
         $this->blogHandler->save($blog);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
-     * @Route("/api/blog-edit/{id}", name="admin.edit_blog_api", methods={"PUT"}, options={"expose": true})
+     * @Route("/api/blog/{id}", name="admin.edit_blog_api", methods={"PUT"}, options={"expose": true})
      *
      * @param Blog    $blog
      * @param Request $request
@@ -77,11 +67,11 @@ class BlogEditController extends AbstractController
 
         $this->blogHandler->save($blog);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
-     * @Route("/api/blog-set-status/{status}/{id}", name="admin.set_blog_status_api", methods={"PATCH"},
+     * @Route("/api/blog/status/{status}/{id}", name="admin.set_blog_status_api", methods={"PATCH"},
      *                                                      options={"expose": true})
      *
      * @param Blog $blog

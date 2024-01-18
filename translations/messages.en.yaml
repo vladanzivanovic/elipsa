@@ -22,6 +22,11 @@ choose: Choose
 choose_gender: Choose gender
 choose_language: Choose language
 
+information:
+  basic: Basic information
+  additional: Additional information
+  contact: Contact information
+
 data:
   success_send: 'Data are successfully sent.'
   success_deleted: 'Data are successfully deleted.'
@@ -165,6 +170,7 @@ title.reset_password: Reset password
 title.not_exits_page: Page doesn't exists
 title.career: Creers
 title.trends: Trends
+title.registration_confirmation: Registration confirmation
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
@@ -207,6 +213,7 @@ First_name: First name
 Last_name: Last name
 last_name: last name
 address: address
+street_and_number: Street and number
 city: city
 zip_code: postal code
 email: Email address
@@ -232,7 +239,7 @@ email.order.text: '<h3>Dear %first_name%,</h3>
 email.order.failedText: '<h3>Dear %first_name%,</h3>
   <p>Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.</p>
   <p class="last-child">If you have any kind of problems ordering products please contact us via email or telephone. Thanks</p>'
-email.order.overview: Your orders
+email.order.overview: Order overview
 email.order.seller: Seller
 email.order.seller.name: Company
 email.order.seller.account: Account number
@@ -291,7 +298,7 @@ email.notification.size.text: '<div>
 
 
 payment_type.on_delivering: On delivering
-payment_type.credit_card: Credi card
+payment_type.credit_card: Credit card
 
 location.modal.work_time: Working time
 location.modal.work_time_saturday: Saturday
@@ -309,9 +316,10 @@ blog.posted: posted
 
 form: form
 submit: Submit
+cancel: Cancel
 
 loyalty.rate: Rate the ELIPSA brand from 1-5
-loyalty.message.success: You are successfuly register in loyalty program.
+loyalty.message.success: You are successfully register in loyalty program.
 loyalty.message.user_exists: You are already registered in loyalty program.
 
 January: Januar
@@ -329,16 +337,17 @@ December: Decembar
 
 login.text: Login
 login.btn: Submit login
-login.remember_me: remember me
+login.remember_me: Remember me
 login.successfull: Login was successful
+login.via: Login via
 
 reset_password.text: Did you forgot password?
-reset_password.label: Reset pssword
-reset_password.successful:  You will receive email with link to change pssword
+reset_password.label: Reset password
+reset_password.successful:  You will receive email with link to change password
 reset_password.user_not_exists: User not exits.
-reset_password.page.text: Enter new pssword.
+reset_password.page.text: Enter new password.
 reset_password.page.error.expired_token: Your request to change password has expired. Please request new one.
-reset_password.page.success: You are successfuly changed password.
+reset_password.page.success: You are successfully changed password.
 
 logout.text: logout
 
@@ -346,25 +355,32 @@ registration.text: Registration
 registration.btn: Submit registration
 registration.via: register via
 registration.error.user_exists: You are already registered
-registration.success.message: Registration was successfull.<br/> We send you confirmation email
+registration.success.title: Registration was successful.
+registration.success.message: We sent you the confirmation email. Follow the link in the email in order to activate your account.
 registration.activation.title: Your account is active
 registration.activation.message: You can continue to login
+registration.dont_have_account: Don't have account
+registration.page.title: Create Your Elipsa account
+registration.page.text: Sign up and enjoy special benefits with online shopping
 
 user.inactive_user: Your email address is not confirmed yet.<br/> Please folow the link in email in order to activate account.
 
 my_account.welcome_text: welcome
+my_account.personal_info.user: Personal data
 my_account.personal_info.text: personal information
 my_account.personal_info.success.message: podaci su uspešno izmenjeni
 my_account.address_info: address information
-my_account.wish_list: wish list
-my_account.order_list: order list
+my_account.personal_info.change_btn: Change personal info
+my_account.wish_list: Wish list
+my_account.order_list: Orders
 my_account.order_table.image: image
-my_account.order_table.name: product
-my_account.order_table.description: description
+my_account.order_table.number: Order number
+my_account.order_table.products: Products
 my_account.order_table.price: price
 my_account.order_table.color: color
 my_account.order_table.size: size
-my_account.order_table.quantity: quantity
+my_account.order_table.payment: Payment type
+my_account.order_table.status: Order status
 my_account.order_table.view_product: product details
 
 wish_list.success.add.message: Product is added to wish list
@@ -381,11 +397,27 @@ newsletter.notShowBtn: don't show anymore.
 newsletter.existingUser: You are already subscribed on newsletter
 newsletter.success.add.message: You are successfully subscribed on newsletter
 
-contact.telephone.main: Main
-contact.telephone.mobile: Mobile
+contact.telephone.mobile: Mobile phone
 contact.company_activity: Company activity
 contact.company_id: Company ID
+contact.title.address: Address
+contact.title.telephone: Contact telephones
+contact.box.street: Street
+contact.box.city: City
+contact.box.post_code: Post code
+contact.box.country: Country
+contact.box.telephone_main: Main
 contact.tax_id: Tax ID
+contact.form.first_name: First name
+contact.form.last_name: Surname
+contact.form.email: Email
+contact.form.telephone: Telephone
+contact.form.how_to_contact_you: How to contact you
+contact.form.order_number: Order number
+contact.form.subject: Subject
+contact.form.message: Message
+contact.form.answer_email: Email
+contact.form.answer_phone: Telephone
 
 links: links
 store: store
@@ -540,7 +572,7 @@ intesa.already_void: Transaction is already canceled.
 order.status.new: New order
 order.status.awaiting_authorization: Fuds reserved
 order.status.post_auth: Payed
-order.status.completed: Payed
+order.status.completed: Order is completed
 order.status.refund: Funds returned
 order.status.void: Order canceled
 order.status.failed: Greška prilikom naručivanja

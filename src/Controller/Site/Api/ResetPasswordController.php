@@ -4,117 +4,106 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Api;
 
-use App\Handler\Site\ResetPasswordHandler;
 use App\Handler\Site\UserHandler;
+use App\Mailer\ResetPasswordRequestMailer;
 use App\Parser\Site\ResetPasswordRequestParser;
+use App\Request\Dto\ResetPasswordRequestDto;
+use App\Request\Dto\ResetPasswordSetRequestDto;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ResetPasswordController extends AbstractController
 {
-    /**
-     * @var ResetPasswordRequestParser
-     */
-    private $requestParser;
+    private ResetPasswordRequestParser $requestParser;
 
-    /**
-     * @var ResetPasswordHandler
-     */
-    private $handler;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private UserHandler $userHandler;
 
-    /**
-     * @param ResetPasswordRequestParser $requestParser
-     * @param ResetPasswordHandler       $handler
-     * @param TranslatorInterface        $translator
-     */
+    private ResetPasswordRequestMailer $resetPasswordRequestMailer;
+
     public function __construct(
         ResetPasswordRequestParser $requestParser,
-        ResetPasswordHandler $handler,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UserHandler $userHandler,
+        ResetPasswordRequestMailer $resetPasswordRequestMailer
     ) {
         $this->requestParser = $requestParser;
-        $this->handler = $handler;
         $this->translator = $translator;
+        $this->userHandler = $userHandler;
+        $this->resetPasswordRequestMailer = $resetPasswordRequestMailer;
     }
 
     /**
-     * @Route({
-     *          "rs": "/api/ask-for-reset-password",
-     *          "en": "/api/ask-for-reset-password"
-     *      },
+     * @Route("/api/ask-for-reset-password",
      *     name="site_api.user_ask_for_reset_password",
      *     methods={"PATCH"},
      *     options={"expose": true}
      * )
-     * @param Request $request
+     *
+     * @param ResetPasswordRequestDto $resetPasswordRequestDto
      *
      * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function requestForResetPassword(Request $request): JsonResponse
+    public function requestForResetPassword(ResetPasswordRequestDto $resetPasswordRequestDto): JsonResponse
     {
-        $csrf = $request->request->get('_csrf_token');
 
-        if (false === $this->isCsrfTokenValid('reset_password', $csrf)) {
+        if (false === $this->isCsrfTokenValid('reset_password', $resetPasswordRequestDto->csrf)) {
             $this->createAccessDeniedException();
         }
 
         try {
-            $user = $this->requestParser->parse($request->request->get('reset_email'));
+            $user = $this->requestParser->parse($resetPasswordRequestDto);
 
-            $this->handler->askForResetPassword($user, $request->getLocale());
-            $request->getSession()->getFlashBag()->add('message', $this->translator->trans('reset_password.successful'));
+            $this->userHandler->save($user, $resetPasswordRequestDto->locale);
+
+            $this->resetPasswordRequestMailer->sendEmail($user, $resetPasswordRequestDto->locale);
+
+            $resetPasswordRequestDto->request->getSession()->getFlashBag()->add('message', $this->translator->trans('reset_password.successful'));
 
         } catch (BadRequestHttpException $httpException) {
-            return $this->json(['error' => $httpException->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['error' => $httpException->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
-     * @Route({
-     *          "rs": "/api/reset-password",
-     *          "en": "/api/reset-password"
-     *      },
+     * @Route("/api/reset-password",
      *     name="site_api.user_reset_password",
      *     methods={"PUT"},
      *     options={"expose": true}
      * )
-     * @param Request $request
-     *
+     * @param ResetPasswordSetRequestDto $resetPasswordSetRequestDto
      * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function resetPassword(Request $request): JsonResponse
+    public function resetPassword(ResetPasswordSetRequestDto $resetPasswordSetRequestDto): JsonResponse
     {
-        $csrf = $request->request->get('_csrf_token');
-
-        if (false === $this->isCsrfTokenValid('reset_password_form', $csrf)) {
+        if (false === $this->isCsrfTokenValid('reset_password_form', $resetPasswordSetRequestDto->csrf)) {
             $this->createAccessDeniedException();
         }
 
         try {
-            $user = $this->requestParser->parseResetPassword($request->request);
+            $user = $this->requestParser->parseResetPassword($resetPasswordSetRequestDto);
 
-            $this->handler->resetPassword($user);
-            $request->getSession()->getFlashBag()->add('message', $this->translator->trans('reset_password.page.success'));
+            $this->userHandler->save($user);
+            $resetPasswordSetRequestDto->request->getSession()->getFlashBag()->add('message', $this->translator->trans('reset_password.page.success'));
 
         } catch (BadRequestHttpException $httpException) {
-            return $this->json(['error' => $httpException->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $httpException->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 }

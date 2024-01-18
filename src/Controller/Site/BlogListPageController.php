@@ -43,7 +43,11 @@ class BlogListPageController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{page}/{tag}", methods={"GET"}, requirements={"page": "\d+"}, name="site.blog_list_page", defaults={"page": 1, "tag": null}, options={"expose": true})
+     * @Route({
+     *          "rs": "/blog/{page}/{tag}",
+     *          "en": "/blog/{page}/{tag}",
+     *      },
+     *     methods={"GET"}, requirements={"page": "\d+"}, name="site.blog_list_page", defaults={"page": 1, "tag": null}, options={"expose": true})
      * @Template("Site/Pages/blog.html.twig")
      *
      * @param Request     $request
@@ -54,7 +58,7 @@ class BlogListPageController extends AbstractController
      */
     public function index(Request $request, int $page, ?string $tag): array
     {
-        $locale = $request->getSession()->get('_locale');
+        $locale = $request->getLocale();
 
         $collection = $this->pageCollector->collect($locale, $page, $tag);
 

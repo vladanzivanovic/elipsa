@@ -1,7 +1,7 @@
 import NotificationService from "../../../js/NotificationService";
 import loyaltyPageMapper from "../Mapper/LoyaltyPageMapper";
 import loader from "../Dom/LoaderDom";
-import askUsPageMapper from "../Mapper/AskUsPageMapper";
+import askUsPageMapper from "../Mapper/AskUsFormMapper";
 
 class AskUsPageHandler {
     constructor() {

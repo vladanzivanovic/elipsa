@@ -7,7 +7,6 @@ import LocationPageController from "./LocationPageController";
 import BlogListPageController from "./BlogListPageController";
 import LoyaltyPageController from "./LoyaltyPageController";
 import MyAccountPageController from "./MyAccountPageController";
-import AskUsPageController from "./AskUsPageController";
 import HomePageController from "./HomePageController";
 import CatalogPageController from "./CatalogPageController";
 import ContactPageController from "./ContactPageController";
@@ -15,6 +14,7 @@ import CollaboratorPageController from "./CollaboratorPageController";
 import CareerPageController from "./CareerPageController";
 import ResetPasswordPageController from "./ResetPasswordPageController";
 import OrderFinishPage from "./OrderFinishPage";
+import RegistrationController from "./RegistrationController";
 
 let routes = [
     {
@@ -58,10 +58,6 @@ let routes = [
         controller: MyAccountPageController,
     },
     {
-        name: 'site.ask_us',
-        controller: AskUsPageController,
-    },
-    {
         name: 'site.catalog_page',
         controller: CatalogPageController,
     },
@@ -80,6 +76,10 @@ let routes = [
     {
         name: 'site.reset_password_page',
         controller: ResetPasswordPageController,
+    },
+    {
+        name: 'site.registration',
+        controller: RegistrationController,
     },
     {
         name: 'site.checkout_completed_successful',

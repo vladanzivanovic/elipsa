@@ -1,0 +1,84 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\View;
+
+use App\Entity\Blog;
+use App\Entity\Image;
+use App\Entity\Tags;
+
+final class BlogView
+{
+    private array $locales;
+
+    private TagView $tagView;
+
+    private ImageView $imageView;
+
+    public function __construct(
+        string $locales,
+        TagView $tagView,
+        ImageView $imageView
+    ){
+        $this->locales = explode('|', $locales);
+        $this->tagView = $tagView;
+        $this->imageView = $imageView;
+    }
+
+    public function editView(Blog $blog): array
+    {
+        $view = $this->defaultViewData($blog);
+
+        $view['media']['images'] = [$this->imageView->view($blog->getImage(), 'blog')];
+
+        foreach ($blog->getBlogHasTags() as $blogHasTag) {
+            $view['tags'][] = $blogHasTag->getTag()->getId();
+        }
+
+        return $view;
+    }
+
+    public function view(Blog $blog): array
+    {
+        $view = $this->defaultViewData($blog);
+
+        foreach ($blog->getBlogHasTags() as $blogHasTag) {
+            $view['tags'][] = $this->tagView->view($blogHasTag->getTag());
+        }
+
+        return $view;
+    }
+
+    private function defaultViewData(Blog $blog): array
+    {
+        $view = [
+            'id' => $blog->getId(),
+            'tags' => null,
+            'translations' => $this->getTranslationValues($blog),
+            'media' => [
+                'images' => null,
+            ],
+        ];
+
+        return $view;
+    }
+
+    private function getTranslationValues(Blog $blog): array
+    {
+        $translations = [];
+
+        foreach ($this->locales as $locale) {
+            $trans = $blog->getBlogTranslationByLocale($locale);
+
+            $translations[$locale] = [
+                'title' => $trans->getTitle(),
+                'slug' => $trans->getAlias(),
+                'short_description' => $trans->getShortDescription(),
+                'description' => $trans->getDescription(),
+            ];
+        }
+
+        return $translations;
+    }
+}

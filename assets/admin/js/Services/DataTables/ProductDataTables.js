@@ -53,7 +53,8 @@ class ProductDataTables {
                             `<p class="status-text">${data}</p>`;
 
                         return type === 'display' ? html : data;
-                    } },
+                    }
+                },
                 {
                     data: 'position_text',
                     name: 'show_home_page',
@@ -78,7 +79,30 @@ class ProductDataTables {
                             `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`;
 
                         return type === 'display' ? html : data;
-                    } },
+                    }
+                },
+                {
+                    data: 'is_sold',
+                    name: 'is_sold',
+                    title: 'Rasprodato',
+                    width: '200px',
+                    render: function (data, type, row, meta) {
+                        let html = '';
+
+                        const isSold = data ? 'checked' : '';
+
+                        html = CAN_EDIT ?
+                            `<div class="row">
+                                <div class="col-md-3">
+                                    <input type="checkbox" value="1" class="toggle-product-is-sold" data-slug="${row.slug}" ${isSold}/>
+                                </div>
+                            </div>
+                            ` :
+                            `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`;
+
+                        return type === 'display' ? html : data;
+                    }
+                },
                 { data: 'slug', searchable: false, orderable: false, render: function (data, type, row, meta) {
                         const editLink = CAN_EDIT ? `<a class="btn btn-link" target="_blank" href="${Routing.generate('admin.edit_product_page', {slug: data})}">Izmeni</a> ` : '';
                         const removeButton = CAN_REMOVE ?`<button class="btn btn-danger remove-item-button" data-alias="${data}" data-title="${row.title}">Ukloni</button>` : '';

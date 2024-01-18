@@ -71,11 +71,12 @@ class SummerNoteImageController extends AbstractController
             $this->imageService->uploadToPath($file, $this->bag->get('upload_dir').$this->uploadImageDir);
 
             return $this->json([
-                'file_url' => $this->router->generate('app.image_show', ['entity' => $entity, 'filter' => 'summernote_images', 'name' => $file->getClientOriginalName()]),
+                'file_url' => $this->router->generate('app.summernote_image_show', ['entity' => $entity, 'name' => $file->getClientOriginalName()]),
                 'file_name' => $file->getClientOriginalName(),
             ]);
 
         } catch (\Throwable $throwable) {
+            dd($throwable);
             return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
         }
     }

@@ -1,15 +1,27 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class BlogEditMapper {
     constructor() {
-        this.form = $('#edit_form');
-        this.title_rs = $('#blog_title_rs', this.form);
-        this.shortDesc_rs = $('#blog_short_description_rs', this.form);
-        this.desc_rs = $('#blog_description_rs', this.form);
-        this.title_en = $('#blog_title_en', this.form);
-        this.shortDesc_en = $('#blog_short_description_en', this.form);
-        this.desc_en = $('#blog_description_en', this.form);
-        this.blog_tags = $('#tags', this.form);
-        this.submitBtn = $('#blog_submit');
+        if (!BlogEditMapper.instance) {
+            this.fields = {};
+
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.fields[`description_${locale}`] = '#description_'+locale;
+                this.fields[`short_description_${locale}`] = '#short_description_'+locale;
+                this.fields[`title_${locale}`] = '#title_'+locale;
+            }
+
+            this.fields.tags = '#tags';
+
+            BlogEditMapper.instance = Object.assign(this, baseFormMapper);
+        }
+
+        return BlogEditMapper.instance;
     }
 }
 
-export default BlogEditMapper;
+const blogEditMapper = new BlogEditMapper();
+
+Object.freeze(blogEditMapper);
+
+export default blogEditMapper;

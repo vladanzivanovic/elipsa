@@ -9,10 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractRequestDto implements ConstructRequestObjectInterface
 {
+    public ?string $csrf = null;
     public string $locale;
+    public Request $request;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, ?string $csrf = null)
     {
         $this->locale = $request->getLocale();
+        $this->csrf = $csrf;
+        $this->request = $request;
     }
 }

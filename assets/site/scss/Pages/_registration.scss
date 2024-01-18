@@ -1,0 +1,49 @@
+@import "../colors";
+
+.registration-page {
+  .contact-form-head {
+    margin: 0 0 80px;
+
+    > h2 {
+      margin: 0 0 50px;
+      position: relative;
+
+      &:after {
+        background: $site-color none repeat scroll 0 0;
+        bottom: -25px;
+        content: "";
+        height: 1px;
+        left: 0;
+        margin: auto;
+        position: absolute;
+        right: 0;
+        width: 73px;
+      }
+    }
+
+    .contact-form-head-post-text {
+      font-size: 18px;
+    }
+  }
+  .submit-register-via-social {
+    display: flex;
+    align-items: center;
+
+    .or-register-to-text {
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #222222;
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0;
+      line-height: 16px;
+      margin: 0 0 14px;
+    }
+
+    .submit-wrapper,
+    .or-register-to {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+}

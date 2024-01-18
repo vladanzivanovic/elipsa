@@ -3,9 +3,11 @@ import resetPasswordPageMapper from "../Mapper/ResetPasswordPageMapper";
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class ResetPasswordPageValidation {
+    #mapper;
+
     constructor() {
         if (!ResetPasswordPageValidation.instance) {
-            this.mapper = resetPasswordPageMapper;
+            this.#mapper = resetPasswordPageMapper;
 
             ResetPasswordPageValidation.instance = this;
         }
@@ -31,7 +33,7 @@ class ResetPasswordPageValidation {
         };
         $.extend(options, window.helpBlock);
 
-        return $(this.mapper.form).validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

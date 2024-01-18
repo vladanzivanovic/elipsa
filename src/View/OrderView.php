@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\View;
 
 use App\Entity\ShopOrder;
+use App\Helper\ConstantsHelper;
 use App\Repository\SettingsRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderView
 {
@@ -21,13 +23,16 @@ final class OrderView
 
     private OrderPaymentView $orderPaymentView;
 
+    private TranslatorInterface $translator;
+
     public function __construct(
         OrderProductView $orderProductView,
         PromotionCouponView $promotionCouponView,
         PriceView $priceView,
         SettingsRepository $settingsRepository,
         AddressView $addressView,
-        OrderPaymentView $orderPaymentView
+        OrderPaymentView $orderPaymentView,
+        TranslatorInterface $translator
     ) {
         $this->orderProductView = $orderProductView;
         $this->promotionCouponView = $promotionCouponView;
@@ -35,18 +40,22 @@ final class OrderView
         $this->settingsRepository = $settingsRepository;
         $this->addressView = $addressView;
         $this->orderPaymentView = $orderPaymentView;
+        $this->translator = $translator;
     }
     public function view(ShopOrder $order, string $locale): array
     {
         $total = 0;
 
+        $orderStatusText = ConstantsHelper::getConstantName($order->getStatus(), 'STATUS', ShopOrder::class);
+
         $view = [
             'id' => $order->getId(),
             'token' => $order->getToken(),
             'status' => $order->getStatus(),
+            'status_text' => $this->translator->trans('order.status.'. $orderStatusText, [], 'messages', $locale),
             'products' => [],
             'promotion' => [],
-            'payment' => null,
+            'payment' => $this->orderPaymentView->view($order),
             'note' => $order->getNote(),
             'checkout_completed_at' => null !== $order->getCompletedAt() ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
         ];
@@ -74,20 +83,19 @@ final class OrderView
         $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
 
         if (ShopOrder::STATUS_NEW < $order->getStatus()) {
-            $view += $this->addCheckoutInformation($order);
+            $view += $this->addCheckoutInformation($order, $locale);
         }
 
-        if (ShopOrder::PAYMENT_TYPE_CREDIT_CARD === $order->getPaymentType()) {
-            $view['payment'] = $this->orderPaymentView->view($order);
-        }
+//        if (ShopOrder::PAYMENT_TYPE_CREDIT_CARD === $order->getPaymentType()) {
+//            $view['payment'] = $this->orderPaymentView->view($order);
+//        }
 
         return $view;
     }
 
-    private function addCheckoutInformation(ShopOrder $order): array
+    private function addCheckoutInformation(ShopOrder $order, string $locale): array
     {
         return [
-            'payment_type' => $order->getPaymentType(),
             'shipping_address' => $this->addressView->view($order->getShippingAddress()),
             'billing_address' => $this->addressView->view($order->getBillingAddress()),
         ];

@@ -4,49 +4,59 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
-use App\Entity\ShopOrder;
-use App\Repository\SettingsRepository;
+use App\Entity\User;
+use App\View\OrderView;
+use App\View\ProductView;
+use App\View\UserView;
 use Symfony\Component\Routing\RouterInterface;
 
 final class MyAccountFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private RouterInterface $router;
 
-    /**
-     * CartPageFormatter constructor.
-     *
-     * @param RouterInterface    $router
-     * @param SettingsRepository $settingsRepository
-     */
+    private UserView $userView;
+
+    private OrderView $orderView;
+
+    private ProductFormatter $productFormatter;
+
     public function __construct(
         RouterInterface $router,
-        SettingsRepository $settingsRepository
+        UserView $userView,
+        OrderView $orderView,
+        ProductFormatter $productFormatter
     ) {
         $this->router = $router;
-        $this->settingsRepository = $settingsRepository;
+        $this->userView = $userView;
+        $this->orderView = $orderView;
+        $this->productFormatter = $productFormatter;
     }
 
-    public function formatResponse(array $data): array
+    public function formatResponse(User $user, array $data, string $locale): array
     {
-        $data['orders'] = array_map(function ($order) {
-            $order['image_link'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $order['image_name'], 'filter' => 'cart_thumb']);
+        $orders = null;
+        $products = [];
 
-            return $order;
-        }, $data['orders']);
+        foreach ($user->getShopOrders() as $shopOrder) {
+            $orders[] = $this->orderView->view($shopOrder, $locale);
+        }
 
-        $data['wishes'] = array_map(function ($order) {
-            $order['image_link'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $order['image_name'], 'filter' => 'cart_thumb']);
+        foreach ($user->getUserWishes() as $userWish) {
+            $products[] = $userWish->getProduct();
+        }
 
-            return $order;
-        }, $data['wishes']);
+        $wishes = $this->productFormatter->getProducts($products, $locale, $user);
 
-        return $data;
+//        $wishes = array_map(function ($order) {
+//            $order['image_link'] = $this->router->generate('app.image_show', ['entity' => 'product', 'name' => $order['image_name'], 'filter' => 'cart_thumb']);
+//
+//            return $order;
+//        }, $data['wishes']);
+
+        return [
+            'profile' => $this->userView->view($user),
+            'orders' => $orders,
+            'wishes' => $wishes,
+        ];
     }
 }

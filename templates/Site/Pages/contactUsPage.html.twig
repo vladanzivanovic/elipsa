@@ -5,78 +5,168 @@
 {% block title %}{{ titleTrans }}{% endblock %}
 {% block bodyClass %}contact-page{% endblock %}
 
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as form %}
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+
+{% set ANSWER_OPTIONS = get_class_constants('App\\Entity\\AskUs') %}
+
 {% block content %}
     {{ include('Site/Components/breadcrumb.html.twig', {'pages': [{'title': titleTrans }], 'activePage': titleTrans}) }}
 
-    <!-- contact-area-start -->
     <div class="contact-area">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
+                    <div class="contact-form-area">
+                        <div class="contact-form-head">
+                            <h2>{{ titleTrans }}</h2>
+                            <h1>{{ titleTrans }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
                     <div class="contact-service">
                         <div class="row">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="single-contact-service">
                                     <div class="clearfix">
                                         <div class="scs-icon">
-                                            <i class="fa fa-map-marker"></i>
+                                            <i class="fa fa-building"></i>
                                         </div>
                                         <div class="scs-content">
                                             <h6 class="letter-capitalize">{{ 'about_company' | trans }}</h6>
-                                            <p>{{ FULL_COMPANY_NAME }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_activity' | trans }}:</span> {{ COMPANY_CODE ~' '~ COMPANY_ACTIVITY }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_id' | trans }}: </span> {{ COMPANY_ID }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.tax_id' | trans }}: </span> {{ PIB }}
+                                            <p>{{ settings.full_company_name.value }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_activity' | trans }}:</span> {{ settings.company_code.value ~' '~ settings.company_activity.value }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_id' | trans }}: </span> {{ settings.company_id.value }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.tax_id' | trans }}: </span> {{ settings.pib.value }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="single-contact-service">
                                     <div class="clearfix">
                                         <div class="scs-icon">
                                             <i class="fa fa-map-marker"></i>
                                         </div>
                                         <div class="scs-content">
-                                            <h6 class="letter-capitalize">{{ 'navi.contact' | trans }}</h6>
+                                            <h6 class="letter-capitalize">{{ 'contact.title.address' | trans }}</h6>
                                             <p>
-                                                <span class="d-inline-block letter-capitalize">{{ 'address' | trans }}:</span> {{ STREET ~', '~ ZIP_CODE ~ ' ' ~ CITY }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ TELEPHONE }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ MOBILE_PHONE }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'email' | trans }}</span>: {{ MAIN_EMAIL }}
+                                                <span class="d-inline-block letter-capitalize">{{ 'email' | trans }}</span>: {{ settings.main_email.value }}
+                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.street' | trans }}:</span> {{ settings.street.value }}
+                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.post_code' | trans }}:</span> {{ settings.zip_code.value }}
+                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.city' | trans }}:</span> {{ settings.city.value }}
+{#                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.country' | trans }}:</span> {{ settings.city.value }}#}
+{#                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ settings.telephone.value }}#}
+{#                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ settings.mobile_phone.value }}#}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-{#                            <div class="col-md-3 col-sm-3 col-xs-12">#}
-{#                                <div class="single-contact-service">#}
-{#                                    <div class="clearfix">#}
-{#                                        <div class="scs-icon">#}
-{#                                            <i class="fa fa-mobile"></i>#}
-{#                                        </div>#}
-{#                                        <div class="scs-content">#}
-{#                                            <h6>{{ 'telephone' | trans }}</h6>#}
-{#                                            <p><span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ MOBILE_PHONE }}#}
-{#                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ TELEPHONE }}</p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="col-md-3 col-sm-3 col-xs-12">#}
-{#                                <div class="single-contact-service">#}
-{#                                    <div class="clearfix">#}
-{#                                        <div class="scs-icon">#}
-{#                                            <i class="fa fa-envelope-o"></i>#}
-{#                                        </div>#}
-{#                                        <div class="scs-content">#}
-{#                                            <h6>{{ 'email' | trans }}</h6>#}
-{#                                            <p>{{ MAIN_EMAIL }}</p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <div class="single-contact-service">
+                                    <div class="clearfix">
+                                        <div class="scs-icon">
+                                            <i class="fa fa-phone"></i>
+                                        </div>
+                                        <div class="scs-content">
+                                            <h6 class="letter-capitalize">{{ 'contact.title.telephone' | trans }}</h6>
+                                            <p>
+                                                <span class="d-inline-block letter-capitalize">{{ 'contact.box.telephone_main' | trans }}</span>: {{ settings.telephone.value }}
+
+                                                {% for contact in office_contacts(locale) %}
+                                                    <br><span class="d-inline-block letter-capitalize">{{ contact.title }}</span>: {{ contact.telephone }}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- contact-area-start -->
+    <div class="contact-area ask-us-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="contact-form-area ask-us-form">
+                        <div class="contact-form-head">
+                            <h2 class="ask-us-title">{{ 'title.ask_us' | trans }}</h2>
+                        </div>
+                        <div class="contact-form-content">
+                            <div class="cf-msg"></div>
+                            <form id="ask-us-form">
+                                <input id="_csrf_token" type="hidden" name="_csrf_token" value="{{ csrf_token('ask_us_form') }}" />
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('contact.form.first_name' | trans ~ ' *', 'first_name', '', 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('contact.form.last_name' | trans ~ ' *', 'last_name', '', 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('contact.form.email' | trans ~ ' *', 'email', '', 'email', '', 'email', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('contact.form.telephone' | trans, 'telephone', '', 'telephone', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.select('contact.form.how_to_contact_you' | trans ~ ' *', 'contact_via', 'contact_via', '', answer_options, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.input('contact.form.subject' | trans ~ ' *', 'subject', '', 'subject', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.textarea('contact.form.message' | trans, 'note', '', 'note', 10, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="cfc-input-box">
+                                            {{ form.button('ask_us_submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="map-area">
+                        <div class="gmap">
+                            {{ include('Moduls/googleMaps.html.twig') }}
                         </div>
                     </div>
                 </div>
@@ -84,16 +174,13 @@
         </div>
     </div>
     <!-- contact-area-end -->
-    <!-- map-area-start -->
-    <div class="map-area">
-        {{ include('Moduls/googleMaps.html.twig') }}
-    </div>
+
 {% endblock %}
 {% block pageStyleSheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/contact.css') }}"/>
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const ADDRESS = ['{{ STREET }}', '{{ CITY }}', 'Srbija'];
+        const ADDRESS = ['{{ settings.street.value }}', '{{ settings.city.value }}', 'Serbia'];
     </script>
 {% endblock %}

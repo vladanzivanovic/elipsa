@@ -1,13 +1,45 @@
 .contact-page {
-  .footer-top-area {
-    padding-top: 95px;
+
+  .contact-form-head {
+    margin: 0;
   }
+
+  .ask-us-area {
+    margin-bottom: 50px;
+
+    .ask-us-form {
+      padding: 0;
+
+      .ask-us-title {
+        margin-bottom: 60px;
+      }
+
+      select {
+        border: 2px solid #ecedee;
+        color: #646a7c;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 16px;
+        padding: 10px 97px 10px 17px;
+        width: 100%;
+      }
+    }
+  }
+
   .contact-service {
+    position: unset;
+    margin-bottom: 50px;
+
     .single-contact-service {
       padding: 0 0 0 20px;
 
       .scs-icon {
         width: 10%;
+
+        > i {
+          font-size: 40px;
+        }
       }
 
       .scs-content {

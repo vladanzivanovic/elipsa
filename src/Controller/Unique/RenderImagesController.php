@@ -64,7 +64,6 @@ class RenderImagesController extends AbstractController
             $response = $this->imageResizer->renderImageWithFilter($uploadDir . $name, $filter);
 
             $response->setPublic();
-            $response->setMaxAge(864000);
 
             return $response;
         } catch (NotLoadableException $notLoadableException) {
@@ -73,8 +72,41 @@ class RenderImagesController extends AbstractController
             $response = $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), $filter);
 
             $response->setPublic();
-            $response->setMaxAge(864000);
 
+            return $response;
+
+        }
+    }
+
+    /**
+     * @Route("/{entity}-image/summernote_images/{name}",
+     *     methods={"GET"},
+     *     name="app.summernote_image_show",
+     *     requirements={
+     *          "entity": "product|blog|slider|location|banner|catalog|about-us|job|description"
+     *     })
+     *
+     * @param string $filter
+     * @param string $name
+     *
+     * @return BinaryFileResponse
+     */
+    public function getSummernoteImage(string $name): BinaryFileResponse
+    {
+        $uploadDir = $this->parameterBag->get('upload_image_dir');
+
+        try {
+            $response = $this->imageResizer->renderImageWithFilter($uploadDir . $name, 'summernote_images');
+
+            $response->setPublic();
+
+            return $response;
+        } catch (NotLoadableException $notLoadableException) {
+            $image = $this->imageRepository->findOneBy(['name' => $name]);
+
+            $response = $this->imageResizer->renderImageWithFilter($uploadDir.$image->getOriginalName(), 'summernote_images');
+
+            $response->setPublic();
 
             return $response;
 

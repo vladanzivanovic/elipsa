@@ -1,17 +1,17 @@
-import NotificationService from "./NotificationService";
 import toastrService from "./Services/ToastrService";
 
-const Private = Symbol('private');
-
 class CoreController {
-    constructor() {}
+    #toastr;
+
+    constructor() {
+        this.#toastr = toastrService;
+    }
 
     showFlashMsg() {
         if (window.Messages) {
-            let toastr = toastrService;
             window.Messages.forEach(message => {
-                toastr.addOptions({timeOut: 10000});
-                toastr.warning(message);
+                this.#toastr.addOptions({timeOut: 10000});
+                this.#toastr.success(message);
             });
         }
     }

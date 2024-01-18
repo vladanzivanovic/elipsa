@@ -5,98 +5,67 @@ declare(strict_types=1);
 namespace App\Parser\Site;
 
 use App\Entity\Address;
-use App\Entity\Loyalty;
 use App\Entity\User;
-use App\Repository\LoyaltyRepository;
+use App\Exception\UserException;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Request\Dto\AddressRequestDto;
+use App\Request\Dto\RegistrationRequestDto;
+use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 
 final class RegistrationRequestParser
 {
-    /**
-     * @var LoyaltyRepository
-     */
-    private $loyaltyRepository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
-    /**
-     * @param LoyaltyRepository $loyaltyRepository
-     * @param UserRepository    $userRepository
-     */
+    private UserEditRequestParser $editRequestParser;
+
     public function __construct(
-        LoyaltyRepository $loyaltyRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        UserEditRequestParser $editRequestParser
     ) {
-        $this->loyaltyRepository = $loyaltyRepository;
         $this->userRepository = $userRepository;
+        $this->editRequestParser = $editRequestParser;
     }
 
-    /**
-     * @param ParameterBag $bag
-     *
-     * @param User|null    $user
-     *
-     * @return User
-     */
-    public function parse(ParameterBag $bag, User $user = null): User
+    public function parse(RegistrationRequestDto $registrationRequestDto, User $user = null): User
     {
-        $countUsers = $this->userRepository->countByEmail($bag->get('registration_email'), $user);
-
-        if ($countUsers > 0) {
-            throw new BadRequestHttpException('registration.error.user_exists');
-        }
-
         if (null === $user) {
             $token = bin2hex(openssl_random_pseudo_bytes(10));
 
-            $user = new User();
-            $user->setPassword($bag->get('registration_password'))
-                ->setRePassword($bag->get('registration_re_password'))
-                ->setStatus(User::STATUS_PENDING)
+            $user = $this->create();
+            $user->setPlainPassword($registrationRequestDto->userRequestDto->password)
+                ->setRePassword($registrationRequestDto->rePassword)
                 ->setResetToken($token)
                 ->setRoles(['ROLE_USER'])
                 ->setResetRequestAt(new \DateTime());
         }
 
-        $user->setFirstName($bag->get('registration_first_name'))
-            ->setLastName($bag->get('registration_last_name'))
-            ->setEmail($bag->get('registration_email'));
-
-        if (null !== $bag->get('registration_password') && null !== $user->getId()) {
-            $user->setPassword($bag->get('registration_password'));
-        }
+        $this->editRequestParser->parse($registrationRequestDto->userRequestDto, $user);
 
         return $user;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param User         $user
-     *
-     * @return void
-     */
-    public function parseAddress(ParameterBag $bag, User $user): void
+    public function parseFromSocial(UserResponseInterface $userResponse): User
     {
-        $address = $user->getAddress();
+        $user = $this->userRepository->findOneBy(['email' => $userResponse->getEmail()]);
 
-        if (null === $address) {
-            $address = new Address();
+        if (null === $user) {
+            $user = $this->create();
+
+            $user->setFirstName($userResponse->getFirstName())
+                ->setLastName($userResponse->getLastName())
+                ->setEmail($userResponse->getEmail())
+                ->setRoles(['ROLE_USER'])
+                ->setStatus(User::STATUS_ACTIVE);
         }
 
-        $address->setEmail($user->getEmail())
-            ->setLastName($user->getLastName())
-            ->setFirstName($user->getFirstName())
-            ->setAddress($bag->get('address'))
-            ->setCity($bag->get('city'))
-            ->setCountry($bag->get('country'))
-            ->setPhone($bag->get('phone'))
-            ->setZipCode((int) $bag->get('zipCode'));
+        $user->setLoginType($userResponse->getResourceOwner()->getName())
+            ->setSocialId($userResponse->getUserIdentifier());
 
-        $user->setAddress($address);
+        return $user;
+    }
+
+    public function create(): User
+    {
+        return new User();
     }
 }

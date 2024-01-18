@@ -22,6 +22,11 @@ choose: Izaberite
 choose_gender: Izaberite pol
 choose_language: Izaberite jezik
 
+information:
+  basic: Osnovne informacije
+  additional: Dodatne informacije
+  contact: Kontakt podaci
+
 data:
   success_send: 'Podaci su uspešno poslati.'
   success_deleted: 'Podaci su uspešno obrisani.'
@@ -155,6 +160,7 @@ title.reset_password: Promena lozinke
 title.not_exits_page: Nepostojeća stranica
 title.career: Radna mesta
 title.trends: Trendovi
+title.registration_confirmation: Potvrda registracije
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
@@ -197,6 +203,7 @@ First_name: Ime
 Last_name: Prezime
 last_name: prezime
 address: adresa
+street_and_number: Ulica i broj
 city: mesto
 zip_code: poštanski broj
 email: Email adresa
@@ -301,6 +308,7 @@ blog.posted: postavljeno
 
 form: forma
 submit: Pošalji
+cancel: Otkaži
 
 loyalty.rate: Ocenite brend ELIPSA ocenama od 1-5
 loyalty.message.success: Uspešno ste se registrovali u loyalty program.
@@ -322,8 +330,9 @@ December: Decembar
 
 login.text: Prijava
 login.btn: Prijavi se
-login.remember_me: zapamti me
+login.remember_me: Zapamti me
 login.successful: Uspešno ste se ulogovali
+login.via: Ulogijte se putem
 
 reset_password.text: zaboravili ste lozinku?
 reset_password.label: resetovanje lozinke
@@ -337,27 +346,34 @@ logout.text: odjavite se
 
 registration.text: Registracija
 registration.btn: Registruj se
-registration.via: registracija putem
+registration.via: Registracija putem
 registration.error.user_exists: Vi ste već registrovani
-registration.success.message: Uspešno ste se registrovali.<br/> Na vašu email adresu je poslat email za potvrdu registracije
+registration.success.title: Uspešno ste se registrovali.
+registration.success.message: Na vašu email adresu je poslat email za potvrdu registracije. Pratite link u email-u kako bi ste aktivirali vaš nalog
 registration.activation.title: Vaš nalog je aktiviran
 registration.activation.message: Sada se možete ulogovati
+registration.dont_have_account: Nemate nalog
+registration.page.title: Kreirajte Vaš Elipsa nalog
+registration.page.text: Registrujte se i uživajte u posebnim pogodnostima koje Vam donosi online kupovina
 
 user.inactive_user: Vaša email adresa nije aktivirana.<br/> Molimo vas da pratite link iz email kako bi ste aktivirali nalog.
 
 my_account.welcome_text: dobrodošli
-my_account.personal_info.text: lični podaci
+my_account.personal_info.user: Lični podaci
 my_account.personal_info.success.message: podaci su uspešno izmenjeni
-my_account.address_info: podaci o adresi
-my_account.wish_list: lista želja
-my_account.order_list: lista porudžbina
+my_account.personal_info.address: Adresa
+my_account.personal_info.phone: Telefon
+my_account.personal_info.change_btn: Izmeni podatke
+my_account.wish_list: Lista želja
+my_account.order_list: Porudžbine
 my_account.order_table.image: slika
-my_account.order_table.name: proizvod
-my_account.order_table.description: opis
+my_account.order_table.number: Broj porudžbine
+my_account.order_table.products: Proizvodi
 my_account.order_table.price: cena
 my_account.order_table.color: boja
 my_account.order_table.size: veličina
-my_account.order_table.quantity: količina
+my_account.order_table.payment: Način plaćanja
+my_account.order_table.status: Status porudžbine
 my_account.order_table.view_product: pogledaj proizvod
 
 wish_list.success.add.message: Proizvod je dodat na listu želja
@@ -374,11 +390,27 @@ newsletter.notShowBtn: ne prikazuj više
 newsletter.existingUser: Vi ste se već prijavili na newsletter
 newsletter.success.add.message: Uspešno ste se prijavili na newsletter
 
-contact.telephone.main: Fiksni
-contact.telephone.mobile: Mobilni
+contact.telephone.mobile: Mobilni telefon
 contact.company_activity: Delatnost
 contact.company_id: Matični broj
+contact.title.address: Adresa
+contact.title.telephone: Kontakt telefoni
+contact.box.street: Ulica
+contact.box.city: Mesto
+contact.box.post_code: Poštanski broj
+contact.box.country: Država
+contact.box.telephone_main: Sedište
 contact.tax_id: PIB
+contact.form.first_name: Ime
+contact.form.last_name: Prezime
+contact.form.email: Email
+contact.form.telephone: Telefon
+contact.form.how_to_contact_you: Kako da vam odgovorimo
+contact.form.order_number: Broj porudžbine
+contact.form.subject: Tema
+contact.form.message: Poruka
+contact.form.answer_email: Emailom
+contact.form.answer_phone: Telefonom
 
 links: linkovi
 store: prodavnica
@@ -537,7 +569,7 @@ intesa.already_void: Transakcija je već otkazana.
 order.status.new: Nova porudžbina
 order.status.awaiting_authorization: Račun zadužen
 order.status.post_auth: Naplaćeno
-order.status.completed: Naplaćeno
+order.status.completed: Porudžbina je završena
 order.status.refund: Sredstva su vraćena
 order.status.void: Porudžbina je otkazana
 order.status.failed: Greška prilikom naručivanja

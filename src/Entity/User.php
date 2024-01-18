@@ -21,6 +21,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     const STATUS_ACTIVE = 2;
     const STATUS_DISABLED = 3;
 
+    const LOGIN_TYPE_INTERN = 'intern';
+
+    const LOGIN_TYPE_FACEBOOK = 'facebook';
+
+    const LOGIN_TYPE_GOOGLE = 'google';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -43,7 +49,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
-     * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
      */
     private $password;
 
@@ -55,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="smallint")
      */
-    private $status;
+    private int $status = self::STATUS_PENDING;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -103,6 +108,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
      */
     private $notifications;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $loginType = self::LOGIN_TYPE_INTERN;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private string $socialId;
+
+    /**
+     * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
+     */
+    private string $plainPassword;
 
     public function __construct()
     {
@@ -402,6 +422,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $notification->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLoginType(): ?string
+    {
+        return $this->loginType;
+    }
+
+    public function setLoginType(string $loginType): self
+    {
+        $this->loginType = $loginType;
+
+        return $this;
+    }
+
+    public function getSocialId(): ?string
+    {
+        return $this->socialId;
+    }
+
+    public function setSocialId(string $socialId): self
+    {
+        $this->socialId = $socialId;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

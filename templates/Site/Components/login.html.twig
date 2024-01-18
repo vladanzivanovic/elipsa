@@ -1,4 +1,5 @@
 {% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as inputWithLabels %}
 
 <div class="header-top-right">
     <div class="login-or-register {{ is_mobile() ? 'col-xs-7 row' : '' }}">
@@ -23,7 +24,7 @@
 
                             </div>
                             <div class="remember-help">
-                                {{ inputs.input('login_remember_me', 1, '_remember_me', '', 'checkbox') }} {{ 'login.remember_me' | trans }}
+                                {{ inputWithLabels.checkbox('login.remember_me' | trans, 'login_remember_me', 1, '_remember_me') }}
                             </div>
                             <div class="lrc-submit">
                                 <input id="login-btn" class="hvr-bs" type="button" value="{{ 'login.btn' | trans }}">
@@ -52,31 +53,18 @@
                 <div id="login_register_show" class="remember-help" style="display: none">
                     <a href="#" id="login_register_show_btn"><span class="d-inline-block letter-capitalize">{{ 'login.text' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration.text' | trans }}</span></a>
                 </div>
-                <div class="lrc-register">
-                    <h4 class="lrc-title letter-capitalize">{{ 'registration.text' | trans }}</h4>
-                    <div class="lrc-register-form">
-                        <form id="registration-form" enctype="multipart/form-data">
-                            {{ inputs.input('_csrf_token_registration', csrf_token('user_registration'), '_csrf_token', '', 'hidden') }}
-                            {{ inputs.input('registration_first_name', '', 'registration_first_name', 'First_name' | trans, 'text', 'letter-capitalize') }}
-                            {{ inputs.input('registration_last_name', '', 'registration_last_name', 'Last_name' | trans, 'text') }}
-                            {{ inputs.input('registration_email', '', 'registration_email', 'Email', 'email') }}
-                            {{ inputs.input('registration_password', '', 'registration_password', 'Password' | trans, 'password') }}
-                            {{ inputs.input('registration_re_password', '', 'registration_re_password', 'Re_password' | trans, 'password') }}
-                            <div class="lrc-register-btn">
-                                <input id="registration-btn" class="hvr-bs" type="button" value="{{ 'registration.btn' | trans }}">
-                            </div>
-                        </form>
-                    </div>
+                <div id="registration_form_btn_wrapper" class="">
+                    <a href="{{ path('site.registration') }}" id="registration_form_btn" class="hvr-bs">{{ 'registration.dont_have_account' | trans }}?</a>
+                </div>
+{#                <div class="lrc-register">#}
 {#                    <div class="or-register-to">#}
-{#                        <span class="letter-capitalize">{{ 'registration.via' | trans }}</span>#}
+{#                        <span class="letter-capitalize">{{ 'login.via' | trans }}</span>#}
 {#                        <ul>#}
-{#                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>#}
-{#                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>#}
-{#                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>#}
-{#                            <li><a href="#"><i class="fa fa-google"></i></a></li>#}
+{#                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>#}
+{#                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>#}
 {#                        </ul>#}
 {#                    </div>#}
-                </div>
+{#                </div>#}
             </div>
         {% endif %}
     </div>

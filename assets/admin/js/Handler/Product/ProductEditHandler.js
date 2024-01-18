@@ -93,6 +93,22 @@ class ProductEditHandler {
         })
     }
 
+    toggleIsSold(checkbox, slug) {
+        const isChecked = checkbox.is(':checked');
+
+        $.ajax({
+            type: 'PATCH',
+            'url': Routing.generate('admin.api_product_is_sold', {slug}),
+            dataType: 'json',
+            success: (response) => {},
+            error: () => {
+                checkbox.prop('checked', !isChecked);
+
+                this.#notification.error(Translator.trans('generic_error', null, 'message', LOCALE));
+            }
+        })
+    }
+
     remove(slug) {
         this.#notification.showLoadingMessage();
 

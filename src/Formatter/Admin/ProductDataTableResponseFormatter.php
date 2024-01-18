@@ -46,6 +46,8 @@ final class ProductDataTableResponseFormatter
             return $product;
         }, $data);
 
+//        dd($data);
+
         return $this->response($tableModel, $data, $total);
 
     }

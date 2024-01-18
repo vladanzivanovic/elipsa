@@ -1,26 +1,25 @@
+import blogEditMapper from "../Mapper/BlogEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class BlogEditValidator {
+    #mapper;
+
     constructor() {
         if (!BlogEditValidator.instance) {
+            this.#mapper = blogEditMapper;
+
             BlogEditValidator.instance = this;
         }
 
         return BlogEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
         options = {
-            ignore: '',
             rules: {
-                rs_title: 'required',
-                rs_short_description: 'required',
-                rs_description: 'setErrorIfSummernoteIsEmpty',
-                en_title: 'required',
-                en_short_description: 'required',
-                en_description: 'setErrorIfSummernoteIsEmpty',
                 'tags[]': 'isMultiSelectBoxEmpty',
                 main_images: {
                     dropZoneHasImage: true,
@@ -29,9 +28,15 @@ class BlogEditValidator {
             },
         };
 
+        for(const [locale, data] of Object.entries(LANGUAGES)) {
+            options.rules[`${locale}[title]`] = {required: true};
+            options.rules[`${locale}[short_description]`] = {required: true};
+            options.rules[`${locale}[description]`] = {setErrorIfSummernoteIsEmpty: true};
+        }
+
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

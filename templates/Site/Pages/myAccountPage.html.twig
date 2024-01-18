@@ -19,9 +19,9 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="my-account-welcome">
-                        <h4 class="my-account-title letter-capitalize">{{ 'my_account.welcome_text' | trans }}</h4>
+                        <h4 class="my-account-title letter-capitalize">{{ 'my_account.welcome_text' | trans }} {{ profile.first_name }}</h4>
                         <ul>
-                            <li><a href="#personal-info" id="personal-info-tab" aria-controls="personal-info" role="tab" data-toggle="tab" class="d-block letter-capitalize active">{{ 'my_account.personal_info.text' | trans }}</a></li>
+                            <li><a href="#personal-info" id="personal-info-tab" aria-controls="personal-info" role="tab" data-toggle="tab" class="d-block letter-capitalize active">{{ 'my_account.personal_info.user' | trans }}</a></li>
                             <li><a href="#order-list" id="order-list-tab" aria-controls="order-list" role="tab" data-toggle="tab" class="d-block letter-capitalize">{{ 'my_account.order_list' | trans }}</a></li>
                             <li><a href="#wish-list" id="wish-list-tab" aria-controls="wish-list" role="tab" data-toggle="tab" class="d-block letter-capitalize">{{ 'my_account.wish_list' | trans }}</a></li>
                         </ul>
@@ -29,54 +29,127 @@
                 </div>
                 <div class="col-md-9 tab-content">
                     <div role="tabpanel" id="personal-info" class="tab-pane fade in active personal-information">
-                        <h4 class="my-account-title">{{ 'my_account.personal_info.text' | trans }}</h4>
-                        <form id="personal-form" class="personal-information-box">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <input type="hidden" id="_csrf_token" name="_csrf_token" value="{{ csrf_token('user_update') }}">
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('first_name' | trans ~ ' *', 'first_name', user.firstName, 'registration_first_name', '', 'text', null, '', 'text-uppercase') }}
+                        <div class="col-xs-12 personal-info">
+                            <div class="contact-service">
+                                <div class="row m-bt-3">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="single-contact-service">
+                                            <div class="clearfix">
+                                                <div class="scs-icon">
+                                                    <i class="fa fa-user-o"></i>
+                                                </div>
+                                                <div class="scs-content">
+                                                    <h6>{{ 'my_account.personal_info.user' | trans }}</h6>
+                                                    <p>{{ profile.first_name }} {{ profile.last_name }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('last_name' | trans ~ ' *', 'last_name', user.lastName, 'registration_last_name', '', 'text', null, '', 'text-uppercase') }}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('email' | trans ~ ' *', 'email', user.email, 'registration_email', '', 'email', null, '', 'text-uppercase') }}
-                                    </div>
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('mobile_telephone' | trans ~ ' *', 'phone', address is not null ? address.phone : '', 'phone', '', 'tel', null, '', 'text-uppercase') }}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('address' | trans ~ ' *', 'address', address is not null ? address.address : '', 'address', '', 'text', null, '', 'text-uppercase') }}
-                                    </div>
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('city' | trans ~ ' *', 'city', address is not null ? address.city : '', 'city', '', 'text', null, '', 'text-uppercase') }}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('country' | trans ~ ' *', 'country', address is not null ? address.country : '', 'country', '', 'text', null, '', 'text-uppercase') }}
-                                    </div>
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('zip_code' | trans ~ ' *', 'zipCode', address is not null ? address.zipCode : '', 'zipCode', '', 'text', null, '', 'text-uppercase') }}
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="single-contact-service">
+                                            <div class="clearfix">
+                                                <div class="scs-icon">
+                                                    <i class="fa fa-map-marker"></i>
+                                                </div>
+                                                <div class="scs-content">
+                                                    <h6>{{ 'my_account.personal_info.address' | trans }}</h6>
+                                                    <p>{{ profile.address is not null ? profile.address.formatted_address : '' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12">
-                                    <div class="pib-item col-md-6 col-xs-12">
-                                        {{ form.input('password' | trans ~ ' *', 'registration_password', '', 'password', '', 'password', null, '', 'text-uppercase') }}
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="single-contact-service">
+                                            <div class="clearfix">
+                                                <div class="scs-icon">
+                                                    <i class="fa fa-map-marker"></i>
+                                                </div>
+                                                <div class="scs-content">
+                                                    <h6>E-mail</h6>
+                                                    <p>{{ profile.email }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="single-contact-service">
+                                            <div class="clearfix">
+                                                <div class="scs-icon">
+                                                    <i class="fa fa-mobile"></i>
+                                                </div>
+                                                <div class="scs-content">
+                                                    <h6>{{ 'my_account.personal_info.phone' | trans }}</h6>
+                                                    <p class="profile-info-phone">{{ profile.address is not null ? profile.address.telephone : '' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12">
-                                    <div class="pib-save-change col-xs-12">
-                                        {{ form.button('personal-btn', '', 'submit' | trans, 'button') }}
+                                <div class="row m-bt-3">
+                                    <div class="col-xs-12">
+                                            <div class="pib-change col-xs-12">
+                                                {{ form.button('personal-info-btn', '', 'my_account.personal_info.change_btn' | trans, 'button') }}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
                             </div>
-                        </form>
+                        </div>
+
+                        <div class="col-xs-12 personal-form hide">
+                            <h4 class="my-account-title">{{ 'my_account.personal_info.user' | trans }}</h4>
+                            <form id="personal-form" class="personal-information-box">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <input type="hidden" id="_csrf_token" name="_csrf_token" value="{{ csrf_token('user_update') }}">
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('first_name' | trans ~ ' *', 'first_name', profile.first_name, 'first_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('last_name' | trans ~ ' *', 'last_name', profile.last_name, 'last_name', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('email' | trans ~ ' *', 'email', profile.email, 'email', '', 'email', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('mobile_telephone' | trans ~ ' *', 'phone', profile.address is not null ? profile.address.telephone : '', 'address[mobile_phone]', '', 'tel', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('address' | trans ~ ' *', 'address', profile.address is not null ? profile.address.street : '', 'address[street]', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('city' | trans ~ ' *', 'city', profile.address is not null ? profile.address.city : '', 'address[city]', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('country' | trans ~ ' *', 'country', profile.address is not null ? profile.address.country : '', 'address[country]', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('zip_code' | trans ~ ' *', 'zipCode', profile.address is not null ? profile.address.post_code : '', 'address[zip_code]', '', 'text', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="pib-item col-md-6 col-xs-12">
+                                            {{ form.input('password' | trans ~ ' *', 'profile_password', '', 'password', '', 'password', null, '', 'text-uppercase') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="pib-cancel-change col-xs-6">
+                                            {{ form.button('personal-cancel-btn', '', 'cancel' | trans, 'button') }}
+                                        </div>
+                                        <div class="pib-save-change col-xs-6">
+                                            {{ form.button('personal-save-btn', 'hvr-bs', 'submit' | trans, 'button') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div role="tabpanel" id="order-list" class="tab-pane fade wishlist-table-area">
                         <div class="col-xs-12">
@@ -84,44 +157,39 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th class="wishlist-img-title">{{ 'my_account.order_table.image' | trans }}</th>
-                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.name' | trans }}</th>
-                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.quantity' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.number' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.products' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.payment' | trans }}</th>
+                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.status' | trans }}</th>
                                         <th class="wishlist-pro-price">{{ 'my_account.order_table.price' | trans }}</th>
-                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.color' | trans }}</th>
-                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.size' | trans }}</th>
                                         <th class="wishlist-pro-remove"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         {% for order in orders %}
-                                            {% set price = order.discount > 0 ? order.discount : order.price %}
-                                            <tr class="table-row1">
-                                                <td class="cart_product_image_value">
-                                                    <div class="wishlist_img">
-                                                        <img src="{{ order.image_link }}" alt="{{ order.title }}" />
-                                                    </div>
-                                                </td>
+                                            <tr id="{{ order.id }}">
                                                 <td class="cart_product_name_value">
-                                                    <p class="wishlist_product_name">
-                                                        <a href="#">{{ order.title }}</a>
-                                                    </p>
+                                                    <span class="wishlist_product_name">#{{ order.id }}</span>
                                                 </td>
                                                 <td class="wishlist_description">
-                                                    <span class="wishlist-desc">{{ order.quantity }}</span>
+                                                    <span class="wishlist-desc">{{
+                                                        order.products | length > 1 ?
+                                                            order.products | length ~' '~ 'my_account.order_table.products' | trans :
+                                                            order.products[0].translation.title
+                                                    }}</span>
+                                                </td>
+                                                <td class="wishlist_description">
+                                                    <span class="wishlist-desc">{{ order.payment.human_type }}</span>
+                                                </td>
+                                                <td class="wishlist_description">
+                                                    <span class="wishlist-desc">{{ order.status_text }}</span>
                                                 </td>
                                                 <td class="wishlist_price">
-                                                    <span class="product_price">{{ price | number_format(2) }} RSD</span>
+                                                    <span class="product_price">{{ order.total_with_shipping.amount }} {{ order.total_with_shipping.currency }}</span>
                                                 </td>
-                                                <td class="wishlist_color">
-                                                    <span class="product_color_box" style="background: {{ order.hex }};"></span>
-                                                </td>
-                                                <td class="wishlist_price">
-                                                    <span class="product_price">{{ order.size }}</span>
-                                                </td>
-                                                <td class="wishlist_remove">
-                                                    <a href="#">
-                                                        <i class="fa fa-times"></i>
+                                                <td class="wishlist_order_btn">
+                                                    <a href="{{ absolute_url(path('site.order_overview', {'token' : order.token})) }}" target="_blank" class="btn hvr-bs go-to-order">
+                                                        {{ 'email.order.overview' | trans }}
                                                     </a>
                                                 </td>
                                             </tr>
@@ -135,49 +203,17 @@
                     <div role="tabpanel" id="wish-list" class="tab-pane fade wishlist-table-area">
                         <div class="col-xs-12">
                             <div id="wish-table" class="wishlist-table shopping-cart-table table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th class="wishlist-img-title">{{ 'my_account.order_table.image' | trans }}</th>
-                                        <th class="wishlist-pro-name">{{ 'my_account.order_table.name' | trans }}</th>
-                                        <th class="wishlist-pro-desc">{{ 'my_account.order_table.description' | trans }}</th>
-                                        <th class="wishlist-pro-add-to">{{ 'my_account.order_table.price' | trans }}</th>
-                                        <th class="wishlist-pro-add-to">{{ 'my_account.order_table.view_product' | trans }}</th>
-                                        <th class="wishlist-pro-remove"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for wish in wishes %}
-                                        {% set price = wish.discount > 0 ? wish.discount : wish.price %}
-                                        <tr class="table-row-{{ wish.id }}">
-                                            <td class="cart_product_image_value">
-                                                <div class="wishlist_img">
-                                                    <img src="{{ wish.image_link }}" alt="{{ wish.title }}" />
-                                                </div>
-                                            </td>
-                                            <td class="cart_product_name_value">
-                                                <p class="wishlist_product_name">
-                                                    <a href="#">{{ wish.title }}</a>
-                                                </p>
-                                            </td>
-                                            <td class="wishlist_description">
-                                                <span class="wishlist-desc">{{ wish.short_description }}</span>
-                                            </td>
-                                            <td class="wishlist_price">
-                                                <span class="product_price">{{ price }} RSD</span>
-                                            </td>
-                                            <td class="wishlist_add_cart">
-                                                <a href="{{ path('site.product_page', {'_locale': locale, 'slug': wish.slug }) }}" class="btn"><i class="fa fa-eye"></i></a>
-                                            </td>
-                                            <td class="wishlist_remove">
-                                                <a href="#" class="toggle-wish-list" data-product-id="{{ wish.id }}" data-page="account">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                {% if wishes is not null %}
+                                    {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                    {% set modusParams = is_mobile() ? 2 : 3 %}
+                                    {% for productsChunks in wishes | batch(modusParams) %}
+                                        <div class="row m-l-0 m-r-0">
+                                            {% for product in productsChunks %}
+                                                {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale) }}
+                                            {% endfor %}
+                                        </div>
                                     {% endfor %}
-                                    </tbody>
-                                </table>
+                                {% endif %}
                             </div>
                         </div>
                         <!-- wishlist-table-area-end -->
@@ -190,8 +226,11 @@
     </div>
     <!-- my-account-area-end -->
 {% endblock %}
+{% block pageStyleSheets %}
+    {{ encore_entry_link_tags('css/site/pages/my_account') }}
+{% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const USER_ID = {{ user.id }};
+        const USER = JSON.parse('{{ profile | json_encode() | raw }}');
     </script>
 {% endblock %}

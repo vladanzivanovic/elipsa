@@ -42,15 +42,16 @@
                 </div>
             </div>
         </div>
+        {% for locale, lang in app_params('languages') %}
         <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Srpski</h6>
+                        <h6 class="card-title">{{ lang.name }}</h6>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {{ form.input('Naziv *', 'blog_title_rs', isEdit ? rs_title : null , 'rs_title', '', 'text', null, 'form-control') }}
+                                    {{ form.input('Naziv *', 'title_'~locale, isEdit ? payload.translations[locale]['title'] : null , locale~'[title]', '', 'text', null, 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -58,7 +59,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Kratak opis *', 'blog_short_description_rs', isEdit ? rs_short_description : null, 'rs_short_description', 3, '', 'form-control') }}
+                                        {{ form.textarea('Kratak opis *', 'short_description_'~locale, isEdit ? payload.translations[locale]['short_description'] : null, locale~'[short_description]', 3, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -67,7 +68,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'blog_description_rs', isEdit ? rs_description : null , 'rs_description', 10, '', 'form-control') }}
+                                        {{ form.textarea('Detaljan opis *', 'description_'~locale, isEdit ? payload.translations[locale]['description'] : null , locale~'[description]', 10, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -76,40 +77,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Engleski</h6>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    {{ form.input('Naziv *', 'blog_title_en', isEdit ? en_title : null , 'en_title', '', 'text', null, 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        {{ form.textarea('Kratak opis *', 'blog_short_description_en', isEdit ? en_short_description : null, 'en_short_description', 3, '', 'form-control') }}
-                                    </div>
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'blog_description_en', isEdit ? en_description : null , 'en_description', 10, '', 'form-control') }}
-                                    </div>
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
         <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
@@ -118,7 +86,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags', 'tags[]', isEdit ? selectedTags : '', tags, '', 'w-100', true) }}
+                                    {{ form.select('Tagovi', 'tags', 'tags[]', isEdit ? payload.tags : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div>
@@ -127,7 +95,7 @@
             </div>
         </div>
     </form>
-    {{ form.button('blog_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
@@ -135,7 +103,7 @@
         const ID = '{{ app.request.attributes.get('id') }}';
 
         {% if isEdit %}
-            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+            const IMAGES = JSON.parse('{{ payload.media.images|json_encode()|raw }}');
         {% endif %}
     </script>
 {% endblock %}

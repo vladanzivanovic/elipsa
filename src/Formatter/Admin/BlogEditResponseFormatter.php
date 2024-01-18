@@ -6,64 +6,75 @@ namespace App\Formatter\Admin;
 
 use App\Entity\Banner;
 use App\Entity\Blog;
+use App\Entity\Tags;
+use App\Formatter\Options\TagOptionsFormatter;
 use App\Repository\ImageRepository;
 use App\Repository\TagsRepository;
+use App\View\BlogView;
 use Symfony\Component\Routing\RouterInterface;
 
 final class BlogEditResponseFormatter
 {
     use ImageTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private TagsRepository $tagsRepository;
 
-    /**
-     * @param RouterInterface $router
-     * @param TagsRepository  $tagsRepository
-     */
+    private TagOptionsFormatter $tagOptionsFormatter;
+
+    private BlogView $blogView;
+
     public function __construct(
         RouterInterface $router,
-        TagsRepository $tagsRepository
+        TagsRepository $tagsRepository,
+        TagOptionsFormatter $tagOptionsFormatter,
+        BlogView $blogView
     ) {
         $this->router = $router;
         $this->tagsRepository = $tagsRepository;
+        $this->tagOptionsFormatter = $tagOptionsFormatter;
+        $this->blogView = $blogView;
     }
 
-    /**
-     * @param Blog $blog
-     *
-     * @return array
-     */
-    public function formatResponse(Blog $blog): array
+    public function formatResponse(Blog $blog = null): array
     {
-        $rsTrans = $blog->getBlogTranslationByLocale('rs');
-        $enTrans = $blog->getBlogTranslationByLocale('en');
+//        $rsTrans = $blog->getBlogTranslationByLocale('rs');
+//        $enTrans = $blog->getBlogTranslationByLocale('en');
+//
+//        $image = $blog->getImage();
+//
+//        $imageArray = [
+//            'id' => $image->getId(),
+//            'fileName' => $image->getName(),
+//            'isMain' => $image->getIsMain(),
+//        ];
 
-        $image = $blog->getImage();
+        $payload = null;
 
-        $imageArray = [
-            'id' => $image->getId(),
-            'fileName' => $image->getName(),
-            'isMain' => $image->getIsMain(),
+        if (null !== $blog) {
+            $payload = $this->blogView->editView($blog);
+        }
+
+        $formattedOptions = [
+            'tags' => $this->tagOptionsFormatter->formatTagOptions(Tags::TYPE_BLOG),
         ];
 
         return [
-            'rs_description' => $rsTrans->getDescription(),
-            'rs_short_description' => $rsTrans->getShortDescription(),
-            'rs_title' => $rsTrans->getTitle(),
-            'en_description' => $enTrans->getDescription(),
-            'en_short_description' => $enTrans->getShortDescription(),
-            'en_title' => $enTrans->getTitle(),
-            'selectedTags' => array_column($this->tagsRepository->getByBlog($blog), 'mainSlug'),
-            'selectedImages' => $this->imagesFormatter($this->router, [$imageArray], 'blog'),
+            'payload' => $payload,
+            'options' => $formattedOptions,
         ];
+
+//        return [
+//            'rs_description' => $rsTrans->getDescription(),
+//            'rs_short_description' => $rsTrans->getShortDescription(),
+//            'rs_title' => $rsTrans->getTitle(),
+//            'en_description' => $enTrans->getDescription(),
+//            'en_short_description' => $enTrans->getShortDescription(),
+//            'en_title' => $enTrans->getTitle(),
+//            'selectedTags' => array_column($this->tagsRepository->getByBlog($blog), 'mainSlug'),
+//            'selectedImages' => $this->imagesFormatter($this->router, [$imageArray], 'blog'),
+//        ];
     }
 
     /**
