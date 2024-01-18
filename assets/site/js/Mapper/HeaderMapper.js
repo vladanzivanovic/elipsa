@@ -1,3 +1,6 @@
+import loginMapper from "./Embedded/LoginMapper";
+import resetPasswordMapper from "./Embedded/ResetPasswordMapper";
+
 class HeaderMapper {
     constructor() {
         if (!HeaderMapper.instance) {
@@ -5,12 +8,8 @@ class HeaderMapper {
             this.registrationSubmitBtn = '#registration-btn';
             this.localeDropDown = '#locale-dropdown';
 
-            this.login = {
-                loginForm: '#login-form',
-                loginSubmitBtn: '#login-btn',
-                loginShowBtn: '#login_register_show_btn',
-                loginShowWrapper: '#login_register_show',
-            };
+            this.login = loginMapper;
+            this.reset = resetPasswordMapper;
 
             this.reset = {
                 form: '#reset_form',
@@ -30,7 +29,7 @@ class HeaderMapper {
             HeaderMapper.instance = this;
         }
 
-        return HeaderMapper.instance;;
+        return HeaderMapper.instance;
     }
 
 }

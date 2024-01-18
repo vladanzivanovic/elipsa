@@ -20,7 +20,7 @@
                     <div class="order-tracker">
                         <h2 class="ot-title">{{ true == is_successful_transaction ? 'checkout_completed.title' | trans : 'checkout_fail.title' | trans }}</h2>
                         <p class="ot-text letter-capitalize">{{ 'checkout_completed.details' | trans }}</p>
-                        {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                        {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
                             <p class="ot-text letter-capitalize">{{
                                 true == is_successful_transaction ?
                                 'checkout.finish.transaction_status_success' | trans :
@@ -165,7 +165,7 @@
                     </div>
                 </div>
             </div>
-            {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+            {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="billing-address">

@@ -7,49 +7,31 @@ namespace App\Parser;
 use App\Entity\Blog;
 use App\Entity\BlogHasTags;
 use App\Entity\BlogTranslation;
-use App\Repository\BlogHasTagsRepository;
 use App\Repository\BlogTranslationRepository;
+use App\Repository\TagsRepository;
 use App\Services\BlogImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class BlogRequestParser
 {
-    /**
-     * @var BlogTranslationRepository
-     */
-    private $translationRepository;
-    /**
-     * @var BlogImageService
-     */
-    private $blogImageService;
-    /**
-     * @var BlogHasTagsRepository
-     */
-    private $hasTagsRepository;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private BlogTranslationRepository $translationRepository;
 
-    /**
-     * BlogRequestParser constructor.
-     *
-     * @param BlogTranslationRepository $translationRepository
-     * @param BlogImageService          $blogImageService
-     * @param BlogHasTagsRepository     $hasTagsRepository
-     * @param ParameterBagInterface     $parameterBag
-     */
+    private BlogImageService $blogImageService;
+
+    private TagsRepository $tagsRepository;
+
+    private array $locales;
+
     public function __construct(
         BlogTranslationRepository $translationRepository,
         BlogImageService $blogImageService,
-        BlogHasTagsRepository $hasTagsRepository,
-        ParameterBagInterface $parameterBag
+        TagsRepository $tagsRepository,
+        string $locales
     ) {
         $this->translationRepository = $translationRepository;
         $this->blogImageService = $blogImageService;
-        $this->hasTagsRepository = $hasTagsRepository;
-        $this->parameterBag = $parameterBag;
+        $this->locales = explode('|', $locales);
+        $this->tagsRepository = $tagsRepository;
     }
 
     /**
@@ -76,49 +58,23 @@ class BlogRequestParser
 
     private function setBlogTranslation(Blog $blog, ParameterBag $bag)
     {
+        foreach ($this->locales as $locale) {
+            $transCollection = $bag->get($locale);
 
-        $languages = $this->setLanguageArray($bag);
-
-        foreach ($languages as $locale => $langBag) {
             $blogTranslation = $this->translationRepository->findOneBy(['blog' => $blog, 'locale' => $locale]);
 
             if (!$blogTranslation instanceof BlogTranslation) {
                 $blogTranslation = new BlogTranslation();
             }
 
-            $blogTranslation->setTitle($bag->get($locale.'_title'))
-                ->setShortDescription($bag->get($locale.'_short_description'))
-                ->setDescription($bag->get($locale.'_description'))
+            $blogTranslation->setTitle($transCollection['title'])
+                ->setShortDescription($transCollection['short_description'])
+                ->setDescription($transCollection['description'])
                 ->setLocale($locale)
                 ->setBlog($blog);
 
             $blog->addBlogTranslation($blogTranslation);
         }
-    }
-
-    private function setLanguageArray(ParameterBag $bag): array
-    {
-        $langArray = [];
-
-        $locales = explode('|', $this->parameterBag->get('locales'));
-
-        foreach ($bag->all() as $key => $item) {
-            $langCode = substr($key, 0, 2);
-
-            if (false === in_array($langCode, $locales)) {
-                continue;
-            }
-
-            if (false === array_key_exists($langCode, $langArray)) {
-                $langArray[$langCode] = new ParameterBag();
-            }
-
-            /** @var ParameterBag $langBag */
-            $langBag = $langArray[$langCode];
-            $langBag->set($key, $item);
-        }
-
-        return $langArray;
     }
 
     /**
@@ -132,7 +88,9 @@ class BlogRequestParser
             $hasTags->clear();
         }
 
-        foreach ($tags as $tag) {
+        foreach ($tags as $tagId) {
+            $tag = $this->tagsRepository->find($tagId);
+
             $hasTags = new BlogHasTags();
             $hasTags->setTag($tag);
 

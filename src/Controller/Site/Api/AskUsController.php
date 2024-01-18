@@ -5,61 +5,75 @@ declare(strict_types=1);
 namespace App\Controller\Site\Api;
 
 use App\Handler\Site\AskUsHandler;
-use App\Handler\Site\LoyaltyHandler;
+use App\Mailer\AskUsMailer;
 use App\Parser\Site\AskUsRequestParser;
-use App\Parser\Site\LoyaltyRequestParser;
+use App\Request\Dto\AskUsRequestDto;
+use App\View\ExceptionView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AskUsController extends AbstractController
 {
-    /**
-     * @var AskUsRequestParser
-     */
-    private $requestParser;
+    private AskUsRequestParser $requestParser;
 
-    /**
-     * @var AskUsHandler
-     */
-    private $handler;
+    private AskUsHandler $handler;
 
-    /**
-     * @param AskUsRequestParser $requestParser
-     * @param AskUsHandler       $handler
-     */
+    private ExceptionView $exceptionView;
+
+    private AskUsMailer $askUsMailer;
+
+    private TranslatorInterface $translator;
+
     public function __construct(
         AskUsRequestParser $requestParser,
-        AskUsHandler $handler
+        AskUsHandler $handler,
+        ExceptionView $exceptionView,
+        AskUsMailer $askUsMailer,
+        TranslatorInterface $translator
     ) {
         $this->requestParser = $requestParser;
         $this->handler = $handler;
+        $this->exceptionView = $exceptionView;
+        $this->askUsMailer = $askUsMailer;
+        $this->translator = $translator;
     }
 
     /**
-     * @Route({
-     *          "rs": "/api/ask-us",
-     *          "en": "/api/ask-us"
-     *      },
+     * @Route("/api/ask-us",
      *     name="site_api.ask_us",
      *     methods={"POST"},
      *     options={"expose": true}
      * )
-     * @param Request $request
+     * @param AskUsRequestDto $askUsRequestDto
      *
      * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \ReflectionException
      */
-    public function add(Request $request): JsonResponse
+    public function insert(AskUsRequestDto $askUsRequestDto): JsonResponse
     {
-        $askUs = $this->requestParser->parse($request->request);
+        if (false === $this->isCsrfTokenValid('ask_us_form', $askUsRequestDto->csrf)) {
+            $this->createAccessDeniedException();
+        }
 
-        $this->handler->save($askUs);
+        try {
+            $askUs = $this->requestParser->parse($askUsRequestDto);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+            $this->handler->save($askUs);
+
+            $this->askUsMailer->sendEmail($askUs);
+
+        } catch (\Throwable $throwable) {
+            return $this->json(
+                ['error' => $this->exceptionView->view($throwable, $askUsRequestDto->locale)],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        return $this->json(
+            ['message' => $this->translator->trans('ask_us.message.success', [], 'messages', $askUsRequestDto->locale)],
+            Response::HTTP_CREATED
+        );
     }
 }

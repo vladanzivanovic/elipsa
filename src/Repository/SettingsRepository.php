@@ -30,7 +30,7 @@ class SettingsRepository extends ExtendedEntityRepository
                 's.value'
             )
             ->where('s.slug IN (:settingsSlug)')
-            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME']);
+            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME']);
 
         return $query->getQuery()->getArrayResult();
     }
@@ -46,7 +46,7 @@ class SettingsRepository extends ExtendedEntityRepository
                 's.value',
             )
             ->where('s.slug IN (:settingsSlug)')
-            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT']);
+            ->setParameter('settingsSlug', ['MAIN_EMAIL', 'TELEPHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT']);
 
         return $query->getQuery()->getArrayResult();
     }

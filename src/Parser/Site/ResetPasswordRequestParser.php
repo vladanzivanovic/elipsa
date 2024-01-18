@@ -6,23 +6,26 @@ namespace App\Parser\Site;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Request\Dto\ResetPasswordRequestDto;
+use App\Request\Dto\ResetPasswordSetRequestDto;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class ResetPasswordRequestParser
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
+
+    private UserPasswordHasherInterface $userPasswordHasher;
 
     /**
      * @param UserRepository    $userRepository
      */
     public function __construct(
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        UserPasswordHasherInterface $userPasswordHasher
     ) {
         $this->userRepository = $userRepository;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     /**
@@ -30,9 +33,9 @@ final class ResetPasswordRequestParser
      *
      * @return User
      */
-    public function parse(string $email): User
+    public function parse(ResetPasswordRequestDto $resetPasswordRequestDto): User
     {
-        $user = $this->userRepository->findOneBy(['email' => $email]);
+        $user = $this->userRepository->findOneBy(['email' => $resetPasswordRequestDto->resetEmail]);
 
         if (null === $user) {
             throw new BadRequestHttpException('reset_password.user_not_exists');
@@ -47,13 +50,13 @@ final class ResetPasswordRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
      *
+     * @param ResetPasswordSetRequestDto $resetPasswordSetRequestDto
      * @return User
      */
-    public function parseResetPassword(ParameterBag $bag): User
+    public function parseResetPassword(ResetPasswordSetRequestDto $resetPasswordSetRequestDto): User
     {
-        $user = $this->userRepository->findOneBy(['resetToken' => $bag->get('token')]);
+        $user = $this->userRepository->findOneBy(['resetToken' => $resetPasswordSetRequestDto->token]);
 
         if (null === $user) {
             throw new BadRequestHttpException('reset_password.user_not_exists');
@@ -61,8 +64,9 @@ final class ResetPasswordRequestParser
 
         $user->setResetToken(null)
             ->setResetRequestAt(null)
-            ->setPassword($bag->get('password'))
-            ->setRePassword($bag->get('repeat_password'));
+            ->setPlainPassword($resetPasswordSetRequestDto->password)
+            ->setPassword($this->userPasswordHasher->hashPassword($user, $resetPasswordSetRequestDto->password))
+            ->setRePassword($resetPasswordSetRequestDto->repeatPassword);
 
         return $user;
     }

@@ -19,6 +19,7 @@ final class AddressView
             'street' => $address->getAddress(),
             'city' => $address->getCity(),
             'telephone' => $address->getPhone(),
+            'formatted_address' => $address->getAddress().', '. $address->getZipCode().' '.$address->getCity().' '.$address->getCountry(),
         ];
     }
 }

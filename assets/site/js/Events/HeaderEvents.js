@@ -1,9 +1,8 @@
 import headerMapper from "../Mapper/HeaderMapper";
-import UserHandler from "../Handler/UserHandler";
 import registrationValidator from "../Validators/RegistrationValidator";
 import resetPasswordValidator from "../Validators/ResetPasswordValidator";
-import orderApiProvider from "../Provider/OrderApiProvider";
-import cartDropDownDom from "../Dom/CartDropDownDom";
+import loginHandler from "../Handler/Login/LoginHandler";
+import resetPasswordHandler from "../Handler/ResetPassword/ResetPasswordHandler";
 
 class HeaderEvents {
     #mapper;
@@ -13,7 +12,6 @@ class HeaderEvents {
 
     constructor() {
         this.#mapper = headerMapper;
-        this.#userHandler = new UserHandler();
 
         this.#registerValidators();
 
@@ -21,14 +19,8 @@ class HeaderEvents {
     }
 
     #registerEvents() {
-        $(document).on('click touchend', this.#mapper.registrationSubmitBtn, e => {
-            $(this.#mapper.registrationForm).valid();
-
-            this.#userHandler.doRegistration(this.#mapper.registrationForm);
-        });
-
-        $(document).on('click touchend', this.#mapper.login.loginSubmitBtn, e => {
-            this.#userHandler.doLogin(this.#mapper);
+        $(document).on('click touchend', this.#mapper.login.submitBtn, async e => {
+            await loginHandler.login();
         });
 
         $(this.#mapper.reset.resetPasswordBtn).on('click touchend', e => {
@@ -55,11 +47,11 @@ class HeaderEvents {
             $(this.#mapper.login.loginShowWrapper).fadeOut();
         });
 
-        $(document).on('click touchend', this.#mapper.reset.resetPasswordSubmitBtn, e => {
+        $(document).on('click touchend', this.#mapper.reset.resetPasswordSubmitBtn, async e => {
 
             $(this.#mapper.reset.form).valid();
 
-            this.#userHandler.doResetPassword(this.#mapper);
+            await resetPasswordHandler.reset();
         });
 
         $(document).on('click touchend', this.#mapper.search.opener, e => {

@@ -47,6 +47,11 @@ security:
                 provider: app_user_provider
 
             user_checker: App\Checker\AuthenticationChecker
+#            custom_authenticator: App\Security\LoginFormAuthenticator
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
 
             logout:
                 path:   site.logout

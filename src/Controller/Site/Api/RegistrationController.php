@@ -63,7 +63,7 @@ final class RegistrationController extends AbstractController
         try {
             $user = $this->registrationRequestParser->parse($registrationRequestDto);
 
-            $this->userHandler->save($user, 'SetUser', true);
+            $this->userHandler->save($user, 'SetUser');
 
             $viewData = $this->userRegistrationFormatter->formatResponse($user, $registrationRequestDto->locale);
 

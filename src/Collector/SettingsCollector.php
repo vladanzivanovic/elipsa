@@ -40,7 +40,10 @@ final class SettingsCollector
 
         switch ($type) {
             case 'email':
-                $fields = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'TELEPHONE', 'MOBILE_PHONE', 'STREET', 'ZIP_CODE', 'CITY'];
+                $fields = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'TELEPHONE', 'STREET', 'ZIP_CODE', 'CITY'];
+                break;
+            case 'contactPage':
+                $fields = ['MAIN_EMAIL', 'TELEPHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT'];
                 break;
         }
 

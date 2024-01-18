@@ -49,7 +49,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      * @ORM\Column(type="string", nullable=true)
      * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
-     * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
      */
     private $password;
 
@@ -119,6 +118,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     private string $socialId;
+
+    /**
+     * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
+     */
+    private string $plainPassword;
 
     public function __construct()
     {
@@ -442,6 +446,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSocialId(string $socialId): self
     {
         $this->socialId = $socialId;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

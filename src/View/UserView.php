@@ -8,6 +8,14 @@ use App\Entity\User;
 
 final class UserView
 {
+    private AddressView $addressView;
+
+    public function __construct(
+        AddressView $addressView
+    ){
+        $this->addressView = $addressView;
+    }
+
     public function view(User $user)
     {
         $view = [
@@ -16,7 +24,14 @@ final class UserView
             'last_name' => $user->getLastName(),
             'email' => $user->getEmail(),
             'reset_token' => $user->getResetToken(),
+            'address' => null,
         ];
+
+        $address = $user->getAddress();
+
+        if (null !== $address) {
+            $view['address'] = $this->addressView->view($address);
+        }
 
         return $view;
     }

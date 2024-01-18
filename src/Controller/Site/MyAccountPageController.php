@@ -55,6 +55,8 @@ final class MyAccountPageController extends AbstractController
 
         $collection = $this->accountCollector->collect($user, $locale);
 
-        return $this->accountFormatter->formatResponse($collection);
+//        dd($this->accountFormatter->formatResponse($user, $collection, $request->getLocale()));
+
+        return $this->accountFormatter->formatResponse($user, $collection, $request->getLocale());
     }
 }

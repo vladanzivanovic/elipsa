@@ -2,19 +2,24 @@ import DropZoneService from "../../../js/Services/DropZoneService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
 import BlogDataTables from "../Services/DataTables/BlogDataTables";
+import blogEditMapper from "../Mapper/BlogEditMapper";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class BlogEditHandler {
+    #mapper;
+
     constructor() {
+        this.#mapper = blogEditMapper;
         this.notification = NotificationService();
     }
 
-    save(mapper)
+    save()
     {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_blog_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = $(this.#mapper.form).serializeArray();
 
-        if (!mapper.form.valid()) {
+        if (!$(this.#mapper.form).valid()) {
             return false;
         }
 

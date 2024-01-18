@@ -6,7 +6,6 @@ namespace App\Mailer;
 
 use App\Entity\User;
 use App\Event\EmailEvent;
-use App\Formatter\SettingsFormatter;
 use App\Model\EmailModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,16 +16,12 @@ final class UserRegistrationMailer
 
     private TranslatorInterface $translator;
 
-    private SettingsFormatter $settingsFormatter;
-
     public function __construct(
         EventDispatcherInterface $dispatcher,
-        TranslatorInterface $translator,
-        SettingsFormatter $settingsFormatter
+        TranslatorInterface $translator
     ) {
         $this->dispatcher = $dispatcher;
         $this->translator = $translator;
-        $this->settingsFormatter = $settingsFormatter;
     }
 
     public function sendEmail(array $viewData, User $user)

@@ -29,6 +29,7 @@ Encore
     .addStyleEntry('css/site/pages/jobDetail', './assets/site/scss/Pages/_jobDetail.scss')
     .addStyleEntry('css/site/pages/orderFinish', './assets/site/scss/Pages/_orderFinish.scss')
     .addStyleEntry('css/site/pages/registration', './assets/site/scss/Pages/_registration.scss')
+    .addStyleEntry('css/site/pages/my_account', './assets/site/scss/Pages/_my_account.scss')
     .addStyleEntry('css/admin/app', [
         './assets/admin/scss/style.scss',
     ])

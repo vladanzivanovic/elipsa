@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  */
 class AskUs
 {
+    public const ANSWER_TYPE_EMAIL = 'email';
+
+    public const ANSWER_TYPE_PHONE = 'phone';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -44,6 +48,16 @@ class AskUs
      * @ORM\Column(type="text", nullable=true)
      */
     private $note;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $contactVia;
 
     public function getId(): ?int
     {
@@ -106,6 +120,30 @@ class AskUs
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getContactVia(): ?string
+    {
+        return $this->contactVia;
+    }
+
+    public function setContactVia(string $contactVia): self
+    {
+        $this->contactVia = $contactVia;
 
         return $this;
     }

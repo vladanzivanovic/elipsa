@@ -10,14 +10,14 @@ use ReflectionException;
 final class ConstantsHelper
 {
     /**
-     * @param string $searchVal
+     * @param string|int $searchVal
      * @param string $group
      * @param string $className
      *
      * @return string|null
      * @throws ReflectionException
      */
-    public static function getConstantName(string $searchVal, string $group, string $className): ?string
+    public static function getConstantName($searchVal, string $group, string $className): ?string
     {
         $reflection = new \ReflectionClass($className);
         $constants = $reflection->getConstants();

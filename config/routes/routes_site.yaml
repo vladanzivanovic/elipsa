@@ -62,14 +62,6 @@ site.use_conditions:
   defaults:
     template: Site/Pages/use_condition.html.twig
 
-site.ask_us:
-  path:
-    rs: /pitajte-nas
-    en: /en/ask-us
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Site/Pages/askUsPage.html.twig
-
 site.cart_page:
   path:
     rs: /korpa

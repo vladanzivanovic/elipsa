@@ -89,13 +89,13 @@
                                     </div>
                                 </div>
                                 <div class="row submit-register-via-social">
-                                    <div class="col-md-6 col-xs-12 or-register-to">
-                                        <p class="or-register-to-text">{{ 'registration.via' | trans }}</p>
-                                        <ul>
-                                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>
-                                        </ul>
-                                    </div>
+{#                                    <div class="col-md-6 col-xs-12 or-register-to">#}
+{#                                        <p class="or-register-to-text">{{ 'registration.via' | trans }}</p>#}
+{#                                        <ul>#}
+{#                                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>#}
+{#                                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>#}
+{#                                        </ul>#}
+{#                                    </div>#}
                                     <div class="col-md-6 col-xs-12 submit-wrapper cfc-input-box">
                                         {{ form.button('submit', 'submit hvr-bs', 'submit' | trans, 'button') }}
                                     </div>

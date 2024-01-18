@@ -139,7 +139,7 @@
                                                                                                                     </div>
                                                                                                                 </td>
                                                                                                             </tr>
-                                                                                                            {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') %}
+                                                                                                            {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') %}
                                                                                                             <tr>
                                                                                                                 <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
                                                                                                                     class="mceBlockContainer"
@@ -156,7 +156,7 @@
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                             {% endif %}
-                                                                                                            {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+                                                                                                            {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
                                                                                                             <tr>
                                                                                                                 <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
                                                                                                                     class="mceBlockContainer"

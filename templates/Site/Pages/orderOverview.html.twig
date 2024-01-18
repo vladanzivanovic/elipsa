@@ -16,7 +16,7 @@
                 <div class="col-sm-12 col-xs-12">
                     <div class="order-tracker">
                         <h2 class="ot-title">{{ title }}</h2>
-                        {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                        {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
                             <p class="ot-text letter-capitalize">{{
                                 'email.order.overview' | trans
                             }}</p>
@@ -159,7 +159,7 @@
                     </div>
                 </div>
             </div>
-            {% if payment_type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+            {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="billing-address">

@@ -58,7 +58,7 @@ final class UserHandler
      * @throws ORMException
      * @throws \Exception
      */
-    public function save(User $user, ?string $group = null, bool $shouldUpdatePassword = false): void
+    public function save(User $user, ?string $group = null): void
     {
         if (null !== $group) {
             $errors = $this->validator->validate($user, null, $group);
@@ -66,10 +66,6 @@ final class UserHandler
             if ($errors->count() > 0) {
                 throw new BadRequestHttpException(json_encode($this->validator->parseErrors($errors)));
             }
-        }
-
-        if (true === $shouldUpdatePassword) {
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
         }
 
         if (null == $user->getId()) {

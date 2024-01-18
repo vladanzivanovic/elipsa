@@ -7,7 +7,6 @@ import LocationPageController from "./LocationPageController";
 import BlogListPageController from "./BlogListPageController";
 import LoyaltyPageController from "./LoyaltyPageController";
 import MyAccountPageController from "./MyAccountPageController";
-import AskUsPageController from "./AskUsPageController";
 import HomePageController from "./HomePageController";
 import CatalogPageController from "./CatalogPageController";
 import ContactPageController from "./ContactPageController";
@@ -57,10 +56,6 @@ let routes = [
     {
         name: 'site.account_page',
         controller: MyAccountPageController,
-    },
-    {
-        name: 'site.ask_us',
-        controller: AskUsPageController,
     },
     {
         name: 'site.catalog_page',

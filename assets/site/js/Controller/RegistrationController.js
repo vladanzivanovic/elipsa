@@ -2,7 +2,7 @@ import registrationMapper from "../Mapper/RegistrationMapper";
 import registrationEvents from "../Events/RegistrationEvents";
 import registrationValidator from "../Validators/RegistrationValidator";
 
-require('inputmask/dist/jquery.inputmask.bundle')
+require('inputmask/dist/jquery.inputmask.bundle');
 
 class RegistrationController {
     #mapper;
@@ -21,7 +21,6 @@ class RegistrationController {
 
     init()
     {
-
         $(this.#mapper.fields.mobilePhone).inputmask('(999) 99 999-999[9]');
         $(this.#mapper.fields.zipCode).inputmask('99999');
 

@@ -35,7 +35,7 @@ class Tags
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private string $productType;
+    private ?string $productType = null;
 
     /**
      * @ORM\OneToMany(targetEntity=TagTranslation::class, mappedBy="tag", orphanRemoval=true, cascade={"persist", "remove"})
@@ -64,7 +64,7 @@ class Tags
         return $this;
     }
 
-    public function getProductType(): string
+    public function getProductType(): ?string
     {
         return $this->productType;
     }

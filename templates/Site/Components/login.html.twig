@@ -1,4 +1,5 @@
 {% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as inputWithLabels %}
 
 <div class="header-top-right">
     <div class="login-or-register {{ is_mobile() ? 'col-xs-7 row' : '' }}">
@@ -23,7 +24,7 @@
 
                             </div>
                             <div class="remember-help">
-                                {{ inputs.input('login_remember_me', 1, '_remember_me', '', 'checkbox') }} {{ 'login.remember_me' | trans }}
+                                {{ inputWithLabels.checkbox('login.remember_me' | trans, 'login_remember_me', 1, '_remember_me') }}
                             </div>
                             <div class="lrc-submit">
                                 <input id="login-btn" class="hvr-bs" type="button" value="{{ 'login.btn' | trans }}">
@@ -55,15 +56,15 @@
                 <div id="registration_form_btn_wrapper" class="">
                     <a href="{{ path('site.registration') }}" id="registration_form_btn" class="hvr-bs">{{ 'registration.dont_have_account' | trans }}?</a>
                 </div>
-                <div class="lrc-register">
-                    <div class="or-register-to">
-                        <span class="letter-capitalize">{{ 'login.via' | trans }}</span>
-                        <ul>
-                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
+{#                <div class="lrc-register">#}
+{#                    <div class="or-register-to">#}
+{#                        <span class="letter-capitalize">{{ 'login.via' | trans }}</span>#}
+{#                        <ul>#}
+{#                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>#}
+{#                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
         {% endif %}
     </div>

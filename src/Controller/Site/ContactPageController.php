@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
+use App\Formatter\Site\ContactPageFormatter;
 use App\Repository\SettingsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,13 +18,17 @@ final class ContactPageController extends AbstractController
      */
     private $settingsRepository;
 
+    private ContactPageFormatter $contactPageFormatter;
+
     /**
      * @param SettingsRepository $settingsRepository
      */
     public function __construct(
-        SettingsRepository $settingsRepository
+        SettingsRepository $settingsRepository,
+        ContactPageFormatter $contactPageFormatter
     ) {
         $this->settingsRepository = $settingsRepository;
+        $this->contactPageFormatter = $contactPageFormatter;
     }
 
     /**
@@ -42,13 +47,15 @@ final class ContactPageController extends AbstractController
      */
     public function renderPage(Request $request): array
     {
-        $settings = $this->settingsRepository->getSettingsForContactPage();
-        $formatted = [];
+        return $this->contactPageFormatter->format($request->getLocale());
 
-        foreach ($settings as $setting) {
-            $formatted[$setting['slug']] = $setting['value'];
-        }
-
-        return $formatted;
+//        $settings = $this->settingsRepository->getSettingsForContactPage();
+//        $formatted = [];
+//
+//        foreach ($settings as $setting) {
+//            $formatted[$setting['slug']] = $setting['value'];
+//        }
+//
+//        return $formatted;
     }
 }
