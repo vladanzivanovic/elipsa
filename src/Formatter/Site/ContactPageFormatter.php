@@ -32,7 +32,7 @@ class ContactPageFormatter
 
         $data = [
             'answer_options' => $this->askUsOptionsFormatter->format($locale),
-            'settings' => $this->settingsFormatter->formatResponse($settings),
+            'company_info' => $settings,
         ];
 
         return $data;

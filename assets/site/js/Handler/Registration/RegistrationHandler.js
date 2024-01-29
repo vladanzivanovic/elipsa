@@ -34,9 +34,6 @@ class RegistrationHandler {
         loader.show();
 
         try {
-            data.address.mobile_phone = $(this.#mapper.fields.mobilePhone).inputmask('unmaskedvalue');
-            data.address.zip_code = $(this.#mapper.fields.zipCode).inputmask('unmaskedvalue')
-
             await this.#apiHandler.register(data);
 
             AppHelperService.redirect(Routing.generate('site.registration_confirmation'));

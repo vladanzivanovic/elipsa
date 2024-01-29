@@ -14,7 +14,7 @@ class ContactPageController {
         this.#handler = contactHandler;
         this.gmapApi = new MapsService();
 
-        $(this.#askUsFormMapper.fields.telephone).inputmask('(999) 99 999-999[9]');
+        $(this.#askUsFormMapper.fields.telephone).inputmask({mask: '(999) 99 999-999[9]', autoUnmask: true, clearIncomplete: true});
 
         askUsPageValidation.validate();
 

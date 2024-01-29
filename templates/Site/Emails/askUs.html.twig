@@ -249,7 +249,7 @@
             content: '';
         }
 
-        .mceText, .ProseMirror {
+        .ProseMirror {
             white-space: pre-wrap;
         }
 
@@ -661,6 +661,7 @@
                                                                                  id="dataBlockId-5" style="width:100%">
                                                                                 <h3>Dobili ste poruku od {{ firstName }} {{ lastName }},</h3>
                                                                                 <p><strong>Telefon: {{ telephone }},</strong></p>
+                                                                                <p><strong>Email: {{ contactEmail }},</strong></p>
                                                                                 {% set contactViaTransId = 'contact.form.answer_' ~ contactVia %}
                                                                                 <p class="last-child"><strong>Odgovori: {{ contactViaTransId | trans}}</strong></p>
                                                                             </div>

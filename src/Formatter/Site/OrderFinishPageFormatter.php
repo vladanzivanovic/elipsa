@@ -15,16 +15,12 @@ final class OrderFinishPageFormatter
 
     private SettingsCollector $settingsCollector;
 
-    private SettingsFormatter $settingsFormatter;
-
     public function __construct(
         OrderFinishView $orderFinishView,
-        SettingsCollector $settingsCollector,
-        SettingsFormatter $settingsFormatter
+        SettingsCollector $settingsCollector
     ) {
         $this->orderFinishView = $orderFinishView;
         $this->settingsCollector = $settingsCollector;
-        $this->settingsFormatter = $settingsFormatter;
     }
 
     public function formatResponse(
@@ -32,16 +28,14 @@ final class OrderFinishPageFormatter
         string $locale,
         bool $isSuccessfulTransaction
     ): array {
-        $settings = $this->settingsCollector->collect('email');
+        $officeInfo = $this->settingsCollector->collect('email');
 
         $view = $this->orderFinishView->view(
             $order,
-            $settings,
+            $officeInfo,
             $locale,
             $isSuccessfulTransaction
         );
-
-        $view['settings'] = $this->settingsFormatter->formatResponse($settings);
 
         return $view;
     }

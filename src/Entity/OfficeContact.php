@@ -34,6 +34,11 @@ class OfficeContact
      */
     private bool $showInFooter;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $useInEmail = false;
+
     public function __construct()
     {
         $this->officeContactTranslations = new ArrayCollection();
@@ -104,5 +109,17 @@ class OfficeContact
     public function setShowInFooter(bool $showInFooter): void
     {
         $this->showInFooter = $showInFooter;
+    }
+
+    public function isUseInEmail(): ?bool
+    {
+        return $this->useInEmail;
+    }
+
+    public function setUseInEmail(bool $useInEmail): self
+    {
+        $this->useInEmail = $useInEmail;
+
+        return $this;
     }
 }

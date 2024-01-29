@@ -36,9 +36,6 @@ class MyAccountHandler {
         loader.show();
 
         try {
-            data.address.mobile_phone = $(this.#mapper.personalFormFields.mobilePhone).inputmask('unmaskedvalue');
-            data.address.zip_code = $(this.#mapper.personalFormFields.zipCode).inputmask('unmaskedvalue')
-
             await this.#apiHandler.send(data);
 
             AppHelperService.redirect('reload');

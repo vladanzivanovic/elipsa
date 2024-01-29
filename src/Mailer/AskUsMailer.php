@@ -30,35 +30,37 @@ final class AskUsMailer
         $this->settingsCollector = $settingsCollector;
     }
 
-    public function sendEmail(AskUs $askUs)
+    public function sendEmail(AskUs $askUs, string $locale)
     {
-        $emailModelCustomer = $this->prepareEmail($askUs);
+        $emailModelCustomer = $this->prepareEmail($askUs, $locale);
         $event = new EmailEvent($emailModelCustomer);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
     }
 
-    private function prepareEmail(AskUs $askUs): EmailModel
+    private function prepareEmail(AskUs $askUs, string $locale): EmailModel
     {
-        $settings = $this->settingsCollector->collect('email');
+        $officeInfo = $this->settingsCollector->collect('email');
 
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_CONTACT_US);
         $model->setTemplate('askUs');
-        $model->setTo($settings['main_email']->getValue());
-        $model->setToName($settings['site_name']->getValue());
+        $model->setTo($officeInfo['settings']['main_email']->getValue());
+        $model->setToName($officeInfo['settings']['site_name']->getValue());
         $model->setSubject($askUs->getSubject());
-        $model->setFrom($settings['main_email']->getValue());
-        $model->setFromName($settings['site_name']->getValue());
-        $model->setReplyTo($settings['main_email']->getValue());
-        $model->setReplyToName($settings['site_name']->getValue());
+        $model->setFrom($officeInfo['settings']['main_email']->getValue());
+        $model->setFromName($officeInfo['settings']['site_name']->getValue());
+        $model->setReplyTo($askUs->getEmail());
+        $model->setReplyToName($askUs->getFirstName().' '. $askUs->getLastName());
         $model->setTemplateData([
             'firstName' => $askUs->getFirstName(),
             'lastName' => $askUs->getLastName(),
             'telephone' => $askUs->getTelephone(),
+            'contactEmail' => $askUs->getEmail(),
             'contactVia' => $askUs->getContactVia(),
             'note' => $askUs->getNote(),
             'subject' => $askUs->getSubject(),
-            'settings' => $settings,
+            'office_info' => $officeInfo,
+            'locale' => $locale,
         ]);
 
         return $model;

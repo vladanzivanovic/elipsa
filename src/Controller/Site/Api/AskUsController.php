@@ -62,7 +62,7 @@ final class AskUsController extends AbstractController
 
             $this->handler->save($askUs);
 
-            $this->askUsMailer->sendEmail($askUs);
+            $this->askUsMailer->sendEmail($askUs, $askUsRequestDto->locale);
 
         } catch (\Throwable $throwable) {
             return $this->json(

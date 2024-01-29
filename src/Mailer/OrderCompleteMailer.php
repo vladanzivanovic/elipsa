@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mailer;
 
+use App\Collector\SettingsCollector;
 use App\Entity\ShopOrder;
 use App\Entity\User;
 use App\Event\EmailEvent;
@@ -22,16 +23,20 @@ final class OrderCompleteMailer
 
     private UserRegistrationMailer $userRegistrationMailer;
 
+    private SettingsCollector $settingsCollector;
+
     public function __construct(
         EventDispatcherInterface $dispatcher,
         TranslatorInterface $translator,
         UserRegistrationFormatter $userRegistrationFormatter,
-        UserRegistrationMailer $userRegistrationMailer
+        UserRegistrationMailer $userRegistrationMailer,
+        SettingsCollector $settingsCollector
     ) {
         $this->dispatcher = $dispatcher;
         $this->translator = $translator;
         $this->userRegistrationFormatter = $userRegistrationFormatter;
         $this->userRegistrationMailer = $userRegistrationMailer;
+        $this->settingsCollector = $settingsCollector;
     }
 
     public function sendEmail(
@@ -42,7 +47,7 @@ final class OrderCompleteMailer
         $user = $order->getUser();
         $isSuccessfulTransaction = $viewData['is_successful_transaction'];
 
-        $emailModelCustomer = $this->prepareEmail($viewData, $order);
+        $emailModelCustomer = $this->prepareEmail($viewData, $order, $locale);
         $event = new EmailEvent($emailModelCustomer);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
 
@@ -64,10 +69,16 @@ final class OrderCompleteMailer
 
     private function prepareEmail(
         array $viewData,
-        ShopOrder $order
+        ShopOrder $order,
+        string $locale
     ): EmailModel {
+        $officeInfo = $this->settingsCollector->collect('email');
+
+        $viewData['locale'] = $locale;
+        $viewData['office_info'] = $officeInfo;
+
         $user = $order->getUser();
-        $settings = $viewData['settings'];
+        $settings = $officeInfo['settings'];
         $isSuccessfulTransaction = $viewData['is_successful_transaction'];
 
         $subject = true === $isSuccessfulTransaction ?

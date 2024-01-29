@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Collector\CartPageCollector;
+use App\Collector\SettingsCollector;
 use App\Entity\BannerTranslation;
 use App\Entity\Image;
 use App\Formatter\Site\CartPageFormatter;
@@ -19,10 +20,14 @@ final class SettingsExtension extends AbstractExtension
 {
     private SettingsRepository $settingsRepository;
 
+    private SettingsCollector $settingsCollector;
+
     public function __construct(
-        SettingsRepository $settingsRepository
+        SettingsRepository $settingsRepository,
+        SettingsCollector $settingsCollector
     ) {
         $this->settingsRepository = $settingsRepository;
+        $this->settingsCollector = $settingsCollector;
     }
 
     /**
@@ -48,7 +53,7 @@ final class SettingsExtension extends AbstractExtension
             $formatted[$setting['slug']] = $setting['value'];
         }
 
-        return $formatted;
+        return $this->settingsCollector->collect();
     }
 
     /**

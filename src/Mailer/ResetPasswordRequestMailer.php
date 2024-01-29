@@ -38,22 +38,22 @@ final class ResetPasswordRequestMailer
 
     private function prepareEmail(User $user, string $locale): EmailModel
     {
-        $settings = $this->settingsCollector->collect('email');
+        $officeInfo = $this->settingsCollector->collect('email');
 
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_USER_RESET_PASSWORD);
         $model->setTemplate('resetPassword');
         $model->setTo($user->getEmail());
         $model->setToName($user->getFirstName().' '.$user->getLastName());
-        $model->setSubject($this->translator->trans('email.reset_password.title', ['%siteName%' => $settings['site_name']->getValue()]));
-        $model->setFrom($settings['main_email']->getValue());
-        $model->setFromName($settings['site_name']->getValue());
-        $model->setReplyTo($settings['main_email']->getValue());
-        $model->setReplyToName($settings['site_name']->getValue());
+        $model->setSubject($this->translator->trans('email.reset_password.title', ['%siteName%' => $officeInfo['settings']['site_name']->getValue()]));
+        $model->setFrom($officeInfo['settings']['main_email']->getValue());
+        $model->setFromName($officeInfo['settings']['site_name']->getValue());
+        $model->setReplyTo($officeInfo['settings']['main_email']->getValue());
+        $model->setReplyToName($officeInfo['settings']['site_name']->getValue());
         $model->setTemplateData([
             'locale' => $locale,
             'token' => $user->getResetToken(),
-            'siteName' => $settings['site_name']->getValue(),
+            'office_info' => $officeInfo
         ]);
 
         return $model;

@@ -70,4 +70,18 @@ class OfficeContactRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    /**
+     * @return array<int, OfficeContact>
+     */
+    public function getContactsByFields(array $fields): array
+    {
+        $query = $this->createQueryBuilder('oc');
+
+        foreach ($fields as $field => $value) {
+            $query->orWhere('oc.'. $field .' = '. $value);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

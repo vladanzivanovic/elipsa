@@ -25,6 +25,7 @@ final class OfficeContactParser
 
         $officeContact->setTelephone($bag->get('telephone'));
         $officeContact->setShowInFooter($bag->getBoolean('show_in_footer'));
+        $officeContact->setUseInEmail($bag->getBoolean('use_in_email'));
 
         $this->setLocale($bag, $officeContact);
 

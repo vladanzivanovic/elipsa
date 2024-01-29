@@ -16,9 +16,9 @@ class MyAccountPageController {
 
         this.#showTab();
 
-        $(this.mapper.personalFormFields.mobilePhone).inputmask('(999) 99 999-999[9]');
-        $(this.mapper.personalInfoFields.mobilePhone).inputmask('(999) 99 999-999[9]');
-        $(this.mapper.personalFormFields.zipCode).inputmask('99999');
+        $(this.mapper.personalFormFields.mobilePhone).inputmask({mask: '(999) 99 999-999[9]', autoUnmask: true, clearIncomplete: true});
+        $(this.mapper.personalInfoFields.mobilePhone).inputmask({mask: '(999) 99 999-999[9]', autoUnmask: true, clearIncomplete: true});
+        $(this.mapper.personalFormFields.zipCode).inputmask({mask: '99999', autoUnmask: true, clearIncomplete: true});
 
         this.#validator.validate();
 
@@ -54,11 +54,7 @@ class MyAccountPageController {
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', e => {
             this.#hidePersonalForm();
-        })
-
-        // $(this.mapper.orderTab).on('show.bs.tab', e => {
-        //     this.service.getList();
-        // })
+        });
     }
 
     #showPersonalForm() {
