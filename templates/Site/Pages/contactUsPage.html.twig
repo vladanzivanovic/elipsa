@@ -37,10 +37,10 @@
                                         </div>
                                         <div class="scs-content">
                                             <h6 class="letter-capitalize">{{ 'about_company' | trans }}</h6>
-                                            <p>{{ settings.full_company_name.value }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_activity' | trans }}:</span> {{ settings.company_code.value ~' '~ settings.company_activity.value }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_id' | trans }}: </span> {{ settings.company_id.value }}
-                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.tax_id' | trans }}: </span> {{ settings.pib.value }}
+                                            <p>{{ company_info.settings.full_company_name.value }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_activity' | trans }}:</span> {{ company_info.settings.company_code.value ~' '~ company_info.settings.company_activity.value }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.company_id' | trans }}: </span> {{ company_info.settings.company_id.value }}
+                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.tax_id' | trans }}: </span> {{ company_info.settings.pib.value }}
                                             </p>
                                         </div>
                                     </div>
@@ -55,10 +55,10 @@
                                         <div class="scs-content">
                                             <h6 class="letter-capitalize">{{ 'contact.title.address' | trans }}</h6>
                                             <p>
-                                                <span class="d-inline-block letter-capitalize">{{ 'email' | trans }}</span>: {{ settings.main_email.value }}
-                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.street' | trans }}:</span> {{ settings.street.value }}
-                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.post_code' | trans }}:</span> {{ settings.zip_code.value }}
-                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.city' | trans }}:</span> {{ settings.city.value }}
+                                                <span class="d-inline-block letter-capitalize">{{ 'email' | trans }}</span>: {{ company_info.settings.main_email.value }}
+                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.street' | trans }}:</span> {{ company_info.settings.street.value }}
+                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.post_code' | trans }}:</span> {{ company_info.settings.zip_code.value }}
+                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.city' | trans }}:</span> {{ company_info.settings.city.value }}
 {#                                                <br /><span class="d-inline-block letter-capitalize">{{ 'contact.box.country' | trans }}:</span> {{ settings.city.value }}#}
 {#                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.main' | trans }}</span>: {{ settings.telephone.value }}#}
 {#                                                <br> <span class="d-inline-block letter-capitalize">{{ 'contact.telephone.mobile' | trans }}</span>: {{ settings.mobile_phone.value }}#}
@@ -76,10 +76,12 @@
                                         <div class="scs-content">
                                             <h6 class="letter-capitalize">{{ 'contact.title.telephone' | trans }}</h6>
                                             <p>
-                                                <span class="d-inline-block letter-capitalize">{{ 'contact.box.telephone_main' | trans }}</span>: {{ settings.telephone.value }}
+                                                {% for contact in company_info.office_contacts %}
+                                                    {% if false == loop.first %}
+                                                        <br>
+                                                    {% endif %}
 
-                                                {% for contact in office_contacts(locale) %}
-                                                    <br><span class="d-inline-block letter-capitalize">{{ contact.title }}</span>: {{ contact.telephone }}
+                                                    <span class="d-inline-block letter-capitalize">{{ contact.translations[locale].title }}</span>: {{ contact.telephone }}
                                                 {% endfor %}
                                             </p>
                                         </div>
@@ -181,6 +183,6 @@
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const ADDRESS = ['{{ settings.street.value }}', '{{ settings.city.value }}', 'Serbia'];
+        const ADDRESS = ['{{ company_info.settings.street.value }}', '{{ company_info.settings.city.value }}', 'Serbia'];
     </script>
 {% endblock %}

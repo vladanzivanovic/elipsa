@@ -24,11 +24,6 @@ class ContactHandler {
     async askUs() {
         const data = FormHelperService.formToJson($(this.#askUsFormMapper.form));
 
-        if (data.telephone) {
-            data.telephone = $(this.#askUsFormMapper.fields.telephone).inputmask('unmaskedvalue');
-            data.telephone = data.telephone.length === 1 ? null : data.telephone;
-        }
-
         if (! $(this.#askUsFormMapper.form).valid()) {
             return false;
         }

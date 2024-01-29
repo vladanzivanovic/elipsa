@@ -18,7 +18,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload[locale]['title'] : '', locale~'[title]') }}
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : '', locale~'[title]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
@@ -38,10 +38,16 @@
                                     {{ form.input('Broj telefona', 'telephone', IS_EDIT ? payload['telephone'] : '', 'telephone') }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <p>&nbsp;</p>
                                 <div class="form-group form-check form-check-flat form-check-primary">
-                                    {{ form.checkbox('Prikaži u footer', 'show_in_footer', 1, 'show_in_footer', 'form-check-label', 'form-check-input', IS_EDIT and true == payload['isShownInFooter'] ? 'checked="checked"' : null ) }}
+                                    {{ form.checkbox('Prikaži u footer', 'show_in_footer', 1, 'show_in_footer', 'form-check-label', 'form-check-input', IS_EDIT and true == payload['show_in_footer'] ? 'checked="checked"' : null ) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-3">
+                                <p>&nbsp;</p>
+                                <div class="form-group form-check form-check-flat form-check-primary">
+                                    {{ form.checkbox('Prikaži u emailu', 'use_in_email', 1, 'use_in_email', 'form-check-label', 'form-check-input', IS_EDIT and true == payload['use_in_email'] ? 'checked="checked"' : null ) }}
                                 </div>
                             </div><!-- Col -->
                         </div>

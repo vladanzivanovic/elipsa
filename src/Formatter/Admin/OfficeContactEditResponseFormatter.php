@@ -22,7 +22,7 @@ final class OfficeContactEditResponseFormatter
         $response = [];
 
         if (null !== $officeContact) {
-            $response['payload'] = $this->OfficeContactView->editView($officeContact);
+            $response['payload'] = $this->OfficeContactView->siteView($officeContact);
         }
 
         return $response;

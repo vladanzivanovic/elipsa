@@ -28,6 +28,9 @@ class AskUsFormValidation {
                     required: true,
                     email   : true
                 },
+                telephone: {
+                    required: true,
+                },
                 subject: {
                     required: true,
                 },

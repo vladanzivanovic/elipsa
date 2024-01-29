@@ -102,7 +102,7 @@ final class OrderOverviewController extends AbstractController
             $locale,
             $isSuccessfulTransaction
         );
-
+        
         return $viewData;
     }
 }

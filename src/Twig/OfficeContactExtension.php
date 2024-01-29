@@ -30,14 +30,14 @@ final class OfficeContactExtension extends AbstractExtension
         ];
     }
 
-    public function getOfficeContact(string $locale): array
+    public function getOfficeContact(): array
     {
         $contacts = $this->officeContactRepository->getFooterContacts();
 
         $formatted = [];
 
         foreach ($contacts as $contact) {
-            $formatted[] = $this->officeContactView->siteView($contact, $locale);
+            $formatted[] = $this->officeContactView->siteView($contact);
         }
 
         return $formatted;

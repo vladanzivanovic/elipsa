@@ -21,11 +21,12 @@ final class OfficeContactView
 
     public function editView(OfficeContact $officeContact): array
     {
-        $view = [];
-
-        foreach ($this->locales as $locale) {
-            $view[$locale] = $this->getDescAndLink($officeContact->getByLocale($locale));
-        }
+        $view = [
+            'translations' => $this->getTranslations($officeContact),
+            'telephone' => $officeContact->getTelephone(),
+            'show_in_footer' => $officeContact->isShownInFooter(),
+            'use_in_email' => $officeContact->isUseInEmail(),
+        ];
 
         $view['telephone'] = $officeContact->getTelephone();
         $view['isShownInFooter'] = $officeContact->isShownInFooter();
@@ -33,13 +34,27 @@ final class OfficeContactView
         return $view;
     }
 
-    public function siteView(OfficeContact $officeContact, string $locale): array
+    public function siteView(OfficeContact $officeContact): array
     {
-        $view = $this->getDescAndLink($officeContact->getByLocale($locale));
-
-        $view['telephone'] = $officeContact->getTelephone();
+        $view = [
+            'translations' => $this->getTranslations($officeContact),
+            'telephone' => $officeContact->getTelephone(),
+            'show_in_footer' => $officeContact->isShownInFooter(),
+            'use_in_email' => $officeContact->isUseInEmail(),
+        ];
 
         return $view;
+    }
+
+    private function getTranslations(OfficeContact $officeContact): array
+    {
+        $translations = [];
+
+        foreach ($this->locales as $locale) {
+            $translations[$locale] = $this->getDescAndLink($officeContact->getByLocale($locale));
+        }
+
+        return $translations;
     }
 
     private function getDescAndLink(OfficeContactTranslation $officeContactTranslation): array

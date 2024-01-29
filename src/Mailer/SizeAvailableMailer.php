@@ -54,18 +54,20 @@ final class SizeAvailableMailer
     private function prepareEmail(
         array $viewData
     ): EmailModel {
-        $settings = $this->settingsCollector->collect('email');
+        $officeInfo = $this->settingsCollector->collect('email');
+
+        $viewData['office_info'] = $officeInfo;
 
         $model = new EmailModel();
         $model->setScript(EmailModel::SCRIPT_USER_ORDERED);
         $model->setTemplate('sizeAvailable');
         $model->setTo($viewData['email_address']);
         $model->setSubject($this->translator->trans('email.notification.size.subject'));
-        $model->setFrom($settings['main_email']->getValue());
-        $model->setFromName($settings['site_name']->getValue());
-        $model->setReplyTo($settings['main_email']->getValue());
-        $model->setReplyToName($settings['site_name']->getValue());
-        $model->setTemplateData($viewData+['settings' => $settings]);
+        $model->setFrom($officeInfo['settings']['main_email']->getValue());
+        $model->setFromName($officeInfo['settings']['site_name']->getValue());
+        $model->setReplyTo($officeInfo['settings']['main_email']->getValue());
+        $model->setReplyToName($officeInfo['settings']['site_name']->getValue());
+        $model->setTemplateData($viewData);
 
         return $model;
     }

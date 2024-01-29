@@ -105,14 +105,13 @@
                         <div class="footer-desc-contact">
                             <h4 class="footer-title">{{ 'title.contact_us' | trans }}</h4>
                             <ul>
-                                <li>{{ siteSettings.FULL_COMPANY_NAME }}</li>
-                                <li>{{ siteSettings.STREET }}</li>
-                                <li>{{ 'company_identification_number' | trans }}: {{ siteSettings.COMPANY_ID }}</li>
-                                <li>PIB: {{ siteSettings.PIB }}</li>
-                                <li>{{ 'email' | trans }}: {{ siteSettings.MAIN_EMAIL }}</li>
-                                <li>{{ 'company_head_office_and_development' | trans }}: {{ siteSettings.TELEPHONE }}</li>
-                                {% for contact in office_contacts(locale) %}
-                                    <li>{{ contact.title }}: {{ contact.telephone }}</li>
+                                <li>{{ siteSettings.settings.full_company_name.value }}</li>
+                                <li>{{ siteSettings.settings.street.value }}</li>
+                                <li>{{ 'company_identification_number' | trans }}: {{ siteSettings.settings.company_id.value }}</li>
+                                <li>PIB: {{ siteSettings.settings.pib.value }}</li>
+                                <li>{{ 'email' | trans }}: {{ siteSettings.settings.main_email.value }}</li>
+                                {% for contact in siteSettings.office_contacts %}
+                                    <li>{{ contact.translations[locale].title }}: {{ contact.telephone }}</li>
                                 {% endfor %}
                             </ul>
                         </div>

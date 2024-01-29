@@ -6,7 +6,9 @@ namespace App\Collector;
 
 use App\Entity\Settings;
 use App\Formatter\SettingsFormatter;
+use App\Repository\OfficeContactRepository;
 use App\Repository\SettingsRepository;
+use App\View\OfficeContactView;
 
 final class SettingsCollector
 {
@@ -14,39 +16,72 @@ final class SettingsCollector
 
     private SettingsFormatter $settingsFormatter;
 
+    private OfficeContactRepository $officeContactRepository;
+
+    private OfficeContactView $officeContactView;
+
     public function __construct(
         SettingsRepository $settingsRepository,
-        SettingsFormatter $settingsFormatter
+        SettingsFormatter $settingsFormatter,
+        OfficeContactRepository $officeContactRepository,
+        OfficeContactView $officeContactView
     ) {
         $this->settingsRepository = $settingsRepository;
         $this->settingsFormatter = $settingsFormatter;
+        $this->officeContactRepository = $officeContactRepository;
+        $this->officeContactView = $officeContactView;
     }
 
     /**
      * @return array<int, Settings>
      */
-    public function collect(string $type): array
+    public function collect(string $type = null): array
     {
         $fields = $this->mapTypeToFields($type);
 
-        $settings = $this->settingsRepository->findBy(['slug' => $fields]);
+        $settings = $this->settingsCollection($fields['settings']);
 
-        return $this->settingsFormatter->formatResponse($settings);
+        $officeContacts = $this->officeContactCollection($fields['office']);
+
+        return ['settings' => $settings, 'office_contacts' => $officeContacts];
     }
 
-    private function mapTypeToFields(string $type): array
+    private function mapTypeToFields(string $type = null): array
     {
-        $fields = [];
-
         switch ($type) {
             case 'email':
-                $fields = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'TELEPHONE', 'STREET', 'ZIP_CODE', 'CITY'];
+                $settingsMapper = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'STREET', 'ZIP_CODE', 'CITY'];
+                $officeMapper = ['useInEmail' => true];
                 break;
             case 'contactPage':
-                $fields = ['MAIN_EMAIL', 'TELEPHONE', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT'];
+                $settingsMapper = ['MAIN_EMAIL', 'STREET', 'CITY', 'ZIP_CODE', 'ACCOUNT_NUMBER', 'PIB', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'SITE_NAME', 'FULL_COMPANY_NAME', 'COMPANY_ACTIVITY', 'COMPANY_CODE', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT'];
+                $officeMapper = ['showInFooter' => true, 'useInEmail' => true];
                 break;
+            default:
+                $settingsMapper = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'STREET', 'ZIP_CODE', 'CITY', 'FULL_COMPANY_NAME', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT'];
+                $officeMapper = ['showInFooter' => true, 'useInEmail' => true];
         }
 
-        return $fields;
+        return ['settings' => $settingsMapper, 'office' => $officeMapper];
+    }
+
+    private function officeContactCollection(array $fields): array
+    {
+        $contacts = $this->officeContactRepository->getContactsByFields($fields);
+
+        $contactsView = [];
+
+        foreach ($contacts as $contact) {
+            $contactsView[] = $this->officeContactView->siteView($contact);
+        }
+
+        return $contactsView;
+    }
+
+    private function settingsCollection(array $fields): array
+    {
+        $fields = $this->settingsRepository->findBy(['slug' => $fields]);
+
+        return $this->settingsFormatter->formatResponse($fields);
     }
 }

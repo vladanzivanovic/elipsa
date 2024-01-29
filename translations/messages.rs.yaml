@@ -265,7 +265,7 @@ email.order.note_title: O porudžbini
 email.registration.title: Registracija na sajtu %siteName%
 email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
   <p>uspešno ste izvršili registraciju.</p>
-  <p class="last-child">Kako bi ste završili proces registracije neophodno je da akivirate nalog, molimo vas kliknite na dugme u nastavku, ili prekopirajte link u pretraživač..</p>'
+  <p class="last-child">Kako bi ste završili proces registracije neophodno je da akivirate nalog, molimo vas kliknite na dugme u nastavku, ili prekopirajte link u pretraživač.</p>'
 email.registration.linkText: Potvrdite reigstraciju
 
 email.reset_password.title: Reset lozinke na sajtu %siteName%

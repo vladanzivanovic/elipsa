@@ -21,8 +21,8 @@ class RegistrationController {
 
     init()
     {
-        $(this.#mapper.fields.mobilePhone).inputmask('(999) 99 999-999[9]');
-        $(this.#mapper.fields.zipCode).inputmask('99999');
+        $(this.#mapper.fields.mobilePhone).inputmask({mask: '(999) 99 999-999[9]', autoUnmask: true, clearIncomplete: true});
+        $(this.#mapper.fields.zipCode).inputmask({mask: '99999', autoUnmask: true, clearIncomplete: true});
 
         this.#validator.validate();
     }

@@ -1,5 +1,7 @@
 import validator from 'jquery-validation';
 
+require('inputmask/dist/jquery.inputmask.bundle');
+
 let moment = require('moment');
 
 $.validator.addMethod(

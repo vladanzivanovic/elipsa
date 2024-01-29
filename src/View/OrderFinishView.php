@@ -19,21 +19,19 @@ final class OrderFinishView
 
     public function view(
         ShopOrder $order,
-        array $settings,
+        array $officeInfo,
         string $locale,
         bool $isSuccessfulTransaction
     ): array {
         $view = $this->orderView->view($order, $locale);
-        $view['locale'] = $locale;
 
         $view['seller'] = [
-            'name'      => $settings['site_name']->getValue(),
-            'pib'       => $settings['pib']->getValue(),
-            'account'   => $settings['account_number']->getValue(),
-            'email'     => $settings['main_email']->getValue(),
-            'telephone' => $settings['telephone']->getValue(),
-            'mobile'    => $settings['mobile_phone']->getValue(),
-            'address'   => $settings['street']->getValue().', '.$settings['zip_code']->getValue().' '.$settings['city']->getValue(),
+            'name'      => $officeInfo['settings']['site_name']->getValue(),
+            'pib'       => $officeInfo['settings']['pib']->getValue(),
+            'account'   => $officeInfo['settings']['account_number']->getValue(),
+            'email'     => $officeInfo['settings']['main_email']->getValue(),
+            'address'   => $officeInfo['settings']['street']->getValue().', '.$officeInfo['settings']['zip_code']->getValue().' '.$officeInfo['settings']['city']->getValue(),
+            'contacts' => $officeInfo['office_contacts']
         ];
 
         $view['is_successful_transaction'] = $isSuccessfulTransaction;

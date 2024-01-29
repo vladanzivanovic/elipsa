@@ -98,32 +98,30 @@
                         <div class="checkout-billing-adress-box">
                             <div class="billing-address-input clearfix">
                                 <label class="letter-capitalize col-md-4">{{ 'email.order.seller.name' | trans }}:</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.site_name.value }}</span>
+                                <span class="col-md-8 col-xs-12">{{ seller.name }}</span>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label class="letter-capitalize col-md-4">{{ 'contact.tax_id' | trans }}:</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.pib.value }}</span>
+                                <span class="col-md-8 col-xs-12">{{ seller.pib }}</span>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label class="col-md-4">{{ 'email.order.seller.account' | trans }}:</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.account_number.value }}</span>
+                                <span class="col-md-8 col-xs-12">{{ seller.account }}</span>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label class="letter-capitalize col-md-4">{{ 'email.order.seller.address' | trans }}:</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.street.value ~' '~ settings.zip_code.value ~' '~ settings.city.value }}</span>
+                                <span class="col-md-8 col-xs-12">{{ seller.address }}</span>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label class="letter-capitalize col-md-4">E-mail</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.main_email.value }}</span>
+                                <span class="col-md-8 col-xs-12">{{ seller.email }}</span>
                             </div>
-                            <div class="billing-address-input clearfix">
-                                <label class="letter-capitalize col-md-4">{{ 'email.order.seller.telephone' | trans }}:</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.telephone.value }}</span>
-                            </div>
-                            <div class="billing-address-input clearfix">
-                                <label class="letter-capitalize col-md-4">{{ 'email.order.seller.mobile' | trans }}:</label>
-                                <span class="col-md-8 col-xs-12">{{ settings.mobile_phone.value }}</span>
-                            </div>
+                            {% for contact in seller.contacts %}
+                                <div class="billing-address-input clearfix">
+                                    <label class="letter-capitalize col-md-4">{{ contact.translations[locale].title }}:</label>
+                                    <span class="col-md-8 col-xs-12">{{ contact.telephone }}</span>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
