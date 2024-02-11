@@ -33,6 +33,7 @@ final class OrderRequestParser
         $order = new ShopOrder();
         $order->setStatus(ShopOrder::STATUS_NEW);
         $order->setToken();
+//        $order->setState(ShopOrder::STATE_PENDING);
 
         return $order;
     }

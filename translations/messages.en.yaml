@@ -174,7 +174,7 @@ title.registration_confirmation: Registration confirmation
 
 checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
 checkout.billing_address: billing address
-checkout.order_notes: order notes
+checkout.order_notes: Order notes
 checkout.login_text: create an account by entering the information below. If you are a returning customer please click "Login" button at the top of the page.
 checkout.your_order: your order
 checkout.product_total: product <span>total</span>
@@ -184,8 +184,17 @@ checkout.paymeny.credit_card: credit card
 checkout.complete_order: complete order
 checkout.account_exists: Account with email address %email% is already registered.
 checkout.account_deactivated: Account with email address %email% is deactivated.
+checkout.finish.title: Order data
 checkout.finish.transaction_detail: Transaction details
+checkout.finish.product_title: Products overview
+checkout.finish.data.payment_type: Payment type
+checkout.finish.data.checkout_date: Order date
+checkout.finish.address_title: Address
+checkout.finish.mobile_phone_title: Mobile phone
+checkout.finish.data.carrier_link: Carrier link
+checkout.finish.data.carrier_ref_no: Tracking number
 checkout.finish.transaction_status_label: Transaction status
+checkout.finish.tracking_info_title: Order tracking info
 checkout.finish.transaction_status_success_detail_text: You order has been successfully paid - your accout is in charge.
 checkout.finish.transaction_status_failed: Payment failed, your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
 checkout.finish.transaction_date_time: Transaction date
@@ -276,12 +285,22 @@ email.order.table.shipping: Shipping
 email.order.table.unit_price: Unit price
 email.order.table.total_price: Total price
 email.order.table.promo_coupon: Promotion
-email.order.total_shipping: total with shipping
+email.order.total_shipping: Total with shipping
 email.order.products_total_price: Subtotal
 email.order.payment_info: Payment information
 email.order.payment_details: Payment details
 email.order.delivery_info: Delivery information
 email.order.note_title: Order additional text
+email.order.status_info: Status porudžbine
+email.order.payment_type: Payment type
+email.order.shipping_type: Shipping type
+email.order.career_link_label: Tracking order link
+
+email.order_status.title: 'Status is changed for order #%id%'
+email.order_status.change_label: '<h3>Dear %first_name%,</h3>
+  <p>Your order status has been change.</p>
+  <p class="last-child">Your order is currently here <strong>"%status_text%"</strong>.</p>'
+email.order_status.tracking_info_label: '<p class="last-child">Tracking link is <a href="%tracking_info.url%">%tracking_info.url%</a>, and the tracking number is %tracking_info.ref_no%.</p>'
 
 email.notification.size.subject: Product is available again
 email.notification.size.title: Product %product_name% is available again
@@ -572,12 +591,18 @@ intesa.already_void: Transaction is already canceled.
 order.status.new: New order
 order.status.awaiting_authorization: Fuds reserved
 order.status.post_auth: Payed
-order.status.completed: Order is completed
+order.status.completed: Completed
 order.status.refund: Funds returned
 order.status.void: Order canceled
 order.status.failed: Greška prilikom naručivanja
 order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
+order.status.pending: Pending
+order.status.preparing: Preparing
+order.status.shipped: Shipped
+order.overview.tracking_info_label: Your order is currently here
+order.shipping.on_delivery: Career service
+order.shipping.in_store: In store
 
 search_site: Search site
 

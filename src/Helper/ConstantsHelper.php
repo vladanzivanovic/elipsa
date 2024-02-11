@@ -71,7 +71,7 @@ final class ConstantsHelper
         $filteredConstants = [];
 
         foreach ($constants as $constant => $value) {
-            if (false !== strpos($constant, $prefix)) {
+            if (0 === strpos($constant, $prefix)) {
                 $filteredConstants[$constant] = $value;
             }
         }

@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Site;
 
 use App\Exception\OrderException;
-use App\Formatter\Site\OrderEditResponseFormatter;
 use App\Formatter\Site\OrderFinishPageFormatter;
-use App\Handler\Site\OrderHandler;
-use App\Mailer\OrderCompleteMailer;
-use App\Parser\Site\Order\OrderFinishParser;
 use App\Parser\Site\Order\OrderRequestParser;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
@@ -23,34 +19,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderOverviewController extends AbstractController
 {
-    private OrderHandler $handler;
-
     private OrderFinishPageFormatter $pageFormatter;
-
-    private OrderCompleteMailer $orderCompleteMailer;
-
-    private OrderFinishParser $orderFinishParser;
-
-    private OrderEditResponseFormatter $responseFormatter;
 
     private TranslatorInterface $translator;
 
     private OrderRequestParser $orderRequestParser;
 
     public function __construct(
-        OrderHandler $handler,
         OrderFinishPageFormatter $pageFormatter,
-        OrderCompleteMailer $orderCompleteMailer,
-        OrderFinishParser $orderFinishParser,
-        OrderEditResponseFormatter $responseFormatter,
         TranslatorInterface $translator,
         OrderRequestParser $orderRequestParser
     ) {
-        $this->handler = $handler;
         $this->pageFormatter = $pageFormatter;
-        $this->orderCompleteMailer = $orderCompleteMailer;
-        $this->orderFinishParser = $orderFinishParser;
-        $this->responseFormatter = $responseFormatter;
         $this->translator = $translator;
         $this->orderRequestParser = $orderRequestParser;
     }
@@ -70,10 +50,6 @@ final class OrderOverviewController extends AbstractController
      * @param Request $request
      * @return array|RedirectResponse
      *
-     * @throws NonUniqueResultException
-     * @throws ORMException
-     * @throws OptimisticLockException
-     * @throws \ReflectionException
      */
     public function orderOverview(Request $request, string $token)
     {
@@ -102,7 +78,7 @@ final class OrderOverviewController extends AbstractController
             $locale,
             $isSuccessfulTransaction
         );
-        
+
         return $viewData;
     }
 }

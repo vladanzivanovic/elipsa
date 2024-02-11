@@ -1,10 +1,20 @@
 class OrderSinglePageMapper {
     constructor() {
-        this.postAuthBtn = '#post_auth_btn';
-        this.refundBtn = '#refund_btn';
-        this.voidBtn = '#void_btn';
-
         if (!OrderSinglePageMapper.instance) {
+            this.payment = {
+                postAuthBtn: '#post_auth_btn',
+                refundBtn: '#refund_btn',
+                voidBtn: '#void_btn'
+            };
+
+            this.state = {
+                form: '#order_tracking_info_form',
+                changeBtn: '.state-btn-change',
+                applyBtn: '.invoice-state-apply',
+                trackingInfoInput: '#tracking-url-input',
+                stateSelect: '.state-select',
+            };
+
             OrderSinglePageMapper.instance = this;
         }
 

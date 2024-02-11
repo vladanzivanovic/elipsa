@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Site;
 
 use App\Exception\OrderException;
-use App\Formatter\Site\OrderEditResponseFormatter;
 use App\Formatter\Site\OrderFinishPageFormatter;
 use App\Handler\Site\OrderHandler;
 use App\Mailer\OrderCompleteMailer;
 use App\Parser\Site\Order\OrderFinishParser;
-use App\View\OrderFinishView;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -32,8 +30,6 @@ final class OrderFinishPageController extends AbstractController
 
     private OrderFinishParser $orderFinishParser;
 
-    private OrderEditResponseFormatter $responseFormatter;
-
     private TranslatorInterface $translator;
 
     public function __construct(
@@ -41,14 +37,12 @@ final class OrderFinishPageController extends AbstractController
         OrderFinishPageFormatter $pageFormatter,
         OrderCompleteMailer $orderCompleteMailer,
         OrderFinishParser $orderFinishParser,
-        OrderEditResponseFormatter $responseFormatter,
         TranslatorInterface $translator
     ) {
         $this->handler = $handler;
         $this->pageFormatter = $pageFormatter;
         $this->orderCompleteMailer = $orderCompleteMailer;
         $this->orderFinishParser = $orderFinishParser;
-        $this->responseFormatter = $responseFormatter;
         $this->translator = $translator;
     }
 

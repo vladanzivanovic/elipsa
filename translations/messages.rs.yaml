@@ -164,7 +164,7 @@ title.registration_confirmation: Potvrda registracije
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
-checkout.order_notes: dodatni tekst o naružbini
+checkout.order_notes: Dodatni tekst o naružbini
 checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
 checkout.your_order: vaša porudžbina
 checkout.product_total: proizvodi <span>ukupno</span>
@@ -174,8 +174,17 @@ checkout.paymeny.credit_card: karticom
 checkout.complete_order: završi narudžbinu
 checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
+checkout.finish.title: Podaci o porudžbini
 checkout.finish.transaction_detail: Podaci o transakciji
+checkout.finish.product_title: Pregled poručenih proizvoda
+checkout.finish.data.payment_type: Nacin plaćanja
+checkout.finish.data.checkout_date: Datum porudžbine
+checkout.finish.data.carrier_link: Praćenje pošiljke
+checkout.finish.data.carrier_ref_no: Broj paketa
+checkout.finish.address_title: Adresa
+checkout.finish.mobile_phone_title: Mobilni telefon
 checkout.finish.transaction_status_label: Status transakcije
+checkout.finish.tracking_info_title: Status vase porudžbine
 checkout.finish.transaction_status_success: Uspešno ste izvršili plaćanje – račun Vaše platne kartice je zadužen.
 checkout.finish.transaction_status_failed: Plaćanje nije uspešno, vaš račun nije zadužen, najčešći uzrok je pogrešno unet broj kartice, datum isteka ili sigurnosni kod, pokušaje ponovo, u slučaju uzastopnih greški pozovite vašu banku
 checkout.finish.transaction_date_time: Datum transakcije
@@ -261,6 +270,16 @@ email.order.payment_info: Informacije o plaćanju
 email.order.payment_details: Podaci o plaćanju
 email.order.delivery_info: Informacije o dostavi
 email.order.note_title: O porudžbini
+email.order.status_info: Status porudžbine
+email.order.payment_type: Tip plaćanja
+email.order.shipping_type: Način isporuke
+email.order.career_link_label: Link za praćenje pošiljke
+
+email.order_status.title: 'Promena status Vaše porudžbine #%id%'
+email.order_status.change_label: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Status vaše porudžbine je promenjen.</p>
+  <p class="last-child">Vaša porudžbina se sada nalazi ovde <strong>"%status_text%"</strong>.</p>'
+email.order_status.tracking_info_label: '<p class="last-child">Link za praćenje pošiljke je <a href="%tracking_link%">%tracking_link%</a>, broj Vaše pošiljke je %tracking_ref_no%.</p>'
 
 email.registration.title: Registracija na sajtu %siteName%
 email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
@@ -569,12 +588,18 @@ intesa.already_void: Transakcija je već otkazana.
 order.status.new: Nova porudžbina
 order.status.awaiting_authorization: Račun zadužen
 order.status.post_auth: Naplaćeno
-order.status.completed: Porudžbina je završena
+order.status.completed: Završeno
 order.status.refund: Sredstva su vraćena
 order.status.void: Porudžbina je otkazana
 order.status.failed: Greška prilikom naručivanja
 order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
+order.status.pending: Na čekanju
+order.status.preparing: U pripremi
+order.status.shipped: Poslato
+order.overview.tracking_info_label: Vaša porudžbina se trenutno nalazi ovde
+order.shipping.on_delivery: Kurirskom službom
+order.shipping.in_store: Preuzimanje u radnji
 
 search_site: Pretražite sajt
 

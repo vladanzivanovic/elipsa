@@ -10,6 +10,7 @@ class EmailModel
 {
     public const SCRIPT_USER_REGISTRATION = 'USER_REGISTRATION';
     public const SCRIPT_USER_ORDERED = 'USER_ORDERED';
+    public const SCRIPT_ORDER_STATUS_CHANGE = 'ORDER_STATUS_CHANGE';
     public const SCRIPT_USER_RESET_PASSWORD = 'USER_RESET_PASSWORD';
     public const SCRIPT_CONTACT_US = 'CONTACT_US';
     public const SCRIPT_LOYALTY = 'LOYALTY';

@@ -32,8 +32,8 @@ final class OrderPaymentView
         $transactionData = $order->getTransactionData();
 
 
-        if (isset($transactionData[ShopOrder::CART_TYPE_REJECT])) {
-            $cardData = $transactionData[ShopOrder::CART_TYPE_REJECT];
+        if (isset($transactionData[ShopOrder::CART_STATUS_REJECT])) {
+            $cardData = $transactionData[ShopOrder::CART_STATUS_REJECT];
 
             $view = [
                 strtolower(ShopOrder::CART_TYPE_REJECT) => [
@@ -47,11 +47,11 @@ final class OrderPaymentView
             ];
         }
 
-        if (isset($transactionData[ShopOrder::CARD_TYPE_PRE_AUTH])) {
-            $cardData = $transactionData[ShopOrder::CARD_TYPE_PRE_AUTH];
+        if (isset($transactionData[ShopOrder::CARD_STATUS_PRE_AUTH])) {
+            $cardData = $transactionData[ShopOrder::CARD_STATUS_PRE_AUTH];
 
             $view = [
-                strtolower(ShopOrder::CARD_TYPE_PRE_AUTH) => [
+                strtolower(ShopOrder::CARD_STATUS_PRE_AUTH) => [
                     'transaction_date_time' => $cardData['EXTRA_TRXDATE'] ? new \DateTime($cardData['EXTRA_TRXDATE']) : null,
                     'transaction_id' => $cardData['TransId'],
                     'auth_code' => $cardData['AuthCode'],
@@ -77,6 +77,7 @@ final class OrderPaymentView
         $view = [
             'type' => $order->getPaymentType(),
             'human_type' => $this->translator->trans('payment_type.' . $paymentType),
+            'status' => $order->getCardStatus(),
         ];
         return $view;
     }

@@ -1,138 +1,167 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Narudžbenica #{{ id }}{% endblock %}
+{% block title %}Narudžbenica #{{ payload.id }}{% endblock %}
 {% block bodyClass %}about-us-edit{% endblock %}
 {% block content %}
 
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Narudžbenica #'~id    } %}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Narudžbenica #'~payload.id    } %}
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <div class="col-lg-3 pl-0">
+                            <a href="#" class="noble-ui-logo logo-light d-block mt-3">{{ payload.billing_address.first_name }} {{ payload.billing_address.last_name }}</a>
+                            <p>{{ payload.billing_address.email }},<br> {{ payload.billing_address.telephone }}.</p>
+                            <h5 class="mt-5 mb-2 text-muted">Adresa naručioca :</h5>
+                            <p>{{ payload.billing_address.street }},<br> {{ payload.billing_address.post_code }} {{ payload.billing_address.city }},<br> {{ payload.billing_address.country }}.</p>
+                        </div>
+                        <div class="col-lg-3 pr-0">
+                            <h4 class="font-weight-medium text-uppercase text-right mt-4 mb-2">Porudžbenica</h4>
+                            <h6 class="text-right mb-5 pb-4"># {{ payload.id }}</h6>
+                            <p class="text-right mb-1">Ukupno</p>
+                            <h4 class="text-right font-weight-normal">{{ payload.total.amount }} {{ payload.total.currency }}</h4>
+                            <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ payload.checkout_completed_at }}</h6>
+                            <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Tip naplate:</span> {{ payload.payment.human_type }}</h6>
+                            <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Dostava:</span> {{ payload.shipping.human_type }}</h6>
+                            <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Status porudžbine:</span> {{ payload.status_text }}</h6>
+                            {% if payload.tracking_info is not null %}
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Url za praćenje pošiljke:</span> {{ payload.tracking_info.url }}</h6>
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Broj pošiljke:</span> {{ payload.tracking_info.ref_no }}</h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if payload.payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
                         <div class="container-fluid d-flex justify-content-between">
-                            <div class="col-lg-3 pl-0">
-                                <a href="#" class="noble-ui-logo logo-light d-block mt-3">{{ fullName }}</a>
-                                <p>{{ email }},<br> {{ phone }}.</p>
-                                <h5 class="mt-5 mb-2 text-muted">Adresa naručioca :</h5>
-                                <p>{{ address }},<br> {{ zipCode }} {{ city }},<br> {{ country }}.</p>
-                            </div>
-                            <div class="col-lg-3 pr-0">
-                                <h4 class="font-weight-medium text-uppercase text-right mt-4 mb-2">narudžbenica</h4>
-                                <h6 class="text-right mb-5 pb-4"># {{ id }}</h6>
-                                <p class="text-right mb-1">Ukupno</p>
-                                <h4 class="text-right font-weight-normal">{{ total | number_format(2) }} RSD</h4>
-                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ orderDate }}</h6>
-                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Tip naplate:</span> {{ orderTypeText | trans }}</h6>
-                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Status plaćanja:</span> {{ statusText | trans }}</h6>
-                            </div>
-                        </div>
-                        {% if orderType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
-                            <div class="container-fluid d-flex justify-content-between">
-                                <div class="col-lg-12 pl-0">
-                                    <h5 class="mt-5 mb-2 text-muted">Podaci o naplati:</h5>
-                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Zaduženo dana:</span> {{ preAuthorizedDate | date('d.m.Y H:i:s') }}</h6>
-
-                                    {% if postAuthorizedDate is defined %}
-                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Realizovano dana:</span> {{ postAuthorizedDate | date('d.m.Y H:i:s') }}</h6>
-                                    {% endif %}
-
-                                    {% if refundedDate is defined %}
-                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ refundedDate | date('d.m.Y H:i:s') }}</h6>
-                                    {% endif %}
-
-                                    {% if voidDate is defined %}
-                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ voidDate | date('d.m.Y H:i:s') }}</h6>
-                                    {% endif %}
-
-                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Broj transakcije:</span> {{ transactionId }}</h6>
-                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Broj kartice:</span> {{ cardNumber }}</h6>
+                            <div class="col-lg-12 pl-0">
+                                <h4 class="mt-5 mb-2 text-muted">Podaci o naplati:</h4>
+                                {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_PRE_AUTH') %}
+                                <div class="col-lg-3 pl-0">
+                                    <h5 class="mt-5 mb-2 text-muted">Pred autorizacija:</h5>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Zaduženo dana:</span> {{ payload.payment.preauth.transaction_date_time | date('d.m.Y H:i:s') }}</h6>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">{{ 'checkout.finish.transaction_id' | trans }}:</span> {{ payload.payment.preauth.transaction_id }}</h6>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">{{ 'checkout.finish.proc_return_code' | trans }}:</span> {{ payload.payment.preauth.proc_return_code }}</h6>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">{{ 'checkout.finish.md_status' | trans }}:</span> {{ payload.payment.preauth.md_status }}</h6>
                                 </div>
-                            </div>
-                        {% endif %}
-                        <div class="container-fluid mt-5 d-flex justify-content-center w-100">
-                            <div class="table-responsive w-100">
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Proizvod</th>
-                                        <th class="text-right">Količina</th>
-                                        <th class="text-right">Cena</th>
-                                        <th class="text-right">Ukupno</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for product in products %}
-                                        <tr class="text-right">
-                                            <td class="text-left">{{ product.id }}</td>
-                                            <td class="text-left">{{ product.name }}</td>
-                                            <td>{{ product.quantity }}</td>
-                                            <td>{{ product.price | number_format(2) }} RSD</td>
-                                            <td>{{ product.priceWithQuantity | number_format(2) }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="container-fluid mt-5 w-100">
-                            <div class="row">
-                                <div class="col-md-6 ml-auto">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <tbody>
-                                            <tr>
-                                                <td>Cena proizvoda</td>
-                                                <td class="text-right">{{ productPrices }}</td>
-                                            </tr>
-                                            {% if promoCode is not null %}
-                                                <tr>
-                                                    <td>Promo kod ({{ promoCode.code }})</td>
-                                                    <td class="text-right">{{ promoCode.discount }} %</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Ukupno sa popustom</td>
-                                                    <td class="text-right">{{ priceWithDiscount | number_format(2) }} RSD</td>
-                                                </tr>
-                                            {% endif %}
-                                            <tr>
-                                                <td>Poštarina</td>
-                                                <td class="text-right">{{ shippingPrice | number_format(2) }} RSD</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-bold-800">Ukupno</td>
-                                                <td class="text-bold-800 text-right">{{ total | number_format(2) }} RSD</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                {% endif %}
+
+                                {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_POST_AUTH') %}
+                                    <div class="col-lg-3 pl-0">
+                                        <h5 class="mt-5 mb-2 text-muted">Autorizacija:</h5>
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Realizovano dana:</span> {{ payload.payment }}</h6>
                                     </div>
+                                {% endif %}
+
+                                {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_REFUND') %}
+                                    <div class="col-lg-3 pl-0">
+                                        <h5 class="mt-5 mb-2 text-muted">Povraćaj:</h5>
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ refundedDate | date('d.m.Y H:i:s') }}</h6>
+                                    </div>
+                                {% endif %}
+
+                                {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_VOID') %}
+                                    <div class="col-lg-3 pl-0">
+                                        <h5 class="mt-5 mb-2 text-muted">Stornirano:</h5>
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Stornirano dana:</span> {{ voidDate | date('d.m.Y H:i:s') }}</h6>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+                        <div class="table-responsive w-100">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Proizvod</th>
+                                    <th class="text-right">Količina</th>
+                                    <th class="text-right">Cena</th>
+                                    <th class="text-right">Ukupno</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in payload.products %}
+                                    <tr class="text-right">
+                                        <td class="text-left">{{ product.id }}</td>
+                                        <td class="text-left">{{ product.translation.title }}</td>
+                                        <td>{{ product.quantity }}</td>
+                                        <td>{{ product.price.amount }} {{ product.price.currency }}</td>
+                                        <td>{{ product.total.amount }} {{ product.total.currency }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="container-fluid mt-5 w-100">
+                        <div class="row">
+                            <div class="col-md-6 ml-auto">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>Međuzbir</td>
+                                            <td class="text-right">{{ payload.total.amount }} {{ payload.total.currency }}</td>
+                                        </tr>
+                                        {% if 0 < payload.promotion | length %}
+                                            <tr>
+                                                <td>Promo kod ({{ promotion.code }})</td>
+                                                <td class="text-right">{{ promotion.percentage }} %</td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>Poštarina</td>
+                                            <td class="text-right">{{ payload.shipping.price.amount }} {{ payload.shipping.price.currency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-bold-800">Ukupno</td>
+                                            <td class="text-bold-800 text-right">{{ payload.total_with_shipping.amount }} {{ payload.total_with_shipping.currency }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        {% if orderType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
-                            <div class="container-fluid w-100">
-                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
-                                    <a href="#" id="void_btn" class="btn btn-outline-primary float-right mt-4 ml-2 ">Otkazi</a>
-                                {% endif %}
-
-                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') or
-                                    status == constant('App\\Entity\\ShopOrder::STATUS_COMPLETED')
-                                %}
-                                    <a href="#" id="refund_btn" class="btn btn-outline-primary float-right mt-4 ml-2">Refundiraj</a>
-                                {% endif %}
-
-                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
-                                    <a href="#" id="post_auth_btn" class="btn btn-primary float-right mt-4 ml-2">Naplati</a>
-                                {% endif %}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="container-fluid w-100">
+                <button type="button" id="preparing_btn" class="btn btn-warning float-left mt-4 ml-2 state-btn-change">Promeni status porudžbine</button>
+            </div>
+            {% if payload.payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                <div class="container-fluid w-100">
+                    {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_PRE_AUTH') %}
+                        <a href="#" id="void_btn" class="btn btn-outline-primary float-right mt-4 ml-2 ">Otkaži</a>
+                    {% endif %}
+
+                    {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_PRE_AUTH') or
+                        payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_POST_AUTH')
+                    %}
+                        <a href="#" id="refund_btn" class="btn btn-outline-primary float-right mt-4 ml-2">Refundiraj</a>
+                    {% endif %}
+
+                    {% if payload.payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_PRE_AUTH') %}
+                        <a href="#" id="post_auth_btn" class="btn btn-primary float-right mt-4 ml-2">Naplati</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {{ include('Admin/Components/confirmationModal.html.twig') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const ID = '{{ app.request.attributes.get('id') }}';
+        const ORDER_TOKEN = '{{ app.request.attributes.get('token') }}';
+        const INVOICE_STATUSES = JSON.parse('{{ get_class_constants('App\\Entity\\ShopOrder', 'SHIPPING_STATUS') | json_encode() | raw }}');
+        const SELECTED_STATUS = '{{ payload.status }}';
+        const TRACKING_INFO = JSON.parse('{{ payload.tracking_info | json_encode() | raw }}');
     </script>
 {% endblock %}

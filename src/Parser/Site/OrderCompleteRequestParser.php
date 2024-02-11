@@ -60,10 +60,11 @@ final class OrderCompleteRequestParser
 
     /**
      * @param ParameterBag $bag
-     * @param string       $orderToken
+     * @param string $orderToken
      *
      * @return ShopOrder
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Exception
      */
     public function parse(ParameterBag $bag, string $orderToken): ShopOrder
     {

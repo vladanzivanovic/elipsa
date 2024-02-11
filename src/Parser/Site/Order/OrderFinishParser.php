@@ -40,7 +40,7 @@ final class OrderFinishParser
 
     private function setSuccessfulTransactionData(ShopOrder $order, ?ParameterBag $bag = null): void
     {
-        $order->setStatus(ShopOrder::STATUS_COMPLETED);
+        $order->setStatus(ShopOrder::STATUS_PENDING);
         $order->setCompletedAt(new \DateTime());
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {

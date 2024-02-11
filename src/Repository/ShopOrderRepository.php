@@ -48,6 +48,7 @@ class ShopOrderRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('o')
             ->addSelect(
                 'o.id as id',
+                'o.token as token',
                 'ba.email as email',
                 'CONCAT(ba.firstName, \' \', ba.lastName) as full_name',
                 'o.paymentType as payment_type',

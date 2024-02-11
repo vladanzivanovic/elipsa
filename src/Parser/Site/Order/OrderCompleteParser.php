@@ -49,8 +49,10 @@ final class OrderCompleteParser
 
         $this->setUser($bag->get('user'), $order);
 
-        $order->setPaymentType($bag->getInt('payment_type'));
+        $order->setPaymentType($bag->get('payment_type'));
         $order->setNote($bag->get('order_note'));
+        $order->setStatus(ShopOrder::STATUS_PENDING);
+        $order->setShippingType(ShopOrder::SHIPPING_TYPE_ON_DELIVERING);
 
         return $order;
     }
