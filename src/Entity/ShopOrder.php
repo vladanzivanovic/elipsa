@@ -53,19 +53,6 @@ class ShopOrder
 
     public const SHIPPING_STATUS_COMPLETED = self::STATUS_COMPLETED;
 
-//    public const CARD_TYPE_PRE_AUTH = 'PreAuth';
-//    public const CARD_TYPE_POST_AUTH = 'PostAuth';
-//    public const CARD_TYPE_REFUND = 'Credit';
-//    public const CARD_TYPE_VOID = 'Void';
-//
-//    public const CART_TYPE_REJECT = 'Reject';
-
-//    public const CARD_STATUS_MAPPER = [
-//        self::CARD_TYPE_POST_AUTH => self::STATUS_COMPLETED,
-//        self::CARD_TYPE_REFUND => self::CARD_STATUS_REFUND,
-//        self::CARD_TYPE_VOID => self::CARD_STATUS_VOID,
-//    ];
-
     use TimestampableEntity;
 
     /**
@@ -146,6 +133,16 @@ class ShopOrder
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $shippingType = null;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $visited = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class)
+     */
+    private ?Location $storeId = null;
 
     public function __construct()
     {
@@ -390,6 +387,30 @@ class ShopOrder
     public function setShippingType(string $shippingType): self
     {
         $this->shippingType = $shippingType;
+
+        return $this;
+    }
+
+    public function isVisited(): ?bool
+    {
+        return $this->visited;
+    }
+
+    public function setVisited(bool $visited): self
+    {
+        $this->visited = $visited;
+
+        return $this;
+    }
+
+    public function getStoreId(): ?Location
+    {
+        return $this->storeId;
+    }
+
+    public function setStoreId(?Location $storeId): self
+    {
+        $this->storeId = $storeId;
 
         return $this;
     }

@@ -205,7 +205,7 @@
     <!-- home3-newsletter-area-start -->
     {% set loyaltyBanner = banner(2, is_mobile() ? 'loyalty_banner_mobile' : 'loyalty_banner', locale, is_mobile()) %}
     {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ loyaltyBanner.image_link ~") no-repeat scroll left top / cover" %}
-    <a href="{{ path('site.loyalty', {'_locale': locale}) }}" class="home3-newsletter-area" style="{{ bannerLink }}"></a>
+    <a href="{{ loyaltyBanner.link }}" class="home3-newsletter-area" style="{{ bannerLink }}"></a>
     <!-- home3-newsletter-area-end -->
 {% endblock %}
 {% block pageStyleSheets %}

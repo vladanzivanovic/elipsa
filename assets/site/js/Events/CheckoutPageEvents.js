@@ -69,6 +69,18 @@ class CheckoutPageEvents {
         $(this.#pageMapper.email).on('keyup', e => {
             $(this.#pageMapper.accountCreateError).fadeOut();
         })
+
+        $(`${this.#pageMapper.shipping.locations} select`).select2();
+
+        $(`${this.#pageMapper.shipping.method} input`).on('change', e => {
+            const selectedMethod = $(e.currentTarget).val();
+
+            $(this.#pageMapper.shipping.locations).addClass('hide');
+
+            if (selectedMethod === IN_STORE_SHIPPING_METHOD) {
+                $(this.#pageMapper.shipping.locations).removeClass('hide');
+            }
+        });
     }
 }
 

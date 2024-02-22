@@ -132,7 +132,7 @@ class ProductDataTables {
         let dom = $('<select class="action-box"></select>');
 
         dom.append('<option value="">Izaberite akciju...</option>');
-        dom.append(`<option value="home-page-remove-all" data-action-type="home_page_status">Početna strana - ukloni</option>`);
+        dom.append(`<option value="0" data-action-type="home_page_status">Početna strana - ukloni</option>`);
         dom.append(`<option value="${PRODUCT_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status">Početna strana - gore</option>`);
         dom.append(`<option value="${PRODUCT_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status">Početna strana - dole</option>`);
         dom.append(`<option value="discount-modal" data-action-type="set_bulk_discount">Popust na izabranim proizvodima</option>`);

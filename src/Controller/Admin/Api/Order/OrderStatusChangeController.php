@@ -59,7 +59,6 @@ final class OrderStatusChangeController extends AbstractController
 
             return $this->json(['message' => 'Status porudžbine je promenjen'], Response::HTTP_OK);
         } catch (\Throwable $throwable) {
-            dd($throwable);
             return $this->json(null,
                 Response::HTTP_BAD_REQUEST
             );

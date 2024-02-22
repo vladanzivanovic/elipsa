@@ -29,7 +29,7 @@ final class OrderDataTableResponseFormatter
 
             return $order;
         }, $data);
-        return $this->response($tableModel, $data, $total);
 
+        return $this->response($tableModel, $data, $total);
     }
 }

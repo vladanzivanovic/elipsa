@@ -36,7 +36,7 @@ final class OrderPaymentView
             $cardData = $transactionData[ShopOrder::CART_STATUS_REJECT];
 
             $view = [
-                strtolower(ShopOrder::CART_TYPE_REJECT) => [
+                strtolower(ShopOrder::CART_STATUS_REJECT) => [
                     'transaction_date_time' => $cardData['EXTRA_TRXDATE'] ? new \DateTime($cardData['EXTRA_TRXDATE']) : null,
                     'transaction_id' => $cardData['TransId'],
                     'auth_code' => $cardData['AuthCode'],

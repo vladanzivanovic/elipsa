@@ -32,6 +32,25 @@ class InvoiceApiHandler {
 
         return result;
     }
+
+    async setAsVisited()
+    {
+        let result;
+        let route = Routing.generate('admin.order_set_visited', {token: ORDER_TOKEN});
+        let type = 'PUT';
+
+        try {
+            result = await $.ajax({
+                type,
+                url: route,
+                data: null,
+            })
+        }catch (error) {
+            result = error;
+        }
+
+        return result;
+    }
 }
 const invoiceApiHandler = new InvoiceApiHandler();
 

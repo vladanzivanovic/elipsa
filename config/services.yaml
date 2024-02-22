@@ -22,6 +22,7 @@ parameters:
     intesa_password: '%env(resolve:PASSWORD)%'
     intesa_api_gateway: '%env(resolve:API_GATEWAY)%'
 
+
     google_recaptcha_secret: '%env(resolve:GOOGLE_RECAPTCHA_KEY_SECRET)%'
 
     router.request_context.host: '%env(resolve:SITE_URL)%'
@@ -41,7 +42,7 @@ services:
             $shopOptions: '%shop%'
             $countries: '%countries%'
             $googleApiKey: '%env(GOOGLE_MAPS_API)%'
-            $adminLocale: 'rs'
+            $adminLocale: '%env(DEFAULT_LOCALE)%'
 
     _instanceof:
         App\Checker\NotificationCheckerInterface:

@@ -6,9 +6,9 @@ namespace App\Parser;
 
 use App\Entity\ShopOrder;
 use App\Parser\Site\Order\OrderRequestParser;
-use App\Request\Dto\OrderStateRequestDto;
+use App\Request\Dto\OrderRequestDto;
 
-final class OrderStatusParser
+final class OrderVisitedParser
 {
     private OrderRequestParser $orderRequestParser;
 
@@ -18,12 +18,11 @@ final class OrderStatusParser
         $this->orderRequestParser = $orderRequestParser;
     }
 
-    public function parse(OrderStateRequestDto $orderStateRequestDto): ShopOrder
+    public function parse(OrderRequestDto $orderRequestDto): ShopOrder
     {
-        $order = $this->orderRequestParser->findOrder($orderStateRequestDto->token);
+        $order = $this->orderRequestParser->findOrder($orderRequestDto->token);
 
-        $order->setStatus($orderStateRequestDto->status);
-        $order->setTrackingInfo($orderStateRequestDto->trackingInfo);
+        $order->setVisited(true);
 
         return $order;
     }

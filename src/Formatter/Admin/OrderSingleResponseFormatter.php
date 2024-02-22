@@ -30,8 +30,6 @@ final class OrderSingleResponseFormatter
     {
         $payload = $this->orderView->view($order, $this->adminLocale);
 
-//        dd($payload);
-
         return ['payload' => $payload];
     }
 }

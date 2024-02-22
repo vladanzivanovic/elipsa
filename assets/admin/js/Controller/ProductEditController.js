@@ -47,12 +47,11 @@ class ProductEditController {
         this.#mapper.category.select2();
         this.#mapper.badge.select2();
         $(`${this.#mapper.sizes} tbody td select`).select2();
+        this.#productEditManipulator.setSizes();
 
         if (IS_EDIT) {
             this.#dropZone.setFiles(IMAGES, 'mainImages');
             this.#youtube.setFromArray(YOUTUBES);
-
-            this.#productEditManipulator.setOnEdit();
         }
     }
 }

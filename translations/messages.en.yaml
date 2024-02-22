@@ -179,8 +179,13 @@ checkout.login_text: create an account by entering the information below. If you
 checkout.your_order: your order
 checkout.product_total: product <span>total</span>
 checkout.create_account: create an account
-checkout.payment.by_taking: Pay when arrive
-checkout.paymeny.credit_card: credit card
+checkout.payment_type.select_label: Select payment type
+checkout.shipping_type.select_label: Select shipping type
+checkout.payment.on_delivery: Pay when arrive
+checkout.payment.credit_card: credit card
+checkout.shipping.on_delivery: Via career service
+checkout.shipping.in_store: In store
+checkout.shipping.store_list_label: Store
 checkout.complete_order: complete order
 checkout.account_exists: Account with email address %email% is already registered.
 checkout.account_deactivated: Account with email address %email% is deactivated.
@@ -188,6 +193,9 @@ checkout.finish.title: Order data
 checkout.finish.transaction_detail: Transaction details
 checkout.finish.product_title: Products overview
 checkout.finish.data.payment_type: Payment type
+checkout.finish.data.shipping_type: Shipping type
+checkout.finish.data.shipping_store_address: Store address
+checkout.finish.data.shipping_store_telephone: Store tel number
 checkout.finish.data.checkout_date: Order date
 checkout.finish.address_title: Address
 checkout.finish.mobile_phone_title: Mobile phone
@@ -242,7 +250,7 @@ about_company: about company
 
 email.order.title: Order %orderId%
 email.order.text: '<h3>Dear %first_name%,</h3>
-  <p>Thanks for your order on site %site_name%. We will contact you soon for confirmation of the order.</p>
+  <p>Thanks for your order on site %site_name%. We will contact you in next 24h for order confirmation. Checking for the available size it may take some time. Thanks for you patient. </p>
   <p>If you have any question or want to make changes on the order, make reply on this email. Please, do not change subject or title of this email, as it will be used to find the order in the system. Thanks</p>
    <p class="last-child">Details about the order are displayed below</p>'
 email.order.failedText: '<h3>Dear %first_name%,</h3>
@@ -294,6 +302,8 @@ email.order.note_title: Order additional text
 email.order.status_info: Status porudžbine
 email.order.payment_type: Payment type
 email.order.shipping_type: Shipping type
+email.order.store_address: Store address
+email.order.store_telephone: Store tel number
 email.order.career_link_label: Tracking order link
 
 email.order_status.title: 'Status is changed for order #%id%'

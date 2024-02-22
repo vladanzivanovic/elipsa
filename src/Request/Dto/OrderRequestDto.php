@@ -7,7 +7,7 @@ namespace App\Request\Dto;
 use Nelexa\RequestDtoBundle\Dto\ConstructRequestObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class OrderRequestDto extends AbstractRequestDto
+class OrderRequestDto extends AbstractRequestDto
 {
     public ?string $token = null;
 

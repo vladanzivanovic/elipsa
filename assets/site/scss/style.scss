@@ -43,6 +43,10 @@
   margin-top: 2rem;
 }
 
+.m-t-3 {
+  margin-top: 3rem;
+}
+
 .m-l-1 {
   margin-left: 1rem;
 }
@@ -77,6 +81,10 @@
 
 .full-width {
   width: 100% !important;
+}
+
+.divider {
+  border: 1px solid $lighter-gray-color;
 }
 
 div#page-loader {

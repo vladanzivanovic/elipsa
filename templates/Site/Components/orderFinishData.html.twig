@@ -35,6 +35,15 @@
                             <p><span>{{ 'checkout.finish.data.payment_type' | trans }}:</span> {{ payment.human_type }}</p>
                         </div>
                         <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.data.shipping_type' | trans }}:</span> {{ shipping.human_type }}</p>
+                        </div>
+                        {% if constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') == shipping.type %}
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.data.shipping_store_address' | trans }}:</span> {{ shipping.store.translations[locale].address }}</p>
+                                <p><span>{{ 'checkout.finish.data.shipping_store_telephone' | trans }}:</span> {{ shipping.store.telephone }}</p>
+                            </div>
+                        {% endif %}
+                        <div class="user-info-address-row clearfix">
                             <p><span>{{ 'checkout.finish.data.checkout_date' | trans }}:</span> {{ checkout_completed_at | date('d.m.Y H:i:s') }}</p>
                         </div>
                         {% if tracking_info is not null %}
@@ -72,6 +81,9 @@
                         </div>
                     </div>
                 {% endif %}
+
+{#                if order has one item then show user info on the bottom, otherwise show user info on the left side #}
+                {% if 1 < products | length %}
                 <div class="user-info-area row m-t-2">
                     <h4 class="user-info-title">{{ 'email.order.buyer' | trans }}</h4>
                     <div class="user-info-address-box">
@@ -117,13 +129,14 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% endif %}
             </div>
             <div class="col-md-7 col-xs-12">
                 <div class="row">
                     <div class="product-list">
                         <h4 class="product-list-title">{{ 'checkout.finish.product_title' | trans }}</h4>
                         {% for product in products %}
-                            <div class="single-product" data-id="product_id">
+                            <div class="single-product m-bt-2" data-id="product_id">
                                 <div class="">
                                     <img src="{{ product.image.file }}" alt="">
                                 </div>
@@ -171,6 +184,57 @@
                 </div>
             </div>
         </div>
+
+        {% if 1 == products | length %}
+            <div class="row m-t-2">
+                <div class="divider"></div>
+                <div class="user-info-area row m-t-2 col-md-6">
+                    <h4 class="user-info-title">{{ 'email.order.buyer' | trans }}</h4>
+                    <div class="user-info-address-box">
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.buyer.full_name' | trans }}:</span> {{ billing_address.first_name ~' '~ billing_address.last_name }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.address_title' | trans }}:</span> {{ billing_address.street ~', '~ billing_address.post_code ~' '~ billing_address.city~', '~ billing_address.country }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email' | trans }}:</span> {{ billing_address.email }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.mobile_phone_title' | trans }}:</span> {{ billing_address.telephone }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.order_notes' | trans }}:</span> {{ note }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-info-area row m-t-2 m-bt-3 col-md-6">
+                    <h4 class="user-info-title">{{ 'email.order.seller' | trans }}</h4>
+                    <div class="user-info-address-box">
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.seller.name' | trans }}:</span> {{ seller.name }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'contact.tax_id' | trans }}:</span> {{ seller.pib }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.seller.account' | trans }}:</span> {{ seller.account }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.seller.address' | trans }}:</span> {{ seller.address }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email' | trans }}:</span> {{ seller.email }}</p>
+                        </div>
+                        {% for contact in seller.contacts %}
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ contact.translations[locale].title }}:</span> {{ contact.telephone }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 <!-- order-tracker-area-end -->

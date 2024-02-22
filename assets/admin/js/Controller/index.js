@@ -1,5 +1,5 @@
 import DashboardController from './DashboardController';
-import CoreController from "../../../js/CoreController";
+import CoreController from "./CoreController";
 import ColorsController from "./ColorsController";
 import ColorEditController from "./ColorEditController";
 import TagController from "./TagController";
@@ -304,7 +304,8 @@ $(document).ready(() => {
 
     let core = new CoreController();
 
-    core.showFlashMsg();
+    core.baseCore.showFlashMsg();
+
     if (route) {
         new route.controller();
     }

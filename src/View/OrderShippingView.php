@@ -16,14 +16,18 @@ final class OrderShippingView
 
     private TranslatorInterface $translator;
 
+    private LocationView $locationView;
+
     public function __construct(
         PriceView $priceView,
         SettingsRepository $settingsRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        LocationView $locationView
     ) {
         $this->priceView = $priceView;
         $this->settingsRepository = $settingsRepository;
         $this->translator = $translator;
+        $this->locationView = $locationView;
     }
 
     public function view(ShopOrder $order, int $total, string $locale): array
@@ -34,7 +38,18 @@ final class OrderShippingView
             'price' => $this->setShippingPrice($total, $locale),
         ];
 
+        $view['store'] = $this->setStoreLocation($order);
+
         return $view;
+    }
+
+    private function setStoreLocation(ShopOrder $order): ?array
+    {
+        if (null !== $order->getStoreId()) {
+            return $this->locationView->view($order->getStoreId());
+        }
+
+        return null;
     }
 
     private function setShippingPrice(int $total, string $locale): array

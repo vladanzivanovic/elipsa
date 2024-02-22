@@ -34,6 +34,10 @@ class OrderStateEvents
 
             await this.#handler.setState();
         });
+
+        setTimeout(() => {
+            this.#handler.setAsVisited();
+        }, 3000);
     }
 }
 

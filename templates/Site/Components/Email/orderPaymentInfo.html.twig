@@ -137,7 +137,8 @@
                                                                                                                         <p>{{ billing_address.telephone }}</p>
                                                                                                                         <p>{{ billing_address.email }}</p>
                                                                                                                         <p class="{{ payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') ? 'last-child' : '' }}">{{ 'email.order.payment_type' | trans }}: {{ payment.human_type }}</p>
-                                                                                                                        {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+                                                                                                                        {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD')
+                                                                                                                        %}
                                                                                                                             <p>
                                                                                                                                 <strong>{{ 'email.order.payment_details' | trans }}:</strong>
                                                                                                                             </p>
@@ -209,8 +210,11 @@
                                                                                                                         <p>{{ shipping_address.street }}</p>
                                                                                                                         <p>{{ shipping_address.post_code ~' '~ shipping_address.city }}, {{ shipping_address.country }}</p>
                                                                                                                         <p>{{ shipping_address.telephone }}</p>
-                                                                                                                        <p class="{{ payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') ? 'last-child' : '' }}">{{ 'email.order.shipping_type' | trans }}: {{ shipping.human_type }}</p>
-
+                                                                                                                        <p class="{{ shipping.type == constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_ON_DELIVERING') ? 'last-child' : '' }}">{{ 'email.order.shipping_type' | trans }}: {{ shipping.human_type }}</p>
+                                                                                                                        {% if constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') == shipping.type %}
+                                                                                                                        <p>{{ 'email.order.store_address' | trans }}: {{ shipping.store.translations[locale].address }}</p>
+                                                                                                                        <p class="last-child">{{ 'email.order.store_telephone' | trans }}: {{ shipping.store.telephone }}</p>
+                                                                                                                        {% endif %}
                                                                                                                     </div>
                                                                                                                 </td>
                                                                                                             </tr>

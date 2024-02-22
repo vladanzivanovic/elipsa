@@ -29,7 +29,7 @@
                 </div>
             </div>
             <form id="checkout-form" enctype="multipart/form-data" class="row">
-                <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="billing-address">
                         <h4 class="checkout-box-title letter-capitalize">{{ 'checkout.billing_address' | trans }}</h4>
                         <div class="checkout-billing-address-box">
@@ -74,26 +74,63 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="col-md-4 col-sm-12 col-xs-12 m-t-2-xss">
+                    <div class="your-order-box">
+                        <h4 class="checkout-box-title text-uppercase">{{ 'checkout.payment_type.select_label' | trans }}</h4>
+                        <div class="yob-content">
+                            <div class="create-account-checkout-method">
+                                {% set paymentTypes = get_class_constants('App\\Entity\\ShopOrder', 'PAYMENT_TYPE') %}
+
+                                {% for paymentType in paymentTypes %}
+                                <div class="select-payment-method">
+                                    {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
+                                    {{ inputs.input('payment_' ~ paymentType, paymentType, 'payment_type', '', 'radio', 'radio-button', erroMessage) }}
+                                    {% set paymentTransId = 'checkout.payment.' ~ paymentType %}
+                                    <label for="{{ 'payment_' ~ paymentType }}" class="letter-capitalize">{{ paymentTransId | trans }}</label>
+                                </div>
+                                {% endfor %}
+
+                                <div class="billing-address-input clearfix m-t-2 m-t-2-xss payment-type-images">
+                                    <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a>
+                                    <img src="{{ asset('build/site/images/intesa/visa_pos_fc.png') }}" alt="Visa card logo">
+                                    <img src="{{ asset('build/site/images/intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo">
+                                    <img src="{{ asset('build/site/images/intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo">
+                                    <img src="{{ asset('build/site/images/intesa/american_express.png') }}" alt="Master card logo">
+                                    <img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="your-order-box m-t-3">
+                        <h4 class="checkout-box-title text-uppercase">{{ 'checkout.shipping_type.select_label' | trans }}</h4>
+                        <div class="yob-content">
+                            <div class="create-account-checkout-method">
+                                {% set shippingTypes = get_class_constants('App\\Entity\\ShopOrder', 'SHIPPING_TYPE') %}
+
+                                {% for shippingType in shippingTypes %}
+                                <div class="select-payment-method shipping-method">
+                                    {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
+                                    {{ inputs.input('shipping_' ~ shippingType, shippingType, 'shipping_type', '', 'radio', 'radio-button', erroMessage) }}
+                                    {% set shippingTransId = 'checkout.shipping.' ~ shippingType %}
+                                    <label for="{{ 'shipping_' ~ shippingType }}" class="letter-capitalize">{{ shippingTransId | trans }}</label>
+                                </div>
+                                {% endfor %}
+
+                                <div class="billing-address-input clearfix m-t-2 location-select hide">
+                                    {% set locations = location_options(locale) %}
+
+                                    {{ form.select('checkout.shipping.store_list_label' | trans ~ ' *', 'store_location', 'store_location', '', locations, '', 'text-uppercase', false, 'custom-select') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12 m-t-2-xss">
                     <div class="your-order-box">
                         <h4 class="checkout-box-title text-uppercase">{{ 'checkout.your_order' | trans }}</h4>
                         <div class="yob-content">
                             <p class="yobc-title text-uppercase">{{ 'checkout.product_total' | trans | raw }}</p>
                             <ul class="product-list">
-{#                                {% for product in products %}#}
-{#                                    {% set price = product.discount > 0 ? product.discount : product.price %}#}
-{#                                    {% set productTotal = product.quantity * price %}#}
-{#                                    <li class="clearfix">{{ product.name }}  x {{ product.quantity }} <span>{{ productTotal | number_format(2)  }} RSD</span></li>#}
-{#                                {% endfor %}#}
-{#                                {% set totalWithDiscount = total %}#}
-{#                                {% set totalWithShipping = shipping | trim + total %}#}
-{##}
-{#                                {% if promo_price is not null %}#}
-{#                                    {% set totalWithDiscount = (total - (total * (promo_price / 100))) %}#}
-{#                                    {% set shipping = totalWithDiscount >= free_shipping_price ? 0 : shipping_price %}#}
-{#                                    {% set totalWithShipping = shipping + totalWithDiscount %}#}
-{#                                {% endif %}#}
-{##}
                             </ul>
                             <ul>
                                 <li id="products-total" class="order-total clearfix">{{ 'cart.total_products' | trans }} <span></span></li>
@@ -105,14 +142,6 @@
                                 </li>
                             </ul>
                             <div class="create-account-checkout-method">
-                                <div class="select-payment-method">
-                                    {{ inputs.input('byTaking', constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING'), 'payment_type', '', 'radio') }}
-                                    <label for="byTaking" class="letter-capitalize">{{ 'checkout.payment.by_taking' | trans }}</label>
-                                </div>
-                                <div class="select-payment-method">
-                                    {{ inputs.input('creditCard', constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD'), 'payment_type', '', 'radio', '', 'data-show-error-after=yes') }}
-                                    <label for="creditCard" class="letter-capitalize">{{ 'checkout.paymeny.credit_card' | trans }}</label>
-                                </div>
                                 <div class="select-payment-method terms-and-conditions">
                                     {{ inputs.input('termsAndConditions', 1, 'terms_and_conditions', '', 'checkbox', '', 'data-error-after=".terms-and-conditions"') }}
                                     <label for="termsAndConditions" id="termsAndConditionLabel" class="letter-capitalize">{{ 'checkout.checkbox.terms_and_conditions' | trans({'%link%': path('site.use_conditions')}) | raw }}</label>
@@ -137,5 +166,6 @@
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const INTESA_GATEWAY = '{{ intesa_gateway }}';
+        const IN_STORE_SHIPPING_METHOD = '{{ constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') }}';
     </script>
 {% endblock %}

@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Formatter\Options\LocationOptionsFormatter;
 use App\Repository\DescriptionRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-final class DescriptionExtension extends AbstractExtension
+final class LocationOptionsExtension extends AbstractExtension
 {
     private DescriptionRepository $repository;
 
     private SessionInterface $session;
 
+    private LocationOptionsFormatter $locationOptionsFormatter;
+
     public function __construct(
         DescriptionRepository $repository,
-        SessionInterface $session
+        SessionInterface $session,
+        LocationOptionsFormatter $locationOptionsFormatter
     ) {
         $this->repository = $repository;
         $this->session = $session;
+        $this->locationOptionsFormatter = $locationOptionsFormatter;
     }
 
     /**
@@ -29,19 +34,17 @@ final class DescriptionExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('description', [$this, 'getDescription']),
+            new TwigFunction('location_options', [$this, 'getOptions']),
         ];
     }
 
-    public function getDescription(string $type): ?string
+    public function getOptions(string $locale): array
     {
-        $description = $this->repository->findOneBy(['type' => $type, 'locale' => $this->session->get('_locale')]);
-
-        return null !== $description ? $description->getDescription() : null;
+        return $this->locationOptionsFormatter->format($locale);
     }
 
     public function getName(): string
     {
-        return 'description_extension';
+        return 'location_options_extension';
     }
 }

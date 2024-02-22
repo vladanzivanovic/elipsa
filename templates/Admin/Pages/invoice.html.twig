@@ -1,7 +1,7 @@
 {% extends 'Admin/base.html.twig' %}
 
 {% block title %}Narudžbenica #{{ payload.id }}{% endblock %}
-{% block bodyClass %}about-us-edit{% endblock %}
+{% block bodyClass %}invoice{% endblock %}
 {% block content %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
@@ -26,6 +26,9 @@
                             <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ payload.checkout_completed_at }}</h6>
                             <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Tip naplate:</span> {{ payload.payment.human_type }}</h6>
                             <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Dostava:</span> {{ payload.shipping.human_type }}</h6>
+                            {% if constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') == payload.shipping.type %}
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Adresa prodavnice:</span> {{ payload.shipping.store.translations[adminLocale].address }}</h6>
+                            {% endif %}
                             <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Status porudžbine:</span> {{ payload.status_text }}</h6>
                             {% if payload.tracking_info is not null %}
                                 <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Url za praćenje pošiljke:</span> {{ payload.tracking_info.url }}</h6>
@@ -70,7 +73,7 @@
                             </div>
                         </div>
                     {% endif %}
-                    <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+                    <div class="container-fluid mt-5 d-flex justify-content-center w-100 product-area">
                         <div class="table-responsive w-100">
                             <table class="table table-bordered">
                                 <thead>
@@ -78,6 +81,8 @@
                                     <th>#</th>
                                     <th>Proizvod</th>
                                     <th class="text-right">Količina</th>
+                                    <th class="text-right">Veličina</th>
+                                    <th class="text-right">Boja</th>
                                     <th class="text-right">Cena</th>
                                     <th class="text-right">Ukupno</th>
                                 </tr>
@@ -88,6 +93,8 @@
                                         <td class="text-left">{{ product.id }}</td>
                                         <td class="text-left">{{ product.translation.title }}</td>
                                         <td>{{ product.quantity }}</td>
+                                        <td>{{ product.size }}</td>
+                                        <td class="color"><span class="color-box" style="background: {{ product.color.hex }}"></span> {{ product.color.translations[adminLocale].title }}</td>
                                         <td>{{ product.price.amount }} {{ product.price.currency }}</td>
                                         <td>{{ product.total.amount }} {{ product.total.currency }}</td>
                                     </tr>

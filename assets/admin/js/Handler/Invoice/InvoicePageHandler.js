@@ -35,6 +35,15 @@ class InvoicePageHandler {
             this.#notification.error(Translator.trans('generic_error', null, 'messages', LOCALE));
         }
     }
+
+    async setAsVisited()
+    {
+        try {
+            await this.#apiHandler.setAsVisited();
+        } catch (error) {
+            this.#notification.error(Translator.trans('generic_error', null, 'messages', LOCALE));
+        }
+    }
 }
 
 const invoicePageHandler = new InvoicePageHandler();

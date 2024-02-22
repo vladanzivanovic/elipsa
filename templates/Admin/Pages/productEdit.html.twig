@@ -7,6 +7,19 @@
 {% block title %}{{ title }}{% endblock %}
 {% block bodyClass %}product-edit{% endblock %}
 
+{% set productSizes = [
+    {'slug': '38', 'quantity': 20},
+    {'slug': '40', 'quantity': 20},
+    {'slug': '42', 'quantity': 20},
+    {'slug': '44', 'quantity': 20},
+    {'slug': '46', 'quantity': 20},
+    {'slug': '48', 'quantity': 20},
+] %}
+
+{% if true == IS_EDIT %}
+    {% set productSizes = payload.sizes %}
+{% endif %}
+
 {% block content %}
 
     {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: title} %}
@@ -207,11 +220,12 @@
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const COLORS = JSON.parse('{{ options.colors|json_encode|raw }}');
         const SIZES = JSON.parse('{{ options.sizes | json_encode | raw }}');
+        const PRODUCT_SIZES = JSON.parse('{{ productSizes | json_encode | raw }}');
 
         {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ payload['selectedImages']|json_encode()|raw }}');
             const YOUTUBES = JSON.parse('{{ payload['youtubes'] | json_encode | e('js') }}');
-            const PRODUCT_SIZES = JSON.parse('{{ payload.sizes | json_encode | raw }}');
+
         {% endif %}
 
     </script>

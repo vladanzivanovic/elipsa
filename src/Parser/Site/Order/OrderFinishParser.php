@@ -44,8 +44,8 @@ final class OrderFinishParser
         $order->setCompletedAt(new \DateTime());
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $order->setTransactionData([ShopOrder::CARD_TYPE_PRE_AUTH => $bag->all()]);
-            $order->setStatus(ShopOrder::STATUS_AWAITING_AUTHORIZATION);
+            $order->setTransactionData([ShopOrder::CARD_STATUS_PRE_AUTH => $bag->all()]);
+            $order->setStatus(ShopOrder::STATUS_PENDING);
         }
     }
 
@@ -58,7 +58,7 @@ final class OrderFinishParser
         $user->setResetRequestAt(null);
 
         if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $order->setTransactionData([ShopOrder::CART_TYPE_REJECT => $bag->all()]);
+            $order->setTransactionData([ShopOrder::CART_STATUS_REJECT => $bag->all()]);
         }
     }
 }

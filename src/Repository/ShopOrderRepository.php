@@ -52,7 +52,8 @@ class ShopOrderRepository extends ExtendedEntityRepository
                 'ba.email as email',
                 'CONCAT(ba.firstName, \' \', ba.lastName) as full_name',
                 'o.paymentType as payment_type',
-                'o.status as status'
+                'o.status as status',
+                'o.visited as visited'
             )
             ->innerJoin('o.billingAddress', 'ba')
             ->setFirstResult($tableModel->getOffset())
