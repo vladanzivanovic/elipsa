@@ -95,6 +95,19 @@ class LocationRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @return array<int, Location>
+     */
+    public function getForOptions(string $locale = 'rs'): array
+    {
+        $query = $this->createQueryBuilder('l')
+            ->innerJoin('l.locationTranslations', 'lt')
+            ->where('lt.locale = :locale')
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
      * @param string $locale
      *
      * @return QueryBuilder

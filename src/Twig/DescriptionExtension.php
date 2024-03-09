@@ -42,6 +42,6 @@ final class DescriptionExtension extends AbstractExtension
 
     public function getName(): string
     {
-        return 'banner_extension';
+        return 'description_extension';
     }
 }

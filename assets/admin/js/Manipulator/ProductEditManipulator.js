@@ -17,7 +17,7 @@ class ProductEditManipulator {
         return ProductEditManipulator.instance;
     }
 
-    setOnEdit()
+    setSizes()
     {
         for (const size of PRODUCT_SIZES) {
             this.addSizeRow(size.slug, size.quantity);

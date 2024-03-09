@@ -164,18 +164,35 @@ title.registration_confirmation: Potvrda registracije
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
-checkout.order_notes: dodatni tekst o naružbini
+checkout.order_notes: Dodatni tekst o naružbini
 checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
 checkout.your_order: vaša porudžbina
 checkout.product_total: proizvodi <span>ukupno</span>
 checkout.create_account: kreirajte nalog
-checkout.payment.by_taking: pouzećem
-checkout.paymeny.credit_card: karticom
+checkout.payment_type.select_label: Izaberite način plaćanja
+checkout.shipping_type.select_label: Izaberite način dostave
+checkout.payment.on_delivery: Pouzećem
+checkout.payment.credit_card: Karticom
+checkout.shipping.on_delivery: Kurirskom službom
+checkout.shipping.in_store: Preuzimanje u radnji
+checkout.shipping.store_list_label: Prodavnica
 checkout.complete_order: završi narudžbinu
 checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
+checkout.finish.title: Podaci o porudžbini
 checkout.finish.transaction_detail: Podaci o transakciji
+checkout.finish.product_title: Pregled poručenih proizvoda
+checkout.finish.data.payment_type: Način plaćanja
+checkout.finish.data.shipping_type: Način slanja
+checkout.finish.data.shipping_store_address: Adresa prodavnice
+checkout.finish.data.shipping_store_telephone: Broj tel prodavnice
+checkout.finish.data.checkout_date: Datum porudžbine
+checkout.finish.data.carrier_link: Praćenje pošiljke
+checkout.finish.data.carrier_ref_no: Broj paketa
+checkout.finish.address_title: Adresa
+checkout.finish.mobile_phone_title: Mobilni telefon
 checkout.finish.transaction_status_label: Status transakcije
+checkout.finish.tracking_info_title: Status vase porudžbine
 checkout.finish.transaction_status_success: Uspešno ste izvršili plaćanje – račun Vaše platne kartice je zadužen.
 checkout.finish.transaction_status_failed: Plaćanje nije uspešno, vaš račun nije zadužen, najčešći uzrok je pogrešno unet broj kartice, datum isteka ili sigurnosni kod, pokušaje ponovo, u slučaju uzastopnih greški pozovite vašu banku
 checkout.finish.transaction_date_time: Datum transakcije
@@ -223,7 +240,7 @@ about_company: podaci o kampaniji
 
 email.order.title: Porudžbenica %orderId%
 email.order.text: '<h3>Poštovani/a %first_name%,</h3>
-  <p>Zahvaljujemo se na porudžbini na sajtu %site_name%. Uskoro ćete biti kontaktirani radi potvrde Vaše porudžbine.</p>
+  <p>Zahvaljujemo se na porudžbini na sajtu %site_name%. U roku od 24h ćete biti kontaktirani radi potvrde Vaše porudžbine. Proveravamo stanje veličine. Traženje veličine može da potraje.Hvala na strpljenju.</p>
   <p>Ukoliko imate neka pitanja ili želite da izmenite porudžbinu, kliknite na dugme reply. Molimo vas da ne menjate naslov porudžbine, kako bi smo lakše pronašli vašu porudžbinu u sistemu. Hvala.</p>
    <p class="last-child">Detalji porudžbine su prikazani ispod</p>'
 email.order.failedText: '<h3>Poštovani/a %first_name%,</h3>
@@ -261,6 +278,18 @@ email.order.payment_info: Informacije o plaćanju
 email.order.payment_details: Podaci o plaćanju
 email.order.delivery_info: Informacije o dostavi
 email.order.note_title: O porudžbini
+email.order.status_info: Status porudžbine
+email.order.payment_type: Tip plaćanja
+email.order.shipping_type: Način isporuke
+email.order.store_address: Adresa prodavnice
+email.order.store_telephone: Broj tel prodavnice
+email.order.career_link_label: Link za praćenje pošiljke
+
+email.order_status.title: 'Promena status Vaše porudžbine #%id%'
+email.order_status.change_label: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Status vaše porudžbine je promenjen.</p>
+  <p class="last-child">Status vaše porudžbine: <strong>"%status_text%"</strong>.</p>'
+email.order_status.tracking_info_label: '<p class="last-child">Link za praćenje pošiljke je: <a href="%tracking_link%">%tracking_link%</a>, broj Vaše pošiljke je: %tracking_ref_no%.</p>'
 
 email.registration.title: Registracija na sajtu %siteName%
 email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
@@ -569,12 +598,18 @@ intesa.already_void: Transakcija je već otkazana.
 order.status.new: Nova porudžbina
 order.status.awaiting_authorization: Račun zadužen
 order.status.post_auth: Naplaćeno
-order.status.completed: Porudžbina je završena
+order.status.completed: Završeno
 order.status.refund: Sredstva su vraćena
 order.status.void: Porudžbina je otkazana
 order.status.failed: Greška prilikom naručivanja
 order.type.on_delivering: pouzećem
 order.type.credit_card: platna kartica
+order.status.pending: Na čekanju
+order.status.preparing: U pripremi
+order.status.shipped: Poslato
+order.overview.tracking_info_label: Vaša porudžbina se trenutno nalazi ovde
+order.shipping.on_delivery: Kurirskom službom
+order.shipping.in_store: Preuzimanje u radnji
 
 search_site: Pretražite sajt
 

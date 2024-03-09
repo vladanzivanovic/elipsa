@@ -2,27 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Api;
+namespace App\Controller\Admin\Api\Order;
 
-use App\Entity\Tags;
-use App\Formatter\Admin\BannerDataTableResponseFormatter;
-use App\Formatter\Admin\LocationDataTableResponseFormatter;
-use App\Formatter\Admin\LoyaltyDataTableResponseFormatter;
+
+
 use App\Formatter\Admin\OrderDataTableResponseFormatter;
-use App\Formatter\Admin\ProductColorDataTableResponseFormatter;
-use App\Formatter\Admin\ProductDataTableResponseFormatter;
-use App\Formatter\Admin\ProductTagDataTableResponseFormatter;
-use App\Formatter\Admin\SliderDataTableResponseFormatter;
 use App\Parser\DataTableRequestParser;
-use App\Repository\BannerRepository;
-use App\Repository\LocationRepository;
-use App\Repository\LoyaltyRepository;
-use App\Repository\ProductColorRepository;
-use App\Repository\ProductRepository;
-use App\Repository\ProductSizeRepository;
 use App\Repository\ShopOrderRepository;
-use App\Repository\TagsRepository;
-use App\Repository\SliderRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,25 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class OrdersListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private DataTableRequestParser $requestParser;
 
-    /**
-     * @var OrderDataTableResponseFormatter
-     */
-    private $responseFormatter;
-    /**
-     * @var ShopOrderRepository
-     */
-    private $repository;
+    private OrderDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @param DataTableRequestParser          $requestParser
-     * @param OrderDataTableResponseFormatter $responseFormatter
-     * @param ShopOrderRepository             $repository
-     */
+    private ShopOrderRepository $repository;
+
     public function __construct(
         DataTableRequestParser $requestParser,
         OrderDataTableResponseFormatter $responseFormatter,
@@ -70,7 +43,7 @@ final class OrdersListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getList(Request $request)
+    public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
         $total = $this->repository->countData();

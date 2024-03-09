@@ -25,11 +25,14 @@ export default (() => {
                 { data: 'status', name: 'status', title: 'Status', render: function (status, type, row, meta) {
                         return Translator.trans(status, null, 'messages', LOCALE);
                     } },
-                { data: 'id', render: function (id, type, row, meta) {
-                        const viewLink = CAN_VIEW ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.view_single_order', {id})}">Pregled</a> ` : '';
+                { data: 'visited', name: 'visited', title: 'Nova porudžbina', render: function (visited, type, row, meta) {
+                        return true === visited ? 'Pregledana' : ' Nije pregledana';
+                    } },
+                { data: 'token', render: function (token, type, row, meta) {
+                        const viewLink = CAN_VIEW ? `<a class="btn btn-outline-primary" href="${Routing.generate('admin.view_single_order', {token})}">Pregled</a> ` : '';
 
                         return type === 'display' ?
-                            viewLink : id;
+                            viewLink : token;
                     } },
             ],
             order: [[0, 'desc']],

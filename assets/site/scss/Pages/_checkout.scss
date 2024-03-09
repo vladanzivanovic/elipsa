@@ -1,32 +1,70 @@
-.checkout-page {
-  #checkout-form {
-    .billing-address-input, .cbab-account-password {
-      position: relative;
+@import "../Components/radio_button";
+@import "../../../scss/media-queries";
 
-      .input-error {
-        border-bottom-color: #ff0000;
+.checkout-page {
+  .checkout-area {
+    padding-bottom: 20px;
+
+    #checkout-form {
+      .billing-address-input, .cbab-account-password {
+        position: relative;
+
+        .input-error {
+          border-bottom-color: #ff0000;
+        }
+
+        .error.help-block {
+          position: absolute;
+          right: 0;
+          bottom: -36px;
+          font-size: 12px;
+          color: #ff0000;
+        }
       }
 
-      .error.help-block {
-        position: absolute;
-        right: 0;
-        bottom: -36px;
-        font-size: 12px;
-        color: #ff0000;
+      .select-payment-method {
+        &.terms-and-conditions {
+          display: flex;
+          align-items: center;
+          line-height: normal;
+        }
+      }
+
+      .yob-content {
+        padding-bottom: 25px;
+      }
+
+      .payment-type-images {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 0 !important;
+
+        img {
+          height: 20px;
+        }
       }
     }
 
-    .select-payment-method {
-      &.terms-and-conditions {
-        display: flex;
-        align-items: center;
-        line-height: normal;
-      }
+    .error.help-block {
+      font-size: 12px;
+      color: #ff0000;
     }
   }
 
-  .error.help-block {
-    font-size: 12px;
-    color: #ff0000;
+  &.mobile {
+    @include xss-xs {
+      .billing-address-input {
+        label {
+          margin: 0 !important;
+        }
+
+        input[type="email"],
+        input[type="tel"] {
+          width: 100% !important;
+        }
+      }
+    }
   }
 }

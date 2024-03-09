@@ -11,3 +11,4 @@ twig:
         languages: '%languages%'
         siteInfoText: '%site_info_texts%'
         countries: '%countries%'
+        adminLocale: '%env(DEFAULT_LOCALE)%'

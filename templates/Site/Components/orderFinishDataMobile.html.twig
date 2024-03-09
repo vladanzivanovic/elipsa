@@ -1,0 +1,174 @@
+{% set shippingStatus = get_class_constants('App\\Entity\\ShopOrder', 'SHIPPING_STATUS') %}
+
+<div class="tracking-info-area shopping-head-area">
+    <div class="container">
+        <div class="row">
+            <h4>{{ 'checkout.finish.tracking_info_title' | trans }}</h4>
+        </div>
+        <div class="row">
+            <div class="tracking-info-box col-xs-12">
+                <div class="tracking-info-list shopping-head">
+                    {% for availableStatus in shippingStatus %}
+                        {% set statusTrans = 'order.status.'~availableStatus %}
+                        <div class="sh-menu-item {{ status == availableStatus ? 'active' : '' }} {{ loop.last == true ? 'last-item' : '' }}">
+                            <p class="letter-capitalize">{{ statusTrans | trans }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- order-tracker-area-start -->
+<div class="order-tracker-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="product-list">
+                        <h4 class="product-list-title">{{ 'checkout.finish.product_title' | trans }}</h4>
+                        {% for product in products %}
+                            <div class="single-product" data-id="product_id">
+                                <div class="">
+                                    <img src="{{ product.image.file }}" alt="">
+                                </div>
+                                <div class="">
+                                    <a class="mcp-product-name" href="link">{{ product.translation.title}} x {{ product.quantity }}</a>
+                                    <p>
+                                        <span>
+                                            <label>{{ 'email.order.table.color' | trans }}:</label>
+                                            {{ product.color.translations[locale].title }}
+                                        </span>
+                                        {% if product.size != constant('App\\Entity\\ProductSize::NO_SIZE') %}
+                                            , <span>
+                                                <label>{{ 'email.order.table.size' | trans }}:</label>
+                                                {{ product.size }}
+                                            </span>
+                                        {% endif %}
+                                    </p>
+                                    <p>
+                                        <label>{{ 'email.order.table.unit_price' | trans }}:</label>
+                                        {{ product.price.amount }} {{ product.price.currency }}
+                                    </p>
+                                    <h6>{{ 'email.order.table.total_price' | trans }}: {{ product.total.amount }} {{ product.total.currency }}</h6>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="order-total-area col-md-12 text-right">
+                        <h6 class="total-row">
+                            <label>{{ 'email.order.products_total_price' | trans }}:</label>
+                            <span>{{ total.amount }} {{ total.currency }}</span>
+                        </h6>
+                        <h6 class="total-row">
+                            <label>{{ 'email.order.table.shipping' | trans }}:</label>
+                            <span>{{ shipping.price.amount }} {{ shipping.price.currency }}</span>
+                        </h6>
+                        <h6 class="total-row">
+                            <label>{{ 'email.order.total_shipping' | trans }}:</label>
+                            <span>{{ total_with_shipping.amount }} {{ total_with_shipping.currency }}</span>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 m-t-2">
+                <div class="user-info-area row">
+                    <h4 class="user-info-title">{{ 'checkout.finish.title' | trans }}</h4>
+                    <div id="order-data" class="user-info-address-box">
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.order_id' | trans }}:</span> {{ id }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.data.payment_type' | trans }}:</span> {{ payment.human_type }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.data.checkout_date' | trans }}:</span> {{ checkout_completed_at | date('d.m.Y H:i:s') }}</p>
+                        </div>
+                        {% if tracking_info is not null %}
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.data.carrier_link' | trans }}:</span> <a href="{{ tracking_info.url }}" target="_blank">{{ tracking_info.url }}</a></p>
+                            </div>
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.data.carrier_ref_no' | trans }}:</span> {{ tracking_info.ref_no }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and payment.status == constant('App\\Entity\\ShopOrder::CARD_STATUS_PRE_AUTH') %}
+                    <div class="user-info-area row m-t-2">
+                        <h4 class="user-info-title">{{ 'checkout.finish.transaction_detail' | trans }}</h4>
+                        <div id="card-data" class="user-info-address-box">
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.auth_code' | trans }}:</span> {{ payment.preauth.auth_code }}</p>
+                            </div>
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.response' | trans }}:</span> {{ payment.preauth.payment_response | trans }}</p>
+                            </div>
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.proc_return_code' | trans }}:</span> {{ payment.preauth.proc_return_code }}</p>
+                            </div>
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.transaction_id' | trans }}:</span> {{ payment.preauth.transaction_id }}</p>
+                            </div>
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.transaction_date_time' | trans }}:</span> {{ payment.preauth.transaction_date_time | date('d.m.Y H:i:s') }}</p>
+                            </div>
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ 'checkout.finish.md_status' | trans }}:</span> {{ payment.preauth.md_status }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="user-info-area row m-t-2">
+                    <h4 class="user-info-title">{{ 'email.order.buyer' | trans }}</h4>
+                    <div id="buyer-data" class="user-info-address-box">
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.buyer.full_name' | trans }}:</span> {{ billing_address.first_name ~' '~ billing_address.last_name }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.address_title' | trans }}:</span> {{ billing_address.street ~', '~ billing_address.post_code ~' '~ billing_address.city~', '~ billing_address.country }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email' | trans }}:</span> {{ billing_address.email }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.finish.mobile_phone_title' | trans }}:</span> {{ billing_address.telephone }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'checkout.order_notes' | trans }}:</span> {{ note }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-info-area row m-t-2 m-bt-3">
+                    <h4 class="user-info-title">{{ 'email.order.seller' | trans }}</h4>
+                    <div id="seller-data" class="user-info-address-box">
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.seller.name' | trans }}:</span> {{ seller.name }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'contact.tax_id' | trans }}:</span> {{ seller.pib }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.seller.account' | trans }}:</span> {{ seller.account }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email.order.seller.address' | trans }}:</span> {{ seller.address }}</p>
+                        </div>
+                        <div class="user-info-address-row clearfix">
+                            <p><span>{{ 'email' | trans }}:</span> {{ seller.email }}</p>
+                        </div>
+                        {% for contact in seller.contacts %}
+                            <div class="user-info-address-row clearfix">
+                                <p><span>{{ contact.translations[locale].title }}:</span> {{ contact.telephone }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- order-tracker-area-end -->

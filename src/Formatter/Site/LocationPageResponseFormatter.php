@@ -53,7 +53,7 @@ final class LocationPageResponseFormatter
             $key = in_array($trans->getCity(), ['Beograd', 'Belgrade'], true) ?
                 $trans->getCity() : $trans->getCountry();
 
-            $formattedResponse[$key][] = $this->locationView->view($location, ['location', 'location_thumb']);
+            $formattedResponse[$key][] = $this->locationView->view($location);
         }
 
         return ['payload' => $formattedResponse];

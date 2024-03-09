@@ -30,7 +30,6 @@ class CouponHandler {
 
             AppHelperService.redirect(AppHelperService.generateLocalizedUrl(PARENT_ROUTE_NAME));
         } catch (error) {
-            console.log(error);
             this.#notification.error(Translator.trans('generic_error', null, 'messages', LOCALE), true);
         }
     }

@@ -9,9 +9,9 @@ Sentry.init({
 require('../../js/Routing');
 
 require ('select2/dist/js/select2.full.min');
+const feather = require ('feather-icons');
 
 import '../vendors/core/core';
-import '../vendors/feather-icons/feather';
 
 import './Core';
 import './Controller';

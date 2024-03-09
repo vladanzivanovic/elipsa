@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @deprecated
+ */
 final class CartPageController extends AbstractController
 {
     /**
@@ -37,51 +40,26 @@ final class CartPageController extends AbstractController
 
 //    /**
 //     * @Route({
-//     *          "rs": "/korpa",
-//     *          "en": "/cart"
+//     *          "rs": "/korpa/unos-podataka",
+//     *          "en": "/checkout"
 //     *     },
-//     *     name="site.cart_page",
+//     *     name="site.checkout_page",
 //     *     methods={"GET"}
 //     * )
-//     * @Template("Site/Pages/cart.html.twig")
+//     * @Template("Site/Pages/checkout.html.twig")
 //     *
 //     * @param Request $request
 //     *
-//     * @return array
+//     * @return array|RedirectResponse
 //     */
-//    public function index(Request $request): array
+//    public function checkout(Request $request)
 //    {
 //        if (false === $request->getSession()->has('order')) {
-//            return ['total' => 0, 'shipping' => 0, 'promo_price' => 0, 'free_shipping_price' => 0, 'shipping_price' => 0];
+//            return $this->redirectToRoute('site.home_page');
 //        }
 //
-//        $orderData = $this->pageCollector->collect($request->getLocale());
+//        $products = $this->pageCollector->collect($request->getLocale());
 //
-//        return $this->pageFormatter->formatResponse($orderData);
+//        return $this->pageFormatter->formatResponse($products, $request->getLocale());
 //    }
-
-    /**
-     * @Route({
-     *          "rs": "/korpa/unos-podataka",
-     *          "en": "/checkout"
-     *     },
-     *     name="site.checkout_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/checkout.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array|RedirectResponse
-     */
-    public function checkout(Request $request)
-    {
-        if (false === $request->getSession()->has('order')) {
-            return $this->redirectToRoute('site.home_page');
-        }
-
-        $products = $this->pageCollector->collect($request->getLocale());
-
-        return $this->pageFormatter->formatResponse($products);
-    }
 }

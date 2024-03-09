@@ -25,6 +25,8 @@ final class OrderView
 
     private TranslatorInterface $translator;
 
+    private OrderShippingView $orderShippingView;
+
     public function __construct(
         OrderProductView $orderProductView,
         PromotionCouponView $promotionCouponView,
@@ -32,7 +34,8 @@ final class OrderView
         SettingsRepository $settingsRepository,
         AddressView $addressView,
         OrderPaymentView $orderPaymentView,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        OrderShippingView $orderShippingView
     ) {
         $this->orderProductView = $orderProductView;
         $this->promotionCouponView = $promotionCouponView;
@@ -41,6 +44,7 @@ final class OrderView
         $this->addressView = $addressView;
         $this->orderPaymentView = $orderPaymentView;
         $this->translator = $translator;
+        $this->orderShippingView = $orderShippingView;
     }
     public function view(ShopOrder $order, string $locale): array
     {
@@ -52,12 +56,13 @@ final class OrderView
             'id' => $order->getId(),
             'token' => $order->getToken(),
             'status' => $order->getStatus(),
-            'status_text' => $this->translator->trans('order.status.'. $orderStatusText, [], 'messages', $locale),
+            'status_text' => $this->translator->trans('order.status.'. $order->getStatus(), [], 'messages', $locale),
             'products' => [],
             'promotion' => [],
             'payment' => $this->orderPaymentView->view($order),
             'note' => $order->getNote(),
             'checkout_completed_at' => null !== $order->getCompletedAt() ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
+            'tracking_info' => $order->getTrackingInfo(),
         ];
 
         if (false === $order->getOrderProducts()->isEmpty()) {
@@ -80,15 +85,13 @@ final class OrderView
 
         $view['total'] = $this->priceView->view($total, $locale);
 
+        $view['shipping'] = $this->orderShippingView->view($order, $total, $locale);
+
         $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
 
-        if (ShopOrder::STATUS_NEW < $order->getStatus()) {
+        if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
             $view += $this->addCheckoutInformation($order, $locale);
         }
-
-//        if (ShopOrder::PAYMENT_TYPE_CREDIT_CARD === $order->getPaymentType()) {
-//            $view['payment'] = $this->orderPaymentView->view($order);
-//        }
 
         return $view;
     }
@@ -101,6 +104,9 @@ final class OrderView
         ];
     }
 
+    /**
+     * @deprecated
+     */
     private function setShippingPriceAndUpdateTotal(array $orderView, int $total, $locale): array
     {
         $freeShippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING']);

@@ -37,33 +37,32 @@ class BannerEditController {
         $(document).on('change', '#banner-select-box', e => {
             const type = parseInt($(e.currentTarget).val());
 
-            if (type === BANNER_TYPES.TYPE_LOYALTY || type === BANNER_TYPES.TYPE_NEWS_LETTER) {
-                this.#removeLinks();
-                this.#showMobileDropZone();
-
-                return;
+            switch (type) {
+                case BANNER_TYPES.TYPE_NEWS_LETTER:
+                    this.#removeLinks();
+                    this.#showMobileDropZone();
+                    break;
+                case BANNER_TYPES.TYPE_POP_UP:
+                    this.#removeButtons();
+                    this.#showLinks();
+                    this.#showMobileDropZone();
+                    break;
+                case BANNER_TYPES.TYPE_MENU:
+                case BANNER_TYPES.TYPE_SEASON:
+                    this.#showLinks();
+                    this.#removeButtons();
+                    this.#removeMobileDropzone();
+                    break;
+                case BANNER_TYPES.TYPE_LOYALTY:
+                    this.#removeButtons();
+                    this.#showLinks();
+                    this.#showMobileDropZone();
+                    break;
+                default:
+                    this.#showButtons();
+                    this.#showLinks();
+                    this.#showMobileDropZone();
             }
-
-            if (type === BANNER_TYPES.TYPE_POP_UP) {
-                this.#removeButtons();
-                this.#showLinks();
-                this.#showMobileDropZone();
-
-                return;
-            }
-
-            if (type === BANNER_TYPES.TYPE_MENU || type === BANNER_TYPES.TYPE_SEASON) {
-                this.#showLinks();
-                this.#removeButtons();
-                this.#removeMobileDropzone();
-
-                return;
-            }
-
-            this.#showButtons();
-            this.#showLinks();
-            this.#showMobileDropZone();
-
         });
     }
 

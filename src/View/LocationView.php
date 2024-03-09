@@ -31,7 +31,7 @@ final class LocationView
 
     public function view(
         Location $location,
-        array $imageFilters
+        array $imageFilters = ['location', 'location_thumb']
     ): array {
         $view = $this->defaultData($location);
 
@@ -58,6 +58,17 @@ final class LocationView
         }
 
         return $view;
+    }
+
+    public function getForOptions(Location $location, string $locale ): array
+    {
+        $trans = $location->getByLocale($locale);
+
+        return [
+            'title' => $trans->getTitle(),
+            'value' => $location->getId(),
+            'address' => $trans->getStreet().', '. $trans->getCity().','. $trans->getCountry(),
+        ];
     }
 
     private function defaultData(Location $location): array
@@ -93,6 +104,7 @@ final class LocationView
                 'city' => $translation->getCity(),
                 'country' => $translation->getCountry(),
                 'street' => $translation->getStreet(),
+                'address' => $translation->getStreet().', '. $translation->getCity().','. $translation->getCountry(),
                 'short_description' => true === $fixDescription ?
                     str_replace(["\r\n", PHP_EOL], '<br>', $translation->getShortDescription()) :
                     $translation->getShortDescription(),

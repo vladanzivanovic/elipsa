@@ -135,28 +135,37 @@
                                                                                                                         <p>{{ billing_address.street }}</p>
                                                                                                                         <p>{{ billing_address.post_code ~' '~ billing_address.city }}, {{ billing_address.country }}</p>
                                                                                                                         <p>{{ billing_address.telephone }}</p>
-                                                                                                                        <p class="last-child">{{ billing_address.email }}</p>
+                                                                                                                        <p>{{ billing_address.email }}</p>
+                                                                                                                        <p class="{{ payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') ? 'last-child' : '' }}">{{ 'email.order.payment_type' | trans }}: {{ payment.human_type }}</p>
+                                                                                                                        {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD')
+                                                                                                                        %}
+                                                                                                                            <p>
+                                                                                                                                <strong>{{ 'email.order.payment_details' | trans }}:</strong>
+                                                                                                                            </p>
+                                                                                                                            <p>
+                                                                                                                                {{ 'checkout.finish.auth_code' | trans }}: {{ payment.preauth.auth_code }}
+                                                                                                                            </p>
+                                                                                                                            <p>
+                                                                                                                                {{ 'checkout.finish.md_status' | trans }}: {{ payment.preauth.md_status }}
+                                                                                                                            </p>
+                                                                                                                            <p>
+                                                                                                                                {{ 'checkout.finish.proc_return_code' | trans }}: {{ payment.preauth.proc_return_code }}
+                                                                                                                            </p>
+                                                                                                                            <p>
+                                                                                                                                {{ 'checkout.finish.response' | trans }}: {{ payment.preauth.payment_response | trans }}
+                                                                                                                            </p>
+                                                                                                                            <p>
+                                                                                                                                {{ 'checkout.finish.transaction_id' | trans }}: {{ payment.preauth.transaction_id }}
+                                                                                                                            </p>
+                                                                                                                            <p class="last-child">
+                                                                                                                                {{ 'checkout.finish.transaction_date_time' | trans }}: {{ payment.preauth.transaction_date_time | date('d.m.Y H:i:s') }}
+                                                                                                                            </p>
+                                                                                                                        {% endif %}
                                                                                                                     </div>
                                                                                                                 </td>
                                                                                                             </tr>
-                                                                                                            {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') %}
-                                                                                                            <tr>
-                                                                                                                <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
-                                                                                                                    class="mceBlockContainer"
-                                                                                                                    valign="top">
-                                                                                                                    <div data-block-id="115"
-                                                                                                                         class="mceText"
-                                                                                                                         id="dataBlockId-115"
-                                                                                                                         style="width:100%">
-                                                                                                                        <p>
-                                                                                                                            <strong>{{ 'email.order.payment_details' | trans }}:</strong>
-                                                                                                                        </p>
-                                                                                                                        <p class="last-child">{{ 'payment_type.on_delivering' | trans }}</p>
-                                                                                                                    </div>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                            {% endif %}
-                                                                                                            {% if payment.type == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') and status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+
+
                                                                                                             <tr>
                                                                                                                 <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px"
                                                                                                                     class="mceBlockContainer"
@@ -165,31 +174,12 @@
                                                                                                                          class="mceText"
                                                                                                                          id="dataBlockId-116"
                                                                                                                          style="width:100%">
-                                                                                                                        <p>
-                                                                                                                            <strong>{{ 'email.order.payment_details' | trans }}:</strong>
-                                                                                                                        </p>
-                                                                                                                        <p>
-                                                                                                                            {{ 'checkout.finish.auth_code' | trans }}: {{ payment.preauth.auth_code }}
-                                                                                                                        </p>
-                                                                                                                        <p>
-                                                                                                                            {{ 'checkout.finish.md_status' | trans }}: {{ payment.preauth.md_status }}
-                                                                                                                        </p>
-                                                                                                                        <p>
-                                                                                                                            {{ 'checkout.finish.proc_return_code' | trans }}: {{ payment.preauth.proc_return_code }}
-                                                                                                                        </p>
-                                                                                                                        <p>
-                                                                                                                            {{ 'checkout.finish.response' | trans }}: {{ payment.preauth.payment_response | trans }}
-                                                                                                                        </p>
-                                                                                                                        <p>
-                                                                                                                            {{ 'checkout.finish.transaction_id' | trans }}: {{ payment.preauth.transaction_id }}
-                                                                                                                        </p>
-                                                                                                                        <p class="last-child">
-                                                                                                                            {{ 'checkout.finish.transaction_date_time' | trans }}: {{ payment.preauth.transaction_date_time | date('d.m.Y H:i:s') }}
-                                                                                                                        </p>
+                                                                                                                        <h4 class="last-child">
+                                                                                                                            {{ 'email.order.status_info' | trans }}: {{ status_text }}
+                                                                                                                        </h4>
                                                                                                                     </div>
                                                                                                                 </td>
                                                                                                             </tr>
-                                                                                                            {% endif %}
                                                                                                             </tbody>
                                                                                                         </table>
                                                                                                     </td>
@@ -219,7 +209,12 @@
                                                                                                                         <p>{{ shipping_address.first_name ~' '~ shipping_address.last_name }}</p>
                                                                                                                         <p>{{ shipping_address.street }}</p>
                                                                                                                         <p>{{ shipping_address.post_code ~' '~ shipping_address.city }}, {{ shipping_address.country }}</p>
-                                                                                                                        <p class="last-child">{{ shipping_address.telephone }}</p>
+                                                                                                                        <p>{{ shipping_address.telephone }}</p>
+                                                                                                                        <p class="{{ shipping.type == constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_ON_DELIVERING') ? 'last-child' : '' }}">{{ 'email.order.shipping_type' | trans }}: {{ shipping.human_type }}</p>
+                                                                                                                        {% if constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') == shipping.type %}
+                                                                                                                        <p>{{ 'email.order.store_address' | trans }}: {{ shipping.store.translations[locale].address }}</p>
+                                                                                                                        <p class="last-child">{{ 'email.order.store_telephone' | trans }}: {{ shipping.store.telephone }}</p>
+                                                                                                                        {% endif %}
                                                                                                                     </div>
                                                                                                                 </td>
                                                                                                             </tr>

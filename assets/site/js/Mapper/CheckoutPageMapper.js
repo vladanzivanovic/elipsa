@@ -14,6 +14,11 @@ class CheckoutPageMapper {
             this.shippingPrice = '#shipping-price';
             this.totalWithShipping = '#total-with-shipping';
 
+            this.shipping = {
+                locations: '.location-select',
+                method: '.shipping-method',
+            };
+
             CheckoutPageMapper.instance = this;
         }
 

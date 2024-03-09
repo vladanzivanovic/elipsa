@@ -4,6 +4,8 @@ import RecaptchaLoader from "../../../js/Services/RecaptchaLoader";
 import checkoutPageEvents from "../Events/CheckoutPageEvents";
 import checkoutPageManipulator from "../Manipulator/CheckoutPageManipulator";
 
+require ('select2/dist/js/select2.full.min');
+
 class CheckoutPageController {
     #pageEvents;
     #pageManipulator;

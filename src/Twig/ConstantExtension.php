@@ -33,9 +33,9 @@ class ConstantExtension extends AbstractExtension
      *
      * @throws \ReflectionException
      */
-    public function getClassConstants(string $className): array
+    public function getClassConstants(string $className, string $prefix = null): array
     {
-        return $this->constantsHelper->getClassConstants($className);
+        return $this->constantsHelper->getClassConstants($className, $prefix);
     }
 
     public function getName(): string

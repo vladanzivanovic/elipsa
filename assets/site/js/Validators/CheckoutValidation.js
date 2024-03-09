@@ -53,8 +53,18 @@ class CheckoutValidation {
                         selector: '[name="create_account"]',
                     }
                 },
-                payment_type: 'required',
-                terms_and_conditions: 'required',
+                payment_type: {
+                    required: true,
+                },
+                shipping_type: {
+                    required: true,
+                },
+                store_location: {
+                    isSelectBoxEmpty: true,
+                },
+                terms_and_conditions: {
+                    required: true,
+                },
             },
         };
         $.extend(options, window.helpBlock);

@@ -13,28 +13,45 @@ use Ramsey\Uuid\Uuid;
  */
 class ShopOrder
 {
-    public const STATUS_NEW = 1;
-    public const STATUS_COMPLETED = 2;
-    public const STATUS_AWAITING_AUTHORIZATION = 4;
-    public const STATUS_REFUND = 5;
-    public const STATUS_VOID = 6;
-    public const STATUS_FAILED = 3;
+    public const STATUS_NEW = 'new'; //1;
 
-    public const PAYMENT_TYPE_ON_DELIVERING = 1;
-    public const PAYMENT_TYPE_CREDIT_CARD = 2;
+    public const STATUS_PENDING = 'pending';
 
-    public const CARD_TYPE_PRE_AUTH = 'PreAuth';
-    public const CARD_TYPE_POST_AUTH = 'PostAuth';
-    public const CARD_TYPE_REFUND = 'Credit';
-    public const CARD_TYPE_VOID = 'Void';
+    public const STATUS_PREPARING = 'preparing';
 
-    public const CART_TYPE_REJECT = 'Reject';
+    public const STATUS_SHIPPED = 'shipped';
 
-    public const CARD_STATUS_MAPPER = [
-        self::CARD_TYPE_POST_AUTH => self::STATUS_COMPLETED,
-        self::CARD_TYPE_REFUND => self::STATUS_REFUND,
-        self::CARD_TYPE_VOID => self::STATUS_VOID,
-    ];
+    public const STATUS_COMPLETED = 'completed';
+
+    public const STATUS_CANCELED = 'canceled';
+
+    public const STATUS_FAILED = 'failed';
+
+//    public const STATUS_COMPLETED = 2;
+
+    public const CARD_STATUS_PRE_AUTH = 'PreAuth'; //4
+    public const CARD_STATUS_POST_AUTH = 'PostAuth';
+    public const CARD_STATUS_REFUND = 'Credit';
+    public const CARD_STATUS_VOID = 'Void';
+//    public const CARD_STATUS_REFUND = 'refund'; //5;
+//    public const CARD_STATUS_VOID = 'void'; //6;
+    public const CARD_STATUS_FAILED = 'Failed'; //3;
+
+    public const CART_STATUS_REJECT = 'Reject';
+
+    public const PAYMENT_TYPE_ON_DELIVERING = 'on_delivery'; //1;
+    public const PAYMENT_TYPE_CREDIT_CARD = 'credit_card'; //2;
+
+    public const SHIPPING_TYPE_ON_DELIVERING = 'on_delivery'; //1;
+    public const SHIPPING_TYPE_IN_STORE = 'in_store'; //2;
+
+    public const SHIPPING_STATUS_PENDING = self::STATUS_PENDING;
+
+    public const SHIPPING_STATUS_PREPARING = self::STATUS_PREPARING;
+
+    public const SHIPPING_STATUS_SHIPPED = self::STATUS_SHIPPED;
+
+    public const SHIPPING_STATUS_COMPLETED = self::STATUS_COMPLETED;
 
     use TimestampableEntity;
 
@@ -46,9 +63,9 @@ class ShopOrder
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private int $status;
+    private string $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -78,10 +95,9 @@ class ShopOrder
     private ?User $user = null;
 
     /**
-     * @var int|null
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?int $paymentType = null;
+    private ?string $paymentType = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -103,6 +119,31 @@ class ShopOrder
      */
     private string $token;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private ?array $trackingInfo = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $cardStatus = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $shippingType = null;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $visited = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class)
+     */
+    private ?Location $storeId = null;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -113,12 +154,12 @@ class ShopOrder
         return $this->id;
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -236,29 +277,16 @@ class ShopOrder
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getPaymentType(): ?int
+    public function getPaymentType(): ?string
     {
         return $this->paymentType;
     }
 
-    /**
-     * @param int|null $paymentType
-     *
-     * @return $this
-     */
-    public function setPaymentType(?int $paymentType): self
+    public function setPaymentType(string $paymentType): void
     {
         $this->paymentType = $paymentType;
-
-        return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getNote(): ?string
     {
         return $this->note;
@@ -325,5 +353,65 @@ class ShopOrder
         }
 
         return $total;
+    }
+
+    public function getTrackingInfo(): ?array
+    {
+        return $this->trackingInfo;
+    }
+
+    public function setTrackingInfo(?array $trackingInfo): self
+    {
+        $this->trackingInfo = $trackingInfo;
+
+        return $this;
+    }
+
+    public function getCardStatus(): ?string
+    {
+        return $this->cardStatus;
+    }
+
+    public function setCardStatus(?string $cardStatus): self
+    {
+        $this->cardStatus = $cardStatus;
+
+        return $this;
+    }
+
+    public function getShippingType(): ?string
+    {
+        return $this->shippingType;
+    }
+
+    public function setShippingType(string $shippingType): self
+    {
+        $this->shippingType = $shippingType;
+
+        return $this;
+    }
+
+    public function isVisited(): ?bool
+    {
+        return $this->visited;
+    }
+
+    public function setVisited(bool $visited): self
+    {
+        $this->visited = $visited;
+
+        return $this;
+    }
+
+    public function getStoreId(): ?Location
+    {
+        return $this->storeId;
+    }
+
+    public function setStoreId(?Location $storeId): self
+    {
+        $this->storeId = $storeId;
+
+        return $this;
     }
 }

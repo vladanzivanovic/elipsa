@@ -12,6 +12,7 @@ use App\Parser\BannerEditRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class BannerEditController extends AbstractController
@@ -43,7 +44,7 @@ final class BannerEditController extends AbstractController
 
         $this->bannerHandler->save($banner);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -62,7 +63,7 @@ final class BannerEditController extends AbstractController
 
         $this->bannerHandler->save($banner);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**

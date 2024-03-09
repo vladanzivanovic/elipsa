@@ -1,9 +1,16 @@
 import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 
-class OrderSinglePageService {
+class InvoicePageService {
     constructor() {
-        this.notification = NotificationService();
+        if (!InvoicePageService.instance) {
+
+            this.notification = NotificationService();
+
+            InvoicePageService.instance = this;
+        }
+
+        return InvoicePageService.instance;
     }
 
     doRequest(url) {
@@ -31,4 +38,8 @@ class OrderSinglePageService {
     }
 }
 
-export default OrderSinglePageService;
+const invoicePageService = new InvoicePageService();
+
+Object.freeze(invoicePageService);
+
+export default invoicePageService;

@@ -5,34 +5,32 @@ declare(strict_types=1);
 namespace App\Formatter\Site;
 
 use App\Entity\ShopOrder;
+use App\Formatter\Options\LocationOptionsFormatter;
 use App\Repository\SettingsRepository;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @deprecated
+ */
 final class CartPageFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private SettingsRepository $settingsRepository;
 
-    /**
-     * @param RouterInterface    $router
-     * @param SettingsRepository $settingsRepository
-     */
+    private LocationOptionsFormatter $locationOptionsFormatter;
+
     public function __construct(
         RouterInterface $router,
-        SettingsRepository $settingsRepository
+        SettingsRepository $settingsRepository,
+        LocationOptionsFormatter $locationOptionsFormatter
     ) {
         $this->router = $router;
         $this->settingsRepository = $settingsRepository;
+        $this->locationOptionsFormatter = $locationOptionsFormatter;
     }
 
-    public function formatResponse(array $orderProducts): array
+    public function formatResponse(array $orderProducts, string $locale): array
     {
         /** @var ShopOrder $order */
         $order = $orderProducts['order'];
@@ -64,6 +62,9 @@ final class CartPageFormatter
             'free_shipping_price' => $freeShippingPrice->getValue(),
             'shipping_price' => $shippingPrice->getValue(),
             'promo_price' => null !== $promoCode ? $promoCode->getDiscount() : null,
+            'options' => [
+                'locations' => $this->locationOptionsFormatter->format($locale),
+            ]
         ];
     }
 }

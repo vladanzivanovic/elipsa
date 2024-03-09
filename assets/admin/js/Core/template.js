@@ -15,6 +15,8 @@ import PerfectScrollbar from 'perfect-scrollbar';
     // Enable feather-icons with SVG markup
     feather.replace();
 
+    $('.dropdown-toggle').dropdown();
+
     // initializing bootstrap tooltip
     $('[data-toggle="tooltip"]').tooltip();
 
