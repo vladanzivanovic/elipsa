@@ -130,27 +130,15 @@ let routes = [
         controller: SettingsPageController,
     },
     {
-        name: 'admin.promotion_coupons',
+        name: 'admin.promotions',
         controller: CouponsController,
     },
     {
-        name: 'admin.promotion_products',
-        controller: CouponsController,
-    },
-    {
-        name: 'admin.add_promotion_coupon_page',
+        name: 'admin.add_promotions_page',
         controller: CouponsEditController,
     },
     {
-        name: 'admin.edit_promotion_coupon_page',
-        controller: CouponsEditController,
-    },
-    {
-        name: 'admin.add_promotion_product_page',
-        controller: CouponsEditController,
-    },
-    {
-        name: 'admin.edit_promotion_product_page',
+        name: 'admin.edit_promotions_page',
         controller: CouponsEditController,
     },
     {

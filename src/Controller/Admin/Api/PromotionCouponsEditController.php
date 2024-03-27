@@ -37,7 +37,7 @@ final class PromotionCouponsEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/promotion/{type}/add", name="admin.add_promotion_api", methods={"POST"})
+     * @Route("/api/promotion/add", name="admin.add_promotion_api", methods={"POST"})
      *
      * @param PromotionCouponRequestDto $promotionCouponRequestDto
      * @return JsonResponse
@@ -53,7 +53,7 @@ final class PromotionCouponsEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/promotion/{type}/{id}", name="admin.edit_promotion_api", methods={"PUT"})
+     * @Route("/api/promotion/{id}", name="admin.edit_promotion_api", methods={"PUT"})
      *
      * @param PromotionCouponRequestDto $promotionCouponRequestDto
      * @param Promotion $coupon

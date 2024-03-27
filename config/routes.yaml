@@ -30,7 +30,7 @@ site.product_page:
   path:
     rs: /{slug}
     en: /{_locale}/{slug}
-    ba: /{_locale}/{slug}
+#    ba: /{_locale}/{slug}
   defaults: { _controller: App\Controller\Site\ProductPageController::index}
   options:
     expose: true

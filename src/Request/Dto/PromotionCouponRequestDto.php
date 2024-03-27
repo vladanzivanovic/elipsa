@@ -29,7 +29,7 @@ class PromotionCouponRequestDto implements ConstructRequestObjectInterface
 
         $body = json_decode($request->getContent(), true);
 
-        $this->type = $request->attributes->get('type');
+        $this->type = $body['type'];
         $this->code = $body['code'];
         $this->discount = (int) $body['discount'];
         $this->validFrom = new \DateTimeImmutable($body['valid_from'] . '00:00:00');

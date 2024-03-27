@@ -42,20 +42,33 @@ class PromotionRepository extends ExtendedEntityRepository
      */
     public function getAdminList(DataTableModel $tableModel, string $type): array
     {
+        $generalSearch = $tableModel->getGeneralSearch();
+        $typeSearch = $tableModel->getColumnSearchValue('type');
+
         $query = $this->createQueryBuilder('pc')
             ->select(
                 'pc.id as id',
                 'pc.code as code',
                 'pc.validFrom as validFrom',
                 'pc.validTo as validTo',
-                'pc.discount as discount'
+                'pc.discount as discount',
+                'pc.type as type'
             )
-            ->where('pc.type = :type')
-            ->setParameter('type', $type)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
+
+
+        if (null !== $typeSearch) {
+            $query->where('pc.type = :type')
+            ->setParameter('type', $typeSearch->getSearchValue());
+        }
+
+        if (null !== $generalSearch) {
+            $query->andWhere('pc.code LIKE :generalSearch')
+                ->setParameter('generalSearch', '%'.$generalSearch.'%');
+        }
 
         return $query->getQuery()->getArrayResult();
     }

@@ -314,7 +314,7 @@ class ProductRepository extends ExtendedEntityRepository
      */
     public function dataTableSearchPart(QueryBuilder $query, DataTableModel $tableModel): void
     {
-        $searchParams = $tableModel->getSearch();
+        $searchParams = $tableModel->getGeneralSearch();
 
         if (isset($searchParams['tags'])) {
             $this->createTagQueryForSearch($query, $searchParams['tags']);

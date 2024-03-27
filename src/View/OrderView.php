@@ -46,11 +46,10 @@ final class OrderView
         $this->translator = $translator;
         $this->orderShippingView = $orderShippingView;
     }
+
     public function view(ShopOrder $order, string $locale): array
     {
         $total = 0;
-
-        $orderStatusText = ConstantsHelper::getConstantName($order->getStatus(), 'STATUS', ShopOrder::class);
 
         $view = [
             'id' => $order->getId(),
@@ -83,11 +82,15 @@ final class OrderView
             $view['promotion'] = $this->promotionCouponView->view($order->getCoupon());
         }
 
-        $view['total'] = $this->priceView->view($total, $locale);
 
         $view['shipping'] = $this->orderShippingView->view($order, $total, $locale);
+        $view['total'] = $this->priceView->view($total, $locale);
+        $view['total_with_shipping'] = $this->priceView->view(
+            $total + $view['shipping']['price']['unformatted_amount'],
+            $locale
+        );
 
-        $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
+//        $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
 
         if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
             $view += $this->addCheckoutInformation($order, $locale);

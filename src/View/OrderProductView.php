@@ -15,14 +15,18 @@ final class OrderProductView
 
     private ColorView $colorView;
 
+    private ProductView $productView;
+
     public function __construct(
         PriceView $priceView,
         ImageView $imageView,
-        ColorView $colorView
+        ColorView $colorView,
+        ProductView $productView
     ) {
         $this->priceView = $priceView;
         $this->imageView = $imageView;
         $this->colorView = $colorView;
+        $this->productView = $productView;
     }
 
     public function view(OrderProduct $orderProduct, string $locale): array
@@ -42,6 +46,7 @@ final class OrderProductView
             'discount' => [],
             'translation' => $this->getTranslationValues($orderProduct->getByLocale($locale)),
             'total' => $this->priceView->view($orderProduct->getTotal(), $locale),
+            'total_original' => $this->priceView->view($orderProduct->getOriginalTotal(), $locale),
             'image' => $this->imageView->view(
                 $orderProduct->getImage(),
                 'product',
@@ -49,7 +54,8 @@ final class OrderProductView
             ),
             'is_sold' => $product->isSold() || false === $isSizeAvailable,
             'color' => $this->colorView->productPageView($orderProduct->getColor()),
-            'promotion_price' => null,
+            'promotion_price' => [],
+            'product' => $this->productView->view($product, $locale),
         ];
 
         if (0 < $discount) {

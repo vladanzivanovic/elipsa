@@ -10,14 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderProductRepository")
  */
-class OrderProduct
+class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    use ResourceTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="ShopOrder", inversedBy="orderProducts")
@@ -94,11 +89,6 @@ class OrderProduct
     public function __construct()
     {
         $this->orderProductTranslations = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getOrderId(): ?ShopOrder
@@ -272,7 +262,13 @@ class OrderProduct
 
     public function getPromotionPrice(): ?int
     {
-        return $this->promotionPrice;
+        $price = 0 < $this->discount ? $this->discount : $this->price;
+
+        if (null === $this->promotionPrice) {
+            return null;
+        }
+
+        return $price + $this->promotionPrice;
     }
 
     public function setPromotionPrice(?int $promotionPrice): self
@@ -286,9 +282,14 @@ class OrderProduct
 
     public function getTotal(): int
     {
-        $this->recalculateTotal();
+        $this->total = $this->recalculateTotal();
 
         return $this->total;
+    }
+
+    public function getOriginalTotal(): int
+    {
+        return $this->recalculateTotal(false);
     }
 
     public function getRealPrice(): int
@@ -296,15 +297,15 @@ class OrderProduct
         return 0 < $this->discount ? $this->discount : $this->price;
     }
 
-    private function recalculateTotal(): void
+    private function recalculateTotal(bool $considerPromotion = true): int
     {
         $price = 0 < $this->discount ? $this->discount : $this->price;
 
-        if (null !== $this->promotionPrice) {
+        if (true === $considerPromotion && null !== $this->promotionPrice) {
             $price = $price + $this->promotionPrice;
         }
 
-        $this->total = $price * $this->quantity;
+        return $price * $this->quantity;
     }
 
     public function getPromotion(): ?Promotion

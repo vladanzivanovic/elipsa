@@ -11,23 +11,17 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
-class Product
+class Product implements EntityInterface, PromotionEligibilityInterface
 {
+    use ResourceTrait;
+    use TimestampableEntity;
+
     const STATUS_PENDING = 1;
     const STATUS_ACTIVE = 2;
     const STATUS_ARCHIVED = 3;
 
     const HOME_PAGE_UP = 2;
     const HOME_PAGE_DOWN = 1;
-
-    use TimestampableEntity;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -124,11 +118,6 @@ class Product
         $this->youtubes = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
         $this->userWishes = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getPrice(): ?int

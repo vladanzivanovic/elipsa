@@ -28,9 +28,15 @@ class CouponHandler {
 
             await this.#apiHandler.save();
 
-            AppHelperService.redirect(AppHelperService.generateLocalizedUrl(PARENT_ROUTE_NAME));
+            if (!IS_EDIT) {
+                AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.promotions'));
+
+                return ;
+            }
+
+            AppHelperService.redirect('reload');
         } catch (error) {
-            this.#notification.error(Translator.trans('generic_error', null, 'messages', LOCALE), true);
+            this.#notification.error(Translator.trans('generic_error', null, 'messages', LOCALE));
         }
     }
 
@@ -46,7 +52,7 @@ class CouponHandler {
                 this.#notification.remove();
             },
             error: jxHR => {
-                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE));
             }
         })
     }

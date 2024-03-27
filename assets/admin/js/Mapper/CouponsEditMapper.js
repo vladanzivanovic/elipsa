@@ -12,6 +12,9 @@ class CouponsEditMapper {
                 tags: '#tags',
                 products: '#products',
                 code: '#code',
+                type: '#type',
+                discount: '#discount',
+                allProductsChk: '#applicableAllProducts',
             };
 
             CouponsEditMapper.instance = defaultMapping;

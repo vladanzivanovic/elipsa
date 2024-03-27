@@ -26,7 +26,7 @@ final class ProductListSearchController extends AbstractController
     }
 
     /**
-     * @Route("/api/products/search/name", name="admin.product_search_name_api", methods={"GET"})
+     * @Route("/api/products/search", name="admin.product_search_name_api", methods={"GET"})
      *
      * @param Request $request
      * @return Response

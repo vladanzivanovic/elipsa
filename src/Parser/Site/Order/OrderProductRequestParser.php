@@ -14,6 +14,7 @@ use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductTranslationRepository;
 use App\Request\Dto\OrderProductRequestDto;
+use Doctrine\ORM\NonUniqueResultException;
 use Webmozart\Assert\Assert;
 
 final class OrderProductRequestParser
@@ -50,6 +51,10 @@ final class OrderProductRequestParser
         $this->productPromotionParser = $productPromotionParser;
     }
 
+    /**
+     * @throws ProductManipulationException
+     * @throws NonUniqueResultException
+     */
     public function parse(
         OrderProductRequestDto $orderProductRequestDto
     ): ShopOrder {
@@ -70,7 +75,10 @@ final class OrderProductRequestParser
         $promotion = $this->productPromotionParser->setProductPromotion($product);
 
         Assert::notFalse($product->hasColor($color));
-        Assert::notFalse($product->isSizeAvailable($size));
+
+        if (false === $product->isSizeAvailable($size)) {
+            throw new ProductManipulationException('product.size_unavailable');
+        }
 
         $orderProduct->setColor($color);
         $orderProduct->setSize($size);

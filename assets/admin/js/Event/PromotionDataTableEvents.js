@@ -23,6 +23,20 @@ class PromotionDataTableEvents {
             .on('draw', () => {
                 this.#toastr.remove();
             });
+
+        $(document).on('change', '.action-box', e => {
+            const value = e.currentTarget.value;
+
+            if ('' === value) {
+                this.#dataTable.getDataTable()
+                    .draw();
+            }
+
+            this.#dataTable.getDataTable()
+                .columns(2)
+                .search(value)
+                .draw();
+        })
     }
 }
 

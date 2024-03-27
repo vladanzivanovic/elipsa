@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Checker;
+
+use App\Entity\Promotion;
+use App\Entity\PromotionEligibilityInterface;
+use App\Entity\PromotionOption;
+
+final class PromotionCouponChecker extends AbstractPromotionChecker
+{
+    /**
+     * @var array <int, PromotionOptionCheckerInterface>
+     */
+    private array $promotionOptionCheckers;
+
+    private PromotionOptionDiscountChecker $promotionOptionDiscountChecker;
+
+    public function __construct(
+        iterable $promotionCheckers,
+        iterable $promotionOptionCheckers,
+        PromotionOptionDiscountChecker $promotionOptionDiscountChecker
+    ){
+        $this->promotionOptionCheckers = iterator_to_array($promotionOptionCheckers);
+        $this->promotionOptionDiscountChecker = $promotionOptionDiscountChecker;
+
+        parent::__construct($promotionCheckers);
+    }
+
+    public function checkEligibility(PromotionEligibilityInterface $orderProduct, Promotion $promotionCoupon): bool
+    {
+        $this->checkCouponIsEligible($promotionCoupon);
+
+        if (
+            null !== $orderProduct->getDiscount() &&
+            false === $this->promotionOptionDiscountChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+        ) {
+            return false;
+        }
+
+        $checkerTypes = $promotionCoupon->getOptionTypes();
+
+        if (0 === count($checkerTypes)) {
+            return true;
+        }
+
+
+        foreach ($this->promotionOptionCheckers as $promotionOptionChecker) {
+            if (true === in_array($promotionOptionChecker->getType(), $checkerTypes)) {
+                $isOptionApplicable = $promotionOptionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType($promotionOptionChecker->getType()));
+
+                if (true === $isOptionApplicable) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+}

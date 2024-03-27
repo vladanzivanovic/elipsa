@@ -25,6 +25,11 @@ final class PromotionOptionTagChecker implements PromotionOptionCheckerInterface
         return PromotionOption::OPTION_TAGS;
     }
 
+    public static function getDefaultPriority(): int
+    {
+        return 50;
+    }
+
     private function check(Product $product, PromotionOption $promotionOption): bool
     {
         $promotionTags = $promotionOption->getConfiguration();

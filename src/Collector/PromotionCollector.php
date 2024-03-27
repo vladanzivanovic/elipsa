@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Collector;
 
+use App\Entity\Product;
 use App\Entity\Promotion;
 use App\Entity\PromotionOption;
 use App\Repository\PromotionRepository;
@@ -18,6 +19,13 @@ final class PromotionCollector
         $this->promotionRepository = $promotionRepository;
     }
 
+    public function collectFreeShippingPromotions(): array
+    {
+        $activePromotions = $this->promotionRepository->getActivePromotionsByType(Promotion::TYPE_FREE_SHIPPING);
+
+        return $activePromotions;
+    }
+
     /**
      * @return array<int, Promotion[]>
      */
@@ -28,22 +36,22 @@ final class PromotionCollector
         $promotions = [];
 
         foreach ($productPromotions as $productPromotion) {
-            $countOptions = $productPromotion->getPromotionOptions()->count();
+            $priority = 0;
 
             $optionTypes = $productPromotion->getOptionTypes();
 
             switch (true) {
                 case in_array(PromotionOption::OPTION_PRODUCTS, $optionTypes):
-                    $countOptions += 100;
+                    $priority = 100;
                     break;
                 case in_array(PromotionOption::OPTION_TAGS, $optionTypes):
-                    $countOptions += 50;
+                    $priority += 50;
                     break;
                 case in_array(PromotionOption::OPTION_CATEGORIES, $optionTypes):
-                    $countOptions += 10;
+                    $priority += 10;
             }
 
-            $promotions[$countOptions][] = $productPromotion;
+            $promotions[$priority][] = $productPromotion;
         }
 
         krsort($promotions);

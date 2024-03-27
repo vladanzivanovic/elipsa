@@ -103,11 +103,15 @@ final class ProductView
         foreach ($translations as $locale => $translation) {
             $params = ['slug' => $translation['slug'], '_locale' => $locale];
 
-            $links[$locale] = $this->router->generate(
-                'site.product_page',
-                $params,
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
+            try {
+                $links[$locale] = $this->router->generate(
+                    'site.product_page',
+                    $params,
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+            } catch (\Throwable $exception) {
+//                dd($translations);
+            }
         }
 
         return $links;

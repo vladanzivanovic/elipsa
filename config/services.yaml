@@ -50,7 +50,7 @@ services:
         App\Checker\PromotionCheckerInterface:
             tags: ['app.checker.promotion']
         App\Checker\PromotionOptionCheckerInterface:
-            tags: ['app.checker.promotion']
+            tags: ['app.checker.promotion_option']
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -136,10 +136,17 @@ services:
         arguments:
             $checkers: !tagged_iterator app.checker.notification
 
-    App\Parser\Site\Order\OrderCouponParser:
+    App\Checker\PromotionCouponChecker:
         arguments:
             $promotionCheckers: !tagged_iterator app.checker.promotion
+            $promotionOptionCheckers: !tagged_iterator app.checker.promotion_option
 
-    App\Parser\ProductPromotionParser:
+    App\Checker\PromotionProductChecker:
         arguments:
             $promotionCheckers: !tagged_iterator app.checker.promotion
+            $promotionOptionCheckers: !tagged_iterator app.checker.promotion_option
+
+    App\Checker\PromotionFreeShippingChecker:
+        arguments:
+            $promotionCheckers: !tagged_iterator app.checker.promotion
+            $promotionOptionCheckers: !tagged_iterator app.checker.promotion_option

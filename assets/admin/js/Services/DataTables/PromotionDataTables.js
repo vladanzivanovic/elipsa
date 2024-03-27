@@ -1,8 +1,9 @@
 import DataTableOptions from "./DataTableOptions";
-
-require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
-import dtrowreorder from 'datatables.net-rowreorder-bs4';
+
+
+// require('./DataTableOptions');
+
 
 class PromotionDataTables {
     #dataTable;
@@ -25,16 +26,18 @@ class PromotionDataTables {
 
     init()
     {
-        const route =  Routing.generate(TABLE_URL);
+        const route =  Routing.generate('admin.get_promotions_list');
 
         const tableOptions = {
             ajax: {
                 url: route,
                 type: 'POST'
             },
+            dom:'<"row" <"col-md-3" l><"col-md-6 action-list"><"col-md-3" f>>rtip',
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'code', name: 'code', title: 'Kod' },
+                { data: 'type_text', name: 'type', title: 'Tip' },
                 { data: 'validFrom', name: 'validFrom', title: 'Važi od' },
                 { data: 'validTo', name: 'validTo', title: 'Važi do' },
                 { data: 'discount', name: 'discount', title: 'Popust', render: function (data, type){
@@ -43,7 +46,7 @@ class PromotionDataTables {
                             data;
                     } },
                 { data: 'id', orderable: false, render: function (data, type, row, meta) {
-                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(EDIT_PAGE_NAME, {id: data})}">Izmeni</a> ` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_promotions_page', {id: data})}">Izmeni</a> ` : '';
                         const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
 
                         return type === 'display' ?
@@ -52,6 +55,9 @@ class PromotionDataTables {
                     } },
             ],
             order: [[0, 'asc']],
+            initComplete: () => {
+                this.#generateActionBox().appendTo('.action-list');
+            }
         };
 
         const options = this.#dataTableOptionGenerator
@@ -60,53 +66,21 @@ class PromotionDataTables {
 
         this.#dataTable = $(this.#tableRef).DataTable(options);
     }
+
+    #generateActionBox()
+    {
+        let dom = $('<select class="action-box"></select>');
+
+        dom.append('<option value="">Izaberite akciju...</option>');
+
+        for (let typeProp in PROMOTION_TYPES) {
+            dom.append(`<option value="${PROMOTION_TYPES[typeProp]}" data-action-type="promotion_type">${Translator.trans(`promotion.type.${PROMOTION_TYPES[typeProp]}`)}</option>`);
+        }
+
+        return dom;
+    }
 }
 
 const promotionDataTables = new PromotionDataTables();
 
 export default promotionDataTables;
-
-// export default (() => {
-//     let Public = {},
-//         Private = {};
-//
-//     Private.tableRef = $('#data-table');
-//     Private.dataTable = null;
-//
-//     Public.init = () => {
-//         const options = Object.assign({}, window.DATATABLE_OPTIONS, {
-//             ajax: {
-//                 url: Routing.generate('admin.get_promotion_coupons_list'),
-//                 type: 'POST'
-//             },
-//             columns: [
-//                 { data: 'id', name: 'id', title: 'Id' },
-//                 { data: 'code', name: 'code', title: 'Kod' },
-//                 { data: 'validFrom', name: 'validFrom', title: 'Važi od' },
-//                 { data: 'validTo', name: 'validTo', title: 'Važi do' },
-//                 { data: 'discount', name: 'discount', title: 'Popust', render: function (data, type){
-//                         return type === 'display' ?
-//                             `${data}%` :
-//                             data;
-//                     } },
-//                 { data: 'id', orderable: false, render: function (data, type, row, meta) {
-//                         const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_promotion_coupon_page', {id: data})}">Izmeni</a> ` : '';
-//                         const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${data}">Ukloni</button>` : '';
-//
-//                         return type === 'display' ?
-//                             editLink+removeButton :
-//                             data;
-//                     } },
-//             ],
-//             order: [[0, 'asc']],
-//         });
-//
-//         Private.dataTable = Private.tableRef.DataTable(options);
-//     };
-//
-//     Public.reload = () => {
-//         Private.tableRef.DataTable().ajax.reload(null, false);
-//     };
-//
-//     return Public;
-// });

@@ -6,15 +6,16 @@ namespace App\Checker;
 
 use App\Entity\OrderProduct;
 use App\Entity\Product;
+use App\Entity\PromotionEligibilityInterface;
 use App\Entity\PromotionOption;
 
-final class PromotionOptionDiscountChecker implements PromotionOptionCheckerInterface
+final class PromotionOptionDiscountChecker
 {
-    public function isEligible(OrderProduct $orderProduct, PromotionOption $promotionOption): bool
+    public function isEligible(PromotionEligibilityInterface $promotionEligibility, PromotionOption $promotionOption): bool
     {
         $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
 
-        return ($orderProduct->getDiscount() === 0) || ($orderProduct->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
+        return ($promotionEligibility->getDiscount() === 0) || ($promotionEligibility->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
     }
 
     public function isProductEligible(Product $product, PromotionOption $promotionOption): bool
@@ -27,5 +28,10 @@ final class PromotionOptionDiscountChecker implements PromotionOptionCheckerInte
     public function getType(): string
     {
         return PromotionOption::OPTION_ALL_PRODUCTS;
+    }
+
+    public static function getDefaultPriority(): int
+    {
+        return 900;
     }
 }

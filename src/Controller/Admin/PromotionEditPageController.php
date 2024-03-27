@@ -24,8 +24,7 @@ final class PromotionEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/promotion/coupon/add", name="admin.add_promotion_coupon_page", methods={"GET"})
-     * @Route("/promotion/products/add", name="admin.add_promotion_product_page", methods={"GET"})
+     * @Route("/promotions/add", name="admin.add_promotions_page", methods={"GET"})
      * @Template("Admin/Pages/promotionEdit.html.twig")
      *
      * @return array
@@ -36,8 +35,7 @@ final class PromotionEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/promotion/coupon/{id}", name="admin.edit_promotion_coupon_page", methods={"GET"})
-     * @Route("/promotion/products/{id}", name="admin.edit_promotion_product_page", methods={"GET"})
+     * @Route("/promotions/{id}", name="admin.edit_promotions_page", methods={"GET"})
      * @Template("Admin/Pages/promotionEdit.html.twig")
      *
      * @param Promotion $coupon

@@ -5,12 +5,14 @@ import orderApiHandler from "./Order/OrderApiHandler";
 import loader from "../Dom/LoaderDom";
 import orderStorageManipulator from "../Manipulator/OrderStorageManipulator";
 import notificationApiHandler from "./NotificationApiHandler";
+import orderApiChecker from "../Checker/OrderApiChecker";
 
 class ProductPageHandler {
     #orderApiHandler;
     #orderStorageManipulator;
     #productPageMapper;
     #notificationApiHandler;
+    #checker;
 
     constructor() {
         if (!ProductPageHandler.instance) {
@@ -20,6 +22,7 @@ class ProductPageHandler {
             this.#orderApiHandler = orderApiHandler;
             this.#orderStorageManipulator = orderStorageManipulator;
             this.#notificationApiHandler = notificationApiHandler;
+            this.#checker = orderApiChecker;
 
             ProductPageHandler.instance = this;
         }
@@ -40,6 +43,8 @@ class ProductPageHandler {
         }
 
         try {
+            this.#checker.isSizeAvailable(size);
+
             const order = await this.#orderApiHandler.manageProduct(
                 $(this.#productPageMapper.colorActive).data('color'),
                 $(this.#productPageMapper.sizeActive).data('slug'),

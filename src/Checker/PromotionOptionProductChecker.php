@@ -25,6 +25,11 @@ final class PromotionOptionProductChecker implements PromotionOptionCheckerInter
         return PromotionOption::OPTION_PRODUCTS;
     }
 
+    public static function getDefaultPriority(): int
+    {
+        return 100;
+    }
+
     private function check(Product $product, PromotionOption $promotionOption): bool
     {
         $promotionProducts = $promotionOption->getConfiguration();

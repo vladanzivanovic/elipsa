@@ -55,6 +55,7 @@ final class PromotionCouponView
             'percentage' => $coupon->getDiscount(),
             'valid_from' => $coupon->getValidFrom()->format('d.m.Y'),
             'valid_to' => $coupon->getValidTo()->format('d.m.Y'),
+            'type' => $coupon->getType(),
         ];
 
         return $view;

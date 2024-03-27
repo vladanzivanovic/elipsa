@@ -7,6 +7,7 @@ namespace App\Formatter\Site;
 use App\Checker\PromotionCheckerTrait;
 use App\Collector\PromotionCollector;
 use App\Entity\Product;
+use App\Entity\Promotion;
 use App\Entity\User;
 use App\Parser\ProductPromotionParser;
 use App\Repository\PromotionRepository;
@@ -118,10 +119,10 @@ final class ProductFormatter
     {
         $productsView = [];
 
-        $productPromotions = $this->promotionCollector->collectProductPromotions();
+//        $productPromotions = $this->promotionCollector->getPromotionsByproduct(Promotion::TYPE_PRODUCT);
 
         foreach ($products as $product) {
-            $this->productPromotionParser->setProductPromotion($product, $productPromotions);
+            $this->productPromotionParser->setProductPromotion($product);
 
             $productView = $this->productView->view($product, $locale, $user);
             $productView['colors'] = $this->getColors($product);

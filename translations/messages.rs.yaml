@@ -674,3 +674,7 @@ closed: Zatvoreno
 
 product.is_archived: Proizvod "%item%" je arhiviran
 product.is_deleted: Proizvod "%item%" je obrisan
+
+promotion.type.coupon: Kupon
+promotion.type.product: Proizvod
+promotion.type.free_shipping: Besplatna dostava

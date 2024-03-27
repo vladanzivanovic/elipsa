@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Parser\Site\Order;
 
 use App\Checker\PromotionCheckerTrait;
+use App\Checker\PromotionCouponChecker;
 use App\Checker\PromotionValidityChecker;
 use App\Entity\OrderProduct;
 use App\Entity\Promotion;
@@ -15,25 +16,19 @@ use Webmozart\Assert\Assert;
 
 final class OrderCouponParser
 {
-    use PromotionCheckerTrait;
-
     private PromotionRepository $promotionCouponRepository;
 
     private OrderRequestParser $orderRequestParser;
-
-    /**
-     * @var array[int, PromotionCheckerInterface]
-     */
-    private array $promotionCheckers;
+    private PromotionCouponChecker $promotionCouponChecker;
 
     public function __construct(
         PromotionRepository $promotionCouponRepository,
         OrderRequestParser $orderRequestParser,
-        iterable $promotionCheckers
+        PromotionCouponChecker $promotionCouponChecker
     ) {
         $this->promotionCouponRepository = $promotionCouponRepository;
         $this->orderRequestParser = $orderRequestParser;
-        $this->promotionCheckers = iterator_to_array($promotionCheckers);
+        $this->promotionCouponChecker = $promotionCouponChecker;
     }
 
     /**
@@ -60,7 +55,7 @@ final class OrderCouponParser
         Promotion $coupon,
         OrderProduct $orderProduct
     ): bool {
-        if (false === $this->checkCouponOptionsAreEligibleForOrderProduct($orderProduct, $coupon)) {
+        if (false === $this->promotionCouponChecker->checkEligibility($orderProduct, $coupon)) {
             return false;
         }
 
@@ -85,21 +80,19 @@ final class OrderCouponParser
             throw new OrderException('promo_coupon.not_found');
         }
 
-        $this->checkCouponIsEligible($promotionCoupon);
-
-        $isPromotionApplied = false;
+        $isPromotionApplicable = false;
 
         foreach ($order->getOrderProducts() as $orderProduct) {
-            $isPromotionApplied = $this->setPromotionPriceOnOrderItems($promotionCoupon, $orderProduct);
+            if (true === $this->setPromotionPriceOnOrderItems($promotionCoupon, $orderProduct)) {
+                $order->setCoupon($promotionCoupon);
+
+                $isPromotionApplicable = true;
+            }
         }
 
-        if (true === $isPromotionApplied) {
-            $order->setCoupon($promotionCoupon);
-
-            return;
+        if (false === $isPromotionApplicable) {
+            throw new OrderException('promo_coupon.not_applicable');
         }
-
-        throw new OrderException('promo_coupon.not_applicable');
     }
 
     /**

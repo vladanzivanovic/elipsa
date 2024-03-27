@@ -7,27 +7,23 @@ namespace App\Parser;
 use App\Checker\PromotionCheckerInterface;
 use App\Checker\PromotionCheckerTrait;
 use App\Checker\PromotionOptionCheckerInterface;
+use App\Checker\PromotionProductChecker;
 use App\Collector\PromotionCollector;
 use App\Entity\Product;
 use App\Entity\Promotion;
 
 final class ProductPromotionParser
 {
-    use PromotionCheckerTrait;
-
     private PromotionCollector $promotionCollector;
 
-    /**
-     * @var array <int, PromotionOptionCheckerInterface, PromotionCheckerInterface>
-     */
-    private array $promotionCheckers;
+    private PromotionProductChecker $promotionProductChecker;
 
     public function __construct(
         PromotionCollector $promotionCollector,
-        iterable $promotionCheckers
+        PromotionProductChecker $promotionProductChecker
     ){
         $this->promotionCollector = $promotionCollector;
-        $this->promotionCheckers = iterator_to_array($promotionCheckers);
+        $this->promotionProductChecker = $promotionProductChecker;
     }
 
     /**
@@ -39,22 +35,30 @@ final class ProductPromotionParser
             $productPromotions = $this->promotionCollector->collectProductPromotions();
         }
 
+        $promotionCandidates = [];
+
         foreach ($productPromotions as $productPromotionElements) {
             foreach ($productPromotionElements as $productPromotion) {
-                if (false === $this->checkCouponIsEligible($productPromotion)) {
-                    continue;
-                }
+                $priority = $this->promotionProductChecker->checkEligibility($product, $productPromotion);
 
-                if (true === $this->checkCouponOptionsAreEligibleForProduct($product, $productPromotion)) {
-                    $price = $product->getDiscount() > 0 ? $product->getDiscount() : $product->getPrice();
-
-                    $discountAmount = $price * ((100 - $productPromotion->getDiscount()) / 100);
-
-                    $product->setPromoDiscount((int)$discountAmount);
-
-                    return $productPromotion;
+                if (true === is_int($priority)) {
+                    $promotionCandidates[$priority] = $productPromotion;
                 }
             }
+        }
+
+        ksort($promotionCandidates, SORT_NUMERIC);
+
+        $eligiblePromotion = end($promotionCandidates);
+
+        if (false !== $eligiblePromotion) {
+            $price = $product->getDiscount() > 0 ? $product->getDiscount() : $product->getPrice();
+
+            $discountAmount = $price * ((100 - $eligiblePromotion->getDiscount()) / 100);
+
+            $product->setPromoDiscount((int)$discountAmount);
+
+            return $eligiblePromotion;
         }
 
         return null;
