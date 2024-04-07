@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,31 +25,20 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
         parent::__construct($registry, User::class);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     *
-     * @param UserInterface $user
-     * @param string        $newEncodedPassword
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
-        $user->setPassword($newEncodedPassword);
+        $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
     }
 
     /**
-     * @param string    $email
      * @param User|null $user
      *
-     * @return int
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -59,7 +49,7 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
             ->where('u.email = :email')
             ->setParameter('email', $email);
 
-        if (null !== $user) {
+        if ($user instanceof \App\Entity\User) {
             $query->andWhere('u != :user')
                 ->setParameter('user', $user);
         }
@@ -81,11 +71,7 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('u')
@@ -105,9 +91,6 @@ class UserRepository extends ExtendedEntityRepository implements PasswordUpgrade
     }
 
     /**
-     * @param string $email
-     *
-     * @return User|null
      * @throws NonUniqueResultException
      */
     public function getByEmail(string $email): ?User

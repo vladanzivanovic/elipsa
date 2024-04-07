@@ -20,26 +20,13 @@ final class ProductColorEditController extends AbstractController
 {
     use ControllerTrait;
 
-    /**
-     * @var ColorRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\ColorRequestParser $requestParser;
 
-    /**
-     * @var ProductColorHandler
-     */
-    private $colorHandler;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Handler\ProductColorHandler $colorHandler;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
     /**
      * ProductColorEditController constructor.
-     *
-     * @param ColorRequestParser  $requestParser
-     * @param ProductColorHandler $colorHandler
-     * @param TranslatorInterface $translator
      */
     public function __construct(
         ColorRequestParser $requestParser,
@@ -52,14 +39,13 @@ final class ProductColorEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-color", name="admin.add_color_api", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/add-color', name: 'admin.add_color_api', methods: ['POST'], options: ['expose' => true])]
     public function insert(Request $request)
     {
         $productColor = $this->requestParser->parse($request->request);
@@ -72,15 +58,13 @@ final class ProductColorEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-color/{id}", name="admin.edit_color_api", methods={"PUT"}, options={"expose": true})
      *
-     * @param Request      $request
-     * @param ProductColor $productColor
      *
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/edit-color/{id}', name: 'admin.edit_color_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, ProductColor $productColor)
     {
         $productColor = $this->requestParser->parse($request->request, $productColor);

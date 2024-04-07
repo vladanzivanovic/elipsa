@@ -37,11 +37,7 @@ class SliderRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('s')
@@ -61,7 +57,6 @@ class SliderRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @return array
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -77,11 +72,7 @@ class SliderRepository extends ExtendedEntityRepository
         return $query->getQuery()->getScalarResult();
     }
 
-    /**
-     * @param int $position
-     *
-     * @return array
-     */
+    
     public function getHigherThenPosition(int $position): array
     {
         $query = $this->createQueryBuilder('s')

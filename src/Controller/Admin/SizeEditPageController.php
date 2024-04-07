@@ -11,7 +11,8 @@ use App\Entity\ProductSize;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductSizeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,47 +20,25 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SizeEditPageController extends AbstractController
 {
     /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
-
-    /**
      * SizeEditPageController constructor.
      *
      * @param ProductSizeRepository $sizeRepository
      * @param ParameterBagInterface $bag
      */
-    public function __construct(
-        ProductSizeRepository $sizeRepository,
-        ParameterBagInterface $bag
-    ) {
-        $this->sizeRepository = $sizeRepository;
-        $this->bag = $bag;
+    public function __construct()
+    {
     }
 
-    /**
-     * @Route("/add-size", name="admin.add_size_page", methods={"GET"})
-     * @Template("Admin/Pages/sizeEdit.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: '/add-size', name: 'admin.add_size_page', methods: ['GET'])]
+    #[Template('Admin/Pages/sizeEdit.html.twig')]
     public function insert(): array
     {
         return [];
     }
 
-    /**
-     * @Route("/edit-size/{slug}", name="admin.edit_size_page", methods={"GET"})
-     * @Template("Admin/Pages/sizeEdit.html.twig")
-     *
-     * @param ProductSize $productSize
-     *
-     * @return array
-     */
+    
+    #[Route(path: '/edit-size/{slug}', name: 'admin.edit_size_page', methods: ['GET'])]
+    #[Template('Admin/Pages/sizeEdit.html.twig')]
     public function update(ProductSize $productSize): array
     {
         return [

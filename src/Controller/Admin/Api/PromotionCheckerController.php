@@ -29,9 +29,7 @@ final class PromotionCheckerController extends AbstractController
         $this->adminLocale = $adminLocale;
         $this->promotionRepository = $promotionRepository;
     }
-    /**
-     * @Route("/api/promotion/checker", name="admin.promotion_code_checker_api", methods={"GET"})
-     */
+    #[Route(path: '/api/promotion/checker', name: 'admin.promotion_code_checker_api', methods: ['GET'])]
     public function checkCodeIsUnique(Request $request): JsonResponse
     {
         $code = $request->query->get('code');

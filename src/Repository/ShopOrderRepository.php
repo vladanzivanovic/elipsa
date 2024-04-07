@@ -38,11 +38,7 @@ class ShopOrderRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('o')
@@ -64,9 +60,6 @@ class ShopOrderRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $token
-     *
-     * @return ShopOrder
      * @throws NonUniqueResultException
      */
     public function getByToken(string $token): ShopOrder

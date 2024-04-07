@@ -21,7 +21,7 @@ final class OfficeContactEditResponseFormatter
     {
         $response = [];
 
-        if (null !== $officeContact) {
+        if ($officeContact instanceof \App\Entity\OfficeContact) {
             $response['payload'] = $this->OfficeContactView->siteView($officeContact);
         }
 

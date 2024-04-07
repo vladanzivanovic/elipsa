@@ -20,24 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class CartEditRequestParser
 {
-    /**
-     * @var OrderProductRepository
-     */
-    private $productRepository;
+    private \App\Repository\OrderProductRepository $productRepository;
 
-    /**
-     * @var ProductSizeRepository
-     */
+    private \App\Repository\ShopOrderRepository $orderRepository;
 
-    /**
-     * @var ShopOrderRepository
-     */
-    private $orderRepository;
-
-    /**
-     * @param OrderProductRepository $orderProductRepository
-     * @param ShopOrderRepository    $orderRepository
-     */
     public function __construct(
         OrderProductRepository $orderProductRepository,
         ShopOrderRepository $orderRepository
@@ -46,11 +32,7 @@ final class CartEditRequestParser
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return ShopOrder
-     */
+    
     public function parse(Request $request): ShopOrder
     {
         $session = $request->getSession();

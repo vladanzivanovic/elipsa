@@ -18,10 +18,8 @@ class ProductsPageResponseFormatter
 
     public function format()
     {
-        $response = [
+        return [
             'options' => $this->productPageOptionsCollector->options(),
         ];
-
-        return $response;
     }
 }

@@ -19,7 +19,7 @@ final class OfficeContactParser
     }
     public function parse(ParameterBag $bag, OfficeContact $officeContact = null): OfficeContact
     {
-        if (null === $officeContact) {
+        if (!$officeContact instanceof \App\Entity\OfficeContact) {
             $officeContact = new OfficeContact();
         }
 
@@ -32,10 +32,10 @@ final class OfficeContactParser
         return $officeContact;
     }
 
-    private function setLocale(ParameterBag $bag, OfficeContact $officeContact)
+    private function setLocale(ParameterBag $bag, OfficeContact $officeContact): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->get($locale);
+            $transCollection = $bag->all($locale);
 
             $trans = new OfficeContactTranslation();
 

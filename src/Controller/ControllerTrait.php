@@ -6,11 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait ControllerTrait
 {
-    /**
-     * @param Request $request
-     *
-     * @return Request
-     */
+    
     public function transformPutData(Request $request): Request
     {
         if ($request->getMethod() === $request::METHOD_PUT) {

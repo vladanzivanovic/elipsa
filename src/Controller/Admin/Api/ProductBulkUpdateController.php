@@ -22,13 +22,7 @@ class ProductBulkUpdateController extends AbstractController
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * @Route("/api/products/bulk/home-page-position/{position}",
-     *     name="admin.api_bulk_product_home_page_position",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
-     */
+    #[Route(path: '/api/products/bulk/home-page-position/{position}', name: 'admin.api_bulk_product_home_page_position', methods: ['POST'], options: ['expose' => true])]
     public function setBulkHomePagePosition(Request $request, int $position): JsonResponse
     {
         $body = json_decode($request->getContent(), true);
@@ -44,13 +38,7 @@ class ProductBulkUpdateController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    /**
-     * @Route("/api/products/bulk/discount",
-     *     name="admin.api_bulk_products_discount",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
-     */
+    #[Route(path: '/api/products/bulk/discount', name: 'admin.api_bulk_products_discount', methods: ['POST'], options: ['expose' => true])]
     public function setBulkProductsDiscount(ProductsBulkRequestDto $bulkRequestDto): JsonResponse
     {
         $products = $this->productRepository->findBy(['id' => $bulkRequestDto->products]);

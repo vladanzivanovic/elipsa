@@ -13,19 +13,9 @@ final class BannerEditResponseFormatter
 {
     use ImageTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \App\Repository\ImageRepository $imageRepository;
 
-    /**
-     * @param RouterInterface $router
-     * @param ImageRepository $imageRepository
-     */
     public function __construct(
         RouterInterface $router,
         ImageRepository $imageRepository
@@ -34,11 +24,7 @@ final class BannerEditResponseFormatter
         $this->imageRepository = $imageRepository;
     }
 
-    /**
-     * @param Banner $banner
-     *
-     * @return array
-     */
+    
     public function formatResponse(Banner $banner): array
     {
         $rsTrans = $banner->getByLocale('rs');
@@ -68,11 +54,7 @@ final class BannerEditResponseFormatter
         ];
     }
 
-    /**
-     * @param Banner $banner
-     *
-     * @return array
-     */
+    
     private function getImages(Banner $banner): array
     {
         $image = $banner->getImage();

@@ -19,49 +19,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SiteMapBlogSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Repository\BlogRepository $blogRepository;
 
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
+    private string $baseUrl;
 
-    /**
-     * @var BlogRepository
-     */
-    private $blogRepository;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var string
-     */
-    private $baseUrl;
-
-    /**
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param TranslatorInterface   $translator
-     * @param ProductRepository     $productRepository
-     * @param CategoryRepository    $categoryRepository
-     * @param BlogRepository        $blogRepository
-     * @param RouterInterface       $router
-     */
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         TranslatorInterface $translator,
@@ -71,25 +36,22 @@ class SiteMapBlogSubscriber implements EventSubscriberInterface
         RouterInterface $router
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->translator = $translator;
-        $this->productRepository = $productRepository;
-        $this->categoryRepository = $categoryRepository;
         $this->blogRepository = $blogRepository;
         $this->router = $router;
 
         $this->baseUrl = $this->router->getContext()->getScheme().'://'.$this->router->getContext()->getHost().'/';
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPopulateEvent::ON_SITEMAP_POPULATE => [
+            SitemapPopulateEvent::class => [
                 ['registerSingleBlogUrl'],
             ],
         ];
     }
 
-    public function registerSingleBlogUrl(SitemapPopulateEvent $event)
+    public function registerSingleBlogUrl(SitemapPopulateEvent $event): void
     {
         $blogs = $this->blogRepository->findBy(['status' => Blog::STATUS_ACTIVE]);
 

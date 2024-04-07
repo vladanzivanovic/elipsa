@@ -124,7 +124,7 @@ final class NavigationMenuExtension extends AbstractExtension
                 return $cat['parent_id'] === $category['id'];
             });
 
-            if (count($childrenCategories) > 0) {
+            if ($childrenCategories !== []) {
                 $category['children'] = $childrenCategories;
             }
 

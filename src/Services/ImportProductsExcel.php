@@ -22,55 +22,21 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ImportProductsExcel
 {
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private \App\Repository\ProductRepository $productRepository;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var ProductTranslationRepository
-     */
-    private $translationRepository;
+    private \App\Repository\ProductTranslationRepository $translationRepository;
 
-    /**
-     * @var CategoryTranslationRepository
-     */
-    private $categoryTranslationRepository;
+    private \App\Repository\CategoryTranslationRepository $categoryTranslationRepository;
 
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
+    private \App\Repository\ProductSizeRepository $sizeRepository;
 
-    /**
-     * @var ProductImageService
-     */
-    private $imageService;
+    private \App\Services\ProductImageService $imageService;
 
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private \App\Repository\ProductColorRepository $colorRepository;
+    private \App\Repository\TagsRepository $tagsRepository;
 
-    /**
-     * @param ProductRepository             $productRepository
-     * @param ParameterBagInterface         $parameterBag
-     * @param ProductTranslationRepository  $translationRepository
-     * @param CategoryTranslationRepository $categoryTranslationRepository
-     * @param ProductSizeRepository         $sizeRepository
-     * @param ProductImageService           $imageService
-     * @param ProductColorRepository        $colorRepository
-     * @param TagsRepository                $tagsRepository
-     */
     public function __construct(
         ProductRepository $productRepository,
         ParameterBagInterface $parameterBag,
@@ -91,7 +57,7 @@ final class ImportProductsExcel
         $this->tagsRepository = $tagsRepository;
     }
 
-    public function doImport()
+    public function doImport(): void
     {
         if ($xslx = \SimpleXLSX::parse(__DIR__.'/../../storage/import/product_import.xlsx')) {
             $rows = $xslx->rows();
@@ -147,11 +113,7 @@ final class ImportProductsExcel
 
     }
 
-    /**
-     * @param array $productExcel
-     *
-     * @return Product
-     */
+    
     private function getProduct(array $productExcel): Product
     {
         $product = $this->productRepository->findOneBy([
@@ -167,10 +129,6 @@ final class ImportProductsExcel
         return $product;
     }
 
-    /**
-     * @param array   $productExcel
-     * @param Product $product
-     */
     private function setLocales(array $productExcel, Product $product): void
     {
         $locales = explode('|', $this->parameterBag->get('locales'));
@@ -191,10 +149,6 @@ final class ImportProductsExcel
         }
     }
 
-    /**
-     * @param Product $product
-     * @param array   $categories
-     */
     private function setCategories(Product $product, array $categories): void
     {
         if (!is_null($product->getId())) {
@@ -213,10 +167,6 @@ final class ImportProductsExcel
         }
     }
 
-    /**
-     * @param Product $product
-     * @param array   $tags
-     */
     private function setTags(Product $product, array $tags): void
     {
         if (!is_null($product->getId())) {
@@ -237,10 +187,6 @@ final class ImportProductsExcel
         }
     }
 
-    /**
-     * @param Product $product
-     * @param array   $sizes
-     */
     private function setSizes(Product $product, array $sizes): void
     {
         if (!is_null($product->getId())) {

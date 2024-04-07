@@ -15,19 +15,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class BannerDataTableResponseFormatter
 {
     use DataTableResponseTrait;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param RouterInterface     $router
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         RouterInterface $router,
         TranslatorInterface $translator
@@ -36,13 +26,7 @@ final class BannerDataTableResponseFormatter
         $this->translator = $translator;
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $data
-     * @param int            $total
-     *
-     * @return array
-     */
+    
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         $router = $this->router;

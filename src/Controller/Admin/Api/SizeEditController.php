@@ -27,26 +27,13 @@ final class SizeEditController extends AbstractController
 {
     use ControllerTrait;
 
-    /**
-     * @var SizeRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\SizeRequestParser $requestParser;
 
-    /**
-     * @var SizeHandler
-     */
-    private $sizeHandler;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Handler\SizeHandler $sizeHandler;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
     /**
      * SizeEditController constructor.
-     *
-     * @param SizeRequestParser   $requestParser
-     * @param SizeHandler         $sizeHandler
-     * @param TranslatorInterface $translator
      */
     public function __construct(
         SizeRequestParser $requestParser,
@@ -59,13 +46,12 @@ final class SizeEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-size", name="admin.add_size_api", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws \Exception
      */
+    #[Route(path: '/api/add-size', name: 'admin.add_size_api', methods: ['POST'], options: ['expose' => true])]
     public function insert(Request $request)
     {
         $size = $this->requestParser->parse($request->request);
@@ -78,15 +64,13 @@ final class SizeEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-size/{slug}", name="admin.edit_size_api", methods={"PUT"}, options={"expose": true})
      *
-     * @param Request     $request
-     * @param ProductSize $productSize
      *
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/edit-size/{slug}', name: 'admin.edit_size_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, ProductSize $productSize)
     {
         $productSize = $this->requestParser->parse($request->request, $productSize);

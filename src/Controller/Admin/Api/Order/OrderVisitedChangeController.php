@@ -31,12 +31,7 @@ final class OrderVisitedChangeController extends AbstractController
         $this->orderView = $orderView;
     }
 
-    /**
-     * @Route("/api/order/{token}/visited", name="admin.order_set_visited", methods={"PUT"}, options={"expose": true})
-     *
-     * @param OrderRequestDto $orderRequestDto
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/{token}/visited', name: 'admin.order_set_visited', methods: ['PUT'], options: ['expose' => true])]
     public function changeState(OrderRequestDto $orderRequestDto): JsonResponse
     {
         try {

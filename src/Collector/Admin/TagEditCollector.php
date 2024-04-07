@@ -14,8 +14,6 @@ final class TagEditCollector
 {
     private TranslatorInterface $translator;
 
-    private TagsRepository $tagsRepository;
-
     private RequestStack $requestStack;
 
     private string $locales;
@@ -27,7 +25,6 @@ final class TagEditCollector
         string $locales
     ) {
         $this->translator = $translator;
-        $this->tagsRepository = $tagsRepository;
         $this->locales = $locales;
         $this->requestStack = $requestStack;
     }
@@ -51,7 +48,7 @@ final class TagEditCollector
             ]
         ];
 
-        if (null !== $tag) {
+        if ($tag instanceof \App\Entity\Tags) {
             $relatedType = $this->requestStack->getMainRequest()->attributes->get('_route') === 'admin.edit_blog_tag_page' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
 
             $locales = explode('|', $this->locales);

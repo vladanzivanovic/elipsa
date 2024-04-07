@@ -48,10 +48,9 @@ final class OrderCompleteController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/complete/{token}", name="site_api.order_complete", methods={"POST"}, options={"expose": true})
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/order/complete/{token}', name: 'site_api.order_complete', methods: ['POST'], options: ['expose' => true])]
     public function complete(Request $request, string $token): Response
     {
         try {
@@ -77,8 +76,6 @@ final class OrderCompleteController extends AbstractController
     }
 
     /**
-     * @param ParameterBag $parameterBag
-     *
      * @throws TransportExceptionInterface
      */
     private function validateHuman(ParameterBag $parameterBag): void
@@ -93,7 +90,7 @@ final class OrderCompleteController extends AbstractController
         $captchaResponse = json_decode($response->getContent(), true);
 
         if (
-            true === $this->isCsrfTokenValid('order_complete', $parameterBag->get('_csrf_token')) &&
+            $this->isCsrfTokenValid('order_complete', $parameterBag->get('_csrf_token')) &&
             true === $captchaResponse['success'] && $captchaResponse['score'] > 0.4 && $captchaResponse['action'] === 'complete_order'
         ) {
             return;

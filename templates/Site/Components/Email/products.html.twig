@@ -59,7 +59,9 @@
                                             <p class="last-child">
                                                 <strong><span style="font-size: 12px">{{ 'email.order.table.unit_price' | trans }}:</span></strong>
                                                 <span style="font-size: 12px">
-                                                    {% if true == isDiscounted %}
+                                                    {% if 0 < product.promotion_price | length %}
+                                                        {{ product.promotion_price.amount }} {{ product.promotion_price.currency }}
+                                                    {% elseif 0 < product.discount | length %}
                                                         {{ product.discount.price.amount }} {{ product.discount.price.currency }}
                                                     {% else %}
                                                         {{ product.price.amount }} {{ product.price.currency }}

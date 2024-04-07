@@ -22,7 +22,7 @@ class CartPageDom {
 
         $(this.#mapper.total).text(`${order.total.amount} ${order.total.currency}`);
         $(this.#mapper.promoCouponPrice).text(`${order.promotion.percentage} %`);
-        $(this.#mapper.shippingPrice).text(`${order.shipping_price.amount}  ${order.total.currency}`);
+        $(this.#mapper.shippingPrice).text(`${order.shipping.price.amount}  ${order.shipping.price.currency}`);
         $(this.#mapper.totalShipping).text(`${order.total_with_shipping.amount}  ${order.total_with_shipping.currency}`);
 
         this.#toggleUpdateButton(hasAvailableProducts);
@@ -78,12 +78,19 @@ class CartPageDom {
         let $sizeHtml = '';
 
         const isDiscounted = 0 < Object.keys(orderProduct.discount).length;
+        const isPromoPrice = 0 < Object.keys(orderProduct.promotion_price).length;
 
         if (orderProduct.is_sold) {
             isSoldHtml = `<p class="cart_product_name product-name-sold">(${Translator.trans('product.unavailable', null, 'messages', LOCALE)})</p>`;
         }
 
-        if (isDiscounted) {
+        if (isPromoPrice) {
+            discountPriceHtml = `
+                    <span class="product_price discount">
+                        ${ orderProduct.promotion_price.amount } ${ orderProduct.promotion_price.currency }
+                    </span>`;
+        }
+        else if (isDiscounted) {
             discountPriceHtml = `
                     <span class="product_price discount">
                         ${ orderProduct.discount.price.amount } ${ orderProduct.discount.price.currency }
@@ -113,7 +120,7 @@ class CartPageDom {
                     ${isSoldHtml}
                 </td>
                 <td class="cart_product_price_value">
-                    <span class="product_price ${ isDiscounted ? 'old-price' : '' }">
+                    <span class="product_price ${ isPromoPrice || isDiscounted ? 'old-price' : '' }">
                         ${ orderProduct.price.amount } ${ orderProduct.price.currency }
                     </span>
                     ${discountPriceHtml}
@@ -126,7 +133,7 @@ class CartPageDom {
                 <td class="cart_product_total_value">
                     <span class="product_price">
                         ${ orderProduct.total.amount } ${ orderProduct.total.currency }
-                        </span>
+                    </span>
                 </td>
                 <td class="cart_product_name">
                     <a href="#" class="remove-product">
@@ -140,17 +147,36 @@ class CartPageDom {
     #updateProductRow(orderProduct, row)
     {
         const isDiscounted = 0 < Object.keys(orderProduct.discount).length;
+        const isPromoPrice = 0 < Object.keys(orderProduct.promotion_price).length;
 
         row.find('.product-title').text(orderProduct.translation.title);
         row.find('.cart_product_total_value span').text(`${orderProduct.total.amount} ${orderProduct.total.currency}`);
         row.find('.product-quantity-t input').val(orderProduct.quantity);
+        row.find('.cart_product_total_value span').removeClass('old-price').text(`${orderProduct.total.amount} ${orderProduct.total.currency}`);
 
-        if (isDiscounted) {
+        if (isPromoPrice) {
+            if (0 === row.find('.cart_product_price_value .old-price').length) {
+                row.find('.cart_product_price_value span').addClass('old-price').text(`${orderProduct.price.amount} ${orderProduct.price.currency}`);
+
+                row.find('.cart_product_price_value').append(`
+                <span class="product_price discount">
+                    ${ isPromoPrice ? orderProduct.promotion_price.amount : orderProduct.discount.price.amount } ${ isPromoPrice ? orderProduct.promotion_price.currency : orderProduct.discount.price.currency }
+                </span>`
+                );
+            } else {
+                row.find('.cart_product_price_value .old-price').text(`${orderProduct.price.amount} ${orderProduct.price.currency}`);
+                row.find('.cart_product_price_value .discount').text(`
+                    ${ isPromoPrice ? orderProduct.promotion_price.amount : orderProduct.discount.price.amount } ${ isPromoPrice ? orderProduct.promotion_price.currency : orderProduct.discount.price.currency }
+                `);
+            }
+        }
+        else if (isDiscounted) {
             row.find('.cart_product_price_value .old-price').text(`${orderProduct.price.amount} ${orderProduct.price.currency}`);
             row.find('.cart_product_price_value .discount').text(`${orderProduct.discount.price.amount} ${orderProduct.discount.price.currency}`);
-
-        } else {
-            row.find('.cart_product_price_value span').text(`${orderProduct.price.amount} ${orderProduct.price.currency}`);
+        }
+        else {
+            row.find('.cart_product_price_value span').removeClass('old-price').text(`${orderProduct.price.amount} ${orderProduct.price.currency}`);
+            row.find('.cart_product_price_value .discount').remove();
         }
     }
 

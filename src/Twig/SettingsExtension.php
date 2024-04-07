@@ -4,35 +4,20 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use App\Collector\CartPageCollector;
 use App\Collector\SettingsCollector;
-use App\Entity\BannerTranslation;
-use App\Entity\Image;
-use App\Formatter\Site\CartPageFormatter;
-use App\Repository\BannerRepository;
-use App\Repository\ImageRepository;
-use App\Repository\SettingsRepository;
-use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class SettingsExtension extends AbstractExtension
 {
-    private SettingsRepository $settingsRepository;
-
     private SettingsCollector $settingsCollector;
 
     public function __construct(
-        SettingsRepository $settingsRepository,
         SettingsCollector $settingsCollector
     ) {
-        $this->settingsRepository = $settingsRepository;
         $this->settingsCollector = $settingsCollector;
     }
 
-    /**
-     * @return array
-     */
     public function getFunctions(): array
     {
         return [
@@ -40,26 +25,12 @@ final class SettingsExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return array|null
-     */
-    public function getSettings(string $locale): ?array
+    public function getSettings(string $locale): array|null
     {
-        $settings = $this->settingsRepository->getAllSettingsByLocale($locale);
-
-        $formatted = [];
-
-        foreach ($settings as $setting) {
-            $formatted[$setting['slug']] = $setting['value'];
-        }
-
         return $this->settingsCollector->collect();
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'settings_extension';
     }

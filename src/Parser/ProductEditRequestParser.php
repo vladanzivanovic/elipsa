@@ -82,13 +82,13 @@ final class ProductEditRequestParser
         $this->setLocales($bag, $product);
 
         if ($bag->has('categories')) {
-            $this->setCategories($product, $bag->get('categories'));
+            $this->setCategories($product, $bag->all('categories'));
         }
         if ($bag->has('tags')) {
-            $this->setTags($product, $bag->get('tags'));
+            $this->setTags($product, $bag->all('tags'));
         }
         if ($bag->has('sizes')) {
-            $this->setSizes($product, $bag->get('sizes'));
+            $this->setSizes($product, $bag->all('sizes'));
         }
 
         $this->setCleaning($product, $bag);
@@ -111,10 +111,10 @@ final class ProductEditRequestParser
             return;
         }
 
-        foreach ($bag->get('youtube') as $youtube) {
+        foreach ($bag->all('youtube') as $youtube) {
             $youtube = $this->youTubeParser->parse(json_decode($youtube, true));
 
-            if (null === $youtube) {
+            if (!$youtube instanceof \App\Entity\Youtube) {
                 continue;
             }
 
@@ -125,7 +125,7 @@ final class ProductEditRequestParser
     private function setLocales(ParameterBag $bag, Product $product): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->get($locale);
+            $transCollection = $bag->all($locale);
             $trans = new ProductTranslation();
 
             if (null !== $product->getId()) {
@@ -195,13 +195,13 @@ final class ProductEditRequestParser
         }
     }
 
-    private function setCleaning(Product $product, ParameterBag $bag)
+    private function setCleaning(Product $product, ParameterBag $bag): void
     {
         $collection = $product->getProductCleanings();
         $collection->clear();
 
         if ($bag->has('cleaning')) {
-            foreach ($bag->get('cleaning') as $iconName) {
+            foreach ($bag->all('cleaning') as $iconName) {
                 $cleaning = new ProductCleaning();
                 $cleaning->setIcon($iconName);
                 $cleaning->setProduct($product);
@@ -211,7 +211,7 @@ final class ProductEditRequestParser
         }
     }
 
-    private function updateOrderProducts(Product $product)
+    private function updateOrderProducts(Product $product): void
     {
         foreach ($product->getOrderProducts() as $orderProduct) {
             $order = $orderProduct->getOrderId();

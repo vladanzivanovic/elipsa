@@ -24,9 +24,7 @@ final class SliderTextHandler
     }
 
     /**
-     * @param SliderText $sliderText
      *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -47,7 +45,6 @@ final class SliderTextHandler
     }
 
     /**
-     * @param SliderText $sliderText
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

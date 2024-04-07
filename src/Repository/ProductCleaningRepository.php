@@ -20,11 +20,7 @@ class ProductCleaningRepository extends ExtendedEntityRepository
         parent::__construct($registry, ProductCleaning::class);
     }
 
-    /**
-     * @param Product $product
-     *
-     * @return array
-     */
+    
     public function getByProduct(Product $product): array
     {
         $query = $this->createQueryBuilder('pc')

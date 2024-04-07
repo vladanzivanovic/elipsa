@@ -24,10 +24,7 @@ final class HomePageCollector
     public function __construct(
         SliderRepository $sliderRepository,
         BannerRepository $bannerRepository,
-        ProductRepository $productRepository,
-        ProductColorRepository $colorRepository,
-        ProductSizeRepository $sizeRepository,
-        TagsRepository $tagsRepository
+        ProductRepository $productRepository
     ) {
         $this->sliderRepository = $sliderRepository;
         $this->bannerRepository = $bannerRepository;

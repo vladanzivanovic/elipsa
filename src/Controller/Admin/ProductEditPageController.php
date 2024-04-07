@@ -10,7 +10,8 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\TagsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -40,10 +41,8 @@ final class ProductEditPageController extends AbstractController
         $this->responseFormatter = $responseFormatter;
     }
 
-    /**
-     * @Route("/add-product", name="admin.add_product_page", methods={"GET"})
-     * @Template("Admin/Pages/productEdit.html.twig")
-     */
+    #[Route(path: '/add-product', name: 'admin.add_product_page', methods: ['GET'])]
+    #[Template('Admin/Pages/productEdit.html.twig')]
     public function insert(): array
     {
         $options = [
@@ -56,10 +55,8 @@ final class ProductEditPageController extends AbstractController
         return $this->responseFormatter->formatResponse($options);
     }
 
-    /**
-     * @Route("/edit-product/{slug}", name="admin.edit_product_page", methods={"GET"})
-     * @Template("Admin/Pages/productEdit.html.twig")
-     */
+    #[Route(path: '/edit-product/{slug}', name: 'admin.edit_product_page', methods: ['GET'])]
+    #[Template('Admin/Pages/productEdit.html.twig')]
     public function edit(ProductTranslation $productTranslation): array
     {
         $options = [

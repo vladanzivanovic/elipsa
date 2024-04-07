@@ -36,7 +36,7 @@ final class ShopFilterCollector
         $sizes = $this->sizeRepository->getForOptions();
         $prices = $this->productRepository->getLowestAndHighestPrice();
 
-        $data = [
+        return [
             'sizes' => $sizes,
             'colors' => $this->colorRepository->getByLocale($locale),
             'collection' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_COLLECTION),
@@ -44,7 +44,5 @@ final class ShopFilterCollector
             'attributes' => $this->tagsRepository->getByProductType(Tags::PRODUCT_TYPE_ATTRIBUTE),
             'price' => $prices[0],
         ];
-
-        return $data;
     }
 }

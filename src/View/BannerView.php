@@ -31,7 +31,7 @@ final class BannerView
 
     public function menuView(Banner $banner, string $locale): array
     {
-        $trans = $banner->getByLocale($locale);
+        $banner->getByLocale($locale);
 
         return $this->links($banner, $locale, 'menu_banner');
     }

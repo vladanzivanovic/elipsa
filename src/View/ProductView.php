@@ -56,7 +56,7 @@ final class ProductView
             'show_home_page' => $product->getShowHomePage(),
             'is_sold' => $product->isSold(),
             'discount' => null,
-            'is_wish' => null !== $user && $product->isUserWish($user),
+            'is_wish' => $user instanceof \App\Entity\User && $product->isUserWish($user),
             'sizes' => $this->getSizes($product),
         ];
 
@@ -103,11 +103,15 @@ final class ProductView
         foreach ($translations as $locale => $translation) {
             $params = ['slug' => $translation['slug'], '_locale' => $locale];
 
-            $links[$locale] = $this->router->generate(
-                'site.product_page',
-                $params,
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
+            try {
+                $links[$locale] = $this->router->generate(
+                    'site.product_page',
+                    $params,
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+            } catch (\Throwable $exception) {
+//                dd($translations);
+            }
         }
 
         return $links;

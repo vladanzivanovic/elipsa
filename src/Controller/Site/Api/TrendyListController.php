@@ -27,28 +27,16 @@ final class TrendyListController extends AbstractController
     }
 
     /**
-     * @Route({
-     *          "rs": "/api/trendy/{page}/{searchData}",
-     *          "en": "/api/trendy/{page}/{searchData}"
-     *      },
-     *     name="site_api.trendy_page",
-     *     methods={"GET"},
-     *     defaults={"page": 1, "searchData": null},
-     *     requirements={"searchData": ".*"},
-     *     options={"expose": true}
-     * )
      *
-     * @param Request      $request
-     * @param int          $page
      * @param string|null  $searchData
      *
-     * @return JsonResponse
      */
+    #[Route(path: ['rs' => '/api/trendy/{page}/{searchData}', 'en' => '/api/trendy/{page}/{searchData}'], name: 'site_api.trendy_page', methods: ['GET'], defaults: ['page' => 1, 'searchData' => null], requirements: ['searchData' => '.*'], options: ['expose' => true])]
     public function index(Request $request, int $page, ?string $searchData): JsonResponse
     {
         $locale = $request->getLocale();
 
-        $data = $this->collectors->collectForApi($locale, $page, $this->getUser(), $searchData, true);
+        $data = $this->collectors->collectForApi($locale, $page, $this->getUser());
 
         return $this->json($this->formatter->formatResponse($data, $locale, 'site.trendy_page', $this->getUser()));
     }

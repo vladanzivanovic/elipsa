@@ -6,42 +6,24 @@ namespace App\Model;
 
 class DataTableColumnModel
 {
-    /**
-     * @var string
-     */
-    private $data;
+    private string $data;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var bool
-     */
-    private $searchable;
+    private bool $searchable;
 
-    /**
-     * @var bool
-     */
-    private $orderable;
+    private bool $orderable;
 
-    /**
-     * @var string
-     */
-    private $searchValue;
+    private ?string $searchValue = null;
 
-    /**
-     * @var string
-     */
-    private $searchRegex;
+    private string $searchRegex;
 
     public function __construct(
         string $data,
         string $name,
         bool $searchable = true,
         bool $orderable = true,
-        string $searchValue = '',
+        string $searchValue = null,
         string  $searchRegex = ''
     ) {
         $this->data = $data;
@@ -52,49 +34,31 @@ class DataTableColumnModel
         $this->searchRegex = $searchRegex;
     }
 
-    /**
-     * @return string
-     */
     public function getData(): string
     {
         return $this->data;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
     public function isSearchable(): bool
     {
         return $this->searchable;
     }
 
-    /**
-     * @return bool
-     */
     public function isOrderable(): bool
     {
         return $this->orderable;
     }
 
-    /**
-     * @return string
-     */
-    public function getSearchValue(): string
+    public function getSearchValue(): ?string
     {
         return $this->searchValue;
     }
 
-    /**
-     * @return string
-     */
     public function getSearchRegex(): string
     {
         return $this->searchRegex;

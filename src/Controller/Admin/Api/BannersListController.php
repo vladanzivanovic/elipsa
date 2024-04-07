@@ -44,15 +44,12 @@ final class BannersListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-home-collection-banner-list", name="admin.get_home_banner_list", methods={"POST"}, options={"expose": true})
-     * @Route("/api/get-banner-list", name="admin.get_banner_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-home-collection-banner-list', name: 'admin.get_home_banner_list', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/get-banner-list', name: 'admin.get_banner_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request): JsonResponse
     {
         $collectionType = [

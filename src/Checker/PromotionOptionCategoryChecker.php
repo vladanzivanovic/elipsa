@@ -41,4 +41,9 @@ final class PromotionOptionCategoryChecker implements PromotionOptionCheckerInte
     {
         return PromotionOption::OPTION_CATEGORIES;
     }
+
+    public static function getDefaultPriority(): int
+    {
+        return 10;
+    }
 }

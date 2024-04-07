@@ -21,14 +21,12 @@ final class SliderTextRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-slider-text/{id}", name="admin.remove_slider_text_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param SliderText $sliderText
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-slider-text/{id}', name: 'admin.remove_slider_text_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(SliderText $sliderText): JsonResponse
     {
         $this->handler->remove($sliderText);

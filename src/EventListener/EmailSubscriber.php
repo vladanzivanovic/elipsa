@@ -30,9 +30,6 @@ final class EmailSubscriber implements EventSubscriberInterface
         $this->emailRepository = $emailRepository;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
        return [
@@ -66,7 +63,6 @@ final class EmailSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param EmailModel $emailModel
      *
      * @throws \Swift_SwiftException
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
@@ -83,7 +79,7 @@ final class EmailSubscriber implements EventSubscriberInterface
                 ->htmlTemplate('Site/Emails/'.$emailModel->getTemplate())
                 ->context($emailModel->getTemplateData());
 
-            if (!empty($emailModel->getAttachments())) {
+            if ($emailModel->getAttachments() !== null && $emailModel->getAttachments() !== []) {
                 foreach ($emailModel->getAttachments() as $attachment) {
                     $emailInstance->attach(( new \Swift_Attachment())->setFile($attachment));
                 }
@@ -98,13 +94,11 @@ final class EmailSubscriber implements EventSubscriberInterface
             $emailModel->setStatus(Email::EMAIL_FAILED);
             $emailModel->setErrorMsg($swift_TransportException->getMessage());
             $this->saveEmail($emailModel);
-            throw new \Swift_SwiftException(Email::EMAIL_FAILED);
+            throw new \Swift_SwiftException(Email::EMAIL_FAILED, $swift_TransportException->getCode(), $swift_TransportException);
         }
     }
 
     /**
-     * @param EmailModel $emailModel
-     *
      * @throws \Doctrine\ORM\ORMException
      */
     private function saveEmail(EmailModel $emailModel): void

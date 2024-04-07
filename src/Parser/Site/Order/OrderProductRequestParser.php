@@ -14,6 +14,7 @@ use App\Repository\ImageRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductTranslationRepository;
 use App\Request\Dto\OrderProductRequestDto;
+use Doctrine\ORM\NonUniqueResultException;
 use Webmozart\Assert\Assert;
 
 final class OrderProductRequestParser
@@ -50,6 +51,10 @@ final class OrderProductRequestParser
         $this->productPromotionParser = $productPromotionParser;
     }
 
+    /**
+     * @throws ProductManipulationException
+     * @throws NonUniqueResultException
+     */
     public function parse(
         OrderProductRequestDto $orderProductRequestDto
     ): ShopOrder {
@@ -70,7 +75,6 @@ final class OrderProductRequestParser
         $promotion = $this->productPromotionParser->setProductPromotion($product);
 
         Assert::notFalse($product->hasColor($color));
-        Assert::notFalse($product->isSizeAvailable($size));
 
         $orderProduct->setColor($color);
         $orderProduct->setSize($size);
@@ -80,11 +84,15 @@ final class OrderProductRequestParser
         $orderProduct->setCode($product->getCode());
         $orderProduct->setDiscount($product->getPromoDiscount() ?? $product->getDiscount());
 
-        if (null !== $promotion) {
+        if (false === $orderProduct->isProductAvailable()) {
+            throw new ProductManipulationException('product.size_unavailable');
+        }
+
+        if ($promotion instanceof \App\Entity\Promotion) {
             $orderProduct->setPromotion($promotion);
         }
 
-        if (null !== $order->getCoupon()) {
+        if ($order->getCoupon() instanceof \App\Entity\Promotion) {
             $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
         }
 
@@ -115,7 +123,7 @@ final class OrderProductRequestParser
             $color
         );
 
-        if (null === $orderProduct) {
+        if (!$orderProduct instanceof \App\Entity\OrderProduct) {
             $productTranslation = $this->productTranslationRepository->findOneBy(['slug' => $productTranslationSlug]);
 
             if (true === $productTranslation->getProduct()->isSold()) {

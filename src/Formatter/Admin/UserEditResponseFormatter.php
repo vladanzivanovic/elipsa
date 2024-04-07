@@ -14,30 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 final class UserEditResponseFormatter
 {
     /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-
-    /**
-     * @param RouterInterface $router
-     * @param ImageRepository $imageRepository
-     */
-    public function __construct(
-        RouterInterface $router,
-        ImageRepository $imageRepository
-    ) {
-        $this->router = $router;
-        $this->imageRepository = $imageRepository;
-    }
-
-    /**
      * @param Banner $banner
-     *
-     * @return array
      */
     public function formatResponse(User $user): array
     {
@@ -55,34 +32,5 @@ final class UserEditResponseFormatter
             'zip_code' => null !== $address ? $address->getZipCode() : '',
             'phone' => null !== $address ? $address->getPhone() : '',
         ];
-    }
-
-    /**
-     * @param Banner $banner
-     *
-     * @return array
-     */
-    private function getImages(Banner $banner): array
-    {
-        $image = $banner->getImage();
-        $mobileImage = $this->imageRepository->findOneBy(['parentImage' => $image->getName(), 'device' => Image::DEVICE_MOBILE]);
-
-        $images = [
-            'desktop' => [
-                'id' => $image->getId(),
-                'fileName' => $image->getName(),
-                'isMain' => $image->getIsMain(),
-            ],
-        ];
-
-        if (null !== $mobileImage) {
-            $images['mobile'] = [
-                'id' => $mobileImage->getId(),
-                'fileName' => $mobileImage->getName(),
-                'isMain' => $mobileImage->getIsMain(),
-            ];
-        }
-
-        return $images;
     }
 }

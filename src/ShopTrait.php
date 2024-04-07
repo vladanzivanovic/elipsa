@@ -12,8 +12,9 @@ trait ShopTrait
         $filters = [];
         $criteria = [];
         $sortMapper = $this->bag->get('shop')['sort_mapping'];
+        $counter = count($searchArray);
 
-        for ($i = 0; $i < count($searchArray); $i++) {
+        for ($i = 0; $i < $counter; $i++) {
             if ($i % 2 == 0) {
                 $filters[] = $this->translator->trans($searchArray[$i], [], 'messages', 'en');
 

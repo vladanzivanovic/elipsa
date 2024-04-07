@@ -34,11 +34,7 @@ class CatalogueRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('c')
@@ -57,11 +53,7 @@ class CatalogueRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getCatalogPage(string $locale): array
     {
         $query = $this->createQueryBuilder('c')

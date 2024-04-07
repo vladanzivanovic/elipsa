@@ -14,20 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class LoyaltyController extends AbstractController
 {
-    /**
-     * @var LoyaltyRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\Site\LoyaltyRequestParser $requestParser;
 
-    /**
-     * @var LoyaltyHandler
-     */
-    private $handler;
+    private \App\Handler\Site\LoyaltyHandler $handler;
 
-    /**
-     * @param LoyaltyRequestParser $requestParser
-     * @param LoyaltyHandler       $handler
-     */
     public function __construct(
         LoyaltyRequestParser $requestParser,
         LoyaltyHandler $handler
@@ -37,14 +27,12 @@ final class LoyaltyController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-loyalty", name="site_api.add_loyalty", methods={"POST"}, options={"expose": true})
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/add-loyalty', name: 'site_api.add_loyalty', methods: ['POST'], options: ['expose' => true])]
     public function add(Request $request): JsonResponse
     {
         try {

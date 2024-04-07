@@ -36,14 +36,12 @@ final class OfficeContactView
 
     public function siteView(OfficeContact $officeContact): array
     {
-        $view = [
+        return [
             'translations' => $this->getTranslations($officeContact),
             'telephone' => $officeContact->getTelephone(),
             'show_in_footer' => $officeContact->isShownInFooter(),
             'use_in_email' => $officeContact->isUseInEmail(),
         ];
-
-        return $view;
     }
 
     private function getTranslations(OfficeContact $officeContact): array

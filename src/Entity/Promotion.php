@@ -10,20 +10,17 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\PromotionRepository")
  * @ORM\Table(name="promotion", uniqueConstraints={@ORM\UniqueConstraint(name="promo_code", columns={"code"})})
  */
-class Promotion
+class Promotion implements EntityInterface
 {
+    use ResourceTrait;
+
     const CHECKER_TYPE_VALIDITY = 'date_valid';
 
     const TYPE_COUPON = 'coupon';
 
     const TYPE_PRODUCT = 'product';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    const TYPE_FREE_SHIPPING = 'free_shipping';
 
     /**
      * @ORM\Column(type="string")
@@ -53,6 +50,7 @@ class Promotion
     /**
      * @ORM\OneToMany(targetEntity=PromotionOption::class, mappedBy="promotionId", cascade={"persist", "remove"}, orphanRemoval=true)
      *
+     * @var Collection<int, PromotionOption>
      */
     private Collection $promotionOptions;
 
@@ -73,21 +71,14 @@ class Promotion
         $this->orderProducts = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getCode(): ?string
     {
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(string $code): void
     {
         $this->code = $code;
-
-        return $this;
     }
 
     public function getValidFrom(): ?\DateTimeInterface
@@ -95,11 +86,9 @@ class Promotion
         return $this->validFrom;
     }
 
-    public function setValidFrom(\DateTimeInterface $validFrom): self
+    public function setValidFrom(\DateTimeInterface $validFrom): void
     {
         $this->validFrom = $validFrom;
-
-        return $this;
     }
 
     public function getValidTo(): ?\DateTimeInterface
@@ -107,11 +96,9 @@ class Promotion
         return $this->validTo;
     }
 
-    public function setValidTo(\DateTimeInterface $validTo): self
+    public function setValidTo(\DateTimeInterface $validTo): void
     {
         $this->validTo = $validTo;
-
-        return $this;
     }
 
     public function getDiscount(): ?int
@@ -119,11 +106,9 @@ class Promotion
         return $this->discount;
     }
 
-    public function setDiscount(int $discount): self
+    public function setDiscount(int $discount): void
     {
         $this->discount = $discount;
-
-        return $this;
     }
 
     /**
@@ -134,17 +119,15 @@ class Promotion
         return $this->shopOrders;
     }
 
-    public function addShopOrder(ShopOrder $shopOrder): self
+    public function addShopOrder(ShopOrder $shopOrder): void
     {
         if (!$this->shopOrders->contains($shopOrder)) {
             $this->shopOrders[] = $shopOrder;
             $shopOrder->setCoupon($this);
         }
-
-        return $this;
     }
 
-    public function removeShopOrder(ShopOrder $shopOrder): self
+    public function removeShopOrder(ShopOrder $shopOrder): void
     {
         if ($this->shopOrders->contains($shopOrder)) {
             $this->shopOrders->removeElement($shopOrder);
@@ -153,8 +136,6 @@ class Promotion
                 $shopOrder->setCoupon(null);
             }
         }
-
-        return $this;
     }
 
     /**
@@ -165,37 +146,31 @@ class Promotion
         return $this->promotionOptions;
     }
 
-    public function addPromotionOption(PromotionOption $promotionOption): self
+    public function addPromotionOption(PromotionOption $promotionOption): void
     {
         if (!$this->promotionOptions->contains($promotionOption)) {
             $this->promotionOptions[] = $promotionOption;
             $promotionOption->setPromotionId($this);
         }
-
-        return $this;
     }
 
-    public function removePromotionOption(PromotionOption $promotionOption): self
+    public function removePromotionOption(PromotionOption $promotionOption): void
     {
-        if ($this->promotionOptions->removeElement($promotionOption)) {
-            // set the owning side to null (unless already changed)
-            if ($promotionOption->getPromotionId() === $this) {
-                $promotionOption->setPromotionId(null);
-            }
-        }
-
-        return $this;
+        $this->promotionOptions->removeElement($promotionOption);
     }
 
-    public function getOptionTypes(): ?array
+    /**
+     * @return PromotionOption[]|null
+     */
+    public function getOptionTypes(): array
     {
-        if (true === $this->promotionOptions->isEmpty()) {
-            return null;
-        }
-
         $types = [];
 
         foreach ($this->promotionOptions as $promotionOption) {
+            if (PromotionOption::OPTION_ALL_PRODUCTS === $promotionOption->getType()) {
+                continue;
+            }
+
             $types[] = $promotionOption->getType();
         }
 
@@ -212,6 +187,19 @@ class Promotion
     }
 
     /**
+     * @param string $type
+     * @return Collection| PromotionOption[]
+     */
+    public function getOptionsByType(string $type): Collection
+    {
+        $filteredCollection = $this->promotionOptions->filter(function (PromotionOption $promotionOption) use ($type) : bool {
+            return $promotionOption->getType() === $type;
+        });
+
+        return $filteredCollection;
+    }
+
+    /**
      * @return Collection<int, OrderProduct>
      */
     public function getOrderProducts(): Collection
@@ -219,26 +207,16 @@ class Promotion
         return $this->orderProducts;
     }
 
-    public function addOrderProduct(OrderProduct $orderProduct): self
+    public function addOrderProduct(OrderProduct $orderProduct): void
     {
         if (!$this->orderProducts->contains($orderProduct)) {
             $this->orderProducts[] = $orderProduct;
-            $orderProduct->setPromoCoupon($this);
         }
-
-        return $this;
     }
 
-    public function removeOrderProduct(OrderProduct $orderProduct): self
+    public function removeOrderProduct(OrderProduct $orderProduct): void
     {
-        if ($this->orderProducts->removeElement($orderProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($orderProduct->getPromoCoupon() === $this) {
-                $orderProduct->setPromoCoupon(null);
-            }
-        }
-
-        return $this;
+        $this->orderProducts->removeElement($orderProduct);
     }
 
     public function getType(): ?string
@@ -246,10 +224,8 @@ class Promotion
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 }

@@ -31,9 +31,9 @@ final class ProductEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/product/add", name="admin.add_product_api", methods={"POST"}, options={"expose": true})
      * @throws ORMException
      */
+    #[Route(path: '/api/product/add', name: 'admin.add_product_api', options: ['expose' => true], methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $product = $this->requestParser->parse($request->request);
@@ -44,9 +44,9 @@ final class ProductEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/product/{slug}", name="admin.edit_product_api", methods={"PUT"}, options={"expose": true})
      * @throws ORMException
      */
+    #[Route(path: '/api/product/{slug}', name: 'admin.edit_product_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, ProductTranslation $productTranslation): JsonResponse
     {
         $product = $this->requestParser->parse($request->request, $productTranslation->getProduct());
@@ -56,9 +56,7 @@ final class ProductEditController extends AbstractController
         return $this->json(null, Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/api/product/status/{slug}/{status}", name="admin.api_product_change_status", methods={"PATCH"}, options={"expose": true})
-     */
+    #[Route(path: '/api/product/status/{slug}/{status}', name: 'admin.api_product_change_status', methods: ['PATCH'], options: ['expose' => true])]
     public function changeStatus(ProductTranslation $productTranslation, int $status): JsonResponse
     {
         $productTranslation->getProduct()->setStatus($status);
@@ -70,13 +68,7 @@ final class ProductEditController extends AbstractController
         return $this->json(['text' => $statusText]);
     }
 
-    /**
-     * @Route("/api/product/home-page-position/{slug}/{status}",
-     *     name="admin.api_product_home_page_position",
-     *     methods={"PATCH"},
-     *     options={"expose": true}
-     * )
-     */
+    #[Route(path: '/api/product/home-page-position/{slug}/{status}', name: 'admin.api_product_home_page_position', methods: ['PATCH'], options: ['expose' => true])]
     public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
     {
         $productTranslation->getProduct()->setShowHomePage($status);
@@ -86,13 +78,7 @@ final class ProductEditController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    /**
-     * @Route("/api/product/sold/{slug}",
-     *     name="admin.api_product_is_sold",
-     *     methods={"PATCH"},
-     *     options={"expose": true}
-     * )
-     */
+    #[Route(path: '/api/product/sold/{slug}', name: 'admin.api_product_is_sold', methods: ['PATCH'], options: ['expose' => true])]
     public function toggleProductIsSold(ProductTranslation $productTranslation): JsonResponse
     {
         $product = $productTranslation->getProduct();

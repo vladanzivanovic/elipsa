@@ -9,14 +9,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class JobPageResponseFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(
         RouterInterface $router
     ) {

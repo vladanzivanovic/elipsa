@@ -8,7 +8,7 @@
             <h4 class="mb-3 mb-md-0">{{ title }}</h4>
         </div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <a href="{{ path(add_promotion_page_name) }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+            <a href="{{ path('admin.add_promotions_page') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                 Dodaj promociju
             </a>
@@ -34,7 +34,6 @@
         const CAN_EDIT = true;
         const CAN_REMOVE = true;
 
-        const TABLE_URL = '{{ list_api_url }}';
-        const EDIT_PAGE_NAME = '{{ edit_promotion_page_name }}'
+        const PROMOTION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Promotion', 'TYPE') | json_encode | raw }}');
     </script>
 {% endblock %}

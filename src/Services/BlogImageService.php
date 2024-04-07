@@ -37,11 +37,6 @@ final class BlogImageService
      */
     private $bag;
 
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     * @param ImageRepository       $imageRepository
-     */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $bag,
@@ -53,8 +48,6 @@ final class BlogImageService
     }
 
     /**
-     * @param BlogTranslation $blogTranslation
-     * @param array           $data
      *
      * @throws \Doctrine\ORM\ORMException
      */
@@ -66,7 +59,7 @@ final class BlogImageService
 
         $blog = $blogTranslation->getBlog();
 
-        if (empty(array_filter($data))) {
+        if (array_filter($data) === []) {
             return;
         }
 
@@ -129,22 +122,16 @@ final class BlogImageService
             $blog->setImage($mediaObj);
         }
 
-        if (count($exceptions) > 0) {
+        if ($exceptions !== []) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
     }
 
-    /**
-     * @param Blog  $blog
-     * @param Image $image
-     *
-     * @return void
-     */
+    
     private function updateImage(Blog $blog, Image $image): void
     {
         $images = [$blog->getImage()];
 
-        /** @var Image $image */
         foreach ($images as $img) {
             $img->setIsMain(false);
         }

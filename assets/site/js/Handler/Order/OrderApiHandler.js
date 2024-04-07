@@ -38,10 +38,9 @@ class OrderApiHandler {
 
         const data = {color, size, quantity};
 
-        try {
-            this.#checker.checkManageProduct(data);
-            this.#checker.isSizeAvailable(size);
+        this.#checker.checkManageProduct(data);
 
+        try {
             result = await $.ajax({
                 type: 'POST',
                 url: urlRoute,

@@ -16,37 +16,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SiteMapTagsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private \App\Repository\TagsRepository $tagsRepository;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @var string
-     */
-    private $baseUrl;
+    private string $baseUrl;
 
-    /**
-     * @param TagsRepository        $tagsRepository
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param TranslatorInterface   $translator
-     * @param RouterInterface       $router
-     */
     public function __construct(
         TagsRepository $tagsRepository,
         UrlGeneratorInterface $urlGenerator,
@@ -64,16 +43,16 @@ final class SiteMapTagsSubscriber implements EventSubscriberInterface
     /**
      * @return array|\string[][][]
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPopulateEvent::ON_SITEMAP_POPULATE => [
+            SitemapPopulateEvent::class => [
                 ['registerTagMenuPage'],
             ],
         ];
     }
 
-    public function registerTagMenuPage(SitemapPopulateEvent $event)
+    public function registerTagMenuPage(SitemapPopulateEvent $event): void
     {
         $tags = $this->tagsRepository->findAll();
 

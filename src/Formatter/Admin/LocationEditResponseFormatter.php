@@ -42,7 +42,7 @@ final class LocationEditResponseFormatter
             'countries' => $this->countryOptionsFormatter->format(),
         ];
 
-        if (null !== $location) {
+        if ($location instanceof \App\Entity\Location) {
             $payload = $this->locationView->editView($location);
         }
 

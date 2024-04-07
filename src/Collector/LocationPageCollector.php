@@ -16,13 +16,9 @@ final class LocationPageCollector
         $this->locationRepository = $locationRepository;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function collect(string $locale): array
     {
-        return $this->locationRepository->findAll($locale);
+        return $this->locationRepository->findAll();
     }
 }

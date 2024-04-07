@@ -99,6 +99,7 @@ class CartHandler {
                 message = e.responseJSON.error.message;
             }
 
+            //todo fix this for product update
             this.#pageManipulator.showError(message, 'coupon');
         }
 

@@ -9,11 +9,7 @@ use App\Request\Dto\AskUsRequestDto;
 
 final class AskUsRequestParser
 {
-    /**
-     * @param AskUsRequestDto $askUsRequestDto
-     *
-     * @return AskUs
-     */
+    
     public function parse(AskUsRequestDto $askUsRequestDto): AskUs
     {
         $askUs = new AskUs();

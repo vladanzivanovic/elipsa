@@ -6,7 +6,7 @@ namespace App\Controller\Site;
 
 use App\Collector\SiteTextCollector;
 use App\Formatter\Site\SiteTextFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,17 +25,8 @@ final class SiteTextController extends AbstractController
         $this->siteTextFormatter = $siteTextFormatter;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/kompanija/{type}",
-     *          "en": "/company/{type}"
-     *     },
-     *     name="site.company_text",
-     *     methods={"GET"},
-     *     options={"expose": true}
-     * )
-     * @Template("Site/Pages/siteText.html.twig")
-     */
+    #[Route(path: ['rs' => '/kompanija/{type}', 'en' => '/company/{type}'], name: 'site.company_text', options: ['expose' => true], methods: ['GET'])]
+    #[Template('Site/Pages/siteText.html.twig')]
     public function index(string $type, Request $request): array
     {
         $locale = $request->getLocale();

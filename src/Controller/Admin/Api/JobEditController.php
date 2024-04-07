@@ -14,24 +14,15 @@ use App\Helper\ConstantsHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class JobEditController extends AbstractController
 {
-    /**
-     * @var JobRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\JobRequestParser $requestParser;
 
-    /**
-     * @var JobHandler
-     */
-    private $handler;
+    private \App\Handler\JobHandler $handler;
 
-    /**
-     * @param JobRequestParser $requestParser
-     * @param JobHandler       $handler
-     */
     public function __construct(
         JobRequestParser $requestParser,
         JobHandler $handler
@@ -41,31 +32,22 @@ class JobEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/job-create", name="admin.add_job_api", methods={"POST"}, options={"expose": true})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/job-create', name: 'admin.add_job_api', options: ['expose' => true], methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $blog = $this->requestParser->parse($request->request);
 
         $this->handler->save($blog);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/api/job-edit/{id}", name="admin.edit_job_api", methods={"PUT"}, options={"expose": true})
-     *
-     * @param CareerDescription $careerDescription
-     * @param Request           $request
-     *
-     * @return JsonResponse
-     */
+
+    /** todo investigate this */
+    #[Route(path: '/api/job-edit/{id}', name: 'admin.edit_job_api', options: ['expose' => true], methods: ['PUT'])]
     public function edit(CareerDescription $careerDescription, Request $request): JsonResponse
     {
         $this->requestParser->parse($request->request, $careerDescription);
@@ -76,15 +58,10 @@ class JobEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/job-set-status/{status}/{id}", name="admin.set_job_status_api", methods={"PATCH"},
-     *                                                      options={"expose": true})
      *
-     * @param CareerDescription $careerDescription
-     * @param int               $status
-     *
-     * @return JsonResponse
      * @throws ReflectionException
      */
+    #[Route(path: '/api/job-set-status/{status}/{id}', name: 'admin.set_job_status_api', methods: ['PATCH'], options: ['expose' => true])]
     public function changeStatus(CareerDescription $careerDescription, int $status): JsonResponse
     {
         $careerDescription->setStatus($status);

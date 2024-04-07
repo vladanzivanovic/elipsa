@@ -13,41 +13,19 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class DocumentUploadHandler
 {
-    /**
-     * @var ImageService
-     */
-    private $imageService;
+    private \App\Repository\ImageRepository $imageRepository;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $parameterBag
-     * @param ImageRepository       $imageRepository
-     */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $parameterBag,
         ImageRepository $imageRepository
     ) {
-        $this->imageService = $imageService;
-        $this->parameterBag = $parameterBag;
         $this->imageRepository = $imageRepository;
     }
 
     /**
-     * @param ParameterBag $files
      *
-     * @param int          $relatedType
      *
-     * @return Image
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

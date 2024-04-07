@@ -18,42 +18,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CollaboratorHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private \App\Repository\SettingsRepository $settingsRepository;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var CollaboratorRepository
-     */
-    private $repository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Repository\CollaboratorRepository $repository;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param ValidatorHelper          $validator
-     * @param SettingsRepository       $settingsRepository
-     * @param EventDispatcherInterface $dispatcher
-     * @param CollaboratorRepository   $repository
-     * @param RouterInterface          $router
-     * @param TranslatorInterface      $translator
-     */
     public function __construct(
         ValidatorHelper $validator,
         SettingsRepository $settingsRepository,
@@ -71,8 +45,6 @@ final class CollaboratorHandler
     }
 
     /**
-     * @param Collaborator $collaborator
-     *
      * @throws \Exception
      */
     public function save(Collaborator $collaborator): void
@@ -91,11 +63,7 @@ final class CollaboratorHandler
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
     }
 
-    /**
-     * @param Collaborator $collaborator
-     *
-     * @return EmailModel
-     */
+    
     private function prepareEmail(Collaborator $collaborator): EmailModel
     {
         $settings = $this->getSettings();
@@ -131,16 +99,13 @@ final class CollaboratorHandler
             'location' => $location,
             'shoppingMall' => $collaborator->getShoppingMall(),
             'spaceSize' => $collaborator->getSpaceSize(),
-            'presentationLink' => null !== $collaborator->getPresentation() ? $this->router->generate('app.download_doc', ['id' => $collaborator->getPresentation()->getId()], RouterInterface::ABSOLUTE_URL) : '',
-            'planLink' => null !== $collaborator->getPlan() ? $this->router->generate('app.download_doc', ['id' => $collaborator->getPlan()->getId()], RouterInterface::ABSOLUTE_URL) : '',
+            'presentationLink' => $collaborator->getPresentation() instanceof \App\Entity\Image ? $this->router->generate('app.download_doc', ['id' => $collaborator->getPresentation()->getId()], RouterInterface::ABSOLUTE_URL) : '',
+            'planLink' => $collaborator->getPlan() instanceof \App\Entity\Image ? $this->router->generate('app.download_doc', ['id' => $collaborator->getPlan()->getId()], RouterInterface::ABSOLUTE_URL) : '',
         ]);
 
         return $model;
     }
 
-    /**
-     * @return array
-     */
     private function getSettings(): array
     {
         $settings = $this->settingsRepository->getSettingsForOrderEmail();

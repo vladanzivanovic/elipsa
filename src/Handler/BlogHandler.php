@@ -20,32 +20,14 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class BlogHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var ImageService
-     */
-    private $imageService;
+    private \App\Services\ImageService $imageService;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
 
-    /**
-     * @var BlogRepository
-     */
-    private $blogRepository;
+    private \App\Repository\BlogRepository $blogRepository;
 
-    /**
-     * @param BlogRepository        $blogRepository
-     * @param ValidatorHelper       $validator
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     */
     public function __construct(
         BlogRepository $blogRepository,
         ValidatorHelper $validator,
@@ -59,9 +41,7 @@ final class BlogHandler
     }
 
     /**
-     * @param Blog $blog
      *
-     * @return void
      *
      * @throws \Exception
      */
@@ -81,7 +61,6 @@ final class BlogHandler
     }
 
     /**
-     * @param Blog $blog
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

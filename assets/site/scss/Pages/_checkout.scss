@@ -23,10 +23,22 @@
       }
 
       .select-payment-method {
-        &.terms-and-conditions {
+        &.policy {
           display: flex;
           align-items: center;
           line-height: normal;
+          justify-content: space-between;
+
+          > div {
+            display: flex;
+            align-items: center;
+            line-height: normal;
+            max-width: 90%;
+
+            input[type=checkbox] {
+              margin: 0;
+            }
+          }
         }
       }
 

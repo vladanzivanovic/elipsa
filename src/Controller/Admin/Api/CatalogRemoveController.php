@@ -28,45 +28,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CatalogRemoveController extends AbstractController
 {
-    /**
-     * @var CategoryHandler
-     */
-    private $categoryHandler;
+    private \App\Handler\CatalogHandler $handler;
 
-    /**
-     * @var CatalogHandler
-     */
-    private $handler;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @param CategoryHandler     $categoryHandler
-     * @param CatalogHandler      $handler
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         CategoryHandler $categoryHandler,
         CatalogHandler $handler,
         TranslatorInterface $translator
     ) {
-        $this->categoryHandler = $categoryHandler;
         $this->handler = $handler;
-        $this->translator = $translator;
     }
 
     /**
-     * @Route("/api/remove-catalog/{id}", name="admin.remove_catalog_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Catalogue $catalogue
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-catalog/{id}', name: 'admin.remove_catalog_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Catalogue $catalogue)
     {
         $this->handler->remove($catalogue);

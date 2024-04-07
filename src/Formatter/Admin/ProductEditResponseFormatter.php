@@ -30,8 +30,6 @@ final class ProductEditResponseFormatter
 
     private TagOptionsFormatter $tagOptionsFormatter;
 
-    private SizeView $sizeView;
-
     public function __construct(
         CategoryTranslationRepository $categoryTranslationRepository,
         TagsRepository $tagsRepository,
@@ -39,8 +37,7 @@ final class ProductEditResponseFormatter
         ProductView $productView,
         ImageView $imageView,
         YoutubeView $youtubeView,
-        TagOptionsFormatter $tagOptionsFormatter,
-        SizeView $sizeView
+        TagOptionsFormatter $tagOptionsFormatter
     ) {
         $this->categoryTranslationRepository = $categoryTranslationRepository;
         $this->tagsRepository = $tagsRepository;
@@ -49,14 +46,13 @@ final class ProductEditResponseFormatter
         $this->imageView = $imageView;
         $this->youtubeView = $youtubeView;
         $this->tagOptionsFormatter = $tagOptionsFormatter;
-        $this->sizeView = $sizeView;
     }
 
     public function formatResponse(array $options, ?Product $product = null): array
     {
         $payload = [];
 
-        if (null !== $product) {
+        if ($product instanceof \App\Entity\Product) {
             $response = [
                 'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
                 'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'id'),

@@ -26,13 +26,7 @@ final class ProductDetailsController extends AbstractController
         $this->pageFormatter = $pageFormatter;
     }
 
-    /**
-     * @Route("/api/products/{slug}",
-     *     name="site_api.product",
-     *     methods={"GET"},
-     *     options={"expose": true}
-     * )
-     */
+    #[Route(path: '/api/products/{slug}', name: 'site_api.product', methods: ['GET'], options: ['expose' => true])]
     public function index(ProductTranslation $productTranslation, Request $request): Response
     {
         $locale = $request->getLocale();

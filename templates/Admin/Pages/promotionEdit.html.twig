@@ -5,9 +5,6 @@
 {% set title = titlePrefix ~ ' promocija' %}
 {% set OPTION_TYPES = get_class_constants('App\\Entity\\PromotionOption') %}
 
-{% set parentPageRouteName = 'promotion_product_page' in routeName() ? 'admin.promotion_products' : 'admin.promotion_coupons' %}
-{% set parentPageTitle = 'promotion_product_page' in routeName() ? 'Promocije proizvoda' : 'Promotivni kuponi' %}
-
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
@@ -16,7 +13,7 @@
     {% include 'Admin/Components/breadcrumbs.html.twig' with {
         activePage: title,
         pages: [
-            {routeName: parentPageRouteName, name: parentPageTitle}
+            {routeName: 'admin.promotions', name: 'Promocije'}
         ]
     } %}
 
@@ -36,7 +33,17 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
+                                    {{ form.select('Tip promocije', 'type', 'type', IS_EDIT ? payload.type : '', options.promotion_types, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
                                     {{ form.input('Promo kod', 'code', IS_EDIT ? payload.code : '', 'code') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.percentage : '', 'discount', '', 'number') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6 col-md-4">
@@ -47,11 +54,6 @@
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
                                     {{ form.datePicker('Važi do', 'valid_to', IS_EDIT ? payload.valid_to : '', 'valid_to') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.percentage : '', 'discount', '', 'number') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -104,8 +106,8 @@
         const ID = {{ IS_EDIT ? app.request.attributes.get('id') : 0 }};
         const PRODUCTS = {{ IS_EDIT and payload.options[OPTION_TYPES.OPTION_PRODUCTS] is defined ? payload.options[OPTION_TYPES.OPTION_PRODUCTS].configuration | json_encode | raw : '[]' }};
 
-        const PROMOTION_TYPE = '{{ 'promotion_product_page' in routeName ? constant('App\\Entity\\Promotion::TYPE_PRODUCT') : constant('App\\Entity\\Promotion::TYPE_COUPON') }}';
+        const PROMOTION_TYPE = '{{ payload.type ?? '' }}';
 
-        const PARENT_ROUTE_NAME = '{{ parentPageRouteName }}';
+        const PROMOTION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Promotion', 'TYPE') | json_encode | raw }}');
     </script>
 {% endblock %}

@@ -35,9 +35,6 @@ class SliderTextRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @return array
-     */
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('st')

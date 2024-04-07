@@ -26,7 +26,6 @@ class BlogRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @return string
      * @throws NonUniqueResultException
      */
     public function countBlog(): string
@@ -38,11 +37,7 @@ class BlogRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getListForAdmin(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('blog')
@@ -62,10 +57,8 @@ class BlogRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string      $locale
      * @param string|null $tagSlug
      *
-     * @return QueryBuilder
      */
     public function getDqlForPaginationPage(string $locale, ?string $tagSlug): QueryBuilder
     {

@@ -20,31 +20,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class LocationHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var ImageService
-     */
-    private $imageService;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private \App\Services\ImageService $imageService;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
 
-    /**
-     * @var LocationRepository
-     */
-    private $locationRepository;
+    private \App\Repository\LocationRepository $locationRepository;
 
-    /**
-     * @param LocationRepository    $locationRepository
-     * @param ValidatorHelper       $validator
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     */
     public function __construct(
         LocationRepository $locationRepository,
         ValidatorHelper $validator,
@@ -60,7 +42,6 @@ final class LocationHandler
     /**
      * @param Banner $banner
      *
-     * @return void
      *
      * @throws \Exception
      */
@@ -80,7 +61,6 @@ final class LocationHandler
     }
 
     /**
-     * @param Location $location
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

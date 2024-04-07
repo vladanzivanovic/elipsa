@@ -24,25 +24,18 @@ final class PromotionCouponsEditController extends AbstractController
 
     private CouponHandler $couponHandler;
 
-    private TranslatorInterface $translator;
-
     public function __construct(
         CouponsEditRequestParser $requestParser,
-        CouponHandler $couponHandler,
-        TranslatorInterface $translator
+        CouponHandler $couponHandler
     ) {
         $this->requestParser = $requestParser;
         $this->couponHandler = $couponHandler;
-        $this->translator = $translator;
     }
 
     /**
-     * @Route("/api/promotion/{type}/add", name="admin.add_promotion_api", methods={"POST"})
-     *
-     * @param PromotionCouponRequestDto $promotionCouponRequestDto
-     * @return JsonResponse
      * @throws \Exception
      */
+    #[Route(path: '/api/promotion/add', name: 'admin.add_promotion_api', methods: ['POST'])]
     public function insert(PromotionCouponRequestDto $promotionCouponRequestDto): JsonResponse
     {
         $coupon = $this->requestParser->parse($promotionCouponRequestDto);
@@ -53,14 +46,10 @@ final class PromotionCouponsEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/promotion/{type}/{id}", name="admin.edit_promotion_api", methods={"PUT"})
      *
-     * @param PromotionCouponRequestDto $promotionCouponRequestDto
-     * @param Promotion $coupon
-     *
-     * @return JsonResponse
      * @throws \Exception
      */
+    #[Route(path: '/api/promotion/{id}', name: 'admin.edit_promotion_api', methods: ['PUT'])]
     public function update(PromotionCouponRequestDto $promotionCouponRequestDto, Promotion $coupon): JsonResponse
     {
         $coupon = $this->requestParser->parse($promotionCouponRequestDto, $coupon);

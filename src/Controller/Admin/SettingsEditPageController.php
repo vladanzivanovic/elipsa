@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Collector\Admin\SettingsPageCollector;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,12 +20,8 @@ final class SettingsEditPageController extends AbstractController
         $this->pageCollector = $pageCollector;
     }
 
-    /**
-     * @Route("/settings", name="admin.settings_page", methods={"GET"})
-     * @Template("Admin/Pages/settingsPage.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: '/settings', name: 'admin.settings_page', methods: ['GET'])]
+    #[Template('Admin/Pages/settingsPage.html.twig')]
     public function getSettings(): array
     {
         return $this->pageCollector->collect();

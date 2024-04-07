@@ -29,7 +29,7 @@ final class ResetPasswordRequestMailer
         $this->settingsCollector = $settingsCollector;
     }
 
-    public function sendEmail(User $user, string $locale)
+    public function sendEmail(User $user, string $locale): void
     {
         $emailModelCustomer = $this->prepareEmail($user, $locale);
         $event = new EmailEvent($emailModelCustomer);

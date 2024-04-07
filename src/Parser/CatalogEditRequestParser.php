@@ -15,26 +15,12 @@ final class CatalogEditRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var CatalogueTranslationRepository
-     */
-    private $translationRepository;
+    private \App\Repository\CatalogueTranslationRepository $translationRepository;
 
-    /**
-     * @var CatalogImageService
-     */
-    private $imageService;
+    private \App\Services\CatalogImageService $imageService;
 
-    /**
-     * @param ParameterBagInterface          $parameterBag
-     * @param CatalogueTranslationRepository $translationRepository
-     * @param CatalogImageService            $imageService
-     */
     public function __construct(
         ParameterBagInterface $parameterBag,
         CatalogueTranslationRepository $translationRepository,
@@ -46,10 +32,7 @@ final class CatalogEditRequestParser
     }
 
     /**
-     * @param ParameterBag   $bag
      * @param Catalogue|null $catalogue
-     *
-     * @return Catalogue
      * @throws \Doctrine\ORM\ORMException
      */
     public function parse(ParameterBag $bag, ?Catalogue $catalogue = null): Catalogue
@@ -66,15 +49,11 @@ final class CatalogEditRequestParser
         return $catalogue;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param Catalogue    $catalogue
-     */
     private function setLocales(ParameterBag $bag, Catalogue $catalogue): void
     {
         $locales = $this->setLanguageArray($this->parameterBag, $bag);
 
-        foreach ($locales as $locale => $langBag) {
+        foreach (array_keys($locales) as $locale) {
             $trans = new CatalogueTranslation();
 
             if (!is_null($catalogue->getId())) {

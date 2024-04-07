@@ -5,28 +5,18 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ParamsExtension extends AbstractExtension
 {
-    private $container;
-
-    /**
-     * ParamsExtension constructor.
-     *
-     * @param ContainerInterface    $container
-     */
     public function __construct(
-        ContainerInterface $container
+        private readonly ParameterBagInterface $parameterBag
     ) {
-        $this->container = $container;
     }
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('app_params', [$this, 'getParams']),
@@ -35,34 +25,17 @@ class ParamsExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param $parameter
-     *
-     * @return mixed
-     */
-    public function getParams($parameter)
+    public function getParams($parameter): mixed
     {
-        return $this->container->getParameter($parameter);
+        return $this->parameterBag->get($parameter);
     }
 
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    public function isSetAndExist($value)
+    public function isSetAndExist($value): bool
     {
         return !empty($value);
     }
 
-    /**
-     * @param             $value
-     * @param string      $param
-     * @param string|null $arrayKey
-     *
-     * @return mixed
-     */
-    public function getValueFromParam($value, string $param, string $arrayKey = null)
+    public function getValueFromParam($value, string $param, string $arrayKey = null): mixed
     {
         $params = $this->getParams($param);
 
@@ -73,10 +46,7 @@ class ParamsExtension extends AbstractExtension
         return $params[$value];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'params_extension';
     }

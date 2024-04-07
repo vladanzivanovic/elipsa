@@ -36,11 +36,7 @@ final class OrderController extends AbstractController
         $this->exceptionView = $exceptionView;
     }
 
-    /**
-     * @Route("/api/order/create", name="site_api.create_order", methods={"POST"}, options={"expose": true})
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/create', name: 'site_api.create_order', methods: ['POST'], options: ['expose' => true])]
     public function create(Request $request): JsonResponse
     {
         $order = $this->requestParser->create();
@@ -53,11 +49,7 @@ final class OrderController extends AbstractController
         ), Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/api/order/remove/{token}", name="site_api.remove_order", methods={"DELETE"}, options={"expose": true})
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/remove/{token}', name: 'site_api.remove_order', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Request $request, string $token): JsonResponse
     {
         try {
@@ -74,11 +66,7 @@ final class OrderController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/api/order/{token}", name="site_api.get_order", methods={"GET"}, options={"expose": true})
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/{token}', name: 'site_api.get_order', methods: ['GET'], options: ['expose' => true])]
     public function getOrder(Request $request, string $token): JsonResponse
     {
         $order = $this->requestParser->findOrder($token);

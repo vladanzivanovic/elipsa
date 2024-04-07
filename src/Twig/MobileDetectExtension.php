@@ -52,7 +52,7 @@ class MobileDetectExtension extends AbstractExtension
         $availableDevices = array();
         $rules = array_change_key_case($this->detector->getRules());
 
-        foreach ($rules as $device => $rule) {
+        foreach (array_keys($rules) as $device) {
             $availableDevices[$device] = static::fromCamelCase($device);
         }
 

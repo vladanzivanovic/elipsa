@@ -35,10 +35,7 @@ class BlogRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
      * @param Blog|null    $blog
-     *
-     * @return Blog
      * @throws \Doctrine\ORM\ORMException
      */
     public function parse(ParameterBag $bag, Blog $blog = null): Blog
@@ -49,17 +46,17 @@ class BlogRequestParser
         }
 
         $this->setBlogTranslation($blog, $bag);
-        $this->setTags($blog, $bag->get('tags'));
+        $this->setTags($blog, $bag->all('tags'));
 
         $this->blogImageService->setImages($blog->getBlogTranslationByLocale('rs'), json_decode($bag->get('images'), true));
 
         return $blog;
     }
 
-    private function setBlogTranslation(Blog $blog, ParameterBag $bag)
+    private function setBlogTranslation(Blog $blog, ParameterBag $bag): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->get($locale);
+            $transCollection = $bag->all($locale);
 
             $blogTranslation = $this->translationRepository->findOneBy(['blog' => $blog, 'locale' => $locale]);
 
@@ -77,10 +74,6 @@ class BlogRequestParser
         }
     }
 
-    /**
-     * @param Blog  $blog
-     * @param array $tags
-     */
     private function setTags(Blog $blog, array $tags): void
     {
         if (!is_null($blog->getId())) {

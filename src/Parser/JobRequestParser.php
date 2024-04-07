@@ -21,26 +21,12 @@ class JobRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var CareerDescriptionTranslationRepository
-     */
-    private $descriptionTranslationRepository;
+    private \App\Repository\CareerDescriptionTranslationRepository $descriptionTranslationRepository;
 
-    /**
-     * @var JobImageService
-     */
-    private $imageService;
+    private \App\Services\JobImageService $imageService;
 
-    /**
-     * @param ParameterBagInterface                  $parameterBag
-     * @param CareerDescriptionTranslationRepository $descriptionTranslationRepository
-     * @param JobImageService                        $imageService
-     */
     public function __construct(
         ParameterBagInterface $parameterBag,
         CareerDescriptionTranslationRepository $descriptionTranslationRepository,
@@ -52,10 +38,7 @@ class JobRequestParser
     }
 
     /**
-     * @param ParameterBag           $bag
      * @param CareerDescription|null $careerDescription
-     *
-     * @return CareerDescription
      * @throws \Doctrine\ORM\ORMException
      */
     public function parse(ParameterBag $bag, CareerDescription $careerDescription = null): CareerDescription
@@ -72,11 +55,11 @@ class JobRequestParser
         return $careerDescription;
     }
 
-    private function setTranslation(CareerDescription $careerDescription, ParameterBag $bag)
+    private function setTranslation(CareerDescription $careerDescription, ParameterBag $bag): void
     {
         $languages = $this->setLanguageArray($this->parameterBag, $bag);
 
-        foreach ($languages as $locale => $langBag) {
+        foreach (array_keys($languages) as $locale) {
             $careerTranslation = $this->descriptionTranslationRepository->findOneBy(['careerDescription' => $careerDescription, 'locale' => $locale]);
 
             if (!$careerTranslation instanceof CareerDescriptionTranslation) {

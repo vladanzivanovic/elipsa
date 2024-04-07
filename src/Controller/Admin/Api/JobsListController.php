@@ -30,26 +30,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class JobsListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var JobsDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\JobsDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var CareerDescriptionRepository
-     */
-    private $careerDescriptionRepository;
+    private \App\Repository\CareerDescriptionRepository $careerDescriptionRepository;
 
-    /**
-     * @param DataTableRequestParser         $requestParser
-     * @param CareerDescriptionRepository    $careerDescriptionRepository
-     * @param JobsDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         CareerDescriptionRepository $careerDescriptionRepository,
@@ -61,14 +47,13 @@ final class JobsListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-jobs-list", name="admin.get_jobs_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-jobs-list', name: 'admin.get_jobs_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

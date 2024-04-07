@@ -29,26 +29,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class UserListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var UserDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\UserDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private \App\Repository\UserRepository $userRepository;
 
-    /**
-     * @param DataTableRequestParser         $requestParser
-     * @param UserRepository                 $userRepository
-     * @param UserDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         UserRepository $userRepository,
@@ -60,14 +46,13 @@ final class UserListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-user-list", name="admin.get_user_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-user-list', name: 'admin.get_user_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

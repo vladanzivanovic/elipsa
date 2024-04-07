@@ -17,36 +17,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class JobRemoveController extends AbstractController
 {
-    /**
-     * @var JobHandler
-     */
-    private $handler;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param JobHandler          $handler
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         JobHandler $handler,
         TranslatorInterface $translator
     ) {
-        $this->handler = $handler;
         $this->translator = $translator;
     }
 
     /**
-     * @Route("/api/job-remove/{id}", name="admin.remove_job_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param CareerDescription $careerDescription
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/job-remove/{id}', name: 'admin.remove_job_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(CareerDescription $careerDescription): JsonResponse
     {
         $careerDescription->setStatus(CareerDescription::STATUS_ARCHIVED);

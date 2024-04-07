@@ -24,6 +24,17 @@ class CheckoutPageDom {
         }
     }
 
+    toggleStoreShipping(order)
+    {
+        if (order.total.unformatted_amount > SHIPPING_STORE_MIN_PRICE) {
+            $(`#shipping_in_store`).removeProp('disabled');
+
+            return;
+        }
+
+        $(`#shipping_in_store`).prop('disabled', true);
+    }
+
     #manageProduct(orderProduct)
     {
         // const productTable = this.#mapper.productTable;
@@ -44,7 +55,14 @@ class CheckoutPageDom {
     #createProductElement(orderProduct)
     {
         const isDiscounted = 0 < Object.keys(orderProduct.discount).length;
-        const price = isDiscounted ? orderProduct.discount.price : orderProduct.price;
+        const isPromoPrice = 0 < Object.keys(orderProduct.promotion_price).length;
+        let price = orderProduct.price;
+
+        if (isPromoPrice) {
+            price = orderProduct.promotion_price;
+        } else if (isDiscounted) {
+            price = orderProduct.discount.price;
+        }
 
         return `
             <li class="clearfix">
@@ -56,7 +74,7 @@ class CheckoutPageDom {
     #setOrderData(order)
     {
         $(`${ this.#pageMapper.productsTotal } span`).text(`${ order.total.amount } ${ order.total.currency }`);
-        $(`${ this.#pageMapper.shippingPrice } span`).text(`${ order.shipping_price.amount } ${ order.shipping_price.currency }`);
+        $(`${ this.#pageMapper.shippingPrice } span`).text(`${ order.shipping.price.amount } ${ order.shipping.price.currency }`);
         $(`${ this.#pageMapper.totalWithShipping } span`).text(`${ order.total_with_shipping.amount } ${ order.total_with_shipping.currency }`);
 
         if (0 !== order.promotion.length) {

@@ -39,11 +39,7 @@ class ProductSizeRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('ps')
@@ -63,9 +59,6 @@ class ProductSizeRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getForOptions(): array
     {
         $query = $this->createQueryBuilder('ps')
@@ -78,11 +71,7 @@ class ProductSizeRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param array $products
-     *
-     * @return array
-     */
+    
     public function getByProducts(array $products): array
     {
         $query = $this->createQueryBuilder('ps')

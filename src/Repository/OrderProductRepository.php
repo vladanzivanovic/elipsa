@@ -24,12 +24,7 @@ class OrderProductRepository extends ExtendedEntityRepository
         parent::__construct($registry, OrderProduct::class);
     }
 
-    /**
-     * @param ShopOrder    $order
-     * @param string       $locale
-     *
-     * @return array
-     */
+    
     public function getByOrder(ShopOrder $order, string $locale): array
     {
         $query = $this->createQueryBuilder('op')
@@ -56,12 +51,7 @@ class OrderProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param User   $user
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByUser(User $user, string $locale): array
     {
         $query = $this->createQueryBuilder('op')
@@ -94,10 +84,6 @@ class OrderProductRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param ShopOrder    $order
-     * @param Product      $product
-     * @param string       $size
-     * @param ProductColor $color
      *
      * @return mixed
      * @throws \Doctrine\ORM\NoResultException

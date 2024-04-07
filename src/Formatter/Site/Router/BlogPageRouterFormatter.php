@@ -17,8 +17,6 @@ final class BlogPageRouterFormatter
     }
 
     /**
-     * @param string $slug
-     * @param string $locale
      *
      * @return string
      */

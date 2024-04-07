@@ -43,14 +43,11 @@ final class TagEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/tag/product/add", name="admin.add_product_tag_api", methods={"POST"}, options={"expose": true})
-     * @Route("/api/tag/blog/add", name="admin.add_blog_tag_api", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws \Exception
      */
+    #[Route(path: '/api/tag/product/add', name: 'admin.add_product_tag_api', options: ['expose' => true], methods: ['POST'])]
+    #[Route(path: '/api/tag/blog/add', name: 'admin.add_blog_tag_api', options: ['expose' => true], methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $relatedType = $this->getRelatedType($request);
@@ -65,12 +62,11 @@ final class TagEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/tag/product/{slug}", name="admin.edit_product_tag_api", methods={"PUT"}, options={"expose": true})
-     * @Route("/api/tag/blog/{slug}", name="admin.edit_blog_tag_api", methods={"PUT"}, options={"expose": true})
      *
-     * @return JsonResponse
      * @throws \Exception
      */
+    #[Route(path: '/api/tag/product/{slug}', name: 'admin.edit_product_tag_api', methods: ['PUT'], options: ['expose' => true])]
+    #[Route(path: '/api/tag/blog/{slug}', name: 'admin.edit_blog_tag_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, string $slug): JsonResponse
     {
         $relatedType = $this->getRelatedType($request);
@@ -84,10 +80,6 @@ final class TagEditController extends AbstractController
         return $this->json(null, Response::HTTP_CREATED);
     }
 
-    /**
-     * @param Request $request
-     * @return int
-     */
     public function getRelatedType(Request $request): int
     {
         return false === strpos($request->attributes->get('_route'), 'blog_tag_api') ?

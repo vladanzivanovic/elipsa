@@ -9,14 +9,8 @@ use App\Repository\UserWishesRepository;
 
 final class WishListHandler
 {
-    /**
-     * @var UserWishesRepository
-     */
-    private $userWishesRepository;
+    private \App\Repository\UserWishesRepository $userWishesRepository;
 
-    /**
-     * @param UserWishesRepository $userWishesRepository
-     */
     public function __construct(
         UserWishesRepository $userWishesRepository
     ) {
@@ -24,9 +18,7 @@ final class WishListHandler
     }
 
     /**
-     * @param UserWishes $userWishes
      *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

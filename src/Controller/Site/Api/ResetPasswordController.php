@@ -42,18 +42,12 @@ final class ResetPasswordController extends AbstractController
     }
 
     /**
-     * @Route("/api/ask-for-reset-password",
-     *     name="site_api.user_ask_for_reset_password",
-     *     methods={"PATCH"},
-     *     options={"expose": true}
-     * )
      *
-     * @param ResetPasswordRequestDto $resetPasswordRequestDto
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/ask-for-reset-password', name: 'site_api.user_ask_for_reset_password', methods: ['PATCH'], options: ['expose' => true])]
     public function requestForResetPassword(ResetPasswordRequestDto $resetPasswordRequestDto): JsonResponse
     {
 
@@ -78,16 +72,10 @@ final class ResetPasswordController extends AbstractController
     }
 
     /**
-     * @Route("/api/reset-password",
-     *     name="site_api.user_reset_password",
-     *     methods={"PUT"},
-     *     options={"expose": true}
-     * )
-     * @param ResetPasswordSetRequestDto $resetPasswordSetRequestDto
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/reset-password', name: 'site_api.user_reset_password', methods: ['PUT'], options: ['expose' => true])]
     public function resetPassword(ResetPasswordSetRequestDto $resetPasswordSetRequestDto): JsonResponse
     {
         if (false === $this->isCsrfTokenValid('reset_password_form', $resetPasswordSetRequestDto->csrf)) {

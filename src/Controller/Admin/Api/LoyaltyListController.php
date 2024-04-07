@@ -30,25 +30,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class LoyaltyListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var LoyaltyDataTableResponseFormatter
-     */
-    private $responseFormatter;
-    /**
-     * @var LoyaltyRepository
-     */
-    private $loyaltyRepository;
+    private \App\Formatter\Admin\LoyaltyDataTableResponseFormatter $responseFormatter;
+    private \App\Repository\LoyaltyRepository $loyaltyRepository;
 
-    /**
-     * @param DataTableRequestParser            $requestParser
-     * @param LoyaltyRepository                 $loyaltyRepository
-     * @param LoyaltyDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         LoyaltyRepository $loyaltyRepository,
@@ -60,14 +46,13 @@ final class LoyaltyListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-loyalty-list", name="admin.get_loyalty_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-loyalty-list', name: 'admin.get_loyalty_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

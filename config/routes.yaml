@@ -2,16 +2,9 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-bazinga_jstranslation_js:
-  path:  /translations/{domain}.{_format}
-  defaults: { _controller: bazinga.jstranslation.controller:getTranslationsAction, domain: null, _format: "js" }
-  methods:  [ GET ]
-  options:
-    i18n: false
-    expose: true
-  requirements:
-    _format: js|json
-    domain: "[\\w]+"
+_bazinga_jstranslation:
+  resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
+  prefix: '/translator'
 
 admin:
   resource: 'routes/routes_admin.yaml'
@@ -30,7 +23,7 @@ site.product_page:
   path:
     rs: /{slug}
     en: /{_locale}/{slug}
-    ba: /{_locale}/{slug}
+#    ba: /{_locale}/{slug}
   defaults: { _controller: App\Controller\Site\ProductPageController::index}
   options:
     expose: true

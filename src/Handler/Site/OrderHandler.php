@@ -10,26 +10,16 @@ use App\Helper\ValidatorHelper;
 use App\Repository\ShopOrderRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class OrderHandler
 {
-    private ShopOrderRepository $orderRepository;
-
-    private ValidatorHelper $validator;
-
-    private SessionInterface $session;
-
     public function __construct(
-        ValidatorHelper $validator,
-        ShopOrderRepository $orderRepository,
-        SessionInterface $session
-    ) {
-        $this->orderRepository = $orderRepository;
-        $this->validator = $validator;
-        $this->session = $session;
-    }
+        private readonly ValidatorHelper $validator,
+        private readonly ShopOrderRepository $orderRepository,
+        private readonly RequestStack $requestStack
+    ) {}
 
     /**
      * @throws OptimisticLockException
@@ -65,16 +55,14 @@ final class OrderHandler
     }
 
     /**
-     * @param Promotion $coupon
      *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function setCoupon(Promotion $coupon): void
     {
-        $order = $this->orderRepository->getByToken($this->session->get('order'));
+        $order = $this->orderRepository->getByToken($this->requestStack->getSession()->get('order'));
         $order->setCoupon($coupon);
 
         $this->orderRepository->flush();

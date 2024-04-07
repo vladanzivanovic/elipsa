@@ -35,9 +35,6 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
         $this->translator = $translator;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
        return [
@@ -51,8 +48,6 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param NewsLetterEvent $event
-     *
      * @throws \Exception
      */
     public function addUserToNewsLetter(NewsLetterEvent $event): void
@@ -74,7 +69,7 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
             'GENDER' => $this->translator->trans($newsLetter->getGender(), [], null, $newsLetter->getLocale()),
         ];
 
-        if (null !== $loyalty) {
+        if ($loyalty instanceof \App\Entity\Loyalty) {
             $mergeFields['FNAME'] = $loyalty->getFirstName();
             $mergeFields['LNAME'] = $loyalty->getLastName();
             $mergeFields['PHONE'] = $loyalty->getMobilePhone();
@@ -99,17 +94,15 @@ final class NewsLetterSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param NewsLetterEvent $event
-     *
      * @throws \Exception
      */
-    public function updateUserMailChimpData(NewsLetterEvent $event)
+    public function updateUserMailChimpData(NewsLetterEvent $event): void
     {
         $loyalty = $event->getLoyalty();
         $newsLetter = $this->newsLetterRepository->findOneBy(['email' => $loyalty->getEmail()]);
 
         $mailChimp = new MailChimp($this->apiKey);
-        $result = $mailChimp->patch('/lists/'.$this->listId.'/members/'.$newsLetter->getChimpId(), [
+        $mailChimp->patch('/lists/'.$this->listId.'/members/'.$newsLetter->getChimpId(), [
             'merge_fields' => [
                 'FNAME' => $loyalty->getFirstName(),
                 'LNAME' => $loyalty->getLastName(),

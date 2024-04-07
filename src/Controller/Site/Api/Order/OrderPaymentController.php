@@ -33,10 +33,9 @@ final class OrderPaymentController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/payment/{token}", name="site_api.get_order_payment", methods={"GET"}, options={"expose": true})
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/order/payment/{token}', name: 'site_api.get_order_payment', methods: ['GET'], options: ['expose' => true])]
     public function getPayment(string $token, Request $request): Response
     {
         try {

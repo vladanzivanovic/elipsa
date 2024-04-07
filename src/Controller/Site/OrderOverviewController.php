@@ -10,7 +10,7 @@ use App\Parser\Site\Order\OrderRequestParser;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,21 +36,11 @@ final class OrderOverviewController extends AbstractController
     }
 
     /**
-     * @Route({
-     *          "rs": "/korpa/pregled-porudzbine/{token}",
-     *          "en": "/cart/order-overview/{token}",
-     *          "ba": "/korpa/pregled-narudžbe/{token}"
-     *     },
-     *     name="site.order_overview",
-     *     methods={"GET"},
-     *     options={"expose": true}
-     * )
-     * @Template("Site/Pages/orderOverview.html.twig")
-     *
-     * @param Request $request
      * @return array|RedirectResponse
      *
      */
+    #[Route(path: ['rs' => '/korpa/pregled-porudzbine/{token}', 'en' => '/cart/order-overview/{token}', 'ba' => '/korpa/pregled-narudžbe/{token}'], name: 'site.order_overview', options: ['expose' => true], methods: ['GET'])]
+    #[Template('Site/Pages/orderOverview.html.twig')]
     public function orderOverview(Request $request, string $token)
     {
         $locale = $request->attributes->get('_locale');
@@ -73,12 +63,10 @@ final class OrderOverviewController extends AbstractController
             return $this->redirectToRoute('site.home_page');
         }
 
-        $viewData = $this->pageFormatter->formatResponse(
+        return $this->pageFormatter->formatResponse(
             $order,
             $locale,
             $isSuccessfulTransaction
         );
-
-        return $viewData;
     }
 }

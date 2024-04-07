@@ -35,6 +35,9 @@ class CouponsEditValidator {
                 discount: {
                     required: true,
                 },
+                type: {
+                    isSelectBoxEmpty: true,
+                },
             },
         };
 

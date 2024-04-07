@@ -30,8 +30,6 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param Product $product
-     *
      * @return Image[]
      */
     public function getProductImages(Product $product): array
@@ -46,8 +44,6 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param Catalogue $catalogue
-     *
      * @return Image[]
      */
     public function getCatalogImages(Catalogue $catalogue): array
@@ -62,8 +58,6 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param Location $location
-     *
      * @return Image[]
      */
     public function getLocationImages(Location $location): array
@@ -77,11 +71,7 @@ class ImageRepository extends ExtendedEntityRepository
 
     }
 
-    /**
-     * @param Product $product
-     *
-     * @return array
-     */
+    
     public function getByProduct(Product $product): array
     {
         $query = $this->createQueryBuilder('i')
@@ -99,11 +89,7 @@ class ImageRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param int $type
-     *
-     * @return array
-     */
+    
     public function getByType(int $type): array
     {
         $query = $this->createQueryBuilder('i')
@@ -119,11 +105,7 @@ class ImageRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param Blog $blog
-     *
-     * @return array
-     */
+    
     public function getByBlog(Blog $blog): array
     {
         $query = $this->createQueryBuilder('i')
@@ -138,11 +120,7 @@ class ImageRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param Location $location
-     *
-     * @return array
-     */
+    
     public function getByLocation(Location $location): array
     {
         $query = $this->createQueryBuilder('i')
@@ -157,11 +135,7 @@ class ImageRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param Catalogue $catalogue
-     *
-     * @return array
-     */
+    
     public function getByCatalog(Catalogue $catalogue): array
     {
         $query = $this->createQueryBuilder('i')
@@ -177,9 +151,6 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param Product $product
-     *
-     * @return Image
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getMainByProduct(Product $product): Image
@@ -208,11 +179,8 @@ class ImageRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param Product      $product
      *
-     * @param ProductColor $color
      *
-     * @return Image
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getFirstByColorAndProduct(Product $product, ProductColor $color): Image

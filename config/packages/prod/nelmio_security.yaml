@@ -79,5 +79,6 @@ nelmio_security:
                 - 'https://maps.googleapis.com'
                 - 'https://maps.googleapis.com'
                 - 'https://www.facebook.com/'
+                - 'cdn.datatables.net'
             block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
             # upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport

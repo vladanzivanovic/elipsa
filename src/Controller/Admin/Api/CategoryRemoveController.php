@@ -14,41 +14,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CategoryRemoveController extends AbstractController
 {
-    /**
-     * @var CategoryHandler
-     */
-    private $categoryHandler;
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Handler\CategoryHandler $categoryHandler;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param CategoryHandler     $categoryHandler
-     * @param ProductRepository   $productRepository
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         CategoryHandler $categoryHandler,
         ProductRepository $productRepository,
         TranslatorInterface $translator
     ) {
         $this->categoryHandler = $categoryHandler;
-        $this->productRepository = $productRepository;
         $this->translator = $translator;
     }
 
     /**
-     * @Route("/api/remove-category/{slug}", name="admin.remove_category_api", methods={"DELETE"}, options={"expose": true})
-     *
-     * @param CategoryTranslation $categoryTranslation
      *
      * @return JsonResponse
      */
+    #[Route(path: '/api/remove-category/{slug}', name: 'admin.remove_category_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(CategoryTranslation $categoryTranslation)
     {
         $category = $categoryTranslation->getCategory();

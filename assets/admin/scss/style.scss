@@ -3,12 +3,12 @@
 @import "~@mdi/font/css/materialdesignicons.css";
 @import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
 @import "~datatables.net-select-bs4/css/select.bootstrap4.css";
-@import "~datatables.net-buttons-dt/css/buttons.dataTables.css";
+@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
+@import "~datatables.net-rowreorder-bs4/css/rowReorder.bootstrap4.min.css";
 @import "~sweetalert2/dist/sweetalert2.css";
 @import "~toastr/toastr";
 @import "~select2";
 @import "~@fortawesome/fontawesome-free/css/all.css";
-@import "~datatables.net-rowreorder-bs4/css/rowReorder.bootstrap4.min.css";
 // Booststrap functions and variables
 @import '../../../node_modules/bootstrap/scss/functions';
 @import '../../../node_modules/bootstrap/scss/variables';

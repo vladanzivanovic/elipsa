@@ -14,14 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class BlogRemoveController extends AbstractController
 {
-    /**
-     * @var BlogHandler
-     */
-    private $blogHandler;
+    private \App\Handler\BlogHandler $blogHandler;
 
-    /**
-     * @param BlogHandler $blogHandler
-     */
     public function __construct(
         BlogHandler $blogHandler
     ) {
@@ -29,14 +23,12 @@ final class BlogRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/blog-remove/{id}", name="admin.remove_blog_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Blog $blog
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/blog-remove/{id}', name: 'admin.remove_blog_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Blog $blog): JsonResponse
     {
         $this->blogHandler->remove($blog);

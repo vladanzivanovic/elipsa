@@ -101,7 +101,7 @@ class LocalizationUrlExtension extends AbstractExtension
             $routeParams['type'] = $this->getTextLocaleSlug($routeParams['type'], $fromLocale, $toLocale);
         }
 
-        if ($toLocale != 'rs') {
+        if ($toLocale !== 'rs') {
             $routeParams['_locale'] = $toLocale;
             $routeName = $this->getRouteName($routeName, $toLocale);
 

@@ -105,7 +105,7 @@ final class LocationView
                 'country' => $translation->getCountry(),
                 'street' => $translation->getStreet(),
                 'address' => $translation->getStreet().', '. $translation->getCity().','. $translation->getCountry(),
-                'short_description' => true === $fixDescription ?
+                'short_description' => $fixDescription ?
                     str_replace(["\r\n", PHP_EOL], '<br>', $translation->getShortDescription()) :
                     $translation->getShortDescription(),
             ];

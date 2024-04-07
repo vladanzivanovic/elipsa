@@ -16,19 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class CollaboratorDetailResponseFormatter
 {
     use DataTableResponseTrait;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param RouterInterface     $router
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         RouterInterface $router,
         TranslatorInterface $translator
@@ -38,9 +28,6 @@ final class CollaboratorDetailResponseFormatter
     }
 
     /**
-     * @param Collaborator $collaborator
-     *
-     * @return array
      * @throws \ReflectionException
      */
     public function formatResponse(Collaborator $collaborator): array
@@ -64,8 +51,8 @@ final class CollaboratorDetailResponseFormatter
             'noFloors' => $collaborator->getNumberOfFloors(),
             'hasStore' => $this->translator->trans(ConstantsHelper::getConstantName((string) $collaborator->getStore(), 'SPACE', Collaborator::class)),
             'location' => $this->translator->trans(ConstantsHelper::getConstantName((string) $collaborator->getLocation(), 'LOCATION', Collaborator::class)),
-            'plan_doc' => null !== $plan ? $this->router->generate('app.download_doc', ['id' => $plan->getId()], RouterInterface::ABSOLUTE_URL) : null,
-            'presentation_doc' => null !== $presentation ? $this->router->generate('app.download_doc', ['id' => $presentation->getId()], RouterInterface::ABSOLUTE_URL) : null,
+            'plan_doc' => $plan instanceof \App\Entity\Image ? $this->router->generate('app.download_doc', ['id' => $plan->getId()], RouterInterface::ABSOLUTE_URL) : null,
+            'presentation_doc' => $presentation instanceof \App\Entity\Image ? $this->router->generate('app.download_doc', ['id' => $presentation->getId()], RouterInterface::ABSOLUTE_URL) : null,
         ];
     }
 }

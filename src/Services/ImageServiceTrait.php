@@ -8,11 +8,7 @@ use App\Entity\Image;
 
 trait ImageServiceTrait
 {
-    /**
-     * @param array $images
-     *
-     * @return void
-     */
+    
     public function deleteImages(array $images): void
     {
         $rootDir = $this->bag->get('upload_dir');
@@ -26,15 +22,11 @@ trait ImageServiceTrait
         }
     }
 
-    /**
-     * @param array $data
-     *
-     * @return bool
-     */
+    
     private function validateMainImage(array $data): bool
     {
         foreach ($data as $image) {
-            if (true === !!$image['isMain']) {
+            if ((bool) $image['isMain']) {
                 return true;
             }
         }

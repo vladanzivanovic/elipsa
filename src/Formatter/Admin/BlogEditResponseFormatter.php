@@ -52,7 +52,7 @@ final class BlogEditResponseFormatter
 
         $payload = null;
 
-        if (null !== $blog) {
+        if ($blog instanceof \App\Entity\Blog) {
             $payload = $this->blogView->editView($blog);
         }
 
@@ -75,21 +75,5 @@ final class BlogEditResponseFormatter
 //            'selectedTags' => array_column($this->tagsRepository->getByBlog($blog), 'mainSlug'),
 //            'selectedImages' => $this->imagesFormatter($this->router, [$imageArray], 'blog'),
 //        ];
-    }
-
-    /**
-     * @param Banner $banner
-     *
-     * @return array
-     */
-    private function getImage(Banner $banner): array
-    {
-        $image = $banner->getImage();
-
-        return [
-            'id' => $image->getId(),
-            'fileName' => $image->getName(),
-            'isMain' => $image->getIsMain(),
-        ];
     }
 }

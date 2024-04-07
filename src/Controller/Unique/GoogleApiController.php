@@ -21,14 +21,9 @@ final class GoogleApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/place/{query}",
-     *     name="app_api.place_search",
-     *     methods={"GET"},
-     *     options={"expose": true}
-     * )
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/place/{query}', name: 'app_api.place_search', methods: ['GET'], options: ['expose' => true])]
     public function placeSearch(string $query): Response
     {
         $places = $this->googleApiProvider->getAddresses($query);

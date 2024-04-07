@@ -23,7 +23,7 @@ class DataTableModel
     /**
      * @var array|string|null
      */
-    private $search = null;
+    private $search;
 
     public function __construct(
         int $draw,
@@ -76,9 +76,18 @@ class DataTableModel
     /**
      * @return array|string|null
      */
-    public function getSearch()
+    public function getGeneralSearch()
     {
         return $this->search;
+    }
+
+    public function getColumnSearchValue(string $columnName): ?DataTableColumnModel
+    {
+        $searchedColumn = $this->columns->filter(function (DataTableColumnModel $column) use ($columnName) {
+            return $column->getName() === $columnName && null !== $column->getSearchValue();
+        });
+
+        return $searchedColumn->isEmpty() ? null : $searchedColumn->first();
     }
 
     private function setColumns(array $columns): void
@@ -86,18 +95,20 @@ class DataTableModel
         $this->columns = new ArrayCollection();
 
         foreach ($columns as $column) {
+            $searchValue = $column['search']['value'];
+
             $this->columns->add(new DataTableColumnModel(
                 $column['data'],
                 $column['name'],
                 $column['searchable'] == true,
                 $column['orderable'] == true,
-                $column['search']['value'],
+                $searchValue !== '' ? $searchValue : null,
                 $column['search']['regex']
             ));
         }
     }
 
-    private function setOrderColumn(int $orderColumn)
+    private function setOrderColumn(int $orderColumn): void
     {
         /** @var DataTableColumnModel $dataTableColumn */
         $dataTableColumn = $this->columns->get($orderColumn);

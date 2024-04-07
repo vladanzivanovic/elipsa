@@ -17,50 +17,27 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ImagesController extends AbstractController
 {
-    /**
-     * @var ImageResizer
-     */
-    private $imageResizer;
+    private \App\Services\ImageService $imageService;
 
-    /**
-     * @var ImageService
-     */
-    private $imageService;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-
-    /**
-     * @param ImageResizer          $imageResizer
-     * @param ImageService          $imageService
-     * @param RouterInterface       $router
-     * @param ParameterBagInterface $parameterBag
-     */
     public function __construct(
         ImageResizer $imageResizer,
         ImageService $imageService,
         RouterInterface $router,
         ParameterBagInterface $parameterBag
     ) {
-        $this->imageResizer = $imageResizer;
         $this->imageService = $imageService;
         $this->router = $router;
         $this->parameterBag = $parameterBag;
     }
 
     /**
-     * @Route("/api/image/resize", name="image_resize_on_fly_api", methods={"POST"})
-     * @param Request $request
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/image/resize', name: 'image_resize_on_fly_api', methods: ['POST'])]
     public function uploadTmpImage(Request $request)
     {
         try {
@@ -81,12 +58,10 @@ final class ImagesController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-tmp-image/{filename}", methods={"DELETE"}, name="remove_tmp_image")
-     *
-     * @param string $filename
      *
      * @return JsonResponse
      */
+    #[Route(path: '/api/remove-tmp-image/{filename}', methods: ['DELETE'], name: 'remove_tmp_image')]
     public function removeTmpImage(string $filename)
     {
         $tmpDir = $this->parameterBag->get('upload_dir').$this->parameterBag->get('upload_tmp_dir');

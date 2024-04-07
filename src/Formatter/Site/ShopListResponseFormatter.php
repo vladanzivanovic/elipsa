@@ -5,54 +5,21 @@ declare(strict_types=1);
 namespace App\Formatter\Site;
 
 use App\Entity\User;
-use App\Formatter\Options\TagOptionsFormatter;
 use App\Formatter\Site\Router\ShopPageRouterFormatter;
 use App\Request\Dto\ShopListRequestDto;
 use App\Request\Dto\ShopPageOptionsDto;
 use App\View\TagView;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 final class ShopListResponseFormatter
 {
     use FormatterTrait;
 
-    private RouterInterface $router;
-
-    private ParameterBagInterface $bag;
-
-    private SessionInterface $session;
-
-    private ProductFormatter $productFormatter;
-
-    private TagView $tagView;
-
-    private TagOptionsFormatter $tagOptionsFormatter;
-
-    private ShopPageRouterFormatter $shopPageRouterFormatter;
-
-    private ShopFilterFormatter $shopFilterFormatter;
-
     public function __construct(
-        RouterInterface $router,
-        ParameterBagInterface $bag,
-        SessionInterface $session,
-        ProductFormatter $productFormatter,
-        TagView $tagView,
-        TagOptionsFormatter $tagOptionsFormatter,
-        ShopPageRouterFormatter $shopPageRouterFormatter,
-        ShopFilterFormatter $shopFilterFormatter
-    ) {
-        $this->router = $router;
-        $this->bag = $bag;
-        $this->session = $session;
-        $this->productFormatter = $productFormatter;
-        $this->tagView = $tagView;
-        $this->tagOptionsFormatter = $tagOptionsFormatter;
-        $this->shopPageRouterFormatter = $shopPageRouterFormatter;
-        $this->shopFilterFormatter = $shopFilterFormatter;
-    }
+        private readonly ProductFormatter $productFormatter,
+        private readonly TagView $tagView,
+        private readonly ShopPageRouterFormatter $shopPageRouterFormatter,
+        private readonly ShopFilterFormatter $shopFilterFormatter
+    ) {}
 
     public function formatResponse(
         array $data,

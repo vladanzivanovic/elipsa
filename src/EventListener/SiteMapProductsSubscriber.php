@@ -22,42 +22,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SiteMapProductsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private \App\Repository\ProductRepository $productRepository;
 
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \App\Repository\CategoryRepository $categoryRepository;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @var string
-     */
-    private $baseUrl;
+    private string $baseUrl;
 
-    /**
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param TranslatorInterface   $translator
-     * @param ProductRepository     $productRepository
-     * @param CategoryRepository    $categoryRepository
-     * @param RouterInterface       $router
-     */
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         TranslatorInterface $translator,
@@ -75,17 +50,17 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
 
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPopulateEvent::ON_SITEMAP_POPULATE => [
+            SitemapPopulateEvent::class => [
                 ['registerProductMenuPage'],
                 ['registerSingleProductPage'],
             ],
         ];
     }
 
-    public function registerProductMenuPage(SitemapPopulateEvent $event)
+    public function registerProductMenuPage(SitemapPopulateEvent $event): void
     {
         $categories = $this->categoryRepository->findAll();
 
@@ -112,9 +87,6 @@ class SiteMapProductsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param SitemapPopulateEvent $event
-     *
-     * @return void
      * @throws Exception
      */
     public function registerSingleProductPage(SitemapPopulateEvent $event): void

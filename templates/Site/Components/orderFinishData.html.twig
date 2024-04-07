@@ -135,32 +135,38 @@
                 <div class="row">
                     <div class="product-list">
                         <h4 class="product-list-title">{{ 'checkout.finish.product_title' | trans }}</h4>
-                        {% for product in products %}
+                        {% for orderProduct in products %}
                             <div class="single-product m-bt-2" data-id="product_id">
                                 <div class="">
-                                    <img src="{{ product.image.file }}" alt="">
+                                    <a href="{{ orderProduct.product._links[locale] }}" target="_blank"><img src="{{ orderProduct.image.file }}" alt="{{ orderProduct.translation.title }}"></a>
                                 </div>
                                 <div class="">
-                                    <a class="mcp-product-name" href="link">{{ product.translation.title}} x {{ product.quantity }}</a>
+                                    <a class="mcp-product-name" href="{{ orderProduct.product._links[locale] }}" target="_blank">{{ orderProduct.translation.title }} x {{ orderProduct.quantity }}</a>
                                     <p>
                                         <span>
                                             <label>{{ 'email.order.table.color' | trans }}:</label>
-                                            {{ product.color.translations[locale].title }}
+                                            {{ orderProduct.color.translations[locale].title }}
                                         </span>
-                                        {% if product.size != constant('App\\Entity\\ProductSize::NO_SIZE') %}
+                                        {% if orderProduct.size != constant('App\\Entity\\ProductSize::NO_SIZE') %}
                                             , <span>
                                                 <label>{{ 'email.order.table.size' | trans }}:</label>
-                                                {{ product.size }}
+                                                {{ orderProduct.size }}
                                             </span>
                                         {% endif %}
                                     </p>
                                     <p>
                                         <label>{{ 'email.order.table.unit_price' | trans }}:</label>
-                                        {{ product.price.amount }} {{ product.price.currency }}
+                                        {% if 0 < orderProduct.promotion_price | length %}
+                                            {{ orderProduct.promotion_price.amount }} {{ orderProduct.promotion_price.currency }}
+                                        {% elseif 0 < orderProduct.discount | length %}
+                                            {{ orderProduct.discount.price.amount }} {{ orderProduct.discount.price.currency }}
+                                        {% else %}
+                                            {{ orderProduct.price.amount }} {{ orderProduct.price.currency }}
+                                        {% endif %}
                                     </p>
                                 </div>
                                 <div class="">
-                                    <h6>{{ 'email.order.table.total_price' | trans }}: {{ product.total.amount }} {{ product.total.currency }}</h6>
+                                    <h6>{{ 'email.order.table.total_price' | trans }}: {{ orderProduct.total.amount }} {{ orderProduct.total.currency }}</h6>
                                 </div>
                             </div>
                         {% endfor %}

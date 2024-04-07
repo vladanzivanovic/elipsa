@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class PromotionCouponsListController extends AbstractController
+final class PromotionsListController extends AbstractController
 {
     private DataTableRequestParser $requestParser;
 
@@ -46,14 +46,12 @@ final class PromotionCouponsListController extends AbstractController
     }
 
     /**
-     * @Route("/api/promotion/coupons/list", name="admin.get_promotion_coupons_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/promotions/list', name: 'admin.get_promotions_list', methods: ['POST'], options: ['expose' => true])]
     public function getCouponsList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
@@ -66,24 +64,24 @@ final class PromotionCouponsListController extends AbstractController
         return new JsonResponse($response);
     }
 
-    /**
-     * @Route("/api/promotion/products/list", name="admin.get_promotion_products_list", methods={"POST"}, options={"expose": true})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
-    public function getProductsList(Request $request): JsonResponse
-    {
-        $formattedRequest = $this->requestParser->formatRequest($request);
-        $total = $this->couponsRepository->countData();
-
-        $data = $this->couponsRepository->getAdminList($formattedRequest, Promotion::TYPE_PRODUCT);
-
-        $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
-
-        return new JsonResponse($response);
-    }
+//    /**
+//     * @Route("/api/promotion/products/list", name="admin.get_promotion_products_list", methods={"POST"}, options={"expose": true})
+//     *
+//     * @param Request $request
+//     *
+//     * @return JsonResponse
+//     * @throws NonUniqueResultException
+//     * @throws NoResultException
+//     */
+//    public function getProductsList(Request $request): JsonResponse
+//    {
+//        $formattedRequest = $this->requestParser->formatRequest($request);
+//        $total = $this->couponsRepository->countData();
+//
+//        $data = $this->couponsRepository->getAdminList($formattedRequest, Promotion::TYPE_PRODUCT);
+//
+//        $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
+//
+//        return new JsonResponse($response);
+//    }
 }

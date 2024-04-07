@@ -58,7 +58,7 @@ final class SettingsCollector
                 $officeMapper = ['showInFooter' => true, 'useInEmail' => true];
                 break;
             default:
-                $settingsMapper = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'STREET', 'ZIP_CODE', 'CITY', 'FULL_COMPANY_NAME', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT'];
+                $settingsMapper = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'STREET', 'ZIP_CODE', 'CITY', 'FULL_COMPANY_NAME', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT', 'FREE_SHIPPING_STORE'];
                 $officeMapper = ['showInFooter' => true, 'useInEmail' => true];
         }
 

@@ -26,13 +26,11 @@ final class CatalogView
     {
         $trans = $catalogue->getByLocale($locale);
 
-        $view = [
+        return [
             'title' => $trans->getTitle(),
             'slug' => $trans->getSlug(),
             'images' => $this->getImages($catalogue),
         ];
-
-        return $view;
     }
 
     private function getImages(Catalogue $catalogue): array

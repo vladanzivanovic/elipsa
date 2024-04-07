@@ -16,26 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CareerListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var CareerDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\CareerDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var CareerRepository
-     */
-    private $repository;
+    private \App\Repository\CareerRepository $repository;
 
-    /**
-     * @param DataTableRequestParser           $requestParser
-     * @param CareerDataTableResponseFormatter $responseFormatter
-     * @param CareerRepository                 $repository
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         CareerDataTableResponseFormatter $responseFormatter,
@@ -47,14 +33,13 @@ final class CareerListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-career-list", name="admin.get_career_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-career-list', name: 'admin.get_career_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

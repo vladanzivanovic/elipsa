@@ -28,7 +28,7 @@ final class SliderImageService
 
     public function setImages(Slider $slider, array $data, int $device): void
     {
-        if(empty(array_filter($data))) {
+        if(array_filter($data) === []) {
             return;
         }
 
@@ -45,12 +45,9 @@ final class SliderImageService
                     $image->setParentImage($slider->getImage()->getName());
                 }
 
-                if (!empty($payload['id'])) {
-                    if (isset($payload['deleted']) && true === $payload['deleted']) {
-                        $this->imageParser->delete($image);
-
-                        continue;
-                    }
+                if (!empty($payload['id']) && (isset($payload['deleted']) && true === $payload['deleted'])) {
+                    $this->imageParser->delete($image);
+                    continue;
                 }
 
                 if ($device === Image::DEVICE_DESKTOP) {
@@ -61,7 +58,7 @@ final class SliderImageService
             }
         }
 
-        if (count($exceptions) > 0) {
+        if ($exceptions !== []) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
     }

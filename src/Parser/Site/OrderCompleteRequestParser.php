@@ -18,15 +18,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class OrderCompleteRequestParser
 {
-    /**
-     * @var ShopOrderRepository
-     */
-    private $orderRepository;
+    private \App\Repository\ShopOrderRepository $orderRepository;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private \App\Repository\UserRepository $userRepository;
 
     /**
      * @var UserPasswordEncoderInterface
@@ -34,35 +28,22 @@ final class OrderCompleteRequestParser
     private $passwordEncoder;
 
     /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-
-    /**
      * OrderCompleteRequestParser constructor.
      *
-     * @param ShopOrderRepository          $orderRepository
-     * @param UserRepository               $userRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ParameterBagInterface        $parameterBag
      */
     public function __construct(
         ShopOrderRepository $orderRepository,
         UserRepository $userRepository,
-        UserPasswordEncoderInterface $passwordEncoder,
-        ParameterBagInterface $parameterBag
+        UserPasswordEncoderInterface $passwordEncoder
     ) {
         $this->orderRepository = $orderRepository;
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
-        $this->parameterBag = $parameterBag;
     }
 
     /**
-     * @param ParameterBag $bag
-     * @param string $orderToken
-     *
-     * @return ShopOrder
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
@@ -82,10 +63,6 @@ final class OrderCompleteRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
-     * @param ShopOrder    $order
-     *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      */
@@ -115,15 +92,10 @@ final class OrderCompleteRequestParser
         $order->setUser($user);
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param ShopOrder    $order
-     *
-     * @return void
-     */
+    
     private function setAddress(ParameterBag $bag, ShopOrder $order): void
     {
-        if(null === $address = $order->getUser()->getAddress()) {
+        if(!($address = $order->getUser()->getAddress()) instanceof \App\Entity\Address) {
             $address = new Address();
             $address->setFirstName($bag->get('first_name'));
             $address->setLastName($bag->get('last_name'));
@@ -140,9 +112,7 @@ final class OrderCompleteRequestParser
     }
 
     /**
-     * @param ShopOrder $order
      *
-     * @return void
      *
      * @throws \Exception
      */

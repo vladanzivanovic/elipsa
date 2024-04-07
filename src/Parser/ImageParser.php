@@ -100,9 +100,7 @@ final class ImageParser
      */
     private function create(): Image
     {
-        $image = new Image();
-
-        return $image;
+        return new Image();
     }
 
     private function setNewImageFileName($file, Image $image): void
@@ -131,7 +129,7 @@ final class ImageParser
         $imageDir = $this->imageDir;
 
         if (false === $isNew) {
-            $imageDir = true === $fromImport ? $this->importDir : $this->tmpDir;
+            $imageDir = $fromImport ? $this->importDir : $this->tmpDir;
         }
 
         return $this->rootDir.$imageDir;

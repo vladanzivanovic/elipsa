@@ -17,20 +17,10 @@ final class CatalogHandler
      */
     protected $img;
 
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var CatalogueRepository
-     */
-    private $catalogueRepository;
+    private \App\Repository\CatalogueRepository $catalogueRepository;
 
-    /**
-     * @param ValidatorHelper     $validator
-     * @param CatalogueRepository $catalogueRepository
-     */
     public function __construct(
         ValidatorHelper $validator,
         CatalogueRepository $catalogueRepository
@@ -40,9 +30,7 @@ final class CatalogHandler
     }
 
     /**
-     * @param Catalogue $catalogue
      *
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -62,9 +50,6 @@ final class CatalogHandler
     }
 
     /**
-     * @param Catalogue $catalogue
-     * @param int       $status
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -76,7 +61,6 @@ final class CatalogHandler
     }
 
     /**
-     * @param Catalogue $catalogue
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

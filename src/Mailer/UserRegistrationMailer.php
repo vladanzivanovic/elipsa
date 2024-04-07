@@ -29,18 +29,13 @@ final class UserRegistrationMailer
         $this->settingsCollector = $settingsCollector;
     }
 
-    public function sendEmail(array $viewData, User $user)
+    public function sendEmail(array $viewData, User $user): void
     {
         $emailModelCustomer = $this->prepareEmail($viewData, $user);
         $event = new EmailEvent($emailModelCustomer);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
     }
 
-    /**
-     * @param array $viewData
-     * @param User $user
-     * @return EmailModel
-     */
     private function prepareEmail(array $viewData, User $user): EmailModel
     {
         $officeInfo = $this->settingsCollector->collect('email');

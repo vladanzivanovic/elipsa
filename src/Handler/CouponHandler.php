@@ -19,40 +19,23 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class CouponHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
+
+    private \App\Repository\PromotionRepository $couponRepository;
 
     /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
-
-    /**
-     * @var PromotionRepository
-     */
-    private $couponRepository;
-
-    /**
-     * @param PromotionRepository $couponRepository
-     * @param ValidatorHelper           $validator
      * @param ParameterBagInterface     $bag
      */
     public function __construct(
         PromotionRepository $couponRepository,
-        ValidatorHelper $validator,
-        ParameterBagInterface $bag
+        ValidatorHelper $validator
     ) {
         $this->validator = $validator;
-        $this->bag = $bag;
         $this->couponRepository = $couponRepository;
     }
 
     /**
-     * @param Promotion $promotion
      *
-     * @return void
      *
      * @throws \Exception
      */
@@ -72,9 +55,7 @@ final class CouponHandler
     }
 
     /**
-     * @param Promotion $promotion
      *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

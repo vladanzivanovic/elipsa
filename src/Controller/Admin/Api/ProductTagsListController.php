@@ -39,15 +39,14 @@ final class ProductTagsListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-product-tags-list", name="admin.get_product_tags_list", methods={"POST"}, options={"expose": true})
-     * @Route("/api/get-blog-tags-list", name="admin.get_blog_tags_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-product-tags-list', name: 'admin.get_product_tags_list', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/get-blog-tags-list', name: 'admin.get_blog_tags_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $relatedType = $request->attributes->get('_route') === 'admin.get_blog_tags_list' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;

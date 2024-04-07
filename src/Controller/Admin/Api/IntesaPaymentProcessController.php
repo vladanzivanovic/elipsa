@@ -15,25 +15,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class IntesaPaymentProcessController extends AbstractController
 {
-    /**
-     * @var IntesaPaymentParser
-     */
-    private $paymentParser;
+    private \App\Parser\IntesaPaymentParser $paymentParser;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var OrderHandler
-     */
-    private $handler;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
+    private \App\Handler\Site\OrderHandler $handler;
 
-    /**
-     * @param IntesaPaymentParser $paymentParser
-     * @param TranslatorInterface $translator
-     * @param OrderHandler        $handler
-     */
     public function __construct(
         IntesaPaymentParser  $paymentParser,
         TranslatorInterface $translator,
@@ -45,48 +31,29 @@ final class IntesaPaymentProcessController extends AbstractController
         $this->handler = $handler;
     }
 
-    /**
-     * @Route("/api/intesa-post-auth/{id}", name="admin.intesa_post_auth_request", methods={"GET"}, options={"expose": true})
-     *
-     * @param ShopOrder $order
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/intesa-post-auth/{id}', name: 'admin.intesa_post_auth_request', methods: ['GET'], options: ['expose' => true])]
     public function postAuth(ShopOrder $order): JsonResponse
     {
         return $this->doRequest($order, ShopOrder::CARD_TYPE_POST_AUTH, 'intesa.already_payed');
     }
 
-    /**
-     * @Route("/api/intesa-refund/{id}", name="admin.intesa_refund_request", methods={"GET"}, options={"expose": true})
-     *
-     * @param ShopOrder $order
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/intesa-refund/{id}', name: 'admin.intesa_refund_request', methods: ['GET'], options: ['expose' => true])]
     public function refund(ShopOrder $order): JsonResponse
     {
         return $this->doRequest($order, ShopOrder::CARD_TYPE_REFUND, 'intesa.already_refunded');
     }
 
-    /**
-     * @Route("/api/intesa-void/{id}", name="admin.intesa_void_request", methods={"GET"}, options={"expose": true})
-     *
-     * @param ShopOrder $order
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/intesa-void/{id}', name: 'admin.intesa_void_request', methods: ['GET'], options: ['expose' => true])]
     public function void(ShopOrder $order): JsonResponse
     {
         return $this->doRequest($order, ShopOrder::CARD_TYPE_VOID, 'intesa.already_void');
     }
 
     /**
-     * @param ShopOrder $order
-     * @param string    $type
-     * @param string    $errorMessage
      *
-     * @return JsonResponse
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

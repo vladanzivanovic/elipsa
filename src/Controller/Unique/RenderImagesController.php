@@ -14,48 +14,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class RenderImagesController extends AbstractController
 {
 
-    private $imageService;
-    private $parameterBag;
-    /**
-     * @var ImageResizer
-     */
-    private $imageResizer;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
+    private \App\Services\ImageResizer $imageResizer;
+    private \App\Repository\ImageRepository $imageRepository;
 
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $parameterBag
-     * @param ImageResizer          $imageResizer
-     * @param ImageRepository       $imageRepository
-     */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $parameterBag,
         ImageResizer $imageResizer,
         ImageRepository $imageRepository
     ) {
-        $this->imageService = $imageService;
         $this->parameterBag = $parameterBag;
         $this->imageResizer = $imageResizer;
         $this->imageRepository = $imageRepository;
     }
 
-    /**
-     * @Route("/{entity}-image/{filter}/{name}.jpeg",
-     *     methods={"GET"},
-     *     name="app.image_show",
-     *     requirements={
-     *          "entity": "product|blog|slider|location|banner|catalog|about-us|job|description"
-     *     })
-     *
-     * @param string $filter
-     * @param string $name
-     *
-     * @return BinaryFileResponse
-     */
+    
+    #[Route(path: '/{entity}-image/{filter}/{name}.jpeg', methods: ['GET'], name: 'app.image_show', requirements: ['entity' => 'product|blog|slider|location|banner|catalog|about-us|job|description'])]
     public function getImage(string $filter, string $name): BinaryFileResponse
     {
         $uploadDir = $this->parameterBag->get('upload_image_dir');
@@ -79,18 +54,11 @@ class RenderImagesController extends AbstractController
     }
 
     /**
-     * @Route("/{entity}-image/summernote_images/{name}",
-     *     methods={"GET"},
-     *     name="app.summernote_image_show",
-     *     requirements={
-     *          "entity": "product|blog|slider|location|banner|catalog|about-us|job|description"
-     *     })
      *
      * @param string $filter
-     * @param string $name
      *
-     * @return BinaryFileResponse
      */
+    #[Route(path: '/{entity}-image/summernote_images/{name}', methods: ['GET'], name: 'app.summernote_image_show', requirements: ['entity' => 'product|blog|slider|location|banner|catalog|about-us|job|description'])]
     public function getSummernoteImage(string $name): BinaryFileResponse
     {
         $uploadDir = $this->parameterBag->get('upload_image_dir');

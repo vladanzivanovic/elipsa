@@ -28,16 +28,11 @@ final class NewsLetterApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/news-letter-add-user",
-     *     name="site_api.news_letter_add_user",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/news-letter-add-user', name: 'site_api.news_letter_add_user', methods: ['POST'], options: ['expose' => true])]
     public function addEmail(NewsLetterRequestDto $newsLetterRequestDto): JsonResponse
     {
         try {

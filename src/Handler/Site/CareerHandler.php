@@ -19,40 +19,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CareerHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
+
+    private \App\Repository\SettingsRepository $settingsRepository;
+
+    private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
+
+    private \App\Repository\CareerRepository $repository;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
     /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var CareerRepository
-     */
-    private $repository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @param ValidatorHelper          $validator
-     * @param SettingsRepository       $settingsRepository
-     * @param EventDispatcherInterface $dispatcher
-     * @param CareerRepository         $repository
-     * @param RouterInterface          $router
      * @param TranslatorInterface      $translator
      */
     public function __construct(
@@ -60,19 +36,16 @@ final class CareerHandler
         SettingsRepository $settingsRepository,
         EventDispatcherInterface $dispatcher,
         CareerRepository $repository,
-        RouterInterface $router,
-        TranslatorInterface $translator
+        RouterInterface $router
     ) {
         $this->validator = $validator;
         $this->settingsRepository = $settingsRepository;
         $this->dispatcher = $dispatcher;
         $this->repository = $repository;
         $this->router = $router;
-        $this->translator = $translator;
     }
 
     /**
-     * @param Career $career
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -95,9 +68,6 @@ final class CareerHandler
     }
 
     /**
-     * @param Career $career
-     *
-     * @return EmailModel
      * @throws \ReflectionException
      */
     private function prepareEmail(Career $career): EmailModel
@@ -122,15 +92,12 @@ final class CareerHandler
             'careerEmail' => $career->getEmail(),
             'position' => $position,
             'accompanyingLetter' => $career->getAccompanyingLetter(),
-            'cv' => null !== $career->getCv() ? $this->router->generate('app.download_doc', ['id' => $career->getCv()->getId()], RouterInterface::ABSOLUTE_URL) : '',
+            'cv' => $career->getCv() instanceof \App\Entity\Image ? $this->router->generate('app.download_doc', ['id' => $career->getCv()->getId()], RouterInterface::ABSOLUTE_URL) : '',
         ]);
 
         return $model;
     }
 
-    /**
-     * @return array
-     */
     private function getSettings(): array
     {
         $settings = $this->settingsRepository->getSettingsForOrderEmail();

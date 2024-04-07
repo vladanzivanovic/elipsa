@@ -8,26 +8,15 @@ use App\Repository\CareerDescriptionTranslationRepository;
 
 final class JobPageRouterFormatter
 {
-    /**
-     * @var CareerDescriptionTranslationRepository
-     */
-    private $descriptionTranslationRepository;
+    private \App\Repository\CareerDescriptionTranslationRepository $descriptionTranslationRepository;
 
-    /**
-     * @param CareerDescriptionTranslationRepository $descriptionTranslationRepository
-     */
     public function __construct(
         CareerDescriptionTranslationRepository $descriptionTranslationRepository
     ) {
         $this->descriptionTranslationRepository = $descriptionTranslationRepository;
     }
 
-    /**
-     * @param string $slug
-     * @param string $locale
-     *
-     * @return string
-     */
+    
     public function localeFormatter(string $slug, string $locale): string
     {
         $fromTrans = $this->descriptionTranslationRepository->findOneBy(['slug' => $slug]);

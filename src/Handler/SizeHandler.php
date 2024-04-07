@@ -13,19 +13,9 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class SizeHandler
 {
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Repository\ProductSizeRepository $sizeRepository;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @param ProductSizeRepository $sizeRepository
-     * @param ValidatorHelper       $validator
-     */
     public function __construct(
         ProductSizeRepository $sizeRepository,
         ValidatorHelper $validator
@@ -35,7 +25,6 @@ final class SizeHandler
     }
 
     /**
-     * @param ProductSize $productSize
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -56,7 +45,6 @@ final class SizeHandler
     }
 
     /**
-     * @param ProductSize $productSize
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

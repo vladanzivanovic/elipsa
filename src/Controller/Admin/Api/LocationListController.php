@@ -28,26 +28,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class LocationListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var LocationDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\LocationDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var LocationRepository
-     */
-    private $locationRepository;
+    private \App\Repository\LocationRepository $locationRepository;
 
-    /**
-     * @param DataTableRequestParser             $requestParser
-     * @param LocationRepository                 $locationRepository
-     * @param LocationDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         LocationRepository $locationRepository,
@@ -59,14 +45,13 @@ final class LocationListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-location-list", name="admin.get_location_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-location-list', name: 'admin.get_location_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

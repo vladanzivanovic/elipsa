@@ -19,26 +19,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CategoryListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var CategoryDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\CategoryDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
+    private \App\Repository\CategoryRepository $categoryRepository;
 
-    /**
-     * @param DataTableRequestParser             $requestParser
-     * @param CategoryRepository                 $categoryRepository
-     * @param CategoryDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         CategoryRepository $categoryRepository,
@@ -50,15 +36,14 @@ final class CategoryListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-category-list", name="admin.get_category_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getList(Request $request)
+    #[Route(path: '/api/get-category-list', name: 'admin.get_category_list', options: ['expose' => true], methods: ['POST'])]
+    public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
         $total = $this->categoryRepository->countData();

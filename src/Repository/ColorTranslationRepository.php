@@ -23,8 +23,6 @@ class ColorTranslationRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $slug
-     * @param string $locale
      *
      * @return int|mixed|string
      * @throws NoResultException

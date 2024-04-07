@@ -1,11 +1,14 @@
 import cartPageMapper from "../Mapper/CartPageMapper";
+import toastrService from "../../../js/Services/ToastrService";
 
 class CartPageErrorDom {
     #pageMapper;
+    #toastr;
 
     constructor() {
         if (!CartPageErrorDom.instance) {
             this.#pageMapper = cartPageMapper;
+            this.#toastr = toastrService;
 
             CartPageErrorDom.instance = this;
         }

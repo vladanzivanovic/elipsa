@@ -52,7 +52,7 @@ final class BlogView
 
     private function defaultViewData(Blog $blog): array
     {
-        $view = [
+        return [
             'id' => $blog->getId(),
             'tags' => null,
             'translations' => $this->getTranslationValues($blog),
@@ -60,8 +60,6 @@ final class BlogView
                 'images' => null,
             ],
         ];
-
-        return $view;
     }
 
     private function getTranslationValues(Blog $blog): array

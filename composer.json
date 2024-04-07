@@ -3,7 +3,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.4",
+        "php": "^8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -11,9 +11,11 @@
         "ext-openssl": "*",
         "ext-simplexml": "*",
         "beberlei/doctrineextensions": "*",
+        "doctrine/annotations": "*",
+        "doctrine/dbal": "*",
         "doctrine/doctrine-bundle": "^2.9",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^2.7",
         "drewm/mailchimp-api": "*",
         "egulias/email-validator": "*",
         "friendsofsymfony/jsrouting-bundle": "*",
@@ -25,20 +27,19 @@
         "presta/sitemap-bundle": "*",
         "ramsey/uuid-doctrine": "*",
         "scienta/doctrine-json-functions": "*",
-        "sensio/framework-extra-bundle": "*",
         "sentry/sentry-symfony": "^4.10",
         "shuchkin/simplexlsx": "*",
-        "symfony/dotenv": "5.4.*",
+        "symfony/dotenv": "6.4.*",
         "symfony/flex": "^1.3.1",
-        "symfony/google-mailer": "5.4.*",
-        "symfony/mailer": "5.4.*",
+        "symfony/google-mailer": "6.4.*",
+        "symfony/mailer": "6.4.*",
         "symfony/monolog-bundle": "*",
-        "symfony/notifier": "5.4.*",
-        "symfony/security-bundle": "5.4.*",
-        "symfony/twig-bundle": "5.4.*",
-        "symfony/validator": "5.4.*",
-        "symfony/web-link": "5.4.*",
-        "symfony/webpack-encore-bundle": "^1.16",
+        "symfony/notifier": "6.4.*",
+        "symfony/security-bundle": "6.4.*",
+        "symfony/twig-bundle": "6.4.*",
+        "symfony/validator": "6.4.*",
+        "symfony/web-link": "6.4.*",
+        "symfony/webpack-encore-bundle": "*",
         "tattali/mobile-detect-bundle": "*",
         "turanjanin/serbian-transliterator": "^1.0",
         "twig/extra-bundle": "*",
@@ -46,9 +47,10 @@
         "willdurand/js-translation-bundle": "*"
     },
     "require-dev": {
-        "symfony/debug-bundle": "5.4.*",
+        "rector/rector": "*",
+        "symfony/debug-bundle": "6.4.*",
         "symfony/maker-bundle": "*",
-        "symfony/web-profiler-bundle": "5.4.*"
+        "symfony/web-profiler-bundle": "6.4.*"
     },
     "config": {
         "preferred-install": {
@@ -141,7 +143,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.4.*"
+            "require": "6.4.*"
         }
     }
 }

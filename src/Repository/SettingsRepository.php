@@ -19,9 +19,6 @@ class SettingsRepository extends ExtendedEntityRepository
         parent::__construct($registry, Settings::class);
     }
 
-    /**
-     * @return array
-     */
     public function getSettingsForOrderEmail(): array
     {
         $query = $this->createQueryBuilder('s')
@@ -35,9 +32,6 @@ class SettingsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getSettingsForContactPage(): array
     {
         $query = $this->createQueryBuilder('s')
@@ -51,9 +45,6 @@ class SettingsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getAllSettingsByLocale(string $locale): array
     {
         $query = $this->createQueryBuilder('s')
@@ -68,9 +59,6 @@ class SettingsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getSettingsForUserRegistrationEmail(): array
     {
         $query = $this->createQueryBuilder('s')
@@ -84,9 +72,6 @@ class SettingsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getEmailSettings(): array
     {
         $query = $this->createQueryBuilder('s')

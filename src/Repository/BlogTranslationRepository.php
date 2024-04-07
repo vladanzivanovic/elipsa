@@ -36,9 +36,6 @@ class BlogTranslationRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $alias
-     * @param string $locale
-     *
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

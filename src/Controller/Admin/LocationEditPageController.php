@@ -6,7 +6,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Location;
 use App\Formatter\Admin\LocationEditResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,25 +21,16 @@ final class LocationEditPageController extends AbstractController
         $this->responseFormatter = $responseFormatter;
     }
 
-    /**
-     * @Route("/add-location", name="admin.add_location_page", methods={"GET"})
-     * @Template("Admin/Pages/locationEdit.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: '/add-location', name: 'admin.add_location_page', methods: ['GET'])]
+    #[Template('Admin/Pages/locationEdit.html.twig')]
     public function insert(): array
     {
         return $this->responseFormatter->formatResponse();
     }
 
-    /**
-     * @Route("/edit-location/{id}", name="admin.edit_location_page", methods={"GET"})
-     * @Template("Admin/Pages/locationEdit.html.twig")
-     *
-     * @param Location $location
-     *
-     * @return array
-     */
+    
+    #[Route(path: '/edit-location/{id}', name: 'admin.edit_location_page', methods: ['GET'])]
+    #[Template('Admin/Pages/locationEdit.html.twig')]
     public function update(Location $location): array
     {
         return $this->responseFormatter->formatResponse($location);

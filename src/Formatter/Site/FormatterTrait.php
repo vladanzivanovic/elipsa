@@ -4,11 +4,7 @@ namespace App\Formatter\Site;
 
 trait FormatterTrait
 {
-    /**
-     * @param array $productColors
-     *
-     * @return array
-     */
+    
     private function formatColors(array $productColors): array
     {
         $formattedProduct = [];
@@ -20,11 +16,7 @@ trait FormatterTrait
         return $formattedProduct;
     }
 
-    /**
-     * @param array $productSizes
-     *
-     * @return array
-     */
+    
     private function formatSizes(array $productSizes): array
     {
         $formattedProduct = [];

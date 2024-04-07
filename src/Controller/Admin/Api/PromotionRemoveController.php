@@ -33,14 +33,12 @@ final class PromotionRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/promotion/remove/{id}", name="admin.remove_promotion_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Promotion $coupon
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/promotion/remove/{id}', name: 'admin.remove_promotion_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Promotion $coupon): JsonResponse
     {
         $this->couponHandler->remove($coupon);

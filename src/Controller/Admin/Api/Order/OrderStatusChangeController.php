@@ -36,12 +36,7 @@ final class OrderStatusChangeController extends AbstractController
         $this->orderView = $orderView;
     }
 
-    /**
-     * @Route("/api/order/{token}/status", name="admin.order_set_status", methods={"PUT"}, options={"expose": true})
-     *
-     * @param OrderStateRequestDto $orderStateRequestDto
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/{token}/status', name: 'admin.order_set_status', methods: ['PUT'], options: ['expose' => true])]
     public function changeState(OrderStateRequestDto $orderStateRequestDto): JsonResponse
     {
         try {

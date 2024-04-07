@@ -11,8 +11,11 @@ use Ramsey\Uuid\Uuid;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ShopOrderRepository")
  */
-class ShopOrder
+class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 {
+    use ResourceTrait;
+    use TimestampableEntity;
+
     public const STATUS_NEW = 'new'; //1;
 
     public const STATUS_PENDING = 'pending';
@@ -52,15 +55,6 @@ class ShopOrder
     public const SHIPPING_STATUS_SHIPPED = self::STATUS_SHIPPED;
 
     public const SHIPPING_STATUS_COMPLETED = self::STATUS_COMPLETED;
-
-    use TimestampableEntity;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -147,11 +141,6 @@ class ShopOrder
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStatus(): ?string

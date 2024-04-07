@@ -13,30 +13,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class SiteMapStaticSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @var string
-     */
-    private $baseUrl;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private string $baseUrl;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param RouterInterface       $router
-     * @param ParameterBagInterface $parameterBag
-     */
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         RouterInterface $router,
@@ -49,19 +32,16 @@ final class SiteMapStaticSubscriber implements EventSubscriberInterface
         $this->baseUrl = $this->router->getContext()->getScheme().'://'.$this->router->getContext()->getHost().'/';
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPopulateEvent::ON_SITEMAP_POPULATE => [
+            SitemapPopulateEvent::class => [
                 ['registerStaticUrl'],
             ],
         ];
     }
 
-    /**
-     * @param SitemapPopulateEvent $event
-     */
-    public function registerStaticUrl(SitemapPopulateEvent $event)
+    public function registerStaticUrl(SitemapPopulateEvent $event): void
     {
        $this->_registerStaticUrl($event, 'site.home_page', UrlConcrete::CHANGEFREQ_WEEKLY, 0.7);
        $this->_registerStaticUrl($event, 'site.loyalty', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
@@ -72,7 +52,7 @@ final class SiteMapStaticSubscriber implements EventSubscriberInterface
        $this->_registerStaticUrl($event, 'site.ask_us', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
     }
 
-    private function _registerStaticUrl(SitemapPopulateEvent $event, string $routeName, $changeFreq, $priority)
+    private function _registerStaticUrl(SitemapPopulateEvent $event, string $routeName, $changeFreq, $priority): void
     {
         $locales = explode('|', $this->parameterBag->get('locales'));
 

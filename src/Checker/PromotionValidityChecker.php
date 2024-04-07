@@ -23,6 +23,11 @@ final class PromotionValidityChecker implements PromotionCheckerInterface
         return Promotion::CHECKER_TYPE_VALIDITY;
     }
 
+    public static function getDefaultPriority(): int
+    {
+        return 1000;
+    }
+
     /**
      * @throws CouponCheckerException
      */

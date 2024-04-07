@@ -51,8 +51,6 @@ final class HomePageResponseFormatter
 
     /**
      * @param Banner[] $banners
-     *
-     * @return array
      */
     private function formatBanners(array $banners, string $locale): array
     {
@@ -65,11 +63,7 @@ final class HomePageResponseFormatter
         return $formattedBanners;
     }
 
-    /**
-     * @param array $products
-     *
-     * @return array
-     */
+    
     private function formatProducts(array $products): array
     {
         $formattedProducts = [];

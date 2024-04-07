@@ -11,36 +11,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RenderTmpImagesController extends AbstractController
 {
-    private $imageService;
-    private $parameterBag;
-    /**
-     * @var ImageResizer
-     */
-    private $imageResizer;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
+    private \App\Services\ImageResizer $imageResizer;
 
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $parameterBag
-     * @param ImageResizer          $imageResizer
-     */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $parameterBag,
         ImageResizer $imageResizer
     ) {
-        $this->imageService = $imageService;
         $this->parameterBag = $parameterBag;
         $this->imageResizer = $imageResizer;
     }
 
-    /**
-     * @Route("/tmp-image-show/{filter}/{name}", methods={"GET"}, name="app.tmp_image_show", defaults={"filter": "tmp_images"})
-     *
-     * @param string $name
-     * @param string $filter
-     *
-     * @return BinaryFileResponse
-     */
+    
+    #[Route(path: '/tmp-image-show/{filter}/{name}', methods: ['GET'], name: 'app.tmp_image_show', defaults: ['filter' => 'tmp_images'])]
     public function getTmpImage(string $name, string $filter): BinaryFileResponse
     {
         $uploadDir = $this->parameterBag->get('upload_tmp_dir');

@@ -13,18 +13,11 @@ final class NewsLetterEvent extends Event
     public const ADD_USER = 'newsletter.add_user';
     public const UPDATE_USER = 'newsletter.update_user';
 
-    /**
-     * @var NewsLetter
-     */
-    protected $newsLetter;
+    protected \App\Entity\NewsLetter $newsLetter;
+
+    protected ?\App\Entity\Loyalty $loyalty;
 
     /**
-     * @var Loyalty|null
-     */
-    protected $loyalty;
-
-    /**
-     * @param NewsLetter   $newsLetter
      * @param Loyalty|null $loyalty
      */
     public function __construct(
@@ -35,17 +28,11 @@ final class NewsLetterEvent extends Event
         $this->loyalty = $loyalty;
     }
 
-    /**
-     * @return NewsLetter
-     */
     public function getNewsLetter(): NewsLetter
     {
         return $this->newsLetter;
     }
 
-    /**
-     * @return Loyalty|null
-     */
     public function getLoyalty(): ?Loyalty
     {
         return $this->loyalty;

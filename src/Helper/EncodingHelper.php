@@ -242,12 +242,11 @@ class EncodingHelper {
         }
 
         $last = "";
-        while($last <> $text){
+        while($last != $text){
             $last = $text;
             $text = self::toUTF8(utf8_decode(str_replace(array_keys(self::$utf8ToWin1252), array_values(self::$utf8ToWin1252), $text)));
         }
-        $text = self::toUTF8(utf8_decode(str_replace(array_keys(self::$utf8ToWin1252), array_values(self::$utf8ToWin1252), $text)));
-        return $text;
+        return self::toUTF8(utf8_decode(str_replace(array_keys(self::$utf8ToWin1252), array_values(self::$utf8ToWin1252), $text)));
     }
 
     static function UTF8FixWin1252Chars($text){
@@ -261,7 +260,7 @@ class EncodingHelper {
     }
 
     static function removeBOM($str=""){
-        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+        if(substr($str, 0,3) === pack("CCC",0xef,0xbb,0xbf)) {
             $str=substr($str, 3);
         }
         return $str;

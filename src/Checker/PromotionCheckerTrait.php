@@ -7,15 +7,16 @@ namespace App\Checker;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
 use App\Entity\Promotion;
+use App\Entity\PromotionOption;
 
 trait PromotionCheckerTrait
 {
-    private function checkCouponIsEligible(Promotion $promotionCoupon)
+    private function checkCouponIsEligible(Promotion $promotionCoupon): void
     {
         $checkerTypes = [Promotion::CHECKER_TYPE_VALIDITY];
 
         foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+            if (in_array($promotionChecker->getType(), $checkerTypes)) {
                 $promotionChecker->isEligible($promotionCoupon);
             }
         }
@@ -29,41 +30,23 @@ trait PromotionCheckerTrait
             return true;
         }
 
-        $isOptionApplicable = false;
-
         foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+            if (
+                $promotionChecker->getType() === PromotionOption::OPTION_ALL_PRODUCTS &&
+                false === $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+            ) {
+                return false;
+            }
+
+            if (in_array($promotionChecker->getType(), $checkerTypes)) {
                 $isOptionApplicable = $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType($promotionChecker->getType()));
 
-                if (false === $isOptionApplicable) {
-                    return false;
+                if (true === $isOptionApplicable) {
+                    return true;
                 }
             }
         }
 
-        return $isOptionApplicable;
-    }
-
-    private function checkCouponOptionsAreEligibleForProduct(Product $product, Promotion $promotionCoupon): bool
-    {
-        $checkerTypes = $promotionCoupon->getOptionTypes();
-
-        if (null === $checkerTypes) {
-            return true;
-        }
-
-        $isOptionApplicable = false;
-
-        foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
-                $isOptionApplicable = $promotionChecker->isProductEligible($product, $promotionCoupon->getOptionByType($promotionChecker->getType()));
-
-                if (false === $isOptionApplicable) {
-                    return false;
-                }
-            }
-        }
-
-        return $isOptionApplicable;
+        return false;
     }
 }

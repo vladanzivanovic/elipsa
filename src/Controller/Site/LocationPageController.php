@@ -6,7 +6,7 @@ namespace App\Controller\Site;
 
 use App\Collector\LocationPageCollector;
 use App\Formatter\Site\LocationPageResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,20 +25,9 @@ final class LocationPageController extends AbstractController
         $this->responseFormatter = $responseFormatter;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/prodavnica",
-     *          "en": "/stores",
-     *      },
-     *     name="site.location_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/locationList.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
+    
+    #[Route(path: ['rs' => '/prodavnica', 'en' => '/stores'], name: 'site.location_page', methods: ['GET'])]
+    #[Template('Site/Pages/locationList.html.twig')]
     public function __invoke(Request $request): array
     {
         $collections = $this->pageCollector->collect($request->getLocale());

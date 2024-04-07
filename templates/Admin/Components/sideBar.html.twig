@@ -123,17 +123,17 @@
 
             <li class="nav-item nav-category">Promocije</li>
             <li class="nav-item {{ routeName() == 'admin.promotion_coupons' ? 'active' : '' }}">
-                <a href="{{ path('admin.promotion_coupons') }}" class="nav-link">
+                <a href="{{ path('admin.promotions') }}" class="nav-link">
                     <i class="link-icon mdi mdi-format-color-fill"></i>
-                    <span class="link-title">Promotivni kuponi</span>
+                    <span class="link-title">Promocije</span>
                 </a>
             </li>
-            <li class="nav-item {{ routeName() == 'admin.promotion_products' ? 'active' : '' }}">
-                <a href="{{ path('admin.promotion_products') }}" class="nav-link">
-                    <i class="link-icon mdi mdi-format-color-fill"></i>
-                    <span class="link-title">Promocije proizvoda</span>
-                </a>
-            </li>
+{#            <li class="nav-item {{ routeName() == 'admin.promotion_products' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.promotion_products') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Promocije proizvoda</span>#}
+{#                </a>#}
+{#            </li>#}
             <li class="nav-item nav-category">šifarnik</li>
             <li class="nav-item {{ routeName() == 'admin.colors' ? 'active' : '' }}">
                 <a href="{{ path('admin.colors') }}" class="nav-link">

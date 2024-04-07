@@ -9,7 +9,7 @@ use App\Collector\ShopPageCollector;
 use App\Formatter\Site\ShopListResponseFormatter;
 use App\Request\Dto\ShopListRequestDto;
 use App\Request\Dto\ShopPageOptionsDto;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,21 +32,8 @@ final class ShopPageController extends AbstractController
         $this->filterCollector = $filterCollector;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/proizvodi",
-     *          "en": "/products",
-     *          "ba": "/proizvodi"
-     *     },
-     *     name="site.shop_page",
-     *     methods={"GET"},
-     *     defaults={"page": 1},
-     *     options={"expose": true}
-     * )
-     * @Template("Site/Pages/shop.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: ['rs' => '/proizvodi', 'en' => '/products', 'ba' => '/proizvodi'], name: 'site.shop_page', options: ['expose' => true], defaults: ['page' => 1], methods: ['GET'])]
+    #[Template('Site/Pages/shop.html.twig')]
     public function shopPage(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
@@ -59,23 +46,9 @@ final class ShopPageController extends AbstractController
         );
     }
 
-    /**
-     * @Route({
-     *          "rs": "/trendovi",
-     *          "en": "/trends",
-     *          "ba": "/trendovi"
-     *     },
-     *     name="site.trendy_page",
-     *     methods={"GET"},
-     *     defaults={"page": 1},
-     *     options={"expose": true}
-     * )
-     * @Template("Site/Pages/shop.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
+    
+    #[Route(path: ['rs' => '/trendovi', 'en' => '/trends', 'ba' => '/trendovi'], name: 'site.trendy_page', options: ['expose' => true], defaults: ['page' => 1], methods: ['GET'])]
+    #[Template('Site/Pages/shop.html.twig')]
     public function trendyPage(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,

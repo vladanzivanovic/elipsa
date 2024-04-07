@@ -36,10 +36,9 @@ final class OrderCouponController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/coupon/{token}/{code}", name="site_api.add_order_coupon_code", methods={"PUT"}, options={"expose": true})
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/order/coupon/{token}/{code}', name: 'site_api.add_order_coupon_code', methods: ['PUT'], options: ['expose' => true])]
     public function manage(Request $request, string $token, string $code): Response
     {
         try {
@@ -60,10 +59,9 @@ final class OrderCouponController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/coupon/{token}/{code}", name="site_api.remove_order_coupon_code", methods={"DELETE"}, options={"expose": true})
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/order/coupon/{token}/{code}', name: 'site_api.remove_order_coupon_code', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Request $request, string $token, string $code): Response
     {
         try {

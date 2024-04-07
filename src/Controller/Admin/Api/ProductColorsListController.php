@@ -18,27 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductColorsListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
     /**
      * @var ProductDataTableResponseFormatter
      */
-    private $responseFormatter;
+    private \App\Formatter\Admin\ProductColorDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
+    private \App\Repository\ProductColorRepository $colorRepository;
 
     /**
      * ProductColorsListController constructor.
-     *
-     * @param DataTableRequestParser                 $requestParser
-     * @param ProductColorRepository                 $colorRepository
-     * @param ProductColorDataTableResponseFormatter $responseFormatter
      */
     public function __construct(
         DataTableRequestParser $requestParser,
@@ -51,14 +41,13 @@ final class ProductColorsListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-product-colors-list", name="admin.get_product_colors_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-product-colors-list', name: 'admin.get_product_colors_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

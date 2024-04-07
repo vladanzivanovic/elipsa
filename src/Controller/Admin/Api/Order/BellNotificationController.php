@@ -20,11 +20,7 @@ final class BellNotificationController extends AbstractController
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @Route("/api/notifications/bell", name="admin.get_bell_notifications", methods={"GET"}, options={"expose": true})
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/notifications/bell', name: 'admin.get_bell_notifications', methods: ['GET'], options: ['expose' => true])]
     public function getNotifications(): JsonResponse
     {
         try {

@@ -47,12 +47,10 @@ final class ProductEditHandler
     }
 
     /**
-     * @param Product $product
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
-     * @return void
      */
     public function save(Product $product): void
     {
@@ -64,7 +62,7 @@ final class ProductEditHandler
             throw new UnprocessableEntityHttpException(json_encode($this->validator->parseErrors($errors)));
         }
 
-        if (true === $isNewProduct) {
+        if ($isNewProduct) {
             $this->productRepository->persist($product);
         }
 
@@ -74,9 +72,6 @@ final class ProductEditHandler
     }
 
     /**
-     * @param Product $product
-     * @param int     $status
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

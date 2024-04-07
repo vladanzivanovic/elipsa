@@ -11,20 +11,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class IntesaPaymentParser
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var HttpClientInterface
-     */
-    private $client;
+    private \Symfony\Contracts\HttpClient\HttpClientInterface $client;
 
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param HttpClientInterface   $client
-     */
     public function __construct(
         ParameterBagInterface $parameterBag,
         HttpClientInterface $client
@@ -35,15 +25,12 @@ final class IntesaPaymentParser
     }
 
     /**
-     * @param ShopOrder $order
-     * @param string    $type
      *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      *
-     * @return void
      */
     public function parse(ShopOrder $order, string $type): void
     {
@@ -53,7 +40,7 @@ final class IntesaPaymentParser
         $xml->addChild('Password', $this->parameterBag->get('intesa_password'));
         $xml->addChild('ClientId', $this->parameterBag->get('intesa_merchant_id'));
         $xml->addChild('Type', $type);
-        $xml->addChild('OrderId', (string) $order->getToken());
+        $xml->addChild('OrderId', $order->getToken());
 
         $response = $this->client->request(
             'POST',
@@ -79,8 +66,6 @@ final class IntesaPaymentParser
     }
 
     /**
-     * @param \SimpleXMLElement $simpleXMLElement
-     *
      * @return array<int, array<string, string>>
      */
     private function parseXmlReportToArray(\SimpleXMLElement $simpleXMLElement): array
@@ -90,7 +75,7 @@ final class IntesaPaymentParser
         foreach ((array) $simpleXMLElement as $name => $item) {
             if ($item instanceof \SimpleXMLElement) {
                 $childArray = $this->parseXmlReportToArray($item);
-                $arrayData[$name] = count($childArray) > 0 ? $childArray : null;
+                $arrayData[$name] = $childArray !== [] ? $childArray : null;
 
                 continue;
             }

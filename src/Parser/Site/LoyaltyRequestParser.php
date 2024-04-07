@@ -14,20 +14,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class LoyaltyRequestParser
 {
-    /**
-     * @var LoyaltyRepository
-     */
-    private $loyaltyRepository;
+    private \App\Repository\LoyaltyRepository $loyaltyRepository;
 
-    /**
-     * @var NewsLetterRepository
-     */
-    private $newsLetterRepository;
+    private \App\Repository\NewsLetterRepository $newsLetterRepository;
 
-    /**
-     * @param LoyaltyRepository    $loyaltyRepository
-     * @param NewsLetterRepository $newsLetterRepository
-     */
     public function __construct(
         LoyaltyRepository $loyaltyRepository,
         NewsLetterRepository $newsLetterRepository
@@ -37,9 +27,6 @@ final class LoyaltyRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
-     *
-     * @return Loyalty
      * @throws \Exception
      */
     public function parse(ParameterBag $bag): Loyalty
@@ -69,11 +56,7 @@ final class LoyaltyRequestParser
         return $loyalty;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return NewsLetter
-     */
+    
     public function parseNewsLetter(string $email): NewsLetter
     {
         $newsLetter = $this->newsLetterRepository->findOneBy(['email' => $email]);

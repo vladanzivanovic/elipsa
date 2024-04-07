@@ -19,26 +19,13 @@ final class CategoryRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-    /**
-     * @var CategoryTranslationRepository
-     */
-    private $translationRepository;
+    private \App\Repository\CategoryRepository $categoryRepository;
+    private \App\Repository\CategoryTranslationRepository $translationRepository;
 
     /**
      * CategoryRequestParser constructor.
-     *
-     * @param ParameterBagInterface         $parameterBag
-     * @param CategoryRepository            $categoryRepository
-     * @param CategoryTranslationRepository $translationRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -51,10 +38,8 @@ final class CategoryRequestParser
     }
 
     /**
-     * @param ParameterBag  $bag
      * @param Category|null $category
      *
-     * @return Category
      */
     public function parse(ParameterBag $bag, ?Category $category = null): Category
     {
@@ -75,12 +60,12 @@ final class CategoryRequestParser
         return $category;
     }
 
-    private function setTranslation(Category $category, ParameterBag $bag)
+    private function setTranslation(Category $category, ParameterBag $bag): void
     {
 
         $locales = $this->setLanguageArray($this->parameterBag, $bag);
 
-        foreach ($locales as $locale => $langBag) {
+        foreach (array_keys($locales) as $locale) {
             $translation = $this->translationRepository->findOneBy(['category' => $category, 'locale' => $locale]);
 
             if (!$translation instanceof CategoryTranslation) {

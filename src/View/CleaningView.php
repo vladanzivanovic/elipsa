@@ -10,10 +10,8 @@ final class CleaningView
 {
     public function productPageView(ProductCleaning $productCleaning): array
     {
-        $view = [
+        return [
             'icon' => $productCleaning->getIcon(),
         ];
-
-        return $view;
     }
 }

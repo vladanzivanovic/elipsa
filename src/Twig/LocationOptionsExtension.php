@@ -5,32 +5,15 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Formatter\Options\LocationOptionsFormatter;
-use App\Repository\DescriptionRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class LocationOptionsExtension extends AbstractExtension
 {
-    private DescriptionRepository $repository;
-
-    private SessionInterface $session;
-
-    private LocationOptionsFormatter $locationOptionsFormatter;
-
     public function __construct(
-        DescriptionRepository $repository,
-        SessionInterface $session,
-        LocationOptionsFormatter $locationOptionsFormatter
-    ) {
-        $this->repository = $repository;
-        $this->session = $session;
-        $this->locationOptionsFormatter = $locationOptionsFormatter;
-    }
+        private readonly LocationOptionsFormatter $locationOptionsFormatter
+    ) {}
 
-    /**
-     * @return array
-     */
     public function getFunctions(): array
     {
         return [

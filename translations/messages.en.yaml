@@ -675,3 +675,8 @@ closed: Closed
 
 product.is_archived: Product "%item%" is archived
 product.is_deleted: Product "%item%" is deleted
+
+promotion.type.coupon: Coupon
+promotion.type.product: Product
+promotion.type.free_shipping: Free shipping
+

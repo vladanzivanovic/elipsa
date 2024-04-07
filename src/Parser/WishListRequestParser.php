@@ -12,19 +12,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class WishListRequestParser
 {
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-    /**
-     * @var UserWishesRepository
-     */
-    private $wishesRepository;
+    private \App\Repository\ProductRepository $productRepository;
+    private \App\Repository\UserWishesRepository $wishesRepository;
 
-    /**
-     * @param ProductRepository    $productRepository
-     * @param UserWishesRepository $wishesRepository
-     */
     public function __construct(
         ProductRepository $productRepository,
         UserWishesRepository $wishesRepository
@@ -35,9 +25,7 @@ final class WishListRequestParser
 
     /**
      * @param ParameterBag $bag
-     * @param User         $user
      *
-     * @return UserWishes
      */
     public function parse(int $productId, User $user): UserWishes
     {

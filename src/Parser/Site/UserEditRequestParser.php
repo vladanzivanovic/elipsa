@@ -61,7 +61,7 @@ final class UserEditRequestParser
     {
         $address = $user->getAddress();
 
-        if (null === $address) {
+        if (!$address instanceof \App\Entity\Address) {
             $address = new Address();
         }
 

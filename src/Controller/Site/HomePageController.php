@@ -6,7 +6,7 @@ namespace App\Controller\Site;
 
 use App\Collector\HomePageCollector;
 use App\Formatter\Site\HomePageResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -26,14 +26,9 @@ final class HomePageController extends AbstractController
         $this->responseFormatter = $responseFormatter;
     }
 
-    /**
-     * @Route("/", name="site.home_page", methods={"GET"}, options={"expose": true})
-     * @Template("Site/Pages/home.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
+    
+    #[Route(path: '/', name: 'site.home_page', options: ['expose' => true], methods: ['GET'])]
+    #[Template('Site/Pages/home.html.twig')]
     public function index(Request $request): array
     {
         $locale = $request->getLocale();
