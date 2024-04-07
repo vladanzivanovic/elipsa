@@ -36,7 +36,7 @@ final class CatalogImageService
     {
         $catalogue = $catalogueTranslation->getCatalogue();
 
-        if(empty(array_filter($data))) {
+        if(array_filter($data) === []) {
             return;
         }
 
@@ -71,7 +71,7 @@ final class CatalogImageService
             }
         }
 
-        if (count($exceptions) > 0) {
+        if ($exceptions !== []) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
     }

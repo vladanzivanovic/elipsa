@@ -12,7 +12,7 @@ use App\Parser\Site\Order\OrderFinishParser;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,17 +47,7 @@ final class OrderFinishPageController extends AbstractController
     }
 
     /**
-     * @Route({
-     *          "rs": "/korpa/uspesna-narudzbina/{token}",
-     *          "en": "/cart/success-order/{token}"
-     *     },
-     *     name="site.checkout_completed_successful",
-     *     methods={"POST", "GET"},
-     *     options={"expose": true}
-     * )
-     * @Template("Site/Pages/checkoutFinish.html.twig")
      *
-     * @param Request $request
      * @return array|RedirectResponse
      *
      * @throws NonUniqueResultException
@@ -65,6 +55,8 @@ final class OrderFinishPageController extends AbstractController
      * @throws OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route(path: ['rs' => '/korpa/uspesna-narudzbina/{token}', 'en' => '/cart/success-order/{token}'], name: 'site.checkout_completed_successful', options: ['expose' => true], methods: ['POST', 'GET'])]
+    #[Template('Site/Pages/checkoutFinish.html.twig')]
     public function successPage(Request $request, string $token)
     {
         $locale = $request->attributes->get('_locale');
@@ -100,22 +92,8 @@ final class OrderFinishPageController extends AbstractController
         return $viewData;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/korpa/neuspesna-narudzbina/{token}",
-     *          "en": "/cart/unsuccessful-order{token}"
-     *     },
-     *     name="site.checkout_failed",
-     *     methods={"POST", "GET"},
-     *     options={"expose": true}
-     * )
-     * @Template("Site/Pages/checkoutFinish.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array|RedirectResponse
-     * @throws \ReflectionException
-     */
+    #[Route(path: ['rs' => '/korpa/neuspesna-narudzbina/{token}', 'en' => '/cart/unsuccessful-order{token}'], name: 'site.checkout_failed', options: ['expose' => true], methods: ['POST', 'GET'])]
+    #[Template('Site/Pages/checkoutFinish.html.twig')]
     public function unsuccessfulPage(Request $request, string $token)
     {
         $locale = $request->attributes->get('_locale');

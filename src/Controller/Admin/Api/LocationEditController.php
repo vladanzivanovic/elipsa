@@ -29,14 +29,12 @@ final class LocationEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-location", name="admin.add_location_api", methods={"POST"})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
+    #[Route(path: '/api/add-location', name: 'admin.add_location_api', methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $banner = $this->requestParser->parse($request->request);
@@ -47,13 +45,9 @@ final class LocationEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-location/{id}", name="admin.edit_location_api", methods={"PUT"}, options={"expose": true})
-     * @param Request  $request
-     * @param Location $location
-     *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      */
+    #[Route(path: '/api/edit-location/{id}', name: 'admin.edit_location_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, Location $location): JsonResponse
     {
         $location = $this->requestParser->parse($request->request, $location);

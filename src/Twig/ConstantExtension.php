@@ -18,9 +18,6 @@ class ConstantExtension extends AbstractExtension
         $this->constantsHelper = $constantsHelper;
     }
 
-    /**
-     * @return array
-     */
     public function getFunctions(): array
     {
         return [

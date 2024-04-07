@@ -11,12 +11,12 @@ use App\Entity\PromotionOption;
 
 trait PromotionCheckerTrait
 {
-    private function checkCouponIsEligible(Promotion $promotionCoupon)
+    private function checkCouponIsEligible(Promotion $promotionCoupon): void
     {
         $checkerTypes = [Promotion::CHECKER_TYPE_VALIDITY];
 
         foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+            if (in_array($promotionChecker->getType(), $checkerTypes)) {
                 $promotionChecker->isEligible($promotionCoupon);
             }
         }
@@ -38,7 +38,7 @@ trait PromotionCheckerTrait
                 return false;
             }
 
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+            if (in_array($promotionChecker->getType(), $checkerTypes)) {
                 $isOptionApplicable = $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType($promotionChecker->getType()));
 
                 if (true === $isOptionApplicable) {

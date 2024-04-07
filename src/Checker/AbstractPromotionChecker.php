@@ -33,7 +33,7 @@ abstract class AbstractPromotionChecker
         $checkerTypes = [Promotion::CHECKER_TYPE_VALIDITY];
 
         foreach ($this->promotionCheckers as $promotionChecker) {
-            if (true === in_array($promotionChecker->getType(), $checkerTypes)) {
+            if (in_array($promotionChecker->getType(), $checkerTypes)) {
                 $promotionChecker->isEligible($promotionCoupon);
             }
         }

@@ -9,18 +9,14 @@ use Twig\TwigFilter;
 
 final class DotenvExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('getenv', [$this, 'getEnvValue']),
         ];
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
+    
     public function getEnvValue(string $name): string
     {
         return $_ENV[$name];

@@ -1,4 +1,7 @@
-import dt from 'datatables.net-dt';
+import dt from 'datatables.net-bs4';
+import 'datatables.net-buttons-bs4';
+import 'datatables.net-buttons/js/buttons.colVis.js';
+import 'datatables.net-responsive-bs4';
 import 'datatables.net-select-bs4';
 
 window.DATATABLE_OPTIONS = {

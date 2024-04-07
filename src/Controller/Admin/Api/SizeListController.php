@@ -22,27 +22,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SizeListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var ProductTagDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\ProductTagDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
+    private \App\Repository\ProductSizeRepository $sizeRepository;
 
     /**
      * SizeListController constructor.
-     *
-     * @param DataTableRequestParser               $requestParser
-     * @param ProductSizeRepository                $sizeRepository
-     * @param ProductTagDataTableResponseFormatter $responseFormatter
      */
     public function __construct(
         DataTableRequestParser $requestParser,
@@ -55,14 +42,13 @@ final class SizeListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-size-list", name="admin.get_size_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-size-list', name: 'admin.get_size_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

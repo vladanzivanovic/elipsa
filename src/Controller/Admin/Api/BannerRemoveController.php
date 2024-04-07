@@ -22,14 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class BannerRemoveController extends AbstractController
 {
-    /**
-     * @var BannerHandler
-     */
-    private $bannerHandler;
+    private \App\Handler\BannerHandler $bannerHandler;
 
-    /**
-     * @param BannerHandler $bannerHandler
-     */
     public function __construct(
         BannerHandler $bannerHandler
     ) {
@@ -37,14 +31,12 @@ final class BannerRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-banner/{id}", name="admin.remove_banner_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Banner $banner
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-banner/{id}', name: 'admin.remove_banner_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Banner $banner): JsonResponse
     {
         $this->bannerHandler->remove($banner);

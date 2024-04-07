@@ -11,10 +11,7 @@ final class ConstantsHelper
 {
     /**
      * @param string|int $searchVal
-     * @param string $group
-     * @param string $className
      *
-     * @return string|null
      * @throws ReflectionException
      */
     public static function getConstantName($searchVal, string $group, string $className): ?string
@@ -32,9 +29,6 @@ final class ConstantsHelper
     }
 
     /**
-     * @param string $str
-     * @param string $group
-     * @param string $className
      *
      * @return mixed|null
      * @throws ReflectionException
@@ -46,7 +40,7 @@ final class ConstantsHelper
 
         $constName = $group.'_'.strtoupper($str);
 
-        if (true === array_key_exists($constName, $constants)) {
+        if (array_key_exists($constName, $constants)) {
             return $reflection->getConstant($constName);
         }
 

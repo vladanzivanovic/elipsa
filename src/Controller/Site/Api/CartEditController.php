@@ -15,24 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CartEditController extends AbstractController
 {
-    /**
-     * @var CartEditRequestParser
-     */
-    private $requestParser;
-    /**
-     * @var OrderHandler
-     */
-    private $orderHandler;
-    /**
-     * @var ShopOrderRepository
-     */
-    private $orderRepository;
+    private \App\Parser\Site\CartEditRequestParser $requestParser;
+    private \App\Handler\Site\OrderHandler $orderHandler;
+    private \App\Repository\ShopOrderRepository $orderRepository;
 
-    /**
-     * @param CartEditRequestParser $requestParser
-     * @param OrderHandler          $orderHandler
-     * @param ShopOrderRepository   $orderRepository
-     */
     public function __construct(
         CartEditRequestParser $requestParser,
         OrderHandler $orderHandler,
@@ -44,16 +30,14 @@ final class CartEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/update-products", name="site_api.update_order_products", methods={"PUT"}, options={"expose":
-     *                                      true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/order/update-products', name: 'site_api.update_order_products', methods: ['PUT'], options: ['expose' => '
+                                     true'])]
     public function update(Request $request): JsonResponse
     {
         $order = $this->requestParser->parse($request);
@@ -64,14 +48,10 @@ final class CartEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/set-coupon/{code}", name="site_api.set_order_coupon", methods={"PATCH"}, options={"expose": true})
      *
-     * @param Promotion $coupon
-     * @param Request         $request
-     *
-     * @return JsonResponse
      * @throws \Exception
      */
+    #[Route(path: '/api/order/set-coupon/{code}', name: 'site_api.set_order_coupon', methods: ['PATCH'], options: ['expose' => true])]
     public function setPromoCoupon(Promotion $coupon, Request $request): JsonResponse
     {
         $order = $this->orderRepository->getByToken($request->getSession()->get('order'));

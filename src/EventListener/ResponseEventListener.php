@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-final class ResponseListener
+final class ResponseEventListener
 {
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
         $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
@@ -19,7 +21,7 @@ final class ResponseListener
         }
 
         $response->headers->addCacheControlDirective('no-cache', true);
-        $response->headers->addCacheControlDirective('max-age', 0);
+        $response->headers->addCacheControlDirective('max-age', '0');
         $response->headers->addCacheControlDirective('must-revalidate', true);
         $response->headers->addCacheControlDirective('no-store', true);
     }

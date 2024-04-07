@@ -14,11 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CommandWrapperController extends AbstractController
 {
-    /**
-     * @Route("/doctrine-migrations-migrate", name="admin.command.doctrine_migrations_migrate", methods={"GET"})
-     *
-     * @return Response
-     */
+    #[Route(path: '/doctrine-migrations-migrate', name: 'admin.command.doctrine_migrations_migrate', methods: ['GET'])]
     public function migrationCommand(KernelInterface $kernel): Response
     {
         $application = new Application($kernel);
@@ -41,11 +37,7 @@ final class CommandWrapperController extends AbstractController
         return new Response($content);
     }
 
-    /**
-     * @Route("/clear-cache/image", name="admin.command.clear_cache_image", methods={"GET"})
-     *
-     * @return Response
-     */
+    #[Route(path: '/clear-cache/image', name: 'admin.command.clear_cache_image', methods: ['GET'])]
     public function clearCacheImages(KernelInterface $kernel): Response
     {
         $application = new Application($kernel);

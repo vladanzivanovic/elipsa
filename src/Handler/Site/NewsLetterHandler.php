@@ -35,9 +35,7 @@ final class NewsLetterHandler
     }
 
     /**
-     * @param NewsLetter $newsLetter
      *
-     * @return bool
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

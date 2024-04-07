@@ -35,7 +35,7 @@ final class OrderUserParser
         $user->setFirstName($bag->get('first_name'));
         $user->setLastName($bag->get('last_name'));
 
-        if (true === $bag->getBoolean('create_account')) {
+        if ($bag->getBoolean('create_account')) {
             $encodedPwd = $this->userPasswordHasher->hashPassword($user, $bag->get('password'));
             $user->setPassword($encodedPwd);
             $user->setResetToken(bin2hex(openssl_random_pseudo_bytes(10)));

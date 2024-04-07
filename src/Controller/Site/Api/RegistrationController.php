@@ -22,8 +22,6 @@ final class RegistrationController extends AbstractController
 {
     private RegistrationRequestParser $registrationRequestParser;
 
-    private TranslatorInterface $translator;
-
     private UserHandler $userHandler;
 
     private ExceptionView $exceptionView;
@@ -41,19 +39,13 @@ final class RegistrationController extends AbstractController
         UserRegistrationFormatter $userRegistrationFormatter
     ){
         $this->registrationRequestParser = $registrationRequestParser;
-        $this->translator = $translator;
         $this->userHandler = $userHandler;
         $this->exceptionView = $exceptionView;
         $this->userRegistrationMailer = $userRegistrationMailer;
         $this->userRegistrationFormatter = $userRegistrationFormatter;
     }
 
-    /**
-     * @Route("/api/user/register",
-     *     name="site_api.user.register",
-     *     methods={"POST"},
-     *     options={"expose": true})
-     */
+    #[Route(path: '/api/user/register', name: 'site_api.user.register', methods: ['POST'], options: ['expose' => true])]
     public function register(RegistrationRequestDto $registrationRequestDto): JsonResponse
     {
         if (false === $this->isCsrfTokenValid('user_registration', $registrationRequestDto->csrf)) {

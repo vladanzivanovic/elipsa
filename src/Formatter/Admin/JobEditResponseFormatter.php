@@ -15,20 +15,10 @@ final class JobEditResponseFormatter
 {
     use ImageTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private \App\Repository\TagsRepository $tagsRepository;
 
-    /**
-     * @param RouterInterface $router
-     * @param TagsRepository  $tagsRepository
-     */
     public function __construct(
         RouterInterface $router,
         TagsRepository $tagsRepository
@@ -37,11 +27,7 @@ final class JobEditResponseFormatter
         $this->tagsRepository = $tagsRepository;
     }
 
-    /**
-     * @param CareerDescription $careerDescription
-     *
-     * @return array
-     */
+    
     public function formatResponse(CareerDescription $careerDescription): array
     {
         $rsTrans = $careerDescription->getTranslationByLocale('rs');

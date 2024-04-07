@@ -20,39 +20,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderRemoveController extends AbstractController
 {
-    /**
-     * @var ProductHasTagsRepository
-     */
-    private $hasTagsRepository;
-
-    /**
-     * @var SliderHandler
-     */
-    private $sliderHandler;
+    private \App\Handler\SliderHandler $sliderHandler;
 
     /**
      * TagRemoveController constructor.
      *
-     * @param SliderHandler            $sliderHandler
      * @param ProductHasTagsRepository $hasTagsRepository
      */
     public function __construct(
-        SliderHandler $sliderHandler,
-        ProductHasTagsRepository $hasTagsRepository
+        SliderHandler $sliderHandler
     ) {
-        $this->hasTagsRepository = $hasTagsRepository;
         $this->sliderHandler = $sliderHandler;
     }
 
     /**
-     * @Route("/api/remove-slider/{id}", name="admin.remove_slider_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Slider $slider
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-slider/{id}', name: 'admin.remove_slider_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Slider $slider): JsonResponse
     {
         $this->sliderHandler->remove($slider);

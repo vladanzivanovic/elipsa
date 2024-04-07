@@ -36,7 +36,7 @@ final class OrderProductView
         $quantity = $orderProduct->getQuantity();
         $product = $orderProduct->getProduct();
 
-        $isSizeAvailable = $product->isSizeAvailable($orderProduct->getSize());
+        $isSizeAvailable = $orderProduct->isProductAvailable();
 
         $view = [
             'id' => $orderProduct->getId(),

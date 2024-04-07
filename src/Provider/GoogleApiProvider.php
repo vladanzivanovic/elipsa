@@ -15,8 +15,6 @@ final class GoogleApiProvider
 
     private HttpClientInterface $client;
 
-    private Transliterator $transliterator;
-
     private GoogleApiView $googleApiView;
 
     private string $googleApiKey;
@@ -29,7 +27,6 @@ final class GoogleApiProvider
     ) {
         $this->client = $client;
         $this->googleApiKey = $googleApiKey;
-        $this->transliterator = $transliterator;
         $this->googleApiView = $googleApiView;
     }
 

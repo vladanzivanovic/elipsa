@@ -58,7 +58,7 @@ final class OrderShippingView
 
     private function setStoreLocation(ShopOrder $order): ?array
     {
-        if (null !== $order->getStoreId()) {
+        if ($order->getStoreId() instanceof \App\Entity\Location) {
             return $this->locationView->view($order->getStoreId());
         }
 

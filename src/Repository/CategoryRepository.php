@@ -6,6 +6,8 @@ use App\Entity\Category;
 use App\Entity\CategoryTranslation;
 use App\Entity\Product;
 use App\Model\DataTableModel;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -37,11 +39,7 @@ class CategoryRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('c')
@@ -63,11 +61,6 @@ class CategoryRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return array
-     */
     public function getAll(?Category $category = null, string $locale = 'rs'): array
     {
         $query = $this->createQueryBuilder('c')
@@ -87,10 +80,7 @@ class CategoryRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $locale
-     *
-     * @return array
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
      */
     public function getForNavigationMenu(string $locale): array
     {
@@ -110,17 +100,13 @@ class CategoryRepository extends ExtendedEntityRepository
                 SELECT * FROM cte order by lvl, title;";
 
         $stmt = $this->_em->getConnection()->prepare($sql);
-        $results = $stmt->executeQuery(['locale' => $locale]);
+        $stmt->bindValue('locale', $locale, ParameterType::STRING);
+        $results = $stmt->executeQuery();
 
         return $results->fetchAllAssociative();
     }
 
-    /**
-     * @param Product $product
-     * @param string  $locale
-     *
-     * @return array
-     */
+    
     public function getByProduct(Product $product, string $locale): array
     {
         $query = $this->createQueryBuilder('c')

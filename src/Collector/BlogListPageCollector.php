@@ -28,11 +28,8 @@ final class BlogListPageCollector
     }
 
     /**
-     * @param string      $locale
-     * @param int         $currentPage
      * @param string|null $tag
      *
-     * @return array
      */
     public function collect(string $locale, int $currentPage, ?string $tag = null): array
     {

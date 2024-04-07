@@ -6,13 +6,10 @@ use App\Entity\ColorTranslation;
 use App\Entity\Product;
 use App\Entity\ProductColor;
 use App\Entity\ProductHasImages;
-use App\Entity\ProductTranslation;
 use App\Model\DataTableModel;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @method ProductColor|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,21 +19,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class ProductColorRepository extends ExtendedEntityRepository
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * ProductColorRepository constructor.
-     *
-     * @param ManagerRegistry  $registry
-     * @param SessionInterface $session
-     */
-    public function __construct(ManagerRegistry $registry, SessionInterface $session)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+    ){
         parent::__construct($registry, ProductColor::class);
-        $this->session = $session;
     }
 
     /**
@@ -52,11 +38,7 @@ class ProductColorRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('pc')
@@ -77,9 +59,6 @@ class ProductColorRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getForOptions(): array
     {
         $query = $this->createQueryBuilder('pc')
@@ -91,11 +70,7 @@ class ProductColorRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param ProductColor $productColor
-     *
-     * @return array
-     */
+    
     public function getByColorForAdmin(ProductColor $productColor): array
     {
         $query = $this->createQueryBuilder('pc')
@@ -112,11 +87,7 @@ class ProductColorRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByLocale(string $locale): array
     {
         $query = $this->createQueryBuilder('pc')
@@ -133,13 +104,7 @@ class ProductColorRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param array  $products
-     *
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByProducts(array $products, string $locale): array
     {
         $query = $this->createQueryBuilder('pc')

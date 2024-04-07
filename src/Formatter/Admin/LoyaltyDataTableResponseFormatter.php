@@ -15,27 +15,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class LoyaltyDataTableResponseFormatter
 {
     use DataTableResponseTrait;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(
         RouterInterface $router
     ) {
         $this->router = $router;
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $data
-     * @param int            $total
-     *
-     * @return array
-     */
+    
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         return $this->response($tableModel, $data, $total);

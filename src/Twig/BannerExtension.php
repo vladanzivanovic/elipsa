@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use App\Collector\CartPageCollector;
-use App\Entity\BannerTranslation;
 use App\Entity\Image;
-use App\Formatter\Site\CartPageFormatter;
 use App\Repository\BannerRepository;
 use App\Repository\ImageRepository;
 use Symfony\Component\Routing\RouterInterface;
@@ -16,21 +13,11 @@ use Twig\TwigFunction;
 
 final class BannerExtension extends AbstractExtension
 {
-    private BannerRepository $bannerRepository;
-
-    private RouterInterface $router;
-
-    private ImageRepository $imageRepository;
-
     public function __construct(
-        BannerRepository $bannerRepository,
-        RouterInterface $router,
-        ImageRepository $imageRepository
-    ) {
-        $this->bannerRepository = $bannerRepository;
-        $this->router = $router;
-        $this->imageRepository = $imageRepository;
-    }
+        private BannerRepository $bannerRepository,
+        private RouterInterface $router,
+        private ImageRepository $imageRepository,
+    ) {}
 
     public function getFunctions(): array
     {
@@ -39,15 +26,7 @@ final class BannerExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param int    $type
-     * @param string $filter
-     * @param string $locale
-     * @param bool   $isMobile
-     *
-     * @return array|null
-     */
-    public function getBanner(int $type, string $filter, string $locale, bool $isMobile = false): ?array
+    public function getBanner(int $type, string $filter, string $locale, bool $isMobile = false): array|null
     {
         $banner = $this->bannerRepository->findOneBy(['type' => $type, 'isActive' => true]);
 
@@ -59,7 +38,7 @@ final class BannerExtension extends AbstractExtension
 
         $trans = $banner->getByLocale($locale);
 
-        if (true === $isMobile) {
+        if ($isMobile) {
             $mobileImage = $this->imageRepository->findOneBy(['parentImage' => $banner->getImage()->getName(), 'device' => Image::DEVICE_MOBILE]);
 
             if (null !== $mobileImage) {
@@ -74,10 +53,7 @@ final class BannerExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'banner_extension';
     }

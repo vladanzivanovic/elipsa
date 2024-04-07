@@ -16,20 +16,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class CategoryHandler
 {
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Repository\CategoryRepository $categoryRepository;
+    private \App\Helper\ValidatorHelper $validator;
 
     /**
      * CategoryHandler constructor.
-     *
-     * @param CategoryRepository $categoryRepository
-     * @param ValidatorHelper    $validator
      */
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -40,9 +31,6 @@ final class CategoryHandler
     }
 
     /**
-     * @param Category $category
-     * @param bool     $isEdit
-     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -62,9 +50,6 @@ final class CategoryHandler
     }
 
     /**
-     * @param Category $category
-     *
-     * @return void
      * @throws ORMException
      */
     public function remove(Category $category): void
@@ -75,9 +60,6 @@ final class CategoryHandler
     }
 
     /**
-     * @param Category $category
-     * @param bool     $status
-     *
      * @throws ORMException
      * @throws OptimisticLockException
      */

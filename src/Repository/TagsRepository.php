@@ -27,7 +27,6 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param int $type
      *
      * @return mixed
      * @throws NoResultException
@@ -44,12 +43,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param int            $type
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel, int $type = Tags::TYPE_PRODUCT): array
     {
         $query = $this->createQueryBuilder('t')
@@ -82,13 +76,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $mainSlug
-     * @param array  $locales
-     * @param int    $type
-     *
-     * @return array
-     */
+    
     public function getByTranslation(string $mainSlug, array $locales, int $type): array
     {
         $query = $this->createQueryBuilder('t')
@@ -102,11 +90,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param string $mainSlug
-     *
-     * @return void
-     */
+    
     public function remove(string $mainSlug): void
     {
         $query = $this->createQueryBuilder('pt')
@@ -117,13 +101,7 @@ class TagsRepository extends ExtendedEntityRepository
         $query->getQuery()->execute();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @param int    $type
-     *
-     * @return array
-     */
+    
     public function getForNavigationMenu(string $locale, int $type = Tags::TYPE_PRODUCT): array
     {
         $query = $this->createQueryBuilder('t')
@@ -174,11 +152,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param Product $product
-     *
-     * @return array
-     */
+    
     public function getByProduct(Product $product): array
     {
         $query = $this->createQueryBuilder('t')
@@ -193,13 +167,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param Blog   $blog
-     *
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByBlog(Blog $blog, string $locale = 'rs'): array
     {
         $query = $this->createQueryBuilder('t')
@@ -212,13 +180,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param array  $products
-     *
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByProducts(array $products, string $locale): array
     {
         $query = $this->createQueryBuilder('t')
@@ -233,12 +195,7 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param array  $blogList
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByBlogList(array $blogList, string $locale): array
     {
         $query = $this->createQueryBuilder('t')
@@ -267,8 +224,6 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param array  $slugs
-     * @param string $locale
      *
      * @return int|mixed|string
      */
@@ -288,10 +243,7 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $slug
-     * @param string $locale
      *
-     * @param int    $relatedType
      *
      * @return int|mixed|string
      * @throws NoResultException

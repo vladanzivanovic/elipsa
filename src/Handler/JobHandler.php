@@ -22,37 +22,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class JobHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var ImageService
-     */
-    private $imageService;
+    private \App\Services\ImageService $imageService;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
+    private \App\Repository\CareerDescriptionRepository $repository;
 
-    /**
-     * @var BlogRepository
-     */
-    private $blogRepository;
-    /**
-     * @var CareerDescriptionRepository
-     */
-    private $repository;
-
-    /**
-     * @param BlogRepository              $blogRepository
-     * @param ValidatorHelper             $validator
-     * @param ImageService                $imageService
-     * @param ParameterBagInterface       $bag
-     * @param CareerDescriptionRepository $repository
-     */
     public function __construct(
         BlogRepository $blogRepository,
         ValidatorHelper $validator,
@@ -63,14 +39,11 @@ final class JobHandler
         $this->validator = $validator;
         $this->imageService = $imageService;
         $this->bag = $bag;
-        $this->blogRepository = $blogRepository;
         $this->repository = $repository;
     }
 
     /**
-     * @param CareerDescription $careerDescription
      *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -91,7 +64,6 @@ final class JobHandler
     }
 
     /**
-     * @param CareerDescription $careerDescription
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

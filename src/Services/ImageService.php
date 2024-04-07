@@ -19,31 +19,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ImageService
 {
-    private $fs;
-    private $fileTypes;
-    private $tmpDir;
-    private $cacheManager;
-    /**
-     * @var FilterService
-     */
-    private $filterService;
-    /**
-     * @var DataManager
-     */
-    private $dataManager;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var FilterManager
-     */
-    private $filterManager;
+    private \Symfony\Component\Filesystem\Filesystem $fs;
+    private bool|string|int|float|\UnitEnum|array|null $tmpDir;
+    private \Liip\ImagineBundle\Imagine\Cache\CacheManager $cacheManager;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
     /**
-     * @param Filesystem            $filesystem
-     * @param ParameterBagInterface $parameterBag
-     * @param CacheManager          $cacheManager
      * @param FilterService         $filterService
      * @param RouterInterface       $router
      * @param DataManager           $dataManager
@@ -52,20 +33,12 @@ class ImageService
     public function __construct(
         Filesystem $filesystem,
         ParameterBagInterface $parameterBag,
-        CacheManager $cacheManager,
-        FilterService $filterService,
-        RouterInterface $router,
-        DataManager $dataManager,
-        FilterManager $filterManager
+        CacheManager $cacheManager
     ) {
         $this->fs = $filesystem;
-        $this->fileTypes = $parameterBag->get('file_types');
         $this->tmpDir = $parameterBag->get('upload_tmp_dir');
         $this->cacheManager = $cacheManager;
-        $this->filterService = $filterService;
-        $this->dataManager = $dataManager;
         $this->parameterBag = $parameterBag;
-        $this->filterManager = $filterManager;
     }
 
     public function moveImageToFinalPath($file, $destination, $newName = null)
@@ -74,21 +47,13 @@ class ImageService
             $file['file'] = substr($file['file'], 1);
 
             $file = $this->setFileObject($file);
-
-            if (null === $file) {
-                return false;
-            }
         }
 
         $file->move($destination, $newName);
         $this->deleteTmpImage($file->getClientOriginalName());
     }
 
-    /**
-     * @param array $image
-     *
-     * @return UploadedFile
-     */
+    
     public function setFileObject(array $image): UploadedFile
     {
         return new UploadedFile($image['file'], $image['fileName'], null, null, true);
@@ -106,15 +71,13 @@ class ImageService
         if (!$this->fs->exists($folder)) {
             $this->fs->mkdir($folder, 0775);
         }
-        if (true === $setThumb && !$this->fs->exists($folder . '/thumb'))
+        if (true === $setThumb && !$this->fs->exists($folder . '/thumb')) {
             $this->fs->mkdir($folder . '/thumb', 0775);
+        }
 
         return true;
     }
 
-    /**
-     * @param UploadedFile $file
-     */
     public function deleteImage(UploadedFile $file): void
     {
         $path = $file->getPathname();
@@ -125,15 +88,11 @@ class ImageService
         }
     }
 
-    /**
-     * @param array $images
-     *
-     * @return void
-     */
+    
     public function deleteImages(array $images): void
     {
-        $rootDir = $this->parameterBag->get('upload_dir');
-        $imageDir = $this->parameterBag->get('upload_image_dir');
+        $this->parameterBag->get('upload_dir');
+        $this->parameterBag->get('upload_image_dir');
 
         /** @var Image $image */
         foreach ($images as $image) {
@@ -143,9 +102,7 @@ class ImageService
 
     /**
      * @param        $file
-     * @param string $path
      *
-     * @return File
      */
     public function uploadToPath($file, string $path): File
     {

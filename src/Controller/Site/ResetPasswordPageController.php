@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Site;
 
 use App\Repository\UserRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,19 +13,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ResetPasswordPageController extends AbstractController
 {
-    /**
-     * @var UserRepository
-     */
-    private $repository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Repository\UserRepository $repository;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param UserRepository      $repository
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         UserRepository $repository,
         TranslatorInterface $translator
@@ -35,25 +25,17 @@ final class ResetPasswordPageController extends AbstractController
     }
 
     /**
-     * @Route({
-     *          "rs": "/promena-lozinke/{resetToken}",
-     *          "en": "/reset-password/{resetToken}"
-     *     },
-     *     name="site.reset_password_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/resetPasswordPage.html.twig")
-     *
-     * @param string $resetToken
      *
      * @return array|RedirectResponse
      */
+    #[Route(path: ['rs' => '/promena-lozinke/{resetToken}', 'en' => '/reset-password/{resetToken}'], name: 'site.reset_password_page', methods: ['GET'])]
+    #[Template('Site/Pages/resetPasswordPage.html.twig')]
     public function index(string $resetToken)
     {
         $user = $this->repository->findOneBy(['resetToken' => $resetToken]);
 
         if (null === $user) {
-            return new RedirectResponse($this->generateUrl('site.not_exists_page'), 302);
+            return new RedirectResponse($this->generateUrl('site.not_exists_page'), \Symfony\Component\HttpFoundation\Response::HTTP_FOUND);
         }
 
         $tokenDate = $user->getResetRequestAt();

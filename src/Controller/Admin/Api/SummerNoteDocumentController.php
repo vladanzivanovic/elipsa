@@ -12,15 +12,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SummerNoteDocumentController extends AbstractController
 {
-    /**
-     * @var DocumentUploadHandler
-     */
-    private $handler;
+    private \App\Handler\DocumentUploadHandler $handler;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
     public function __construct(
         DocumentUploadHandler $handler,
@@ -31,13 +25,12 @@ class SummerNoteDocumentController extends AbstractController
     }
 
     /**
-     * @Route("/api/summernote-document", name="admin.summernote_document_upload", methods={"POST"}, options={"expose":
-     *                                    true})
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      */
+    #[Route(path: '/api/summernote-document', name: 'admin.summernote_document_upload', methods: ['POST'], options: ['expose' => '
+                                   true'])]
     public function uploadImage(Request $request)
     {
         $document = $this->handler->save($request->files, Image::RELATED_TYPE_DESCRIPTION);

@@ -16,25 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
-    /**
-     * @var BlogRepository
-     */
-    private $blogRepository;
-    /**
-     * @var BlogDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Parser\DataTableRequestParser $requestParser;
+    private \App\Repository\BlogRepository $blogRepository;
+    private \App\Formatter\Admin\BlogDataTableResponseFormatter $responseFormatter;
 
     /**
      * BlogListController constructor.
-     *
-     * @param DataTableRequestParser         $requestParser
-     * @param BlogRepository                 $blogRepository
-     * @param BlogDataTableResponseFormatter $responseFormatter
      */
     public function __construct(
         DataTableRequestParser $requestParser,
@@ -47,13 +34,10 @@ class BlogListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-blog-list", name="admin.blog_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      */
+    #[Route(path: '/api/get-blog-list', name: 'admin.blog_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

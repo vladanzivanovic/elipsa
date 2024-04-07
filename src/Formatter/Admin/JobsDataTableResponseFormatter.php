@@ -17,19 +17,9 @@ final class JobsDataTableResponseFormatter
 {
     use DataTableResponseTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param RouterInterface     $router
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         RouterInterface $router,
         TranslatorInterface $translator
@@ -38,13 +28,7 @@ final class JobsDataTableResponseFormatter
         $this->translator = $translator;
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $data
-     * @param int            $total
-     *
-     * @return array
-     */
+    
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         $router = $this->router;

@@ -14,44 +14,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ImageResizer
 {
-    /**
-     * @var string
-     */
-    private $tmpDir;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var FilterService
-     */
-    private $filterService;
-    /**
-     * @var string
-     */
-    private $rootDir;
+    private bool|string|int|float|\UnitEnum|array|null $tmpDir;
+    private \Liip\ImagineBundle\Service\FilterService $filterService;
+    private bool|string|int|float|\UnitEnum|array|null $rootDir;
 
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param FilterService         $filterService
-     */
     public function __construct(
         ParameterBagInterface $parameterBag,
         FilterService $filterService
     ) {
-        $this->parameterBag = $parameterBag;
         $this->rootDir = $parameterBag->get('upload_dir');
         $this->tmpDir = $parameterBag->get('upload_tmp_dir');
         $this->filterService = $filterService;
     }
 
-    /**
-     * @param UploadedFile $file
-     *
-     * @param string       $folder
-     *
-     * @return void
-     */
+    
     public function moveToFolder(UploadedFile $file, string $folder): void
     {
         /** @var File $movedFile */
@@ -62,12 +38,7 @@ final class ImageResizer
         $this->filterService->getUrlOfFilteredImage($path, 'tmp_images');
     }
 
-    /**
-     * @param string $path
-     * @param string $filter
-     *
-     * @return BinaryFileResponse
-     */
+    
     public function renderImageWithFilter(string $path, string $filter): BinaryFileResponse
     {
         $url = $this->filterService->getUrlOfFilteredImage($path, $filter);

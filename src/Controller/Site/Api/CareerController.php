@@ -14,20 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CareerController extends AbstractController
 {
-    /**
-     * @var CareerRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\Site\CareerRequestParser $requestParser;
 
-    /**
-     * @var CareerHandler
-     */
-    private $handler;
+    private \App\Handler\Site\CareerHandler $handler;
 
-    /**
-     * @param CareerRequestParser $requestParser
-     * @param CareerHandler       $handler
-     */
     public function __construct(
         CareerRequestParser $requestParser,
         CareerHandler $handler
@@ -37,14 +27,12 @@ final class CareerController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-career", name="site_api.add_career", methods={"POST"}, options={"expose": true})
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/add-career', name: 'site_api.add_career', methods: ['POST'], options: ['expose' => true])]
     public function add(Request $request): JsonResponse
     {
         if (!$this->isCsrfTokenValid('career_form', $request->request->get('_csrf_token'))) {

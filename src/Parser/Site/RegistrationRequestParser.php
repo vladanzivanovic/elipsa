@@ -28,7 +28,7 @@ final class RegistrationRequestParser
 
     public function parse(RegistrationRequestDto $registrationRequestDto, User $user = null): User
     {
-        if (null === $user) {
+        if (!$user instanceof \App\Entity\User) {
             $token = bin2hex(openssl_random_pseudo_bytes(10));
 
             $user = $this->create();

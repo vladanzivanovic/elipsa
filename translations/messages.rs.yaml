@@ -176,6 +176,7 @@ checkout.payment.credit_card: Karticom
 checkout.shipping.on_delivery: Kurirskom službom
 checkout.shipping.in_store: Preuzimanje u radnji
 checkout.shipping.store_list_label: Prodavnica
+checkout.shipping.in_store_not_available: Iznos porudžbine mora biti jednak ili veći od %shipping_price_store% RSD za isporuku i preuzimanje u željenoj prodavnici.
 checkout.complete_order: završi narudžbinu
 checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
@@ -204,7 +205,7 @@ checkout.finish.transaction_id: Broj transakcije
 checkout.finish.md_status: Statusni kod 3D transakcije
 checkout.finish.payment_id: Broj plaćanja
 checkout.finish.credit_card_no: Broj platne kartice
-checkout.checkbox.terms_and_conditions: Klikom na dugme prihvatate naše <a href="%link%">Opšte uslove korišćenja i prodaje.</a>
+checkout.checkbox.terms_and_conditions: Klikom na dugme prihvatate naše <strong>"Opšte uslove korišćenja i prodaje"</strong>.
 
 checkout_completed.title: uspešno ste naručili proizvode.
 checkout_completed.details: detalji vaše porudžbine su vam poslati na email.

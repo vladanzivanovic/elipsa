@@ -108,18 +108,23 @@
                                 {% set shippingTypes = get_class_constants('App\\Entity\\ShopOrder', 'SHIPPING_TYPE') %}
 
                                 {% for shippingType in shippingTypes %}
-                                <div class="select-payment-method shipping-method">
-                                    {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
-                                    {{ inputs.input('shipping_' ~ shippingType, shippingType, 'shipping_type', '', 'radio', 'radio-button', erroMessage) }}
-                                    {% set shippingTransId = 'checkout.shipping.' ~ shippingType %}
-                                    <label for="{{ 'shipping_' ~ shippingType }}" class="letter-capitalize">{{ shippingTransId | trans }}</label>
-                                </div>
+                                    <div class="select-payment-method shipping-method">
+                                        {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
+                                        {% set firstChecked = true == loop.first ? 'checked="checked"' : '' %}
+                                        {{ inputs.input('shipping_' ~ shippingType, shippingType, 'shipping_type', '', 'radio', 'radio-button', erroMessage ~ ' ' ~ firstChecked) }}
+                                        {% set shippingTransId = 'checkout.shipping.' ~ shippingType %}
+                                        <label for="{{ 'shipping_' ~ shippingType }}" class="letter-capitalize">{{ shippingTransId | trans }}</label>
+                                    </div>
                                 {% endfor %}
 
                                 <div class="billing-address-input clearfix m-t-2 location-select hide">
                                     {% set locations = location_options(locale) %}
 
                                     {{ form.select('checkout.shipping.store_list_label' | trans ~ ' *', 'store_location', 'store_location', '', locations, '', 'text-uppercase', false, 'custom-select') }}
+                                </div>
+
+                                <div class="billing-address-input clearfix m-t-2">
+                                    <p>{{ 'checkout.shipping.in_store_not_available' | trans({'%shipping_price_store%' : siteSettings.settings.free_shipping_store.value}) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -142,9 +147,12 @@
                                 </li>
                             </ul>
                             <div class="create-account-checkout-method">
-                                <div class="select-payment-method terms-and-conditions">
-                                    {{ inputs.input('termsAndConditions', 1, 'terms_and_conditions', '', 'checkbox', '', 'data-error-after=".terms-and-conditions"') }}
-                                    <label for="termsAndConditions" id="termsAndConditionLabel" class="letter-capitalize">{{ 'checkout.checkbox.terms_and_conditions' | trans({'%link%': path('site.use_conditions')}) | raw }}</label>
+                                <div class="select-payment-method policy terms-and-conditions">
+                                    <div>
+                                        {{ inputs.input('termsAndConditions', 1, 'terms_and_conditions', '', 'checkbox', '', 'data-error-after=".terms-and-conditions"') }}
+                                        <label for="termsAndConditions" id="termsAndConditionLabel" class="letter-capitalize"> {{ 'checkout.checkbox.terms_and_conditions' | trans | raw }}</label>
+                                    </div>
+                                    <a href="{{ path('site.use_conditions') }}" class="fa fa-info-circle" aria-hidden="true" target="_blank"></a>
                                 </div>
                                 <div class="place-order">
                                     <button type="submit" class="checkout-page-button hvr-bs">{{ 'cart.checkout' | trans }}</button>
@@ -167,5 +175,6 @@
     <script nonce="{{ csp_nonce('script') }}">
         const INTESA_GATEWAY = '{{ intesa_gateway }}';
         const IN_STORE_SHIPPING_METHOD = '{{ constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') }}';
+        const SHIPPING_STORE_MIN_PRICE = {{ siteSettings.settings.free_shipping_store.value }};
     </script>
 {% endblock %}

@@ -41,7 +41,7 @@ final class ProductPromotionParser
             foreach ($productPromotionElements as $productPromotion) {
                 $priority = $this->promotionProductChecker->checkEligibility($product, $productPromotion);
 
-                if (true === is_int($priority)) {
+                if (is_int($priority)) {
                     $promotionCandidates[$priority] = $productPromotion;
                 }
             }

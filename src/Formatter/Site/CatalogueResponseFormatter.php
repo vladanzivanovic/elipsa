@@ -19,8 +19,6 @@ final class CatalogueResponseFormatter
 
     /**
      * @param array<int, Catalogue> $catalogues
-     * @param string $locale
-     * @return array
      */
     public function formatResponse(array $catalogues, string $locale): array
     {

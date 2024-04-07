@@ -13,20 +13,14 @@ final class CategoryDataTableResponseFormatter
 {
     use DataTableResponseTrait;
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $data
-     * @param int            $total
-     *
-     * @return array
-     */
+    
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         $data = array_map(function ($item) {
             $locales = explode(',', $item['locales']);
             $titles = explode(',', $item['titles']);
 
-            $locales = array_map(function (&$locale) {
+            $locales = array_map(function ($locale) {
                 return $locale.'_name';
             },$locales);
 

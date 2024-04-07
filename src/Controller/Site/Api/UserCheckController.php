@@ -17,14 +17,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncode;
  */
 final class UserCheckController extends AbstractController
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private \App\Repository\UserRepository $userRepository;
 
-    /**
-     * @param UserRepository $userRepository
-     */
     public function __construct(
         UserRepository $userRepository
     ) {
@@ -33,12 +27,9 @@ final class UserCheckController extends AbstractController
     }
 
     /**
-     * @Route("/user-exists/{email}", name="site_api.user_exists", methods={"GET"}, options={"expose": true})
-     * @param string $email
-     *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    #[Route(path: '/user-exists/{email}', name: 'site_api.user_exists', methods: ['GET'], options: ['expose' => true])]
     public function userExistsByEmail(string $email): JsonResponse
     {
         $user = $this->userRepository->getByEmail($email);

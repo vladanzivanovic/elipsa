@@ -6,7 +6,7 @@ namespace App\Controller\Site;
 
 use App\Entity\CatalogueTranslation;
 use App\View\CatalogView;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,20 +21,8 @@ final class CatalogDetailPageController extends AbstractController
         $this->catalogView = $catalogView;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/katalog/{slug}",
-     *          "en": "/catalogue/{slug}"
-     *     },
-     *     name="site.catalog_detail_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/catalogDetail.html.twig")
-     *
-     * @param CatalogueTranslation $catalogueTranslation
-     * @param Request $request
-     * @return array
-     */
+    #[Route(path: ['rs' => '/katalog/{slug}', 'en' => '/catalogue/{slug}'], name: 'site.catalog_detail_page', methods: ['GET'])]
+    #[Template('Site/Pages/catalogDetail.html.twig')]
     public function getCatalog(
         CatalogueTranslation $catalogueTranslation,
         Request $request

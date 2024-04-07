@@ -6,26 +6,16 @@ namespace App\Controller\Site;
 
 use App\Collector\MyAccountCollector;
 use App\Formatter\Site\MyAccountFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class MyAccountPageController extends AbstractController
 {
-    /**
-     * @var MyAccountCollector
-     */
-    private $accountCollector;
-    /**
-     * @var MyAccountFormatter
-     */
-    private $accountFormatter;
+    private \App\Collector\MyAccountCollector $accountCollector;
+    private \App\Formatter\Site\MyAccountFormatter $accountFormatter;
 
-    /**
-     * @param MyAccountCollector $accountCollector
-     * @param MyAccountFormatter $accountFormatter
-     */
     public function __construct(
         MyAccountCollector $accountCollector,
         MyAccountFormatter $accountFormatter
@@ -34,20 +24,9 @@ final class MyAccountPageController extends AbstractController
         $this->accountFormatter = $accountFormatter;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/moj-nalog",
-     *          "en": "/my-account"
-     *     },
-     *     name="site.account_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/myAccountPage.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
+    
+    #[Route(path: ['rs' => '/moj-nalog', 'en' => '/my-account'], name: 'site.account_page', methods: ['GET'])]
+    #[Template('Site/Pages/myAccountPage.html.twig')]
     public function renderPage(Request $request): array
     {
         $user = $this->getUser();

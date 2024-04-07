@@ -13,11 +13,7 @@ final class SliderTextDataTableResponseFormatter
     use DataTableResponseTrait;
 
     /**
-     * @param DataTableModel $tableModel
-     * @param array $data
-     * @param int $total
      *
-     * @return array
      * @throws \ReflectionException
      */
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array

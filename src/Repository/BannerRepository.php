@@ -36,12 +36,7 @@ class BannerRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $types
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel, array $types): array
     {
         $query = $this->createQueryBuilder('b')

@@ -17,9 +17,6 @@ final class ResetPasswordRequestParser
 
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    /**
-     * @param UserRepository    $userRepository
-     */
     public function __construct(
         UserRepository $userRepository,
         UserPasswordHasherInterface $userPasswordHasher
@@ -30,8 +27,6 @@ final class ResetPasswordRequestParser
 
     /**
      * @param string $email
-     *
-     * @return User
      */
     public function parse(ResetPasswordRequestDto $resetPasswordRequestDto): User
     {
@@ -49,11 +44,7 @@ final class ResetPasswordRequestParser
         return $user;
     }
 
-    /**
-     *
-     * @param ResetPasswordSetRequestDto $resetPasswordSetRequestDto
-     * @return User
-     */
+    
     public function parseResetPassword(ResetPasswordSetRequestDto $resetPasswordSetRequestDto): User
     {
         $user = $this->userRepository->findOneBy(['resetToken' => $resetPasswordSetRequestDto->token]);

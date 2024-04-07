@@ -25,7 +25,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,24 +34,18 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class ProductRepository extends ExtendedEntityRepository
 {
-    private array $shopOptions;
-
     public function __construct(
         ManagerRegistry $registry,
-        array $shopOptions
+        private readonly array $shopOptions
     ) {
         parent::__construct($registry, Product::class);
-        $this->shopOptions = $shopOptions;
     }
 
     /**
-     * @param DataTableModel $tableModel
-     *
-     * @return mixed
-     * @throws NoResultException
      * @throws NonUniqueResultException
+     * @throws NoResultException
      */
-    public function countData(DataTableModel $tableModel)
+    public function countData(DataTableModel $tableModel): mixed
     {
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(p.id) as total')
@@ -65,11 +58,6 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('p')
@@ -100,9 +88,6 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getLowestAndHighestPrice(): array
     {
         $query = $this->createQueryBuilder('p')
@@ -116,10 +101,6 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
     public function getDqlForPaginationPage(
         ShopListRequestDto $shopListRequestDto,
         ?ShopPageOptionsDto $shopPageOptionsDto = null,
@@ -132,7 +113,7 @@ class ProductRepository extends ExtendedEntityRepository
             ->orderBy('p.id', 'DESC')
         ;
 
-        if (null !== $shopPageOptionsDto && null !== $shopPageOptionsDto->sort) {
+        if ($shopPageOptionsDto instanceof \App\Request\Dto\ShopPageOptionsDto && null !== $shopPageOptionsDto->sort) {
             $sort = $this->shopOptions['sort_mapping'][$shopPageOptionsDto->sort];
 
             $query->orderBy($sort[0], $sort[1]);
@@ -208,12 +189,7 @@ class ProductRepository extends ExtendedEntityRepository
         return $query;
     }
 
-    /**
-     * @param array   $categories
-     * @param Product $product
-     *
-     * @return array
-     */
+    
     public function getRelatedProducts(array $categories, Product $product, ?User $user): array
     {
         $filterDto = new ShopListRequestDto();
@@ -229,8 +205,6 @@ class ProductRepository extends ExtendedEntityRepository
 
     /**
      * @param User|null $user
-     *
-     * @return array
      */
     public function getForHomePage(?User $user): array
     {
@@ -270,7 +244,7 @@ class ProductRepository extends ExtendedEntityRepository
         $splitString = explode(' ', $searchString);
         $searchArray = [];
 
-        foreach ($splitString as $index => $searchItem) {
+        foreach ($splitString as $searchItem) {
             $itemLength = mb_strlen(trim($searchItem));
 
             if(0 === $itemLength) {
@@ -307,11 +281,6 @@ class ProductRepository extends ExtendedEntityRepository
         return $search;
     }
 
-    /**
-     * @param QueryBuilder $query
-     * @param DataTableModel $tableModel
-     * @return void
-     */
     public function dataTableSearchPart(QueryBuilder $query, DataTableModel $tableModel): void
     {
         $searchParams = $tableModel->getGeneralSearch();

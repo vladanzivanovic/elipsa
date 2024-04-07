@@ -24,6 +24,17 @@ class CheckoutPageDom {
         }
     }
 
+    toggleStoreShipping(order)
+    {
+        if (order.total.unformatted_amount > SHIPPING_STORE_MIN_PRICE) {
+            $(`#shipping_in_store`).removeProp('disabled');
+
+            return;
+        }
+
+        $(`#shipping_in_store`).prop('disabled', true);
+    }
+
     #manageProduct(orderProduct)
     {
         // const productTable = this.#mapper.productTable;

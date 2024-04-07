@@ -30,14 +30,13 @@ class DescriptionEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/set-description", name="admin.set_description_api", methods={"POST", "PUT"}, options={"expose": true})
      *
      * @param Request $request
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/set-description', name: 'admin.set_description_api', methods: ['POST', 'PUT'], options: ['expose' => true])]
     public function set(DescriptionRequestDto $descriptionRequestDto): JsonResponse
     {
         $this->requestParser->parse($descriptionRequestDto);
@@ -48,14 +47,12 @@ class DescriptionEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/description-remove/{type}", name="admin.remove_description_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param string $type
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/description-remove/{type}', name: 'admin.remove_description_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(string $type): JsonResponse
     {
         $descriptions = $this->repository->findBy(['type' => $type]);

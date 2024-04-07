@@ -17,8 +17,6 @@ final class ProductPageRouterFormatter
     }
 
     /**
-     * @param string $slug
-     * @param string $locale
      *
      * @return string
      */

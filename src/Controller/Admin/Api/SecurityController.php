@@ -11,24 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SecurityController extends AbstractController
 {
     /**
-     * @Route({
-     *          "rs": "/api/login",
-     *          "en": "/api/login"
-     *      },
-     *     name="admin_api.login",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function login(Request $request)
+    #[Route(path: ['rs' => '/api/login', 'en' => '/api/login'], name: 'admin_api.login', methods: ['POST'], options: ['expose' => true])]
+    public function login()
     {
         $user = $this->getUser();
-
         return $this->json([
-            'username' => $user->getUsername(),
+            'username' => $user->getUserIdentifier(),
             'roles' => $user->getRoles(),
         ]);
     }

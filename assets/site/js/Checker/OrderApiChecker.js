@@ -50,9 +50,7 @@ class OrderApiChecker {
 
     #showErrorAndThrowException(key)
     {
-        this.#notification.show('error', Translator.trans(key, null, 'validators', LOCALE), true);
-
-        throw Error('Validation failed.');
+        throw Error(Translator.trans(key, null, 'validators', LOCALE));
     }
 }
 

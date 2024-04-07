@@ -20,44 +20,18 @@ final class CatalogResponseFormatter
 {
     use ImageTrait;
 
-    /**
-     * @var CategoryTranslationRepository
-     */
-    private $categoryTranslationRepository;
+    private \App\Repository\CategoryTranslationRepository $categoryTranslationRepository;
 
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
+    private \App\Repository\TagsRepository $tagsRepository;
 
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
+    private \App\Repository\ProductSizeRepository $sizeRepository;
 
-    /**
-     * @var ProductHasImagesRepository
-     */
-    private $hasImagesRepository;
+    private \App\Repository\ProductHasImagesRepository $hasImagesRepository;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private \App\Repository\ImageRepository $imageRepository;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
-    /**
-     * @param CategoryTranslationRepository $categoryTranslationRepository
-     * @param TagsRepository                $tagsRepository
-     * @param ProductSizeRepository         $sizeRepository
-     * @param ProductHasImagesRepository    $hasImagesRepository
-     * @param ImageRepository               $imageRepository
-     * @param RouterInterface               $router
-     */
     public function __construct(
         CategoryTranslationRepository $categoryTranslationRepository,
         TagsRepository $tagsRepository,
@@ -74,11 +48,7 @@ final class CatalogResponseFormatter
         $this->router = $router;
     }
 
-    /**
-     * @param Catalogue $catalogue
-     *
-     * @return array
-     */
+    
     public function formatResponse(Catalogue $catalogue): array
     {
         $transRs = $catalogue->getByLocale('rs');

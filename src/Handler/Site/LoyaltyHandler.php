@@ -18,37 +18,15 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class LoyaltyHandler
 {
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private \App\Repository\SettingsRepository $settingsRepository;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var LoyaltyRepository
-     */
-    private $loyaltyRepository;
-    /**
-     * @var NewsLetterRepository
-     */
-    private $newsLetterRepository;
+    private \App\Repository\LoyaltyRepository $loyaltyRepository;
+    private \App\Repository\NewsLetterRepository $newsLetterRepository;
 
-    /**
-     * @param ValidatorHelper          $validator
-     * @param SettingsRepository       $settingsRepository
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoyaltyRepository        $loyaltyRepository
-     * @param NewsLetterRepository     $newsLetterRepository
-     */
     public function __construct(
         ValidatorHelper $validator,
         SettingsRepository $settingsRepository,
@@ -64,8 +42,6 @@ final class LoyaltyHandler
     }
 
     /**
-     * @param Loyalty    $loyalty
-     * @param NewsLetter $newsLetter
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -99,9 +75,6 @@ final class LoyaltyHandler
     }
 
     /**
-     * @param Loyalty $loyalty
-     *
-     * @return EmailModel
      * @throws \ReflectionException
      */
     private function prepareEmail(Loyalty $loyalty): EmailModel
@@ -134,9 +107,6 @@ final class LoyaltyHandler
         return $model;
     }
 
-    /**
-     * @return array
-     */
     private function getSettings(): array
     {
         $settings = $this->settingsRepository->getSettingsForOrderEmail();

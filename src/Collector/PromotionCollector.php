@@ -21,9 +21,7 @@ final class PromotionCollector
 
     public function collectFreeShippingPromotions(): array
     {
-        $activePromotions = $this->promotionRepository->getActivePromotionsByType(Promotion::TYPE_FREE_SHIPPING);
-
-        return $activePromotions;
+        return $this->promotionRepository->getActivePromotionsByType(Promotion::TYPE_FREE_SHIPPING);
     }
 
     /**

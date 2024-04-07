@@ -25,11 +25,11 @@ final class OrderFinishParser
     {
         $order = $this->orderRequestParser->findOrder($orderToken);
 
-        if (null !== $order->getCompletedAt()) {
+        if ($order->getCompletedAt() instanceof \DateTimeInterface) {
             throw new OrderException('order.already_completed');
         }
 
-        if (true === $isSuccessfulTransaction) {
+        if ($isSuccessfulTransaction) {
             $this->setSuccessfulTransactionData($order, $bag);
         } else {
             $this->setFailedTransactionData($order, $bag);

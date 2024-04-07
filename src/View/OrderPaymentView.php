@@ -23,7 +23,7 @@ final class OrderPaymentView
      */
     public function view(ShopOrder $order): array
     {
-        if (empty($order->getTransactionData())) {
+        if ($order->getTransactionData() === null || $order->getTransactionData() === []) {
             return $this->defaultValues($order);
         }
 
@@ -66,19 +66,15 @@ final class OrderPaymentView
     }
 
     /**
-     * @param ShopOrder $order
-     * @return array
      * @throws \ReflectionException
      */
     private function defaultValues(ShopOrder $order): array
     {
         $paymentType = ConstantsHelper::getConstantName($order->getPaymentType(), 'PAYMENT_TYPE', ShopOrder::class);
-
-        $view = [
+        return [
             'type' => $order->getPaymentType(),
             'human_type' => $this->translator->trans('payment_type.' . $paymentType),
             'status' => $order->getCardStatus(),
         ];
-        return $view;
     }
 }

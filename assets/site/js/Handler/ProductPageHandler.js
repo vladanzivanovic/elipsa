@@ -6,6 +6,7 @@ import loader from "../Dom/LoaderDom";
 import orderStorageManipulator from "../Manipulator/OrderStorageManipulator";
 import notificationApiHandler from "./NotificationApiHandler";
 import orderApiChecker from "../Checker/OrderApiChecker";
+import toastrService from "../../../js/Services/ToastrService";
 
 class ProductPageHandler {
     #orderApiHandler;
@@ -13,6 +14,7 @@ class ProductPageHandler {
     #productPageMapper;
     #notificationApiHandler;
     #checker;
+    #toastr;
 
     constructor() {
         if (!ProductPageHandler.instance) {
@@ -23,6 +25,7 @@ class ProductPageHandler {
             this.#orderStorageManipulator = orderStorageManipulator;
             this.#notificationApiHandler = notificationApiHandler;
             this.#checker = orderApiChecker;
+            this.#toastr = toastrService;
 
             ProductPageHandler.instance = this;
         }
@@ -43,8 +46,6 @@ class ProductPageHandler {
         }
 
         try {
-            this.#checker.isSizeAvailable(size);
-
             const order = await this.#orderApiHandler.manageProduct(
                 $(this.#productPageMapper.colorActive).data('color'),
                 $(this.#productPageMapper.sizeActive).data('slug'),
@@ -57,7 +58,15 @@ class ProductPageHandler {
                 $('#scrollUp').click();
                 $('#top_cart').click();
             }
-        } catch (e) {}
+        } catch (e) {
+            let message = e.message;
+
+            if (e.responseJSON !== undefined && e.responseJSON.error !== undefined) {
+                message = e.responseJSON.error.message;
+            }
+
+            this.#toastr.error(message);
+        }
 
         loader.hide();
     }

@@ -32,15 +32,7 @@ final class ShopListController extends AbstractController
         $this->filterCollector = $filterCollector;
     }
 
-    /**
-     * @Route("/api/products",
-     *     name="site_api.shop_page",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/products', name: 'site_api.shop_page', methods: ['POST'], options: ['expose' => true])]
     public function index(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,

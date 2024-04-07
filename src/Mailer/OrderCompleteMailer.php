@@ -100,7 +100,7 @@ final class OrderCompleteMailer
         return $model;
     }
 
-    private function sendUserRegistrationEmail(User $user, string $locale)
+    private function sendUserRegistrationEmail(User $user, string $locale): void
     {
         $userFormattedData = $this->userRegistrationFormatter->formatResponse($user, $locale);
 

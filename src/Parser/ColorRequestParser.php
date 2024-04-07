@@ -17,21 +17,12 @@ final class ColorRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
+    private \App\Repository\ProductColorRepository $colorRepository;
 
     /**
      * ColorRequestParser constructor.
-     *
-     * @param ParameterBagInterface  $parameterBag
-     * @param ProductColorRepository $colorRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -42,10 +33,8 @@ final class ColorRequestParser
     }
 
     /**
-     * @param ParameterBag      $bag
      * @param ProductColor|null $productColor
      *
-     * @return ProductColor
      */
     public function parse(ParameterBag $bag, ?ProductColor $productColor = null): ProductColor
     {
@@ -56,9 +45,9 @@ final class ColorRequestParser
             $productColor->setHex($bag->get('color'));
         }
 
-        $colors = new ArrayCollection();
+        new ArrayCollection();
 
-        foreach ($locales as $locale => $langBag) {
+        foreach (array_keys($locales) as $locale) {
             $trans = new ColorTranslation();
 
             if (null !== $productColor->getId()) {

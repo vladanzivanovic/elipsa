@@ -21,11 +21,7 @@ final class OrderSingleResponseFormatter
         $this->adminLocale = $adminLocale;
     }
 
-    /**
-     * @param ShopOrder $order
-     *
-     * @return array
-     */
+    
     public function formatResponse(ShopOrder $order): array
     {
         $payload = $this->orderView->view($order, $this->adminLocale);

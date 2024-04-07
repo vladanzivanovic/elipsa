@@ -35,14 +35,12 @@ final class BlogEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/blog/add", name="admin.add_blog_api", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/blog/add', name: 'admin.add_blog_api', methods: ['POST'], options: ['expose' => true])]
     public function insert(Request $request): JsonResponse
     {
         $blog = $this->blogRequestParser->parse($request->request);
@@ -53,14 +51,10 @@ final class BlogEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/blog/{id}", name="admin.edit_blog_api", methods={"PUT"}, options={"expose": true})
      *
-     * @param Blog    $blog
-     * @param Request $request
-     *
-     * @return JsonResponse
      * @throws ORMException
      */
+    #[Route(path: '/api/blog/{id}', name: 'admin.edit_blog_api', methods: ['PUT'], options: ['expose' => true])]
     public function edit(Blog $blog, Request $request): JsonResponse
     {
         $this->blogRequestParser->parse($request->request, $blog);
@@ -71,15 +65,10 @@ final class BlogEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/blog/status/{status}/{id}", name="admin.set_blog_status_api", methods={"PATCH"},
-     *                                                      options={"expose": true})
      *
-     * @param Blog $blog
-     * @param int  $status
-     *
-     * @return JsonResponse
      * @throws ReflectionException
      */
+    #[Route(path: '/api/blog/status/{status}/{id}', name: 'admin.set_blog_status_api', methods: ['PATCH'], options: ['expose' => true])]
     public function changeStatus(Blog $blog, int $status): JsonResponse
     {
         $blog->setStatus($status);

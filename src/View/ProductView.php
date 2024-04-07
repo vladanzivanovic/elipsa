@@ -56,7 +56,7 @@ final class ProductView
             'show_home_page' => $product->getShowHomePage(),
             'is_sold' => $product->isSold(),
             'discount' => null,
-            'is_wish' => null !== $user && $product->isUserWish($user),
+            'is_wish' => $user instanceof \App\Entity\User && $product->isUserWish($user),
             'sizes' => $this->getSizes($product),
         ];
 

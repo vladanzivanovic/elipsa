@@ -16,21 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductColorRemoveController extends AbstractController
 {
-    /**
-     * @var ProductColorHandler
-     */
-    private $colorHandler;
+    private \App\Handler\ProductColorHandler $colorHandler;
 
-    /**
-     * @var ProductHasImagesRepository
-     */
-    private $hasImagesRepository;
+    private \App\Repository\ProductHasImagesRepository $hasImagesRepository;
 
     /**
      * ProductColorRemoveController constructor.
-     *
-     * @param ProductColorHandler        $colorHandler
-     * @param ProductHasImagesRepository $hasImagesRepository
      */
     public function __construct(
         ProductColorHandler $colorHandler,
@@ -41,14 +32,13 @@ final class ProductColorRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-color/{id}", name="admin.remove_color_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param ProductColor $productColor
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-color/{id}', name: 'admin.remove_color_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(ProductColor $productColor)
     {
         $productCount = $this->hasImagesRepository->count(['color' => $productColor]);

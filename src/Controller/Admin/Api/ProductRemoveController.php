@@ -36,13 +36,8 @@ final class ProductRemoveController extends AbstractController
         $this->translator = $translator;
     }
 
-    /**
-     * @Route("/api/remove-product/{slug}", name="admin.remove_product_api", methods={"DELETE"}, options={"expose": true})
-     *
-     * @param ProductTranslation $productTranslation
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/remove-product/{slug}', name: 'admin.remove_product_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(ProductTranslation $productTranslation): JsonResponse
     {
         $product = $productTranslation->getProduct();

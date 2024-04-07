@@ -42,7 +42,7 @@ final class OrderCompleteParser
     {
         $order = $this->orderRequestParser->findOrder($orderToken);
 
-        if (null !== $order->getCompletedAt()) {
+        if ($order->getCompletedAt() instanceof \DateTimeInterface) {
             throw new OrderException('order.already_completed');
         }
 

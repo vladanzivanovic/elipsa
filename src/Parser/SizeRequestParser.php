@@ -19,21 +19,12 @@ final class SizeRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
+    private \App\Repository\ProductSizeRepository $sizeRepository;
 
     /**
      * SizeRequestParser constructor.
-     *
-     * @param ParameterBagInterface $parameterBag
-     * @param ProductSizeRepository $sizeRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -44,10 +35,8 @@ final class SizeRequestParser
     }
 
     /**
-     * @param ParameterBag     $bag
      * @param ProductSize|null $productSize
      *
-     * @return ProductSize
      */
     public function parse(ParameterBag $bag, ProductSize $productSize = null): ProductSize
     {

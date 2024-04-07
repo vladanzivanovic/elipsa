@@ -15,28 +15,14 @@ final class LocationEditRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var LocationImageService
-     */
-    private $imageService;
+    private \App\Services\LocationImageService $imageService;
 
-    /**
-     * @var BannerRepository
-     */
-    private $bannerRepository;
+    private \App\Repository\BannerRepository $bannerRepository;
 
     private array $locales;
 
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param LocationImageService  $imageService
-     * @param BannerRepository      $bannerRepository
-     */
     public function __construct(
         ParameterBagInterface $parameterBag,
         LocationImageService $imageService,
@@ -50,10 +36,7 @@ final class LocationEditRequestParser
     }
 
     /**
-     * @param ParameterBag  $bag
      * @param Location|null $location
-     *
-     * @return Location
      * @throws \Doctrine\ORM\ORMException
      */
     public function parse(ParameterBag $bag, Location $location = null): Location
@@ -81,7 +64,7 @@ final class LocationEditRequestParser
     private function setLocale(ParameterBag $bag, Location $location): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->get($locale);
+            $transCollection = $bag->all($locale);
             $trans = new LocationTranslation();
 
             if (null !== $location->getId()) {

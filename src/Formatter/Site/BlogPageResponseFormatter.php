@@ -36,7 +36,6 @@ final class BlogPageResponseFormatter
     /**
      * @param array<string, array<array<string|int, mixed>>> $data
      *
-     * @param string                                         $locale
      *
      * @return array<string, array<array<string|int, mixed>>>
      */
@@ -51,9 +50,7 @@ final class BlogPageResponseFormatter
         $data['pagination'] = $data['blog_list']['pagination'];
         $data['blog_list'] = $data['blog_list']['data'];
 
-        if (null !== $data['localized_url']) {
-            $data['localized_url'] = $this->router->generate('site.blog_list_page', ['_locale' => $locale === 'rs' ? 'en' : 'rs', 'tag' => $data['localized_url']]);
-        }
+        $data['localized_url'] = $this->router->generate('site.blog_list_page', ['_locale' => $locale === 'rs' ? 'en' : 'rs', 'tag' => $data['localized_url']]);
 
         if (isset($data['tags'])) {
             $tagList = [];

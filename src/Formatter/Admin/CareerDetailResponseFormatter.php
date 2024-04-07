@@ -17,40 +17,19 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CareerDetailResponseFormatter
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private \Symfony\Component\Routing\RouterInterface $router;
 
     /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
-
-    /**
-     * @param RouterInterface    $router
      * @param ImageRepository    $imageRepository
      * @param SettingsRepository $settingsRepository
      */
     public function __construct(
-        RouterInterface $router,
-        ImageRepository $imageRepository,
-        SettingsRepository $settingsRepository
+        RouterInterface $router
     ) {
         $this->router = $router;
-        $this->imageRepository = $imageRepository;
-        $this->settingsRepository = $settingsRepository;
     }
 
-    /**
-     * @param Career $career
-     *
-     * @return array
-     */
+    
     public function formatResponse(Career $career): array
     {
         return [

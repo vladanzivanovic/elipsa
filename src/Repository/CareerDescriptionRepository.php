@@ -35,11 +35,7 @@ class CareerDescriptionRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('c')
@@ -60,11 +56,7 @@ class CareerDescriptionRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getActiveList(string $locale): array
     {
         $query = $this->createQueryBuilder('c')
@@ -85,11 +77,7 @@ class CareerDescriptionRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getForOptions(string $locale): array
     {
         $query = $this->createQueryBuilder('c')

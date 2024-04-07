@@ -23,7 +23,7 @@ class DataTableModel
     /**
      * @var array|string|null
      */
-    private $search = null;
+    private $search;
 
     public function __construct(
         int $draw,
@@ -87,7 +87,7 @@ class DataTableModel
             return $column->getName() === $columnName && null !== $column->getSearchValue();
         });
 
-        return !$searchedColumn->isEmpty() ? $searchedColumn->first() : null;
+        return $searchedColumn->isEmpty() ? null : $searchedColumn->first();
     }
 
     private function setColumns(array $columns): void
@@ -108,7 +108,7 @@ class DataTableModel
         }
     }
 
-    private function setOrderColumn(int $orderColumn)
+    private function setOrderColumn(int $orderColumn): void
     {
         /** @var DataTableColumnModel $dataTableColumn */
         $dataTableColumn = $this->columns->get($orderColumn);

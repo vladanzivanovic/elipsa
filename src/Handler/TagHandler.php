@@ -58,7 +58,6 @@ final class TagHandler
     /**
      * @param string $mainSlug
      *
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      */
     public function removeFromProducts(Tags $tags): void
@@ -91,21 +90,6 @@ final class TagHandler
         }
 
         $this->tagsRepository->delete($tags);
-
-        $this->tagsRepository->flush();
-    }
-
-    /**
-     * @param string $mainSlug
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    private function remove(string $mainSlug): void
-    {
-        foreach ($this->tagsRepository->findBy(['mainSlug' => $mainSlug]) as $tag) {
-            $this->tagsRepository->delete($tag);
-        }
 
         $this->tagsRepository->flush();
     }

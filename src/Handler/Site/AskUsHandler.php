@@ -24,7 +24,6 @@ final class AskUsHandler
     }
 
     /**
-     * @param AskUs $askUs
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

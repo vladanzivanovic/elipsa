@@ -16,27 +16,14 @@ final class BannerEditRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @var BannerImageService
-     */
-    private $imageService;
+    private \App\Services\BannerImageService $imageService;
 
-    /**
-     * @var BannerRepository
-     */
-    private $bannerRepository;
+    private \App\Repository\BannerRepository $bannerRepository;
 
     /**
      * BannerEditRequestParser constructor.
-     *
-     * @param ParameterBagInterface $parameterBag
-     * @param BannerImageService    $imageService
-     * @param BannerRepository      $bannerRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -49,10 +36,7 @@ final class BannerEditRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
      * @param Banner|null  $banner
-     *
-     * @return Banner
      * @throws \Doctrine\ORM\ORMException
      */
     public function parse(ParameterBag $bag, Banner $banner = null): Banner
@@ -75,7 +59,7 @@ final class BannerEditRequestParser
         return $banner;
     }
 
-    private function setLocale(ParameterBag $bag, Banner $banner)
+    private function setLocale(ParameterBag $bag, Banner $banner): void
     {
         $locales = $this->setLanguageArray($this->parameterBag, $bag);
 

@@ -68,7 +68,7 @@ final class ImageFileSystemListener
             return ;
         }
 
-        if(true === $entity->isDeleted()) {
+        if($entity->isDeleted()) {
             $this->imageService->deleteImages([$entity]);
 
             return;

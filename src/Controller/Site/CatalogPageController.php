@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
-use App\Entity\Catalogue;
-use App\Entity\Image;
 use App\Formatter\Admin\ImageTrait;
 use App\Formatter\Site\CatalogueResponseFormatter;
 use App\Repository\CatalogueRepository;
 use App\Repository\ImageRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,29 +18,11 @@ final class CatalogPageController extends AbstractController
 {
     use ImageTrait;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var CatalogueRepository
-     */
-    private $catalogueRepository;
-    /**
-     * @var CatalogueResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Repository\ImageRepository $imageRepository;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \App\Repository\CatalogueRepository $catalogueRepository;
+    private \App\Formatter\Site\CatalogueResponseFormatter $responseFormatter;
 
-    /**
-     * @param ImageRepository            $imageRepository
-     * @param RouterInterface            $router
-     * @param CatalogueRepository        $catalogueRepository
-     * @param CatalogueResponseFormatter $responseFormatter
-     */
     public function __construct(
         ImageRepository $imageRepository,
         RouterInterface $router,
@@ -55,20 +35,9 @@ final class CatalogPageController extends AbstractController
         $this->responseFormatter = $responseFormatter;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/katalog",
-     *          "en": "/catalogue"
-     *     },
-     *     name="site.catalog_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/catalog.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
+    
+    #[Route(path: ['rs' => '/katalog', 'en' => '/catalogue'], name: 'site.catalog_page', methods: ['GET'])]
+    #[Template('Site/Pages/catalog.html.twig')]
     public function getCatalogues(Request $request): array
     {
         $locale = $request->getLocale();

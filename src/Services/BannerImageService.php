@@ -18,27 +18,14 @@ use Webmozart\Assert\Assert;
 
 final class BannerImageService
 {
-    /**
-     * @var ImageService
-     */
-    protected $img;
+    protected \App\Services\ImageService $img;
 
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private \App\Repository\ImageRepository $imageRepository;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
 
     /**
      * BannerImageService constructor.
-     *
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     * @param ImageRepository       $imageRepository
      */
     public function __construct(
         ImageService $imageService,
@@ -51,9 +38,6 @@ final class BannerImageService
     }
 
     /**
-     * @param Banner $banner
-     * @param array  $data
-     * @param int    $device
      *
      * @throws \Doctrine\ORM\ORMException
      */
@@ -63,7 +47,7 @@ final class BannerImageService
         $tmpDir = $this->bag->get('upload_tmp_dir');
         $imageDir = $this->bag->get('upload_image_dir');
 
-        if (empty(array_filter($data))) {
+        if (array_filter($data) === []) {
             return;
         }
 
@@ -123,11 +107,7 @@ final class BannerImageService
         }
     }
 
-    /**
-     * @param array $images
-     *
-     * @return void
-     */
+    
     public function deleteImages(array $images): void
     {
         $rootDir = $this->bag->get('upload_dir');

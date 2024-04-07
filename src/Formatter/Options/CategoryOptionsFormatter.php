@@ -18,8 +18,6 @@ final class CategoryOptionsFormatter
 
     public function format(string $locale): array
     {
-        $options = $this->categoryRepository->getAll(null, $locale);
-
-        return $options;
+        return $this->categoryRepository->getAll(null, $locale);
     }
 }

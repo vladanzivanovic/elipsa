@@ -46,6 +46,7 @@ class CheckoutPageManipulator {
 
         this.#orderStorageManipulator.setOrderData(order);
         this.#pageDom.manageOrderData(order)
+        this.#pageDom.toggleStoreShipping(order);
     }
 }
 

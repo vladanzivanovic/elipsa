@@ -25,7 +25,7 @@ class AuthenticationChecker implements UserCheckerInterface
         $this->requestStack = $requestStack;
     }
 
-    public function checkPreAuth(UserInterface $user)
+    public function checkPreAuth(UserInterface $user): void
     {
         if (!$user instanceof User) {
             return;
@@ -43,7 +43,7 @@ class AuthenticationChecker implements UserCheckerInterface
         }
     }
 
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $user): void
     {
         // TODO: Implement checkPostAuth() method.
     }

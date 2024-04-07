@@ -15,42 +15,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class CollaboratorRequestParser
 {
-    /**
-     * @var CollaboratorRepository
-     */
-    private $repository;
+    private \App\Repository\CollaboratorRepository $repository;
 
     /**
-     * @var ImageService
-     */
-    private $imageService;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-
-    /**
-     * @param CollaboratorRepository $repository
      * @param ImageService           $imageService
      * @param ParameterBagInterface  $parameterBag
      */
     public function __construct(
-        CollaboratorRepository $repository,
-        ImageService $imageService,
-        ParameterBagInterface $parameterBag
+        CollaboratorRepository $repository
     ) {
         $this->repository = $repository;
-        $this->imageService = $imageService;
-        $this->parameterBag = $parameterBag;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param ParameterBag $files
-     *
-     * @return Collaborator
-     */
+    
     public function parse(ParameterBag $bag, ParameterBag $files): Collaborator
     {
         $countByUser = $this->repository->count([

@@ -1,6 +1,6 @@
 import dt from 'datatables.net-bs4';
-import 'datatables.net-responsive-dt';
-import 'datatables.net-buttons-dt/js/buttons.dataTables';
+import 'datatables.net-responsive-bs4';
+import 'datatables.net-buttons-bs4';
 import NotificationService from "../../../../js/NotificationService";
 
 class CoreDataTable {

@@ -8,7 +8,8 @@ use App\Entity\Blog;
 use App\Entity\Tags;
 use App\Formatter\Admin\BlogEditResponseFormatter;
 use App\Repository\TagsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,25 +27,16 @@ final class BlogEditPageController extends AbstractController
         $this->tagsRepository = $tagsRepository;
     }
 
-    /**
-     * @Route("/blog/add", name="admin.add_blog_page", methods={"GET"})
-     * @Template("Admin/Pages/blogEdit.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: '/blog/add', name: 'admin.add_blog_page', methods: ['GET'])]
+    #[Template('Admin/Pages/blogEdit.html.twig')]
     public function insert(): array
     {
         return $this->responseFormatter->formatResponse();
     }
 
-    /**
-     * @Route("/blog/{id}", name="admin.edit_blog_page", methods={"GET"})
-     * @Template("Admin/Pages/blogEdit.html.twig")
-     *
-     * @param Blog $blog
-     *
-     * @return array
-     */
+    
+    #[Route(path: '/blog/{id}', name: 'admin.edit_blog_page', methods: ['GET'])]
+    #[Template('Admin/Pages/blogEdit.html.twig')]
     public function update(Blog $blog): array
     {
         $blogData = $this->responseFormatter->formatResponse($blog);

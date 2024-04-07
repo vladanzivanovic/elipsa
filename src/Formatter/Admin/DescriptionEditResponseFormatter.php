@@ -60,7 +60,7 @@ final class DescriptionEditResponseFormatter
 
         $options = [];
 
-        foreach ($constants as $constant => $value) {
+        foreach ($constants as $value) {
             $options[] = [
                 'title' => $this->translator->trans('navi.'.$value),
                 'value' => $value,

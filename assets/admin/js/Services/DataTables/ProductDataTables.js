@@ -31,7 +31,7 @@ class ProductDataTables {
                 url: route,
                 type: 'POST'
             },
-            dom:'<"row" <"col-md-3" B><"col-md-6 action-list"><"col-md-3" l>>rtip',
+            dom:'<"row" <"col-md-3" B><"col-md-6 action-list"><"col-md-3" l>>rt<"row" <"col-md-6" i><"col-md-6" p>>',
             columns: [
                 { data: null, name: 'code', title: '', defaultContent: '' },
                 { data: 'code', name: 'code', title: 'Šifra' },
@@ -115,7 +115,26 @@ class ProductDataTables {
             order: [[1, 'desc']],
             initComplete: () => {
                 this.#generateActionBox().appendTo('.action-list');
-            }
+            },
+            layout: {
+                topStart: {
+                    buttons: [
+                        {
+                            text: 'Select all',
+                            action: function () {
+                                table.rows().select();
+                            }
+                        },
+                        {
+                            text: 'Select none',
+                            action: function () {
+                                table.rows().deselect();
+                            }
+                        }
+                    ]
+                }
+            },
+            select: true
         };
 
         const options = this.#dataTableOptionGenerator

@@ -38,9 +38,9 @@ class OrderApiHandler {
 
         const data = {color, size, quantity};
 
-        try {
-            this.#checker.checkManageProduct(data);
+        this.#checker.checkManageProduct(data);
 
+        try {
             result = await $.ajax({
                 type: 'POST',
                 url: urlRoute,
@@ -48,7 +48,6 @@ class OrderApiHandler {
             });
 
         } catch (error) {
-            console.log(error);
             result = error;
         }
 

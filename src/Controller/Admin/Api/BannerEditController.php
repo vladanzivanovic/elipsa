@@ -30,14 +30,12 @@ final class BannerEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-banner", name="admin.add_banner_api", methods={"POST"})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
+    #[Route(path: '/api/add-banner', name: 'admin.add_banner_api', methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $banner = $this->requestParser->parse($request->request);
@@ -48,15 +46,12 @@ final class BannerEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-banner/{id}", name="admin.edit_banner_api", methods={"PUT"}, options={"expose": true})
-     * @param Request $request
-     * @param Banner  $banner
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      */
+    #[Route(path: '/api/edit-banner/{id}', name: 'admin.edit_banner_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, Banner $banner): JsonResponse
     {
         $banner = $this->requestParser->parse($request->request, $banner);
@@ -67,16 +62,11 @@ final class BannerEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/toggle-banner-status/{id}/{status}", name="admin.api_toggle_banner_status", methods={"PATCH"},
-     *                                                   options={"expose": true})
      *
-     * @param Banner $banner
-     * @param int    $status
-     *
-     * @return JsonResponse
      *
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/toggle-banner-status/{id}/{status}', name: 'admin.api_toggle_banner_status', methods: ['PATCH'], options: ['expose' => true])]
     public function toggleActivation(Banner $banner, int $status): JsonResponse
     {
         $banner->setIsActive((bool) $status);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api\Order;
 
-
-
 use App\Formatter\Admin\OrderDataTableResponseFormatter;
 use App\Parser\DataTableRequestParser;
 use App\Repository\ShopOrderRepository;
@@ -35,14 +33,12 @@ final class OrdersListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-order-list", name="admin.get_order_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-order-list', name: 'admin.get_order_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

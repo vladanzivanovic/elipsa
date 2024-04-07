@@ -13,19 +13,9 @@ final class SliderEditResponseFormatter
 {
     use ImageTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \App\Repository\ImageRepository $imageRepository;
 
-    /**
-     * @param RouterInterface $router
-     * @param ImageRepository $imageRepository
-     */
     public function __construct(
         RouterInterface $router,
         ImageRepository $imageRepository
@@ -34,11 +24,7 @@ final class SliderEditResponseFormatter
         $this->imageRepository = $imageRepository;
     }
 
-    /**
-     * @param Slider $slider
-     *
-     * @return array
-     */
+    
     public function formatResponse(Slider $slider): array
     {
         $rsTrans = $slider->getByLocale('rs');
@@ -64,11 +50,7 @@ final class SliderEditResponseFormatter
         ];
     }
 
-    /**
-     * @param Slider $slider
-     *
-     * @return array
-     */
+    
     private function getImages(Slider $slider): array
     {
         $image = $slider->getImage();

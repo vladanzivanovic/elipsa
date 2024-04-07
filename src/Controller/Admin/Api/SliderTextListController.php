@@ -33,14 +33,12 @@ final class SliderTextListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-slider-text-list", name="admin.get_slider_text_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-slider-text-list', name: 'admin.get_slider_text_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

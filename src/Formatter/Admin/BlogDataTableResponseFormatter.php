@@ -12,13 +12,7 @@ final class BlogDataTableResponseFormatter
 {
     use DataTableResponseTrait;
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $blogs
-     * @param int            $total
-     *
-     * @return array
-     */
+    
     public function formatResponse(DataTableModel $tableModel, array $blogs, int $total): array
     {
         $blogs = array_map(function ($blog) {

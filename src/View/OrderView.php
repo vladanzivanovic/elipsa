@@ -17,8 +17,6 @@ final class OrderView
 
     private PriceView $priceView;
 
-    private SettingsRepository $settingsRepository;
-
     private AddressView $addressView;
 
     private OrderPaymentView $orderPaymentView;
@@ -40,7 +38,6 @@ final class OrderView
         $this->orderProductView = $orderProductView;
         $this->promotionCouponView = $promotionCouponView;
         $this->priceView = $priceView;
-        $this->settingsRepository = $settingsRepository;
         $this->addressView = $addressView;
         $this->orderPaymentView = $orderPaymentView;
         $this->translator = $translator;
@@ -60,7 +57,7 @@ final class OrderView
             'promotion' => [],
             'payment' => $this->orderPaymentView->view($order),
             'note' => $order->getNote(),
-            'checkout_completed_at' => null !== $order->getCompletedAt() ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
+            'checkout_completed_at' => $order->getCompletedAt() instanceof \DateTimeInterface ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
             'tracking_info' => $order->getTrackingInfo(),
         ];
 
@@ -78,7 +75,7 @@ final class OrderView
             }
         }
 
-        if (null !== $order->getCoupon()) {
+        if ($order->getCoupon() instanceof \App\Entity\Promotion) {
             $view['promotion'] = $this->promotionCouponView->view($order->getCoupon());
         }
 
@@ -93,39 +90,17 @@ final class OrderView
 //        $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
 
         if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
-            $view += $this->addCheckoutInformation($order, $locale);
+            $view += $this->addCheckoutInformation($order);
         }
 
         return $view;
     }
 
-    private function addCheckoutInformation(ShopOrder $order, string $locale): array
+    private function addCheckoutInformation(ShopOrder $order): array
     {
         return [
             'shipping_address' => $this->addressView->view($order->getShippingAddress()),
             'billing_address' => $this->addressView->view($order->getBillingAddress()),
         ];
-    }
-
-    /**
-     * @deprecated
-     */
-    private function setShippingPriceAndUpdateTotal(array $orderView, int $total, $locale): array
-    {
-        $freeShippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING']);
-        $shippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE']);
-
-        $shippingPrice = (int) $shippingPriceConfig->getValue();
-        $totalWithShipping = $total + $shippingPriceConfig->getValue();
-
-        if ($total >= $freeShippingPriceConfig->getValue()) {
-            $totalWithShipping = $total;
-            $shippingPrice = 0;
-        }
-
-        $orderView['total_with_shipping'] = $this->priceView->view($totalWithShipping, $locale);
-        $orderView['shipping_price'] = $this->priceView->view($shippingPrice, $locale);
-
-        return $orderView;
     }
 }

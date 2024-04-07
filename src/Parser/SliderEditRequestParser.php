@@ -16,25 +16,12 @@ final class SliderEditRequestParser
 {
     use ParserTrait;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var SliderImageService
-     */
-    private $imageService;
-    /**
-     * @var SliderRepository
-     */
-    private $sliderRepository;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
+    private \App\Services\SliderImageService $imageService;
+    private \App\Repository\SliderRepository $sliderRepository;
 
     /**
      * SliderEditRequestParser constructor.
-     *
-     * @param ParameterBagInterface $parameterBag
-     * @param SliderImageService    $imageService
-     * @param SliderRepository      $sliderRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -47,10 +34,8 @@ final class SliderEditRequestParser
     }
 
     /**
-     * @param ParameterBag $bag
      * @param Slider|null  $slider
      *
-     * @return Slider
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
@@ -74,7 +59,7 @@ final class SliderEditRequestParser
         return $slider;
     }
 
-    private function setLocale(ParameterBag $bag, Slider $slider)
+    private function setLocale(ParameterBag $bag, Slider $slider): void
     {
         $locales = $this->setLanguageArray($this->parameterBag, $bag);
 

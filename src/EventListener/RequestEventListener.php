@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-final class RequestListener
+final class RequestEventListener
 {
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $requestUri = $event->getRequest()->server->get('REQUEST_URI');
 
@@ -17,7 +20,7 @@ final class RequestListener
 
             $redirectUri = str_replace('/public', '', $requestUri);
 
-            $event->setResponse(new RedirectResponse($redirectUri !== '' ? $redirectUri : '/', 301));
+            $event->setResponse(new RedirectResponse($redirectUri !== '' ? $redirectUri : '/', Response::HTTP_MOVED_PERMANENTLY));
 
             return;
         }

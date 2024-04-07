@@ -13,14 +13,8 @@ final class ImportProducts extends Command
 {
     protected static $defaultName = 'app:import:excel-products';
 
-    /**
-     * @var ImportProductsExcel
-     */
-    private $importProductsExcel;
+    private \App\Services\ImportProductsExcel $importProductsExcel;
 
-    /**
-     * @param ImportProductsExcel $importProductsExcel
-     */
     public function __construct(
         ImportProductsExcel $importProductsExcel
     ) {
@@ -28,12 +22,12 @@ final class ImportProducts extends Command
         $this->importProductsExcel = $importProductsExcel;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->importProductsExcel->doImport();
 

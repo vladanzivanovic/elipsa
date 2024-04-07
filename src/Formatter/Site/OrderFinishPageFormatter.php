@@ -30,13 +30,11 @@ final class OrderFinishPageFormatter
     ): array {
         $officeInfo = $this->settingsCollector->collect('email');
 
-        $view = $this->orderFinishView->view(
+        return $this->orderFinishView->view(
             $order,
             $officeInfo,
             $locale,
             $isSuccessfulTransaction
         );
-
-        return $view;
     }
 }

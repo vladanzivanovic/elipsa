@@ -8,17 +8,8 @@ use App\Entity\Description;
 
 final class DescriptionView
 {
-    private array $locales;
-
-    public function __construct(
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
-
     /**
      * @param Description[] $descriptions
-     * @return array
      */
     public function view(array $descriptions): array
     {

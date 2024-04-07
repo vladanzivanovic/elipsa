@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PHP_VERSION=7.4
+ARG PHP_VERSION=8.1
 
 RUN apt-get update -y
 RUN apt-get install -y apt-utils
@@ -23,7 +23,7 @@ RUN apt-get install -y php-pear
 RUN apt-get install -y  libapache2-mod-php$PHP_VERSION
 RUN apt-get install -y php$PHP_VERSION-mysql
 RUN apt-get install -y php$PHP_VERSION-bcmath
-RUN apt-get install -y php$PHP_VERSION-json
+#RUN apt-get install -y php$PHP_VERSION-json
 RUN apt-get install -y php$PHP_VERSION-cgi
 RUN apt-get install -y php$PHP_VERSION-xsl
 RUN apt-get install -y php$PHP_VERSION-gd

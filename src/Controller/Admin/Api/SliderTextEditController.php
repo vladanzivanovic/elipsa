@@ -32,14 +32,12 @@ final class SliderTextEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/app-slider-text", name="admin.add_slider_text_api", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/app-slider-text', name: 'admin.add_slider_text_api', options: ['expose' => true], methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $sliderText = $this->requestParser->parse($request->request);
@@ -49,13 +47,8 @@ final class SliderTextEditController extends AbstractController
         return $this->json(null, Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/api/edit-slider-text/{id}", name="admin.edit_slider_text_api", methods={"PUT"}, options={"expose": true})
-     * @param Request    $request
-     * @param SliderText $sliderText
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/edit-slider-text/{id}', name: 'admin.edit_slider_text_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, SliderText $sliderText): JsonResponse
     {
         $sliderText = $this->requestParser->parse($request->request, $sliderText);
@@ -66,16 +59,11 @@ final class SliderTextEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/toggle-slider-text-status/{id}/{status}", name="admin.api_toggle_slider_text_status", methods={"PATCH"},
-     *                                                   options={"expose": true})
      *
-     * @param SliderText $sliderText
-     * @param int        $status
-     *
-     * @return JsonResponse
      *
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/toggle-slider-text-status/{id}/{status}', name: 'admin.api_toggle_slider_text_status', methods: ['PATCH'], options: ['expose' => true])]
     public function toggleActivation(SliderText $sliderText, int $status): JsonResponse
     {
         $sliderText->setIsActive((bool) $status);

@@ -16,8 +16,6 @@ final class AskUsMailer
 {
     private EventDispatcherInterface $dispatcher;
 
-    private TranslatorInterface $translator;
-
     private SettingsCollector $settingsCollector;
 
     public function __construct(
@@ -26,11 +24,10 @@ final class AskUsMailer
         SettingsCollector $settingsCollector
     ) {
         $this->dispatcher = $dispatcher;
-        $this->translator = $translator;
         $this->settingsCollector = $settingsCollector;
     }
 
-    public function sendEmail(AskUs $askUs, string $locale)
+    public function sendEmail(AskUs $askUs, string $locale): void
     {
         $emailModelCustomer = $this->prepareEmail($askUs, $locale);
         $event = new EmailEvent($emailModelCustomer);

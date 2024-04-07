@@ -38,7 +38,7 @@ final class SliderTextEditResponseFormatter
             'positionOptions' => $this->formatPositions(),
         ];
 
-        if (null !== $sliderText) {
+        if ($sliderText instanceof \App\Entity\SliderText) {
             $rsTrans = $sliderText->getByLocale('rs');
             $enTrans = $sliderText->getByLocale('en');
 
@@ -57,7 +57,7 @@ final class SliderTextEditResponseFormatter
 
         $formatted = [];
 
-        foreach ($availablePositions as $name => $value) {
+        foreach ($availablePositions as $value) {
             $formatted[] = [
                 'title' => $this->translator->trans('banner_text.'.$value),
                 'value' => $value

@@ -50,14 +50,12 @@ final class PromotionCouponView
 
     public function view(Promotion $coupon): array
     {
-        $view = [
+        return [
             'code' => $coupon->getCode(),
             'percentage' => $coupon->getDiscount(),
             'valid_from' => $coupon->getValidFrom()->format('d.m.Y'),
             'valid_to' => $coupon->getValidTo()->format('d.m.Y'),
             'type' => $coupon->getType(),
         ];
-
-        return $view;
     }
 }

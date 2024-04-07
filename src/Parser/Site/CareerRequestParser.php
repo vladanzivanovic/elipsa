@@ -20,49 +20,18 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class CareerRequestParser
 {
-    /**
-     * @var CareerRepository
-     */
-    private $repository;
+    private \App\Repository\CareerDescriptionRepository $descriptionRepository;
 
-    /**
-     * @var ImageService
-     */
-    private $imageService;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var CareerDescriptionRepository
-     */
-    private $descriptionRepository;
-
-    /**
-     * @param CareerRepository            $repository
-     * @param ImageService                $imageService
-     * @param ParameterBagInterface       $parameterBag
-     * @param CareerDescriptionRepository $descriptionRepository
-     */
     public function __construct(
         CareerRepository $repository,
         ImageService $imageService,
         ParameterBagInterface $parameterBag,
         CareerDescriptionRepository $descriptionRepository
     ) {
-        $this->repository = $repository;
-        $this->imageService = $imageService;
-        $this->parameterBag = $parameterBag;
         $this->descriptionRepository = $descriptionRepository;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param ParameterBag $files
-     *
-     * @return Career
-     */
+    
     public function parse(ParameterBag $bag, ParameterBag $files): Career
     {
         $position = $this->descriptionRepository->find($bag->get('position'));

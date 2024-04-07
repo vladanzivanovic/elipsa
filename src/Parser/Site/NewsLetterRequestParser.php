@@ -14,24 +14,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class NewsLetterRequestParser
 {
-    /**
-     * @var NewsLetterRepository
-     */
-    private $letterRepository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Repository\NewsLetterRepository $letterRepository;
+    private \App\Repository\UserRepository $userRepository;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param NewsLetterRepository $letterRepository
-     * @param UserRepository       $userRepository
-     * @param TranslatorInterface  $translator
-     */
     public function __construct(
         NewsLetterRepository $letterRepository,
         UserRepository $userRepository,
@@ -42,10 +28,6 @@ final class NewsLetterRequestParser
         $this->translator = $translator;
     }
 
-    /**
-     * @param NewsLetterRequestDto $newsLetterRequestDto
-     * @return NewsLetter
-     */
     public function parse(NewsLetterRequestDto $newsLetterRequestDto): NewsLetter
     {
         $email = $newsLetterRequestDto->email;

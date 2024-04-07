@@ -20,9 +20,7 @@ class BlogHasTagsRepository extends ExtendedEntityRepository
 
     /**
      * @param array $tags
-     * @param Blog  $blog
      *
-     * @return array
      */
     public function getTagsByBlog(Blog $blog): array
     {
@@ -36,12 +34,7 @@ class BlogHasTagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param array $tags
-     * @param Blog  $blog
-     *
-     * @return array
-     */
+    
     public function getTagsEntityByBlog(array $tags, Blog $blog): array
     {
         $query = $this->createQueryBuilder('bht')

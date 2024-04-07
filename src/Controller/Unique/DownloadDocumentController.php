@@ -16,46 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class DownloadDocumentController extends AbstractController
 {
 
-    private $imageService;
-    private $parameterBag;
-    /**
-     * @var ImageResizer
-     */
-    private $imageResizer;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $parameterBag
-     * @param ImageResizer          $imageResizer
-     * @param ImageRepository       $imageRepository
-     */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $parameterBag,
         ImageResizer $imageResizer,
         ImageRepository $imageRepository
     ) {
-        $this->imageService = $imageService;
         $this->parameterBag = $parameterBag;
-        $this->imageResizer = $imageResizer;
-        $this->imageRepository = $imageRepository;
     }
 
-    /**
-     * @Route("/download-doc/{id}",
-     *     methods={"GET"},
-     *     name="app.download_doc",
-     *     options={"expose": true}
-     * )
-     *
-     * @param Image $image
-     *
-     * @return BinaryFileResponse
-     */
+    
+    #[Route(path: '/download-doc/{id}', methods: ['GET'], name: 'app.download_doc', options: ['expose' => true])]
     public function getImage(Image $image): BinaryFileResponse
     {
         $rootDir = $this->parameterBag->get('upload_dir');

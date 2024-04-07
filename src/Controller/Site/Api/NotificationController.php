@@ -32,11 +32,7 @@ final class NotificationController extends AbstractController
         $this->exceptionView = $exceptionView;
     }
 
-    /**
-     * @Route("/api/notification", name="site_api.set_notification", methods={"POST"}, options={"expose": true})
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/notification', name: 'site_api.set_notification', methods: ['POST'], options: ['expose' => true])]
     public function setNotification(
         NotificationRequestDto $notificationRequestDto,
         Request $request

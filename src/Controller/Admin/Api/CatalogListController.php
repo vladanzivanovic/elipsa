@@ -29,26 +29,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CatalogListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var CatalogDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\CatalogDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var CatalogueRepository
-     */
-    private $catalogueRepository;
+    private \App\Repository\CatalogueRepository $catalogueRepository;
 
-    /**
-     * @param DataTableRequestParser            $requestParser
-     * @param CatalogueRepository               $catalogueRepository
-     * @param CatalogDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         CatalogueRepository $catalogueRepository,
@@ -60,14 +46,12 @@ final class CatalogListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-catalog-list", name="admin.get_catalog_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-catalog-list', name: 'admin.get_catalog_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

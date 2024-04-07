@@ -23,17 +23,7 @@ final class UserHandler
 {
     private ValidatorHelper $validator;
 
-    private TranslatorInterface $translator;
-
-    private SettingsRepository $settingsRepository;
-
-    private EventDispatcherInterface $dispatcher;
-
     private UserRepository $userRepository;
-
-    private UserPasswordHasherInterface $userPasswordHasher;
-
-    private SettingsFormatter $settingsFormatter;
 
     public function __construct(
         ValidatorHelper $validator,
@@ -45,12 +35,7 @@ final class UserHandler
         SettingsFormatter $settingsFormatter
     ) {
         $this->validator = $validator;
-        $this->translator = $translator;
-        $this->settingsRepository = $settingsRepository;
-        $this->dispatcher = $dispatcher;
         $this->userRepository = $userRepository;
-        $this->userPasswordHasher = $userPasswordHasher;
-        $this->settingsFormatter = $settingsFormatter;
     }
 
     /**

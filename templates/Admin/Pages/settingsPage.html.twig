@@ -15,37 +15,99 @@
     </div>
 
     <form id="edit_form" enctype="multipart/form-data" class="forms-sample">
-
-            <div class="row">
-                <div class="col-md-12 grid-margin">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                {% for setting in settings %}
-                                    {% if setting.inputType != 'textarea' %}
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id, '', setting.inputType) }}
-                                            </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Podaci o kompaniji</h6>
+                        <div class="row">
+                            {% for setting in settings.company %}
+                                {% if setting.inputType != 'textarea' %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id, '', setting.inputType) }}
                                         </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <div class="row">
-                                {% for setting in settings %}
-                                    {% if setting.inputType == 'textarea' %}
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                {{ form.textarea(setting.name ~ ' - ' ~ languages[setting.locale].name, 'name_' ~ setting.id, setting.value, setting.id, 10, '', 'form-control') }}
-                                            </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            {% for setting in settings.company %}
+                                {% if setting.inputType == 'textarea' %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.textarea(setting.name ~ ' - ' ~ languages[setting.locale].name, 'name_' ~ setting.id, setting.value, setting.id, 10, '', 'form-control') }}
                                         </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Podešavanje sajta</h6>
+                        <div class="row">
+                            {% for setting in settings.site %}
+                                {% if setting.inputType != 'textarea' %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id, '', setting.inputType) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            {% for setting in settings.site %}
+                                {% if setting.inputType == 'textarea' %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.textarea(setting.name ~ ' - ' ~ languages[setting.locale].name, 'name_' ~ setting.id, setting.value, setting.id, 10, '', 'form-control') }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Footer tekst</h6>
+                        <div class="row">
+                            {% for setting in settings.footer %}
+                                {% if setting.inputType != 'textarea' %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id, '', setting.inputType) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            {% for setting in settings.footer %}
+                                {% if setting.inputType == 'textarea' %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.textarea(setting.name ~ ' - ' ~ languages[setting.locale].name, 'name_' ~ setting.id, setting.value, setting.id, 10, '', 'form-control') }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
     {{ form.button('settings_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}

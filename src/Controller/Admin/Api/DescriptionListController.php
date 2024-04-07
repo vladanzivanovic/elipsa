@@ -16,26 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DescriptionListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var DescriptionDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\DescriptionDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var DescriptionRepository
-     */
-    private $descriptionRepository;
+    private \App\Repository\DescriptionRepository $descriptionRepository;
 
-    /**
-     * @param DataTableRequestParser                $requestParser
-     * @param DescriptionRepository                 $descriptionRepository
-     * @param DescriptionDataTableResponseFormatter $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         DescriptionRepository $descriptionRepository,
@@ -47,14 +33,12 @@ final class DescriptionListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-description-list", name="admin.get_description_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-description-list', name: 'admin.get_description_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

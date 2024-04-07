@@ -18,7 +18,7 @@ final class ShopFilterFormatter
 
     public function format(array $filters): array
     {
-        $formattedData = [
+        return [
             'collections' => $this->formatTags($filters['collection']),
             'seasons' => $this->formatTags($filters['season']),
             'attributes' => $this->formatTags($filters['attributes']),
@@ -26,8 +26,6 @@ final class ShopFilterFormatter
             'colors' => $filters['colors'],
             'price' => $filters['price'],
         ];
-
-        return $formattedData;
     }
 
     private function formatTags(array $tags): array

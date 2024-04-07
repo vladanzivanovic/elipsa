@@ -39,11 +39,6 @@ final class JobImageService
      */
     private $bag;
 
-    /**
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     * @param ImageRepository       $imageRepository
-     */
     public function __construct(
         ImageService $imageService,
         ParameterBagInterface $bag,
@@ -55,8 +50,6 @@ final class JobImageService
     }
 
     /**
-     * @param CareerDescriptionTranslation $careerDescriptionTranslation
-     * @param array                        $data
      *
      * @throws \Doctrine\ORM\ORMException
      */
@@ -68,7 +61,7 @@ final class JobImageService
 
         $career = $careerDescriptionTranslation->getCareerDescription();
 
-        if (empty(array_filter($data))) {
+        if (array_filter($data) === []) {
             return;
         }
 
@@ -131,22 +124,16 @@ final class JobImageService
             $career->setImage($mediaObj);
         }
 
-        if (count($exceptions) > 0) {
+        if ($exceptions !== []) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
     }
 
-    /**
-     * @param CareerDescription $careerDescription
-     * @param Image             $image
-     *
-     * @return void
-     */
+    
     private function updateImage(CareerDescription $careerDescription, Image $image): void
     {
         $images = [$careerDescription->getImage()];
 
-        /** @var Image $image */
         foreach ($images as $img) {
             $img->setIsMain(false);
         }

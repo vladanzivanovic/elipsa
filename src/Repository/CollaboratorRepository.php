@@ -35,11 +35,7 @@ class CollaboratorRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->createQueryBuilder('c')

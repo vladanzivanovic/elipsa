@@ -12,8 +12,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class MyAccountFormatter
 {
-    private RouterInterface $router;
-
     private UserView $userView;
 
     private OrderView $orderView;
@@ -26,7 +24,6 @@ final class MyAccountFormatter
         OrderView $orderView,
         ProductFormatter $productFormatter
     ) {
-        $this->router = $router;
         $this->userView = $userView;
         $this->orderView = $orderView;
         $this->productFormatter = $productFormatter;

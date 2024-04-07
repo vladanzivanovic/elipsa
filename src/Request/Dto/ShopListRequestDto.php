@@ -29,7 +29,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
 
     public function __construct(Request $request = null)
     {
-        if (null === $request) {
+        if (!$request instanceof \Symfony\Component\HttpFoundation\Request) {
             return;
         }
 
@@ -65,7 +65,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
     {
         $body = $request->query->all();
 
-        $this->setBasePart($body, $request);
+        $this->setBasePart($body);
 
         $this->size =  isset($body['sizes']) ? explode('+', $body['sizes']) : null;
         $this->color = isset($body['colors']) ? explode('+', $body['colors']) : null;
@@ -80,7 +80,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
     {
         $body = json_decode($request->getContent(), true);
 
-        $this->setBasePart($body, $request);
+        $this->setBasePart($body);
 
         $this->size =  $body['sizes'] ?? null;
         $this->color = $body['colors'] ?? null;
@@ -93,10 +93,8 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
 
     /**
      * @param $body
-     * @param Request $request
-     * @return void
      */
-    private function setBasePart($body, Request $request): void
+    private function setBasePart($body): void
     {
         $this->search = $body['search'] ?? null;
     }

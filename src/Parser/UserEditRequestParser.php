@@ -15,33 +15,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class UserEditRequestParser
 {
-    /**
-     * @var LoyaltyRepository
-     */
-    private $loyaltyRepository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private \App\Repository\UserRepository $userRepository;
 
-    /**
-     * @param LoyaltyRepository $loyaltyRepository
-     * @param UserRepository    $userRepository
-     */
     public function __construct(
         LoyaltyRepository $loyaltyRepository,
         UserRepository $userRepository
     ) {
-        $this->loyaltyRepository = $loyaltyRepository;
         $this->userRepository = $userRepository;
     }
 
     /**
-     * @param ParameterBag $bag
      *
      * @param User|null    $user
      *
-     * @return User
      */
     public function parse(ParameterBag $bag, User $user = null): User
     {
@@ -51,7 +37,7 @@ final class UserEditRequestParser
             throw new BadRequestHttpException('registration.error.user_exists');
         }
 
-        if (null === $user) {
+        if (!$user instanceof \App\Entity\User) {
             $user = new User();
             $user->setPassword($bag->get('password'))
                 ->setStatus(User::STATUS_PENDING);
@@ -69,17 +55,12 @@ final class UserEditRequestParser
         return $user;
     }
 
-    /**
-     * @param ParameterBag $bag
-     * @param User         $user
-     *
-     * @return void
-     */
+    
     public function parseAddress(ParameterBag $bag, User $user): void
     {
         $address = $user->getAddress();
 
-        if (null === $address) {
+        if (!$address instanceof \App\Entity\Address) {
             $address = new Address();
         }
 

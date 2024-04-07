@@ -17,20 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CollaboratorController extends AbstractController
 {
-    /**
-     * @var CollaboratorRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\Site\CollaboratorRequestParser $requestParser;
 
-    /**
-     * @var CollaboratorHandler
-     */
-    private $handler;
+    private \App\Handler\Site\CollaboratorHandler $handler;
 
-    /**
-     * @param CollaboratorRequestParser $requestParser
-     * @param CollaboratorHandler       $handler
-     */
     public function __construct(
         CollaboratorRequestParser $requestParser,
         CollaboratorHandler $handler
@@ -40,14 +30,12 @@ final class CollaboratorController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-collaborator", name="site_api.add_collaborator", methods={"POST"}, options={"expose": true})
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/add-collaborator', name: 'site_api.add_collaborator', methods: ['POST'], options: ['expose' => true])]
     public function add(Request $request): JsonResponse
     {
         if (!$this->isCsrfTokenValid('collaborator_form', $request->request->get('_csrf_token'))) {

@@ -18,44 +18,14 @@ use App\Repository\TagsRepository;
 
 final class ProductPageCollector
 {
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var TagsRepository
-     */
-    private $tagsRepository;
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-    /**
-     * @var ProductCleaningRepository
-     */
-    private $cleaningRepository;
+    private \App\Repository\ProductColorRepository $colorRepository;
+    private \App\Repository\ProductSizeRepository $sizeRepository;
+    private \App\Repository\TagsRepository $tagsRepository;
+    private \App\Repository\CategoryRepository $categoryRepository;
+    private \App\Repository\ImageRepository $imageRepository;
+    private \App\Repository\ProductRepository $productRepository;
+    private \App\Repository\ProductCleaningRepository $cleaningRepository;
 
-    /**
-     * @param ProductColorRepository    $colorRepository
-     * @param ProductSizeRepository     $sizeRepository
-     * @param TagsRepository            $tagsRepository
-     * @param CategoryRepository        $categoryRepository
-     * @param ImageRepository           $imageRepository
-     * @param ProductRepository         $productRepository
-     * @param ProductCleaningRepository $cleaningRepository
-     */
     public function __construct(
         ProductColorRepository $colorRepository,
         ProductSizeRepository $sizeRepository,

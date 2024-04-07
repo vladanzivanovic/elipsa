@@ -76,10 +76,6 @@ final class OrderProductRequestParser
 
         Assert::notFalse($product->hasColor($color));
 
-        if (false === $product->isSizeAvailable($size)) {
-            throw new ProductManipulationException('product.size_unavailable');
-        }
-
         $orderProduct->setColor($color);
         $orderProduct->setSize($size);
         $orderProduct->setQuantity($orderProductRequestDto->quantity);
@@ -88,11 +84,15 @@ final class OrderProductRequestParser
         $orderProduct->setCode($product->getCode());
         $orderProduct->setDiscount($product->getPromoDiscount() ?? $product->getDiscount());
 
-        if (null !== $promotion) {
+        if (false === $orderProduct->isProductAvailable()) {
+            throw new ProductManipulationException('product.size_unavailable');
+        }
+
+        if ($promotion instanceof \App\Entity\Promotion) {
             $orderProduct->setPromotion($promotion);
         }
 
-        if (null !== $order->getCoupon()) {
+        if ($order->getCoupon() instanceof \App\Entity\Promotion) {
             $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
         }
 
@@ -123,7 +123,7 @@ final class OrderProductRequestParser
             $color
         );
 
-        if (null === $orderProduct) {
+        if (!$orderProduct instanceof \App\Entity\OrderProduct) {
             $productTranslation = $this->productTranslationRepository->findOneBy(['slug' => $productTranslationSlug]);
 
             if (true === $productTranslation->getProduct()->isSold()) {

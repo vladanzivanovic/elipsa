@@ -9,22 +9,11 @@ use App\View\LocationView;
 
 final class LocationOptionsFormatter
 {
-    private LocationView $locationView;
-
-    private LocationRepository $locationRepository;
-
-    private string $defaultLocale;
-
     public function __construct(
-        LocationView $locationView,
-        LocationRepository $locationRepository,
-        string $defaultLocale
-    ) {
-
-        $this->locationView = $locationView;
-        $this->defaultLocale = $defaultLocale;
-        $this->locationRepository = $locationRepository;
-    }
+        private readonly LocationView $locationView,
+        private readonly LocationRepository $locationRepository,
+        private readonly string $defaultLocale
+    ) {}
 
     public function format($locale = null): array
     {

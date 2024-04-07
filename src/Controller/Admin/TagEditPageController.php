@@ -11,7 +11,8 @@ use App\Entity\TagTranslation;
 use App\Formatter\Admin\TagEditFormatter;
 use App\Repository\ProductColorRepository;
 use App\Repository\TagsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class TagEditPageController extends AbstractController
 {
-    private TagsRepository $tagsRepository;
-
-    private ParameterBagInterface $bag;
-
     private TagEditCollector $tagEditCollector;
 
     private TagEditFormatter $tagEditFormatter;
@@ -33,19 +30,13 @@ final class TagEditPageController extends AbstractController
         TagEditCollector $tagEditCollector,
         TagEditFormatter $tagEditFormatter
     ) {
-        $this->tagsRepository = $tagsRepository;
-        $this->bag = $bag;
         $this->tagEditCollector = $tagEditCollector;
         $this->tagEditFormatter = $tagEditFormatter;
     }
 
-    /**
-     * @Route("/add-product-tag", name="admin.add_product_tag_page", methods={"GET"})
-     * @Route("/add-blog-tag", name="admin.add_blog_tag_page", methods={"GET"})
-     * @Template("Admin/Pages/tagEdit.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: '/add-product-tag', name: 'admin.add_product_tag_page', methods: ['GET'])]
+    #[Route(path: '/add-blog-tag', name: 'admin.add_blog_tag_page', methods: ['GET'])]
+    #[Template('Admin/Pages/tagEdit.html.twig')]
     public function insert(): array
     {
         $collectedData = $this->tagEditCollector->collect();
@@ -53,17 +44,11 @@ final class TagEditPageController extends AbstractController
         return $this->tagEditFormatter->format($collectedData);
     }
 
-    /**
-     * @Route("/edit-product-tag/{slug}", name="admin.edit_product_tag_page", methods={"GET"})
-     * @Route("/edit-blog-tag/{slug}", name="admin.edit_blog_tag_page", methods={"GET"})
-     * @Template("Admin/Pages/tagEdit.html.twig")
-     *
-     * @param TagTranslation $tagTranslation
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function update(TagTranslation $tagTranslation, Request $request): array
+    
+    #[Route(path: '/edit-product-tag/{slug}', name: 'admin.edit_product_tag_page', methods: ['GET'])]
+    #[Route(path: '/edit-blog-tag/{slug}', name: 'admin.edit_blog_tag_page', methods: ['GET'])]
+    #[Template('Admin/Pages/tagEdit.html.twig')]
+    public function update(TagTranslation $tagTranslation): array
     {
         $collectedData = $this->tagEditCollector->collect($tagTranslation->getTag());
 

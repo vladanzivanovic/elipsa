@@ -106,7 +106,7 @@ final class ProductFormatter
         $productView['sizes'] = $this->getSizes($product);
         $productView['cleaningIcons'] = $this->getCleaningIcons($product);
         $productView['media']['youtubes'] = $this->getYoutubes($product);
-        $productView['tags'] = $this->getTags($product, $locale);
+        $productView['tags'] = $this->getTags($product);
 
         return $productView;
     }
@@ -127,7 +127,7 @@ final class ProductFormatter
             $productView = $this->productView->view($product, $locale, $user);
             $productView['colors'] = $this->getColors($product);
             $productView['sizes'] = $this->getSizes($product);
-            $productView['tags'] = $this->getTags($product, $locale);
+            $productView['tags'] = $this->getTags($product);
             $productView['image'] = $this->imageView->view($product->getMainImage(), 'product', 'list_thumb');
 
             $productsView[] = $productView;
@@ -191,7 +191,7 @@ final class ProductFormatter
         return $icons;
     }
 
-    private function getTags(Product $product, string $locale): array
+    private function getTags(Product $product): array
     {
         $formattedTags = [];
 

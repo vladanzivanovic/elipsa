@@ -48,7 +48,7 @@ final class CouponsEditRequestParser
 
             $option = new PromotionOption();
             $option->setType($type);
-            $option->setConfiguration(!is_array($values) ? [$values] : $values);
+            $option->setConfiguration(is_array($values) ? $values : [$values]);
 
             $promotion->addPromotionOption($option);
         }

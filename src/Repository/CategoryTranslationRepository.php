@@ -24,11 +24,7 @@ class CategoryTranslationRepository extends ExtendedEntityRepository
         parent::__construct($registry, CategoryTranslation::class);
     }
 
-    /**
-     * @param Product $product
-     *
-     * @return array
-     */
+    
     public function getByProduct(Product $product): array
     {
         $query = $this->createQueryBuilder('ct')
@@ -44,8 +40,6 @@ class CategoryTranslationRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $slug
-     * @param string $locale
      *
      * @return int|mixed|string
      * @throws NoResultException

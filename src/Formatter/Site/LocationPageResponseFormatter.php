@@ -13,21 +13,11 @@ final class LocationPageResponseFormatter
 {
     use FormatterTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
 
     private LocationView $locationView;
 
-    /**
-     * @param RouterInterface       $router
-     * @param ParameterBagInterface $bag
-     */
     public function __construct(
         RouterInterface $router,
         ParameterBagInterface $bag,

@@ -15,16 +15,13 @@
         "version": "1.2.8"
     },
     "doctrine/annotations": {
-        "version": "1.0",
+        "version": "2.0",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a2759dd6123694c8d901d0ec80006e044c2e6457"
-        },
-        "files": [
-            "config/routes/annotations.yaml"
-        ]
+            "branch": "main",
+            "version": "1.10",
+            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
+        }
     },
     "doctrine/cache": {
         "version": "1.10.2"
@@ -215,6 +212,18 @@
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
     },
+    "phpstan/phpstan": {
+        "version": "1.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "5e490cc197fb6bb1ae22e5abbc531ddc633b6767"
+        },
+        "files": [
+            "phpstan.dist.neon"
+        ]
+    },
     "presta/sitemap-bundle": {
         "version": "v2.3.1"
     },
@@ -261,18 +270,6 @@
         },
         "files": [
             "config/packages/ramsey_uuid_doctrine.yaml"
-        ]
-    },
-    "sensio/framework-extra-bundle": {
-        "version": "5.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "config/packages/sensio_framework_extra.yaml"
         ]
     },
     "sentry/sdk": {
@@ -390,19 +387,18 @@
         "version": "v5.1.7"
     },
     "symfony/framework-bundle": {
-        "version": "5.1",
+        "version": "6.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.1",
-            "ref": "6ee1194b036378b21884e7f57b6a2ac721167f16"
+            "branch": "main",
+            "version": "6.4",
+            "ref": "a91c965766ad3ff2ae15981801643330eb42b6a5"
         },
         "files": [
             "config/packages/cache.yaml",
             "config/packages/framework.yaml",
-            "config/packages/test/framework.yaml",
             "config/preload.php",
-            "config/routes/dev/framework.yaml",
+            "config/routes/framework.yaml",
             "config/services.yaml",
             "public/index.php",
             "src/Controller/.gitignore",
@@ -520,9 +516,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.18.1"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.18.1"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.18.1"
     },
@@ -571,9 +564,6 @@
         "version": "v5.1.7"
     },
     "symfony/security-csrf": {
-        "version": "v5.1.7"
-    },
-    "symfony/security-guard": {
         "version": "v5.1.7"
     },
     "symfony/security-http": {

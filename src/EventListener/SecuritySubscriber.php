@@ -37,7 +37,7 @@ final class SecuritySubscriber implements EventSubscriberInterface
         $this->setRememberMeBadge($event);
     }
 
-    public function loginFailure(LoginFailureEvent $event)
+    public function loginFailure(LoginFailureEvent $event): void
     {
         if ($event->getException() instanceof BadCredentialsException) {
             /** @var JsonResponse $response */

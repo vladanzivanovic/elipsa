@@ -6,45 +6,25 @@ namespace App\Controller\Site;
 
 use App\Formatter\Site\ContactPageFormatter;
 use App\Repository\SettingsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ContactPageController extends AbstractController
 {
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
-
     private ContactPageFormatter $contactPageFormatter;
 
-    /**
-     * @param SettingsRepository $settingsRepository
-     */
     public function __construct(
         SettingsRepository $settingsRepository,
         ContactPageFormatter $contactPageFormatter
     ) {
-        $this->settingsRepository = $settingsRepository;
         $this->contactPageFormatter = $contactPageFormatter;
     }
 
-    /**
-     * @Route({
-     *          "rs": "/kontakt",
-     *          "en": "/contact"
-     *     },
-     *     name="site.contact_page",
-     *     methods={"GET"}
-     * )
-     * @Template("Site/Pages/contactUsPage.html.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
+    
+    #[Route(path: ['rs' => '/kontakt', 'en' => '/contact'], name: 'site.contact_page', methods: ['GET'])]
+    #[Template('Site/Pages/contactUsPage.html.twig')]
     public function renderPage(Request $request): array
     {
         return $this->contactPageFormatter->format($request->getLocale());

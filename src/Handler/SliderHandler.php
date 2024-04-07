@@ -15,32 +15,15 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class SliderHandler
 {
-    /**
-     * @var SliderRepository
-     */
-    private $sliderRepository;
+    private \App\Repository\SliderRepository $sliderRepository;
 
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Helper\ValidatorHelper $validator;
 
-    /**
-     * @var ImageService
-     */
-    private $imageService;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private \App\Services\ImageService $imageService;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
 
     /**
      * SliderHandler constructor.
-     *
-     * @param SliderRepository      $sliderRepository
-     * @param ValidatorHelper       $validator
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
      */
     public function __construct(
         SliderRepository $sliderRepository,
@@ -55,9 +38,7 @@ final class SliderHandler
     }
 
     /**
-     * @param Slider $slider
      *
-     * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -78,12 +59,11 @@ final class SliderHandler
     }
 
     /**
-     * @param ParameterBag $bag
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function saveRowsPositions(ParameterBag $bag)
+    public function saveRowsPositions(ParameterBag $bag): void
     {
         $rows = json_decode($bag->get('rows'), true);
 
@@ -97,7 +77,6 @@ final class SliderHandler
     }
 
     /**
-     * @param Slider $slider
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -118,11 +97,7 @@ final class SliderHandler
         $this->sliderRepository->flush();
     }
 
-    /**
-     * @param int $fromPosition
-     *
-     * @return void
-     */
+    
     private function reorderSliders(int $fromPosition): void
     {
         $sliders = $this->sliderRepository->getHigherThenPosition($fromPosition);

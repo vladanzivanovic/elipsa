@@ -35,11 +35,7 @@ class PromotionRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel, string $type): array
     {
         $generalSearch = $tableModel->getGeneralSearch();
@@ -60,7 +56,7 @@ class PromotionRepository extends ExtendedEntityRepository
         ;
 
 
-        if (null !== $typeSearch) {
+        if ($typeSearch instanceof \App\Model\DataTableColumnModel) {
             $query->where('pc.type = :type')
             ->setParameter('type', $typeSearch->getSearchValue());
         }
@@ -74,7 +70,6 @@ class PromotionRepository extends ExtendedEntityRepository
     }
 
     /**
-     * @param string $type
      * @return Promotion[]
      */
     public function getActivePromotionsByType(string $type): array

@@ -17,13 +17,7 @@ final class DescriptionDataTableResponseFormatter
 {
     use DataTableResponseTrait;
 
-    /**
-     * @param DataTableModel $tableModel
-     * @param array          $data
-     * @param int            $total
-     *
-     * @return array
-     */
+    
     public function formatResponse(DataTableModel $tableModel, array $data, int $total): array
     {
         $data = array_map(function ($desc) {

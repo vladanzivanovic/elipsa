@@ -8,54 +8,35 @@ use App\Entity\Banner;
 use App\Entity\Catalogue;
 use App\Formatter\Admin\BannerEditResponseFormatter;
 use App\Formatter\Admin\CatalogResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class CatalogPageController extends AbstractController
 {
-    /**
-     * @var CatalogResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\CatalogResponseFormatter $responseFormatter;
 
     /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
-
-    /**
-     * @param CatalogResponseFormatter $responseFormatter
      * @param ParameterBagInterface    $bag
      */
     public function __construct(
-        CatalogResponseFormatter $responseFormatter,
-        ParameterBagInterface $bag
+        CatalogResponseFormatter $responseFormatter
     ) {
         $this->responseFormatter = $responseFormatter;
-        $this->bag = $bag;
     }
 
-    /**
-     * @Route("/add-catalog", name="admin.add_catalog_page", methods={"GET"})
-     * @Template("Admin/Pages/catalogEdit.html.twig")
-     *
-     * @return array
-     */
+    #[Route(path: '/add-catalog', name: 'admin.add_catalog_page', methods: ['GET'])]
+    #[Template('Admin/Pages/catalogEdit.html.twig')]
     public function set(): array
     {
         return [];
     }
 
-    /**
-     * @Route("/edit-catalog/{id}", name="admin.edit_catalog_page", methods={"GET"})
-     * @Template("Admin/Pages/catalogEdit.html.twig")
-     *
-     * @param Catalogue $catalogue
-     *
-     * @return array
-     */
+    
+    #[Route(path: '/edit-catalog/{id}', name: 'admin.edit_catalog_page', methods: ['GET'])]
+    #[Template('Admin/Pages/catalogEdit.html.twig')]
     public function update(Catalogue $catalogue): array
     {
         return $this->responseFormatter->formatResponse($catalogue);

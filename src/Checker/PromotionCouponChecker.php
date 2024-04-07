@@ -41,13 +41,13 @@ final class PromotionCouponChecker extends AbstractPromotionChecker
 
         $checkerTypes = $promotionCoupon->getOptionTypes();
 
-        if (0 === count($checkerTypes)) {
+        if ([] === $checkerTypes) {
             return true;
         }
 
 
         foreach ($this->promotionOptionCheckers as $promotionOptionChecker) {
-            if (true === in_array($promotionOptionChecker->getType(), $checkerTypes)) {
+            if (in_array($promotionOptionChecker->getType(), $checkerTypes)) {
                 $isOptionApplicable = $promotionOptionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType($promotionOptionChecker->getType()));
 
                 if (true === $isOptionApplicable) {

@@ -50,89 +50,56 @@ class EmailModel
 
     private string $fromName;
 
-    /**
-     * @param string $to
-     */
     public function setTo(string $to): void
     {
         $this->to = $to;
     }
 
-    /**
-     * @return string
-     */
     public function getTo(): string
     {
         return $this->to;
     }
 
-    /**
-     * @param string $toName
-     */
     public function setToName(string $toName): void
     {
         $this->toName = $toName;
     }
 
-    /**
-     * @return string
-     */
     public function getToName(): string
     {
         return $this->toName;
     }
 
-    /**
-     * @param string $template
-     */
     public function setTemplate(string $template): void
     {
         $this->template = $template.'.html.twig';
     }
 
-    /**
-     * @return string
-     */
     public function getTemplate(): string
     {
         return $this->template;
     }
 
-    /**
-     * @param string $replyTo
-     */
     public function setReplyTo(string $replyTo): void
     {
         $this->replyTo = $replyTo;
     }
 
-    /**
-     * @return string
-     */
     public function getReplyTo(): string
     {
         return $this->replyTo;
     }
 
-    /**
-     * @param string $replyToName
-     */
     public function setReplyToName(string $replyToName): void
     {
         $this->replyToName = $replyToName;
     }
 
-    /**
-     * @return string
-     */
     public function getReplyToName(): string
     {
         return $this->replyToName;
     }
 
-    /**
-     * @param string $subject
-     */
     public function setSubject(string $subject): void
     {
         $this->subject = $subject;
@@ -146,25 +113,16 @@ class EmailModel
         return $this->subject;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSubject(): bool
     {
         return is_string($this->subject);
     }
 
-    /**
-     * @param array $templateData
-     */
     public function setTemplateData(array $templateData): void
     {
         $this->templateData = $templateData;
     }
 
-    /**
-     * @return array
-     */
     public function getTemplateData(): array
     {
         return $this->templateData;
@@ -186,105 +144,66 @@ class EmailModel
         return $this->attachments;
     }
 
-    /**
-     * @param string $status
-     */
     public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @param string $code
-     */
     public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @param string $script
-     */
     public function setScript(string $script): void
     {
         $this->script = $script;
     }
 
-    /**
-     * @return string
-     */
     public function getScript(): string
     {
         return $this->script;
     }
 
-    /**
-     * @param string $error
-     */
     public function setErrorMsg(string $error): void
     {
         $this->errorMsg = $error;
     }
 
-    /**
-     * @return string|null
-     */
     public function getErrorMsg(): ?string
     {
         return $this->errorMsg;
     }
 
-    /**
-     * @return array
-     */
     public function _toArray(): array
     {
         return call_user_func('get_object_vars', $this);
     }
 
-    /**
-     * @return string
-     */
     public function getFrom(): string
     {
         return $this->from;
     }
 
-    /**
-     * @param string $from
-     */
     public function setFrom(string $from): void
     {
         $this->from = $from;
     }
 
-    /**
-     * @return string
-     */
     public function getFromName(): string
     {
         return $this->fromName;
     }
 
-    /**
-     * @param string $fromName
-     */
     public function setFromName(string $fromName): void
     {
         $this->fromName = $fromName;

@@ -18,19 +18,12 @@ use Webmozart\Assert\Assert;
 
 final class TagRequestParser
 {
-    private ParameterBagInterface $parameterBag;
-
-    private TagsRepository $tagsRepository;
-
     private TagTranslationRepository $translationRepository;
 
     private array $locales;
 
     /**
      * TagRequestParser constructor.
-     *
-     * @param ParameterBagInterface $parameterBag
-     * @param TagsRepository        $tagsRepository
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -38,8 +31,6 @@ final class TagRequestParser
         TagTranslationRepository $translationRepository,
         string $locales
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->tagsRepository = $tagsRepository;
         $this->locales = explode('|', $locales);
         $this->translationRepository = $translationRepository;
     }
@@ -75,7 +66,7 @@ final class TagRequestParser
     private function setLocales(ParameterBag $bag, Tags $tags): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->get($locale);
+            $transCollection = $bag->all($locale);
             $trans = $this->translationRepository->findOneBy(['tag' => $tags, 'locale' => $locale]);
 
 

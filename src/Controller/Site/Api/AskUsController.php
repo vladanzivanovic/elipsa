@@ -41,16 +41,8 @@ final class AskUsController extends AbstractController
         $this->translator = $translator;
     }
 
-    /**
-     * @Route("/api/ask-us",
-     *     name="site_api.ask_us",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
-     * @param AskUsRequestDto $askUsRequestDto
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/ask-us', name: 'site_api.ask_us', methods: ['POST'], options: ['expose' => true])]
     public function insert(AskUsRequestDto $askUsRequestDto): JsonResponse
     {
         if (false === $this->isCsrfTokenValid('ask_us_form', $askUsRequestDto->csrf)) {

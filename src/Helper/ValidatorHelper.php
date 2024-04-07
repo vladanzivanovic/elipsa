@@ -13,9 +13,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ValidatorHelper extends TraceableValidator
 {
-    /**
-     * @param ValidatorInterface $validator
-     */
     public function __construct(ValidatorInterface $validator)
     {
         parent::__construct($validator);
@@ -24,7 +21,6 @@ class ValidatorHelper extends TraceableValidator
     /**
      * @param ConstraintViolationListInterface|ConstraintViolationList $errors
      *
-     * @return array
      * @throws Exception
      */
     public function parseErrors(ConstraintViolationListInterface $errors): array
@@ -43,7 +39,6 @@ class ValidatorHelper extends TraceableValidator
     /**
      * @param ConstraintViolationListInterface|ConstraintViolationList $errors
      *
-     * @return string
      * @throws Exception
      */
     public function getFirstError(ConstraintViolationListInterface $errors): string

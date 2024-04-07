@@ -1,5 +1,5 @@
 security:
-    enable_authenticator_manager: true
+#    enable_authenticator_manager: true
 
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
@@ -67,7 +67,7 @@ security:
     access_control:
          - { path: ^/moj-nalog, roles: ROLE_USER }
          - { path: /my-account, roles: ROLE_USER }
-         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
          - { path: ^/admin, roles: ROLE_ADMIN }
     role_hierarchy:
         ROLE_ADMIN:       [ROLE_ADVANCED_USER, ROLE_USER]

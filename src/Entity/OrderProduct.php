@@ -319,4 +319,18 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 
         return $this;
     }
+
+    public function isProductAvailable(): bool
+    {
+        foreach ($this->product->getAvailableSizes() as $availableSize) {
+            if (
+                ($availableSize->getSize()->getSlug() === $this->size) &&
+                ($this->quantity <= $availableSize->getQuantity())
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -37,11 +37,7 @@ class LocationRepository extends ExtendedEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getList(string $locale): array
     {
         $query = $this->getDqlForList($locale)
@@ -59,11 +55,7 @@ class LocationRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getCountryList(string $locale): array
     {
         $query = $this->createQueryBuilder('l')
@@ -78,11 +70,7 @@ class LocationRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param DataTableModel $tableModel
-     *
-     * @return array
-     */
+    
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->getDqlForList('rs')
@@ -107,11 +95,7 @@ class LocationRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return QueryBuilder
-     */
+    
     private function getDqlForList(string $locale): QueryBuilder
     {
         return $this->createQueryBuilder('l')

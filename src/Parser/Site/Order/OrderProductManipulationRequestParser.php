@@ -19,35 +19,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class OrderProductManipulationRequestParser
 {
-    /**
-     * @var OrderProductRepository
-     */
-    private $productRepository;
-    /**
-     * @var ProductSizeRepository
-     */
-    private $sizeRepository;
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-    /**
-     * @var ShopOrderRepository
-     */
-    private $orderRepository;
+    private \App\Repository\OrderProductRepository $productRepository;
+    private \App\Repository\ProductColorRepository $colorRepository;
+    private \App\Repository\ImageRepository $imageRepository;
+    private \App\Repository\ShopOrderRepository $orderRepository;
 
     /**
      * OrderProductManipulationRequestParser constructor.
-     *
-     * @param OrderProductRepository $orderProductRepository
-     * @param ProductSizeRepository  $sizeRepository
-     * @param ProductColorRepository $colorRepository
-     * @param ImageRepository        $imageRepository
-     * @param ShopOrderRepository    $orderRepository
      */
     public function __construct(
         OrderProductRepository $orderProductRepository,
@@ -57,17 +35,13 @@ final class OrderProductManipulationRequestParser
         ShopOrderRepository $orderRepository
     ) {
         $this->productRepository = $orderProductRepository;
-        $this->sizeRepository = $sizeRepository;
         $this->colorRepository = $colorRepository;
         $this->imageRepository = $imageRepository;
         $this->orderRepository = $orderRepository;
     }
 
     /**
-     * @param Request $request
-     * @param Product $product
      *
-     * @return ShopOrder
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function parse(Request $request, Product $product): ShopOrder
@@ -75,7 +49,7 @@ final class OrderProductManipulationRequestParser
         $session = $request->getSession();
         $order = null;
 
-        if (true === $session->isStarted() && $session->has('order')) {
+        if ($session->isStarted() && $session->has('order')) {
             $order = $this->orderRepository->getByToken($session->get('order'));
         }
 
@@ -115,27 +89,5 @@ final class OrderProductManipulationRequestParser
         $orderProduct->setDiscount($product->getDiscount());
 
         $order->addOrderProduct($orderProduct);
-    }
-
-    /**
-     * @param Product      $product
-     * @param OrderProduct $orderProduct
-     *
-     * @throws \Exception
-     */
-    private function setProductTranslations(Product $product, OrderProduct $orderProduct): void
-    {
-        $translations = $product->getProductTranslations();
-
-        /** @var ProductTranslation $trans */
-        foreach ($translations->getIterator() as $trans) {
-            $orderTrans = new OrderProductTranslation();
-            $orderTrans->setTitle($trans->getTitle());
-            $orderTrans->setSlug($trans->getSlug());
-            $orderTrans->setLocale($trans->getLocale());
-            $orderTrans->setOrderProduct($orderProduct);
-
-            $orderProduct->addOrderProductTranslation($orderTrans);
-        }
     }
 }

@@ -46,14 +46,12 @@ final class PromotionsListController extends AbstractController
     }
 
     /**
-     * @Route("/api/promotions/list", name="admin.get_promotions_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/promotions/list', name: 'admin.get_promotions_list', methods: ['POST'], options: ['expose' => true])]
     public function getCouponsList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

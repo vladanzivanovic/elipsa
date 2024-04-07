@@ -47,7 +47,7 @@ final class TagView
             'slug' => null,
         ];
 
-        if (null !== $tagTranslation) {
+        if ($tagTranslation instanceof \App\Entity\TagTranslation) {
             $data = [
                 'title' => $tagTranslation->getTitle(),
                 'slug' => $tagTranslation->getSlug(),

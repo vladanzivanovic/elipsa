@@ -22,12 +22,7 @@ class UserWishesRepository extends ExtendedEntityRepository
         parent::__construct($registry, UserWishes::class);
     }
 
-    /**
-     * @param User   $user
-     * @param string $locale
-     *
-     * @return array
-     */
+    
     public function getByUser(User $user, string $locale): array
     {
         $query = $this->createQueryBuilder('uw')

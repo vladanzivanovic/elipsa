@@ -39,16 +39,11 @@ final class UserEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/user/{id}",
-     *     name="site_api.user.update",
-     *     methods={"PUT"},
-     *     options={"expose": true}
-     * )
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException|UserException
      */
+    #[Route(path: '/api/user/{id}', name: 'site_api.user.update', methods: ['PUT'], options: ['expose' => true])]
     public function update(UserRequestDto $userRequestDto, User $user, Request $request): JsonResponse
     {
         $csrf = $userRequestDto->csrf;

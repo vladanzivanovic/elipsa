@@ -43,7 +43,7 @@ final class NotificationRequestParser
             $notificationRequestDto->payload
         );
 
-        if (null !== $notification) {
+        if ($notification instanceof \App\Entity\Notification) {
             throw new NotificationException('notification.already_set_notification');
         }
 

@@ -29,14 +29,12 @@ final class SliderEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/app-slider", name="admin.add_slider_api", methods={"POST"})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/app-slider', name: 'admin.add_slider_api', methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         $slider = $this->requestParser->parse($request->request);
@@ -47,13 +45,11 @@ final class SliderEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/set-sliders-position", name="admin.set_sliders_position", methods={"POST"}, options={"expose": true})
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/set-sliders-position', name: 'admin.set_sliders_position', methods: ['POST'], options: ['expose' => true])]
     public function changeOrder(Request $request): JsonResponse
     {
         $this->sliderHandler->saveRowsPositions($request->request);
@@ -62,16 +58,13 @@ final class SliderEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-slider/{id}", name="admin.edit_slider_api", methods={"PUT"}, options={"expose": true})
-     * @param Request $request
-     * @param Slider  $slider
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/edit-slider/{id}', name: 'admin.edit_slider_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, Slider $slider): JsonResponse
     {
         $slider = $this->requestParser->parse($request->request, $slider);
@@ -82,18 +75,14 @@ final class SliderEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/toggle-slider-status/{id}/{status}", name="admin.api_toggle_slider_status", methods={"PATCH"},
-     *                                                   options={"expose": true})
      *
-     * @param Slider $slider
-     * @param int    $status
      *
-     * @return JsonResponse
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route(path: '/api/toggle-slider-status/{id}/{status}', name: 'admin.api_toggle_slider_status', methods: ['PATCH'], options: ['expose' => true])]
     public function toggleActivation(Slider $slider, int $status): JsonResponse
     {
         $slider->setIsActive((bool) $status);

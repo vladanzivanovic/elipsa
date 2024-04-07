@@ -12,14 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SizeRemoveController extends AbstractController
 {
-    /**
-     * @var SizeHandler
-     */
-    private $handler;
+    private \App\Handler\SizeHandler $handler;
 
-    /**
-     * @param SizeHandler $handler
-     */
     public function __construct(
         SizeHandler $handler
     ) {
@@ -27,14 +21,13 @@ final class SizeRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-size/{slug}", name="admin.remove_size_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param ProductSize $size
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-size/{slug}', name: 'admin.remove_size_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(ProductSize $size)
     {
         $productCount = $size->getProductHasSizes()->count();

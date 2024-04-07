@@ -29,7 +29,7 @@ final class UserView
 
         $address = $user->getAddress();
 
-        if (null !== $address) {
+        if ($address instanceof \App\Entity\Address) {
             $view['address'] = $this->addressView->view($address);
         }
 

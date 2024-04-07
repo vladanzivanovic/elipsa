@@ -23,7 +23,7 @@ class PromotionCouponRequestDto implements ConstructRequestObjectInterface
 
     public function __construct(Request $request = null)
     {
-        if (null === $request) {
+        if (!$request instanceof \Symfony\Component\HttpFoundation\Request) {
             return;
         }
 

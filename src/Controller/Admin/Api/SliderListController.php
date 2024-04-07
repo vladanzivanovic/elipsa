@@ -24,26 +24,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var SliderDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\SliderDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var SliderRepository
-     */
-    private $sliderRepository;
+    private \App\Repository\SliderRepository $sliderRepository;
 
-    /**
-     * @param DataTableRequestParser               $requestParser
-     * @param SliderRepository                     $sliderRepository
-     * @param SliderDataTableResponseFormatter     $responseFormatter
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         SliderRepository $sliderRepository,
@@ -55,14 +41,13 @@ final class SliderListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-slider-list", name="admin.get_slider_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-slider-list', name: 'admin.get_slider_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

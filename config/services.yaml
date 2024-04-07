@@ -97,18 +97,18 @@ services:
             - { name: doctrine.event_listener, event: postUpdate }
             - { name: doctrine.event_listener, event: postRemove }
 
-    App\EventListener\RequestListener:
-        class: App\EventListener\RequestListener
+    App\EventListener\RequestEventListener:
+        class: App\EventListener\RequestEventListener
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
-    App\EventListener\FilterRequestListener:
-        class: App\EventListener\FilterRequestListener
+    App\EventListener\FilterRequestEventListener:
+        class: App\EventListener\FilterRequestEventListener
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
-    App\EventListener\ResponseListener:
-        class: App\EventListener\ResponseListener
+    App\EventListener\ResponseEventListener:
+        class: App\EventListener\ResponseEventListener
         tags:
             - { name: kernel.event_listener, event: kernel.response }
 

@@ -30,10 +30,9 @@ final class OfficeContactEditApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-office-contact", name="admin.add_office_contact_api", methods={"POST"}, options={"expose": true})
-
      * @throws \Exception
      */
+    #[Route(path: '/api/add-office-contact', name: 'admin.add_office_contact_api', methods: ['POST'], options: ['expose' => true])]
     public function insert(Request $request): JsonResponse
     {
         $officeContact = $this->OfficeContactParser->parse($request->request);
@@ -44,9 +43,9 @@ final class OfficeContactEditApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-office-contact/{id}", name="admin.edit_office_contact_api", methods={"PUT"}, options={"expose": true})
      * @throws \Exception
      */
+    #[Route(path: '/api/edit-office-contact/{id}', name: 'admin.edit_office_contact_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, OfficeContact $officeContact): JsonResponse
     {
         $officeContact = $this->OfficeContactParser->parse($request->request, $officeContact);
@@ -57,14 +56,12 @@ final class OfficeContactEditApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-office-contact/{id}", name="admin.remove_office_contact_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param OfficeContact $officeContact
      *
-     * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/remove-office-contact/{id}', name: 'admin.remove_office_contact_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(OfficeContact $officeContact): JsonResponse
     {
         $this->officeContactHandler->remove($officeContact);

@@ -16,26 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CollaboratorListController extends AbstractController
 {
-    /**
-     * @var DataTableRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\DataTableRequestParser $requestParser;
 
-    /**
-     * @var CollaboratorDataTableResponseFormatter
-     */
-    private $responseFormatter;
+    private \App\Formatter\Admin\CollaboratorDataTableResponseFormatter $responseFormatter;
 
-    /**
-     * @var CollaboratorRepository
-     */
-    private $repository;
+    private \App\Repository\CollaboratorRepository $repository;
 
-    /**
-     * @param DataTableRequestParser                 $requestParser
-     * @param CollaboratorDataTableResponseFormatter $responseFormatter
-     * @param CollaboratorRepository                 $repository
-     */
     public function __construct(
         DataTableRequestParser $requestParser,
         CollaboratorDataTableResponseFormatter $responseFormatter,
@@ -47,14 +33,13 @@ final class CollaboratorListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-collaborator-list", name="admin.get_collaborator_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-collaborator-list', name: 'admin.get_collaborator_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

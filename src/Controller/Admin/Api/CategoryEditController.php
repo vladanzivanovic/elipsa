@@ -20,25 +20,11 @@ final class CategoryEditController extends AbstractController
 {
     use ControllerTrait;
 
-    /**
-     * @var CategoryRequestParser
-     */
-    private $requestParser;
+    private \App\Parser\CategoryRequestParser $requestParser;
 
-    /**
-     * @var CategoryHandler
-     */
-    private $categoryHandler;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private \App\Handler\CategoryHandler $categoryHandler;
+    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
 
-    /**
-     * @param CategoryRequestParser $requestParser
-     * @param CategoryHandler       $categoryHandler
-     * @param TranslatorInterface   $translator
-     */
     public function __construct(
         CategoryRequestParser $requestParser,
         CategoryHandler $categoryHandler,
@@ -50,14 +36,13 @@ final class CategoryEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-category", name="admin.add_category_api", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/add-category', name: 'admin.add_category_api', methods: ['POST'], options: ['expose' => true])]
     public function insert(Request $request)
     {
         $category = $this->requestParser->parse($request->request);
@@ -70,15 +55,13 @@ final class CategoryEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/edit-category/{slug}", name="admin.edit_category_api", methods={"PUT"}, options={"expose": true})
      *
-     * @param Request             $request
-     * @param CategoryTranslation $categoryTranslation
      *
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[Route(path: '/api/edit-category/{slug}', name: 'admin.edit_category_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, CategoryTranslation $categoryTranslation)
     {
         $category = $this->requestParser->parse($request->request, $categoryTranslation->getCategory());
@@ -90,13 +73,8 @@ final class CategoryEditController extends AbstractController
         return $this->json(null, JsonResponse::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/api/category-change-home-page/{slug}/{status}", name="admin.api_category_change_home_page", methods={"PATCH"}, options={"expose": true})
-     * @param CategoryTranslation $categoryTranslation
-     * @param int                 $status
-     *
-     * @return JsonResponse
-     */
+    
+    #[Route(path: '/api/category-change-home-page/{slug}/{status}', name: 'admin.api_category_change_home_page', methods: ['PATCH'], options: ['expose' => true])]
     public function toggleHomePage(CategoryTranslation $categoryTranslation, int $status): JsonResponse
     {
         $this->categoryHandler->toggleHomePage($categoryTranslation->getCategory(), (bool) $status);

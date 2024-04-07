@@ -34,7 +34,7 @@ class PaginationService
 
         $dataArray['pagination']['disableFirst'] = ($this->currentPage == 1);
         $dataArray['pagination']['disableLast'] = ($this->currentPage >= $this->totalPage);
-        $dataArray['pagination']['currentPage'] = (int) $this->currentPage;
+        $dataArray['pagination']['currentPage'] = $this->currentPage;
 
         return $dataArray;
     }
@@ -46,7 +46,7 @@ class PaginationService
         return $this;
     }
 
-    public function setNumberOfData($no)
+    public function setNumberOfData($no): void
     {
         $this->limit = $no;
     }
@@ -70,11 +70,13 @@ class PaginationService
         $prevPage = $this->currentPage;
         --$prevPage;
 
-        if($this->currentPage <= 1 )
+        if ($this->currentPage <= 1) {
             $prevPage = 0;
+        }
 
-        if($this->currentPage > $this->totalPage)
+        if ($this->currentPage > $this->totalPage) {
             $prevPage = $this->totalPage;
+        }
 
         return $prevPage;
     }
@@ -83,8 +85,9 @@ class PaginationService
     {
         $nextPage = $this->currentPage;
         ++$nextPage;
-        if($this->currentPage >= $this->totalPage )
+        if ($this->currentPage >= $this->totalPage) {
             $nextPage = $this->totalPage;
+        }
 
         return $nextPage;
     }

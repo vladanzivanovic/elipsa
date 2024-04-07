@@ -24,14 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class LocationRemoveController extends AbstractController
 {
-    /**
-     * @var LocationHandler
-     */
-    private $locationHandler;
+    private \App\Handler\LocationHandler $locationHandler;
 
-    /**
-     * @param LocationHandler $locationHandler
-     */
     public function __construct(
         LocationHandler $locationHandler
     ) {
@@ -39,14 +33,12 @@ final class LocationRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-location/{id}", name="admin.remove_location_api", methods={"DELETE"}, options={"expose": true})
      *
-     * @param Location $location
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/remove-location/{id}', name: 'admin.remove_location_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Location $location): JsonResponse
     {
         $this->locationHandler->remove($location);

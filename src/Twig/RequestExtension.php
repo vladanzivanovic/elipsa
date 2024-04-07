@@ -12,14 +12,8 @@ use Twig\TwigFunction;
 
 class RequestExtension extends AbstractExtension
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
+    private \Symfony\Component\HttpFoundation\RequestStack $request;
 
-    /**
-     * @param RequestStack $request
-     */
     public function __construct(
         RequestStack $request
     ) {
@@ -36,13 +30,10 @@ class RequestExtension extends AbstractExtension
         ];
     }
 
-    /**
-     *
-     * @return string
-     */
+    
     public function getRouteName(): string
     {
-        return $this->request->getMasterRequest()->attributes->get('_route');
+        return $this->request->getMainRequest()->attributes->get('_route');
     }
 
     /**

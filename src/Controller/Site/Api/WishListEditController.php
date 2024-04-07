@@ -33,22 +33,16 @@ final class WishListEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/toggle-wish/{productId}",
-     *     name="site_api.toggle_wish",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route(path: '/api/toggle-wish/{productId}', name: 'site_api.toggle_wish', methods: ['POST'], options: ['expose' => true])]
     public function toggleItem(Request $request, int $productId): JsonResponse
     {
         try {
-            if (null === $this->getUser()) {
+            if (!$this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
                 $userException = new UserException('login_required');
 
                 $userException->setDomain('messages');
@@ -62,7 +56,7 @@ final class WishListEditController extends AbstractController
 
             $this->wishListHandler->toggle($wish);
 
-            if (true === $isAdded) {
+            if ($isAdded) {
                 return $this->json(null, Response::HTTP_CREATED);
             }
 

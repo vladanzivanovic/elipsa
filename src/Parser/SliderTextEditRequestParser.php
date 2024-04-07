@@ -31,10 +31,8 @@ final class SliderTextEditRequestParser
     }
 
     /**
-     * @param ParameterBag    $bag
      * @param SliderText|null $sliderText
      *
-     * @return SliderText
      */
     public function parse(ParameterBag $bag, SliderText $sliderText = null): SliderText
     {
@@ -50,10 +48,10 @@ final class SliderTextEditRequestParser
         return $sliderText;
     }
 
-    private function setLocale(ParameterBag $bag, Slidertext $sliderText)
+    private function setLocale(ParameterBag $bag, Slidertext $sliderText): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->get($locale);
+            $transCollection = $bag->all($locale);
 
             $trans = new SliderTextTranslation();
 

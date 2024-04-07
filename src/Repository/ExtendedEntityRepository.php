@@ -47,7 +47,7 @@ class ExtendedEntityRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save($object)
+    public function save($object): void
     {
         $this->persist($object);
         $this->flush();
@@ -58,7 +58,7 @@ class ExtendedEntityRepository extends ServiceEntityRepository
      *
      * @throws ORMException
      */
-    public function delete($object)
+    public function delete($object): void
     {
         $this->_em->remove($object);
     }
@@ -69,7 +69,7 @@ class ExtendedEntityRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function removeWithFlush($object)
+    public function removeWithFlush($object): void
     {
         $this->delete($object);
         $this->flush();

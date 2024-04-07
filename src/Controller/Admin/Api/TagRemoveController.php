@@ -30,11 +30,9 @@ final class TagRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-product-tag/{slug}", name="admin.remove_product_tag_api", methods={"DELETE"}, options={"expose": true})
-     *
-     * @return JsonResponse
      * @throws ORMException
      */
+    #[Route(path: '/api/remove-product-tag/{slug}', name: 'admin.remove_product_tag_api', methods: ['DELETE'], options: ['expose' => true])]
     public function removeProductTag(string $slug): JsonResponse
     {
         $tag = $this->requestParser->getTagBySlug($slug);
@@ -47,12 +45,11 @@ final class TagRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-blog-tag/{slug}", name="admin.remove_blog_tag_api", methods={"DELETE"}, options={"expose": true})
      *
      * @param Tags $tags
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/remove-blog-tag/{slug}', name: 'admin.remove_blog_tag_api', methods: ['DELETE'], options: ['expose' => true])]
     public function removeBlogTag(string $slug)
     {
         $tag = $this->requestParser->getTagBySlug($slug);

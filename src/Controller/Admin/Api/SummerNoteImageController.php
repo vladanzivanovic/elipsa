@@ -15,40 +15,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SummerNoteImageController extends AbstractController
 {
-    /**
-     * @var ImageResizer
-     */
-    private $imageResizer;
-    /**
-     * @var string
-     */
-    private $uploadImageDir;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var ImageService
-     */
-    private $imageService;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    private bool|string|int|float|\UnitEnum|array|null $uploadImageDir;
+    private \Symfony\Component\Routing\RouterInterface $router;
+    private \App\Services\ImageService $imageService;
+    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
 
-    /**
-     * @param ImageResizer          $imageResizer
-     * @param RouterInterface       $router
-     * @param ImageService          $imageService
-     * @param ParameterBagInterface $bag
-     */
     public function __construct(
         ImageResizer $imageResizer,
         RouterInterface $router,
         ImageService $imageService,
         ParameterBagInterface $bag
     ) {
-        $this->imageResizer = $imageResizer;
         $this->router = $router;
         $this->imageService = $imageService;
         $this->bag = $bag;
@@ -56,11 +33,9 @@ class SummerNoteImageController extends AbstractController
     }
 
     /**
-     * @Route("/api/summernote-image/resize", name="admin.summernote_image_resize", methods={"POST"}, options={"expose": true})
-     * @param Request $request
-     *
      * @return JsonResponse
      */
+    #[Route(path: '/api/summernote-image/resize', name: 'admin.summernote_image_resize', methods: ['POST'], options: ['expose' => true])]
     public function uploadImage(Request $request)
     {
         try {
@@ -82,12 +57,10 @@ class SummerNoteImageController extends AbstractController
     }
 
     /**
-     * @Route("/api/remove-summernote-image/{filename}", methods={"DELETE"}, name="admin.remove_summernote_image", options={"expose": true})
-     *
-     * @param string $filename
      *
      * @return JsonResponse
      */
+    #[Route(path: '/api/remove-summernote-image/{filename}', methods: ['DELETE'], name: 'admin.remove_summernote_image', options: ['expose' => true])]
     public function removeImage(string $filename)
     {
         $file = $this->imageService->setFileObject([

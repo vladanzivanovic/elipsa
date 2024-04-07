@@ -14,20 +14,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class ProductColorHandler
 {
-    /**
-     * @var ProductColorRepository
-     */
-    private $colorRepository;
-    /**
-     * @var ValidatorHelper
-     */
-    private $validator;
+    private \App\Repository\ProductColorRepository $colorRepository;
+    private \App\Helper\ValidatorHelper $validator;
 
     /**
      * ProductColorHandler constructor.
-     *
-     * @param ProductColorRepository $colorRepository
-     * @param ValidatorHelper        $validator
      */
     public function __construct(
         ProductColorRepository $colorRepository,
@@ -38,7 +29,6 @@ final class ProductColorHandler
     }
 
     /**
-     * @param ProductColor $productColor
      *
      * @throws ORMException
      * @throws OptimisticLockException
@@ -59,9 +49,7 @@ final class ProductColorHandler
     }
 
     /**
-     * @param ProductColor $productColor
      *
-     * @return void
      * @throws ORMException
      * @throws OptimisticLockException
      */

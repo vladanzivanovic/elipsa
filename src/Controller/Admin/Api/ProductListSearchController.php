@@ -25,12 +25,7 @@ final class ProductListSearchController extends AbstractController
         $this->productSearchResponseFormatter = $productSearchResponseFormatter;
     }
 
-    /**
-     * @Route("/api/products/search", name="admin.product_search_name_api", methods={"GET"})
-     *
-     * @param Request $request
-     * @return Response
-     */
+    #[Route(path: '/api/products/search', name: 'admin.product_search_name_api', methods: ['GET'])]
     public function getProductList(Request $request): Response
     {
         $products = $this->productRepository->getProductsByQueryString($request->query->get('query'));

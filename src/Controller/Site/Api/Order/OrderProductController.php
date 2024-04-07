@@ -43,12 +43,7 @@ final class OrderProductController extends AbstractController
         $this->exceptionView = $exceptionView;
     }
 
-    /**
-     * @Route("/api/order/product/{token}/{slug}", name="site_api.set_product_order", methods={"POST"}, options={"expose": true})
-     *
-     * @param OrderProductRequestDto $orderProductRequestDto
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/product/{token}/{slug}', name: 'site_api.set_product_order', methods: ['POST'], options: ['expose' => true])]
     public function manage(OrderProductRequestDto $orderProductRequestDto): JsonResponse
     {
         try {
@@ -68,11 +63,7 @@ final class OrderProductController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/api/order/product/{token}/{orderProductId}", name="site_api.remove_order_product", methods={"DELETE"}, options={"expose": true})
-     *
-     * @return JsonResponse
-     */
+    #[Route(path: '/api/order/product/{token}/{orderProductId}', name: 'site_api.remove_order_product', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(Request $request, string $token, int $orderProductId): JsonResponse
     {
         try {

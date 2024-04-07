@@ -33,14 +33,12 @@ final class ProductListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-product-list", name="admin.get_product_list", methods={"POST"}, options={"expose": true})
      *
-     * @param Request $request
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route(path: '/api/get-product-list', name: 'admin.get_product_list', options: ['expose' => true], methods: ['POST'])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
