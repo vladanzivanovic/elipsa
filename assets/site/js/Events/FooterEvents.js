@@ -28,7 +28,7 @@ class FooterEvents {
         })
 
         $(document).euCookieLawPopup().init({
-            cookiePolicyUrl : Routing.generate(`site.cookie_policy.${LOCALE}`),
+            cookiePolicyUrl : Routing.generate(`site.company_text.${LOCALE}`, {'type': SITE_INFO_TEXT.use_conditions.slug[LOCALE]}),
             popupTitle : Translator.trans('eu.cookies.accept.title', null, 'messages', LOCALE),
             popupText : Translator.trans('eu.cookies.accept.text', null, 'messages', LOCALE),
             buttonContinueTitle : Translator.trans('eu.cookies.accept.btn', null, 'messages', LOCALE),

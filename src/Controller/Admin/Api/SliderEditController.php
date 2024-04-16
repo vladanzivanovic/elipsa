@@ -16,17 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderEditController extends AbstractController
 {
-    private SliderEditRequestParser $requestParser;
-
-    private SliderHandler $sliderHandler;
-
     public function __construct(
-        SliderEditRequestParser $requestParser,
-        SliderHandler $sliderHandler
-    ) {
-        $this->requestParser = $requestParser;
-        $this->sliderHandler = $sliderHandler;
-    }
+        private readonly SliderEditRequestParser $requestParser,
+        private readonly SliderHandler $sliderHandler
+    ) {}
 
     /**
      *

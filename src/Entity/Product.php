@@ -417,7 +417,7 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return null;
     }
 
-    public function getByLocale(string $locale): ?ProductTranslation
+    public function getByLocale(string $locale): null|ProductTranslation
     {
         $filteredTrans = $this->productTranslations->filter(function ($trans) use ($locale) {
             /** @var ProductTranslation $trans */

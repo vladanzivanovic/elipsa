@@ -145,12 +145,7 @@ class Banner
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return BannerTranslation
-     */
-    public function getByLocale(string $locale): BannerTranslation
+    public function getByLocale(string $locale): BannerTranslation|null
     {
         $trans = $this->bannerTranslations;
 
@@ -159,7 +154,7 @@ class Banner
             return $bannerTrans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 
     public function getType(): ?int

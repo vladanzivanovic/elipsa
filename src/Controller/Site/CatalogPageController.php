@@ -36,7 +36,7 @@ final class CatalogPageController extends AbstractController
     }
 
     
-    #[Route(path: ['rs' => '/katalog', 'en' => '/catalogue'], name: 'site.catalog_page', methods: ['GET'])]
+    #[Route(path: ['rs' => '/katalog', 'en' => '/catalogue', 'ba' => '/katalog'], name: 'site.catalog_page', methods: ['GET'])]
     #[Template('Site/Pages/catalog.html.twig')]
     public function getCatalogues(Request $request): array
     {

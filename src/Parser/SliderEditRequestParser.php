@@ -8,7 +8,10 @@ use App\Entity\Image;
 use App\Entity\Slider;
 use App\Entity\SliderTranslation;
 use App\Repository\SliderRepository;
+use App\Repository\SliderTranslationRepository;
 use App\Services\SliderImageService;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -16,29 +19,21 @@ final class SliderEditRequestParser
 {
     use ParserTrait;
 
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-    private \App\Services\SliderImageService $imageService;
-    private \App\Repository\SliderRepository $sliderRepository;
+    private array $locales;
 
-    /**
-     * SliderEditRequestParser constructor.
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        SliderImageService $imageService,
-        SliderRepository $sliderRepository
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly SliderImageService $imageService,
+        private readonly SliderRepository $sliderRepository,
+        private readonly SliderTranslationRepository $translationRepository,
+        string $locales,
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->imageService = $imageService;
-        $this->sliderRepository = $sliderRepository;
+        $this->locales = explode('|', $locales);
     }
 
     /**
-     * @param Slider|null  $slider
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws NonUniqueResultException
+     * @throws NoResultException
      */
     public function parse(ParameterBag $bag, Slider $slider = null): Slider
     {
@@ -61,17 +56,17 @@ final class SliderEditRequestParser
 
     private function setLocale(ParameterBag $bag, Slider $slider): void
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
+        foreach ($this->locales as $locale) {
+            $transCollection = $bag->all($locale);
+            $trans = $this->translationRepository->findOneBy(['slider' => $slider, 'locale' => $locale]);
 
-        foreach ($locales as $locale => $lagBag) {
-            $trans = new SliderTranslation();
 
-            if (null !== $slider->getId()) {
-                $trans = $slider->getByLocale($locale);
+            if (null === $trans) {
+                $trans = new SliderTranslation();
             }
 
-            $trans->setDescription($lagBag->get('description'));
-            $trans->setButtonLink($lagBag->get('link'));
+            $trans->setDescription($transCollection['description']);
+            $trans->setButtonLink($transCollection['link']);
             $trans->setLocale($locale);
 
             $slider->addSliderTranslation($trans);

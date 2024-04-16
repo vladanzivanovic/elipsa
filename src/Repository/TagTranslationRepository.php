@@ -24,12 +24,10 @@ class TagTranslationRepository extends ExtendedEntityRepository
     }
 
     /**
-     *
-     * @return int|mixed|string
-     * @throws NoResultException
      * @throws NonUniqueResultException
+     * @throws NoResultException
      */
-    public function getForLocalization(string $slug, string $locale)
+    public function getForLocalization(string $slug, string $locale): bool|float|int|string|null
     {
         $query = $this->createQueryBuilder('tt')
             ->select(

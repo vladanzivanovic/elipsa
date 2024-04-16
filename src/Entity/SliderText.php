@@ -9,20 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SliderTextRepository")
  */
-class SliderText
+class SliderText implements EntityInterface
 {
+    use ResourceTrait;
+
     public const STATUS_PENDING = false;
     public const STATUS_ACTIVE = true;
 
     public const POSITION_HEADER = 'header';
     public const POSITION_FOOTER = 'footer';
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
 
     /**
      * @ORM\Column(type="boolean")
@@ -44,11 +39,6 @@ class SliderText
         $this->sliderTextTranslations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getIsActive(): ?bool
     {
         return $this->isActive;
@@ -62,7 +52,7 @@ class SliderText
     }
 
     /**
-     * @return Collection|SliderTranslation[]
+     * @return Collection<int, SliderTranslation>
      */
     public function getSliderTextTranslations(): Collection
     {
@@ -92,7 +82,7 @@ class SliderText
         return $this;
     }
 
-    public function getByLocale(string $locale): SliderTextTranslation
+    public function getByLocale(string $locale): SliderTextTranslation|null
     {
         $transCollection = $this->sliderTextTranslations;
 
@@ -101,7 +91,7 @@ class SliderText
             return $trans->getLocale() === $locale;
         });
 
-        return $filtered->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function getPosition(): ?string

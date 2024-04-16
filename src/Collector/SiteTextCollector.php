@@ -20,6 +20,7 @@ final class SiteTextCollector
         $this->descriptionRepository = $descriptionRepository;
         $this->siteInfoText = $siteInfoText;
     }
+
     public function collect(string $type, string $locale): Description
     {
         $siteTextConfig = array_filter($this->siteInfoText, fn($text)  => $text['slug'][$locale] === $type );

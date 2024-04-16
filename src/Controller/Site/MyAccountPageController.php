@@ -25,7 +25,7 @@ final class MyAccountPageController extends AbstractController
     }
 
     
-    #[Route(path: ['rs' => '/moj-nalog', 'en' => '/my-account'], name: 'site.account_page', methods: ['GET'])]
+    #[Route(path: ['rs' => '/moj-nalog', 'en' => '/my-account', 'ba' => '/moj-racun'], name: 'site.account_page', methods: ['GET'])]
     #[Template('Site/Pages/myAccountPage.html.twig')]
     public function renderPage(Request $request): array
     {

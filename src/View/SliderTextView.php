@@ -12,6 +12,7 @@ final class SliderTextView
     private array $locales;
 
     public function __construct(
+        private readonly string $defaultLocale,
         string $locales
     ) {
         $this->locales = explode('|', $locales);
@@ -32,7 +33,13 @@ final class SliderTextView
 
     public function siteView(SliderText $sliderText, string $locale): array
     {
-        return $this->getDescAndLink($sliderText->getByLocale($locale));
+        $trans = $sliderText->getByLocale($locale);
+
+        if (null === $trans) {
+            $trans = $sliderText->getByLocale($this->defaultLocale);
+        }
+
+        return $this->getDescAndLink($trans);
     }
 
     private function getDescAndLink(SliderTextTranslation $sliderTextTranslation): array

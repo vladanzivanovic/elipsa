@@ -6,6 +6,7 @@ services:
     container_name: elipsa-lamp
     ports:
       - "9600:80"
+      - "9605:80"
     volumes:
       - "./:/var/www/html:rw,cached"
     depends_on:

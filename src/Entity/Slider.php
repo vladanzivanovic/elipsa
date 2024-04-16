@@ -95,12 +95,7 @@ class Slider
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return SliderTranslation
-     */
-    public function getByLocale(string $locale): SliderTranslation
+    public function getByLocale(string $locale): SliderTranslation|null
     {
         $transCollection = $this->sliderTranslations;
 
@@ -109,7 +104,7 @@ class Slider
             return $trans->getLocale() === $locale;
         });
 
-        return $filtered->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function getImage(): ?Image

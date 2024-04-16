@@ -12,33 +12,40 @@ final class ColorView
     private array $locales;
 
     public function __construct(
-        string $locales
+        private readonly string $defaultLocale,
+        string $locales,
     ) {
         $this->locales = explode('|', $locales);
     }
+
     public function productPageView(ProductColor $color): array
     {
-        $translations = [];
-
         $view = [
             'id' => $color->getId(),
             'hex' => $color->getHex(),
+            'translations' => $this->getTranslationValues($color),
         ];
-
-        foreach ($this->locales as $locale) {
-            $translations[$locale] = $this->getTranslationValues($color->getByLocale($locale));
-        }
-
-        $view['translations'] = $translations;
 
         return $view;
     }
 
-    private function getTranslationValues(ColorTranslation $colorTranslation): array
+    private function getTranslationValues(ProductColor $color): array
     {
-        return [
-            'title' => $colorTranslation->getTitle(),
-            'slug' => $colorTranslation->getSlug(),
-        ];
+        $translations = [];
+
+        foreach ($this->locales as $locale) {
+            $trans = $color->getByLocale($locale);
+
+            if(null === $trans) {
+                $trans = $color->getByLocale($this->defaultLocale);
+            }
+
+            $translations[$locale] = [
+                'title' => $trans->getTitle(),
+                'slug' => $trans->getSlug(),
+            ];
+        }
+
+        return $translations;
     }
 }

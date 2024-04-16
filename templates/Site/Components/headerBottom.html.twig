@@ -34,8 +34,8 @@
                                                 </div>
                                                 <div class="mega-menu-img">
                                                     {% if menuBanners[0] is defined %}
-                                                        <a href="{{ menuBanners[0]['buttonLink'] }}">
-                                                            <img src="{{ menuBanners[0]['imageLink'] }}" alt="{{ default_alt_tag }}">
+                                                        <a href="{{ menuBanners[0].translations[locale].button_link }}">
+                                                            <img src="{{ menuBanners[0].media.images.desktop.file }}" alt="{{ default_alt_tag }}">
                                                         </a>
                                                     {% endif %}
                                                 </div>
@@ -50,8 +50,8 @@
                                                 </div>
                                                 <div class="mega-menu-img">
                                                     {% if menuBanners[1] is defined %}
-                                                        <a href="{{ menuBanners[1]['buttonLink'] }}">
-                                                            <img src="{{ menuBanners[1]['imageLink'] }}" alt="{{ default_alt_tag }}">
+                                                        <a href="{{ menuBanners[1].translations[locale].button_link }}">
+                                                            <img src="{{ menuBanners[1].media.images.desktop.file }}" alt="{{ default_alt_tag }}">
                                                         </a>
                                                     {% endif %}
                                                 </div>
@@ -68,8 +68,8 @@
                                         {% endfor %}
                                     </ul>
                                     {% if seasonBanner is not null %}
-                                        <a href="{{ seasonBanner['buttonLink'] }}">
-                                            <img src="{{ seasonBanner['imageLink'] }}" alt="{{ default_alt_tag }}">
+                                        <a href="{{ seasonBanner.translations[locale].button_link }}">
+                                            <img src="{{ seasonBanner.media.images.desktop.file }}" alt="{{ default_alt_tag }}">
                                         </a>
                                     {% endif %}
                                 </div>

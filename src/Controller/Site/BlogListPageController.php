@@ -18,7 +18,11 @@ class BlogListPageController extends AbstractController
         private readonly BlogPageResponseFormatter $pageFormatter,
     ) {}
 
-    #[Route(path: ['rs' => '/blog/{page}/{tag}', 'en' => '/blog/{page}/{tag}'], name: 'site.blog_list_page', requirements: ['page' => '\d+'], options: ['expose' => true], defaults: ['page' => 1, 'tag' => null], methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/blog/{page}/{tag}',
+        'en' => '/blog/{page}/{tag}',
+        'ba' => '/blog/{page}/{tag}',
+    ], name: 'site.blog_list_page', requirements: ['page' => '\d+'], options: ['expose' => true], defaults: ['page' => 1, 'tag' => null], methods: ['GET'])]
     #[Template('Site/Pages/blog.html.twig')]
     public function index(Request $request, int $page, ?string $tag): array
     {

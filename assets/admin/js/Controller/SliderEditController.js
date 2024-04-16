@@ -10,15 +10,12 @@ class SliderEditController {
         this.validator = sliderEditValidator;
         this.summernote = new SummerNote();
 
-        this.summernote.initialize(
-            this.mapper.descriptionRs,
-            this.summernote.createCallBacksSummernote(this.mapper.descriptionRs, 'slider')
-        );
-
-        this.summernote.initialize(
-            this.mapper.descriptionEn,
-            this.summernote.createCallBacksSummernote(this.mapper.descriptionEn, 'slider')
-        );
+        for(const [locale, data] of Object.entries(LANGUAGES)) {
+            this.summernote.initialize(
+                $(this.mapper[`description_${locale}`]),
+                this.summernote.createCallBacksSummernote($(this.mapper[`description_${locale}`]), 'slider')
+            );
+        }
 
         $('.dropdown-toggle').dropdown();
 
@@ -34,13 +31,13 @@ class SliderEditController {
             }
         }
 
-        this.validator.validate(this.mapper.form);
+        this.validator.validate($(this.mapper.form));
 
         this.registerEvents();
     }
 
     registerEvents() {
-        this.mapper.submitBtn.on('click touchend', e => {
+        $(this.mapper.submitBtn).on('click touchend', e => {
             const handler = new SliderHandler();
 
             handler.save(this.mapper);

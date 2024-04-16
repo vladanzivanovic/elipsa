@@ -5,6 +5,7 @@
 {% set transUrls = languages %}
 {% set langOptions = [] %}
 
+{{ dump(app.request.locale) }}
 {% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') %}
 
 {% if routeName is null %}
@@ -124,6 +125,7 @@
             const SENTRY_DSN = '{{ 'SENTRY_JAVASCRIPT_DSN' | getenv }}';
             const NOTIFICATION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Notification') | json_encode() | raw }}');
             const NO_SIZE = '{{ constant('App\\Entity\\ProductSize::NO_SIZE') }}';
+            const SITE_INFO_TEXT = JSON.parse('{{ siteInfoText | json_encode() | raw }}');
 
             window.USER = null;
 

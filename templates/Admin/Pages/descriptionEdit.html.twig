@@ -5,12 +5,14 @@
 {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_description_page' %}
 {% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
 {% set title = titlePrefix ~ ' teksta' %}
+{% set routePath = 'admin.descriptions' %}
+{% set routeTitle = 'Tekstovi' %}
 
 {% block content %}
     {% include 'Admin/Components/breadcrumbs.html.twig' with {
         activePage: title,
         pages: [
-            {routeName: 'admin.descriptions', name: 'Tekstovi'}
+            {routeName: routePath, name: routeTitle}
         ]
     } %}
 
@@ -78,7 +80,14 @@
 {#            </div>#}
 {#        </div>#}
     </form>
-    {{ form.button('description_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.button('description_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+        </div>
+        <div class="col-md-6 text-right">
+            <a href="{{ path(routePath) }}" class="btn btn-outline-warning cancel">Otkaži</a>
+        </div>
+    </div>
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">

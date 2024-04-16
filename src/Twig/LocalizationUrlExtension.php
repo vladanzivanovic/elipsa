@@ -72,9 +72,9 @@ class LocalizationUrlExtension extends AbstractExtension
 
     public function generateUrlLocale(string $routeName, array $routeParams, string $fromLocale, string $toLocale): string
     {
-        if (($routeName === 'site.shop_page' || $routeName === 'site.trendy_page') && isset($routeParams['searchData'])) {
-            $routeParams['searchData'] = $this->shopPageRouterFormatter->localeFormatter($routeParams['searchData'], $toLocale);
-        }
+//        if (($routeName === 'site.shop_page' || $routeName === 'site.trendy_page') && isset($routeParams['searchData'])) {
+//            $routeParams['searchData'] = $this->shopPageRouterFormatter->localeFormatter($routeParams['searchData'], $toLocale);
+//        }
 
         if ($routeName === 'site.blog_list_page' && isset($routeParams['tag'])) {
             $tag = $this->tagUrlLocalizationFormatter->localeFormatter($routeParams['tag'], $toLocale);

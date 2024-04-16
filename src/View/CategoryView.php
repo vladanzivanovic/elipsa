@@ -9,20 +9,28 @@ use App\Entity\CategoryTranslation;
 
 final class CategoryView
 {
+    public function __construct(
+        private readonly string $defaultLocale
+    ){}
+
     public function productPageView(Category $category, string $locale): array
     {
-        $view = [
+        $view = [];
 
-        ];
-
-        return $view + $this->getTranslation($category->getByLocale($locale));
+        return $view + $this->getTranslation($category, $locale);
     }
 
-    private function getTranslation(CategoryTranslation $categoryTranslation): array
+    private function getTranslation(Category $category, string $locale): array
     {
+        $trans = $category->getByLocale($locale);
+
+        if (null === $trans) {
+            $trans = $category->getByLocale($this->defaultLocale);
+        }
+
         return [
-            'title' => $categoryTranslation->getTitle(),
-            'slug' => $categoryTranslation->getSlug(),
+            'title' => $trans->getTitle(),
+            'slug' => $trans->getSlug(),
         ];
     }
 }

@@ -7,14 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SliderTextTranslationRepository")
  */
-class SliderTextTranslation
+class SliderTextTranslation implements EntityInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    use ResourceTrait;
 
     /**
      * @ORM\Column(type="string")
@@ -42,10 +37,6 @@ class SliderTextTranslation
      */
     private SliderText $sliderText;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getTitle(): string
     {

@@ -1,10 +1,14 @@
 controllers_site:
     resource: ../../src/Controller/Site/
     type: annotation
+    host:
+        rs: 'localhost'
+        ba: 'ba-elipsa'
+        en: ''
     prefix:
         rs: ''
+        ba: ''
         en: '/en'
-        ba: '/ba'
 
 controllers_unique:
     resource: ../../src/Controller/Unique/

@@ -13,24 +13,16 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ProductView
 {
-    private PriceView $priceView;
-
-    private ProductSizeView $productSizeView;
-
-    private RouterInterface $router;
-
     private array $locales;
 
     public function __construct(
-        PriceView $priceView,
-        ProductSizeView $productSizeView,
-        RouterInterface $router,
-        string $locales
+        private readonly PriceView $priceView,
+        private readonly ProductSizeView $productSizeView,
+        private readonly RouterInterface $router,
+        private readonly string $defaultLocale,
+        string $locales,
     ) {
         $this->locales = explode('|', $locales);
-        $this->priceView = $priceView;
-        $this->router = $router;
-        $this->productSizeView = $productSizeView;
     }
 
     public function editView(Product $product): array
@@ -83,6 +75,10 @@ final class ProductView
 
         foreach ($this->locales as $locale) {
             $productTranslation = $product->getByLocale($locale);
+
+            if(null === $productTranslation) {
+                $productTranslation = $product->getByLocale($this->defaultLocale);
+            }
 
             $translations[$locale] = [
                 'title' => $productTranslation->getTitle(),

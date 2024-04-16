@@ -10,14 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=OfficeContactRepository::class)
  */
-class OfficeContact
+class OfficeContact implements EntityInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    use ResourceTrait;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -26,6 +21,8 @@ class OfficeContact
 
     /**
      * @ORM\OneToMany(targetEntity=OfficeContactTranslation::class, mappedBy="officeContact", orphanRemoval=true, cascade={"persist", "remove"})
+     *
+     * @var Collection<int, OfficeContactTranslation>
      */
     private Collection $officeContactTranslations;
 
@@ -89,7 +86,7 @@ class OfficeContact
         return $this;
     }
 
-    public function getByLocale(string $locale): OfficeContactTranslation
+    public function getByLocale(string $locale): OfficeContactTranslation|null
     {
         $transCollection = $this->officeContactTranslations;
 
@@ -98,7 +95,7 @@ class OfficeContact
             return $trans->getLocale() === $locale;
         });
 
-        return $filtered->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function isShownInFooter(): bool

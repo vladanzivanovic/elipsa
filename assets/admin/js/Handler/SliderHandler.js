@@ -12,9 +12,9 @@ class SliderHandler {
     save(mapper) {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_slider_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = $(mapper.form).serializeArray();
 
-        if (! mapper.form.valid()) {
+        if (! $(mapper.form).valid()) {
             return false;
         }
 

@@ -24,7 +24,11 @@ final class AboutUsPageController extends AbstractController
      *
      * @return string[]
      */
-    #[Route(path: ['rs' => '/o-nama', 'en' => '/about-us'], name: 'site.about_us_page', methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/o-nama',
+        'en' => '/about-us',
+        'ba' => '/o-nama',
+    ], name: 'site.about_us_page', methods: ['GET'])]
     #[Template('Site/Pages/aboutUsPage.html.twig')]
     public function renderPage(Request $request)
     {

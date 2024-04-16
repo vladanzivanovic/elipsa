@@ -13,42 +13,22 @@ use App\Repository\TagsRepository;
 use App\View\BannerView;
 use App\View\SliderTextView;
 use App\View\TagView;
+use Doctrine\DBAL\Exception;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class NavigationMenuExtension extends AbstractExtension
 {
-    private CategoryRepository $categoryRepository;
-
-    private TagsRepository $tagsRepository;
-
-    private SliderTextRepository $sliderTextRepository;
-
-    private BannerRepository $bannerRepository;
-
-    private BannerView $bannerView;
-
-    private SliderTextView $sliderTextView;
-
-    private TagView $tagView;
-
     public function __construct(
-        CategoryRepository $categoryRepository,
-        TagsRepository $tagsRepository,
-        SliderTextRepository $sliderTextRepository,
-        BannerRepository $bannerRepository,
-        BannerView $bannerView,
-        SliderTextView $sliderTextView,
-        TagView $tagView
-    ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->tagsRepository = $tagsRepository;
-        $this->sliderTextRepository = $sliderTextRepository;
-        $this->bannerRepository = $bannerRepository;
-        $this->bannerView = $bannerView;
-        $this->sliderTextView = $sliderTextView;
-        $this->tagView = $tagView;
-    }
+        private readonly CategoryRepository $categoryRepository,
+        private readonly TagsRepository $tagsRepository,
+        private readonly SliderTextRepository $sliderTextRepository,
+        private readonly BannerRepository $bannerRepository,
+        private readonly BannerView $bannerView,
+        private readonly SliderTextView $sliderTextView,
+        private readonly TagView $tagView,
+        private readonly string $defaultLocale
+    ) {}
 
     /**
      * @return array<int, TwigFunction>
@@ -64,9 +44,16 @@ final class NavigationMenuExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function getNavigationMenu(string $locale): array
     {
         $categories = $this->categoryRepository->getForNavigationMenu($locale);
+
+        if (0 === count($categories)) {
+            $categories = $this->categoryRepository->getForNavigationMenu($this->defaultLocale);
+        }
 
         $lastCategory = end($categories);
 
@@ -150,8 +137,10 @@ final class NavigationMenuExtension extends AbstractExtension
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-            $formattedBanners[] = $this->bannerView->menuView($banner, $locale);
+            $formattedBanners[] = $this->bannerView->view($banner);
         }
+
+//        dd($formattedBanners);
 
         return $formattedBanners;
     }

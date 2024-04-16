@@ -26,7 +26,11 @@ final class UserRegistrationController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    #[Route(path: ['rs' => '/aktivacija-naloga/{resetToken}', 'en' => '/account-activation/{resetToken}'], name: 'site.registration_activation_page', methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/aktivacija-naloga/{resetToken}',
+        'en' => '/account-activation/{resetToken}',
+        'ba' => '/aktivacija-naloga/{resetToken}'
+    ], name: 'site.registration_activation_page', methods: ['GET'])]
     #[Template('Site/Pages/accountActivationPage.html.twig')]
     public function index(User $user): array
     {

@@ -2,6 +2,7 @@ site.loyalty:
   path:
     rs: /loyalty
     en: /en/loyalty
+    ba: /loyalty
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/loyalty.html.twig
@@ -12,6 +13,7 @@ site.registration:
   path:
     rs: /registracija
     en: /en/registration
+    ba: /registracija
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/registration.html.twig
@@ -22,50 +24,18 @@ site.registration_confirmation:
   path:
     rs: /uspesna-registracija
     en: /en/success-registration
+    ba: /uspjesna-registracija
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/registrationSuccess.html.twig
   options:
     expose: true
 
-site.collaborator:
-  path:
-    rs: /saradnici
-    en: /en/collaborators
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Site/Pages/collaborator.html.twig
-
-site.policy_page:
-  path:
-    rs: /politika-privatnosti
-    en: /en/privacy-policy
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Site/Pages/privacy_policy.html.twig
-
-site.cookie_policy:
-  path:
-    rs: /politika-kolacica
-    en: /en/cookie-policy
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Site/Pages/cookie_policy.html.twig
-  options:
-    expose: true
-
-site.use_conditions:
-  path:
-    rs: /uslovi-koriscenja
-    en: /en/use-conditions
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-  defaults:
-    template: Site/Pages/use_condition.html.twig
-
 site.cart_page:
   path:
     rs: /korpa
     en: /en/cart
+    ba: /korpa
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/cart.html.twig
@@ -74,6 +44,7 @@ site.checkout_page:
   path:
     rs: /korpa/unos-podataka
     en: /en/checkout
+    ba: /korpa/unos-podataka
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/checkout.html.twig
@@ -91,6 +62,7 @@ site.not_exists_page:
   path:
     rs: /nepostojeca-stranica
     en: /en/not-exits-page
+    ba: /nepostojeca-stranica
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: Site/Pages/404Page.html.twig

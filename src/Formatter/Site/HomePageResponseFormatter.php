@@ -41,7 +41,7 @@ final class HomePageResponseFormatter
             return $this->sliderView->siteView($slider, $locale);
         }, $data['sliders']);
 
-        $data['banners'] = $this->formatBanners($data['banners'], $locale);
+        $data['banners'] = $this->formatBanners($data['banners']);
         $data['products'] = $this->formatProducts(
             $this->productFormatter->getProducts($data['products'], $locale, $user)
         );
@@ -52,12 +52,12 @@ final class HomePageResponseFormatter
     /**
      * @param Banner[] $banners
      */
-    private function formatBanners(array $banners, string $locale): array
+    private function formatBanners(array $banners): array
     {
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-            $formattedBanners[$banner->getPosition()] = $this->bannerView->speedLinks($banner, $locale);
+            $formattedBanners[$banner->getPosition()] = $this->bannerView->view($banner);
         }
 
         return $formattedBanners;

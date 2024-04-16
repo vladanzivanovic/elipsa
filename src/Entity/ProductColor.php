@@ -11,40 +11,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductColorRepository")
  */
-class ProductColor
+class ProductColor implements EntityInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
 
     /**
      * @ORM\Column(type="string", length=7)
      * @Assert\NotBlank(message="field.not_blank", groups={"SetColor"})
      */
-    private $hex;
+    private string $hex;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ColorTranslation", mappedBy="color", orphanRemoval=true, cascade={"persist", "remove"})
+     * @var Collection<int, ColorTranslation>
      */
-    private $colorTranslations;
+    private Collection $colorTranslations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="color")
+     *
+     * @var Collection<int, OrderProduct>
      */
-    private $orderProducts;
+    private Collection $orderProducts;
 
     public function __construct()
     {
         $this->colorTranslations = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getHex(): ?string
@@ -60,7 +53,7 @@ class ProductColor
     }
 
     /**
-     * @return Collection|ColorTranslation[]
+     * @return Collection<int, ColorTranslation>
      */
     public function getColorTranslations(): Collection
     {
@@ -90,23 +83,18 @@ class ProductColor
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return ColorTranslation
-     */
-    public function getByLocale(string $locale): ColorTranslation
+    public function getByLocale(string $locale): ColorTranslation|null
     {
         $filteredTrans = $this->colorTranslations->filter(function ($trans) use ($locale) {
             /** @var ColorTranslation $trans */
             return $trans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 
     /**
-     * @return Collection|OrderProduct[]
+     * @return Collection<int, OrderProduct>
      */
     public function getOrderProducts(): Collection
     {

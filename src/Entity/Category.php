@@ -10,35 +10,36 @@ use SiteBundle\Entity\BlogTranslation;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
-class Category
+class Category implements EntityInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="children")
      */
-    private $parent;
+    private null|Category $parent;
 
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CategoryTranslation", mappedBy="category", orphanRemoval=true, cascade={"persist", "remove"})
+     *
+     * @var Collection<int, CategoryTranslation>
      */
-    private $categoryTranslations;
+    private Collection $categoryTranslations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
+     *
+     * @var Collection<int, Category>
      */
-    private $children;
+    private Collection $children;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="category")
+     *
+     * @var Collection<int, ProductHasCategories>
      */
-    private $productHasCategories;
+    private Collection $productHasCategories;
 
     public function __construct()
     {
@@ -47,17 +48,12 @@ class Category
         $this->productHasCategories = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getParent(): ?self
+    public function getParent(): null | self
     {
         return $this->parent;
     }
 
-    public function setParent(?self $category): self
+    public function setParent(null|self $category): self
     {
         $this->parent = $category;
 
@@ -65,7 +61,7 @@ class Category
     }
 
     /**
-     * @return Collection|CategoryTranslation[]
+     * @return Collection<int, CategoryTranslation>
      */
     public function getCategoryTranslations(): Collection
     {
@@ -96,20 +92,7 @@ class Category
     }
 
     /**
-     * @param string $locale
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslationByLocale(string $locale): ArrayCollection
-    {
-        return $this->categoryTranslations->filter(function ($item) use ($locale) {
-            /** @var CategoryTranslation $item */
-            return $item->getLocale() == $locale;
-        });
-    }
-
-    /**
-     * @return Collection|self[]
+     * @return Collection<int, Category>
      */
     public function getChildren(): Collection
     {
@@ -140,7 +123,7 @@ class Category
     }
 
     /**
-     * @return Collection|ProductHasCategories[]
+     * @return Collection<int, ProductHasCategories>
      */
     public function getProductHasCategories(): Collection
     {
@@ -170,13 +153,13 @@ class Category
         return $this;
     }
 
-    public function getByLocale(string $locale): CategoryTranslation
+    public function getByLocale(string $locale): null|CategoryTranslation
     {
         $filteredTrans = $this->categoryTranslations->filter(function ($trans) use ($locale) {
             /** @var CategoryTranslation $trans */
             return $trans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 }

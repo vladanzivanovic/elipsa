@@ -7,32 +7,20 @@ namespace App\Parser;
 use App\Entity\Banner;
 use App\Entity\BannerTranslation;
 use App\Entity\Image;
-use App\Repository\BannerRepository;
+use App\Repository\BannerTranslationRepository;
 use App\Services\BannerImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class BannerEditRequestParser
 {
-    use ParserTrait;
+    private array $locales;
 
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-
-    private \App\Services\BannerImageService $imageService;
-
-    private \App\Repository\BannerRepository $bannerRepository;
-
-    /**
-     * BannerEditRequestParser constructor.
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        BannerImageService $imageService,
-        BannerRepository $bannerRepository
+        private readonly BannerImageService $imageService,
+        private readonly BannerTranslationRepository $translationRepository,
+        string $locales,
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->imageService = $imageService;
-        $this->bannerRepository = $bannerRepository;
+        $this->locales = explode('|', $locales);
     }
 
     /**
@@ -61,18 +49,18 @@ final class BannerEditRequestParser
 
     private function setLocale(ParameterBag $bag, Banner $banner): void
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
+        foreach ($this->locales as $locale) {
+            $transCollection = $bag->all($locale);
+            $trans = $this->translationRepository->findOneBy(['banner' => $banner, 'locale' => $locale]);
 
-        foreach ($locales as $locale => $lagBag) {
-            $trans = new BannerTranslation();
 
-            if (null !== $banner->getId()) {
-                $trans = $banner->getByLocale($locale);
+            if (null === $trans) {
+                $trans = new BannerTranslation();
             }
 
-            $trans->setDescription($lagBag->get('description', ''));
-            $trans->setButtonText($lagBag->get('button'));
-            $trans->setButtonLink($lagBag->get('link'));
+            $trans->setDescription($transCollection['description'] ?? '');
+            $trans->setButtonText($transCollection['button']);
+            $trans->setButtonLink($transCollection['link']);
             $trans->setLocale($locale);
 
             $banner->addBannerTranslation($trans);

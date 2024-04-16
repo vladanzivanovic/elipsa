@@ -12,17 +12,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class SliderView
 {
-    private RouterInterface $router;
-
-    private ImageRepository $imageRepository;
+    private array $locales;
 
     public function __construct(
-        RouterInterface $router,
-        ImageRepository $imageRepository
+        private readonly RouterInterface $router,
+        private readonly ImageRepository $imageRepository,
+        private readonly ImageView $imageView,
+        string $locales,
     ) {
-
-        $this->router = $router;
-        $this->imageRepository = $imageRepository;
+        $this->locales = explode('|', $locales);
     }
 
     /**
@@ -43,5 +41,61 @@ final class SliderView
             'image_link' => $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $sliderImageName, 'filter' => 'site_slider']),
             'mobile_image_link' => $this->router->generate('app.image_show', ['entity' => 'slider', 'name' => $mobileImage->getName(), 'filter' => 'site_slider_mobile']),
         ];
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function editView(Slider $slider): array
+    {
+        $images = $this->getImages($slider, ['desktop' => 'tmp_image_thumb', 'mobile' => 'tmp_image_thumb']);
+
+        $images['desktop'] = [$images['desktop']];
+        $images['mobile'] = [$images['mobile']];
+
+        $view = [
+            'id' => $slider->getId(),
+            'position' => $slider->getPosition(),
+            'is_active' => $slider->getIsActive(),
+            'translations' => $this->getTranslationValues($slider),
+            'media' => [
+                'images' => $images,
+            ]
+        ];
+
+        return $view;
+    }
+
+    private function getTranslationValues(Slider $slider): array
+    {
+        $translations = [];
+
+        foreach ($this->locales as $locale) {
+            $trans = $slider->getByLocale($locale);
+
+            $translations[$locale] = [
+                'id' => $trans?->getId(),
+                'description' => $trans?->getDescription(),
+                'button_link' => $trans?->getButtonLink(),
+            ];
+        }
+
+        return $translations;
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    private function getImages(Slider $slider, array $filters): array
+    {
+        $desktopImage = $slider->getImage();
+        $mobileImage = $this->imageRepository->getRelatedImage($desktopImage->getName());
+
+        $view = [
+            'desktop' => $this->imageView->view($desktopImage, 'slider', $filters['desktop']),
+            'mobile' => $this->imageView->view($mobileImage, 'slider', $filters['mobile'])
+        ];
+
+        return $view;
     }
 }

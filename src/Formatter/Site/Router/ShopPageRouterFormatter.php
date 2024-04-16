@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site\Router;
 
-use App\Entity\Tags;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ColorTranslationRepository;
 use App\Repository\TagTranslationRepository;
@@ -23,40 +22,20 @@ final class ShopPageRouterFormatter
 {
     use ShopTrait;
 
-    private ParameterBagInterface $bag;
-
-    private TranslatorInterface $translator;
-
-    private ColorTranslationRepository $colorTranslationRepository;
-
-    private CategoryTranslationRepository $categoryTranslationRepository;
-
-    private TagUrlLocalizationFormatter $tagUrlLocalizationFormatter;
-
-    private TagTranslationRepository $tagTranslationRepository;
-
     private array $locales;
 
-    private RouterInterface $router;
-
     public function __construct(
-        ParameterBagInterface $bag,
-        TranslatorInterface $translator,
-        ColorTranslationRepository $colorTranslationRepository,
-        CategoryTranslationRepository $categoryTranslationRepository,
-        TagUrlLocalizationFormatter $tagUrlLocalizationFormatter,
-        TagTranslationRepository $tagTranslationRepository,
-        RouterInterface $router,
-        string $locales
+        private readonly ParameterBagInterface $bag,
+        private readonly TranslatorInterface $translator,
+        private readonly ColorTranslationRepository $colorTranslationRepository,
+        private readonly CategoryTranslationRepository $categoryTranslationRepository,
+        private readonly TagUrlLocalizationFormatter $tagUrlLocalizationFormatter,
+        private readonly TagTranslationRepository $tagTranslationRepository,
+        private readonly RouterInterface $router,
+        private readonly string $defaultLocale,
+        string $locales,
     ) {
-        $this->bag = $bag;
-        $this->translator = $translator;
-        $this->colorTranslationRepository = $colorTranslationRepository;
-        $this->categoryTranslationRepository = $categoryTranslationRepository;
-        $this->tagUrlLocalizationFormatter = $tagUrlLocalizationFormatter;
         $this->locales = explode('|', $locales);
-        $this->tagTranslationRepository = $tagTranslationRepository;
-        $this->router = $router;
     }
 
     public function localeFormatter(string $searchData, string $locale): string
@@ -69,7 +48,7 @@ final class ShopPageRouterFormatter
     public function createLocalizedLinks(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        array $routerNames
+        array $routerNames,
     ): array {
         $translations = [];
 
@@ -167,13 +146,17 @@ final class ShopPageRouterFormatter
 
         $transName = $this->translator->trans('filter.colors', [], 'messages', $locale);
 
-        $transColors = [];
+        $trans = [];
 
         foreach ($colors as $color) {
-            $transColors[] = $this->colorTranslationRepository->getForLocalization($color, $locale);
+            try {
+            $trans[] = $this->colorTranslationRepository->getForLocalization($color, $locale);
+            } catch (\Throwable $exception) {
+                $trans[] = $this->colorTranslationRepository->getForLocalization($color, $this->defaultLocale);
+            }
         }
 
-        $searchCriteria[$transName] = implode('+', $transColors);
+        $searchCriteria[$transName] = implode('+', $trans);
     }
 
     /**
@@ -191,7 +174,11 @@ final class ShopPageRouterFormatter
         $trans = [];
 
         foreach ($categories as $category) {
-            $trans[] = $this->categoryTranslationRepository->getForLocalization($category, $locale);
+            try {
+                $trans[] = $this->categoryTranslationRepository->getForLocalization($category, $locale);
+            } catch (\Throwable $exception) {
+                $trans[] = $this->categoryTranslationRepository->getForLocalization($category, $this->defaultLocale);
+            }
         }
 
         $searchCriteria[$transName] = implode('+', $trans);
@@ -212,7 +199,11 @@ final class ShopPageRouterFormatter
         $trans = [];
 
         foreach ($tags as $tag) {
+            try {
             $trans[] = $this->tagTranslationRepository->getForLocalization($tag, $locale);
+            } catch (\Throwable $exception) {
+                $trans[] = $this->tagTranslationRepository->getForLocalization($tag, $this->defaultLocale);
+            }
         }
 
         $searchCriteria[$transName] = implode('+', $trans);

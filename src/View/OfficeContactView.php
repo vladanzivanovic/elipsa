@@ -14,7 +14,8 @@ final class OfficeContactView
     private array $locales;
 
     public function __construct(
-        string $locales
+        private readonly string $defaultLocale,
+        string $locales,
     ) {
         $this->locales = explode('|', $locales);
     }
@@ -49,7 +50,13 @@ final class OfficeContactView
         $translations = [];
 
         foreach ($this->locales as $locale) {
-            $translations[$locale] = $this->getDescAndLink($officeContact->getByLocale($locale));
+            $trans = $officeContact->getByLocale($locale);
+
+            if(null === $trans) {
+                $trans = $officeContact->getByLocale($this->defaultLocale);
+            }
+
+            $translations[$locale] = $this->getDescAndLink($trans);
         }
 
         return $translations;

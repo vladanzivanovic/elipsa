@@ -13,7 +13,7 @@ final class OfficeContactParser
     private array $locales;
 
     public function __construct(
-        string $locales
+        string $locales,
     ) {
         $this->locales = explode('|', $locales);
     }
@@ -36,11 +36,10 @@ final class OfficeContactParser
     {
         foreach ($this->locales as $locale) {
             $transCollection = $bag->all($locale);
+            $trans = $officeContact->getByLocale($locale);
 
-            $trans = new OfficeContactTranslation();
-
-            if (null !== $officeContact->getId()) {
-                $trans = $officeContact->getByLocale($locale);
+            if (null === $trans) {
+                $trans = new OfficeContactTranslation();
             }
 
             $trans->setTitle($transCollection['title']);
