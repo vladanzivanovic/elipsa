@@ -118,24 +118,6 @@ class ShopPageDom {
         return html;
     }
 
-    addCriteriaOnPage(name, value, text) {
-
-        const criteria = `<a class="btn selected-filter-btn letter-capitalize" data-name="${name}" data-value="${value}">${text}<span class="close"></span></a>`;
-
-        this.mapper.searchView.append(criteria);
-    }
-
-    setFilterCounter(elm, total)
-    {
-        let totalText = `(${total})`;
-
-        if (0 === total) {
-            totalText = '';
-        }
-
-        elm.parents('.sidebar-box').find('.sidebar-accordion-button').find(this.mapper.filterCounter).text(`${totalText}`);
-    }
-
     toggleWish(elm, isAdded)
     {
         if (isAdded) {

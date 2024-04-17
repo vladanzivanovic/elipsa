@@ -7,6 +7,7 @@ namespace App\Controller\Site;
 use App\Collector\BlogPageCollector;
 use App\Entity\BlogTranslation;
 use App\Formatter\Site\BlogDetailedPageResponseFormatter;
+use App\Request\Dto\BlogPageRequestDto;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,12 +28,11 @@ class BlogPageController extends AbstractController
     }
 
     
-    #[Route(path: '/blog/{slug}', name: 'site.blog_detailed_page', methods: ['GET'], options: ['expose' => true])]
-    #[ParamConverter('blogTranslation', options: ['mapping' => ['slug' => 'alias']])]
+    #[Route(path: '/blog/{slug}', name: 'site.blog_detailed_page', options: ['expose' => true], methods: ['GET'])]
     #[Template('Site/Pages/blogPage.html.twig')]
-    public function index(BlogTranslation $blogTranslation, Request $request): array
+    public function index(BlogPageRequestDto $blogPageRequestDto): array
     {
-        $collection = $this->pageCollector->collect($blogTranslation, $request->getLocale());
+        $collection = $this->pageCollector->collect($blogPageRequestDto);
 
         return $this->pageFormatter->formatResponse($collection);
     }

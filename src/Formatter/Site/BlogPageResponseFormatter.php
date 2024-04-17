@@ -4,34 +4,16 @@ declare(strict_types=1);
 
 namespace App\Formatter\Site;
 
-use App\Repository\TagsRepository;
-use App\View\TagView;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Routing\RouterInterface;
+use App\Formatter\Site\Router\BlogPageRouterFormatter;
+use App\View\BlogView;
 
 final class BlogPageResponseFormatter
 {
-    use FormatterTrait;
-
-    private RouterInterface $router;
-
-    private ParameterBagInterface $bag;
-
-    private TagsRepository $tagsRepository;
-
-    private TagView $tagView;
-
     public function __construct(
-        RouterInterface $router,
-        ParameterBagInterface $bag,
-        TagsRepository $tagsRepository,
-        TagView $tagView
-    ) {
-        $this->router = $router;
-        $this->bag = $bag;
-        $this->tagsRepository = $tagsRepository;
-        $this->tagView = $tagView;
-    }
+        private readonly BlogView $blogView,
+        private readonly BlogOptionsFormatter $blogOptionsFormatter,
+        private readonly BlogPageRouterFormatter $blogPageRouterFormatter,
+    ) {}
 
     /**
      * @param array<string, array<array<string|int, mixed>>> $data
@@ -39,29 +21,21 @@ final class BlogPageResponseFormatter
      *
      * @return array<string, array<array<string|int, mixed>>>
      */
-    public function formatResponse(array $data, string $locale): array
+    public function formatResponse(array $data, array $options, null|string $tag = null): array
     {
-        $data['blog_list']['data'] = array_map(function ($blog) {
-            $blog['image_link_list'] = $this->router->generate('app.image_show', ['entity' => 'blog', 'name' => $blog['imageName'], 'filter' => 'blog_list']);
+        $blogList = [];
 
-            return $blog;
-        }, $data['blog_list']['data']);
-
-        $data['pagination'] = $data['blog_list']['pagination'];
-        $data['blog_list'] = $data['blog_list']['data'];
-
-        $data['localized_url'] = $this->router->generate('site.blog_list_page', ['_locale' => $locale === 'rs' ? 'en' : 'rs', 'tag' => $data['localized_url']]);
-
-        if (isset($data['tags'])) {
-            $tagList = [];
-
-            foreach ($data['tags'] as $tag) {
-                $tagList[] = $this->tagView->view($tag);
-            }
-
-            $data['tags'] = $tagList;
+        foreach ($data['data'] as $blog) {
+            $blogList[] = $this->blogView->view($blog);
         }
 
-        return $data;
+        $localizedUrls = $this->blogPageRouterFormatter->createLocalizedLinks($tag);
+
+        return [
+            'blogs' => $blogList,
+            'pagination' => $data['pagination'],
+            'options' => $this->blogOptionsFormatter->format($options),
+            '_web_links' => $localizedUrls,
+        ];
     }
 }

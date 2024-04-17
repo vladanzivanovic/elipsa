@@ -12,25 +12,13 @@ use App\Repository\TagsRepository;
 
 final class ShopFilterCollector
 {
-    private ProductSizeRepository $sizeRepository;
-
-    private ProductRepository $productRepository;
-
-    private ProductColorRepository $colorRepository;
-
-    private TagsRepository $tagsRepository;
-
     public function __construct(
-        ProductSizeRepository $sizeRepository,
-        ProductRepository $productRepository,
-        ProductColorRepository $colorRepository,
-        TagsRepository $tagsRepository
-    ) {
-        $this->sizeRepository = $sizeRepository;
-        $this->productRepository = $productRepository;
-        $this->colorRepository = $colorRepository;
-        $this->tagsRepository = $tagsRepository;
-    }
+        private readonly ProductSizeRepository $sizeRepository,
+        private readonly ProductRepository $productRepository,
+        private readonly ProductColorRepository $colorRepository,
+        private readonly TagsRepository $tagsRepository
+    ) {}
+
     public function collect(string $locale): array
     {
         $sizes = $this->sizeRepository->getForOptions();

@@ -25,7 +25,7 @@ final class ShopPageController extends AbstractController
     public function __construct(
         ShopPageCollector $collectors,
         ShopListResponseFormatter $formatter,
-        ShopFilterCollector $filterCollector
+        ShopFilterCollector $filterCollector,
     ) {
         $this->collectors = $collectors;
         $this->formatter = $formatter;

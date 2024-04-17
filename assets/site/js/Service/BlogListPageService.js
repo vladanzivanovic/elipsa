@@ -1,10 +1,16 @@
 import blogPageDom from "../Dom/BlogPageDom";
 import blogListPageMapper from "../Mapper/BlogListPageMapper";
+import headerDom from "../Dom/HeaderDom";
 
 class BlogListPageService {
+    #dom;
+    #mapper;
+    #headerDom;
+
     constructor() {
-        this.dom = blogPageDom;
-        this.mapper = blogListPageMapper;
+        this.#dom = blogPageDom;
+        this.#mapper = blogListPageMapper;
+        this.#headerDom = headerDom;
 
         $.scrollUp.init({
             scrollTrigger: $('<a/>', {
@@ -28,11 +34,13 @@ class BlogListPageService {
             dataType: 'json',
             success: response => {
                 $('.blogs').empty()
-                    .append(this.dom.generateBlog(response));
+                    .append(this.#dom.generateBlog(response));
 
                 $('#scroll-to-blog-list').trigger('click');
                 $('#page-loader').addClass('hide');
-                $('#locale-dropdown li a').attr('href', response.localized_url);
+                // $('#locale-dropdown li a').attr('href', response.localized_url);
+
+                this.#headerDom.updateLanguageDropDown(response._web_links);
             },
             error: error => {
 

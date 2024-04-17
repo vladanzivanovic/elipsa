@@ -13,37 +13,28 @@ class BlogPageDom {
     generateBlog(data) {
         let html = '';
 
-        for(let i in data.blog_list) {
-            let blog = data.blog_list[i];
+        for(let i in data.blogs) {
+            let blog = data.blogs[i];
+            const trans = blog.translations[LOCALE];
 
             html += `<div class="single-blog">
                         <div class="blog-img">
-                            <a href="${AppHelperService.generateLocalizedUrl('site.blog_detailed_page', {slug: blog.alias})}"><img src="${ blog.image_link_list }" alt="${ blog.title }"></a>
+                            <a href="${AppHelperService.generateLocalizedUrl('site.blog_detailed_page', {slug: trans.slug})}"><img src="${ blog.media.images[0].file }" alt="${ blog.title }"></a>
                             <div class="blog-img-content">
-                                <span class="bc-date">${ blog.day }</span>
-                                <span class="bc-month">${ blog.month }</span>
+                                <span class="bc-date">${ blog.date.day }</span>
+                                <span class="bc-month">${ blog.date.month }</span>
                             </div>
                         </div>
                         <div class="blog-content">
-                            <a class="blog-title" href="${AppHelperService.generateLocalizedUrl('site.blog_detailed_page', {slug: blog.alias})}">${ blog.title }</a>
-                            <p class="blog-text">${ blog.shortDescription }</p>
-                            <a class="blog-read-more letter-capitalize" href="${AppHelperService.generateLocalizedUrl('site.blog_detailed_page', {slug: blog.alias})}">${Translator.trans('read_more', null, 'messages', LOCALE)}</a>
+                            <a class="blog-title" href="${AppHelperService.generateLocalizedUrl('site.blog_detailed_page', {slug: trans.slug})}">${ trans.title }</a>
+                            <p class="blog-text">${ trans.short_description }</p>
+                            <a class="blog-read-more letter-capitalize" href="${AppHelperService.generateLocalizedUrl('site.blog_detailed_page', {slug: trans.slug})}">${Translator.trans('read_more', null, 'messages', LOCALE)}</a>
                         </div>
                     </div>`;
         }
 
         return html;
     };
-
-    listData(data) {
-        let html = '';
-
-        for(let i in data) {
-            html += `<li><a href="#">${data[i]}</a></li>`;
-        }
-
-        return html;
-    }
 }
 
 const blogPageDom = new BlogPageDom();

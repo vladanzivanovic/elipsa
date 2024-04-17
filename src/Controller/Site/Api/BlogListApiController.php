@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Site\Api;
 
 use App\Collector\BlogListPageCollector;
+use App\Collector\BlogOptionsCollector;
 use App\Formatter\Site\BlogPageResponseFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +17,7 @@ class BlogListApiController extends AbstractController
     public function __construct(
         private readonly BlogListPageCollector $pageCollector,
         private readonly BlogPageResponseFormatter $pageFormatter,
+        private readonly BlogOptionsCollector $blogOptionsCollector,
     ) {}
 
     /**
@@ -23,13 +25,14 @@ class BlogListApiController extends AbstractController
      * @param string|null $tag
      *
      */
-    #[Route(path: '/api/blog/{page}/{tag}', methods: ['GET'], name: 'site_api.blog_list_page', defaults: ['page' => 1, 'tag' => null], options: ['expose' => true])]
+    #[Route(path: '/api/blog/{page}/{tag}', name: 'site_api.blog_list_page', options: ['expose' => true], defaults: ['page' => 1, 'tag' => null], methods: ['GET'])]
     public function index(Request $request, int $page, ?string $tag): JsonResponse
     {
         $locale = $request->getSession()->get('_locale');
 
         $collection = $this->pageCollector->collect($locale, $page, $tag);
+        $optionsCollector = $this->blogOptionsCollector->collect();
 
-        return $this->json($this->pageFormatter->formatResponse($collection, $locale));
+        return $this->json($this->pageFormatter->formatResponse($collection, $optionsCollector, $tag));
     }
 }

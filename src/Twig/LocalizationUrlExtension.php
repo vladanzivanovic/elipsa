@@ -76,12 +76,6 @@ class LocalizationUrlExtension extends AbstractExtension
             $routeParams['searchData'] = $this->shopPageRouterFormatter->localeFormatter($routeParams['searchData'], $toLocale);
         }
 
-        if ($routeName === 'site.blog_list_page' && isset($routeParams['tag'])) {
-            $tag = $this->tagUrlLocalizationFormatter->localeFormatter($routeParams['tag'], $toLocale);
-
-            $routeParams['tag'] = $tag ?? '#';
-        }
-
         if ($routeName === 'site.product_page') {
             $slug = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
             $routeParams['slug'] = $slug ?? '#';
