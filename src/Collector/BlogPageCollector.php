@@ -4,40 +4,26 @@ declare(strict_types=1);
 
 namespace App\Collector;
 
-use App\Entity\BlogTranslation;
 use App\Entity\Tags;
-use App\Repository\BlogRepository;
-use App\Repository\ProductColorRepository;
-use App\Repository\ProductRepository;
-use App\Repository\ProductSizeRepository;
+use App\Repository\BlogTranslationRepository;
 use App\Repository\TagsRepository;
-use App\Services\PaginationService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Request\Dto\BlogPageRequestDto;
 
 final class BlogPageCollector
 {
-    private \App\Repository\TagsRepository $tagsRepository;
-
     public function __construct(
-        ProductColorRepository $colorRepository,
-        ProductSizeRepository $sizeRepository,
-        ProductRepository $productRepository,
-        PaginationService $paginationService,
-        TagsRepository $tagsRepository,
-        TranslatorInterface $translator,
-        ParameterBagInterface $bag,
-        BlogRepository $blogRepository
-    ) {
-        $this->tagsRepository = $tagsRepository;
-    }
+        private readonly TagsRepository $tagsRepository,
+        private readonly BlogTranslationRepository $blogTranslationRepository,
+    ) {}
 
-    
-    public function collect(BlogTranslation $blogTranslation, string $locale): array
+    public function collect(BlogPageRequestDto $blogPageRequestDto): array
     {
+
+        $blogTranslation = $this->blogTranslationRepository->findOneBy(['alias' => $blogPageRequestDto->slug]);
+
         $blog = $blogTranslation->getBlog();
 
-        $blogTags = $this->tagsRepository->getByBlog($blog, $locale);
+        $blogTags = $this->tagsRepository->getByBlog($blog, $blogPageRequestDto->locale);
         $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG]);
 
         return [

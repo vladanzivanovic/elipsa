@@ -42,10 +42,12 @@ final class BlogListPageCollector
 //            $localizedUrl = $this->tagsRepository->getForLocalization($tag, $locale === 'rs' ? 'en' : 'rs');
 //        }
 
-        $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tagMainSlug[0]['mainSlug']);
-        $blogList = $this->paginationService->pagination($blogDql, $currentPage, 12);
+        $blogDql = $this->blogRepository->getDqlForPaginationPage($locale, $tag);
+        return $this->paginationService->pagination($blogDql, $currentPage, 12);
 
-        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG]);
+        dd($blogList);
+
+//        $tags = $this->tagsRepository->findBy(['relatedType' => Tags::TYPE_BLOG]);
 
         return [
             'blog_list'         => $blogList,

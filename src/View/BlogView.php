@@ -47,15 +47,24 @@ final class BlogView
             $view['tags'][] = $this->tagView->view($blogHasTag->getTag());
         }
 
+        $view['media']['images'] = [$this->imageView->view($blog->getImage(), 'blog', 'blog_list')];
+
         return $view;
     }
 
     private function defaultViewData(Blog $blog): array
     {
+        $createdAt = $blog->getCreatedAt();
+
         return [
             'id' => $blog->getId(),
             'tags' => null,
             'translations' => $this->getTranslationValues($blog),
+            'date' => [
+                'day' => $createdAt->format('d'),
+                'month' => $createdAt->format('m'),
+                'formatted' => $createdAt->format('d.m.Y'),
+            ],
             'media' => [
                 'images' => null,
             ],

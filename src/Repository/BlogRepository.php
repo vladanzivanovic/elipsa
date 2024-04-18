@@ -60,26 +60,26 @@ class BlogRepository extends ExtendedEntityRepository
      * @param string|null $tagSlug
      *
      */
-    public function getDqlForPaginationPage(string $locale, ?string $tagSlug): QueryBuilder
+    public function getDqlForPaginationPage(string $locale, null|string $tagSlug): QueryBuilder
     {
         $query = $this->createQueryBuilder('blog')
-            ->select(
-                'blog.id as productId',
-                'DATE_FORMAT(blog.createdAt, \'%d\') as day',
-                'DATE_FORMAT(blog.createdAt, \'%b\') as month',
-                'DATE_FORMAT(blog.createdAt, \'%d.%m.%Y\') as date',
-                'bt.title',
-                'bt.shortDescription',
-                'bt.alias',
-                'image.name as imageName'
-            )
-            ->innerJoin('blog.blogTranslations', 'bt')
-            ->innerJoin('blog.image', 'image')
-            ->innerJoin('blog.blogHasTags', 'bht')
+//            ->select(
+//                'blog.id as productId',
+//                'DATE_FORMAT(blog.createdAt, \'%d\') as day',
+//                'DATE_FORMAT(blog.createdAt, \'%b\') as month',
+//                'DATE_FORMAT(blog.createdAt, \'%d.%m.%Y\') as date',
+//                'bt.title',
+//                'bt.shortDescription',
+//                'bt.alias',
+//                'image.name as imageName'
+//            )
+//            ->innerJoin('blog.blogTranslations', 'bt')
+//            ->innerJoin('blog.image', 'image')
+//            ->innerJoin('blog.blogHasTags', 'bht')
             ->where('blog.status = :status')
-            ->andWhere('bt.locale = :locale')
+//            ->andWhere('bt.locale = :locale')
             ->setParameter('status', Blog::STATUS_ACTIVE)
-            ->setParameter('locale', $locale)
+//            ->setParameter('locale', $locale)
             ->orderBy('blog.createdAt', 'DESC')
             ->groupBy('blog.id');
 
@@ -88,11 +88,12 @@ class BlogRepository extends ExtendedEntityRepository
                 ->select('tt')
                 ->from(TagTranslation::class, 'tt')
                 ->innerJoin(BlogHasTags::class, 'bht', 'WITH', 'bht.tag = tt.tag')
-                ->where('tt.slug IN (:tagsSlug)')
+                ->where('tt.slug = :tagSlug')
                 ->andWhere('bht.blog = blog');
+                ;
 
             $query->andWhere('EXISTS ('. $tagsQuery->getDQL() .')')
-                ->setParameter('tag', $tagSlug);
+                ->setParameter('tagSlug', $tagSlug);
         }
 
         return $query;

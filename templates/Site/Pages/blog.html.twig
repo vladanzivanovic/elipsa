@@ -13,19 +13,20 @@
             <div class="row">
                 <div class="col-md-9 col-sm-12 col-xs-12">
                     <div class="blogs">
-                        {% for blog in blog_list %}
+                        {% for blog in blogs %}
+                            {% set trans = blog.translations[locale] %}
                             <div class="single-blog">
                                 <div class="blog-img">
-                                    <a href="{{ path('site.blog_detailed_page', {'slug': blog.alias}) }}"><img src="{{ blog.image_link_list }}" alt="{{ blog.title ~ default_alt_tag }}"></a>
+                                    <a href="{{ path('site.blog_detailed_page', {'slug': trans.slug}) }}"><img src="{{ blog.media.images[0].file }}" alt="{{ trans.title ~ default_alt_tag }}"></a>
                                     <div class="blog-img-content">
-                                        <span class="bc-date">{{ blog.day }}</span>
-                                        <span class="bc-month">{{ blog.month }}</span>
+                                        <span class="bc-date">{{ blog.date.day }}</span>
+                                        <span class="bc-month">{{ blog.date.month }}</span>
                                     </div>
                                 </div>
                                 <div class="blog-content">
-                                    <a class="blog-title" href="{{ path('site.blog_detailed_page', {'slug': blog.alias}) }}">{{ blog.title }}</a>
-                                    <p class="blog-text">{{ blog.shortDescription }}</p>
-                                    <a class="blog-read-more letter-capitalize" href="{{ path('site.blog_detailed_page', {'slug': blog.alias}) }}">{{ 'read_more' | trans }}</a>
+                                    <a class="blog-title" href="{{ path('site.blog_detailed_page', {'slug': trans.slug}) }}">{{ trans.title }}</a>
+                                    <p class="blog-text">{{ trans.short_description }}</p>
+                                    <a class="blog-read-more letter-capitalize" href="{{ path('site.blog_detailed_page', {'slug': trans.slug}) }}">{{ 'read_more' | trans }}</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -38,7 +39,7 @@
                             <h4 class="bw-title letter-capitalize">{{ 'tags' | trans }}</h4>
                             <ul class="bw-cat-list">
                                 <li><a class="tag-btn {{ selectedTag is null ? 'active' : '' }} letter-capitalize" data-search="all" href="#">{{ 'all' | trans }}</a></li>
-                                {% for tag in tags %}
+                                {% for tag in options.tags %}
                                     <li><a class="tag-btn {{ selectedTag is not null and selectedTag == tag[locale].slug ? 'active' : '' }}" data-search="{{ tag[locale].slug }}" href="#">{{ tag[locale].title }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -53,5 +54,6 @@
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const IS_FIRST_PAGE = {{ app.request.attributes.get('page') == 1 ? 1 : 0 }};
+        const LINKS = JSON.parse('{{ _web_links | json_encode | raw }}');
     </script>
 {% endblock %}
