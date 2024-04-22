@@ -20,5 +20,5 @@ monolog:
         deprecation_filter:
             type: filter
             handler: deprecation
-            max_level: info
+            max_level: debug
             channels: ["php"]

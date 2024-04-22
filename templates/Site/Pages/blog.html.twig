@@ -40,7 +40,7 @@
                             <ul class="bw-cat-list">
                                 <li><a class="tag-btn {{ selectedTag is null ? 'active' : '' }} letter-capitalize" data-search="all" href="#">{{ 'all' | trans }}</a></li>
                                 {% for tag in options.tags %}
-                                    <li><a class="tag-btn {{ selectedTag is not null and selectedTag == tag[locale].slug ? 'active' : '' }}" data-search="{{ tag[locale].slug }}" href="#">{{ tag[locale].title }}</a></li>
+                                    <li><a class="tag-btn {{ selectedTag is not null and selectedTag == tag.translations[locale].slug ? 'active' : '' }}" data-search="{{ tag.translations[locale].slug }}" href="#">{{ tag.translations[locale].title }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>

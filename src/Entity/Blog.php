@@ -83,7 +83,7 @@ class Blog
         return $this;
     }
 
-    public function getBlogTranslationByLocale(string $locale): ?BlogTranslation
+    public function getBlogTranslationByLocale(string $locale): null|BlogTranslation
     {
         $filteredTrans = $this->blogTranslations->filter(function ($blogTrans) use ($locale) {
             /** @var BlogTranslation $blogTrans */

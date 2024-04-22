@@ -18,16 +18,13 @@
 
     <form id="edit_form" enctype="multipart/form-data">
         <div class="row">
+            {% for locale, lang in app_params('languages') %}
             <div class="col-sm-6 col-md-6">
                 <div class="form-group">
-                    {{ form.input('Naziv na srpskom', 'catalog_title_rs', IS_EDIT ? rs_title : '', 'rs_title') }}
+                    {{ form.input('Naziv - '~lang.name, 'catalog_title_'~locale, IS_EDIT ? rs_title : '', locale~'[title]') }}
                 </div>
             </div><!-- Col -->
-            <div class="col-sm-6 col-md-6">
-                <div class="form-group">
-                    {{ form.input('Naziv na engleskom', 'catalog_title_en', IS_EDIT ? en_title : '', 'en_title') }}
-                </div>
-            </div><!-- Col -->
+            {% endfor %}
         </div><!-- Row -->
         <div class="row">
             <div class="col-md-12 grid-margin">

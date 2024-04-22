@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group">
-                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? tag[locale].title : '', locale~'[title]') }}
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? tag.translations[locale].title : '', locale~'[title]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div>

@@ -104,7 +104,7 @@ class Tags
         return $this;
     }
 
-    public function getByLocale(string $locale): ?TagTranslation
+    public function getByLocale(string $locale): null|TagTranslation
     {
         $filteredTrans = $this->tagTranslations->filter(function ($trans) use ($locale) {
             /** @var TagTranslation $trans */

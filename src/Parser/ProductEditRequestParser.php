@@ -126,10 +126,10 @@ final class ProductEditRequestParser
     {
         foreach ($this->locales as $locale) {
             $transCollection = $bag->all($locale);
-            $trans = new ProductTranslation();
+            $trans = $this->translationRepository->findOneBy(['product' => $product, 'locale' => $locale]);
 
-            if (null !== $product->getId()) {
-                $trans = $this->translationRepository->findOneBy(['product' => $product, 'locale' => $locale]);
+            if (null === $trans) {
+                $trans = new ProductTranslation();
             }
 
             $trans->setTitle($transCollection['title']);

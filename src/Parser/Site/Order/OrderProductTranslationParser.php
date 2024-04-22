@@ -16,7 +16,6 @@ final class OrderProductTranslationParser
     public function __construct(
         OrderProductTranslationRepository $orderProductTranslationRepository
     ) {
-
         $this->orderProductTranslationRepository = $orderProductTranslationRepository;
     }
     public function parse(

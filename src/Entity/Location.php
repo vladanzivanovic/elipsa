@@ -194,12 +194,7 @@ class Location
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return LocationTranslation
-     */
-    public function getByLocale(string $locale): LocationTranslation
+    public function getByLocale(string $locale): null|LocationTranslation
     {
         $trans = $this->locationTranslations;
 
@@ -208,7 +203,7 @@ class Location
             return $locationTrans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 
     /**

@@ -45,7 +45,7 @@
                                             <div class="mega-menu-part">
                                                 <div class="mega-menu-content">
                                                     {% for tag in navigationTagsCollection %}
-                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {('filter.collections' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a>
+                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {('filter.collections' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a>
                                                     {% endfor %}
                                                 </div>
                                                 <div class="mega-menu-img">
@@ -64,7 +64,7 @@
                                 <div class="menu-dropdown with-img">
                                     <ul>
                                         {% for tag in navigationTagsSeasson %}
-                                            <li><a href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a></li>
+                                            <li><a href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a></li>
                                         {% endfor %}
                                     </ul>
                                     {% if seasonBanner is not null %}
@@ -124,7 +124,7 @@
                                     {% endfor %}
                                     {% for tag in navigationTagsCollection %}
                                         <li>
-                                            <a href="{{ path('site.shop_page', {('filter.collections' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a>
+                                            <a href="{{ path('site.shop_page', {('filter.collections' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -132,7 +132,7 @@
                             <li><a href="{{ path('site.trendy_page') }}">{{ 'navi.seasons' | trans }}</a>
                                 <ul>
                                     {% for tag in navigationTagsSeasson %}
-                                        <li><a class="mega-menu-title" href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a>
+                                        <li><a class="mega-menu-title" href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>

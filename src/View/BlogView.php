@@ -12,18 +12,13 @@ final class BlogView
 {
     private array $locales;
 
-    private TagView $tagView;
-
-    private ImageView $imageView;
-
     public function __construct(
+        private readonly TagView $tagView,
+        private readonly ImageView $imageView,
+        private readonly string $defaultLocale,
         string $locales,
-        TagView $tagView,
-        ImageView $imageView
     ){
         $this->locales = explode('|', $locales);
-        $this->tagView = $tagView;
-        $this->imageView = $imageView;
     }
 
     public function editView(Blog $blog): array
@@ -77,6 +72,10 @@ final class BlogView
 
         foreach ($this->locales as $locale) {
             $trans = $blog->getBlogTranslationByLocale($locale);
+
+            if (null === $trans) {
+                $trans = $blog->getBlogTranslationByLocale($this->defaultLocale);
+            }
 
             $translations[$locale] = [
                 'title' => $trans->getTitle(),

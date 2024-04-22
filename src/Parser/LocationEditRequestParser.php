@@ -65,10 +65,11 @@ final class LocationEditRequestParser
     {
         foreach ($this->locales as $locale) {
             $transCollection = $bag->all($locale);
-            $trans = new LocationTranslation();
 
-            if (null !== $location->getId()) {
-                $trans = $location->getByLocale($locale);
+            $trans = $location->getByLocale($locale);
+
+            if (null === $trans) {
+                $trans = new LocationTranslation();
             }
 
             $trans->setStreet($transCollection['street'])

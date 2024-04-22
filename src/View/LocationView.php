@@ -8,15 +8,13 @@ use App\Entity\Location;
 
 final class LocationView
 {
-    private ImageView $imageView;
-
     private array $locales;
 
     public function __construct(
-        ImageView $imageView,
+        private readonly ImageView $imageView,
+        private readonly string $defaultLocale,
         string $locales
     ) {
-        $this->imageView = $imageView;
         $this->locales = explode('|', $locales);
     }
 
@@ -96,6 +94,10 @@ final class LocationView
 
         foreach ($this->locales as $locale) {
             $translation = $location->getByLocale($locale);
+
+            if (null === $translation) {
+                $translation = $location->getByLocale($this->defaultLocale);
+            }
 
             $translations[$locale] = [
                 'id' => $translation->getId(),
