@@ -1,7 +1,5 @@
 import cartPageMapper from "../Mapper/CartPageMapper";
 import CartHandler from "../Handler/CartHandler";
-import orderApiProvider from "../Provider/OrderApiProvider";
-import cartPageDom from "../Dom/CartPageDom";
 import cartPageManipulator from "../Manipulator/CartPageManipulator";
 import cartPageEvents from "../Events/CartPageEvents";
 

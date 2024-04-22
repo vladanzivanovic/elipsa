@@ -178,6 +178,14 @@ class CartPageDom {
             row.find('.cart_product_price_value span').removeClass('old-price').text(`${orderProduct.price.amount} ${orderProduct.price.currency}`);
             row.find('.cart_product_price_value .discount').remove();
         }
+
+        row.removeClass('product-sold');
+        row.find('.cart_product_name_value .product-name-sold').remove();
+
+        if (orderProduct.is_sold) {
+            row.addClass('product-sold');
+            row.find('.cart_product_name_value').append(`<p class="cart_product_name product-name-sold">(${Translator.trans('product.unavailable', null, 'messages', LOCALE)})</p>`);
+        }
     }
 
     #removeDeletedProductsFromTable(orderProducts)

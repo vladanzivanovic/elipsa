@@ -42,9 +42,11 @@ class CheckoutPageDom {
         // const productRow = $(`tr[data-id="${orderProduct.id}"]`);
         //
         // if (0 === productRow.length) {
+        if (false === orderProduct.is_sold) {
             const productElement = this.#createProductElement(orderProduct);
 
             $(`${this.#pageMapper.productList}`).append(productElement);
+        }
 
             // return;
         // }
