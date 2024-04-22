@@ -50,7 +50,7 @@ final class OrderCompleteController extends AbstractController
     /**
      * @return JsonResponse
      */
-    #[Route(path: '/api/order/complete/{token}', name: 'site_api.order_complete', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/order/complete/{token}', name: 'site_api.order_complete', options: ['expose' => true], methods: ['POST'])]
     public function complete(Request $request, string $token): Response
     {
         try {

@@ -213,10 +213,6 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     {
         if ($this->orderProducts->contains($orderProduct)) {
             $this->orderProducts->removeElement($orderProduct);
-            // set the owning side to null (unless already changed)
-            if ($orderProduct->getOrderId() === $this) {
-                $orderProduct->setOrderId(null);
-            }
         }
 
         return $this;

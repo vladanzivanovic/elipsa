@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Parser\Site\Order;
 
 use App\Entity\Address;
+use App\Entity\OrderProduct;
 use App\Entity\ShopOrder;
 use App\Entity\User;
 use App\Exception\OrderException;
@@ -60,6 +61,8 @@ final class OrderCompleteParser
         $order->setShippingType($bag->get('shipping_type'));
         $order->setVisited(false);
 
+        $this->removeUnavailableOrderProducts($order);
+
         if (ShopOrder::PAYMENT_TYPE_CREDIT_CARD === $order->getPaymentType()) {
             $order->setCardStatus(ShopOrder::CARD_STATUS_PRE_AUTH);
         }
@@ -87,5 +90,20 @@ final class OrderCompleteParser
         $user = $this->orderUserParser->parse($bag);
 
         $order->setUser($user);
+    }
+
+    private function removeUnavailableOrderProducts(ShopOrder $order): void
+    {
+        foreach ($order->getOrderProducts() as $orderProduct) {
+            if (false === $orderProduct->isProductAvailable()) {
+                $order->removeOrderProduct($orderProduct);
+
+                continue;
+            }
+
+            if (true === $orderProduct->getProduct()->isSold()) {
+                $order->removeOrderProduct($orderProduct);
+            }
+        }
     }
 }
