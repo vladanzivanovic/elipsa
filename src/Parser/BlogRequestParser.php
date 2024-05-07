@@ -26,11 +26,11 @@ class BlogRequestParser
         BlogTranslationRepository $translationRepository,
         BlogImageService $blogImageService,
         TagsRepository $tagsRepository,
-        string $locales
+        array $locales
     ) {
         $this->translationRepository = $translationRepository;
         $this->blogImageService = $blogImageService;
-        $this->locales = explode('|', $locales);
+        $this->locales = $locales;
         $this->tagsRepository = $tagsRepository;
     }
 

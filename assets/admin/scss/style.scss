@@ -119,3 +119,7 @@
 // Page related
 @import "./pages/product-edit";
 @import "./pages/invoice";
+
+.hide-country {
+  display: none !important;
+}

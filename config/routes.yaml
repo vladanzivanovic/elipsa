@@ -15,16 +15,16 @@ admin:
 site:
   resource: 'routes/routes_site.yaml'
   host:
-    rs: 'localhost'
-    ba: 'ba-elipsa'
+    rs: '%host_rs%'
+    ba: '%host_ba%'
     en: ''
   options:
     expose: true
 
 site.product_page:
   host:
-    rs: 'localhost'
-    ba: 'ba-elipsa'
+    rs: '%host_rs%'
+    ba: '%host_ba%'
     en: ''
   path:
     rs: /{slug}

@@ -19,6 +19,7 @@ use App\Repository\ProductSizeRepository;
 use App\Repository\ProductTranslationRepository;
 use App\Repository\TagsRepository;
 use App\Services\ProductImageService;
+use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -53,7 +54,7 @@ final class ProductEditRequestParser
         YouTubeParser $youTubeParser,
         TagsRepository $tagsRepository,
         OrderProductTranslationParser $orderProductTranslationParser,
-        string $locales
+        array $locales
     ) {
         $this->parameterBag = $parameterBag;
         $this->translationRepository = $translationRepository;
@@ -61,7 +62,7 @@ final class ProductEditRequestParser
         $this->sizeRepository = $sizeRepository;
         $this->imageService = $imageService;
         $this->youTubeParser = $youTubeParser;
-        $this->locales = explode('|', $locales);
+        $this->locales = $locales;
         $this->tagsRepository = $tagsRepository;
         $this->orderProductTranslationParser = $orderProductTranslationParser;
     }
@@ -133,6 +134,7 @@ final class ProductEditRequestParser
             }
 
             $trans->setTitle($transCollection['title']);
+            $trans->setSlug(Urlizer::urlize($transCollection['title'], '-'));
             $trans->setDescription($transCollection['description']);
             $trans->setShortDescription($transCollection['short_description']);
             $trans->setCleaning($transCollection['cleaning']);

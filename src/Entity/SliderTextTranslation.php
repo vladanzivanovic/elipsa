@@ -4,37 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SliderTextTranslationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\SliderTextTranslationRepository::class)]
 class SliderTextTranslation implements EntityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private string $title;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $link;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private string $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SliderText", inversedBy="sliderTextTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\SliderText::class, inversedBy: 'sliderTextTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private SliderText $sliderText;
 
 

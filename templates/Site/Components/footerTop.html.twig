@@ -42,7 +42,7 @@
                                                         {{ inputs.selectbox('gender', 'newsletter_gender', '', genderOptions, '', '', false, 'choose_gender') }}
                                                     </div>
                                                     <div class="col-xs-12 col-md-4">
-                                                        {{ inputs.selectbox('language', 'newsletter_language', '', langOptions, '', '', false, 'choose_language') }}
+                                                        {{ inputs.selectbox('language', 'newsletter_language', '', languageOptionsByCountry, '', '', false, 'choose_language') }}
                                                     </div>
                                                     <div class="col-xs-12 col-md-4 m-t-2-xs m-t-2-sm">
                                                         <button class="news_letter_btn submit-btn full-width hvr-bs text-uppercase" type="button">{{ 'submit' | trans }}</button>

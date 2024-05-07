@@ -4,37 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SliderTranslationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\SliderTranslationRepository::class)]
 class SliderTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private ?string $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $buttonLink;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private ?string $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Slider", inversedBy="sliderTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Slider::class, inversedBy: 'sliderTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Slider $slider;
 
     public function getId(): ?int

@@ -7,46 +7,32 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\BlogRepository::class)]
 class Blog
 {
     const STATUS_ACTIVE = 1;
     const STATUS_PENDING = 2;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\BlogTranslation", mappedBy="blog", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\BlogTranslation::class, mappedBy: 'blog', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $blogTranslations;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private $status;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private $createdAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="BlogHasTags", mappedBy="blog", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \BlogHasTags::class, mappedBy: 'blog', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $blogHasTags;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\OneToOne(targetEntity: \App\Entity\Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $image;
 
     public function __construct()

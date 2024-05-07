@@ -7,34 +7,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CatalogueRepository::class)
- */
+#[ORM\Entity(repositoryClass: CatalogueRepository::class)]
 class Catalogue
 {
     public const STATUS_PENDING = 1;
     public const STATUS_ACTIVE = 2;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private $status;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CatalogueTranslation::class, mappedBy="catalogue", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: CatalogueTranslation::class, mappedBy: 'catalogue', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $catalogueTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CatalogueHasImages::class, mappedBy="catalogue", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: CatalogueHasImages::class, mappedBy: 'catalogue', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $catalogueHasImages;
 
     public function __construct()

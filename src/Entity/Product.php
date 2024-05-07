@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ProductRepository::class)]
 class Product implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;
@@ -23,86 +21,55 @@ class Product implements EntityInterface, PromotionEligibilityInterface
     const HOME_PAGE_UP = 2;
     const HOME_PAGE_DOWN = 1;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private ?int $price;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $discount;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private ?int $status;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductTranslation::class, mappedBy: 'product', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $productTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasTags", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasTags::class, mappedBy: 'product', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $productHasTags;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
+    #[ORM\Column(type: 'smallint', nullable: true)]
     private ?int $badge;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $code;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasCategories::class, mappedBy: 'product', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $productHasCategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasSizes::class, mappedBy: 'product', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $productHasSizes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasImages", mappedBy="product", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasImages::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     private Collection $productHasImages;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private ?int $showHomePage;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductCleaning", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductCleaning::class, mappedBy: 'product', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $productCleanings;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Youtube", mappedBy="product", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Youtube::class, mappedBy: 'product', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $youtubes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="product")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\OrderProduct::class, mappedBy: 'product')]
     private Collection $orderProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserWishes", mappedBy="product")
-     *
      * @var Collection<int, UserWishes>
      */
+    #[ORM\OneToMany(targetEntity: \App\Entity\UserWishes::class, mappedBy: 'product')]
     private Collection $userWishes;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $sold;
 
     private ?int $promoDiscount = null;

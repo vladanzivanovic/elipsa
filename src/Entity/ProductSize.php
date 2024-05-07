@@ -7,34 +7,24 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductSizeRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ProductSizeRepository::class)]
 class ProductSize
 {
     public const NO_SIZE = 'no-sizes';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private $size;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="size")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasSizes::class, mappedBy: 'size')]
     private $productHasSizes;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"size"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['size'], updatable: false)]
     private $slug;
 
     public function __construct()

@@ -72,9 +72,11 @@ navi:
   orders: Narudžbine
   shopping: Kupovina
 
-serbian: Srpski
-english: Engleski
+serbian_lang: Srpski jezik
+english_lang: Engleski jezik
+bosnia_lang: Bosanksi jezik
 serbia: Srbija
+bosnia_and_herzegovina: Bosna i Hercegovina
 
 size: veličina
 color: boja
@@ -679,3 +681,6 @@ product.is_deleted: Proizvod "%item%" je obrisan
 promotion.type.coupon: Kupon
 promotion.type.product: Proizvod
 promotion.type.free_shipping: Besplatna dostava
+
+header.choose_country_label: Izaberite državu
+header.choose_lang_label: Izaberite jezik

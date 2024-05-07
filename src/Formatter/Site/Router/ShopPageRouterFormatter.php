@@ -22,8 +22,6 @@ final class ShopPageRouterFormatter
 {
     use ShopTrait;
 
-    private array $locales;
-
     public function __construct(
         private readonly ParameterBagInterface $bag,
         private readonly TranslatorInterface $translator,
@@ -33,10 +31,8 @@ final class ShopPageRouterFormatter
         private readonly TagTranslationRepository $tagTranslationRepository,
         private readonly RouterInterface $router,
         private readonly string $defaultLocale,
-        string $locales,
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
     public function localeFormatter(string $searchData, string $locale): string
     {

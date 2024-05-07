@@ -101,7 +101,7 @@
                                 <ul>
                                     {% for tag in payload.tags %}
                                         <li>
-                                            <a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}" target="_blank">{{ tag[locale].title }}</a>
+                                            <a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag.translations[locale].slug }) }}" target="_blank">{{ tag.translations[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>

@@ -1,0 +1,14 @@
+<div class="cart-wrapper {{ cartWrapperClass ?? '' }}">
+    <div class="my-cart-products"></div>
+    <div class="my-cart-total-cost">
+        <span class="letter-capitalize">{{ 'cart.total_products' | trans }}</span>
+        <span class="cost"><span class="cost__number"></span></span>
+    </div>
+    <div class="viewcart-checkout">
+        <a class="viewcart letter-capitalize" href="{{ path('site.cart_page') }}">{{ 'cart.view' | trans }}</a>
+        <a class="checkout letter-capitalize" href="{{ path('site.checkout_page') }}">{{ 'cart.checkout' | trans }}</a>
+    </div>
+</div>
+<div class="empty-cart">
+    <p>{{ 'cart.empty' | trans }}</p>
+</div>

@@ -1,4 +1,6 @@
 parameters:
+  host_rs: '%env(resolve:HOST_RS)%'
+  host_ba: '%env(resolve:HOST_BA)%'
   site_info:
     url: '%env(resolve:SITE_URL)%'
   shop:
@@ -108,27 +110,33 @@ parameters:
     - pe-ly-wring
   languages:
     rs:
-      name: Srpski
       code: rs
       currencyCode: RSD
       locale: sr_RS
-      translation: serbian
+      translation: serbian_lang
     en:
-      name: Engleski
       code: en
       currencyCode: RSD
       locale: en_AT
-      translation: english
+      translation: english_lang
     ba:
-      name: Bosanski
       code: ba
       currencyCode: BAM
       locale: bs_BA
-      translation: bosnia
+      translation: bosnia_lang
   countries:
     rs:
-      name: serbia
-      code: rs
+      host: '%host_rs%'
+      translation: serbia
+      languages:
+        - rs
+        - en
+    ba:
+      translation: bosnia_and_herzegovina
+      host: '%host_ba%'
+      languages:
+        - ba
+        - en
   site_info_texts:
     cookie_policy:
       title: navi.cookie_policy

@@ -12,16 +12,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class SliderView
 {
-    private array $locales;
-
     public function __construct(
         private readonly RouterInterface $router,
         private readonly ImageRepository $imageRepository,
         private readonly ImageView $imageView,
-        string $locales,
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
     /**
      * @throws NonUniqueResultException

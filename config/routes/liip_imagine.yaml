@@ -1,2 +1,6 @@
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+    host:
+        rs: '%host_rs%'
+        ba: '%host_ba%'
+        en: ''

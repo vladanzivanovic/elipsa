@@ -11,16 +11,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class BannerView
 {
-    private array $locales;
-
     public function __construct(
         private readonly RouterInterface $router,
         private readonly ImageView $imageView,
         private readonly ImageRepository $imageRepository,
-        string $locales,
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
     public function view(Banner $banner): array
     {
@@ -75,6 +71,7 @@ final class BannerView
             'is_active' => $banner->getIsActive(),
             'position' => $banner->getPosition(),
             'translations' => $this->getTranslationValues($banner),
+            'available_countries' => $banner->getAvailableCountries(),
             'media' => [
                 'images' => $images,
             ]
@@ -123,7 +120,7 @@ final class BannerView
             'desktop' => $this->imageView->view($desktopImage, 'banner', $filters['desktop']),
         ];
 
-        if (isset($images['mobile'])) {
+        if (null !== $mobileImage) {
             $view['mobile'] = $this->imageView->view($mobileImage, 'banner', $filters['mobile']);
         }
 

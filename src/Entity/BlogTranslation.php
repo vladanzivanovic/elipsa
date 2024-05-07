@@ -6,51 +6,35 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\BlogTranslationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\BlogTranslationRepository::class)]
 class BlogTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="fields.required", groups={"SetAdminBlog"})
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAdminBlog'])]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private $alias;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="fields.required", groups={"SetAdminBlog"})
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAdminBlog'])]
     private $shortDescription;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="fields.required", groups={"SetAdminBlog"})
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAdminBlog'])]
     private $description;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Blog", inversedBy="blogTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Blog::class, inversedBy: 'blogTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $blog;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private $locale;
 
     /**

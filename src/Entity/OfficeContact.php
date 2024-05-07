@@ -7,33 +7,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=OfficeContactRepository::class)
- */
+#[ORM\Entity(repositoryClass: OfficeContactRepository::class)]
 class OfficeContact implements EntityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=OfficeContactTranslation::class, mappedBy="officeContact", orphanRemoval=true, cascade={"persist", "remove"})
-     *
      * @var Collection<int, OfficeContactTranslation>
      */
+    #[ORM\OneToMany(targetEntity: OfficeContactTranslation::class, mappedBy: 'officeContact', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $officeContactTranslations;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private bool $showInFooter;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $useInEmail = false;
 
     public function __construct()

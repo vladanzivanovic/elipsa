@@ -26,6 +26,12 @@ class HeaderMapper {
                 input: '#search-input',
             };
 
+            this.dropDown = {
+                close: '.close-drop-down',
+                area: '.drop-down-area',
+                button: '.mobile-user-item > a',
+            };
+
             HeaderMapper.instance = this;
         }
 

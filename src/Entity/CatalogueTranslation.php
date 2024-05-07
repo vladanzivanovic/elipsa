@@ -6,38 +6,26 @@ use App\Repository\CatalogueTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass=CatalogueTranslationRepository::class)
- */
+#[ORM\Entity(repositoryClass: CatalogueTranslationRepository::class)]
 class CatalogueTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Catalogue::class, inversedBy="catalogueTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Catalogue::class, inversedBy: 'catalogueTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $catalogue;
 
     public function getId(): ?int

@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EmailRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\EmailRepository::class)]
 class Email
 {
     const EMAIL_SUCCESS = 'SENT';
@@ -17,67 +15,59 @@ class Email
 
     /**
      * @var integer
-     *
-     * @ORM\Column(type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private $fromEmail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private $toEmail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $rawData;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", length=65535, nullable=true)
      */
+    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $errorMessage;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=150, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 150, nullable: false)]
     private $status;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=200, nullable=false)
      */
+    #[ORM\Column(type: 'string', length: 200, nullable: false)]
     private $script;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="code", type="string", length=5)
      */
+    #[ORM\Column(name: 'code', type: 'string', length: 5)]
     private $code;
 
     /**
      * @var \DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private $createdAt;
 
     /**

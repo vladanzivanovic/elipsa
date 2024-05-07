@@ -37,7 +37,7 @@ final class HomePageCollector
     public function collect(string $locale, ?User $user): array
     {
         $sliders = $this->sliderRepository->getRandomActiveSlider($locale);
-        $banners = $this->bannerRepository->getActiveByType(Banner::TYPE_SPEED_LINKS);
+        $banners = $this->bannerRepository->getActiveByType(Banner::TYPE_SPEED_LINKS, $locale);
         $products = $this->productRepository->getForHomePage($user);
 
         return [

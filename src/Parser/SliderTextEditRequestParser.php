@@ -23,11 +23,11 @@ final class SliderTextEditRequestParser
     public function __construct(
         ParameterBagInterface $parameterBag,
         SliderTextRepository $repository,
-        string $locales
+        array $locales
     ) {
         $this->parameterBag = $parameterBag;
         $this->repository = $repository;
-        $this->locales = explode('|', $locales);
+        $this->locales = $locales;
     }
 
     /**

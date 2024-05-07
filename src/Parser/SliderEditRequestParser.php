@@ -19,17 +19,13 @@ final class SliderEditRequestParser
 {
     use ParserTrait;
 
-    private array $locales;
-
     public function __construct(
         private readonly ParameterBagInterface $parameterBag,
         private readonly SliderImageService $imageService,
         private readonly SliderRepository $sliderRepository,
         private readonly SliderTranslationRepository $translationRepository,
-        string $locales,
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
     /**
      * @throws NonUniqueResultException

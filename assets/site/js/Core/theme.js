@@ -455,21 +455,23 @@ require('webpack-jquery-ui');
     /*-----------------------
     hide-show-sign-in-form
     -----------------------*/
-    document.getElementById("my_cart").style.display = "none";
-    $("#top_cart").on('click touchend', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+    if (null !== document.getElementById("my_cart")) {
+        document.getElementById("my_cart").style.display = "none";
+        $("#top_cart").on('click touchend', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
 
-        $.each($('.open'), (index, element) => {
-            if (!$(e.currentTarget).closest($(element)).length) {
-                $(element).fadeOut("slow");
-                $(element).removeClass('open');
-            }
-        })
+            $.each($('.open'), (index, element) => {
+                if (!$(e.currentTarget).closest($(element)).length) {
+                    $(element).fadeOut("slow");
+                    $(element).removeClass('open');
+                }
+            })
 
-        $("#my_cart").fadeIn("slow");
-        $('#my_cart').addClass('open');
-    });
+            $("#my_cart").fadeIn("slow");
+            $('#my_cart').addClass('open');
+        });
+    }
 
     $(document).on('click touchend', e => {
         $.each($('.open'), (index, element) => {

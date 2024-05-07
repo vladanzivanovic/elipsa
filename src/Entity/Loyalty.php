@@ -6,63 +6,39 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LoyaltyRepository")
- *
- * @ORM\Table(name="loyalty",
- *    uniqueConstraints={
- *        @UniqueConstraint(name="loyalty_unique",
- *            columns={"first_name", "last_name", "email"})
- *    }
- * )
- */
+
+#[ORM\Entity(repositoryClass: \App\Repository\LoyaltyRepository::class)]
+#[ORM\Table(name: 'loyalty')]
+#[UniqueConstraint(name: 'loyalty_unique', columns: ['first_name', 'last_name', 'email'])]
 class Loyalty
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=15, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private $mobilePhone;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $birthDate;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $occupation;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $note;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private $rate;
 
     public function getId(): ?int

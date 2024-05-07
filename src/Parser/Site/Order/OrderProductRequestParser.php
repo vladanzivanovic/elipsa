@@ -7,6 +7,7 @@ namespace App\Parser\Site\Order;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
 use App\Entity\ProductColor;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Exception\ProductManipulationException;
 use App\Parser\ProductPromotionParser;
@@ -88,11 +89,11 @@ final class OrderProductRequestParser
             throw new ProductManipulationException('product.size_unavailable');
         }
 
-        if ($promotion instanceof \App\Entity\Promotion) {
+        if ($promotion instanceof Promotion) {
             $orderProduct->setPromotion($promotion);
         }
 
-        if ($order->getCoupon() instanceof \App\Entity\Promotion) {
+        if ($order->getCoupon() instanceof Promotion) {
             $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
         }
 
@@ -123,7 +124,7 @@ final class OrderProductRequestParser
             $color
         );
 
-        if (!$orderProduct instanceof \App\Entity\OrderProduct) {
+        if (!$orderProduct instanceof OrderProduct) {
             $productTranslation = $this->productTranslationRepository->findOneBy(['slug' => $productTranslationSlug]);
 
             if (true === $productTranslation->getProduct()->isSold()) {

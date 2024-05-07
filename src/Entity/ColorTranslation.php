@@ -5,38 +5,26 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ColorTranslationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ColorTranslationRepository::class)]
 class ColorTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductColor", inversedBy="colorTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\ProductColor::class, inversedBy: 'colorTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $color;
 
     public function getId(): ?int

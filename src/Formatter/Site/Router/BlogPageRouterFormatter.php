@@ -11,16 +11,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class BlogPageRouterFormatter
 {
-    private array $locales;
-
     public function __construct(
         private readonly BlogTranslationRepository $blogTranslationRepository,
         private readonly RouterInterface $router,
         private readonly TagTranslationRepository $tagTranslationRepository,
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
     /**
      *

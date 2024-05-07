@@ -10,13 +10,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class OfficeContactParser
 {
-    private array $locales;
-
     public function __construct(
-        string $locales,
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
     public function parse(ParameterBag $bag, OfficeContact $officeContact = null): OfficeContact
     {
         if (!$officeContact instanceof \App\Entity\OfficeContact) {

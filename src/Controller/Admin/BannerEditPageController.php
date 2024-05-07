@@ -44,7 +44,6 @@ final class BannerEditPageController extends AbstractController
     #[Template('Admin/Pages/bannerEdit.html.twig')]
     public function update(Banner $banner): array
     {
-//        dd($this->responseFormatter->formatResponse($banner));
         return $this->responseFormatter->formatResponse($banner);
     }
 }

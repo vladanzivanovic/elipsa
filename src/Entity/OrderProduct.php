@@ -7,83 +7,57 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\OrderProductRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\OrderProductRepository::class)]
 class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ShopOrder", inversedBy="orderProducts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \ShopOrder::class, inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
     private ShopOrder $orderId;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="product.size")
-     */
+    
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(message: 'product.size')]
     private string $size;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductColor", inversedBy="orderProducts")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank(message="product.color")
-     */
+    
+    #[ORM\ManyToOne(targetEntity: \App\Entity\ProductColor::class, inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'product.color')]
     private ProductColor $color;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="product.quantity")
-     * @Assert\Positive(message="product.quantity_positive_number")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank(message: 'product.quantity')]
+    #[Assert\Positive(message: 'product.quantity_positive_number')]
     private int $quantity;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $price;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProductTranslation", mappedBy="orderProduct", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\OrderProductTranslation::class, mappedBy: 'orderProduct', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProductTranslations;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderProducts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $code;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Image")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Image::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Image $image;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $discount = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $promotionPrice = null;
 
     private int $total = 0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="orderProducts")
-     */
+    #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'orderProducts')]
     private ?Promotion $promotion = null;
 
     public function __construct()

@@ -5,39 +5,28 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryTranslationRepository")
- * @ORM\Table(indexes={@ORM\Index(columns={"title"}, flags={"fulltext"})})
- */
+#[ORM\Entity(repositoryClass: \App\Repository\CategoryTranslationRepository::class)]
+#[ORM\Table]
+#[ORM\Index(columns: ['title'], flags: ['fulltext'])]
 class CategoryTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="categoryTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Category::class, inversedBy: 'categoryTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $category;
 
     public function getId(): ?int

@@ -2,7 +2,7 @@
 {% import 'Site/Macros/Inputs/formWithLabels.html.twig' as inputWithLabels %}
 
 <div class="header-top-right">
-    <div class="login-or-register {{ is_mobile() ? 'col-xs-7 row' : '' }}">
+    <div class="login-or-register">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <a href="{{ path('site.logout') }}" id="logout"><span class="d-inline-block letter-capitalize">{{ 'logout.text' | trans }}</span></a>
         {% else %}
@@ -68,30 +68,16 @@
             </div>
         {% endif %}
     </div>
-
     <div class="top-cart {{ is_mobile() ? 'col-xs-5 row' : '' }}">
-        <span id="top_cart" tabindex="3" class="letter-capitalize">
-            <i class="fa fa-shopping-basket"></i>
-            <span class="letter-capitalize d-inline-block">{{ 'cart.name' | trans }}</span>
-            <span class="cart-number">
-                (<span class="cart-length">0</span>)
-            </span>
+    <span id="top_cart" tabindex="3" class="letter-capitalize">
+        <i class="fa fa-shopping-basket"></i>
+        <span class="letter-capitalize d-inline-block">{{ 'cart.name' | trans }}</span>
+        <span class="cart-number">
+            (<span class="cart-length">0</span>)
         </span>
+    </span>
         <div class="my-cart" id="my_cart">
-            <div class="cart-wrapper hide">
-                <div class="my-cart-products"></div>
-                <div class="my-cart-total-cost">
-                    <span class="letter-capitalize">{{ 'cart.total_products' | trans }}</span>
-                    <span class="cost"><span class="cost__number"></span></span>
-                </div>
-                <div class="viewcart-checkout">
-                    <a class="viewcart letter-capitalize" href="{{ path('site.cart_page') }}">{{ 'cart.view' | trans }}</a>
-                    <a class="checkout letter-capitalize" href="{{ path('site.checkout_page') }}">{{ 'cart.checkout' | trans }}</a>
-                </div>
-            </div>
-            <div class="empty-cart">
-                <p>{{ 'cart.empty' | trans }}</p>
-            </div>
+            {% include 'Site/Components/cartDropDown.html.twig' with {'cartWrapperClass': 'hide'} %}
         </div>
     </div>
 </div>

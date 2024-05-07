@@ -6,9 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SliderTextRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\SliderTextRepository::class)]
 class SliderText implements EntityInterface
 {
     use ResourceTrait;
@@ -19,19 +17,13 @@ class SliderText implements EntityInterface
     public const POSITION_HEADER = 'header';
     public const POSITION_FOOTER = 'footer';
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private ?bool $isActive = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SliderTextTranslation", mappedBy="sliderText", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\SliderTextTranslation::class, mappedBy: 'sliderText', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $sliderTextTranslations;
 
-    /**
-     * @ORM\Column(type="string", length=20, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
     private ?string $position;
 
     public function __construct()

@@ -16,10 +16,10 @@ class DescriptionRequestParser
 
     public function __construct(
         DescriptionRepository $descriptionRepository,
-        string $locales
+        array $locales
     ) {
         $this->descriptionRepository = $descriptionRepository;
-        $this->locales = explode('|', $locales);
+        $this->locales = $locales;
     }
 
     public function parse(DescriptionRequestDto $descriptionRequestDto): void

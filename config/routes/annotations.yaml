@@ -2,8 +2,8 @@ controllers_site:
     resource: ../../src/Controller/Site/
     type: annotation
     host:
-        rs: 'localhost'
-        ba: 'ba-elipsa'
+        rs: '%host_rs%'
+        ba: '%host_ba%'
         en: ''
     prefix:
         rs: ''

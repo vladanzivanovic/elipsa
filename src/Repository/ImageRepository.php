@@ -169,7 +169,7 @@ class ImageRepository extends ExtendedEntityRepository
     /**
      * @throws NonUniqueResultException
      */
-    public function getRelatedImage(string $imageName): ?Image
+    public function getRelatedImage(string $imageName): null|Image
     {
         $query = $this->createQueryBuilder('i')
             ->where('i.parentImage = :parentImageName')

@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ShopOrderRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ShopOrderRepository::class)]
 class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;
@@ -56,86 +54,55 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 
     public const SHIPPING_STATUS_COMPLETED = self::STATUS_COMPLETED;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $status;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $completedAt = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: \App\Entity\Address::class, cascade: ['persist', 'remove'])]
     private ?Address $billingAddress = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: \App\Entity\Address::class, cascade: ['persist', 'remove'])]
     private ?Address $shippingAddress = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="orderId", cascade={"persist", "remove"}, orphanRemoval=true)
-     *
      * @var Collection<int, OrderProduct>
      */
+    #[ORM\OneToMany(targetEntity: \App\Entity\OrderProduct::class, mappedBy: 'orderId', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProducts;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="shopOrders", cascade={"persist", "remove"})
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'shopOrders', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $paymentType = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $note = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Promotion", inversedBy="shopOrders")
-     */
+    #[ORM\ManyToOne(targetEntity: \Promotion::class, inversedBy: 'shopOrders')]
     private ?Promotion $coupon = null;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     private array $transactionData = [];
 
-    /**
-     * @ORM\Column(type="uuid", unique=true)
-     */
+    #[ORM\Column(type: 'uuid', unique: true)]
     private string $token;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     private ?array $trackingInfo = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $cardStatus = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $shippingType = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $visited = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Location::class)
-     */
+    #[ORM\ManyToOne(targetEntity: Location::class)]
     private ?Location $storeId = null;
 
     public function __construct()

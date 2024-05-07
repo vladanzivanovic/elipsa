@@ -58,13 +58,15 @@ class BannerRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    public function getActiveByType(int $type)
+    public function getActiveByType(int $type, string $locale)
     {
         $query = $this->createQueryBuilder('b')
             ->where('b.isActive = :isActive')
             ->andWhere('b.type = :type')
+            ->andWhere('b.availableCountries LIKE :locale')
             ->setParameter('isActive', true)
             ->setParameter('type', $type)
+            ->setParameter('locale', '%'.$locale.'%')
             ->orderBy('b.position');
 
         return $query->getQuery()->getResult();

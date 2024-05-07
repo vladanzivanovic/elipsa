@@ -25,7 +25,7 @@ final class SettingsExtension extends AbstractExtension
         ];
     }
 
-    public function getSettings(string $locale): array|null
+    public function getSettings(): array|null
     {
         return $this->settingsCollector->collect();
     }

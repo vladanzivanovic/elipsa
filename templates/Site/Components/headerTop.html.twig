@@ -1,49 +1,180 @@
+{% import 'Site/Macros/Inputs/input.html.twig' as inputs %}
+{% import 'Site/Macros/Inputs/formWithLabels.html.twig' as inputWithLabels %}
+
 <div class="header-top">
     <div class="container">
         {% if is_mobile() %}
-            <div class="row mobile-lang-bar">
-                <div class="my-account col-xs-4 text-center row">
-                    <a href="{{ path('site.account_page') }}">{{ 'navi.account' | trans }}</a>
-                </div>
-                <div class="col-xs-7 row">
+            <div class="row header-area">
+                <div class="col-xs-4">
                     <div class="logo">
                         <a href="{{ path('site.home_page') }}"><img src="{{ asset('build/site/images/logo/logo_header.png') }}" alt="{{ default_alt_tag }}"></a>
                     </div>
                 </div>
-                <div class="language col-xs-3 text-center row">
-                    {% for language in languages %}
-                        {% if locale == language.code %}
-                            <a href="#">{{ language.name | trans }}</a>
-                        {% endif %}
-                    {% endfor %}
-                    <ul id="locale-dropdown" class="menu-right-dropdown">
-                        {% for localeCode, language in transUrls %}
-                            {% if locale != localeCode %}
-                                <li>
-                                    <a id="locale_{{ language.code }}" data-locale-code="{{ language.code }}" href="{{ language.url }}">{{ language.name | trans }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+                <div class="col-xs-8 mobile-user-area">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <div class="my-account mobile-user-item go-to-link">
+                            <a href="{{ path('site.account_page') }}" title="{{ default_title_tag }} - User account">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="my-account mobile-user-item go-to-link">
+                            <a href="{{ path('site.logout') }}" title="{{ default_title_tag }} - Sign out">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="language mobile-user-item">
+                            <a href="#" title="{{ default_title_tag }} - Sign in">
+                                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            </a>
+                            <div class="drop-down-area">
+                                <h3>
+                                    <span>{{ 'login.text' | trans }} / {{ 'registration.text' | trans }}</span>
+                                    <i class="fa fa-times close-drop-down" aria-hidden="true"></i>
+                                </h3>
+                                <div class="mobile-login-registration-area">
+                                    <div>
+                                        <div class="lrc-login-form">
+                                            <form id="login-form" enctype="multipart/form-data">
+                                                {{ inputs.input('_csrf_token_login', csrf_token('authenticate'), '_csrf_token', '', 'hidden') }}
 
+                                                <div class="account-name">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ inputs.input('login_email', '', 'username', 'Email', 'email', 'letter-capitalize') }}
+                                                </div>
+                                                <div class="password">
+                                                    <i class="fa fa-lock"></i>
+                                                    {{ inputs.input('login_password', '', 'password', 'Password' | trans, 'password') }}
 
-{#                    {% if locale == 'en' %}#}
-{#                        <a id="current_language" href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
-{#                    {% else %}#}
-{#                        <a id="current_language" href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
-{#                    {% endif %}#}
-{#                    <ul id="locale-dropdown" class="menu-right-dropdown">#}
-{#                        <li>#}
-{#                            {% if locale == 'en' %}#}
-{#                                <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
-{#                            {% else %}#}
-{#                                <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
-{#                            {% endif %}#}
-{#                        </li>#}
-{#                    </ul>#}
+                                                </div>
+                                                <div class="remember-help">
+                                                    {{ inputWithLabels.checkbox('login.remember_me' | trans, 'login_remember_me', 1, '_remember_me') }}
+                                                </div>
+                                                <div class="lrc-submit">
+                                                    <input id="login-btn" class="hvr-bs" type="button" value="{{ 'login.btn' | trans }}">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div id="reset_password" class="remember-help">
+                                        <a href="#" id="reset_password_btn" class="letter-capitalize">{{ 'reset_password.text' | trans }}</a>
+                                    </div>
+                                    <div id="reset_password_form_wrapper" class="lrc-login" style="display: none">
+                                        <h4 class="lrc-title letter-capitalize">{{ 'reset_password.label' | trans }}</h4>
+                                        <div class="lrc-login-form">
+                                            <form id="reset_form" enctype="multipart/form-data">
+                                                {{ inputs.input('_csrf_token_reset_password', csrf_token('reset_password'), '_csrf_token', '', 'hidden') }}
+                                                <div class="account-name">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ inputs.input('reset_email', '', 'reset_email', 'Email', 'email', 'letter-capitalize') }}
+                                                </div>
+                                                <div class="lrc-submit">
+                                                    <input id="reset_btn" class="hvr-bs" type="button" value="{{ 'submit' | trans }}">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div id="login_register_show" class="remember-help" style="display: none">
+                                        <a href="#" id="login_register_show_btn"><span class="d-inline-block letter-capitalize">{{ 'login.text' | trans }}</span> / <span class="d-inline-block letter-capitalize">{{ 'registration.text' | trans }}</span></a>
+                                    </div>
+                                    <div id="registration_form_btn_wrapper" class="">
+                                        <a href="{{ path('site.registration') }}" id="registration_form_btn" class="hvr-bs">{{ 'registration.dont_have_account' | trans }}?</a>
+                                    </div>
+                                    {#                <div class="lrc-register">#}
+                                    {#                    <div class="or-register-to">#}
+                                    {#                        <span class="letter-capitalize">{{ 'login.via' | trans }}</span>#}
+                                    {#                        <ul>#}
+                                    {#                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"><i class="fa fa-facebook"></i></a></li>#}
+                                    {#                            <li><a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"><i class="fa fa-google"></i></a></li>#}
+                                    {#                        </ul>#}
+                                    {#                    </div>#}
+                                    {#                </div>#}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="language mobile-user-item">
+                        <a href="#">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                        </a>
+                        <div class="drop-down-area">
+                            <h3>
+                                <span>{{ 'header.choose_country_label' | trans }}</span>
+                                <i class="fa fa-times close-drop-down" aria-hidden="true"></i>
+                            </h3>
+                            <ul id="locale-dropdown" class="drop-down-list">
+                                {% for countryCode, country in countries  %}
+                                    <li>
+                                        <a
+                                            id="country_{{ countryCode }}"
+                                            data-country-code="{{ countryCode }}"
+                                            href="{{ url_locale(routeName, routeParams, locale, countryCode) }}"
+                                            class="{{ app.request.host == country.host ? 'selected' : '' }}"
+                                        >
+                                            {{ country.translation | trans }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="language mobile-user-item">
+                        <a href="#">
+                            <i class="fa fa-language" aria-hidden="true"></i>
+                        </a>
+                        <div class="drop-down-area">
+                            <h3>
+                                <span>{{ 'header.choose_lang_label' | trans }}</span>
+                                <i class="fa fa-times close-drop-down" aria-hidden="true"></i>
+                            </h3>
+                            <ul id="locale-dropdown" class="drop-down-list">
+                                {% for localeCode in countries[countryDefaultLocale].languages  %}
+                                    <li>
+                                        <a
+                                            id="locale_{{ localeCode }}"
+                                            data-locale-code="{{ localeCode }}"
+                                            href="{{ url_locale(routeName, routeParams, locale, localeCode) }}"
+                                            class="{{ locale == localeCode ? 'selected' : '' }}"
+                                        >
+                                            {{ languages[localeCode].translation | trans }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <ul id="locale-dropdown" class="menu-right-dropdown">
+                            {% for countryCode, country in countries  %}
+                                {% if locale != countryCode %}
+                                    <li>
+                                        <a id="country_{{ countryCode }}" data-country-code="{{ countryCode }}" href="{{ app.request.scheme ~ country.host }}">{{ languages[countryCode].translation | trans }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="mobile-user-item">
+                        <a href="#">
+                            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                        </a>
+                        <div class="drop-down-area">
+                            <h3>
+                                <span>{{ 'cart.name' | trans }}</span>
+                                <i class="fa fa-times close-drop-down" aria-hidden="true"></i>
+                            </h3>
+                            {% include 'Site/Components/cartDropDown.html.twig' %}
+                        </div>
+                    </div>
                 </div>
             </div>
-        {% endif %}
+{#            <div class="row">#}
+{#                <div class="col-xs-7 row">#}
+{#                    <div class="logo">#}
+{#                        <a href="{{ path('site.home_page') }}"><img src="{{ asset('build/site/images/logo/logo_header.png') }}" alt="{{ default_alt_tag }}"></a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+        {% else %}
         <div class="row">
             <div class="col-md-5 hidden-xs">
                 <div class="menu-area-left">
@@ -57,36 +188,36 @@
                     {#                        </ul>#}
                     {#                    </div>#}
                     <div class="language">
-                        {% for language in languages %}
-                            {% if locale == language.code %}
-                                <a href="#">{{ language.name | trans }}</a>
+                        {% for countryCode, country in countries %}
+                            {% if app.request.host == country.host %}
+                                <a href="#">{{ country.translation | trans }}</a>
                             {% endif %}
                         {% endfor %}
                         <ul id="locale-dropdown" class="menu-right-dropdown">
-                            {% for localeCode, language in transUrls %}
-                                {% if locale != localeCode %}
+                            {% for countryCode, country in countries  %}
+                                {% if app.request.host != country.host %}
                                     <li>
-                                        <a id="locale_{{ language.code }}" data-locale-code="{{ language.code }}" href="{{ language.url }}">{{ language.name | trans }}</a>
+                                        <a id="country_{{ countryCode }}" data-country-code="{{ countryCode }}" href="{{ url_locale(routeName, routeParams, locale, countryCode) }}">{{ country.translation | trans }}</a>
                                     </li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
-
-
-{#                        {% if locale == 'en' %}#}
-{#                            <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
-{#                        {% else %}#}
-{#                            <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
-{#                        {% endif %}#}
-{#                        <ul id="locale-dropdown" class="menu-right-dropdown">#}
-{#                            <li>#}
-{#                                {% if locale == 'en' %}#}
-{#                                    <a href="{{ locale != 'rs' ? url_locale(routeName, routeParams, 'en', 'rs') : '#' }}">{{ 'serbian' | trans }}</a>#}
-{#                                {% else %}#}
-{#                                    <a href="{{ locale != 'en' ? url_locale(routeName, routeParams, 'rs', 'en') : '#' }}">{{ 'english' | trans }}</a>#}
-{#                                {% endif %}#}
-{#                            </li>#}
-{#                        </ul>#}
+                    </div>
+                    <div class="language">
+                        {% for language in languages %}
+                            {% if locale == language.code %}
+                                <a href="#">{{ language.translation | trans }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <ul id="locale-dropdown" class="menu-right-dropdown">
+                            {% for localeCode in countries[countryDefaultLocale].languages %}
+                                {% if locale != localeCode %}
+                                    <li>
+                                        <a id="locale_{{ localeCode }}" data-locale-code="{{ localeCode }}" href="{{ url_locale(routeName, routeParams, locale, localeCode) }}">{{ languages[localeCode].translation | trans }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -97,9 +228,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-8 col-xs-12">
-                {{ include('Site/Components/login.html.twig') }}
-            </div>
+            {% if is_full_view() %}
+                <div class="col-md-4 col-sm-8 col-xs-12">
+                    {{ include('Site/Components/login.html.twig') }}
+                </div>
+            {% endif %}
         </div>
+        {% endif %}
     </div>
 </div>

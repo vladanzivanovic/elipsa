@@ -27,12 +27,12 @@ final class LocationEditRequestParser
         ParameterBagInterface $parameterBag,
         LocationImageService $imageService,
         BannerRepository $bannerRepository,
-        string $locales
+        array $locales
     ) {
         $this->parameterBag = $parameterBag;
         $this->imageService = $imageService;
         $this->bannerRepository = $bannerRepository;
-        $this->locales = explode('|', $locales);
+        $this->locales = $locales;
     }
 
     /**

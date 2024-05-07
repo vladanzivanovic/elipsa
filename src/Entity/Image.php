@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ImageRepository::class)]
 class Image
 {
     public const RELATED_TYPE_PRODUCT = 1;
@@ -24,38 +22,28 @@ class Image
     public const DEVICE_DESKTOP = 1;
     public const DEVICE_MOBILE = 2;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $originalName;
 
-    /**
-     * @ORM\Column(type="smallint")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'smallint')]
+    #[Assert\NotBlank]
     private $relatedToType;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $isMain;
 
     /**
      * @var UploadedFile $file
-     * @Assert\Image(maxSize="10M")
      */
+    #[Assert\Image(maxSize: '10M')]
     private $file;
 
     /**
@@ -63,14 +51,10 @@ class Image
      */
     private $isDeleted = false;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private $device;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length=255)
-     */
+    #[ORM\Column(type: 'string', nullable: true, length: 255)]
     private $parentImage;
 
     public function getId(): ?int

@@ -8,26 +8,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CountryOptionsFormatter
 {
-    private TranslatorInterface $translator;
-
-    private array $countries;
-
     public function __construct(
-        TranslatorInterface $translator,
-        array $countries
-    ) {
-        $this->countries = $countries;
-        $this->translator = $translator;
-    }
+        private readonly TranslatorInterface $translator,
+        private readonly array $countries,
+    ) {}
 
     public function format(): array
     {
         $options = [];
 
-        foreach ($this->countries as $country) {
+        foreach ($this->countries as $localeCode => $country) {
             $options[] = [
-                'title' => $this->translator->trans($country['name']),
-                'value' => $country['code'],
+                'title' => $this->translator->trans($country['translation']),
+                'value' => $localeCode,
             ];
         }
 

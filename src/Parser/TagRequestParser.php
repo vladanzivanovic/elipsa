@@ -29,9 +29,9 @@ final class TagRequestParser
         ParameterBagInterface $parameterBag,
         TagsRepository $tagsRepository,
         TagTranslationRepository $translationRepository,
-        string $locales
+        array $locales
     ) {
-        $this->locales = explode('|', $locales);
+        $this->locales = $locales;
         $this->translationRepository = $translationRepository;
     }
 

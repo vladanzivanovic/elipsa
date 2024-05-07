@@ -45,8 +45,6 @@ final class ColorRequestParser
             $productColor->setHex($bag->get('color'));
         }
 
-        new ArrayCollection();
-
         foreach (array_keys($locales) as $locale) {
             $trans = new ColorTranslation();
 

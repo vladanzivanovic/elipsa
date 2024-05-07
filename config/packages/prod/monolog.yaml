@@ -1,4 +1,6 @@
 monolog:
+    channels:
+        - deprecation
     handlers:
         main:
             type: fingers_crossed
@@ -13,12 +15,12 @@ monolog:
         console:
             type: console
             process_psr_3_messages: false
-            channels: ["!event", "!doctrine"]
+            channels: ["!event", "!doctrine", "!deprecation"]
         deprecation:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+            type: "null"
+            channels: ["deprecation"]
         deprecation_filter:
             type: filter
             handler: deprecation
-            max_level: debug
+            max_level: info
             channels: ["php"]

@@ -72,9 +72,11 @@ navi:
   orders: Orders
   shopping: Shopping
 
-serbian: Serbian
-english: English
+serbian_lang: Serbian language
+english_lang: English language
+bosnia_lang: Bosnia language
 serbia: Serbia
+bosnia_and_herzegovina: Bosnia and Herzegovina
 
 size: size
 color: color
@@ -679,4 +681,8 @@ product.is_deleted: Product "%item%" is deleted
 promotion.type.coupon: Coupon
 promotion.type.product: Product
 promotion.type.free_shipping: Free shipping
+
+header.choose_country_label: Choose country
+header.choose_lang_label: Choose language
+
 

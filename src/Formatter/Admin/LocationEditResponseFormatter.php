@@ -38,9 +38,10 @@ final class LocationEditResponseFormatter
     {
         $payload = [];
 
-        $options = [
-            'countries' => $this->countryOptionsFormatter->format(),
-        ];
+        //todo check this
+//        $options = [
+//            'countries' => $this->countryOptionsFormatter->format(),
+//        ];
 
         if ($location instanceof \App\Entity\Location) {
             $payload = $this->locationView->editView($location);
@@ -48,7 +49,7 @@ final class LocationEditResponseFormatter
 
         return [
             'payload' => $payload,
-            'options' => $options,
+//            'options' => $options,
         ];
     }
 }

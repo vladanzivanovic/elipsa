@@ -9,6 +9,7 @@ use App\Entity\Slider;
 use App\Handler\BannerHandler;
 use App\Helper\ConstantsHelper;
 use App\Parser\BannerEditRequestParser;
+use App\Request\Dto\Admin\BannerEditRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,9 +24,9 @@ final class BannerEditController extends AbstractController
     ) {}
 
     #[Route(path: '/api/add-banner', name: 'admin.add_banner_api', methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(BannerEditRequestDto $bannerEditRequestDto): JsonResponse
     {
-        $banner = $this->requestParser->parse($request->request);
+        $banner = $this->requestParser->parse($bannerEditRequestDto);
 
         $this->bannerHandler->save($banner);
 
@@ -39,9 +40,9 @@ final class BannerEditController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      */
     #[Route(path: '/api/edit-banner/{id}', name: 'admin.edit_banner_api', options: ['expose' => true], methods: ['PUT'])]
-    public function update(Request $request, Banner $banner): JsonResponse
+    public function update(BannerEditRequestDto $bannerEditRequestDto, Banner $banner): JsonResponse
     {
-        $banner = $this->requestParser->parse($request->request, $banner);
+        $banner = $this->requestParser->parse($bannerEditRequestDto, $banner);
 
         $this->bannerHandler->save($banner);
 

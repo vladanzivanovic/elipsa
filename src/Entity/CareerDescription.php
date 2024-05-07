@@ -7,9 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CareerDescriptionRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\CareerDescriptionRepository::class)]
 class CareerDescription
 {
     use TimestampableEntity;
@@ -18,37 +16,25 @@ class CareerDescription
     const STATUS_ACTIVE = 2;
     const STATUS_ARCHIVED = 3;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\OneToOne(targetEntity: \App\Entity\Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $image;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private $status;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CareerDescriptionTranslation", mappedBy="careerDescription", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\CareerDescriptionTranslation::class, mappedBy: 'careerDescription', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private $careerDescriptionTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Career", mappedBy="position")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Career::class, mappedBy: 'position')]
     private $careers;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $activationDate;
 
     public function __construct()

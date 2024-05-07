@@ -1073,7 +1073,8 @@ ul.menu-list li .hot::after {
 
 .language .menu-right-dropdown {
     left: -30px;
-    width: 130px;
+    min-width: 130px;
+    max-width: 200px;
 }
 
 .language a img {

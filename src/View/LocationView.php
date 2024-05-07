@@ -8,15 +8,11 @@ use App\Entity\Location;
 
 final class LocationView
 {
-    private array $locales;
-
     public function __construct(
         private readonly ImageView $imageView,
         private readonly string $defaultLocale,
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales
+    ) {}
 
     public function editView(Location $location): array
     {

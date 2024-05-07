@@ -132,7 +132,7 @@ final class NavigationMenuExtension extends AbstractExtension
 
     public function getBanners(string $locale, int $type): array
     {
-        $banners = $this->bannerRepository->getActiveByType($type);
+        $banners = $this->bannerRepository->getActiveByType($type, $locale);
 
         $formattedBanners = [];
 

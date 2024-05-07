@@ -4,41 +4,27 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SettingsRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\SettingsRepository::class)]
 class Settings
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private ?string $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private ?string $value;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private ?string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 2, nullable: true)]
     private ?string $locale;
 
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
+    #[ORM\Column(type: 'string', length: 15)]
     private ?string $inputType;
 
     public function getId(): ?int

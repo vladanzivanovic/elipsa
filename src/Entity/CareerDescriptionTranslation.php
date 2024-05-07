@@ -5,43 +5,29 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CareerDescriptionTranslationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\CareerDescriptionTranslationRepository::class)]
 class CareerDescriptionTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CareerDescription", inversedBy="careerDescriptionTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\CareerDescription::class, inversedBy: 'careerDescriptionTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $careerDescription;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private $slug;
 
     public function getId(): ?int

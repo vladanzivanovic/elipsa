@@ -10,12 +10,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
     use TimestampableEntity;
+    use ResourceTrait;
 
     const STATUS_PENDING = 1;
     const STATUS_ACTIVE = 2;
@@ -27,101 +26,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     const LOGIN_TYPE_GOOGLE = 'google';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'field.required', groups: ['SetUser', 'SetUserAdmin'])]
+    private string $email;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
-     */
-    private $email;
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\NotBlank(message: 'field.required', groups: ['SetUser', 'SetUserAdmin'])]
+    private null|string $password;
 
-    /**
-     * @var string|null The hashed password
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
-     */
-    private $password;
+    private null|string $rePassword;
 
-    /**
-     * @var string|null The hashed password
-     */
-    private $rePassword;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private int $status = self::STATUS_PENDING;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
-     */
-    private $firstName;
+    #[ORM\Column(type: 'string', length: 100)]
+    #[Assert\NotBlank(message: 'field.required', groups: ['SetUser', 'SetUserAdmin'])]
+    private string $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="field.required", groups={"SetUser", "SetUserAdmin"})
-     */
-    private $lastName;
+    #[ORM\Column(type: 'string', length: 100)]
+    #[Assert\NotBlank(message: 'field.required', groups: ['SetUser', 'SetUserAdmin'])]
+    private string $lastName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $resetToken;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private null|string $resetToken;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $resetRequestAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private null|\DateTimeInterface $resetRequestAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ShopOrder", mappedBy="user")
-     */
-    private $shopOrders;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ShopOrder::class)]
+    private Collection $shopOrders;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Address", mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $address;
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'])]
+    private Address $address;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserWishes", mappedBy="user", orphanRemoval=true)
-     */
-    private $userWishes;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserWishes::class, orphanRemoval: true)]
+    private Collection $userWishes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\NewsLetter", mappedBy="user")
-     */
-    private $newsLetters;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: NewsLetter::class)]
+    private Collection $newsLetters;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
-     */
-    private $notifications;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
+    private Collection $notifications;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $loginType = self::LOGIN_TYPE_INTERN;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $loginType = self::LOGIN_TYPE_INTERN;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private string $socialId;
 
-    /**
-     * @Assert\EqualTo(message="field.password_not_equal", propertyPath="rePassword", groups={"SetUser"})
-     */
+    #[Assert\EqualTo(propertyPath: 'rePassword', message: 'field.password_not_equal', groups: ['SetUser'])]
     private string $plainPassword;
 
     public function __construct()

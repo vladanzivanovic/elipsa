@@ -4,32 +4,22 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductHasSizesRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ProductHasSizesRepository::class)]
 class ProductHasSizes
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductSize", inversedBy="productHasSizes")
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\ProductSize::class, inversedBy: 'productHasSizes')]
     private ProductSize $size;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productHasSizes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'productHasSizes')]
+    #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $quantity = 0;
 
     public function getId(): ?int

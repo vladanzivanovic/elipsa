@@ -11,14 +11,10 @@ use App\Entity\SliderTextTranslation;
 
 final class OfficeContactView
 {
-    private array $locales;
-
     public function __construct(
         private readonly string $defaultLocale,
-        string $locales,
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
     public function editView(OfficeContact $officeContact): array
     {

@@ -4,9 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DescriptionRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\DescriptionRepository::class)]
 class Description
 {
     public const TYPE_LOYALTY = 'loyalty';
@@ -41,26 +39,18 @@ class Description
 
     public const TYPE_ABOUT_US = 'about_us';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private string $description;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private string $type;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private string $locale;
 
     public function getId(): ?int

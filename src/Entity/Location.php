@@ -6,66 +6,42 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\LocationRepository::class)]
 class Location
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private string $lat;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private string $lng;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="string", length=15, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private ?string $telephone = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $workingTime;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $saturday = null;
 
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
+    #[ORM\Column(type: 'string', length: 5)]
     private string $zipCode;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LocationTranslation", mappedBy="location", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\LocationTranslation::class, mappedBy: 'location', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $locationTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LocationHasImages", mappedBy="location", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\LocationHasImages::class, mappedBy: 'location', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $locationHasImages;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $sunday = null;
 
     public function __construct()

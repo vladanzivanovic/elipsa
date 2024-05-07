@@ -7,38 +7,31 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use SiteBundle\Entity\BlogTranslation;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\CategoryRepository::class)]
 class Category implements EntityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="children")
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Category::class, inversedBy: 'children')]
     private null|Category $parent;
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CategoryTranslation", mappedBy="category", orphanRemoval=true, cascade={"persist", "remove"})
-     *
      * @var Collection<int, CategoryTranslation>
      */
+    #[ORM\OneToMany(targetEntity: \App\Entity\CategoryTranslation::class, mappedBy: 'category', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $categoryTranslations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
-     *
      * @var Collection<int, Category>
      */
+    #[ORM\OneToMany(targetEntity: \App\Entity\Category::class, mappedBy: 'parent')]
     private Collection $children;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="category")
-     *
      * @var Collection<int, ProductHasCategories>
      */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasCategories::class, mappedBy: 'category')]
     private Collection $productHasCategories;
 
     public function __construct()

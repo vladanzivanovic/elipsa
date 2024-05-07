@@ -10,16 +10,12 @@ use App\Entity\Tags;
 
 final class BlogView
 {
-    private array $locales;
-
     public function __construct(
         private readonly TagView $tagView,
         private readonly ImageView $imageView,
         private readonly string $defaultLocale,
-        string $locales,
-    ){
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ){}
 
     public function editView(Blog $blog): array
     {
