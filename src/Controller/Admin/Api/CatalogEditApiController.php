@@ -11,64 +11,48 @@ use App\Handler\BannerHandler;
 use App\Helper\ConstantsHelper;
 use App\Handler\CatalogHandler;
 use App\Parser\CatalogEditRequestParser;
+use App\Request\Dto\Admin\CatalogEditRequestDto;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class CatalogEditApiController extends AbstractController
 {
-    private CatalogHandler $handler;
-
-    private CatalogEditRequestParser $requestParser;
-
     public function __construct(
-        CatalogHandler $handler,
-        CatalogEditRequestParser $requestParser
-    ) {
-        $this->handler = $handler;
-        $this->requestParser = $requestParser;
-    }
+        private readonly CatalogHandler $handler,
+        private readonly CatalogEditRequestParser $requestParser
+    ) {}
 
-    /**
-     *
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Exception
-     */
-    #[Route(path: '/api/add-catalog', name: 'admin.add_catalog_api', methods: ['POST'], options: ['expose' => true])]
-    public function add(Request $request): JsonResponse
+    #[Route(path: '/api/add-catalog', name: 'admin.add_catalog_api', options: ['expose' => true], methods: ['POST'])]
+    public function add(CatalogEditRequestDto $catalogEditRequestDto): JsonResponse
     {
-        $catalog = $this->requestParser->parse($request->request);
+        $catalog = $this->requestParser->parse($catalogEditRequestDto);
 
         $this->handler->save($catalog);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
-    /**
-     *
-     *
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    #[Route(path: '/api/update-catalog/{id}', name: 'admin.edit_catalog_api', methods: ['PUT'], options: ['expose' => true])]
-    public function update(Request $request, Catalogue $catalogue): JsonResponse
+    #[Route(path: '/api/update-catalog/{id}', name: 'admin.edit_catalog_api', options: ['expose' => true], methods: ['PUT'])]
+    public function update(CatalogEditRequestDto $catalogEditRequestDto, Catalogue $catalogue): JsonResponse
     {
-        $this->requestParser->parse($request->request, $catalogue);
+        $this->requestParser->parse($catalogEditRequestDto, $catalogue);
 
         $this->handler->save($catalogue);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
-     *
-     *
      * @throws \ReflectionException
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
-    #[Route(path: '/api/toggle-catalog-status/{id}/{status}', name: 'admin.api_toggle_catalog_status', methods: ['PATCH'], options: ['expose' => true])]
+    #[Route(path: '/api/toggle-catalog-status/{id}/{status}', name: 'admin.api_toggle_catalog_status', options: ['expose' => true], methods: ['PATCH'])]
     public function toggleActivation(Catalogue $catalogue, int $status): JsonResponse
     {
         $catalogue->setStatus($status);

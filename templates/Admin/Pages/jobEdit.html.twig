@@ -1,12 +1,19 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Dodavanje/Izmena radnog mesta{% endblock %}
+{% set IS_EDIT = routeName() == 'admin.edit_job' %}
+{% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
+{% set title = titlePrefix ~ ' radnog mesta' %}
+{% set routePath = 'admin.sliders' %}
+{% set routeTitle = 'Radna mesta' %}
+
+{% block title %}{{ title }}{% endblock %}
 {% block bodyClass %}job-edit{% endblock %}
-{% set isEdit = routeName() == 'admin.edit_job' %}
+
 {% block content %}
-
-
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena radnog mesta' } %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: title,
+        pages: [
+            {routeName: routePath, name: routeTitle}
+        ]} %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
 
@@ -34,6 +41,22 @@
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
+                        <h6 class="card-title">Odabir države</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Zemlja', 'country-select-box', 'available_countries[]', IS_EDIT ? payload.available_countries : '' , countries_options(), '', 'w-100', true) }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
                         <h6 class="card-title">Glavna slika</h6>
                         <div class="row">
                             {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'job', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
@@ -42,66 +65,43 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Srpski</h6>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    {{ form.input('Naziv *', 'job_title_rs', isEdit ? rs_title : null , 'rs_title') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
+        {% for locale, lang in languages %}
+            <div class="row country_{{ locale }} hide-country">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ lang.translation | trans }}</h6>
+                            <div class="row">
+                                <div class="col-sm-12">
                                     <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'job_description_rs', isEdit ? rs_description : null , 'rs_description', 10, '', 'form-control') }}
+                                        {{ form.input('Naziv *', 'title_'~locale, IS_EDIT ? payload.translations[locale].title : null , 'translations['~locale~'][title]') }}
                                     </div>
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            {{ form.textarea('Detaljan opis *', 'description_'~locale, IS_EDIT ? payload.translations[locale].description : null , 'translations['~locale~'][description]', 10, '', 'form-control') }}
+                                        </div>
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Engleski</h6>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    {{ form.input('Naziv *', 'job_title_en', isEdit ? en_title : null , 'en_title') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'job_description_en', isEdit ? en_description : null , 'en_description', 10, '', 'form-control') }}
-                                    </div>
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </form>
-    {{ form.button('job_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const IS_EDIT = {{ isEdit ? 1 : 0 }};
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
 
-        {% if isEdit %}
-            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        {% if IS_EDIT %}
+            const IMAGES = JSON.parse('{{ payload.media.images|json_encode()|raw }}');
         {% endif %}
     </script>
 {% endblock %}

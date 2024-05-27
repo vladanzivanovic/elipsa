@@ -7,6 +7,8 @@ namespace App\View;
 use App\Entity\Blog;
 use App\Entity\Image;
 use App\Entity\Tags;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class BlogView
 {
@@ -15,6 +17,7 @@ final class BlogView
         private readonly ImageView $imageView,
         private readonly string $defaultLocale,
         private readonly array $locales,
+        private readonly RouterInterface $router,
     ){}
 
     public function editView(Blog $blog): array
@@ -22,6 +25,7 @@ final class BlogView
         $view = $this->defaultViewData($blog);
 
         $view['media']['images'] = [$this->imageView->view($blog->getImage(), 'blog')];
+        $view['available_countries'] = $blog->getAvailableCountries();
 
         foreach ($blog->getBlogHasTags() as $blogHasTag) {
             $view['tags'][] = $blogHasTag->getTag()->getId();
@@ -39,6 +43,7 @@ final class BlogView
         }
 
         $view['media']['images'] = [$this->imageView->view($blog->getImage(), 'blog', 'blog_list')];
+        $view['_links'] = $this->getLinks($view['translations']);
 
         return $view;
     }
@@ -82,5 +87,22 @@ final class BlogView
         }
 
         return $translations;
+    }
+
+    private function getLinks(array $translations): array
+    {
+        $links = [];
+
+        foreach ($translations as $locale => $translation) {
+            $params = ['slug' => $translation['slug'], '_locale' => $locale];
+
+            $links[$locale] = $this->router->generate(
+                'site.blog_detailed_page',
+                $params,
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
+        return $links;
     }
 }

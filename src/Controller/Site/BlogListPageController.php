@@ -30,7 +30,7 @@ class BlogListPageController extends AbstractController
     {
         $locale = $request->getLocale();
 
-        $collection = $this->pageCollector->collect($locale, $page, $tag);
+        $collection = $this->pageCollector->collect($locale, $request->attributes->get('_country'), $page, $tag);
         $optionsCollector = $this->blogOptionsCollector->collect();
 
         return $this->pageFormatter->formatResponse($collection, $optionsCollector, $tag);

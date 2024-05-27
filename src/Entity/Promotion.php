@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,9 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: \App\Repository\PromotionRepository::class)]
 #[ORM\Table(name: 'promotion')]
 #[ORM\UniqueConstraint(name: 'promo_code', columns: ['code'])]
-class Promotion implements EntityInterface
+class Promotion implements EntityInterface, CountryResourceInterface
 {
     use ResourceTrait;
+    use CountryResourceTrait;
 
     const CHECKER_TYPE_VALIDITY = 'date_valid';
 

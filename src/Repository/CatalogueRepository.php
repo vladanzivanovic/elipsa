@@ -41,7 +41,8 @@ class CatalogueRepository extends ExtendedEntityRepository
             ->select(
                 'c.id as id',
                 'ct.title as title',
-                'c.status as status'
+                'c.status as status',
+                'c.availableCountries as available_countries'
             )
             ->innerJoin('c.catalogueTranslations', 'ct')
             ->where('ct.locale = \'rs\'')
@@ -54,14 +55,16 @@ class CatalogueRepository extends ExtendedEntityRepository
     }
 
     
-    public function getCatalogPage(string $locale): array
+    public function getCatalogPage(string $locale, string $countryCode): array
     {
         $query = $this->createQueryBuilder('c')
             ->innerJoin('c.catalogueTranslations', 'ct')
             ->where('ct.locale = :locale')
             ->andWhere('c.status = :activeStatus')
+            ->andWhere('c.availableCountries LIKE :country')
             ->setParameter('locale', $locale)
-            ->setParameter('activeStatus', Catalogue::STATUS_ACTIVE);
+            ->setParameter('activeStatus', Catalogue::STATUS_ACTIVE)
+            ->setParameter('country', '%'.$countryCode.'%');
 
         return $query->getQuery()->getResult();
     }

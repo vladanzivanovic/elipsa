@@ -2,17 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\PromotionEligibilityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\OrderProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: \App\Repository\OrderProductRepository::class)]
+#[ORM\Entity(repositoryClass: OrderProductRepository::class)]
 class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;
 
-    #[ORM\ManyToOne(targetEntity: \ShopOrder::class, inversedBy: 'orderProducts')]
+    #[ORM\ManyToOne(targetEntity: ShopOrder::class, inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ShopOrder $orderId;
 
@@ -22,7 +26,7 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
     private string $size;
 
     
-    #[ORM\ManyToOne(targetEntity: \App\Entity\ProductColor::class, inversedBy: 'orderProducts')]
+    #[ORM\ManyToOne(targetEntity: ProductColor::class, inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank(message: 'product.color')]
     private ProductColor $color;
@@ -35,10 +39,10 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
     #[ORM\Column(type: 'integer')]
     private int $price;
 
-    #[ORM\OneToMany(targetEntity: \App\Entity\OrderProductTranslation::class, mappedBy: 'orderProduct', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'orderProduct', targetEntity: \App\Entity\OrderProductTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProductTranslations;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'orderProducts')]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
@@ -158,12 +162,12 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
 
@@ -194,7 +198,7 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return $this;
     }
 
-    public function getDiscount(): ?int
+    public function getDiscount(): null|int
     {
         return $this->discount;
     }
@@ -296,7 +300,13 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 
     public function isProductAvailable(): bool
     {
-        foreach ($this->product->getAvailableSizes() as $availableSize) {
+        $productOption = $this->product->getOptionsByCountry($this->orderId->getCountry());
+
+        if (null === $productOption) {
+            return false;
+        }
+
+        foreach ($productOption->getAvailableSizes() as $availableSize) {
             if (
                 ($availableSize->getSize()->getSlug() === $this->size) &&
                 ($this->quantity <= $availableSize->getQuantity())

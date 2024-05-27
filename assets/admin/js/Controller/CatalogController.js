@@ -2,16 +2,17 @@ import ConfirmationModalService from "../Services/ConfirmationModalService";
 import NotificationService from "../../../js/NotificationService";
 import CatalogHandler from "../Handler/CatalogHandler";
 import CatalogDataTables from "../Services/DataTables/CatalogDataTables";
+import CatalogDataTableEvents from "../Event/CatalogDataTableEvents";
 
 const Private = Symbol('private');
 
 class CatalogController {
     constructor() {
-        if (CAN_VIEW) {
-            CatalogDataTables().init();
-        }
+        const dataTable = new CatalogDataTableEvents();
+
         this.notification = NotificationService();
 
+        dataTable.registerEvents();
         this[Private]().registerEvents();
     }
 

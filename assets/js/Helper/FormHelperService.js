@@ -4,7 +4,7 @@ require('jquery-serializejson');
 
 class FormHelperService {
     static sanitize(data) {
-        return data.filter(obj => obj.value && obj.value.length > 0);
+        return data.filter(obj => obj.value && obj.value.length > 0 && obj.value != '<p><br></p>');
     }
 
     static sanitizeJson(data) {
@@ -15,7 +15,7 @@ class FormHelperService {
                 sanitizedObject[itemKey] = this.sanitizeJson(data[itemKey]);
             }
 
-            if (data[itemKey] && data[itemKey].length > 0) {
+            if (data[itemKey] && data[itemKey].length > 0 && data[itemKey] != '<p><br></p>') {
                 sanitizedObject[itemKey] = data[itemKey];
             }
         }

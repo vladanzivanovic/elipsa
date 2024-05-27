@@ -1,5 +1,5 @@
     {% import 'Site/Macros/navigation.html.twig' as childNavList %}
-    {% set menuBanners = menu_banners(locale) %}
+    {% set menuBanners = menu_banners(countryDefaultLocale) %}
     {% set seasonBanner = season_banner(locale) %}
 <div class="menu-area hidden-sm hidden-xs">
     <div class="container">
@@ -152,7 +152,7 @@
     </div>
 </div>
 <!-- mobile-menu-end -->
-    {% set sliderTexts = slider_text(locale, constant('App\\Entity\\SliderText::POSITION_HEADER')) %}
+    {% set sliderTexts = slider_text(locale, constant('App\\Entity\\SliderText::POSITION_HEADER'), countryDefaultLocale) %}
 
     {% if sliderTexts | length > 0 %}
         <div class="slider-text-area">

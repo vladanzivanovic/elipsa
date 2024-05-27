@@ -33,12 +33,10 @@ final class OrdersListController extends AbstractController
     }
 
     /**
-     *
-     *
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    #[Route(path: '/api/get-order-list', name: 'admin.get_order_list', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/get-order-list', name: 'admin.get_order_list', options: ['expose' => true], methods: ['POST'])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

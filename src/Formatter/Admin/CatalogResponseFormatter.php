@@ -36,6 +36,7 @@ final class CatalogResponseFormatter
     {
         $view = [
             'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByCatalog($catalogue), 'catalog'),
+            'available_countries' => $catalogue->getAvailableCountries(),
         ];
 
         $translations = [];

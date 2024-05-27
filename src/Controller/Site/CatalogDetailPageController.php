@@ -6,6 +6,7 @@ namespace App\Controller\Site;
 
 use App\Entity\CatalogueTranslation;
 use App\View\CatalogView;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,13 +22,22 @@ final class CatalogDetailPageController extends AbstractController
         $this->catalogView = $catalogView;
     }
 
-    #[Route(path: ['rs' => '/katalog/{slug}', 'en' => '/catalogue/{slug}'], name: 'site.catalog_detail_page', methods: ['GET'])]
+    //todo try to customise error message from EntityValueResolver
+    #[Route(path: [
+        'rs' => '/katalog/{slug}',
+        'en' => '/catalogue/{slug}',
+        'ba' => '/katalog/{slug}'
+    ], name: 'site.catalog_detail_page', methods: ['GET'])]
     #[Template('Site/Pages/catalogDetail.html.twig')]
     public function getCatalog(
+        #[MapEntity(expr: 'repository.getByCountryCode(slug, request.attributes.get("_country"))')]
         CatalogueTranslation $catalogueTranslation,
         Request $request
     ): array {
 
-        return $this->catalogView->view($catalogueTranslation->getCatalogue(), $request->getLocale());
+        return $this->catalogView->view(
+            $catalogueTranslation->getCatalogue(),
+            $request->getLocale()
+        );
     }
 }

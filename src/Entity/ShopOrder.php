@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\PromotionEligibilityInterface;
+use App\Entity\Resources\ResourceTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -104,6 +107,9 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
     private ?Location $storeId = null;
+
+    #[ORM\Column(length: 5)]
+    private ?string $country = null;
 
     public function __construct()
     {
@@ -363,6 +369,18 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     public function setStoreId(?Location $storeId): self
     {
         $this->storeId = $storeId;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }

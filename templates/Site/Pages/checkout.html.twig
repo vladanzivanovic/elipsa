@@ -152,7 +152,7 @@
                                         {{ inputs.input('termsAndConditions', 1, 'terms_and_conditions', '', 'checkbox', '', 'data-error-after=".terms-and-conditions"') }}
                                         <label for="termsAndConditions" id="termsAndConditionLabel" class="letter-capitalize"> {{ 'checkout.checkbox.terms_and_conditions' | trans | raw }}</label>
                                     </div>
-                                    <a href="{{ path('site.use_conditions') }}" class="fa fa-info-circle" aria-hidden="true" target="_blank"></a>
+                                    <a href="{{ path('site.company_text', {'_locale': locale, 'type': siteInfoText.use_conditions.slug[locale]}) }}" class="fa fa-info-circle" aria-hidden="true" target="_blank"></a>
                                 </div>
                                 <div class="place-order">
                                     <button type="submit" class="checkout-page-button hvr-bs">{{ 'cart.checkout' | trans }}</button>

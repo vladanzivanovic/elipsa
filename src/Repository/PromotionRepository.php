@@ -7,6 +7,7 @@ use App\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @method Promotion|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,8 +17,10 @@ use Doctrine\ORM\NoResultException;
  */
 class PromotionRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly RequestStack $requestStack
+    ) {
         parent::__construct($registry, Promotion::class);
     }
 
@@ -70,19 +73,38 @@ class PromotionRepository extends ExtendedEntityRepository
     }
 
     /**
+     * @throws NonUniqueResultException
+     */
+    public function getByCode(string $code): null|Promotion
+    {
+        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
+
+        $query = $this->createQueryBuilder('p')
+            ->where('p.code = :code')
+            ->andWhere('p.availableCountries LIKE :countryCode')
+            ->setParameter('code', $code)
+            ->setParameter('countryCode', '%'.$countryCode.'%');
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * @return Promotion[]
      */
     public function getActivePromotionsByType(string $type): array
     {
         $now = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
+        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
 
         $query = $this->createQueryBuilder('p')
             ->select('p')
             ->where('p.validTo >= :now')
             ->andWhere('p.validFrom <= :now')
             ->andWhere('p.type = :type')
+            ->andWhere('p.availableCountries LIKE :countryCode')
             ->setParameter('now', $now)
-            ->setParameter('type', $type);
+            ->setParameter('type', $type)
+            ->setParameter('countryCode', '%'.$countryCode.'%');
 
         return $query->getQuery()->getResult();
     }

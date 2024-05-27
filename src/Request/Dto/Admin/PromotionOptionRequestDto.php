@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Request\Dto;
+namespace App\Request\Dto\Admin;
 
 class PromotionOptionRequestDto
 {

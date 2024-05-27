@@ -2,7 +2,7 @@
 
 {% block title %}Dodavanje/Izmena bloga{% endblock %}
 {% block bodyClass %}blog-edit{% endblock %}
-{% set isEdit = routeName() == 'admin.edit_blog_page' %}
+{% set IS_EDIT = routeName() == 'admin.edit_blog_page' %}
 {% block content %}
 
 
@@ -34,6 +34,22 @@
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
+                        <h6 class="card-title">Odabir države</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Zemlja', 'country-select-box', 'available_countries[]', IS_EDIT ? payload.available_countries : '' , countries_options(), '', 'w-100', true) }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
                         <h6 class="card-title">Glavna slika</h6>
                         <div class="row">
                             {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'blog', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
@@ -42,16 +58,16 @@
                 </div>
             </div>
         </div>
-        {% for locale, lang in app_params('languages') %}
-        <div class="row">
+        {% for locale, lang in languages %}
+        <div class="row country_{{ locale }} hide-country">
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">{{ lang.name }}</h6>
+                        <h6 class="card-title">{{ lang.translation | trans }}</h6>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {{ form.input('Naziv *', 'title_'~locale, isEdit ? payload.translations[locale]['title'] : null , locale~'[title]', '', 'text', null, 'form-control') }}
+                                    {{ form.input('Naziv *', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : null, 'translations['~locale~'][title]', '', 'text', null, 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
@@ -59,7 +75,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Kratak opis *', 'short_description_'~locale, isEdit ? payload.translations[locale]['short_description'] : null, locale~'[short_description]', 3, '', 'form-control') }}
+                                        {{ form.textarea('Kratak opis *', 'short_description_'~locale, IS_EDIT ? payload.translations[locale]['short_description'] : null, 'translations['~locale~'][short_description]', 3, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -68,7 +84,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        {{ form.textarea('Detaljan opis *', 'description_'~locale, isEdit ? payload.translations[locale]['description'] : null , locale~'[description]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Detaljan opis *', 'description_'~locale, IS_EDIT ? payload.translations[locale]['description'] : null , 'translations['~locale~'][description]', 10, '', 'form-control') }}
                                     </div>
                                 </div>
                             </div><!-- Col -->
@@ -86,7 +102,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags', 'tags[]', isEdit ? payload.tags : '', options.tags, '', 'w-100', true) }}
+                                    {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? payload.tags : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div>
@@ -99,10 +115,10 @@
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
-        const IS_EDIT = {{ isEdit ? 1 : 0 }};
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = '{{ app.request.attributes.get('id') }}';
 
-        {% if isEdit %}
+        {% if IS_EDIT %}
             const IMAGES = JSON.parse('{{ payload.media.images|json_encode()|raw }}');
         {% endif %}
     </script>

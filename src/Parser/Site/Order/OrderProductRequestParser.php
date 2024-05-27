@@ -20,37 +20,15 @@ use Webmozart\Assert\Assert;
 
 final class OrderProductRequestParser
 {
-    private ProductColorRepository $colorRepository;
-
-    private ImageRepository $imageRepository;
-
-    private ProductTranslationRepository $productTranslationRepository;
-
-    private OrderProductTranslationParser $orderProductTranslationParser;
-
-    private OrderCouponParser $orderCouponParser;
-
-    private OrderRequestParser $orderRequestParser;
-
-    private ProductPromotionParser $productPromotionParser;
-
     public function __construct(
-        ProductColorRepository $colorRepository,
-        ImageRepository $imageRepository,
-        ProductTranslationRepository $productTranslationRepository,
-        OrderProductTranslationParser $orderProductTranslationParser,
-        OrderCouponParser $orderCouponParser,
-        OrderRequestParser $orderRequestParser,
-        ProductPromotionParser $productPromotionParser
-    ) {
-        $this->colorRepository = $colorRepository;
-        $this->imageRepository = $imageRepository;
-        $this->productTranslationRepository = $productTranslationRepository;
-        $this->orderProductTranslationParser = $orderProductTranslationParser;
-        $this->orderCouponParser = $orderCouponParser;
-        $this->orderRequestParser = $orderRequestParser;
-        $this->productPromotionParser = $productPromotionParser;
-    }
+        private readonly ProductColorRepository $colorRepository,
+        private readonly ImageRepository $imageRepository,
+        private readonly ProductTranslationRepository $productTranslationRepository,
+        private readonly OrderProductTranslationParser $orderProductTranslationParser,
+        private readonly OrderCouponParser $orderCouponParser,
+        private readonly OrderRequestParser $orderRequestParser,
+        private readonly ProductPromotionParser $productPromotionParser
+    ) {}
 
     /**
      * @throws ProductManipulationException
@@ -68,12 +46,14 @@ final class OrderProductRequestParser
             $order,
             $orderProductRequestDto->productSlug,
             $size,
-            $color
+            $color,
+            $orderProductRequestDto->country,
         );
 
         $product = $orderProduct->getProduct();
+        $productOption = $product->getOptionsByCountry($orderProductRequestDto->country);
 
-        $promotion = $this->productPromotionParser->setProductPromotion($product);
+        $promotion = $this->productPromotionParser->setProductPromotion($product, $orderProductRequestDto->country);
 
         Assert::notFalse($product->hasColor($color));
 
@@ -81,9 +61,9 @@ final class OrderProductRequestParser
         $orderProduct->setSize($size);
         $orderProduct->setQuantity($orderProductRequestDto->quantity);
         $orderProduct->setImage($this->imageRepository->getMainByProduct($product));
-        $orderProduct->setPrice($product->getPrice());
+        $orderProduct->setPrice($productOption->getPrice());
         $orderProduct->setCode($product->getCode());
-        $orderProduct->setDiscount($product->getPromoDiscount() ?? $product->getDiscount());
+        $orderProduct->setDiscount($productOption->getPromoDiscount() ?? $productOption->getDiscount());
 
         if (false === $orderProduct->isProductAvailable()) {
             throw new ProductManipulationException('product.size_unavailable');
@@ -116,7 +96,8 @@ final class OrderProductRequestParser
         ShopOrder $order,
         string $productTranslationSlug,
         string $size,
-        ProductColor $color
+        ProductColor $color,
+        string $country,
     ): OrderProduct {
         $orderProduct = $order->getOrderProductByValues(
             $productTranslationSlug,
@@ -127,13 +108,21 @@ final class OrderProductRequestParser
         if (!$orderProduct instanceof OrderProduct) {
             $productTranslation = $this->productTranslationRepository->findOneBy(['slug' => $productTranslationSlug]);
 
-            if (true === $productTranslation->getProduct()->isSold()) {
+            $product = $productTranslation->getProduct();
+
+            $productOption = $product->getOptionsByCountry($country);
+
+            if (null === $productOption) {
+                throw new ProductManipulationException('product.not_available_for_country');
+            }
+
+            if (true === $productOption->isSold()) {
                 throw new ProductManipulationException('product.is_sold');
             }
 
             $orderProduct = new OrderProduct();
 
-            $orderProduct->setProduct($productTranslation->getProduct());
+            $orderProduct->setProduct($product);
             $orderProduct->setOrderId($order);
         }
 

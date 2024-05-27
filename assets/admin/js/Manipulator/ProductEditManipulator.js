@@ -19,18 +19,22 @@ class ProductEditManipulator {
 
     setSizes()
     {
-        for (const size of PRODUCT_SIZES) {
-            this.addSizeRow(size.slug, size.quantity);
+        for (const countryCode in PRODUCT_SIZES) {
+            const sizes = PRODUCT_SIZES[countryCode];
+
+            for (const size of sizes) {
+                this.addSizeRow(countryCode, size.slug, size.quantity);
+            }
         }
     }
 
-    addSizeRow(sizeValue, quantity)
+    addSizeRow(countryCode, sizeValue, quantity)
     {
-        const row = this.#productEditDom.getSizeRowHtml(sizeValue, quantity);
+        const row = this.#productEditDom.getSizeRowHtml(countryCode, sizeValue, quantity);
 
-        $(`${this.#productEditMapper.sizes} tbody`).append(row);
+        $(`${this.#productEditMapper.sizes[countryCode].table} tbody`).append(row);
 
-        $('.sizes:last').select2();
+        $('.sizes').select2({width: '100%'});
     }
 
     removeSizeRow(rowElement)

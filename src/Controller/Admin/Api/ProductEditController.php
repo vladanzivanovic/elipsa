@@ -9,6 +9,7 @@ use App\Entity\ProductTranslation;
 use App\Handler\ProductEditHandler;
 use App\Helper\ConstantsHelper;
 use App\Parser\ProductEditRequestParser;
+use App\Request\Dto\Admin\ProductEditRequestDto;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,9 +35,9 @@ final class ProductEditController extends AbstractController
      * @throws ORMException
      */
     #[Route(path: '/api/product/add', name: 'admin.add_product_api', options: ['expose' => true], methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(ProductEditRequestDto $productEditRequestDto): JsonResponse
     {
-        $product = $this->requestParser->parse($request->request);
+        $product = $this->requestParser->parse($productEditRequestDto);
 
         $this->editHandler->save($product);
 
@@ -46,17 +47,17 @@ final class ProductEditController extends AbstractController
     /**
      * @throws ORMException
      */
-    #[Route(path: '/api/product/{slug}', name: 'admin.edit_product_api', methods: ['PUT'], options: ['expose' => true])]
-    public function update(Request $request, ProductTranslation $productTranslation): JsonResponse
+    #[Route(path: '/api/product/{slug}', name: 'admin.edit_product_api', options: ['expose' => true], methods: ['PUT'])]
+    public function update(ProductEditRequestDto $productEditRequestDto, ProductTranslation $productTranslation): JsonResponse
     {
-        $product = $this->requestParser->parse($request->request, $productTranslation->getProduct());
+        $product = $this->requestParser->parse($productEditRequestDto, $productTranslation->getProduct());
 
         $this->editHandler->save($product);
 
         return $this->json(null, Response::HTTP_CREATED);
     }
 
-    #[Route(path: '/api/product/status/{slug}/{status}', name: 'admin.api_product_change_status', methods: ['PATCH'], options: ['expose' => true])]
+    #[Route(path: '/api/product/status/{slug}/{status}', name: 'admin.api_product_change_status', options: ['expose' => true], methods: ['PATCH'])]
     public function changeStatus(ProductTranslation $productTranslation, int $status): JsonResponse
     {
         $productTranslation->getProduct()->setStatus($status);
@@ -68,7 +69,7 @@ final class ProductEditController extends AbstractController
         return $this->json(['text' => $statusText]);
     }
 
-    #[Route(path: '/api/product/home-page-position/{slug}/{status}', name: 'admin.api_product_home_page_position', methods: ['PATCH'], options: ['expose' => true])]
+    #[Route(path: '/api/product/home-page-position/{slug}/{status}', name: 'admin.api_product_home_page_position', options: ['expose' => true], methods: ['PATCH'])]
     public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
     {
         $productTranslation->getProduct()->setShowHomePage($status);
@@ -78,7 +79,7 @@ final class ProductEditController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    #[Route(path: '/api/product/sold/{slug}', name: 'admin.api_product_is_sold', methods: ['PATCH'], options: ['expose' => true])]
+    #[Route(path: '/api/product/sold/{slug}', name: 'admin.api_product_is_sold', options: ['expose' => true], methods: ['PATCH'])]
     public function toggleProductIsSold(ProductTranslation $productTranslation): JsonResponse
     {
         $product = $productTranslation->getProduct();

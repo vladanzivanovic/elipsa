@@ -17,9 +17,10 @@ final class SliderTextView
     public function editView(SliderText $sliderText): array
     {
         $view = [];
+        $view['available_countries'] = $sliderText->getAvailableCountries();
 
         foreach ($this->locales as $locale) {
-            $view[$locale] = $this->getDescAndLink($sliderText->getByLocale($locale));
+            $view['translations'][$locale] = $this->getDescAndLink($sliderText->getByLocale($locale));
         }
 
         $view['position'] = $sliderText->getPosition();

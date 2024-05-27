@@ -1,6 +1,9 @@
 @import "../youtube";
 
 .product-edit {
+  .dropzone-file{
+    height: auto;
+  }
   .select2-selection--single {
     padding: 6px 10px;
   }

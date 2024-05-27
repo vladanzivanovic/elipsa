@@ -83,27 +83,27 @@ final class ProductFormatter
         $this->promotionCollector = $promotionCollector;
     }
 
-    public function formatResponse(array $data, string $locale, ?User $user = null): array
+    public function formatResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
     {
         return
-            ['payload' => $this->formatApiResponse($data, $locale, $user)] +
-            ['relatedProducts' => $this->getProducts($data['related_products'], $locale)]
+            ['payload' => $this->formatApiResponse($data, $locale, $countryCode, $user)] +
+            ['relatedProducts' => $this->getProducts($data['related_products'], $countryCode)]
         ;
     }
 
-    public function formatApiResponse(array $data, string $locale, ?User $user = null): array
+    public function formatApiResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
     {
         /** @var Product $product */
         $product = $data['product'];
 
-        $this->productPromotionParser->setProductPromotion($product);
+        $this->productPromotionParser->setProductPromotion($product, $countryCode);
 
-        $productView = $this->productView->view($product, $locale, $user);
+        $productView = $this->productView->view($product, $user);
 
         $productView['categories'] = $this->getCategories($product, $locale);
         $productView['media']['images'] = $this->getImages($product);
         $productView['colors'] = $this->getColors($product);
-        $productView['sizes'] = $this->getSizes($product);
+//        $productView['sizes'] = $this->getSizes($product);
         $productView['cleaningIcons'] = $this->getCleaningIcons($product);
         $productView['media']['youtubes'] = $this->getYoutubes($product);
         $productView['tags'] = $this->getTags($product);
@@ -111,22 +111,17 @@ final class ProductFormatter
         return $productView;
     }
 
-    /**
-     * @param array<int, Product> $products
-     * @return array<int, mixed>
-     */
-    public function getProducts(array $products, string $locale, ?User $user = null): array
+    public function getProducts(array $products, string $countryCode, null|User $user = null): array
     {
         $productsView = [];
 
-//        $productPromotions = $this->promotionCollector->getPromotionsByproduct(Promotion::TYPE_PRODUCT);
+//        $productPromotions = $this->promotionCollector->getPromotionsByProduct(Promotion::TYPE_PRODUCT);
 
         foreach ($products as $product) {
-            $this->productPromotionParser->setProductPromotion($product);
+            $this->productPromotionParser->setProductPromotion($product, $countryCode);
 
-            $productView = $this->productView->view($product, $locale, $user);
+            $productView = $this->productView->view($product, $user);
             $productView['colors'] = $this->getColors($product);
-            $productView['sizes'] = $this->getSizes($product);
             $productView['tags'] = $this->getTags($product);
             $productView['image'] = $this->imageView->view($product->getMainImage(), 'product', 'list_thumb');
 
@@ -156,17 +151,6 @@ final class ProductFormatter
         }
 
         return $colors;
-    }
-
-    private function getSizes(Product $product): array
-    {
-        $sizes = [];
-
-        foreach ($product->getProductHasSizes() as $productHasSize) {
-            $sizes[] = $this->productSizeView->view($productHasSize);
-        }
-
-        return $sizes;
     }
 
     private function getCategories(Product $product, string $locale): array

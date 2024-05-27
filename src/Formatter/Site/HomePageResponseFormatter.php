@@ -14,37 +14,34 @@ final class HomePageResponseFormatter
 {
     use FormatterTrait;
 
-    private RouterInterface $router;
-
-    private SliderView $sliderView;
-
-    private BannerView $bannerView;
-
-    private ProductFormatter $productFormatter;
-
     public function __construct(
-        RouterInterface $router,
-        SliderView $sliderView,
-        BannerView $bannerView,
-        ProductFormatter $productFormatter
-    ) {
-        $this->router = $router;
-        $this->sliderView = $sliderView;
-        $this->bannerView = $bannerView;
-        $this->productFormatter = $productFormatter;
-    }
+        private readonly RouterInterface $router,
+        private readonly SliderView $sliderView,
+        private readonly BannerView $bannerView,
+        private readonly ProductFormatter $productFormatter
+    ) {}
 
-    public function formatResponse(array $data, string $locale, ?User $user = null): array
+    public function formatResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
     {
         $data['sliders'] = array_map(function ($slider) use ($locale) {
 
             return $this->sliderView->siteView($slider, $locale);
         }, $data['sliders']);
 
-        $data['banners'] = $this->formatBanners($data['banners']);
-        $data['products'] = $this->formatProducts(
-            $this->productFormatter->getProducts($data['products'], $locale, $user)
-        );
+        if (null !== $data['banners'][Banner::TYPE_SPEED_LINKS]) {
+            $data['banners'][Banner::TYPE_SPEED_LINKS] = $this->formatSpeedLinksBanners($data['banners'][Banner::TYPE_SPEED_LINKS]);
+        }
+
+        if (0 < count($data['banners'][Banner::TYPE_LOYALTY])) {
+            $data['banners'][Banner::TYPE_LOYALTY] = $this->createBannerView(
+                $data['banners'][Banner::TYPE_LOYALTY][0],
+                ['desktop' => 'loyalty_banner', 'mobile' => 'loyalty_banner_mobile'],
+            );
+        }
+
+        $data['products'] = $this->productFormatter->getProducts($data['products'], $countryCode, $user);
+
+//        dd($data);
 
         return $data;
     }
@@ -52,26 +49,21 @@ final class HomePageResponseFormatter
     /**
      * @param Banner[] $banners
      */
-    private function formatBanners(array $banners): array
+    private function formatSpeedLinksBanners(array $banners): array
     {
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-            $formattedBanners[$banner->getPosition()] = $this->bannerView->view($banner);
+            $filter = in_array($banner->getPosition(), [1,4]) ? 'home_banner_side' : 'home_banner_center';
+
+            $formattedBanners[$banner->getPosition()] = $this->createBannerView($banner, ['desktop' => $filter, 'mobile' => $filter]);
         }
 
         return $formattedBanners;
     }
 
-    
-    private function formatProducts(array $products): array
+    private function createBannerView(Banner $banner, array $filters): array
     {
-        $formattedProducts = [];
-
-        foreach ($products as $product){
-            $formattedProducts[$product['show_home_page']][] = $product;
-        }
-
-        return $formattedProducts;
+        return $this->bannerView->view($banner, $filters);
     }
 }

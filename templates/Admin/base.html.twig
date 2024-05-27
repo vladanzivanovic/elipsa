@@ -45,6 +45,7 @@
         const YOUTUBE_API_KEY = '{{ 'YOUTUBE_API_KEY' | getenv }}';
         const COUNTRIES = JSON.parse('{{ countries | json_encode | raw }}');
         const IMAGE_DEVICES = JSON.parse('{{ get_class_constants('App\\Entity\\Image', 'DEVICE') | json_encode() | raw }}');
+        const ENTITY_STATUSES = JSON.parse('{{ get_class_constants('App\\Entity\\Resources\\StatusInterface', 'STATUS') | json_encode() | raw }}');
 
         window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
     </script>

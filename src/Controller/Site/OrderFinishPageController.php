@@ -55,7 +55,11 @@ final class OrderFinishPageController extends AbstractController
      * @throws OptimisticLockException
      * @throws \ReflectionException
      */
-    #[Route(path: ['rs' => '/korpa/uspesna-narudzbina/{token}', 'en' => '/cart/success-order/{token}'], name: 'site.checkout_completed_successful', options: ['expose' => true], methods: ['POST', 'GET'])]
+    #[Route(path: [
+        'rs' => '/korpa/uspesna-narudzbina/{token}',
+        'en' => '/cart/success-order/{token}',
+        'ba' => '/korpa/uspjesna-narudzba/{token}'
+    ], name: 'site.checkout_completed_successful', options: ['expose' => true], methods: ['POST', 'GET'])]
     #[Template('Site/Pages/checkoutFinish.html.twig')]
     public function successPage(Request $request, string $token)
     {

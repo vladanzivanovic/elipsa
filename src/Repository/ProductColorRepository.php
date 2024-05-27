@@ -20,7 +20,8 @@ use Doctrine\ORM\NoResultException;
 class ProductColorRepository extends ExtendedEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry,
+        private readonly ManagerRegistry $registry,
+        private readonly string $defaultLocale,
     ){
         parent::__construct($registry, ProductColor::class);
     }
@@ -64,8 +65,12 @@ class ProductColorRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('pc')
             ->select(
                 'pc.hex',
+                'pct.title',
                 'pc.id as value'
-            );
+            )
+            ->innerJoin('pc.colorTranslations', 'pct')
+            ->where('pct.locale = :defaultLocale')
+            ->setParameter('defaultLocale', $this->defaultLocale);
 
         return $query->getQuery()->getArrayResult();
     }

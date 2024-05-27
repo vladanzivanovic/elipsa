@@ -18,17 +18,13 @@ final class BlogPageRouterFormatter
         private readonly array $locales,
     ) {}
 
-    /**
-     *
-     * @return string
-     */
     public function localeFormatter(string $slug, string $locale): ?string
     {
         $fromTrans = $this->blogTranslationRepository->findOneBy(['alias' => $slug]);
 
         $toTrans = $fromTrans->getBlog()->getBlogTranslationByLocale($locale);
 
-        return null !== $toTrans ? $toTrans->getAlias() : null;
+        return $toTrans?->getAlias();
     }
 
     public function createLocalizedLinks(
@@ -67,6 +63,8 @@ final class BlogPageRouterFormatter
             return null;
         }
 
-        return $this->tagTranslationRepository->getForLocalization($tagSlug, $locale);
+        $tag = $this->tagTranslationRepository->getForLocalization($tagSlug, $locale);
+
+        return $tag['slug'] ?? null;
     }
 }

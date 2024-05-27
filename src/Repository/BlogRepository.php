@@ -45,7 +45,8 @@ class BlogRepository extends ExtendedEntityRepository
                 'blog.id as id',
                 'blog.status as status',
                 'bt.title as title',
-                'bt.alias'
+                'bt.alias',
+                'blog.availableCountries as available_countries'
             )
             ->innerJoin(BlogTranslation::class, 'bt', 'WITH', 'bt.blog = blog AND bt.locale = :locale')
             ->setFirstResult($tableModel->getOffset())
@@ -56,30 +57,13 @@ class BlogRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string|null $tagSlug
-     *
-     */
-    public function getDqlForPaginationPage(string $locale, null|string $tagSlug): QueryBuilder
+    public function getDqlForPaginationPage(string $countryCode, null|string $tagSlug): QueryBuilder
     {
         $query = $this->createQueryBuilder('blog')
-//            ->select(
-//                'blog.id as productId',
-//                'DATE_FORMAT(blog.createdAt, \'%d\') as day',
-//                'DATE_FORMAT(blog.createdAt, \'%b\') as month',
-//                'DATE_FORMAT(blog.createdAt, \'%d.%m.%Y\') as date',
-//                'bt.title',
-//                'bt.shortDescription',
-//                'bt.alias',
-//                'image.name as imageName'
-//            )
-//            ->innerJoin('blog.blogTranslations', 'bt')
-//            ->innerJoin('blog.image', 'image')
-//            ->innerJoin('blog.blogHasTags', 'bht')
             ->where('blog.status = :status')
-//            ->andWhere('bt.locale = :locale')
+            ->andWhere('blog.availableCountries LIKE :country')
             ->setParameter('status', Blog::STATUS_ACTIVE)
-//            ->setParameter('locale', $locale)
+            ->setParameter('country', '%'.$countryCode.'%')
             ->orderBy('blog.createdAt', 'DESC')
             ->groupBy('blog.id');
 

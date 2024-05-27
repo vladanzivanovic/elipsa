@@ -1,17 +1,17 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import NotificationService from "../../../js/NotificationService";
 import BannerHandler from "../Handler/BannerHandler";
-import BannersDataTables from "../Services/DataTables/BannersDataTables";
+import BannersDataTableEvents from "../Event/BannersDataTableEvents";
 
 const Private = Symbol('private');
 
 class BannersController {
     constructor() {
-        if (CAN_VIEW) {
-            BannersDataTables().init();
-        }
+        const dataTable = new BannersDataTableEvents();
+
         this.notification = NotificationService();
 
+        dataTable.registerEvents();
         this[Private]().registerEvents();
     }
 

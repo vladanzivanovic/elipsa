@@ -1,15 +1,34 @@
+import DataTableOptions from "./DataTableOptions";
+
 require('./DataTableOptions');
 
-export default (() => {
-    let Public = {},
-        Private = {};
+class BlogDataTables {
+    #dataTable;
+    #tableRef = '#data-table';
+    #dataTableOptionGenerator;
 
-    Private.tableRef = $('#data-table');
+    constructor() {
+        this.#dataTableOptionGenerator = new DataTableOptions();
+    }
 
-    Public.init = () => {
-        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
+    reload()
+    {
+        this.#dataTable.ajax.reload(null, false);
+    }
+
+    getDataTable()
+    {
+        return this.#dataTable;
+    }
+
+
+    init()
+    {
+        const route = Routing.generate('admin.blog_list');
+
+        const tableOptions = {
             ajax: {
-                url: Routing.generate('admin.blog_list'),
+                url: route,
                 type: 'POST'
             },
             columns: [
@@ -31,13 +50,17 @@ export default (() => {
                     } },
             ],
             order: [[0, 'desc']],
-        });
-        Private.tableRef.DataTable(options);
-    };
+        }
 
-    Public.reload = () => {
-        Private.tableRef.DataTable().ajax.reload(null, false);
-    };
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
 
-    return Public;
-});
+        this.#dataTable = $(this.#tableRef).DataTable(options);
+    }
+}
+
+const blogDataTables = new BlogDataTables();
+
+export default blogDataTables;

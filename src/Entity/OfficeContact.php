@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use App\Repository\OfficeContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

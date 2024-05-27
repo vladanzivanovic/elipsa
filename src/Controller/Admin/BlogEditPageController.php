@@ -15,17 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class BlogEditPageController extends AbstractController
 {
-    private BlogEditResponseFormatter $responseFormatter;
-
-    private TagsRepository $tagsRepository;
-
     public function __construct(
-        BlogEditResponseFormatter $responseFormatter,
-        TagsRepository $tagsRepository
-    ) {
-        $this->responseFormatter = $responseFormatter;
-        $this->tagsRepository = $tagsRepository;
-    }
+        private readonly BlogEditResponseFormatter $responseFormatter,
+        private readonly TagsRepository $tagsRepository
+    ) {}
 
     #[Route(path: '/blog/add', name: 'admin.add_blog_page', methods: ['GET'])]
     #[Template('Admin/Pages/blogEdit.html.twig')]

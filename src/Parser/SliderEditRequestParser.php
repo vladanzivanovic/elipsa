@@ -9,6 +9,7 @@ use App\Entity\Slider;
 use App\Entity\SliderTranslation;
 use App\Repository\SliderRepository;
 use App\Repository\SliderTranslationRepository;
+use App\Request\Dto\Admin\SliderEditRequestDto;
 use App\Services\SliderImageService;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -31,7 +32,7 @@ final class SliderEditRequestParser
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function parse(ParameterBag $bag, Slider $slider = null): Slider
+    public function parse(SliderEditRequestDto $sliderEditRequestDto, Slider $slider = null): Slider
     {
         if (!$slider instanceof Slider) {
             $lastPosition = $this->sliderRepository->getLastPosition();
@@ -42,18 +43,21 @@ final class SliderEditRequestParser
             $slider->setPosition($newPosition);
         }
 
-        $this->setLocale($bag, $slider);
+        $slider->setAvailableCountries($sliderEditRequestDto->availableCountries);
 
-        $this->imageService->setImages($slider, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);
-        $this->imageService->setImages($slider, json_decode($bag->get('images_mobile'), true), Image::DEVICE_MOBILE);
+        $this->setLocale($sliderEditRequestDto->translations, $slider);
+
+        foreach ($sliderEditRequestDto->images as $device => $images) {
+            $this->imageService->setImages($slider, $images, $device);
+        }
 
         return $slider;
     }
 
-    private function setLocale(ParameterBag $bag, Slider $slider): void
+    private function setLocale(array $translations, Slider $slider): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->all($locale);
+            $transCollection = $translations[$locale];
             $trans = $this->translationRepository->findOneBy(['slider' => $slider, 'locale' => $locale]);
 
 

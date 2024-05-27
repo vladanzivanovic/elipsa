@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Resources\StatusInterface;
 use App\Entity\SliderText;
 use App\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,8 +17,10 @@ use Doctrine\ORM\NoResultException;
  */
 class SliderTextRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly string $defaultLocale,
+    ) {
         parent::__construct($registry, SliderText::class);
     }
 
@@ -40,13 +43,15 @@ class SliderTextRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('st')
             ->select(
                 'st.id as id',
-                'st.isActive as is_active',
+                'st.status as status',
                 'st.position as position',
                 'stt.title as title',
                 'stt.link as link',
+                'st.availableCountries as available_countries',
             )
-            ->innerJoin('st.sliderTextTranslations', 'stt')
-            ->where('stt.locale = \'rs\'')
+            ->innerJoin('st.translations', 'stt')
+            ->where('stt.locale = :defaultLocale')
+            ->setParameter('defaultLocale', $this->defaultLocale)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
@@ -55,13 +60,15 @@ class SliderTextRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    public function getListByPosition(string $position): array
+    public function getListByPosition(string $position, string $countryCode): array
     {
         $query = $this->createQueryBuilder('st')
-            ->where('st.isActive = :activeSlider')
+            ->where('st.status = :activeSlider')
             ->andWhere('st.position = :position')
-            ->setParameter('activeSlider', SliderText::STATUS_ACTIVE)
+            ->andWhere('st.availableCountries LIKE :country')
+            ->setParameter('activeSlider', StatusInterface::STATUS_ACTIVE)
             ->setParameter('position', $position)
+            ->setParameter('country', '%'.$countryCode.'%')
         ;
 
         return $query->getQuery()->getResult();

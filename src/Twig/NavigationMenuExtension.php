@@ -77,9 +77,9 @@ final class NavigationMenuExtension extends AbstractExtension
         return $formattedTags;
     }
 
-    public function getSliderText(string $locale, string $position): array
+    public function getSliderText(string $locale, string $position, string $countryCode): array
     {
-        $texts = $this->sliderTextRepository->getListByPosition($position);
+        $texts = $this->sliderTextRepository->getListByPosition($position, $countryCode);
 
         $sliderTexts = [];
 
@@ -90,9 +90,9 @@ final class NavigationMenuExtension extends AbstractExtension
         return $sliderTexts;
     }
 
-    public function getMenuBanners(string $locale): array
+    public function getMenuBanners(string $host): array
     {
-        return $this->getBanners($locale, Banner::TYPE_MENU);
+        return $this->getBanners($host, Banner::TYPE_MENU);
     }
 
     public function getSeasonBanner(string $locale): ?array
@@ -125,23 +125,21 @@ final class NavigationMenuExtension extends AbstractExtension
         return $formattedMenu;
     }
 
-    public function getName(): string
+    public function getBanners(string $host, int $type): array
     {
-        return 'navigation_extension';
-    }
-
-    public function getBanners(string $locale, int $type): array
-    {
-        $banners = $this->bannerRepository->getActiveByType($type, $locale);
+        $banners = $this->bannerRepository->getActiveByType($type, $host);
 
         $formattedBanners = [];
 
         foreach ($banners as $banner) {
-            $formattedBanners[] = $this->bannerView->view($banner);
+            $formattedBanners[] = $this->bannerView->view($banner, ['desktop' => 'menu_banner', 'mobile' => 'menu_banner']);
         }
 
-//        dd($formattedBanners);
-
         return $formattedBanners;
+    }
+
+    public function getName(): string
+    {
+        return 'navigation_extension';
     }
 }

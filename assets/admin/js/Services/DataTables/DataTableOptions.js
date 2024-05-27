@@ -34,6 +34,17 @@ class DataTableOptions {
         return this;
     }
 
+    setAvailableCountries(index)
+    {
+        const columns = this.#tableOptions.columns;
+
+        columns.splice(index, 0, { data: 'hosts', name: 'available_countries', title: 'Sajtovi' });
+
+        this.#tableOptions.columns = columns;
+
+        return this;
+    }
+
     withCheckBoxSelection()
     {
         this.#tableOptions = Object.assign(

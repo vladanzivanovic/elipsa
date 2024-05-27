@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:focal
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG PHP_VERSION=8.1
@@ -16,8 +16,6 @@ RUN apt-get update -y
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 
-RUN apt-get update -y
-
 RUN apt-get update -y && apt-get install -y php$PHP_VERSION
 RUN apt-get install -y php-pear
 RUN apt-get install -y  libapache2-mod-php$PHP_VERSION
@@ -29,7 +27,7 @@ RUN apt-get install -y php$PHP_VERSION-xsl
 RUN apt-get install -y php$PHP_VERSION-gd
 
 RUN apt-get update -y
-RUN apt-get install -y php$PHP_VERSION-imagick
+#RUN apt-get install -y php$PHP_VERSION-imagick
 RUN apt-get install -y php$PHP_VERSION-tidy
 RUN apt-get install -y php$PHP_VERSION-xmlrpc
 RUN apt-get install -y php$PHP_VERSION-xml
@@ -40,6 +38,7 @@ RUN apt-get install -y php$PHP_VERSION-mbstring
 RUN apt-get install -y php$PHP_VERSION-zip
 RUN apt-get install -y php$PHP_VERSION-intl
 RUN apt-get install -y php$PHP_VERSION-dev
+RUN apt-get install -y php$PHP_VERSION-imagick
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 

@@ -38,7 +38,7 @@ final class OrderCouponParser
     {
         $order = $this->orderRequestParser->findOrder($orderToken);
 
-        $coupon = $this->promotionCouponRepository->findOneBy(['code' => $couponCode]);
+        $coupon = $this->promotionCouponRepository->getByCode($couponCode);
 
         if ($removeCoupon) {
             $this->removePromotion($order, $coupon);

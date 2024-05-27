@@ -51,6 +51,8 @@ class LocalizationUrlExtension extends AbstractExtension
             default => $this->default($routeName, $routeParams, $toLocale),
         };
 
+        $routeParams['_locale'] = $toLocale;
+
         return $this->router->generate($routeName, $routeParams);
     }
 

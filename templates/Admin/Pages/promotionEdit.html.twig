@@ -31,6 +31,22 @@
                 <div class="card-body">
                     <form id="edit_form" enctype="multipart/form-data">
                         <div class="row">
+                            <div class="col-md-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Odabir države</h6>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    {{ form.select('Zemlja', 'country-select-box', 'available_countries[]', IS_EDIT ? payload.available_countries : '' , countries_options(), '', 'w-100', true) }}
+                                                </div>
+                                            </div><!-- Col -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
                                     {{ form.select('Tip promocije', 'type', 'type', IS_EDIT ? payload.type : '', options.promotion_types, '', 'w-100') }}

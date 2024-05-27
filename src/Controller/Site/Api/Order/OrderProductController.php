@@ -19,29 +19,13 @@ use Webmozart\Assert\Assert;
 
 final class OrderProductController extends AbstractController
 {
-    private OrderProductRequestParser $orderProductRequestParser;
-
-    private OrderHandler $orderHandler;
-
-    private OrderEditResponseFormatter $responseFormatter;
-
-    private OrderProductHandler $orderProductHandler;
-
-    private ExceptionView $exceptionView;
-
     public function __construct(
-        OrderProductRequestParser $orderProductRequestParser,
-        OrderHandler $orderHandler,
-        OrderEditResponseFormatter $responseFormatter,
-        OrderProductHandler $orderProductHandler,
-        ExceptionView $exceptionView
-    ) {
-        $this->orderHandler = $orderHandler;
-        $this->responseFormatter = $responseFormatter;
-        $this->orderProductRequestParser = $orderProductRequestParser;
-        $this->orderProductHandler = $orderProductHandler;
-        $this->exceptionView = $exceptionView;
-    }
+        private readonly OrderProductRequestParser $orderProductRequestParser,
+        private readonly OrderHandler $orderHandler,
+        private readonly OrderEditResponseFormatter $responseFormatter,
+        private readonly OrderProductHandler $orderProductHandler,
+        private readonly ExceptionView $exceptionView
+    ) {}
 
     #[Route(path: '/api/order/product/{token}/{slug}', name: 'site_api.set_product_order', options: ['expose' => true], methods: ['POST'])]
     public function manage(OrderProductRequestDto $orderProductRequestDto): JsonResponse

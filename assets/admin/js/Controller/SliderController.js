@@ -1,17 +1,17 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
 import NotificationService from "../../../js/NotificationService";
-import SliderDataTables from "../Services/DataTables/SliderDataTables";
 import SliderHandler from "../Handler/SliderHandler";
+import SliderDataTableEvents from "../Event/SliderDataTableEvents";
 
 const Private = Symbol('private');
 
 class SliderController {
     constructor() {
-        if (CAN_VIEW) {
-            SliderDataTables().init();
-        }
+        const dataTable = new SliderDataTableEvents();
+
         this.notification = NotificationService();
 
+        dataTable.registerEvents();
         this[Private]().registerEvents();
     }
 

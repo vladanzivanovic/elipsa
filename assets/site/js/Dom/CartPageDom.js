@@ -109,7 +109,7 @@ class CartPageDom {
             <tr class="table-row1 ${orderProduct.is_sold ? 'product-sold' : ''}" data-id="${ orderProduct.id }">
                 <td class="cart_product_image_value">
                     <div class="pro-photo-checkout">
-                        <img src="${ orderProduct.image.file }" alt="" />
+                        <img src="${ orderProduct.image.file }" alt="${DEFAULT_ALT_TAG}" />
                     </div>
                 </td>
                 <td class="cart_product_name_value">

@@ -76,6 +76,7 @@ class CheckoutHandler {
                         AppHelperService.redirect(redirectUrl);
                     })
                     .catch(e => {
+                        console.log(e);
                         let message = e.message;
 
                         if (e.responseJSON !== undefined && e.responseJSON.error !== undefined) {

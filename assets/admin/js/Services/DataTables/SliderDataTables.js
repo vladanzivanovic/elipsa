@@ -1,18 +1,36 @@
+import DataTableOptions from "./DataTableOptions";
+
 require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
-export default (() => {
-    let Public = {},
-        Private = {};
+class SliderDataTables {
+    #dataTable;
+    #tableRef = '#data-table';
+    #dataTableOptionGenerator;
 
-    Private.tableRef = $('#data-table');
-    Private.dataTable = null;
+    constructor() {
+        this.#dataTableOptionGenerator = new DataTableOptions();
+    }
 
-    Public.init = () => {
-        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
+    reload()
+    {
+        this.#dataTable.ajax.reload(null, false);
+    }
+
+    getDataTable()
+    {
+        return this.#dataTable;
+    }
+
+
+    init()
+    {
+        const route = Routing.generate('admin.get_slider_list');
+
+        const tableOptions = {
             ajax: {
-                url: Routing.generate('admin.get_slider_list'),
+                url: route,
                 type: 'POST'
             },
             columns: [
@@ -47,43 +65,17 @@ export default (() => {
                 dataSrc: 'id',
                 update: false,
             }
-        });
+        }
 
-        Private.dataTable = Private.tableRef.DataTable(options);
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
 
-        Private.registerEvents();
-    };
+        this.#dataTable = $(this.#tableRef).DataTable(options);
+    }
+}
 
-    Public.reload = () => {
-        Private.tableRef.DataTable().ajax.reload(null, false);
-    };
+const sliderDataTables = new SliderDataTables();
 
-    Private.registerEvents = () => {
-        Private.dataTable.on('row-reorder', (e, diff, edit) => {
-            let data = {};
-            for(let i = 0; i < diff.length; i++) {
-                let rowData = Private.dataTable.row( diff[i].node ).data();
-
-                data[rowData.id] = {
-                    'id': rowData.id,
-                    'position': diff[i].newPosition + 1,
-                };
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: AppHelperService.generateLocalizedUrl('admin.set_sliders_position'),
-                data: {'rows': JSON.stringify(data)},
-                dataType: 'json',
-                success: response => {
-                    Public.reload();
-                },
-                error: error => {
-
-                },
-            })
-        })
-    };
-
-    return Public;
-});
+export default sliderDataTables;

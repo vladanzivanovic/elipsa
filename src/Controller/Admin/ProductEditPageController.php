@@ -17,29 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ProductEditPageController extends AbstractController
 {
-    private TagsRepository $tagsRepository;
-
-    private CategoryRepository $categoryRepository;
-
-    private ProductSizeRepository $sizeRepository;
-
-    private ProductColorRepository $colorRepository;
-
-    private ProductEditResponseFormatter $responseFormatter;
-
     public function __construct(
-        TagsRepository $tagsRepository,
-        CategoryRepository $categoryRepository,
-        ProductSizeRepository $sizeRepository,
-        ProductColorRepository $colorRepository,
-        ProductEditResponseFormatter $responseFormatter
-    ) {
-        $this->tagsRepository = $tagsRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->sizeRepository = $sizeRepository;
-        $this->colorRepository = $colorRepository;
-        $this->responseFormatter = $responseFormatter;
-    }
+        private readonly TagsRepository $tagsRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly ProductSizeRepository $sizeRepository,
+        private readonly ProductColorRepository $colorRepository,
+        private readonly ProductEditResponseFormatter $responseFormatter
+    ) {}
 
     #[Route(path: '/add-product', name: 'admin.add_product_page', methods: ['GET'])]
     #[Template('Admin/Pages/productEdit.html.twig')]

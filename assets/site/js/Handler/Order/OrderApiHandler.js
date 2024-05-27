@@ -1,6 +1,4 @@
-import AppHelperService from "../../../../js/Helper/AppHelperService";
 import orderApiChecker from "../../Checker/OrderApiChecker";
-import loader from "../../Dom/LoaderDom";
 import orderStorageManipulator from "../../Manipulator/OrderStorageManipulator";
 
 class OrderApiHandler {

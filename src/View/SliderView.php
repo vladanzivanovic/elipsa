@@ -54,6 +54,7 @@ final class SliderView
             'position' => $slider->getPosition(),
             'is_active' => $slider->getIsActive(),
             'translations' => $this->getTranslationValues($slider),
+            'available_countries' => $slider->getAvailableCountries(),
             'media' => [
                 'images' => $images,
             ]

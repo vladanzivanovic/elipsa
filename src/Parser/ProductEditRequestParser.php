@@ -10,14 +10,17 @@ use App\Entity\ProductCleaning;
 use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
+use App\Entity\ProductOptions;
 use App\Entity\ProductTranslation;
 use App\Entity\ShopOrder;
 use App\Entity\Tags;
+use App\Entity\Youtube;
 use App\Parser\Site\Order\OrderProductTranslationParser;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductSizeRepository;
 use App\Repository\ProductTranslationRepository;
 use App\Repository\TagsRepository;
+use App\Request\Dto\Admin\ProductEditRequestDto;
 use App\Services\ProductImageService;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -27,95 +30,58 @@ final class ProductEditRequestParser
 {
     use ParserTrait;
 
-    private ParameterBagInterface $parameterBag;
-
-    private ProductTranslationRepository $translationRepository;
-
-    private CategoryTranslationRepository $categoryTranslationRepository;
-
-    private ProductSizeRepository $sizeRepository;
-
-    private ProductImageService $imageService;
-
-    private YouTubeParser $youTubeParser;
-
-    private TagsRepository $tagsRepository;
-
-    private OrderProductTranslationParser $orderProductTranslationParser;
-
-    private array $locales;
-
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        ProductTranslationRepository $translationRepository,
-        CategoryTranslationRepository $categoryTranslationRepository,
-        ProductSizeRepository $sizeRepository,
-        ProductImageService $imageService,
-        YouTubeParser $youTubeParser,
-        TagsRepository $tagsRepository,
-        OrderProductTranslationParser $orderProductTranslationParser,
-        array $locales
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->translationRepository = $translationRepository;
-        $this->categoryTranslationRepository = $categoryTranslationRepository;
-        $this->sizeRepository = $sizeRepository;
-        $this->imageService = $imageService;
-        $this->youTubeParser = $youTubeParser;
-        $this->locales = $locales;
-        $this->tagsRepository = $tagsRepository;
-        $this->orderProductTranslationParser = $orderProductTranslationParser;
-    }
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly ProductTranslationRepository $translationRepository,
+        private readonly CategoryTranslationRepository $categoryTranslationRepository,
+        private readonly ProductSizeRepository $sizeRepository,
+        private readonly ProductImageService $imageService,
+        private readonly YouTubeParser $youTubeParser,
+        private readonly TagsRepository $tagsRepository,
+        private readonly OrderProductTranslationParser $orderProductTranslationParser,
+        private readonly array $locales,
+    ) {}
 
-    public function parse(ParameterBag $bag, ?Product $product = null): Product
+    public function parse(ProductEditRequestDto $productEditRequestDto, null|Product $product = null): Product
     {
         if (!$product instanceof Product) {
             $product = new Product();
             $product->setStatus(Product::STATUS_PENDING);
         }
 
-        $product->setCode($bag->get('code'));
-        $product->setDiscount($bag->getInt('discount'));
-        $product->setPrice($bag->getInt('price'));
-        $product->setShowHomePage((int) $bag->get('show_home_page'));
-        $product->setSold($bag->getBoolean('sold'));
+        $product->setCode($productEditRequestDto->code);
 
-        $this->setLocales($bag, $product);
+        $this->setOptions($productEditRequestDto, $product);
 
-        if ($bag->has('categories')) {
-            $this->setCategories($product, $bag->all('categories'));
+        $this->setLocales($productEditRequestDto, $product);
+
+        if ($productEditRequestDto->categories) {
+            $this->setCategories($product, $productEditRequestDto->categories);
         }
-        if ($bag->has('tags')) {
-            $this->setTags($product, $bag->all('tags'));
-        }
-        if ($bag->has('sizes')) {
-            $this->setSizes($product, $bag->all('sizes'));
+        if ($productEditRequestDto->tags) {
+            $this->setTags($product, $productEditRequestDto->tags);
         }
 
-        $this->setCleaning($product, $bag);
+        $this->setCleaning($product, $productEditRequestDto);
 
-        $this->imageService->setImages($product->getProductTranslations()->first(), json_decode($bag->get('images'), true));
+        $this->imageService->setImages($product->getProductTranslations()->first(), $productEditRequestDto->images);
 
-        $this->setYoutube($bag, $product);
+        $this->setYoutube($productEditRequestDto, $product);
 
+        //todo fix this when order is refactored for country option
         $this->updateOrderProducts($product);
 
         return $product;
     }
 
-    public function setYoutube(ParameterBag $bag, Product $product): void
+    public function setYoutube(ProductEditRequestDto $productEditRequestDto, Product $product): void
     {
-        $collection = $product->getYoutubes();
-        $collection->clear();
+        $product->getYoutubes()->clear();
 
-        if (false === $bag->has('youtube')) {
-            return;
-        }
-
-        foreach ($bag->all('youtube') as $youtube) {
+        foreach ($productEditRequestDto->youtubeUrl as $youtube) {
             $youtube = $this->youTubeParser->parse(json_decode($youtube, true));
 
-            if (!$youtube instanceof \App\Entity\Youtube) {
+            if (!$youtube instanceof Youtube) {
                 continue;
             }
 
@@ -123,10 +89,10 @@ final class ProductEditRequestParser
         }
     }
 
-    private function setLocales(ParameterBag $bag, Product $product): void
+    private function setLocales(ProductEditRequestDto $productEditRequestDto, Product $product): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->all($locale);
+            $transCollection = $productEditRequestDto->translations[$locale];
             $trans = $this->translationRepository->findOneBy(['product' => $product, 'locale' => $locale]);
 
             if (null === $trans) {
@@ -179,12 +145,9 @@ final class ProductEditRequestParser
         }
     }
 
-    private function setSizes(Product $product, array $sizes): void
+    private function setSizes(ProductOptions $productOptions, array $sizes): void
     {
-        if (!is_null($product->getId())) {
-            $hasTags = $product->getProductHasSizes();
-            $hasTags->clear();
-        }
+        $productOptions->getProductHasSizes()->clear();
 
         foreach ($sizes['slug'] as $index => $sizeSlug) {
             $size = $this->sizeRepository->findOneBy(['slug' => $sizeSlug]);
@@ -193,23 +156,20 @@ final class ProductEditRequestParser
             $hasSize->setSize($size);
             $hasSize->setQuantity((int) $sizes['quantity'][$index]);
 
-            $product->addProductHasSize($hasSize);
+            $productOptions->addProductHasSize($hasSize);
         }
     }
 
-    private function setCleaning(Product $product, ParameterBag $bag): void
+    private function setCleaning(Product $product, ProductEditRequestDto $productEditRequestDto): void
     {
-        $collection = $product->getProductCleanings();
-        $collection->clear();
+        $product->getProductCleanings()->clear();
 
-        if ($bag->has('cleaning')) {
-            foreach ($bag->all('cleaning') as $iconName) {
-                $cleaning = new ProductCleaning();
-                $cleaning->setIcon($iconName);
-                $cleaning->setProduct($product);
+        foreach ($productEditRequestDto->cleaning as $iconName) {
+            $cleaning = new ProductCleaning();
+            $cleaning->setIcon($iconName);
+            $cleaning->setProduct($product);
 
-                $product->addProductCleaning($cleaning);
-            }
+            $product->addProductCleaning($cleaning);
         }
     }
 
@@ -235,6 +195,28 @@ final class ProductEditRequestParser
             $orderProductTranslation = $this->orderProductTranslationParser->parse($productTranslation, $orderProduct);
 
             $orderProduct->addOrderProductTranslation($orderProductTranslation);
+        }
+    }
+
+    private function setOptions(ProductEditRequestDto $productEditRequestDto, Product $product): void
+    {
+        $product->getProductOptions()->clear();
+
+        foreach ($productEditRequestDto->options as $countryCode => $options) {
+            if (false === in_array($countryCode, $productEditRequestDto->availableCountries)) {
+                continue;
+            }
+
+            $productOptions = new ProductOptions();
+            $productOptions->setPrice((int) $options['price']);
+            $productOptions->setDiscount(isset($options['discount']) ? (int) $options['discount'] : 0);
+            $productOptions->setSold(isset($options['sold']) ? filter_var($options['sold'], FILTER_VALIDATE_BOOLEAN) : false);
+            $productOptions->setShowHomePage($options['show_home_page'] ?? null);
+            $productOptions->setCountry($countryCode);
+
+            $this->setSizes($productOptions, $options['sizes']);
+
+            $product->addProductOption($productOptions);
         }
     }
 }

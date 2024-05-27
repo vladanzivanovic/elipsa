@@ -10,13 +10,9 @@ use Webmozart\Assert\Assert;
 
 final class OrderRequestParser
 {
-    private ShopOrderRepository $orderRepository;
-
     public function __construct(
-        ShopOrderRepository $orderRepository
-    ) {
-        $this->orderRepository = $orderRepository;
-    }
+        private readonly ShopOrderRepository $orderRepository
+    ) {}
 
     public function findOrder(
         string $token
@@ -28,12 +24,12 @@ final class OrderRequestParser
         return $order;
     }
 
-    public function create():ShopOrder
+    public function create(string $country):ShopOrder
     {
         $order = new ShopOrder();
         $order->setStatus(ShopOrder::STATUS_NEW);
         $order->setToken();
-//        $order->setState(ShopOrder::STATE_PENDING);
+        $order->setCountry($country);
 
         return $order;
     }

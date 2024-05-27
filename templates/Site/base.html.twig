@@ -5,6 +5,7 @@
 {% set transUrls = languages %}
 {% set langOptions = [] %}
 {% set countryDefaultLocale = default_locale %}
+{% set mediaDevice = is_mobile() ? 'mobile' : 'desktop' %}
 
 {% for countryCode, country in countries %}
     {% if app.request.host == country.host %}
@@ -26,12 +27,6 @@
 {% if app is not null and (app.request.attributes.get('_route_params') is not null or app.request.query.all is not empty) %}
     {% set routeParams = routeParams|merge(query) %}
 {% endif %}
-
-{#{% for language in languages %}#}
-{#    {% set language = language|merge({'url': url_locale(routeName, routeParams, locale, language.code)}) %}#}
-{#    {% set transUrls = transUrls|merge({(language.code): language}) %}#}
-{#    {% set langOptions = langOptions|merge([{'title': language.translation | trans, 'value': language.code }]) %}#}
-{#{% endfor %}#}
 
 {% import 'Site/Macros/externalServices.html.twig' as externals %}
 
@@ -119,13 +114,14 @@
 
     {% import 'Site/Macros/popUp.html.twig' as popup %}
 
-    {{ popup.news_letter('news_letter', locale, languageOptionsByCountry) }}
+    {{ popup.news_letter('news_letter', locale, languageOptionsByCountry, mediaDevice) }}
 
-    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, 1) }}
+    {{ popup.popup_banner(constant('App\\Entity\\Banner::TYPE_POP_UP'), 'pop_up', locale, mediaDevice, locale, 1) }}
     <!-- footer-end -->
     {% block javascripts %}
         <script nonce="{{ csp_nonce('script') }}" type="text/javascript">
             const LOCALE = '{{ locale }}';
+            const COUNTRY_DEFAULT_LOCALE = '{{ countryDefaultLocale }}';
             const ROUTE_NAME = '{{ routeName }}';
             const IS_MOBILE = window.matchMedia("only screen and (max-width: 760px)").matches;
             const GOOGLE_RECAPTCHA_KEY_SITE  = '{{ 'GOOGLE_RECAPTCHA_KEY_SITE' | getenv }}';
@@ -134,6 +130,7 @@
             const NOTIFICATION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Notification') | json_encode() | raw }}');
             const NO_SIZE = '{{ constant('App\\Entity\\ProductSize::NO_SIZE') }}';
             const SITE_INFO_TEXT = JSON.parse('{{ siteInfoText | json_encode() | raw }}');
+            const DEFAULT_ALT_TAG = '{{ default_alt_tag }}';
 
             window.USER = null;
 

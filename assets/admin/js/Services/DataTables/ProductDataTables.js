@@ -40,9 +40,56 @@ class ProductDataTables {
 
                         return type === 'display' ? html : title;
                     } },
-                { data: 'price', name: 'price', title: 'Cena', type: "num" },
-                { data: 'discount', name: 'discount', title: 'Popust', type: "num" },
-                { data: 'sizes', name: 'sizes', title: 'Veličine' },
+                // { data: 'price', name: 'price', title: 'Cena', type: "num" },
+                // { data: 'discount', name: 'discount', title: 'Popust', type: "num" },
+                // { data: 'sizes', name: 'sizes', title: 'Veličine', render: function (sizes, type, row) {
+                //         let html = '';
+                //
+                //         for (const countryCode in sizes) {
+                //             const size = sizes[countryCode];
+                //
+                //             html += `<p><label style="font-weight: bold">${countryCode}</label> - ${size}</p>`;
+                //         }
+                //
+                //         return html;
+                //     }
+                // },
+                { data: 'prices', name: 'prices', title: 'Cena', render: function (prices, type, row) {
+                        let html = '';
+
+                        for (const countryCode in prices) {
+                            const countryName = Translator.trans(COUNTRIES[countryCode].translation, null, 'messages', LOCALE);
+
+                            html +=
+                                `<div class="row">
+                                    <div class="col-md-12">
+                                        <p class="status-text">${countryName} - ${prices[countryCode]}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        return html;
+                    }
+                },
+                { data: 'discounts', name: 'discounts', title: 'Popust', render: function (discounts, type, row) {
+                        let html = '';
+
+                        for (const countryCode in discounts) {
+                            const countryName = Translator.trans(COUNTRIES[countryCode].translation, null, 'messages', LOCALE);
+
+                            html +=
+                                `<div class="row">
+                                    <div class="col-md-12">
+                                        <p class="status-text">${countryName} - ${discounts[countryCode]}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        return html;
+                    }
+                },
                 { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
                         const buttonText = row.status === PRODUCT_CONSTANTS.STATUS_ACTIVE ? 'Deaktiviraj' : 'Aktiviraj';
                         const newStatus = row.status !== PRODUCT_CONSTANTS.STATUS_ACTIVE ? PRODUCT_CONSTANTS.STATUS_ACTIVE : PRODUCT_CONSTANTS.STATUS_PENDING;
@@ -56,51 +103,49 @@ class ProductDataTables {
                     }
                 },
                 {
-                    data: 'position_text',
+                    data: 'show_home_page',
                     name: 'show_home_page',
                     title: 'Početna stranica',
                     width: '200px',
-                    render: function (data, type, row, meta) {
+                    render: function (show_home_page, type, row, meta) {
                         let html = '';
 
-                        const upChecked = row.show_home_page === PRODUCT_CONSTANTS.HOME_PAGE_UP ? 'checked' : '';
-                        const downChecked = row.show_home_page === PRODUCT_CONSTANTS.HOME_PAGE_DOWN ? 'checked' : '';
+                        for (const countryCode in show_home_page) {
+                            const countryName = Translator.trans(COUNTRIES[countryCode].translation, null, 'messages', LOCALE);
+                            const position = show_home_page[countryCode] === PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP ? 'Gore' : 'Dole';
 
-                        html = CAN_EDIT ?
-                            `<div class="row">
-                                <div class="col-md-3">
-                                    <p class="status-text">Gore</p><input type="checkbox" value="${PRODUCT_CONSTANTS.HOME_PAGE_UP}" class="set-home-page" data-slug="${row.slug}" ${upChecked}/>
+                            html +=
+                                `<div class="row">
+                                    <div class="col-md-12">
+                                        <p class="status-text">${countryName} - ${position}</p>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <p class="status-text">Dole</p><input type="checkbox" value="${PRODUCT_CONSTANTS.HOME_PAGE_DOWN}" class="set-home-page" data-slug="${row.slug}" ${downChecked}/>
-                                </div>
-                            </div>
-                            ` :
-                            `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`;
+                            `;
+                        }
 
-                        return type === 'display' ? html : data;
+                        return html;
                     }
                 },
                 {
-                    data: 'is_sold',
+                    data: 'sold',
                     name: 'is_sold',
                     title: 'Rasprodato',
                     width: '200px',
-                    render: function (data, type, row, meta) {
-                        let html = '';
+                    render: function (sold, type, row, meta) {
+                        let html = '<div class="row">';
 
-                        const isSold = data ? 'checked' : '';
+                        for (const countryCode in sold) {
+                            const isSold = true === sold[countryCode] ? 'Da' : 'Ne';
+                            const countryName = Translator.trans(COUNTRIES[countryCode].translation, null, 'messages', LOCALE)
 
-                        html = CAN_EDIT ?
-                            `<div class="row">
-                                <div class="col-md-3">
-                                    <input type="checkbox" value="1" class="toggle-product-is-sold" data-slug="${row.slug}" ${isSold}/>
-                                </div>
-                            </div>
-                            ` :
-                            `<p class="status-text d-block letter-capitalize">${Translator.trans(data, null, 'messages', LOCALE)}</p>`;
+                            html += `<div class="col-md-12">
+                                    <p>${countryName} - ${isSold}</p>
+                                </div>`;
+                        }
 
-                        return type === 'display' ? html : data;
+                        html += '</div>';
+
+                        return html;
                     }
                 },
                 { data: 'slug', searchable: false, orderable: false, render: function (data, type, row, meta) {
@@ -152,8 +197,8 @@ class ProductDataTables {
 
         dom.append('<option value="">Izaberite akciju...</option>');
         dom.append(`<option value="0" data-action-type="home_page_status">Početna strana - ukloni</option>`);
-        dom.append(`<option value="${PRODUCT_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status">Početna strana - gore</option>`);
-        dom.append(`<option value="${PRODUCT_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status">Početna strana - dole</option>`);
+        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status">Početna strana - gore</option>`);
+        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status">Početna strana - dole</option>`);
         dom.append(`<option value="discount-modal" data-action-type="set_bulk_discount">Popust na izabranim proizvodima</option>`);
 
         return dom;

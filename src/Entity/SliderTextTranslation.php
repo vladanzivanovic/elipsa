@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\SliderTextTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\SliderTextTranslationRepository::class)]
-class SliderTextTranslation implements EntityInterface
+#[ORM\Entity(repositoryClass: SliderTextTranslationRepository::class)]
+class SliderTextTranslation implements EntityInterface, LocaleInterface
 {
     use ResourceTrait;
+    use LocaleTrait;
 
     #[ORM\Column(type: 'string')]
     private string $title;
@@ -21,7 +27,7 @@ class SliderTextTranslation implements EntityInterface
     #[ORM\Column(type: 'string', length: 2)]
     private string $locale;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\SliderText::class, inversedBy: 'sliderTextTranslations')]
+    #[ORM\ManyToOne(targetEntity: SliderText::class, inversedBy: 'sliderTextTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private SliderText $sliderText;
 
@@ -50,31 +56,19 @@ class SliderTextTranslation implements EntityInterface
         return $this;
     }
 
-    public function getLocale(): string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
     public function getSliderText(): SliderText
     {
         return $this->sliderText;
     }
 
-    public function setSliderText(?SliderText $sliderText): self
+    public function setSliderText(SliderText $sliderText): self
     {
         $this->sliderText = $sliderText;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): null|string
     {
         return $this->description;
     }

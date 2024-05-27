@@ -1,11 +1,11 @@
-{% macro productGrid(product, class, locale) %}
+{% macro productGrid(product, class, locale, countryDefaultLocale) %}
     <div class="{{ class }}">
         <div class="single-featured-item">
             <div class="sfi-img">
                 <a href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}">
                     <img src="{{ product.image.file }}" alt="{{ default_alt_tag }}">
                 </a>
-                {% if product.is_sold == true %}
+                {% if product.options[countryDefaultLocale].is_sold == true %}
                 <a href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}">
                     <svg class='svg-stroke product-sold' viewBox='0 -0.2 6.5 15' preserveAspectRatio='none'>
                         <line x1="7" y1="-1" x2="-1" y2="11" stroke="#a70303" stroke-width=".6" stroke-opacity="1"></line>
@@ -13,9 +13,9 @@
                     </svg>
                 </a>
                 {% endif %}
-                {% if product.discount is not null %}
+                {% if product.options[countryDefaultLocale].discount is not null %}
                     <div class="sfi-img-banner product-discount">
-                        <span>-{{ product.discount.percentage }} %</span>
+                        <span>-{{ product.options[countryDefaultLocale].discount.percentage }} %</span>
                     </div>
                 {% endif %}
                 <div class="sfi-img-content sfi-data-content">
@@ -29,7 +29,7 @@
                     </ul>
                     <p class="letter-capitalize">{{ 'available_sizes' | trans }}:</p>
                     <ul class="sizes">
-                        {% for productSize in product.sizes %}
+                        {% for productSize in product.options[countryDefaultLocale].sizes %}
                             <li>
                                 <a href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}" class="{{ productSize.quantity <= 0 ? 'unavailable' : '' }}">{{ productSize.size }}</a>
                             </li>
@@ -48,17 +48,17 @@
                     <a class="sfi-name" href="{{ path('site.product_page', {'slug': product.translations[locale].slug}) }}">{{ product.translations[locale].title }}</a>
                 </div>
                 <div class="sfi-price-rating">
-                    {% if product.discount is not null %}
-                        <p class="sfi-old-price">-{{ product.price.amount }} {{ product.price.currency }}</p>
+                    {% if product.options[countryDefaultLocale].discount is not null %}
+                        <p class="sfi-old-price">-{{ product.options[countryDefaultLocale].price.amount }} {{ product.options[countryDefaultLocale].price.currency }}</p>
                         <div class="discount-price">
                             <p class="sfi-price text-uppercase">
-                                <span>{{ product.discount.price.amount }} {{ product.price.currency }}</span>
+                                <span>{{ product.options[countryDefaultLocale].discount.price.amount }} {{ product.options[countryDefaultLocale].price.currency }}</span>
                             </p>
-                            <p class="price-saving">{{ 'saving' | trans }} {{ product.discount.saving.amount }} {{ product.discount.saving.currency }}</p>
+                            <p class="price-saving">{{ 'saving' | trans }} {{ product.options[countryDefaultLocale].discount.saving.amount }} {{ product.options[countryDefaultLocale].discount.saving.currency }}</p>
                         </div>
                     {% else %}
                         <p class="sfi-price text-uppercase">
-                            <span>{{ product.price.amount }} {{ product.price.currency }}</span>
+                            <span>{{ product.options[countryDefaultLocale].price.amount }} {{ product.options[countryDefaultLocale].price.currency }}</span>
                         </p>
                     {% endif %}
                 </div>

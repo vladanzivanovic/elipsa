@@ -16,49 +16,69 @@ final class ProductView
     public function __construct(
         private readonly PriceView $priceView,
         private readonly ProductSizeView $productSizeView,
+        private readonly ProductOptionsView $productOptionsView,
         private readonly RouterInterface $router,
         private readonly string $defaultLocale,
         private readonly array $locales,
+        private readonly array $countries,
     ) {}
 
     public function editView(Product $product): array
     {
-        $view = $this->view($product, 'rs');
+        $view = $this->view($product);
 
-        $view['price'] = $product->getPrice();
-        $view['discount'] = $product->getDiscount();
+//        $view['price'] = $product->getPrice();
+//        $view['discount'] = $product->getDiscount();
         $view['translations'] = $this->getTranslationValues($product);
+        $view['available_countries'] = array_keys($view['options']);
+
+//        dd($view);
 
         return $view;
     }
 
-    public function view(Product $product, string $locale, ?User $user = null): array
+    public function view(Product $product, null|User $user = null): array
     {
-        $discount = $product->getPromoDiscount() ?? $product->getDiscount();
-        $price = $product->getPrice();
+        //todo check where to set promo discount, productOptions or product
+//        $discount = $product->getPromoDiscount($countryCode) ?? $product->getDiscount($countryCode);
+//        $price = $product->getPrice();
 
         $view = [
             'id' => $product->getId(),
             'code' => $product->getCode(),
-            'price' => $this->priceView->view($price, $locale),
-            'show_home_page' => $product->getShowHomePage(),
-            'is_sold' => $product->isSold(),
-            'discount' => null,
-            'is_wish' => $user instanceof \App\Entity\User && $product->isUserWish($user),
-            'sizes' => $this->getSizes($product),
+//            'price' => $this->priceView->view($price, $locale),
+//            'show_home_page' => $product->getShowHomePage(),
+//            'is_sold' => $product->isSold(),
+//            'discount' => null,
+            'is_wish' => $user instanceof User && $product->isUserWish($user),
+//            'sizes' => $this->getSizes($product),
+            'options' => [],
         ];
 
         $view['translations'] = $this->getTranslationValues($product);
 
-        if (0 < $discount) {
-            $percentage = (int) round(abs((100 - ($discount/$price) * 100)));
+        foreach ($this->countries as $countryCode => $country) {
+            $productOptions = $product->getOptionsByCountry($countryCode);
 
-            $view['discount'] = [
-                'price' => $this->priceView->view($discount, $locale),
-                'percentage' => 100 !== $percentage ? $percentage : 0,
-                'saving' => $this->priceView->view($discount - $price, $locale),
-            ];
+            if (null === $productOptions) {
+//                $view['options'][$countryCode] = [];
+
+                continue;
+            }
+
+            $view['options'][$countryCode] = $this->productOptionsView->view($productOptions);
         }
+
+
+//        if (0 < $discount) {
+//            $percentage = (int) round(abs((100 - ($discount/$price) * 100)));
+//
+//            $view['discount'] = [
+//                'price' => $this->priceView->view($discount, $locale),
+//                'percentage' => 100 !== $percentage ? $percentage : 0,
+//                'saving' => $this->priceView->view($discount - $price, $locale),
+//            ];
+//        }
 
         $view['_links'] = $this->getLinks($view['translations']);
 
@@ -95,28 +115,13 @@ final class ProductView
         foreach ($translations as $locale => $translation) {
             $params = ['slug' => $translation['slug'], '_locale' => $locale];
 
-            try {
-                $links[$locale] = $this->router->generate(
-                    'site.product_page',
-                    $params,
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                );
-            } catch (\Throwable $exception) {
-//                dd($translations);
-            }
+            $links[$locale] = $this->router->generate(
+                'site.product_page',
+                $params,
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
         }
 
         return $links;
-    }
-
-    private function getSizes(Product $product): array
-    {
-        $sizes = [];
-
-        foreach ($product->getProductHasSizes() as $productHasSize) {
-            $sizes[] = $this->productSizeView->view($productHasSize);
-        }
-
-        return $sizes;
     }
 }

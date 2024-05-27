@@ -45,7 +45,6 @@ final class ShopListController extends AbstractController
 
         return $this->json($this->formatter->formatResponse(
             $data,
-            $locale,
             ['site.shop_page', 'site.trendy_page'],
             $shopListRequestDto,
             $shopPageOptionsDto,

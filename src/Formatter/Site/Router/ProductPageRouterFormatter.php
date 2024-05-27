@@ -13,7 +13,7 @@ final class ProductPageRouterFormatter
         private readonly string $defaultLocale,
     ) {}
 
-    public function localeFormatter(string $slug, string $locale): ?string
+    public function localeFormatter(string $slug, string $locale): null|string
     {
         $fromTrans = $this->productTranslationRepository->findOneBy(['slug' => $slug]);
 

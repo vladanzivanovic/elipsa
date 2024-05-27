@@ -29,7 +29,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
 
     public function __construct(Request $request = null)
     {
-        if (!$request instanceof \Symfony\Component\HttpFoundation\Request) {
+        if (!$request instanceof Request) {
             return;
         }
 

@@ -29,8 +29,9 @@ class BlogListApiController extends AbstractController
     public function index(Request $request, int $page, ?string $tag): JsonResponse
     {
         $locale = $request->getSession()->get('_locale');
+        $countryCode = $request->attributes->get('_country');
 
-        $collection = $this->pageCollector->collect($locale, $page, $tag);
+        $collection = $this->pageCollector->collect($locale, $countryCode, $page, $tag);
         $optionsCollector = $this->blogOptionsCollector->collect();
 
         return $this->json($this->pageFormatter->formatResponse($collection, $optionsCollector, $tag));

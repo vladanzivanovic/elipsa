@@ -52,7 +52,7 @@
                                             {% for productsChunks in products | batch(modusParams) %}
                                                 <div class="row m-l-0 m-r-0">
                                                     {% for product in productsChunks %}
-                                                        {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale) }}
+                                                        {{ productGrid.productGrid(product, 'col-md-4 col-sm-6 col-xs-6', locale, countryDefaultLocale) }}
                                                     {% endfor %}
                                                 </div>
                                             {% endfor %}

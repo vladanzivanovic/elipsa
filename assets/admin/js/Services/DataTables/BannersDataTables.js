@@ -1,18 +1,35 @@
+import DataTableOptions from "./DataTableOptions";
+
 require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
-import dtrowreorder from 'datatables.net-rowreorder-bs4';
 
-export default (() => {
-    let Public = {},
-        Private = {};
+class BannersDataTables {
+    #dataTable;
+    #tableRef = '#data-table';
+    #dataTableOptionGenerator;
 
-    Private.tableRef = $('#data-table');
-    Private.dataTable = null;
+    constructor() {
+        this.#dataTableOptionGenerator = new DataTableOptions();
+    }
 
-    Public.init = () => {
-        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
+    reload()
+    {
+        this.#dataTable.ajax.reload(null, false);
+    }
+
+    getDataTable()
+    {
+        return this.#dataTable;
+    }
+
+
+    init()
+    {
+        const route = Routing.generate('admin.get_banner_list');
+
+        const tableOptions = {
             ajax: {
-                url: Routing.generate('admin.get_banner_list'),
+                url: route,
                 type: 'POST'
             },
             columns: [
@@ -45,18 +62,17 @@ export default (() => {
                     } },
             ],
             order: [[2, 'asc']],
-            rowReorder: {
-                dataSrc: 'id',
-                update: false,
-            }
-        });
+        }
 
-        Private.dataTable = Private.tableRef.DataTable(options);
-    };
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
 
-    Public.reload = () => {
-        Private.tableRef.DataTable().ajax.reload(null, false);
-    };
+        this.#dataTable = $(this.#tableRef).DataTable(options);
+    }
+}
 
-    return Public;
-});
+const bannersDataTables = new BannersDataTables();
+
+export default bannersDataTables;

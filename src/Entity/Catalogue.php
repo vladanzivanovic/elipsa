@@ -2,40 +2,37 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use App\Repository\CatalogueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CatalogueRepository::class)]
-class Catalogue
+class Catalogue implements EntityInterface, CountryResourceInterface
 {
+    use ResourceTrait;
+    use CountryResourceTrait;
+
     public const STATUS_PENDING = 1;
     public const STATUS_ACTIVE = 2;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
-
     #[ORM\Column(type: 'smallint')]
-    private $status;
+    private int $status;
 
-    #[ORM\OneToMany(targetEntity: CatalogueTranslation::class, mappedBy: 'catalogue', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private $catalogueTranslations;
+    #[ORM\OneToMany(mappedBy: 'catalogue', targetEntity: CatalogueTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $catalogueTranslations;
 
-    #[ORM\OneToMany(targetEntity: CatalogueHasImages::class, mappedBy: 'catalogue', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private $catalogueHasImages;
+    #[ORM\OneToMany(mappedBy: 'catalogue', targetEntity: CatalogueHasImages::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $catalogueHasImages;
 
     public function __construct()
     {
         $this->catalogueTranslations = new ArrayCollection();
         $this->catalogueHasImages = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStatus(): ?int
@@ -51,7 +48,7 @@ class Catalogue
     }
 
     /**
-     * @return Collection|CatalogueTranslation[]
+     * @return Collection<int, CatalogueTranslation>
      */
     public function getCatalogueTranslations(): Collection
     {
@@ -82,7 +79,7 @@ class Catalogue
     }
 
     /**
-     * @return Collection|CatalogueHasImages[]
+     * @return Collection<int, CatalogueHasImages>
      */
     public function getCatalogueHasImages(): Collection
     {
@@ -112,12 +109,7 @@ class Catalogue
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return CatalogueTranslation
-     */
-    public function getByLocale(string $locale): CatalogueTranslation
+    public function getByLocale(string $locale): null|CatalogueTranslation
     {
         $trans = $this->getCatalogueTranslations();
 
@@ -126,10 +118,10 @@ class Catalogue
             return $translation->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
     }
 
-    public function getMainImage(): ?Image
+    public function getMainImage(): null|Image
     {
         foreach ($this->getCatalogueHasImages() as $catalogueHasImage) {
             $image = $catalogueHasImage->getImage();

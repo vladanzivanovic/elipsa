@@ -15,12 +15,12 @@ class ProductHasSizes
     #[ORM\ManyToOne(targetEntity: \App\Entity\ProductSize::class, inversedBy: 'productHasSizes')]
     private ProductSize $size;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'productHasSizes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Product $product;
-
     #[ORM\Column(type: 'integer')]
     private int $quantity = 0;
+
+    #[ORM\ManyToOne(inversedBy: 'productHasSizes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ProductOptions $productOption;
 
     public function getId(): ?int
     {
@@ -39,18 +39,6 @@ class ProductHasSizes
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
     public function getQuantity(): int
     {
         return $this->quantity;
@@ -59,5 +47,17 @@ class ProductHasSizes
     public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    public function getProductOption(): ProductOptions
+    {
+        return $this->productOption;
+    }
+
+    public function setProductOption(ProductOptions $productOption): static
+    {
+        $this->productOption = $productOption;
+
+        return $this;
     }
 }

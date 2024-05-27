@@ -53,8 +53,8 @@ final class JobsListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    #[Route(path: '/api/get-jobs-list', name: 'admin.get_jobs_list', methods: ['POST'], options: ['expose' => true])]
-    public function getList(Request $request)
+    #[Route(path: '/api/get-jobs-list', name: 'admin.get_jobs_list', options: ['expose' => true], methods: ['POST'])]
+    public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
         $total = $this->careerDescriptionRepository->countData();

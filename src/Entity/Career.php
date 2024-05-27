@@ -2,65 +2,59 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\CareerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: \App\Repository\CareerRepository::class)]
-class Career
+#[ORM\Entity(repositoryClass: CareerRepository::class)]
+class Career implements EntityInterface
 {
     use TimestampableEntity;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    use ResourceTrait;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $firstName;
+    private string $firstName;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $lastName;
+    private string $lastName;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $email;
+    private string $email;
 
-    #[ORM\OneToOne(targetEntity: \App\Entity\Image::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private $cv;
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Image $cv;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $accompanyingLetter;
+    private null|string $accompanyingLetter = null;
 
     #[ORM\Column(type: 'datetime')]
-    private $birthDate;
+    private \DateTimeInterface $birthDate;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $address;
+    private string $address;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $city;
+    private string $city;
 
     #[ORM\Column(type: 'string', length: 50)]
-    private $mobilePhone;
+    private string $mobilePhone;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $school;
+    private string $school;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $schoolLevel;
+    private string $schoolLevel;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $schoolTitle;
+    private string $schoolTitle;
 
     #[ORM\ManyToOne(targetEntity: \App\Entity\CareerDescription::class, inversedBy: 'careers')]
     #[ORM\JoinColumn(nullable: false)]
-    private $position;
+    private CareerDescription $position;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getFirstName(): ?string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -72,7 +66,7 @@ class Career
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -84,7 +78,7 @@ class Career
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -96,31 +90,31 @@ class Career
         return $this;
     }
 
-    public function getCv(): ?Image
+    public function getCv(): Image
     {
         return $this->cv;
     }
 
-    public function setCv(?Image $cv): self
+    public function setCv(Image $cv): self
     {
         $this->cv = $cv;
 
         return $this;
     }
 
-    public function getAccompanyingLetter(): ?string
+    public function getAccompanyingLetter(): null|string
     {
         return $this->accompanyingLetter;
     }
 
-    public function setAccompanyingLetter(?string $accompanyingLetter): self
+    public function setAccompanyingLetter(null|string $accompanyingLetter): self
     {
         $this->accompanyingLetter = $accompanyingLetter;
 
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate(): \DateTimeInterface
     {
         return $this->birthDate;
     }
@@ -132,7 +126,7 @@ class Career
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getAddress(): string
     {
         return $this->address;
     }
@@ -144,7 +138,7 @@ class Career
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -156,7 +150,7 @@ class Career
         return $this;
     }
 
-    public function getMobilePhone(): ?string
+    public function getMobilePhone(): string
     {
         return $this->mobilePhone;
     }
@@ -168,7 +162,7 @@ class Career
         return $this;
     }
 
-    public function getSchool(): ?string
+    public function getSchool(): string
     {
         return $this->school;
     }
@@ -180,7 +174,7 @@ class Career
         return $this;
     }
 
-    public function getSchoolLevel(): ?string
+    public function getSchoolLevel(): string
     {
         return $this->schoolLevel;
     }
@@ -192,7 +186,7 @@ class Career
         return $this;
     }
 
-    public function getSchoolTitle(): ?string
+    public function getSchoolTitle(): string
     {
         return $this->schoolTitle;
     }
@@ -204,12 +198,12 @@ class Career
         return $this;
     }
 
-    public function getPosition(): ?CareerDescription
+    public function getPosition(): CareerDescription
     {
         return $this->position;
     }
 
-    public function setPosition(?CareerDescription $position): self
+    public function setPosition(CareerDescription $position): self
     {
         $this->position = $position;
 

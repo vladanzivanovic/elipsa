@@ -102,7 +102,7 @@
                                 <span>{{ 'header.choose_country_label' | trans }}</span>
                                 <i class="fa fa-times close-drop-down" aria-hidden="true"></i>
                             </h3>
-                            <ul id="locale-dropdown" class="drop-down-list">
+                            <ul id="country-dropdown" class="drop-down-list">
                                 {% for countryCode, country in countries  %}
                                     <li>
                                         <a
@@ -193,7 +193,7 @@
                                 <a href="#">{{ country.translation | trans }}</a>
                             {% endif %}
                         {% endfor %}
-                        <ul id="locale-dropdown" class="menu-right-dropdown">
+                        <ul id="country-dropdown" class="menu-right-dropdown">
                             {% for countryCode, country in countries  %}
                                 {% if app.request.host != country.host %}
                                     <li>

@@ -7,20 +7,21 @@ namespace App\View;
 use App\Entity\Banner;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Component\Routing\RouterInterface;
 
 final class BannerView
 {
     public function __construct(
-        private readonly RouterInterface $router,
         private readonly ImageView $imageView,
         private readonly ImageRepository $imageRepository,
         private readonly array $locales,
     ) {}
 
-    public function view(Banner $banner): array
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function view(Banner $banner, array $imageFilter): array
     {
-        $images = $this->getImages($banner, ['desktop' => 'menu_banner', 'mobile' => 'menu_banner']);
+        $images = $this->getImages($banner, $imageFilter);
 
         $view = [
             'id' => $banner->getId(),
@@ -34,23 +35,7 @@ final class BannerView
         ];
 
         return $view;
-
-//        $trans = $banner->getByLocale($locale);
-//        $filter = in_array($banner->getPosition(), [1,4]) ? 'home_banner_side' : 'home_banner_center';
-//
-//        $bannerView = $this->links($banner, $locale, $filter);
-//
-//        $bannerView['description'] = explode(PHP_EOL, $trans->getDescription());
-//
-//        return $bannerView;
     }
-
-//    public function menuView(Banner $banner, string $locale): array
-//    {
-//        $banner->getByLocale($locale);
-//
-//        return $this->links($banner, $locale, 'menu_banner');
-//    }
 
     /**
      * @throws NonUniqueResultException
@@ -79,16 +64,6 @@ final class BannerView
 
         return $view;
     }
-
-//    private function image(Banner $banner, string $locale, string $filter): string
-//    {
-//        $imageName = $banner->getImage()->getName();
-//
-//        return $this->router->generate(
-//                'app.image_show',
-//                ['entity' => 'banner', 'name' => $imageName, 'filter' => $filter])
-//        ;
-//    }
 
     private function getTranslationValues(Banner $banner): array
     {

@@ -45,7 +45,8 @@ class BannerRepository extends ExtendedEntityRepository
                 'b.position as position',
                 'b.isActive as is_active',
                 'b.type as type',
-                'image.name'
+                'image.name',
+                'b.availableCountries as available_countries'
             )
             ->innerJoin('b.image', 'image')
             ->where('b.type IN (:types)')
@@ -58,15 +59,15 @@ class BannerRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    public function getActiveByType(int $type, string $locale)
+    public function getActiveByType(int $type, string $host): array
     {
         $query = $this->createQueryBuilder('b')
             ->where('b.isActive = :isActive')
             ->andWhere('b.type = :type')
-            ->andWhere('b.availableCountries LIKE :locale')
+            ->andWhere('b.availableCountries LIKE :host')
             ->setParameter('isActive', true)
             ->setParameter('type', $type)
-            ->setParameter('locale', '%'.$locale.'%')
+            ->setParameter('host', '%'.$host.'%')
             ->orderBy('b.position');
 
         return $query->getQuery()->getResult();

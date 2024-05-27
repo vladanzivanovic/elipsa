@@ -51,9 +51,9 @@ final class ProductImageService
                 $color = $this->colorRepository->find($payload['color_id']);
 
                 $payload['fileName'] = $payload['fileName'] ?? $payload['file_name']; //f todo fix this
-                $payload['isMain'] = $payload['isMain'] ?? $payload['is_main'];
+                $payload['isMain'] = $payload['isMain'] ? filter_var($payload['isMain'], FILTER_VALIDATE_BOOLEAN) : filter_var($payload['is_main'], FILTER_VALIDATE_BOOLEAN);
 
-                $image = $this->imageParser->parse($payload, Image::DEVICE_DESKTOP);
+                $image = $this->imageParser->parse($payload);
 
                 if (isset($payload['id'])) {
                     $hasImage = $this->hasImagesRepository->findOneBy(['product' => $product, 'image' => $image]);

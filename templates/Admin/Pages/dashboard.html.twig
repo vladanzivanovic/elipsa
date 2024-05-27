@@ -83,8 +83,8 @@
                                     {%
                                         set homePageOptions = [
                                         {'title': 'Sve pozicije', 'value': 'all'},
-                                        {'title': 'Gore', 'value': constant('App\\Entity\\Product::HOME_PAGE_UP')},
-                                        {'title': 'Dole', 'value': constant('App\\Entity\\Product::HOME_PAGE_DOWN')}
+                                        {'title': 'Gore', 'value': constant('App\\Entity\\ProductOptions::HOME_PAGE_UP')},
+                                        {'title': 'Dole', 'value': constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN')}
                                     ]
                                     %}
                                     {{ form.select('Prikaz na početnoj stranici', 'home_page_show', 'home_page_show', '', homePageOptions, '', 'w-100') }}
@@ -132,6 +132,7 @@
         const CAN_REMOVE = true;
 
         const PRODUCT_CONSTANTS = JSON.parse('{{ get_class_constants('App\\Entity\\Product') | json_encode() | raw }}');
+        const PRODUCT_OPTIONS_CONSTANTS = JSON.parse('{{ get_class_constants('App\\Entity\\ProductOptions') | json_encode() | raw }}');
 
     </script>
 {% endblock %}

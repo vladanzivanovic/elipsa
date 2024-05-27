@@ -34,7 +34,7 @@ final class ShopPageCollector
     public function collect(
         ShopListRequestDto $shopListRequestDto,
         ShopPageOptionsDto $shopPageOptionsDto,
-        ?UserInterface $user
+        null|UserInterface $user
     ): array {
         return $this->collectForApi($shopListRequestDto, $shopPageOptionsDto, $user);
     }
@@ -46,9 +46,9 @@ final class ShopPageCollector
     public function collectForApi(
         ShopListRequestDto $shopListRequestDto,
         ShopPageOptionsDto $shopPageOptionsDto,
-        ?User $user
+        null|User $user
     ): array {
-        $productDql = $this->productRepository->getDqlForPaginationPage($shopListRequestDto, $shopPageOptionsDto, $user);
+        $productDql = $this->productRepository->getDqlForPaginationPage($shopListRequestDto, $shopPageOptionsDto->country, $shopPageOptionsDto,);
 
         return $this->paginationService->pagination($productDql, $shopPageOptionsDto->page, $shopPageOptionsDto->limit);
     }

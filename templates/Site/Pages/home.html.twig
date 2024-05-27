@@ -3,6 +3,8 @@
 {% block bodyClass %}home{% endblock %}
 
 {% block content %}
+    {% set bannerSpeedLinksType = constant('App\\Entity\\Banner::TYPE_SPEED_LINKS') %}
+
     <!-- home2-slider-start -->
     <div class="home3-slider-container">
         <!-- Slider Image -->
@@ -52,7 +54,6 @@
     </div>
     <!-- home2-slider-end -->
     <!-- featured-itema-area-start -->
-    {% if products[2] is defined %}
     <div class="home-2-featured-item-area">
         <div class="container">
 
@@ -63,8 +64,10 @@
                             <div class="row">
                                 <div id="top_carousel" class="feature-pro-carousel owl-carousel">
                                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                    {% for product in products[2] %}
-                                        {{ productGrid.productGrid(product, 'col-xs-12', locale) }}
+                                    {% for product in products %}
+                                        {% if product.options[countryDefaultLocale].show_home_page == constant('App\\Entity\\ProductOptions::HOME_PAGE_UP') %}
+                                            {{ productGrid.productGrid(product, 'col-xs-12', locale, countryDefaultLocale) }}
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -74,15 +77,14 @@
             </div>
         </div>
     </div>
-    {% endif %}
     <!-- featured-itema-area-end -->
     <!-- home3-banner-area-start -->
     <div class="home3-banner-area">
         <div class="container">
             <div class="row home3-row m-bt-3-xs">
                 <div class="col-md-4 col-sm-6 col-xs-12 m-bt-2-xs home3-banner-column">
-                    {% if banners[1] is defined %}
-                        {% set firstBanner = banners[1] %}
+                    {% if banners[bannerSpeedLinksType][1] is defined %}
+                        {% set firstBanner = banners[bannerSpeedLinksType][1] %}
                         <a href="{{ firstBanner.translations[locale].button_link }}">
                             <div class="h3b-single-banner-4 h3b-single-banner">
                                 <div class="h3b-img">
@@ -97,8 +99,8 @@
                     {% endif %}
                 </div>
                 <div class="col-md-4 hidden-sm hidden-xs home3-banner-column home-middle-banners">
-                    {% if banners[2] is defined %}
-                        {% set secondBanner = banners[2] %}
+                    {% if banners[bannerSpeedLinksType][2] is defined %}
+                        {% set secondBanner = banners[bannerSpeedLinksType][2] %}
                         <a href="{{ secondBanner.translations[locale].button_link }}">
                             <div class="h3b-single-banner-3 h3b-single-banner">
                                 <div class="h3b-img">
@@ -110,8 +112,8 @@
                             </div>
                         </a>
                     {% endif %}
-                    {% if banners[3] is defined %}
-                        {% set thirdBanner = banners[3] %}
+                    {% if banners[bannerSpeedLinksType][3] is defined %}
+                        {% set thirdBanner = banners[bannerSpeedLinksType][3] %}
                         <a href="{{ thirdBanner.translations[locale].button_link }}">
                             <div class="h3b-single-banner-3 h3b-single-banner">
                                 <div class="h3b-img">
@@ -125,8 +127,8 @@
                     {% endif %}
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12 home3-banner-column">
-                    {% if banners[4] is defined %}
-                        {% set fourthBanner = banners[4] %}
+                    {% if banners[bannerSpeedLinksType][4] is defined %}
+                        {% set fourthBanner = banners[bannerSpeedLinksType][4] %}
                         <a href="{{ fourthBanner.translations[locale].button_link }}">
                             <div class="h3b-single-banner-4 h3b-single-banner">
                                 <div class="h3b-img">
@@ -143,8 +145,8 @@
             </div>
             <div class="row home3-row">
                 <div class="hidden-lg hidden-md col-xs-12 home3-banner-column home-middle-banners">
-                    {% if banners[2] is defined %}
-                        {% set secondBanner = banners[2] %}
+                    {% if banners[bannerSpeedLinksType][2] is defined %}
+                        {% set secondBanner = banners[bannerSpeedLinksType][2] %}
                         <a href="{{ secondBanner.media.images.desktop.file }}">
                             <div class="h3b-single-banner-3 h3b-single-banner">
                                 <div class="h3b-img">
@@ -158,8 +160,8 @@
                     {% endif %}
                 </div>
                     <div class="hidden-lg hidden-md col-xs-12 home3-banner-column home-middle-banners">
-                    {% if banners[3] is defined %}
-                        {% set thirdBanner = banners[3] %}
+                    {% if banners[bannerSpeedLinksType][3] is defined %}
+                        {% set thirdBanner = banners[bannerSpeedLinksType][3] %}
                         <a href="{{ thirdBanner.media.images.desktop.file }}">
                             <div class="h3b-single-banner-3 h3b-single-banner">
                                 <div class="h3b-img">
@@ -178,21 +180,21 @@
     </div>
     <!-- home3-banner-area-end -->
     <!-- featured-itema-area-start -->
-    {% if products[1] is defined %}
-        <div class="home-2-featured-item-area">
-            <div class="container">
+    <div class="home-2-featured-item-area">
+        <div class="container">
 
-                <div class="featured-items">
-                    <div>
-                        <div class="featured-all">
-                            <div class="fi-row">
-                                <div class="row">
-                                    <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
-                                        {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                        {% for product in products[1] %}
-                                            {{ productGrid.productGrid(product, 'col-xs-12', locale) }}
-                                        {% endfor %}
-                                    </div>
+            <div class="featured-items">
+                <div>
+                    <div class="featured-all">
+                        <div class="fi-row">
+                            <div class="row">
+                                <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
+                                    {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
+                                    {% for product in products %}
+                                        {% if product.options[countryDefaultLocale].show_home_page == constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN') %}
+                                            {{ productGrid.productGrid(product, 'col-xs-12', locale, countryDefaultLocale) }}
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -200,12 +202,14 @@
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
     <!-- featured-itema-area-end -->
     <!-- home3-newsletter-area-start -->
-    {% set loyaltyBanner = banner(2, is_mobile() ? 'loyalty_banner_mobile' : 'loyalty_banner', locale, is_mobile()) %}
-    {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ loyaltyBanner.image_link ~") no-repeat scroll left top / cover" %}
-    <a href="{{ loyaltyBanner.link }}" class="home3-newsletter-area" style="{{ bannerLink }}"></a>
+    {% set loyaltyType = constant('App\\Entity\\Banner::TYPE_LOYALTY') %}
+    {% if null != banners[loyaltyType] %}
+        {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ banners[loyaltyType].media.images[mediaDevice].file ~") no-repeat scroll left top / cover" %}
+        <a href="{{ banners[loyaltyType].translations[locale].button_link }}" class="home3-newsletter-area" style="{{ bannerLink }}"></a>
+    {% endif %}
     <!-- home3-newsletter-area-end -->
 {% endblock %}
 {% block pageStyleSheets %}

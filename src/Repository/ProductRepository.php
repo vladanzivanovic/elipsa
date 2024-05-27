@@ -10,6 +10,7 @@ use App\Entity\ProductHasCategories;
 use App\Entity\ProductHasImages;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
+use App\Entity\ProductOptions;
 use App\Entity\ProductSize;
 use App\Entity\ProductTranslation;
 use App\Entity\Tags;
@@ -36,7 +37,9 @@ class ProductRepository extends ExtendedEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private readonly array $shopOptions
+        private readonly array $shopOptions,
+        private readonly string $defaultLocale,
+        private readonly array $countries,
     ) {
         parent::__construct($registry, Product::class);
     }
@@ -50,7 +53,7 @@ class ProductRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(p.id) as total')
             ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
-            ->setParameter('locale', 'rs')
+            ->setParameter('locale', $this->defaultLocale)
         ;
 
         $this->dataTableSearchPart($query, $tableModel);
@@ -64,19 +67,13 @@ class ProductRepository extends ExtendedEntityRepository
             ->select(
                 'p.id',
                 'p.code as code',
-                'p.price as price',
                 'p.discount as discount',
                 'p.status as status',
                 'pt.title as title',
                 'pt.slug',
-                'p.showHomePage as show_home_page',
-                'p.sold as is_sold',
-                'GROUP_CONCAT(s.size ORDER BY s.size ASC SEPARATOR \', \') as sizes'
             )
             ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
-            ->innerJoin('p.productHasSizes', 'ps')
-            ->innerJoin('ps.size', 's')
-            ->setParameter('locale', 'rs')
+            ->setParameter('locale', $this->defaultLocale)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->groupBy('pt.slug')
@@ -85,7 +82,7 @@ class ProductRepository extends ExtendedEntityRepository
 
         $this->dataTableSearchPart($query, $tableModel);
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 
     public function getLowestAndHighestPrice(): array
@@ -103,17 +100,19 @@ class ProductRepository extends ExtendedEntityRepository
 
     public function getDqlForPaginationPage(
         ShopListRequestDto $shopListRequestDto,
-        ?ShopPageOptionsDto $shopPageOptionsDto = null,
-        ?User $user = null
+        string $countryCode,
+        null|ShopPageOptionsDto $shopPageOptionsDto = null,
     ): QueryBuilder {
         $query = $this->createQueryBuilder('p')
+            ->innerJoin(ProductOptions::class, 'po', 'WITH', 'po.product = p AND po.country = :country')
             ->where('p.status = :activeStatus')
             ->setParameter('activeStatus', Product::STATUS_ACTIVE, ParameterType::INTEGER)
+            ->setParameter('country', $countryCode, ParameterType::STRING)
             ->groupBy('p.id')
             ->orderBy('p.id', 'DESC')
         ;
 
-        if ($shopPageOptionsDto instanceof \App\Request\Dto\ShopPageOptionsDto && null !== $shopPageOptionsDto->sort) {
+        if ($shopPageOptionsDto instanceof ShopPageOptionsDto && null !== $shopPageOptionsDto->sort) {
             $sort = $this->shopOptions['sort_mapping'][$shopPageOptionsDto->sort];
 
             $query->orderBy($sort[0], $sort[1]);
@@ -165,7 +164,7 @@ class ProductRepository extends ExtendedEntityRepository
                 ->from(ProductHasSizes::class, 'phs')
                 ->innerJoin(ProductSize::class, 's', 'WITH', 's = phs.size')
                 ->where('s.size IN (:sizes)')
-                ->andWhere('phs.product = p');
+                ->andWhere('phs.productOption = po');
 
             $query->andWhere('EXISTS ('.$sizesQuery->getDQL().')')
                 ->setParameter('sizes', $shopListRequestDto->size);
@@ -174,8 +173,8 @@ class ProductRepository extends ExtendedEntityRepository
         if ($shopListRequestDto->price) {
             $price = $shopListRequestDto->price;
 
-            $query->andWhere('p.price >= :lowPrice')
-                ->andWhere('p.price <= :highPrice')
+            $query->andWhere('po.price >= :lowPrice')
+                ->andWhere('po.price <= :highPrice')
                 ->setParameter('lowPrice', $price[0])
                 ->setParameter('highPrice', $price[1]);
         }
@@ -190,12 +189,15 @@ class ProductRepository extends ExtendedEntityRepository
     }
 
     
-    public function getRelatedProducts(array $categories, Product $product, ?User $user): array
-    {
+    public function getRelatedProducts(
+        array $categories,
+        Product $product,
+        string $countryCode,
+    ): array {
         $filterDto = new ShopListRequestDto();
         $filterDto->setCategories($categories);
 
-        $query = $this->getDqlForPaginationPage($filterDto, null, $user)
+        $query = $this->getDqlForPaginationPage($filterDto, $countryCode)
             ->andWhere('p <> :product')
             ->setParameter('product', $product)
             ->setMaxResults(6);
@@ -203,15 +205,13 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * @param User|null $user
-     */
-    public function getForHomePage(?User $user): array
+    public function getForHomePage(string $host): array
     {
         $query = $this->createQueryBuilder('p')
-            ->where('p.showHomePage > 0')
+            ->innerJoin(ProductOptions::class, 'po', 'WITH', 'po.product = p AND po.country = :country AND po.showHomePage IS NOT NULL')
             ->andWhere('p.status = :activeStatus')
             ->setParameter('activeStatus', Product::STATUS_ACTIVE)
+            ->setParameter('country', $host)
             ->groupBy('p.id')
             ->orderBy('RAND()');
 
@@ -303,21 +303,33 @@ class ProductRepository extends ExtendedEntityRepository
                 ->setParameter('searchCode', $searchParams['code']);
         }
 
+        if (isset($searchParams['sold']) || isset($searchParams['home_page_show'])) {
+            $countries = [];
+
+            $query
+                ->innerJoin(ProductOptions::class, 'po', 'WITH', 'po.product = p AND po.country IN (:countries)');
+
+            foreach ($this->countries as $countryCode => $country) {
+                $countries[] = $countryCode;
+            }
+
+            $query->setParameter('countries', $countries);
+        }
+
         if (isset($searchParams['sold'])) {
             $query
-                ->andWhere('p.sold = :isSold')
+                ->andWhere('po.sold = :isSold')
                 ->setParameter('isSold', true);
         }
 
         if (isset($searchParams['home_page_show'])) {
-
             if ('all' === $searchParams['home_page_show']) {
                 $query
-                    ->andWhere('p.showHomePage IN (:showHomePage)')
-                    ->setParameter('showHomePage', [Product::HOME_PAGE_UP, Product::HOME_PAGE_DOWN]);
+                    ->andWhere('po.showHomePage IN (:showHomePage)')
+                    ->setParameter('showHomePage', [ProductOptions::HOME_PAGE_UP, ProductOptions::HOME_PAGE_DOWN]);
             } else {
                 $query
-                    ->andWhere('p.showHomePage = (:showHomePage)')
+                    ->andWhere('po.showHomePage = (:showHomePage)')
                     ->setParameter('showHomePage', $searchParams['home_page_show']);
             }
         }

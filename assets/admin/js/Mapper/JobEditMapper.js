@@ -1,14 +1,16 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class JobEditMapper {
     constructor() {
         if (! JobEditMapper.instance) {
-            this.form = '#edit_form';
-            this.title_rs = '#job_title_rs';
-            this.desc_rs = '#job_description_rs';
-            this.title_en = '#job_title_en';
-            this.desc_en = '#job_description_en';
-            this.submitBtn = '#job_submit';
+            this.fields = {};
 
-            JobEditMapper.instance = this;
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.fields[`title_${locale}`] = '#title_'+locale;
+                this.fields[`description_${locale}`] = '#description_'+locale;
+            }
+
+            JobEditMapper.instance = Object.assign(this, baseFormMapper);
         }
 
         return JobEditMapper.instance;

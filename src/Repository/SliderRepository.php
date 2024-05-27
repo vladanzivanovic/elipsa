@@ -45,7 +45,8 @@ class SliderRepository extends ExtendedEntityRepository
                 's.id as id',
                 's.position as position',
                 's.isActive as is_active',
-                'image.name'
+                'image.name',
+                's.availableCountries as available_countries'
             )
             ->innerJoin('s.image', 'image')
             ->setFirstResult($tableModel->getOffset())
@@ -85,11 +86,13 @@ class SliderRepository extends ExtendedEntityRepository
     /**
      * @return array<int, Slider>
      */
-    public function getRandomActiveSlider(string $locale): array
+    public function getRandomActiveSlider(string $host): array
     {
         $query = $this->createQueryBuilder('s')
             ->where('s.isActive = :isActive')
+            ->andWhere('s.availableCountries LIKE :host')
             ->setParameter('isActive', true)
+            ->setParameter('host', '%'.$host.'%')
             ->orderBy('RAND()');
 
         return $query->getQuery()->getResult();

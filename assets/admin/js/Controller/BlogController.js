@@ -1,16 +1,17 @@
 import BlogDataTables from "../Services/DataTables/BlogDataTables";
 import BlogEditHandler from "../Handler/BlogEditHandler";
 import ConfirmationModalService from "../Services/ConfirmationModalService";
+import BlogDataTableEvents from "../Event/BlogDataTableEvents";
 
 const Private = Symbol('private');
 
 class BlogController {
     constructor() {
-        this.handler = new BlogEditHandler();
-        if (CAN_VIEW) {
-            BlogDataTables().init();
-        }
+        const dataTable = new BlogDataTableEvents();
 
+        this.handler = new BlogEditHandler();
+
+        dataTable.registerEvents();
         this[Private]().registerEvents();
     }
 

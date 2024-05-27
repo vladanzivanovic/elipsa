@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace App\Checker;
 
-use App\Entity\OrderProduct;
 use App\Entity\Product;
-use App\Entity\PromotionEligibilityInterface;
 use App\Entity\PromotionOption;
+use App\Entity\Resources\PromotionEligibilityInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PromotionOptionDiscountChecker
 {
+    public function __construct(
+        private readonly RequestStack $requestStack
+    ) {}
+
     public function isEligible(PromotionEligibilityInterface $promotionEligibility, PromotionOption $promotionOption): bool
     {
-        $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
-
-        return ($promotionEligibility->getDiscount() === 0) || ($promotionEligibility->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
+        return $this->checkEligibility($promotionEligibility, $promotionOption);
     }
 
     public function isProductEligible(Product $product, PromotionOption $promotionOption): bool
     {
-        $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
-
-        return ($product->getDiscount() === 0) || ($product->getDiscount() > 0 && true === $applicableOnDiscountedProducts);
+        return $this->checkEligibility($product, $promotionOption);
     }
 
     public function getType(): string
@@ -33,5 +33,18 @@ final class PromotionOptionDiscountChecker
     public static function getDefaultPriority(): int
     {
         return 900;
+    }
+
+    private function checkEligibility(PromotionEligibilityInterface $promotionEligibility, PromotionOption $promotionOption): bool
+    {
+        $applicableOnDiscountedProducts = $promotionOption->getConfiguration()[0];
+
+        if ($promotionEligibility instanceof Product) {
+            $discount = $promotionEligibility->getDiscount($this->requestStack->getCurrentRequest()->attributes->get('_country'));
+        } else {
+            $discount = $promotionEligibility->getDiscount();
+        }
+
+        return ($discount === 0) || ($discount > 0 && true === $applicableOnDiscountedProducts);
     }
 }

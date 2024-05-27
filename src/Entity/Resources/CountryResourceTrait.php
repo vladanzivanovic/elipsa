@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Resources;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,5 +19,10 @@ trait CountryResourceTrait
     public function getAvailableCountries(): array
     {
         return $this->availableCountries;
+    }
+
+    public function hasByCountryCode(string $countryCode): bool
+    {
+        return in_array($countryCode, $this->availableCountries);
     }
 }

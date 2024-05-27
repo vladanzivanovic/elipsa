@@ -39,20 +39,9 @@ final class BlogEditResponseFormatter
 
     public function formatResponse(Blog $blog = null): array
     {
-//        $rsTrans = $blog->getBlogTranslationByLocale('rs');
-//        $enTrans = $blog->getBlogTranslationByLocale('en');
-//
-//        $image = $blog->getImage();
-//
-//        $imageArray = [
-//            'id' => $image->getId(),
-//            'fileName' => $image->getName(),
-//            'isMain' => $image->getIsMain(),
-//        ];
-
         $payload = null;
 
-        if ($blog instanceof \App\Entity\Blog) {
+        if ($blog instanceof Blog) {
             $payload = $this->blogView->editView($blog);
         }
 
@@ -64,16 +53,5 @@ final class BlogEditResponseFormatter
             'payload' => $payload,
             'options' => $formattedOptions,
         ];
-
-//        return [
-//            'rs_description' => $rsTrans->getDescription(),
-//            'rs_short_description' => $rsTrans->getShortDescription(),
-//            'rs_title' => $rsTrans->getTitle(),
-//            'en_description' => $enTrans->getDescription(),
-//            'en_short_description' => $enTrans->getShortDescription(),
-//            'en_title' => $enTrans->getTitle(),
-//            'selectedTags' => array_column($this->tagsRepository->getByBlog($blog), 'mainSlug'),
-//            'selectedImages' => $this->imagesFormatter($this->router, [$imageArray], 'blog'),
-//        ];
     }
 }

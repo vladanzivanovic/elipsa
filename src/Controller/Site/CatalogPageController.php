@@ -18,31 +18,26 @@ final class CatalogPageController extends AbstractController
 {
     use ImageTrait;
 
-    private \App\Repository\ImageRepository $imageRepository;
-    private \Symfony\Component\Routing\RouterInterface $router;
-    private \App\Repository\CatalogueRepository $catalogueRepository;
-    private \App\Formatter\Site\CatalogueResponseFormatter $responseFormatter;
-
     public function __construct(
-        ImageRepository $imageRepository,
-        RouterInterface $router,
-        CatalogueRepository $catalogueRepository,
-        CatalogueResponseFormatter $responseFormatter
-    ) {
-        $this->imageRepository = $imageRepository;
-        $this->router = $router;
-        $this->catalogueRepository = $catalogueRepository;
-        $this->responseFormatter = $responseFormatter;
-    }
+        private readonly ImageRepository $imageRepository,
+        private readonly RouterInterface $router,
+        private readonly CatalogueRepository $catalogueRepository,
+        private readonly CatalogueResponseFormatter $responseFormatter
+    ) {}
 
     
-    #[Route(path: ['rs' => '/katalog', 'en' => '/catalogue', 'ba' => '/katalog'], name: 'site.catalog_page', methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/katalog',
+        'en' => '/catalogue',
+        'ba' => '/katalog'
+    ], name: 'site.catalog_page', methods: ['GET'])]
     #[Template('Site/Pages/catalog.html.twig')]
     public function getCatalogues(Request $request): array
     {
         $locale = $request->getLocale();
+        $countryCode = $request->attributes->get('_country');
 
-        $catalogues = $this->catalogueRepository->getCatalogPage($locale);
+        $catalogues = $this->catalogueRepository->getCatalogPage($locale, $countryCode);
 
         return $this->responseFormatter->formatResponse($catalogues, $locale);
     }

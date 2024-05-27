@@ -13,6 +13,14 @@ controllers_site:
 controllers_unique:
     resource: ../../src/Controller/Unique/
     type: annotation
+    host:
+        rs: '%host_rs%'
+        ba: '%host_ba%'
+        en: ''
+    prefix:
+        rs: ''
+        ba: ''
+        en: '/en'
 
 controllers_admin:
     resource: ../../src/Controller/Admin/

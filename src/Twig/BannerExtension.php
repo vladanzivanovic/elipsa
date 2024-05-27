@@ -7,6 +7,7 @@ namespace App\Twig;
 use App\Entity\Image;
 use App\Repository\BannerRepository;
 use App\Repository\ImageRepository;
+use App\View\BannerView;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -14,43 +15,48 @@ use Twig\TwigFunction;
 final class BannerExtension extends AbstractExtension
 {
     public function __construct(
-        private BannerRepository $bannerRepository,
-        private RouterInterface $router,
-        private ImageRepository $imageRepository,
+        private readonly BannerRepository $bannerRepository,
+        private readonly RouterInterface $router,
+        private readonly ImageRepository $imageRepository,
+        private readonly BannerView $bannerView,
     ) {}
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('banner', [$this, 'getBanner']),
+            new TwigFunction('get_banners', [$this, 'getBanner']),
         ];
     }
 
-    public function getBanner(int $type, string $filter, string $locale, bool $isMobile = false): array|null
+    public function getBanner(int $type, array $filters, string $host): array
     {
-        $banner = $this->bannerRepository->findOneBy(['type' => $type, 'isActive' => true]);
+        $banners = $this->bannerRepository->getActiveByType($type, $host);
 
-        if (null === $banner) {
-            return null;
+        $formattedBanners = [];
+
+        foreach ($banners as $banner) {
+            $formattedBanners[] = $this->bannerView->view($banner, $filters);
         }
 
-        $imageName = $banner->getImage()->getName();
-
-        $trans = $banner->getByLocale($locale);
-
-        if ($isMobile) {
-            $mobileImage = $this->imageRepository->findOneBy(['parentImage' => $banner->getImage()->getName(), 'device' => Image::DEVICE_MOBILE]);
-
-            if (null !== $mobileImage) {
-                $imageName = $mobileImage->getName();
-            }
-        }
-
-        return [
-            'image_link' => $this->router->generate('app.image_show', ['entity' => 'banner', 'name' => $imageName, 'filter' => $filter]),
-            'image' => ['entity' => 'banner', 'name' => $imageName, 'filter' => $filter],
-            'link' => $trans->getButtonLink(),
-        ];
+        return  $formattedBanners;
+//
+//        $imageName = $banner->getImage()->getName();
+//
+//        $trans = $banner->getByLocale($locale);
+//
+//        if ($isMobile) {
+//            $mobileImage = $this->imageRepository->findOneBy(['parentImage' => $banner->getImage()->getName(), 'device' => Image::DEVICE_MOBILE]);
+//
+//            if (null !== $mobileImage) {
+//                $imageName = $mobileImage->getName();
+//            }
+//        }
+//
+//        return [
+//            'image_link' => $this->router->generate('app.image_show', ['entity' => 'banner', 'name' => $imageName, 'filter' => $filter]),
+//            'image' => ['entity' => 'banner', 'name' => $imageName, 'filter' => $filter],
+//            'link' => $trans->getButtonLink(),
+//        ];
     }
 
     public function getName(): string
