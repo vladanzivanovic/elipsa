@@ -37,7 +37,13 @@ class BlogRequestParser
         $this->setTags($blog, $blogEditRequestDto);
         $blog->setAvailableCountries($blogEditRequestDto->availableCountries);
 
-        $this->blogImageService->setImages($blog->getBlogTranslationByLocale($this->defaultLocale), $blogEditRequestDto->images);
+        $countryLocale = $this->defaultLocale;
+
+        if (false === in_array($countryLocale, $blogEditRequestDto->availableCountries, true)) {
+            $countryLocale = $blogEditRequestDto->availableCountries[0];
+        }
+
+        $this->blogImageService->setImages($blog->getBlogTranslationByLocale($countryLocale), $blogEditRequestDto->images);
 
         return $blog;
     }
@@ -45,7 +51,11 @@ class BlogRequestParser
     private function setBlogTranslation(Blog $blog, BlogEditRequestDto $blogEditRequestDto): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $blogEditRequestDto->translations[$locale];
+            $transCollection = $blogEditRequestDto->translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
 
             $blogTranslation = $this->translationRepository->findOneBy(['blog' => $blog, 'locale' => $locale]);
 

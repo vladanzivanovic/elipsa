@@ -73,7 +73,7 @@ final class OrderPaymentRequestView
             'oid' => $oid,
             'clientid' => $clientId ,
             'storetype' => '3d_pay_hosting',
-            'lang' => $locale === 'rs' ? 'sr' : $locale,
+            'lang' => $locale === 'rs' || 'ba' ? 'sr' : $locale,
             'hashAlgorithm' => 'ver2',
             'rnd' => $rnd,
             'encoding' => 'utf-8',

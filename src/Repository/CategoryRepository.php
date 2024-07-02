@@ -101,6 +101,7 @@ class CategoryRepository extends ExtendedEntityRepository
 
         $stmt = $this->_em->getConnection()->prepare($sql);
         $stmt->bindValue('locale', $locale, ParameterType::STRING);
+
         $results = $stmt->executeQuery();
 
         return $results->fetchAllAssociative();
@@ -114,7 +115,7 @@ class CategoryRepository extends ExtendedEntityRepository
                 'ct.title',
                 'ct.slug'
             )
-            ->innerJoin('c.categoryTranslations', 'ct')
+            ->innerJoin('c.translations', 'ct')
             ->innerJoin('c.productHasCategories', 'phc')
             ->where('ct.locale = :locale')
             ->andWhere('phc.product = :product')

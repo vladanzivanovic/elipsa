@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     private Collection $shopOrders;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    private Address $address;
+    private null|Address $address = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserWishes::class, orphanRemoval: true)]
     private Collection $userWishes;
@@ -244,11 +244,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     }
 
     /**
-     * @return Collection|ShopOrder[]
+     * @return Collection<int, ShopOrder>
      */
-    public function getShopOrders(): Collection
+    public function getShopOrders(string $country = null): Collection
     {
-        return $this->shopOrders;
+        if (null === $country) {
+            return $this->shopOrders;
+        }
+
+        $filterByCountry = $this->shopOrders->filter(function (ShopOrder $shopOrder) use ($country) {
+            return $shopOrder->getCountry() === $country;
+        });
+
+        return $filterByCountry;
     }
 
     public function addShopOrder(ShopOrder $shopOrder): self

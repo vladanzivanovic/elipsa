@@ -1,18 +1,24 @@
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import NotificationService from "../../../../js/NotificationService";
 import ColorsDataTables from "../../Services/DataTables/ColorsDataTables";
+import colorEditMapper from "../../Mapper/ColorEditMapper";
+import FormHelperService from "../../../../js/Helper/FormHelperService";
 
 class ColorHandler {
+    #notification;
+    #mapper;
+
     constructor() {
-        this.notification = NotificationService();
+        this.#notification = NotificationService();
+        this.#mapper = colorEditMapper;
     }
 
     save(mapper) {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_color_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
 
-        if (! mapper.form.valid()) {
+        if (! $(this.#mapper.form).valid()) {
             return false;
         }
 
@@ -21,7 +27,7 @@ class ColorHandler {
             type = 'PUT';
         }
 
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type,
@@ -32,23 +38,23 @@ class ColorHandler {
                 AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.colors'));
             },
             error: error => {
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
             }
         })
     }
 
     remove(id) {
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type: 'DELETE',
             url: AppHelperService.generateLocalizedUrl('admin.remove_color_api', {id}),
             success: () => {
                 ColorsDataTables().reload();
-                this.notification.remove();
+                this.#notification.remove();
             },
             error: (error) => {
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
             }
         })
     }

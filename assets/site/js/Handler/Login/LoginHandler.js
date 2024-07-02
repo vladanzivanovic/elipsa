@@ -34,7 +34,7 @@ class LoginHandler {
         try {
             await this.#apiHandler.send(data);
 
-            AppHelperService.redirect(Routing.generate('site.home_page'));
+            AppHelperService.redirect(Routing.generate(`site.home_page.${LOCALE}`));
 
             return ;
         } catch (e) {

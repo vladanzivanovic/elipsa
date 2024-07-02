@@ -75,7 +75,7 @@ final class BlogView
             $trans = $blog->getBlogTranslationByLocale($locale);
 
             if (null === $trans) {
-                $trans = $blog->getBlogTranslationByLocale($this->defaultLocale);
+                continue;
             }
 
             $translations[$locale] = [

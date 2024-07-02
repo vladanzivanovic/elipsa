@@ -1,36 +1,38 @@
+import tagEditMapper from "../Mapper/TagEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class TagEditValidator {
+    #mapper;
+
     constructor() {
         if (!TagEditValidator.instance) {
+            this.#mapper = tagEditMapper;
+
             TagEditValidator.instance = this;
         }
 
         return TagEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
-        //todo fix this
         options = {
-            rules: {
-                rs_title: {required: true},
-                en_title: {required: true},
-            },
+            rules: {},
         };
 
         for(const [locale, data] of Object.entries(LANGUAGES)) {
-            options.rules[`${locale}[title]`] = 'required';
+            options.rules[`translations[${locale}][title]`] = 'required';
         }
 
-        if (ROUTE_SUB_NAME === 'product') {
+        if (TAG_TYPE === 'product') {
             options.rules.product_type = {isSelectBoxEmpty: true};
         }
 
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

@@ -1,33 +1,43 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Dodavanje / Izmena tagova{% endblock %}
+{% set type = routeName() == 'admin.add_blog_tag_page' or routeName() == 'admin.edit_blog_tag_page' ? 'blog' : 'product' %}
+{% set typeTitle = type == 'blog' ? 'blog' : 'proizvod' %}
+{% set IS_EDIT = routeName() == 'admin.edit_' ~ type ~ '_tag_page' %}
 
-{% set routeSubName = routeName() == 'admin.add_blog_tag_page' or routeName() == 'admin.edit_blog_tag_page' ? 'blog' : 'product' %}
+{% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
+{% set title = titlePrefix ~ ' taga' %}
+{% set routePath = 'admin.' ~ type ~ '_tags' %}
+{% set routeTitle = 'Tagovi' %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    {% set IS_EDIT = routeName() == 'admin.edit_' ~ routeSubName ~ '_tag_page' %}
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena tagova' } %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {
+        activePage: title,
+        pages: [
+            {routeName: routePath, name: routeTitle}
+        ]
+    } %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
 
-
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Dodavanje - izmena tagova</h4>
+            <h4 class="mb-3 mb-md-0">{{ title }}</h4>
         </div>
     </div>
 
     <form id="edit_form" enctype="multipart/form-data">
-        {% for locale, lang in app_params('languages') %}
+        {% for locale, lang in languages %}
             <div class="row grid-margin">
                 <div class="col-md-12 stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h6 class="card-title">{{ lang.name }}</h6>
+                            <h6 class="card-title">{{ lang.translation | trans }}</h6>
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group">
-                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? tag.translations[locale].title : '', locale~'[title]') }}
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale].title : '', 'translations['~locale~'][title]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div>
@@ -36,31 +46,31 @@
                 </div>
             </div>
         {% endfor %}
-        {% if routeSubName == 'product' %}
-        <div class="row grid-margin">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Dodatne informacije</h6>
-                        <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.select('Tip taga', 'product_type', 'product_type', IS_EDIT ? tag.product_type : '', options, '', 'w-100') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
+        {% if type == 'product' %}
+            <div class="row grid-margin">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Dodatne informacije</h6>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        {{ form.select('Tip taga', 'product_type', 'product_type', IS_EDIT ? payload.product_type : '', options, '', 'w-100') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endif %}
     </form>
-    {{ form.button('tag_submit', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
+    {{ include('Admin/Components/formButtons.html.twig') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
         const SLUG = '{{ app.request.attributes.get('slug') }}';
-        const ROUTE_SUB_NAME = '{{ routeSubName }}';
+        const TAG_TYPE = '{{ type }}';
     </script>
 {% endblock %}

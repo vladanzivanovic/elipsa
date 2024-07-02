@@ -99,7 +99,7 @@
                     <nav id="mobile_menu_active">
                         <ul class="menu-list">
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
-                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a>
+                            <li><a href="{{ path('site.company_text', {'_locale': locale, 'type': siteInfoText.about_us.slug[locale]}) }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul>
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>

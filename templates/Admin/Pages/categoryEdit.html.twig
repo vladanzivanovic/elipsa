@@ -1,51 +1,69 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Dodavanje / Izmena kategorije{% endblock %}
+{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_category_page' %}
+{% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
+{% set title = titlePrefix ~ ' kategorije' %}
+{% set routePath = 'admin.categories' %}
+{% set routeTitle = 'Kategorije' %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_category_page' %}
-    {% set categoryRs = IS_EDIT ? category.translationByLocale('rs').first() : '' %}
-    {% set categoryEn = IS_EDIT ? category.translationByLocale('en').first() : '' %}
-    {% set parentRs = IS_EDIT and category.parent is not null ? category.parent.translationByLocale('rs').first() : '' %}
 
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena kategorije' } %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {
+        activePage: title,
+        pages: [
+            {routeName: routePath, name: routeTitle}
+        ]
+    } %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
 
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">Dodavanje - izmena kategorije</h4>
+            <h4 class="mb-3 mb-md-0">{{ title }}</h4>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12 stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <form id="edit_form" enctype="multipart/form-data">
+    <form id="edit_form" enctype="multipart/form-data">
+
+        <div class="row">
+            {% for locale, lang in languages %}
+            <div class="col-md-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ lang.translation | trans }}</h6>
                         <div class="row">
-                            <div class="col-sm-6 col-md-4">
+                            <div class="col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    {{ form.input('Naziv na srpskom', 'title_rs', IS_EDIT ? categoryRs.title : '', 'rs_title') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.input('Naziv na engleskom', 'title_en', IS_EDIT ? categoryEn.title : '', 'en_title') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.select('Glavna kategorija', 'parent_category', 'parent_category', parentRs is not empty ? parentRs.slug : '', options, '', 'w-100') }}
+                                    {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : null, 'translations['~locale~'][title]', '', 'text', null, 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
-                    </form>
-                    {{ form.button('category_submit', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Glavna kategorija</h6>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.select('Glavna kategorija', 'parent_category', 'parent_category', payload.parent.translations[adminLocale]['slug'] ?? '', options, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        {{ include('Admin/Components/formButtons.html.twig') }}
+    </form>
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">

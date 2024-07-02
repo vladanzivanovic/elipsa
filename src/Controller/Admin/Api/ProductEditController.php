@@ -72,7 +72,7 @@ final class ProductEditController extends AbstractController
     #[Route(path: '/api/product/home-page-position/{slug}/{status}', name: 'admin.api_product_home_page_position', options: ['expose' => true], methods: ['PATCH'])]
     public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
     {
-        $productTranslation->getProduct()->setShowHomePage($status);
+//        $productTranslation->getProduct()->setShowHomePage($status);
 
         $this->editHandler->save($productTranslation->getProduct());
 
@@ -83,9 +83,12 @@ final class ProductEditController extends AbstractController
     public function toggleProductIsSold(ProductTranslation $productTranslation): JsonResponse
     {
         $product = $productTranslation->getProduct();
-        $isSold = $product->isSold();
 
-        $product->setSold(!$isSold);
+        foreach ($product->getProductOptions() as $productOption) {
+            $isSold = $productOption->isSold();
+
+            $productOption->setSold(!$isSold);
+        }
 
         $this->editHandler->save($productTranslation->getProduct());
 

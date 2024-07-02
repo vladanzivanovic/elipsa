@@ -21,7 +21,7 @@
     {% set routeName = 'site.home_page' %}
 {% endif %}
 
-{% set routeParams = app.request.attributes.get('_route_params') is not null ? app.request.attributes.get('_route_params') : {'_locale': 'rs'} %}
+{% set routeParams = app.request.attributes.get('_route_params') is not null ? app.request.attributes.get('_route_params') : {'_locale': default_locale} %}
 {% set query = app is not null and app.request.query.all is not null ? app.request.query.all : [] %}
 
 {% if app is not null and (app.request.attributes.get('_route_params') is not null or app.request.query.all is not empty) %}

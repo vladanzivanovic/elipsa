@@ -7,20 +7,15 @@ namespace App\Controller\Admin;
 use App\Entity\OfficeContact;
 use App\Formatter\Admin\OfficeContactEditResponseFormatter;
 use Symfony\Bridge\Twig\Attribute\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class OfficeContactEditPageController extends AbstractController
 {
-    private OfficeContactEditResponseFormatter $OfficeContactEditResponseFormatter;
-
     public function __construct(
-        OfficeContactEditResponseFormatter $OfficeContactEditResponseFormatter
-    ) {
+        private readonly OfficeContactEditResponseFormatter $OfficeContactEditResponseFormatter
+    ) {}
 
-        $this->OfficeContactEditResponseFormatter = $OfficeContactEditResponseFormatter;
-    }
     #[Route(path: '/add-office-contact', name: 'admin.add_office_contact_page', methods: ['GET'])]
     #[Template('Admin/Pages/officeContactEdit.html.twig')]
     public function insert(): array

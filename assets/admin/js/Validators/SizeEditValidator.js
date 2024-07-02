@@ -1,15 +1,21 @@
+import sizeEditMapper from "../Mapper/SizeEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class SizeEditValidator {
+    #mapper;
+
     constructor() {
         if (!SizeEditValidator.instance) {
+            this.#mapper = sizeEditMapper;
+
             SizeEditValidator.instance = this;
         }
 
         return SizeEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
         options = {
@@ -20,7 +26,7 @@ class SizeEditValidator {
 
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

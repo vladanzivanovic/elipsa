@@ -73,7 +73,7 @@ class SliderTextTranslation implements EntityInterface, LocaleInterface
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(null|string $description): void
     {
         $this->description = $description;
     }

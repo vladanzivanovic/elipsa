@@ -30,7 +30,13 @@ final class PromotionCouponView
                 $products = $this->productRepository->findBy(['id' => $configuration]);
 
                 foreach ($products as $product) {
-                    $trans = $product->getByLocale($this->defaultLocale);
+                    $countryLocale = $this->defaultLocale;
+
+                    if (false === in_array($countryLocale, $product->getAvailableCountries(), true)) {
+                        $countryLocale = $product->getAvailableCountries()[0];
+                    }
+
+                    $trans = $product->getByLocale($countryLocale);
 
                     $option['configuration'][] = ['id' => $product->getId(), 'text' => $trans->getTitle()];
                 }

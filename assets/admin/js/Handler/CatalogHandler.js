@@ -1,9 +1,9 @@
 import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import DropZoneService from "../../../js/Services/DropZoneService";
-import HomeBannersDataTables from "../Services/DataTables/HomeBannersDataTables";
 import catalogMapper from "../Mapper/CatalogMapper";
 import CatalogDataTables from "../Services/DataTables/CatalogDataTables";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class CatalogHandler {
     constructor() {
@@ -14,12 +14,16 @@ class CatalogHandler {
     save(id) {
         let urlRoute = Routing.generate('admin.add_catalog_api');
         let type = 'POST';
-        const data = $(this.mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.mapper.form));
+        const images = DropZoneService().getFilesArray('catalog');
 
-        data.push({
-            name: 'images',
-            value: JSON.stringify(DropZoneService().getFilesArray('catalog')),
-        });
+        data.images = [];
+
+        for (const index in images) {
+            const image = images[index];
+
+            data.images.push(image);
+        }
 
         if (IS_EDIT) {
             urlRoute = Routing.generate('admin.edit_catalog_api', {id: ID});

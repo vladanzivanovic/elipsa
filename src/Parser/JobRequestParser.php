@@ -10,15 +10,10 @@ use App\Entity\Resources\StatusInterface;
 use App\Repository\CareerDescriptionTranslationRepository;
 use App\Request\Dto\Admin\CareerDescriptionEditRequestDto;
 use App\Services\JobImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class JobRequestParser
 {
-    use ParserTrait;
-
     public function __construct(
-        private readonly ParameterBagInterface $parameterBag,
         private readonly CareerDescriptionTranslationRepository $descriptionTranslationRepository,
         private readonly JobImageService $imageService,
         private readonly array $locales,

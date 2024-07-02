@@ -1,25 +1,38 @@
-import CategoryEditMapper from "../Mapper/CategoryEditMapper";
 import CategoryHandler from "../Handler/CategoryHandler";
 import categoryEditValidator from "../Validators/CategoryEditValidator";
-import('bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css');
-require('bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min');
+import categoryEditMapper from "../Mapper/CategoryEditMapper";
+import baseEvents from "./BaseEvents";
 
 class CategoryEditController {
+    #mapper;
+    #validator;
+    #baseEvents
+
     constructor() {
-        this.mapper = new CategoryEditMapper();
-        this.validator = categoryEditValidator;
+        this.#mapper = categoryEditMapper;
+        this.#validator = categoryEditValidator;
+        this.#baseEvents = baseEvents;
 
-        this.validator.validate(this.mapper.form);
+        this.#initForm();
 
-        this.registerEvents();
+        this.#registerEvents();
     }
 
-    registerEvents() {
-        this.mapper.submitBtn.on('click touchend', e => {
+    #initForm()
+    {
+        $(`${this.#mapper.form} select`).select2();
+
+        this.#validator.validate();
+    }
+
+    #registerEvents() {
+        $(this.#mapper.submitBtn).on('click', e => {
             const handler = new CategoryHandler();
 
-            handler.save(this.mapper);
+            handler.save();
         });
+
+        this.#baseEvents.events();
     }
 }
 

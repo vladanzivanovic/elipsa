@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\ResourceTrait;
 use App\Repository\OfficeContactRepository;
@@ -10,9 +12,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OfficeContactRepository::class)]
-class OfficeContact implements EntityInterface
+class OfficeContact implements EntityInterface, CountryResourceInterface
 {
     use ResourceTrait;
+    use CountryResourceTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $telephone;
@@ -20,7 +23,7 @@ class OfficeContact implements EntityInterface
     /**
      * @var Collection<int, OfficeContactTranslation>
      */
-    #[ORM\OneToMany(targetEntity: OfficeContactTranslation::class, mappedBy: 'officeContact', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'officeContact', targetEntity: OfficeContactTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $officeContactTranslations;
 
     #[ORM\Column(type: 'boolean', nullable: true)]

@@ -52,8 +52,9 @@ class ProductRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(p.id) as total')
-            ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
-            ->setParameter('locale', $this->defaultLocale)
+            ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND (pt.locale = :rsLocale OR pt.locale = :baLocale)')
+            ->setParameter('rsLocale', 'rs')
+            ->setParameter('baLocale', 'ba')
         ;
 
         $this->dataTableSearchPart($query, $tableModel);
@@ -67,16 +68,16 @@ class ProductRepository extends ExtendedEntityRepository
             ->select(
                 'p.id',
                 'p.code as code',
-                'p.discount as discount',
                 'p.status as status',
                 'pt.title as title',
                 'pt.slug',
             )
-            ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND pt.locale = :locale')
-            ->setParameter('locale', $this->defaultLocale)
+            ->innerJoin(ProductTranslation::class, 'pt', 'WITH', 'pt.product = p AND (pt.locale = :rsLocale OR pt.locale = :baLocale)')
+            ->setParameter('rsLocale', 'rs')
+            ->setParameter('baLocale', 'ba')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->groupBy('pt.slug')
+            ->groupBy('p.id')
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 

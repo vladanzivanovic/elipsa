@@ -75,8 +75,7 @@ class BlogEditController {
         });
 
         this.#countrySelectionEvents.registerEvents();
-
-        // this.#baseEvents.events();
+        this.#baseEvents.events();
     }
 }
 

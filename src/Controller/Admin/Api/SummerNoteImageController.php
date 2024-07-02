@@ -51,7 +51,6 @@ class SummerNoteImageController extends AbstractController
             ]);
 
         } catch (\Throwable $throwable) {
-            dd($throwable);
             return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
         }
     }

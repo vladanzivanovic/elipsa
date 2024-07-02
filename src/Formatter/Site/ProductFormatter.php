@@ -7,7 +7,6 @@ namespace App\Formatter\Site;
 use App\Checker\PromotionCheckerTrait;
 use App\Collector\PromotionCollector;
 use App\Entity\Product;
-use App\Entity\Promotion;
 use App\Entity\User;
 use App\Parser\ProductPromotionParser;
 use App\Repository\PromotionRepository;
@@ -27,61 +26,21 @@ final class ProductFormatter
     use FormatterTrait;
     use PromotionCheckerTrait;
 
-    private RouterInterface $router;
-
-    private ProductView $productView;
-
-    private ImageView $imageView;
-
-    private ColorView $colorView;
-
-    private CategoryView $categoryView;
-
-    private CleaningView $cleaningView;
-
-    private TagsRepository $tagsRepository;
-
-    private TagView $tagView;
-
-    private YoutubeView $youtubeView;
-
-    private ProductSizeView $productSizeView;
-
-    private PromotionRepository $promotionRepository;
-
-    private ProductPromotionParser $productPromotionParser;
-
-    private PromotionCollector $promotionCollector;
-
     public function __construct(
-        RouterInterface $router,
-        ProductView $productView,
-        ImageView $imageView,
-        ColorView $colorView,
-        CategoryView $categoryView,
-        CleaningView $cleaningView,
-        TagsRepository $tagsRepository,
-        TagView $tagView,
-        YoutubeView $youtubeView,
-        ProductSizeView $productSizeView,
-        PromotionRepository $promotionRepository,
-        ProductPromotionParser $productPromotionParser,
-        PromotionCollector $promotionCollector
-    ) {
-        $this->router = $router;
-        $this->productView = $productView;
-        $this->imageView = $imageView;
-        $this->colorView = $colorView;
-        $this->categoryView = $categoryView;
-        $this->cleaningView = $cleaningView;
-        $this->tagsRepository = $tagsRepository;
-        $this->tagView = $tagView;
-        $this->youtubeView = $youtubeView;
-        $this->productSizeView = $productSizeView;
-        $this->promotionRepository = $promotionRepository;
-        $this->productPromotionParser = $productPromotionParser;
-        $this->promotionCollector = $promotionCollector;
-    }
+        private readonly RouterInterface $router,
+        private readonly ProductView $productView,
+        private readonly ImageView $imageView,
+        private readonly ColorView $colorView,
+        private readonly CategoryView $categoryView,
+        private readonly CleaningView $cleaningView,
+        private readonly TagsRepository $tagsRepository,
+        private readonly TagView $tagView,
+        private readonly YoutubeView $youtubeView,
+        private readonly ProductSizeView $productSizeView,
+        private readonly PromotionRepository $promotionRepository,
+        private readonly ProductPromotionParser $productPromotionParser,
+        private readonly PromotionCollector $promotionCollector
+    ) {}
 
     public function formatResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
     {
@@ -111,6 +70,12 @@ final class ProductFormatter
         return $productView;
     }
 
+    /**
+     * @param array<int, Product> $products
+     * @param string $countryCode
+     * @param User|null $user
+     * @return array
+     */
     public function getProducts(array $products, string $countryCode, null|User $user = null): array
     {
         $productsView = [];
@@ -147,7 +112,7 @@ final class ProductFormatter
         $colors = [];
 
         foreach ($product->getProductColors() as $hex => $productColor) {
-            $colors[$hex] = $this->colorView->productPageView($productColor);
+            $colors[$hex] = $this->colorView->view($productColor);
         }
 
         return $colors;

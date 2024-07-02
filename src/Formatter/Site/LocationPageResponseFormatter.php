@@ -11,22 +11,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class LocationPageResponseFormatter
 {
-    use FormatterTrait;
-
-    private \Symfony\Component\Routing\RouterInterface $router;
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
-
-    private LocationView $locationView;
-
     public function __construct(
-        RouterInterface $router,
-        ParameterBagInterface $bag,
-        LocationView $locationView
-    ) {
-        $this->router = $router;
-        $this->bag = $bag;
-        $this->locationView = $locationView;
-    }
+        private readonly LocationView $locationView,
+        private readonly string $defaultLocale
+    ) {}
 
     /**
      * @param Location[] $locations
@@ -39,6 +27,10 @@ final class LocationPageResponseFormatter
 
         foreach ($locations as $location) {
             $trans = $location->getByLocale($locale);
+
+            if (null === $trans) {
+                $trans = $location->getByLocale($this->defaultLocale);
+            }
 
             $key = in_array($trans->getCity(), ['Beograd', 'Belgrade'], true) ?
                 $trans->getCity() : $trans->getCountry();

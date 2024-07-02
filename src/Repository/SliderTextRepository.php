@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Resources\StatusInterface;
 use App\Entity\SliderText;
+use App\Entity\SliderTextTranslation;
+use App\Entity\SliderTranslation;
 use App\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
@@ -49,11 +51,12 @@ class SliderTextRepository extends ExtendedEntityRepository
                 'stt.link as link',
                 'st.availableCountries as available_countries',
             )
-            ->innerJoin('st.translations', 'stt')
-            ->where('stt.locale = :defaultLocale')
-            ->setParameter('defaultLocale', $this->defaultLocale)
+            ->innerJoin(SliderTextTranslation::class, 'stt', 'WITH', 'stt.sliderText = st AND (stt.locale = :rsLocale OR stt.locale = :baLocale)')
+            ->setParameter('rsLocale', 'rs')
+            ->setParameter('baLocale', 'ba')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
+            ->groupBy('st.id')
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 

@@ -27,8 +27,11 @@ final class SliderView
         $sliderTrans = $slider->getByLocale($locale);
         $sliderImageName = $slider->getImage()->getName();
         $mobileImage = $this->imageRepository->getRelatedImage($sliderImageName);
+        $descriptions = [null];
 
-        preg_match_all('%(<p[^>]*>.*?</p>)%im', $sliderTrans->getDescription(), $descriptions);
+        if (null !== $sliderTrans->getDescription()) {
+            preg_match_all('%(<p[^>]*>.*?</p>)%im', $sliderTrans->getDescription(), $descriptions);
+        }
 
         return [
             'id' => $slider->getId(),

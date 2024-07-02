@@ -3,16 +3,20 @@
 namespace App\Entity;
 
 use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleTranslatorInterface;
+use App\Entity\Resources\LocaleTranslatorTrait;
 use App\Entity\Resources\ResourceTrait;
+use App\Repository\ProductColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: \App\Repository\ProductColorRepository::class)]
-class ProductColor implements EntityInterface
+#[ORM\Entity(repositoryClass: ProductColorRepository::class)]
+class ProductColor implements EntityInterface, LocaleTranslatorInterface
 {
     use ResourceTrait;
+    use LocaleTranslatorTrait;
 
     #[ORM\Column(type: 'string', length: 7)]
     #[Assert\NotBlank(message: 'field.not_blank', groups: ['SetColor'])]
@@ -21,18 +25,18 @@ class ProductColor implements EntityInterface
     /**
      * @var Collection<int, ColorTranslation>
      */
-    #[ORM\OneToMany(targetEntity: \App\Entity\ColorTranslation::class, mappedBy: 'color', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private Collection $colorTranslations;
+    #[ORM\OneToMany(targetEntity: ColorTranslation::class, mappedBy: 'color', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $translations;
 
     /**
      * @var Collection<int, OrderProduct>
      */
-    #[ORM\OneToMany(targetEntity: \App\Entity\OrderProduct::class, mappedBy: 'color')]
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'color')]
     private Collection $orderProducts;
 
     public function __construct()
     {
-        $this->colorTranslations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
     }
 
@@ -53,13 +57,13 @@ class ProductColor implements EntityInterface
      */
     public function getColorTranslations(): Collection
     {
-        return $this->colorTranslations;
+        return $this->translations;
     }
 
     public function addColorTranslation(ColorTranslation $colorTranslation): self
     {
-        if (!$this->colorTranslations->contains($colorTranslation)) {
-            $this->colorTranslations[] = $colorTranslation;
+        if (!$this->translations->contains($colorTranslation)) {
+            $this->translations[] = $colorTranslation;
             $colorTranslation->setColor($this);
         }
 
@@ -68,25 +72,11 @@ class ProductColor implements EntityInterface
 
     public function removeColorTranslation(ColorTranslation $colorTranslation): self
     {
-        if ($this->colorTranslations->contains($colorTranslation)) {
-            $this->colorTranslations->removeElement($colorTranslation);
-            // set the owning side to null (unless already changed)
-            if ($colorTranslation->getColor() === $this) {
-                $colorTranslation->setColor(null);
-            }
+        if ($this->translations->contains($colorTranslation)) {
+            $this->translations->removeElement($colorTranslation);
         }
 
         return $this;
-    }
-
-    public function getByLocale(string $locale): ColorTranslation|null
-    {
-        $filteredTrans = $this->colorTranslations->filter(function ($trans) use ($locale) {
-            /** @var ColorTranslation $trans */
-            return $trans->getLocale() === $locale;
-        });
-
-        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 
     /**

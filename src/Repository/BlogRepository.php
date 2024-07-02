@@ -48,10 +48,12 @@ class BlogRepository extends ExtendedEntityRepository
                 'bt.alias',
                 'blog.availableCountries as available_countries'
             )
-            ->innerJoin(BlogTranslation::class, 'bt', 'WITH', 'bt.blog = blog AND bt.locale = :locale')
+            ->innerJoin(BlogTranslation::class, 'bt', 'WITH', 'bt.blog = blog AND (bt.locale = :rsLocale OR bt.locale = :baLocale)')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
-            ->setParameter('locale', 'rs')
+            ->setParameter('rsLocale', 'rs')
+            ->setParameter('baLocale', 'ba')
+            ->groupBy('blog.id')
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         return $query->getQuery()->getArrayResult();

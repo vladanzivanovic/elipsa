@@ -17,7 +17,7 @@ final class LocationPageCollector
     }
 
     
-    public function collect(string $locale): array
+    public function collect(): array
     {
         return $this->locationRepository->findAll();
     }

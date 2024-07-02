@@ -1,11 +1,25 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class CategoryEditMapper {
     constructor() {
-        this.form = $('#edit_form');
-        this.titleRs = $('#title_rs', this.form);
-        this.titleEn = $('#title_en', this.form);
-        this.parent = $('#parent_category', this.form);
-        this.submitBtn = $('#category_submit');
+        if (!CategoryEditMapper.instance) {
+            this.parent = '#parent_category';
+
+            this.fields = {};
+
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.fields[`title_${locale}`] = '#title_'+locale;
+            }
+
+            CategoryEditMapper.instance = Object.assign(this, baseFormMapper);
+        }
+
+        return CategoryEditMapper.instance;
     }
 }
 
-export default CategoryEditMapper;
+const categoryEditMapper = new CategoryEditMapper();
+
+Object.freeze(categoryEditMapper);
+
+export default categoryEditMapper;

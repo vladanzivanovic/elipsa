@@ -2,37 +2,37 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\SettingsRepository::class)]
-class Settings
+#[ORM\Entity(repositoryClass: SettingsRepository::class)]
+class Settings implements EntityInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    use ResourceTrait;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private ?string $name;
+    private string $name;
 
     #[ORM\Column(type: 'text')]
-    private ?string $value;
+    private string $value;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private ?string $slug;
+    private string $slug;
 
     #[ORM\Column(type: 'string', length: 2, nullable: true)]
-    private ?string $locale;
+    private null|string $locale;
 
     #[ORM\Column(type: 'string', length: 15)]
-    private ?string $inputType;
+    private string $inputType;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    #[ORM\Column(length: 2, nullable: true)]
+    private null|string $country = null;
 
-    public function getName(): ?string
+    public function getName(): null|string
     {
         return $this->name;
     }
@@ -44,7 +44,7 @@ class Settings
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue(): null|string
     {
         return $this->value;
     }
@@ -56,7 +56,7 @@ class Settings
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): null|string
     {
         return $this->slug;
     }
@@ -68,19 +68,19 @@ class Settings
         return $this;
     }
 
-    public function getLocale(): ?string
+    public function getLocale(): null|string
     {
         return $this->locale;
     }
 
-    public function setLocale(?string $locale): self
+    public function setLocale(null|string $locale): self
     {
         $this->locale = $locale;
 
         return $this;
     }
 
-    public function getInputType(): ?string
+    public function getInputType(): null|string
     {
         return $this->inputType;
     }
@@ -88,5 +88,17 @@ class Settings
     public function setInputType(?string $inputType): void
     {
         $this->inputType = $inputType;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
+
+        return $this;
     }
 }

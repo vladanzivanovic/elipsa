@@ -1,32 +1,41 @@
 import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import DropZoneService from "../../../js/Services/DropZoneService";
-import SizesDataTables from "../Services/DataTables/SizesDataTables";
 import SliderDataTables from "../Services/DataTables/SliderDataTables";
+import FormHelperService from "../../../js/Helper/FormHelperService";
+import sliderEditMapper from "../Mapper/SliderEditMapper";
 
 class SliderHandler {
+    #mapper;
+
     constructor() {
+        this.#mapper = sliderEditMapper;
         this.notification = NotificationService();
     }
 
-    save(mapper) {
+    save() {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_slider_api');
         let type = 'POST';
-        const data = $(mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
+        const images = DropZoneService().getFilesArray('slider');
+        const imagesMobile = DropZoneService().getFilesArray('slider_mobile');
 
-        if (! $(mapper.form).valid()) {
+        if (! $(this.#mapper.form).valid()) {
             return false;
         }
 
-        data.push({
-            name: 'images',
-            value: JSON.stringify(DropZoneService().getFilesArray('slider')),
-        });
+        data.images = {
+            'desktop': [],
+            'mobile': [],
+        };
 
-        data.push({
-            name: 'images_mobile',
-            value: JSON.stringify(DropZoneService().getFilesArray('slider_mobile')),
-        });
+        for (const index in images) {
+            data.images.desktop.push(images[index]);
+        }
+
+        for (const index in imagesMobile) {
+            data.images.mobile.push(imagesMobile[index]);
+        }
 
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_slider_api', {id: ID});

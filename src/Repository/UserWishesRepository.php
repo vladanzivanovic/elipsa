@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\ProductOptions;
 use App\Entity\User;
 use App\Entity\UserWishes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,19 +24,20 @@ class UserWishesRepository extends ExtendedEntityRepository
     }
 
     
-    public function getByUser(User $user, string $locale): array
+    public function getByUser(User $user, string $locale, string $country): array
     {
         $query = $this->createQueryBuilder('uw')
             ->select(
                 'p.id',
-                'p.price',
-                'p.discount',
+                'po.price',
+                'po.discount',
                 'pt.slug',
                 'pt.shortDescription as short_description',
                 'pt.title',
                 'i.name as image_name'
             )
             ->innerJoin('uw.product', 'p')
+            ->innerJoin(ProductOptions::class, 'po', 'WITH', 'p.id = po.product and po.country = :country')
             ->innerJoin('p.productTranslations', 'pt')
             ->innerJoin('p.productHasImages', 'phi')
             ->innerJoin('phi.image', 'i')
@@ -43,6 +45,7 @@ class UserWishesRepository extends ExtendedEntityRepository
             ->andWhere('p.status = :activeStatus')
             ->andWhere('pt.locale = :locale')
             ->andWhere('i.isMain = :isMain')
+            ->setParameter('country', $country)
             ->setParameter('user', $user)
             ->setParameter('activeStatus', Product::STATUS_ACTIVE, ParameterType::INTEGER)
             ->setParameter('locale', $locale, ParameterType::STRING)

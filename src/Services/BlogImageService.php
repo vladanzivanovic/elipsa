@@ -4,48 +4,23 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Entity\Blog;
 use App\Entity\BlogHasImages;
 use App\Entity\BlogTranslation;
 use App\Entity\Image;
-use App\Repository\BlogHasImagesRepository;
+use App\Parser\ImageParser;
 use App\Repository\ImageRepository;
-use App\Repository\ProductHasImagesRepository;
-use Gedmo\Sluggable\Util\Urlizer;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Webmozart\Assert\Assert;
 
 final class BlogImageService
 {
-    use ImageServiceTrait;
-
-    /**
-     * @var ImageService
-     */
-    protected $img;
-
-    /**
-     * @var ImageRepository
-     */
-    private $imageRepository;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    private $bag;
+    use MainImageValidationTrait;
 
     public function __construct(
-        ImageService $imageService,
-        ParameterBagInterface $bag,
-        ImageRepository $imageRepository
-    ) {
-        $this->img = $imageService;
-        $this->imageRepository = $imageRepository;
-        $this->bag = $bag;
-    }
+        private readonly ImageRepository $imageRepository,
+        private readonly ImageParser $imageParser
+    ) {}
 
     /**
      *
@@ -53,10 +28,6 @@ final class BlogImageService
      */
     public function setImages(BlogTranslation $blogTranslation, array $data): void
     {
-        $rootDir = $this->bag->get('upload_dir');
-        $tmpDir = $this->bag->get('upload_tmp_dir');
-        $imageDir = $this->bag->get('upload_image_dir');
-
         $blog = $blogTranslation->getBlog();
 
         if (array_filter($data) === []) {
@@ -65,77 +36,34 @@ final class BlogImageService
 
         Assert::true($this->validateMainImage($data), 'field.main_image');
 
-        $slug = Urlizer::transliterate($blogTranslation->getTitle());
         $exceptions = [];
 
-        foreach ($data as $index => $image) {
-
-            if (isset($image['id'])) {
-                $imageObj = $this->imageRepository->find($image['id']);
-
-                if(isset($image['deleted']) && true === $image['deleted']) {
-                    $image['file'] = $rootDir.$imageDir.$imageObj->getOriginalName();
-                    $file = $this->img->setFileObject($image);
-                    $imageObj->setFile($file);
-                    $imageObj->setIsDeleted(true);
-
-                    $this->imageRepository->delete($imageObj);
-
-                    continue;
-                }
-
-                if (true === $image['isMain']) {
-                    $this->updateImage($blog, $imageObj);
-                }
-
-                continue;
-            }
+        foreach ($data as $payload) {
 
             try {
-                $image['file'] = $rootDir.$tmpDir.$image['fileName'];
-                $file = $this->img->setFileObject($image);
+                $image = $this->imageParser->parse($payload);
+                $image->setRelatedToType(Image::RELATED_TYPE_BLOG);
+
+                if (isset($payload['id'])) {
+                    $image = $this->imageRepository->find($payload['id']);
+
+                    if (isset($payload['deleted']) && 'true' === $payload['deleted']) {
+                        $this->imageParser->delete($image);
+
+                        continue;
+                    }
+                }
+
+                $blog->setImage($image);
             } catch (FileNotFoundException $exception) {
-                $exceptions[] = $image['fileName'];
+                $exceptions[] = $exception->getMessage();
 
                 continue;
             }
-
-            $mediaObj = new Image();
-
-            $image['file'] = $rootDir.$tmpDir.$image['fileName'];
-
-            if (!($file instanceof UploadedFile)) {
-                continue;
-            }
-
-            $newName = md5($file->getFilename().$slug).'.'.$file->guessExtension();
-
-            $mediaObj->setRelatedToType(Image::RELATED_TYPE_BLOG);
-            $mediaObj->setName($slug.'-'.++$index);
-            $mediaObj->setIsmain($image['isMain']);
-            $mediaObj->setOriginalName($newName);
-            $mediaObj->setFile($file);
-            $mediaObj->setDevice(Image::DEVICE_DESKTOP);
-
-            $this->imageRepository->persist($mediaObj);
-
-            $blog->setImage($mediaObj);
         }
 
         if ($exceptions !== []) {
             throw new BadRequestHttpException(json_encode(['images' => $exceptions]));
         }
-    }
-
-    
-    private function updateImage(Blog $blog, Image $image): void
-    {
-        $images = [$blog->getImage()];
-
-        foreach ($images as $img) {
-            $img->setIsMain(false);
-        }
-
-        $image->setIsMain(true);
     }
 }

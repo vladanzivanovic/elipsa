@@ -80,7 +80,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): null|string
     {
         return $this->city;
     }

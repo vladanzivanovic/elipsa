@@ -15,7 +15,11 @@ class FormHelperService {
                 sanitizedObject[itemKey] = this.sanitizeJson(data[itemKey]);
             }
 
-            if (data[itemKey] && data[itemKey].length > 0 && data[itemKey] != '<p><br></p>') {
+            let value = new DOMParser()
+                .parseFromString(data[itemKey], "text/html")
+                .documentElement.textContent;
+
+            if (data[itemKey] && data[itemKey].length > 0 && value.trim() !== '') {
                 sanitizedObject[itemKey] = data[itemKey];
             }
         }

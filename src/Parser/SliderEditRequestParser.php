@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
-use App\Entity\Image;
 use App\Entity\Slider;
 use App\Entity\SliderTranslation;
 use App\Repository\SliderRepository;
@@ -13,15 +12,10 @@ use App\Request\Dto\Admin\SliderEditRequestDto;
 use App\Services\SliderImageService;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class SliderEditRequestParser
 {
-    use ParserTrait;
-
     public function __construct(
-        private readonly ParameterBagInterface $parameterBag,
         private readonly SliderImageService $imageService,
         private readonly SliderRepository $sliderRepository,
         private readonly SliderTranslationRepository $translationRepository,
@@ -57,7 +51,12 @@ final class SliderEditRequestParser
     private function setLocale(array $translations, Slider $slider): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $translations[$locale];
+            $transCollection = $translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
+
             $trans = $this->translationRepository->findOneBy(['slider' => $slider, 'locale' => $locale]);
 
 
@@ -65,7 +64,7 @@ final class SliderEditRequestParser
                 $trans = new SliderTranslation();
             }
 
-            $trans->setDescription($transCollection['description']);
+            $trans->setDescription($transCollection['description'] ?? null);
             $trans->setButtonLink($transCollection['link']);
             $trans->setLocale($locale);
 

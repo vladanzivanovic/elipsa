@@ -9,28 +9,17 @@ use App\Formatter\SettingsFormatter;
 use App\Repository\OfficeContactRepository;
 use App\Repository\SettingsRepository;
 use App\View\OfficeContactView;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class SettingsCollector
 {
-    private SettingsRepository $settingsRepository;
-
-    private SettingsFormatter $settingsFormatter;
-
-    private OfficeContactRepository $officeContactRepository;
-
-    private OfficeContactView $officeContactView;
-
     public function __construct(
-        SettingsRepository $settingsRepository,
-        SettingsFormatter $settingsFormatter,
-        OfficeContactRepository $officeContactRepository,
-        OfficeContactView $officeContactView
-    ) {
-        $this->settingsRepository = $settingsRepository;
-        $this->settingsFormatter = $settingsFormatter;
-        $this->officeContactRepository = $officeContactRepository;
-        $this->officeContactView = $officeContactView;
-    }
+        private readonly SettingsRepository $settingsRepository,
+        private readonly SettingsFormatter $settingsFormatter,
+        private readonly OfficeContactRepository $officeContactRepository,
+        private readonly OfficeContactView $officeContactView,
+        private readonly RequestStack $requestStack,
+    ) {}
 
     /**
      * @return array<int, Settings>
@@ -67,7 +56,10 @@ final class SettingsCollector
 
     private function officeContactCollection(array $fields): array
     {
-        $contacts = $this->officeContactRepository->getContactsByFields($fields);
+        $contacts = $this->officeContactRepository->getContactsByFields(
+            $fields,
+            $this->requestStack->getCurrentRequest()->attributes->get('_country')
+        );
 
         $contactsView = [];
 

@@ -41,8 +41,6 @@ final class HomePageResponseFormatter
 
         $data['products'] = $this->productFormatter->getProducts($data['products'], $countryCode, $user);
 
-//        dd($data);
-
         return $data;
     }
 

@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
+use App\Repository\SliderTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\SliderTranslationRepository::class)]
+#[ORM\Entity(repositoryClass: SliderTranslationRepository::class)]
 class SliderTranslation
 {
     #[ORM\Id]
@@ -12,8 +13,8 @@ class SliderTranslation
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: 'text')]
-    private ?string $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private null|string $description = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $buttonLink;
@@ -21,7 +22,7 @@ class SliderTranslation
     #[ORM\Column(type: 'string', length: 2)]
     private ?string $locale;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Slider::class, inversedBy: 'sliderTranslations')]
+    #[ORM\ManyToOne(targetEntity: Slider::class, inversedBy: 'sliderTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Slider $slider;
 
@@ -30,12 +31,12 @@ class SliderTranslation
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): null|string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(null|string $description): self
     {
         $this->description = $description;
 

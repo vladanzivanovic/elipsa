@@ -7,58 +7,47 @@ namespace App\Parser;
 use App\Entity\ColorTranslation;
 use App\Entity\ProductColor;
 use App\Repository\ColorTranslationRepository;
-use App\Repository\ProductColorRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
+use App\Request\Dto\Admin\ColorEditRequestDto;
 
 final class ColorRequestParser
 {
-    use ParserTrait;
-
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-
-    private \App\Repository\ProductColorRepository $colorRepository;
-
-    /**
-     * ColorRequestParser constructor.
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        ProductColorRepository $colorRepository
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->colorRepository = $colorRepository;
-    }
+        private readonly ColorTranslationRepository $colorTranslationRepository,
+        private readonly array $locales,
+    ) {}
 
     /**
      * @param ProductColor|null $productColor
      *
      */
-    public function parse(ParameterBag $bag, ?ProductColor $productColor = null): ProductColor
+    public function parse(ColorEditRequestDto $colorEditRequestDto, ProductColor $productColor = null): ProductColor
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
-
         if (!$productColor instanceof ProductColor) {
             $productColor = new ProductColor();
-            $productColor->setHex($bag->get('color'));
         }
 
-        foreach (array_keys($locales) as $locale) {
-            $trans = new ColorTranslation();
+        $productColor->setHex($colorEditRequestDto->hex);
 
-            if (null !== $productColor->getId()) {
-                $trans = $productColor->getByLocale($locale);
+        $this->setTranslations($productColor, $colorEditRequestDto);
+
+        return $productColor;
+    }
+
+    private function setTranslations(ProductColor $productColor, ColorEditRequestDto $colorEditRequestDto): void
+    {
+        foreach ($this->locales as $locale) {
+            $transCollection = $colorEditRequestDto->translations[$locale];
+
+            $trans = $this->colorTranslationRepository->findOneBy(['color' => $productColor, 'locale' => $locale]);
+
+            if (null === $trans) {
+                $trans = new ColorTranslation();
+                $trans->setLocale($locale);
             }
 
-            $trans->setTitle($bag->get($locale.'_title'));
-            $trans->setLocale($locale);
-            $trans->setColor($productColor);
+            $trans->setTitle($transCollection['title']);
 
             $productColor->addColorTranslation($trans);
         }
-
-        return $productColor;
     }
 }

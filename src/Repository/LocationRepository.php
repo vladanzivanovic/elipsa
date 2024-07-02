@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @method Location|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,8 +19,11 @@ use Doctrine\ORM\QueryBuilder;
  */
 class LocationRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly TranslatorInterface $translator,
+        private readonly array $countries,
+    ) {
         parent::__construct($registry, Location::class);
     }
 
@@ -36,7 +40,6 @@ class LocationRepository extends ExtendedEntityRepository
 
         return $query->getQuery()->getSingleScalarResult();
     }
-
     
     public function getList(string $locale): array
     {

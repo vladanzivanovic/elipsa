@@ -96,7 +96,11 @@ final class OrderFinishPageController extends AbstractController
         return $viewData;
     }
 
-    #[Route(path: ['rs' => '/korpa/neuspesna-narudzbina/{token}', 'en' => '/cart/unsuccessful-order{token}'], name: 'site.checkout_failed', options: ['expose' => true], methods: ['POST', 'GET'])]
+    #[Route(path: [
+        'rs' => '/korpa/neuspesna-narudzbina/{token}',
+        'en' => '/cart/unsuccessful-order/{token}',
+        'ba' => '/korpa/neuspjesna-narudzba/{token}'
+    ], name: 'site.checkout_failed', options: ['expose' => true], methods: ['POST', 'GET'])]
     #[Template('Site/Pages/checkoutFinish.html.twig')]
     public function unsuccessfulPage(Request $request, string $token)
     {

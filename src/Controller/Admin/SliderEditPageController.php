@@ -29,7 +29,6 @@ final class SliderEditPageController extends AbstractController
     #[Template('Admin/Pages/sliderEdit.html.twig')]
     public function update(Slider $slider): array
     {
-//        dd($this->responseFormatter->formatResponse($slider));
         return $this->responseFormatter->formatResponse($slider);
     }
 }

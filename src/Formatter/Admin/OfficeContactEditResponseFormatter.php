@@ -9,20 +9,16 @@ use App\View\OfficeContactView;
 
 final class OfficeContactEditResponseFormatter
 {
-    private OfficeContactView $OfficeContactView;
-
     public function __construct(
-        OfficeContactView $OfficeContactView
-    ) {
-        $this->OfficeContactView = $OfficeContactView;
-    }
+        private readonly OfficeContactView $officeContactView
+    ) {}
 
     public function formatResponse(OfficeContact $officeContact = null): array
     {
         $response = [];
 
-        if ($officeContact instanceof \App\Entity\OfficeContact) {
-            $response['payload'] = $this->OfficeContactView->siteView($officeContact);
+        if ($officeContact instanceof OfficeContact) {
+            $response['payload'] = $this->officeContactView->siteView($officeContact);
         }
 
         return $response;

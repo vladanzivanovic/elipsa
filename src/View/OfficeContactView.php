@@ -38,6 +38,7 @@ final class OfficeContactView
             'telephone' => $officeContact->getTelephone(),
             'show_in_footer' => $officeContact->isShownInFooter(),
             'use_in_email' => $officeContact->isUseInEmail(),
+            'available_countries' => $officeContact->getAvailableCountries(),
         ];
     }
 

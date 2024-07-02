@@ -212,19 +212,14 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return OrderProductTranslation
-     */
-    public function getByLocale(string $locale): OrderProductTranslation
+    public function getByLocale(string $locale): null|OrderProductTranslation
     {
-        $filteredTrans = $this->orderProductTranslations->filter(function ($trans) use ($locale) {
+        $filtered = $this->orderProductTranslations->filter(function ($trans) use ($locale) {
             /** @var OrderProductTranslation $trans */
             return $trans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function getBySlug(string $slug): ?OrderProductTranslation

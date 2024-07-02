@@ -1,27 +1,40 @@
-import ColorEditMapper from "../Mapper/ColorEditMapper";
 import ColorHandler from "../Handler/Product/ColorHandler";
 import colorEditValidator from "../Validators/ColorEditValidator";
+import colorEditMapper from "../Mapper/ColorEditMapper";
+import baseEvents from "./BaseEvents";
 import('bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css');
 require('bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min');
 
 class ColorEditController {
+    #mapper;
+    #validator;
+    #baseEvents;
+
     constructor() {
-        this.mapper = new ColorEditMapper();
-        this.validator = colorEditValidator;
+        this.#mapper = colorEditMapper;
+        this.#validator = colorEditValidator;
+        this.#baseEvents = baseEvents;
 
-        this.mapper.color.colorpicker();
-
-        this.validator.validate(this.mapper.form);
+        this.#initForm();
 
         this.registerEvents();
     }
 
+    #initForm()
+    {
+        $(this.#mapper.color).colorpicker();
+
+        this.#validator.validate();
+    }
+
     registerEvents() {
-        this.mapper.submitBtn.on('click touchend', e => {
+        $(this.#mapper.submitBtn).on('click touchend', e => {
             const handler = new ColorHandler();
 
-            handler.save(this.mapper);
+            handler.save();
         });
+
+        this.#baseEvents.events();
     }
 }
 

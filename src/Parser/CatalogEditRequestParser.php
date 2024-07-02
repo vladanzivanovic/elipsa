@@ -9,15 +9,10 @@ use App\Entity\CatalogueTranslation;
 use App\Repository\CatalogueTranslationRepository;
 use App\Request\Dto\Admin\CatalogEditRequestDto;
 use App\Services\CatalogImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class CatalogEditRequestParser
 {
-    use ParserTrait;
-
     public function __construct(
-        private readonly ParameterBagInterface $parameterBag,
         private readonly CatalogueTranslationRepository $translationRepository,
         private readonly CatalogImageService $imageService,
         private readonly array $locales,
@@ -41,10 +36,16 @@ final class CatalogEditRequestParser
 
     private function setLocales(CatalogEditRequestDto $catalogEditRequestDto, Catalogue $catalogue): void
     {
-        foreach ($this->locales as $locale) {
-            $transCollection = $catalogEditRequestDto->translations[$locale];
-            $trans = $this->translationRepository->findOneBy(['catalogue' => $catalogue, 'locale' => $locale]);
+        $catalogue->getCatalogueTranslations()->clear();
 
+        foreach ($this->locales as $locale) {
+            $transCollection = $catalogEditRequestDto->translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
+
+            $trans = $this->translationRepository->findOneBy(['catalogue' => $catalogue, 'locale' => $locale]);
 
             if (null === $trans) {
                 $trans = new CatalogueTranslation();

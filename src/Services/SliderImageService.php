@@ -26,7 +26,7 @@ final class SliderImageService
         $this->imageParser = $imageParser;
     }
 
-    public function setImages(Slider $slider, array $data, int $device): void
+    public function setImages(Slider $slider, array $data, string $device): void
     {
         if(array_filter($data) === []) {
             return;
@@ -45,7 +45,7 @@ final class SliderImageService
                     $image->setParentImage($slider->getImage()->getName());
                 }
 
-                if (!empty($payload['id']) && (isset($payload['deleted']) && true === $payload['deleted'])) {
+                if (!empty($payload['id']) && (isset($payload['deleted']) && 'true' === $payload['deleted'])) {
                     $this->imageParser->delete($image);
                     continue;
                 }

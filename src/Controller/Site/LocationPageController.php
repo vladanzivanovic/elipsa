@@ -34,7 +34,7 @@ final class LocationPageController extends AbstractController
     #[Template('Site/Pages/locationList.html.twig')]
     public function __invoke(Request $request): array
     {
-        $collections = $this->pageCollector->collect($request->getLocale());
+        $collections = $this->pageCollector->collect();
 
         return $this->responseFormatter->formatResponse($collections, $request->getLocale());
     }

@@ -12,6 +12,7 @@ use App\Handler\ProductColorHandler;
 use App\Handler\TagHandler;
 use App\Parser\ColorRequestParser;
 use App\Parser\TagRequestParser;
+use App\Request\Dto\Admin\TagEditRequestDto;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Gedmo\Sluggable\Util\Urlizer;
@@ -24,23 +25,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TagEditController extends AbstractController
 {
-    use ControllerTrait;
-
-    private TagRequestParser $requestParser;
-
-    private TagHandler $tagHandler;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        TagRequestParser $requestParser,
-        TagHandler $tagHandler,
-        TranslatorInterface $translator
-    ) {
-        $this->requestParser = $requestParser;
-        $this->tagHandler = $tagHandler;
-        $this->translator = $translator;
-    }
+        private readonly TagRequestParser $requestParser,
+        private readonly TagHandler $tagHandler,
+        private readonly TranslatorInterface $translator
+    ) {}
 
     /**
      *
@@ -48,15 +37,13 @@ final class TagEditController extends AbstractController
      */
     #[Route(path: '/api/tag/product/add', name: 'admin.add_product_tag_api', options: ['expose' => true], methods: ['POST'])]
     #[Route(path: '/api/tag/blog/add', name: 'admin.add_blog_tag_api', options: ['expose' => true], methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(TagEditRequestDto $tagEditRequestDto): JsonResponse
     {
-        $relatedType = $this->getRelatedType($request);
-
-        $tags = $this->requestParser->parse($request->request, $relatedType, null);
+        $tags = $this->requestParser->parse($tagEditRequestDto, null);
 
         $this->tagHandler->save($tags);
 
-        $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
+        $tagEditRequestDto->session->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
 
         return $this->json(null, Response::HTTP_CREATED);
     }
@@ -65,24 +52,16 @@ final class TagEditController extends AbstractController
      *
      * @throws \Exception
      */
-    #[Route(path: '/api/tag/product/{slug}', name: 'admin.edit_product_tag_api', methods: ['PUT'], options: ['expose' => true])]
-    #[Route(path: '/api/tag/blog/{slug}', name: 'admin.edit_blog_tag_api', methods: ['PUT'], options: ['expose' => true])]
-    public function update(Request $request, string $slug): JsonResponse
+    #[Route(path: '/api/tag/product/{slug}', name: 'admin.edit_product_tag_api', options: ['expose' => true], methods: ['PUT'])]
+    #[Route(path: '/api/tag/blog/{slug}', name: 'admin.edit_blog_tag_api', options: ['expose' => true], methods: ['PUT'])]
+    public function update(TagEditRequestDto $tagEditRequestDto, string $slug): JsonResponse
     {
-        $relatedType = $this->getRelatedType($request);
-
-        $tags = $this->requestParser->parse($request->request, $relatedType, $slug);
+        $tags = $this->requestParser->parse($tagEditRequestDto, $slug);
 
         $this->tagHandler->save($tags);
 
-        $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
+        $tagEditRequestDto->session->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
 
         return $this->json(null, Response::HTTP_CREATED);
-    }
-
-    public function getRelatedType(Request $request): int
-    {
-        return false === strpos($request->attributes->get('_route'), 'blog_tag_api') ?
-            Tags::TYPE_PRODUCT : Tags::TYPE_BLOG;
     }
 }

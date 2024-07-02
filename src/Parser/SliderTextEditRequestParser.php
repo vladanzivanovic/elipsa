@@ -12,8 +12,6 @@ use App\Request\Dto\Admin\SliderTextEditRequestDto;
 
 final class SliderTextEditRequestParser
 {
-    use ParserTrait;
-
     public function __construct(
         private readonly SliderTextTranslationRepository $translationRepository,
         private readonly array $locales,
@@ -36,7 +34,10 @@ final class SliderTextEditRequestParser
 
     private function setLocale(array $translations, Slidertext $sliderText): void
     {
+        $sliderText->getSliderTextTranslations()->clear();
+
         foreach ($this->locales as $locale) {
+
             if (!isset($translations[$locale])) {
                 continue;
             }
@@ -48,7 +49,7 @@ final class SliderTextEditRequestParser
                 $trans = new SliderTextTranslation();
             }
 
-            $trans->setDescription($transCollection['description']);
+            $trans->setDescription($transCollection['description'] ?? null);
             $trans->setTitle($transCollection['title']);
             $trans->setLink($transCollection['link']);
             $trans->setLocale($locale);

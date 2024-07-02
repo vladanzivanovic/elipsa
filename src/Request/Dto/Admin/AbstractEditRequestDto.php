@@ -6,6 +6,7 @@ namespace App\Request\Dto\Admin;
 
 use Nelexa\RequestDtoBundle\Dto\ConstructRequestObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 abstract class AbstractEditRequestDto implements ConstructRequestObjectInterface
 {
@@ -15,12 +16,15 @@ abstract class AbstractEditRequestDto implements ConstructRequestObjectInterface
 
     public null|array $images = null;
 
+    public Session $session;
+
     public function __construct(Request $request)
     {
         $payload = $request->request;
 
         $this->availableCountries = $payload->all('available_countries');
         $this->translations = $payload->all('translations');
+        $this->session = $request->getSession();
 
         if ($payload->has('images')) {
             $this->images = true === is_array($payload->all()['images']) ?

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -53,7 +54,7 @@ final class OrderView
             }
         }
 
-        if ($order->getCoupon() instanceof \App\Entity\Promotion) {
+        if ($order->getCoupon() instanceof Promotion) {
             $view['promotion'] = $this->promotionCouponView->view($order->getCoupon());
         }
 

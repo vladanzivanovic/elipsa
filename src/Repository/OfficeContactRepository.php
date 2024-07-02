@@ -19,8 +19,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OfficeContactRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly string $defaultLocale
+    ) {
         parent::__construct($registry, OfficeContact::class);
     }
 
@@ -44,10 +46,12 @@ class OfficeContactRepository extends ExtendedEntityRepository
                 'oc.id as id',
                 'oc.telephone as telephone',
                 'oc.showInFooter as isShownInFooter',
-                'oct.title as title'
+                'oct.title as title',
+                'oc.availableCountries as available_countries'
             )
             ->innerJoin('oc.officeContactTranslations', 'oct')
-            ->where('oct.locale = \'rs\'')
+            ->where('oct.locale = :defaultLocale')
+            ->setParameter('defaultLocale', $this->defaultLocale)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
@@ -59,10 +63,12 @@ class OfficeContactRepository extends ExtendedEntityRepository
     /**
      * @return array<int, OfficeContact>
      */
-    public function getFooterContacts(): array
+    public function getFooterContacts(string $countryCode): array
     {
         $query = $this->createQueryBuilder('oc')
-            ->where('oc.showInFooter = true');
+            ->where('oc.showInFooter = true')
+            ->andWhere('oc.availableCountries LIKE :countryCode')
+            ->setParameter('countryCode', '%' . $countryCode . '%');
 
         return $query->getQuery()->getResult();
     }
@@ -70,13 +76,22 @@ class OfficeContactRepository extends ExtendedEntityRepository
     /**
      * @return array<int, OfficeContact>
      */
-    public function getContactsByFields(array $fields): array
+    public function getContactsByFields(array $fields, string $countryCode): array
     {
         $query = $this->createQueryBuilder('oc');
 
+        $query->where($query->expr()->like('oc.availableCountries', ':countryCode'))
+            ->setParameter('countryCode', '%' . $countryCode . '%');
+
+        $orWhereFields = [];
+
         foreach ($fields as $field => $value) {
-            $query->orWhere('oc.'. $field .' = '. $value);
+            $orWhereFields[] = 'oc.'. $field .'='. $value;
         }
+
+        $query->andWhere($query->expr()->orX(
+            ...$orWhereFields
+        ));
 
         return $query->getQuery()->getResult();
     }

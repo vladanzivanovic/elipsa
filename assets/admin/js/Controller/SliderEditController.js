@@ -49,7 +49,7 @@ class SliderEditController {
         $(this.#mapper.submitBtn).on('click touchend', e => {
             const handler = new SliderHandler();
 
-            handler.save(this.#mapper);
+            handler.save();
         });
 
         this.#countrySelectionEvents.registerEvents();

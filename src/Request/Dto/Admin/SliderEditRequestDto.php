@@ -11,7 +11,5 @@ final class SliderEditRequestDto extends AbstractEditRequestDto
     public function __construct(Request $request)
     {
         parent::__construct($request);
-
-        $this->splitImagesByDevices();
     }
 }

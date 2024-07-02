@@ -62,7 +62,7 @@ final class ShopPageController extends AbstractController
         ShopListRequestDto $shopListRequestDto,
     ): array {
         $data = $this->collectors->collect($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
-        $filters = $this->filterCollector->collect($shopPageOptionsDto->locale);
+        $filters = $this->filterCollector->collect($shopPageOptionsDto->locale, $shopPageOptionsDto->country);
 
         return $this->formatter->formatResponse(
             $data,

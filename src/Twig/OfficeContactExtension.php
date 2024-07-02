@@ -30,9 +30,9 @@ final class OfficeContactExtension extends AbstractExtension
         ];
     }
 
-    public function getOfficeContact(): array
+    public function getOfficeContact(string $countryCode): array
     {
-        $contacts = $this->officeContactRepository->getFooterContacts();
+        $contacts = $this->officeContactRepository->getFooterContacts($countryCode);
 
         $formatted = [];
 

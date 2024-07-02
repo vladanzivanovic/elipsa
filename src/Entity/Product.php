@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\PromotionEligibilityInterface;
 use App\Entity\Resources\ResourceTrait;
@@ -12,10 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product implements EntityInterface, PromotionEligibilityInterface
+class Product implements EntityInterface, PromotionEligibilityInterface, CountryResourceInterface
 {
     use ResourceTrait;
     use TimestampableEntity;
+    use CountryResourceTrait;
 
     const STATUS_PENDING = 1;
     const STATUS_ACTIVE = 2;
@@ -23,12 +26,6 @@ class Product implements EntityInterface, PromotionEligibilityInterface
 
     const HOME_PAGE_UP = 2;
     const HOME_PAGE_DOWN = 1;
-
-    #[ORM\Column(type: 'integer')]
-    private ?int $price;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $discount;
 
     #[ORM\Column(type: 'smallint')]
     private ?int $status;
@@ -51,9 +48,6 @@ class Product implements EntityInterface, PromotionEligibilityInterface
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductHasImages::class, cascade: ['persist', 'remove'])]
     private Collection $productHasImages;
 
-    #[ORM\Column(type: 'smallint')]
-    private ?int $showHomePage;
-
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductCleaning::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productCleanings;
 
@@ -68,9 +62,6 @@ class Product implements EntityInterface, PromotionEligibilityInterface
      */
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: UserWishes::class)]
     private Collection $userWishes;
-
-    #[ORM\Column(type: 'boolean')]
-    private bool $sold;
 
     private ?int $promoDiscount = null;
 
@@ -97,28 +88,11 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return $promotionOptions->getPrice();
     }
 
-    public function setPrice(int $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
     public function getDiscount(string $countryCode): ?int
     {
         $promotionOptions = $this->getOptionsByCountry($countryCode);
 
         return $promotionOptions->getDiscount();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setDiscount(?int $discount): self
-    {
-        $this->discount = $discount;
-
-        return $this;
     }
 
     public function getStatus(): ?int
@@ -288,39 +262,8 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return $categories;
     }
 
-//    /**
-//     * @return array<int, ProductHasSizes>
-//     */
-//    public function getAvailableSizes(): array
-//    {
-//        $sizes = [];
-//
-//        foreach ($this->productHasSizes as $productHasSize) {
-//            if (0 === $productHasSize->getQuantity()) {
-//                continue;
-//            }
-//
-//            $sizes[$productHasSize->getSize()->getSize()] = $productHasSize;
-//        }
-//
-//        ksort($sizes);
-//
-//        return $sizes;
-//    }
-//
-//    public function isSizeAvailable(string $sizeSlug): bool
-//    {
-//        foreach ($this->getAvailableSizes() as $availableSize) {
-//            if ($availableSize->getSize()->getSlug() === $sizeSlug) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
     /**
-     * @return Collection|ProductHasImages[]
+     * @return Collection<int, ProductHasImages>
      */
     public function getProductHasImages(): Collection
     {
@@ -371,18 +314,6 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         });
 
         return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
-    }
-
-    public function getShowHomePage(): ?int
-    {
-        return $this->showHomePage;
-    }
-
-    public function setShowHomePage(int $showHomePage): self
-    {
-        $this->showHomePage = $showHomePage;
-
-        return $this;
     }
 
     public function getProductCleanings(): Collection
@@ -467,17 +398,17 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return $this->orderProducts;
     }
 
-    public function isSold(): ?bool
-    {
-        return $this->sold;
-    }
-
-    public function setSold(bool $sold): self
-    {
-        $this->sold = $sold;
-
-        return $this;
-    }
+//    public function isSold(): ?bool
+//    {
+//        return $this->sold;
+//    }
+//
+//    public function setSold(bool $sold): self
+//    {
+//        $this->sold = $sold;
+//
+//        return $this;
+//    }
 
     public function isUserWish(User $user): bool
     {

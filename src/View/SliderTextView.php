@@ -20,7 +20,9 @@ final class SliderTextView
         $view['available_countries'] = $sliderText->getAvailableCountries();
 
         foreach ($this->locales as $locale) {
-            $view['translations'][$locale] = $this->getDescAndLink($sliderText->getByLocale($locale));
+            $trans = $sliderText->getByLocale($locale);
+
+            $view['translations'][$locale] = $this->getDescAndLink($trans);
         }
 
         $view['position'] = $sliderText->getPosition();
@@ -39,12 +41,12 @@ final class SliderTextView
         return $this->getDescAndLink($trans);
     }
 
-    private function getDescAndLink(SliderTextTranslation $sliderTextTranslation): array
+    private function getDescAndLink(null|SliderTextTranslation $sliderTextTranslation): array
     {
         return [
-            'title' => $sliderTextTranslation->getTitle(),
-            'description' => $sliderTextTranslation->getDescription(),
-            'link' => $sliderTextTranslation->getLink(),
+            'title' => $sliderTextTranslation?->getTitle(),
+            'description' => $sliderTextTranslation?->getDescription(),
+            'link' => $sliderTextTranslation?->getLink(),
         ];
     }
 }

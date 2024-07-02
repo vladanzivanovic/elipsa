@@ -51,10 +51,6 @@ final class NavigationMenuExtension extends AbstractExtension
     {
         $categories = $this->categoryRepository->getForNavigationMenu($locale);
 
-        if (0 === count($categories)) {
-            $categories = $this->categoryRepository->getForNavigationMenu($this->defaultLocale);
-        }
-
         $lastCategory = end($categories);
 
         $categories = $this->formatMegaMenu($categories, 1, (int) $lastCategory['lvl']);
@@ -102,6 +98,24 @@ final class NavigationMenuExtension extends AbstractExtension
         return $banners[0] ?? null;
     }
 
+    public function getBanners(string $host, int $type): array
+    {
+        $banners = $this->bannerRepository->getActiveByType($type, $host);
+
+        $formattedBanners = [];
+
+        foreach ($banners as $banner) {
+            $formattedBanners[] = $this->bannerView->view($banner, ['desktop' => 'menu_banner', 'mobile' => 'menu_banner']);
+        }
+
+        return $formattedBanners;
+    }
+
+    public function getName(): string
+    {
+        return 'navigation_extension';
+    }
+
     private function formatMegaMenu(array $categories, int $level, int $maxLevel): array
     {
         $formattedMenu = [];
@@ -123,23 +137,5 @@ final class NavigationMenuExtension extends AbstractExtension
         }
 
         return $formattedMenu;
-    }
-
-    public function getBanners(string $host, int $type): array
-    {
-        $banners = $this->bannerRepository->getActiveByType($type, $host);
-
-        $formattedBanners = [];
-
-        foreach ($banners as $banner) {
-            $formattedBanners[] = $this->bannerView->view($banner, ['desktop' => 'menu_banner', 'mobile' => 'menu_banner']);
-        }
-
-        return $formattedBanners;
-    }
-
-    public function getName(): string
-    {
-        return 'navigation_extension';
     }
 }

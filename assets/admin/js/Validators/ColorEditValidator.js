@@ -1,15 +1,21 @@
+import colorEditMapper from "../Mapper/ColorEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class ColorEditValidator {
+    #mapper;
+
     constructor() {
         if (!ColorEditValidator.instance) {
+            this.#mapper = colorEditMapper;
+
             ColorEditValidator.instance = this;
         }
 
         return ColorEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
         options = {
@@ -22,7 +28,7 @@ class ColorEditValidator {
 
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

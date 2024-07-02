@@ -47,7 +47,7 @@ final class ImageParser
      */
     public function parse(
         array $payload,
-        int $device = Image::DEVICE_DESKTOP,
+        string $device = Image::DEVICE_DESKTOP,
         bool $fromImport = false,
         int $relatedTo = Image::RELATED_TYPE_PRODUCT
     ): Image {

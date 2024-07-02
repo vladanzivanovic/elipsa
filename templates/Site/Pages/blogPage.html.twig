@@ -25,7 +25,7 @@
                         <div class="blog-tags-social clearfix">
                             <ul class="blog-tags">
                                 {% for tag in blog_tags %}
-                                    <li><a href="{{ path('site.blog_list_page', {'tag': tag[locale].slug}) }}">{{ tag[locale].title }}</a></li>
+                                    <li><a href="{{ path('site.blog_list_page', {'tag': tag.translations[locale].slug}) }}">{{ tag.translations[locale].title }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -38,7 +38,7 @@
                             <ul class="bw-cat-list">
                                 <li><a class="tag-btn letter-capitalize" href="{{ path('site.blog_list_page') }}">{{ 'all' | trans }}</a></li>
                                 {% for tag in tags %}
-                                    <li><a class="tag-btn" href="{{ path('site.blog_list_page', {'tag': tag[locale].slug}) }}">{{ tag[locale].title }}</a></li>
+                                    <li><a class="tag-btn" href="{{ path('site.blog_list_page', {'tag': tag.translations[locale].slug}) }}">{{ tag.translations[locale].title }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>

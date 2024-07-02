@@ -14,7 +14,7 @@ final class ColorView
         private readonly array $locales,
     ) {}
 
-    public function productPageView(ProductColor $color): array
+    public function view(ProductColor $color): array
     {
         $view = [
             'id' => $color->getId(),

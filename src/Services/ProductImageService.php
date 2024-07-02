@@ -51,7 +51,6 @@ final class ProductImageService
                 $color = $this->colorRepository->find($payload['color_id']);
 
                 $payload['fileName'] = $payload['fileName'] ?? $payload['file_name']; //f todo fix this
-                $payload['isMain'] = $payload['isMain'] ? filter_var($payload['isMain'], FILTER_VALIDATE_BOOLEAN) : filter_var($payload['is_main'], FILTER_VALIDATE_BOOLEAN);
 
                 $image = $this->imageParser->parse($payload);
 
@@ -59,7 +58,7 @@ final class ProductImageService
                     $hasImage = $this->hasImagesRepository->findOneBy(['product' => $product, 'image' => $image]);
                     $hasImage->setColor($color);
 
-                    if(isset($payload['deleted']) && true === $payload['deleted']) {
+                    if (isset($payload['deleted']) && 'true' === $payload['deleted']) {
                         $orderImages = $product->getOrderProducts()->filter(function (OrderProduct $orderProduct) use ($image) {
                             return $orderProduct->getImage() === $image;
                         });

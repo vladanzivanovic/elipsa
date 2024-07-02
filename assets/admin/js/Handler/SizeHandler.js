@@ -1,18 +1,24 @@
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
 import SizesDataTables from "../Services/DataTables/SizesDataTables";
+import sizeEditMapper from "../Mapper/SizeEditMapper";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class SizeHandler {
+    #mapper;
+    #notification;
+    
     constructor() {
-        this.notification = NotificationService();
+        this.#mapper = sizeEditMapper;
+        this.#notification = NotificationService();
     }
 
-    save(mapper) {
+    save() {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_size_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
 
-        if (! mapper.form.valid()) {
+        if (! $(this.#mapper.form).valid()) {
             return false;
         }
 
@@ -21,7 +27,7 @@ class SizeHandler {
             type = 'PUT';
         }
 
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type,
@@ -32,13 +38,13 @@ class SizeHandler {
                 AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.sizes'));
             },
             error: error => {
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
             }
         })
     }
 
     remove(slug) {
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type: 'DELETE',
@@ -46,18 +52,18 @@ class SizeHandler {
             dataType: 'json',
             success: () => {
                 SizesDataTables().reload();
-                this.notification.remove();
+                this.#notification.remove();
             },
             error: jxHR => {
                 const errors = jxHR.responseJSON;
 
                 if (errors.hasOwnProperty('message')) {
-                    this.notification.show('error', Translator.trans(errors.message, {item: 'Veličina'}, 'messages', LOCALE), true);
+                    this.#notification.show('error', Translator.trans(errors.message, {item: 'Veličina'}, 'messages', LOCALE), true);
 
                     return;
                 }
 
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
             }
         })
     }

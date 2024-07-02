@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
-class Notification
+class Notification implements EntityInterface
 {
-    const TYPE_SIZE_AVAILABLE = 'size_available';
+    use ResourceTrait;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    const TYPE_SIZE_AVAILABLE = 'size_available';
 
     #[ORM\Column(type: 'string', length: 20)]
     #[Assert\NotBlank(message: 'field.required', groups: ['SetNotification'])]
@@ -28,12 +28,10 @@ class Notification
     private array $payload = [];
 
     #[ORM\Column(type: 'string', length: 5)]
-    private $locale;
+    private string $locale;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    #[ORM\Column(type: 'string', length: 5)]
+    private string $country;
 
     public function getType(): ?string
     {
@@ -71,7 +69,7 @@ class Notification
         return $this;
     }
 
-    public function getLocale(): ?string
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -79,6 +77,18 @@ class Notification
     public function setLocale(string $locale): self
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

@@ -129,7 +129,6 @@ class ShopPageOptionsManipulator {
 
             this.#headerDom.updateLanguageDropDown(data._web_links);
         } catch (e) {
-            console.log(e);
         }
     }
 

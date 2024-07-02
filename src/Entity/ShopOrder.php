@@ -5,13 +5,14 @@ namespace App\Entity;
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\PromotionEligibilityInterface;
 use App\Entity\Resources\ResourceTrait;
+use App\Repository\ShopOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Entity(repositoryClass: \App\Repository\ShopOrderRepository::class)]
+#[ORM\Entity(repositoryClass: ShopOrderRepository::class)]
 class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;

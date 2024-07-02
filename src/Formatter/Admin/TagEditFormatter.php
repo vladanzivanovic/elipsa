@@ -4,28 +4,22 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
-use App\Entity\Tags;
 use App\View\TagView;
 
 final class TagEditFormatter
 {
-    private TagView $tagView;
-
     public function __construct(
-        TagView $tagView
-    ) {
-
-        $this->tagView = $tagView;
-    }
+        private readonly TagView $tagView
+    ) {}
     public function format(array $data): array
     {
         $formattedData = [
             'options' => $data['productTagsOptions'],
-            'tags' => [],
+            'payload' => [],
         ];
 
-        if (isset($data['tag'])) {
-            $formattedData['tag'] = $this->tagView->view($data['tag']);
+        if (isset($data['payload'])) {
+            $formattedData['payload'] = $this->tagView->view($data['payload']);
         }
 
         return $formattedData;

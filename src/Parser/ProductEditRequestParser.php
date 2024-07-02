@@ -23,15 +23,10 @@ use App\Repository\TagsRepository;
 use App\Request\Dto\Admin\ProductEditRequestDto;
 use App\Services\ProductImageService;
 use Gedmo\Sluggable\Util\Urlizer;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class ProductEditRequestParser
 {
-    use ParserTrait;
-
     public function __construct(
-        private readonly ParameterBagInterface $parameterBag,
         private readonly ProductTranslationRepository $translationRepository,
         private readonly CategoryTranslationRepository $categoryTranslationRepository,
         private readonly ProductSizeRepository $sizeRepository,
@@ -50,6 +45,7 @@ final class ProductEditRequestParser
         }
 
         $product->setCode($productEditRequestDto->code);
+        $product->setAvailableCountries($productEditRequestDto->availableCountries);
 
         $this->setOptions($productEditRequestDto, $product);
 
@@ -92,7 +88,12 @@ final class ProductEditRequestParser
     private function setLocales(ProductEditRequestDto $productEditRequestDto, Product $product): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $productEditRequestDto->translations[$locale];
+            $transCollection = $productEditRequestDto->translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
+
             $trans = $this->translationRepository->findOneBy(['product' => $product, 'locale' => $locale]);
 
             if (null === $trans) {
@@ -182,8 +183,8 @@ final class ProductEditRequestParser
                 continue;
             }
 
-            $orderProduct->setPrice($product->getPrice());
-            $orderProduct->setDiscount($product->getDiscount());
+            $orderProduct->setPrice($product->getPrice($order->getCountry()));
+            $orderProduct->setDiscount($product->getDiscount($order->getCountry()));
 
             $this->setTranslations($product, $orderProduct);
         }
@@ -204,6 +205,10 @@ final class ProductEditRequestParser
 
         foreach ($productEditRequestDto->options as $countryCode => $options) {
             if (false === in_array($countryCode, $productEditRequestDto->availableCountries)) {
+                continue;
+            }
+
+            if (!isset($options['price'])) {
                 continue;
             }
 

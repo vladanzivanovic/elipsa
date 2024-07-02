@@ -3,42 +3,44 @@
 namespace App\Entity;
 
 use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleTranslatorInterface;
+use App\Entity\Resources\LocaleTranslatorTrait;
 use App\Entity\Resources\ResourceTrait;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use SiteBundle\Entity\BlogTranslation;
 
-#[ORM\Entity(repositoryClass: \App\Repository\CategoryRepository::class)]
-class Category implements EntityInterface
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category implements EntityInterface, LocaleTranslatorInterface
 {
     use ResourceTrait;
+    use LocaleTranslatorTrait;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Category::class, inversedBy: 'children')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children')]
     private null|Category $parent;
-
 
     /**
      * @var Collection<int, CategoryTranslation>
      */
-    #[ORM\OneToMany(targetEntity: \App\Entity\CategoryTranslation::class, mappedBy: 'category', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private Collection $categoryTranslations;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $translations;
 
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\OneToMany(targetEntity: \App\Entity\Category::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Category::class)]
     private Collection $children;
 
     /**
      * @var Collection<int, ProductHasCategories>
      */
-    #[ORM\OneToMany(targetEntity: \App\Entity\ProductHasCategories::class, mappedBy: 'category')]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: ProductHasCategories::class)]
     private Collection $productHasCategories;
 
     public function __construct()
     {
-        $this->categoryTranslations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->productHasCategories = new ArrayCollection();
     }
@@ -60,13 +62,13 @@ class Category implements EntityInterface
      */
     public function getCategoryTranslations(): Collection
     {
-        return $this->categoryTranslations;
+        return $this->translations;
     }
 
     public function addCategoryTranslation(CategoryTranslation $categoryTranslation): self
     {
-        if (!$this->categoryTranslations->contains($categoryTranslation)) {
-            $this->categoryTranslations[] = $categoryTranslation;
+        if (!$this->translations->contains($categoryTranslation)) {
+            $this->translations[] = $categoryTranslation;
             $categoryTranslation->setCategory($this);
         }
 
@@ -75,8 +77,8 @@ class Category implements EntityInterface
 
     public function removeCategoryTranslation(CategoryTranslation $categoryTranslation): self
     {
-        if ($this->categoryTranslations->contains($categoryTranslation)) {
-            $this->categoryTranslations->removeElement($categoryTranslation);
+        if ($this->translations->contains($categoryTranslation)) {
+            $this->translations->removeElement($categoryTranslation);
             // set the owning side to null (unless already changed)
             if ($categoryTranslation->getCategory() === $this) {
                 $categoryTranslation->setCategory(null);
@@ -146,15 +148,5 @@ class Category implements EntityInterface
         }
 
         return $this;
-    }
-
-    public function getByLocale(string $locale): null|CategoryTranslation
-    {
-        $filteredTrans = $this->categoryTranslations->filter(function ($trans) use ($locale) {
-            /** @var CategoryTranslation $trans */
-            return $trans->getLocale() === $locale;
-        });
-
-        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 }

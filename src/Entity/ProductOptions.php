@@ -34,7 +34,7 @@ class ProductOptions
     private Product $product;
 
     #[ORM\Column(length: 255)]
-    private ?string $country = null;
+    private null|string $country = null;
 
     #[ORM\OneToMany(mappedBy: 'productOption', targetEntity: ProductHasSizes::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productHasSizes;

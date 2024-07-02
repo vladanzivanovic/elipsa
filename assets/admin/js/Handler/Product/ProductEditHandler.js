@@ -31,8 +31,13 @@ class ProductEditHandler {
         for (const index in images) {
             const image = images[index];
 
-            image.color_id = selectedColors[index].value;
             data.images.push(image);
+
+            if (image.hasOwnProperty('deleted') && true === image.deleted) {
+                continue;
+            }
+
+            image.color_id = selectedColors[index].value;
         }
 
         for (const youtube of this.#youtube.getLists()) {
