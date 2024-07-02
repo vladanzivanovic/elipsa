@@ -48,15 +48,14 @@ final class ProductEditResponseFormatter
         $this->tagOptionsFormatter = $tagOptionsFormatter;
     }
 
-    public function formatResponse(array $options, ?Product $product = null): array
+    public function formatResponse(array $options, null|Product $product = null): array
     {
         $payload = [];
 
-        if ($product instanceof \App\Entity\Product) {
+        if ($product instanceof Product) {
             $response = [
                 'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
                 'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'id'),
-//                'selected_sizes' => array_column($this->sizeRepository->getByProduct($product), 'slug'),
                 'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
             ];
 

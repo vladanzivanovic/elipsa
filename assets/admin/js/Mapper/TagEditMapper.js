@@ -1,10 +1,26 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class TagEditMapper {
     constructor() {
-        this.form = $('#edit_form');
-        this.titleRs = $('#title_rs', this.form);
-        this.titleEn = $('#title_en', this.form);
-        this.submitBtn = $('#tag_submit');
+        if (!TagEditMapper.instance) {
+
+            this.productType = '#product_type';
+
+            this.fields = {};
+
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.fields[`title_${locale}`] = '#title_'+locale;
+            }
+
+            TagEditMapper.instance = Object.assign(this, baseFormMapper);
+        }
+
+        return TagEditMapper.instance;
     }
 }
 
-export default TagEditMapper;
+const tagEditMapper = new TagEditMapper();
+
+Object.freeze(tagEditMapper);
+
+export default tagEditMapper;

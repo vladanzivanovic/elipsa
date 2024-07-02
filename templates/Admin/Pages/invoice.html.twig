@@ -115,8 +115,8 @@
                                         </tr>
                                         {% if 0 < payload.promotion | length %}
                                             <tr>
-                                                <td>Promo kod ({{ promotion.code }})</td>
-                                                <td class="text-right">{{ promotion.percentage }} %</td>
+                                                <td>Promo kod ({{ payload.promotion.code }})</td>
+                                                <td class="text-right">{{ payload.promotion.percentage }} %</td>
                                             </tr>
                                         {% endif %}
                                         <tr>

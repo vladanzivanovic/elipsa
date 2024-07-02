@@ -25,10 +25,10 @@ final class LocationListController extends AbstractController
         $this->responseFormatter = $responseFormatter;
     }
 
-    #[Route(path: '/api/stores', name: 'site_api.locations', methods: ['GET'], options: ['expose' => true])]
+    #[Route(path: '/api/stores', name: 'site_api.locations', options: ['expose' => true], methods: ['GET'])]
     public function __invoke(Request $request): Response
     {
-        $collections = $this->pageCollector->collect($request->getLocale());
+        $collections = $this->pageCollector->collect();
 
         return $this->json(
             $this->responseFormatter->formatResponse($collections, $request->getLocale()),

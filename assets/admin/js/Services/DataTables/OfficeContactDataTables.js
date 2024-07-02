@@ -1,14 +1,17 @@
 import CoreDataTable from "./CoreDataTable";
+import DataTableOptions from "./DataTableOptions";
 
 require('./DataTableOptions');
 
 class OfficeContactDataTables {
     #coreDataTable;
+    #dataTableOptionGenerator;
     #dataTable = null;
 
     constructor() {
         if(!OfficeContactDataTables.instance) {
             this.#coreDataTable = new CoreDataTable();
+            this.#dataTableOptionGenerator = new DataTableOptions();
 
             OfficeContactDataTables.instance = this;
         }
@@ -17,7 +20,7 @@ class OfficeContactDataTables {
     }
 
     init() {
-        const options = {
+        const tableOptions = {
             ajax: {
                 url: Routing.generate('admin.get_office_contact_list'),
                 type: 'POST'
@@ -42,6 +45,11 @@ class OfficeContactDataTables {
             ],
             order: [[0, 'asc']],
         };
+
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
 
         this.#coreDataTable.setTableOptions(options);
 

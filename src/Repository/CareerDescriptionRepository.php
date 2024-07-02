@@ -16,8 +16,10 @@ use Doctrine\ORM\NoResultException;
  */
 class CareerDescriptionRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly string $defaultLocale,
+    ) {
         parent::__construct($registry, CareerDescription::class);
     }
 
@@ -43,11 +45,14 @@ class CareerDescriptionRepository extends ExtendedEntityRepository
                 'c.id as id',
                 'c.status as status',
                 'cdt.title as title',
-                'image.name'
+                'image.name',
+                'c.availableCountries as available_countries'
+
             )
             ->innerJoin('c.image', 'image')
-            ->innerJoin('c.careerDescriptionTranslations', 'cdt')
-            ->where('cdt.locale = \'rs\'')
+            ->innerJoin('c.translations', 'cdt')
+            ->where('cdt.locale = :defaultLocale')
+            ->setParameter('defaultLocale', $this->defaultLocale)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())

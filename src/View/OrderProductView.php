@@ -9,25 +9,12 @@ use App\Entity\OrderProductTranslation;
 
 final class OrderProductView
 {
-    private PriceView $priceView;
-
-    private ImageView $imageView;
-
-    private ColorView $colorView;
-
-    private ProductView $productView;
-
     public function __construct(
-        PriceView $priceView,
-        ImageView $imageView,
-        ColorView $colorView,
-        ProductView $productView
-    ) {
-        $this->priceView = $priceView;
-        $this->imageView = $imageView;
-        $this->colorView = $colorView;
-        $this->productView = $productView;
-    }
+        private readonly PriceView $priceView,
+        private readonly ImageView $imageView,
+        private readonly ColorView $colorView,
+        private readonly ProductView $productView,
+    ) {}
 
     public function view(OrderProduct $orderProduct, string $locale): array
     {
@@ -37,6 +24,8 @@ final class OrderProductView
         $product = $orderProduct->getProduct();
 
         $isSizeAvailable = $orderProduct->isProductAvailable();
+
+        $productOption = $product->getOptionsByCountry($orderProduct->getOrderId()->getCountry());
 
         $view = [
             'id' => $orderProduct->getId(),
@@ -52,10 +41,10 @@ final class OrderProductView
                 'product',
                 'cart_thumb'
             ),
-            'is_sold' => $product->isSold() || false === $isSizeAvailable,
-            'color' => $this->colorView->productPageView($orderProduct->getColor()),
+            'is_sold' => $productOption->isSold() || false === $isSizeAvailable, //todo move this to product options
+            'color' => $this->colorView->view($orderProduct->getColor()),
             'promotion_price' => [],
-            'product' => $this->productView->view($product, $locale),
+            'product' => $this->productView->view($product),
         ];
 
         if (0 < $discount) {

@@ -2,29 +2,33 @@ import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import DropZoneService from "../../../js/Services/DropZoneService";
 import HomeBannersDataTables from "../Services/DataTables/HomeBannersDataTables";
+import bannerEditMapper from "../Mapper/BannerEditMapper";
 
 class BannerHandler {
+    #mapper;
+
     constructor() {
+        this.#mapper = bannerEditMapper;
         this.notification = NotificationService();
     }
 
-    save(mapper) {
+    save() {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_banner_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = $(this.#mapper.form).serializeArray();
 
-        if (! mapper.form.valid()) {
+        if (! $(this.#mapper.form).valid()) {
             return false;
         }
 
         data.push({
-            name: 'images',
+            name: `images[${IMAGE_DEVICES.DEVICE_DESKTOP}]`,
             value: JSON.stringify(DropZoneService().getFilesArray('banner')),
         });
 
         if ($('[data-files="banner_mobile"]').length > 0) {
             data.push({
-                name : 'images_mobile',
+                name : `images[${IMAGE_DEVICES.DEVICE_MOBILE}]`,
                 value: JSON.stringify(DropZoneService().getFilesArray('banner_mobile')),
             });
         }

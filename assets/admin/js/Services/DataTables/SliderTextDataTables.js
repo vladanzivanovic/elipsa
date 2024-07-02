@@ -1,17 +1,20 @@
 import CoreDataTable from "./CoreDataTable";
+import DataTableOptions from "./DataTableOptions";
 
 require('./DataTableOptions');
 
 class SliderTextDataTables {
     #coreDataTable;
     #dataTable = null;
+    #dataTableOptionGenerator;
 
     constructor() {
         this.#coreDataTable = new CoreDataTable();
+        this.#dataTableOptionGenerator = new DataTableOptions();
     }
 
     init() {
-        const options = {
+        const tableOptions = {
             ajax: {
                 url: Routing.generate('admin.get_slider_text_list'),
                 type: 'POST'
@@ -20,7 +23,7 @@ class SliderTextDataTables {
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'title', name: 'description', title: 'Naslov' },
                 { data: 'status_text', name: 'is_active', title: 'Status', width: '200px', render: function (data, type, row, meta) {
-                        const checkedAttr = row.is_active === true ? 'checked' : '';
+                        const checkedAttr = row.status === ENTITY_STATUSES.STATUS_ACTIVE ? 'checked' : '';
                         const text = Translator.trans(data, null, 'messages', LOCALE);
 
                         let html = CAN_EDIT ? `<p class="status-text text-uppercase">${text}</p><input type="checkbox" class="set-active-slider" data-id="${row.id}" ${checkedAttr}/>` : `<p class="status-text">${text}</p>`;
@@ -41,10 +44,17 @@ class SliderTextDataTables {
                             data;
                     } },
             ],
-            order: [[0, 'asc']],
         };
 
-        this.#coreDataTable.setTableOptions(options);
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
+
+        this.#coreDataTable
+            .setTableOptions(options);
+
+        this.#coreDataTable.setOrder(0, 'asc');
 
         this.#dataTable = this.#coreDataTable.renderTable();
     }

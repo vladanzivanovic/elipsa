@@ -1,6 +1,4 @@
-import AppHelperService from "../../../../js/Helper/AppHelperService";
 import orderApiChecker from "../../Checker/OrderApiChecker";
-import loader from "../../Dom/LoaderDom";
 import orderStorageManipulator from "../../Manipulator/OrderStorageManipulator";
 
 class OrderApiHandler {
@@ -22,14 +20,14 @@ class OrderApiHandler {
     {
         return $.ajax({
             type: 'POST',
-            url: AppHelperService.generateLocalizedUrl('site_api.create_order'),
+            url: Routing.generate(`site_api.create_order.${LOCALE}`),
             data: null,
         });
     }
 
     async manageProduct(color, size, quantity, slug = SLUG)
     {
-        const urlRoute = Routing.generate('site_api.set_product_order', {
+        const urlRoute = Routing.generate(`site_api.set_product_order.${LOCALE}`, {
             token: this.#orderStorageManipulator.getOrderToken(),
             slug
         });
@@ -61,7 +59,7 @@ class OrderApiHandler {
      */
     async completeOrder(formData)
     {
-        const urlRoute = Routing.generate('site_api.order_complete', {
+        const urlRoute = Routing.generate(`site_api.order_complete.${LOCALE}`, {
             token: this.#orderStorageManipulator.getOrderToken(),
         });
 
@@ -83,7 +81,7 @@ class OrderApiHandler {
 
     async removeOrder()
     {
-        const urlRoute = Routing.generate('site_api.remove_order', {
+        const urlRoute = Routing.generate(`site_api.remove_order.${LOCALE}`, {
             token: this.#orderStorageManipulator.getOrderToken(),
         });
 
@@ -104,7 +102,7 @@ class OrderApiHandler {
 
     async removeProduct(orderProductId)
     {
-        const urlRoute = Routing.generate('site_api.remove_order_product', {
+        const urlRoute = Routing.generate(`site_api.remove_order_product.${LOCALE}`, {
             token: this.#orderStorageManipulator.getOrderToken(),
             orderProductId: orderProductId
         });
@@ -127,7 +125,7 @@ class OrderApiHandler {
 
     async setCoupon(couponCode)
     {
-        const urlRoute = Routing.generate('site_api.add_order_coupon_code', {
+        const urlRoute = Routing.generate(`site_api.add_order_coupon_code.${LOCALE}`, {
             token: this.#orderStorageManipulator.getOrderToken(),
             code: couponCode
         })
@@ -150,7 +148,7 @@ class OrderApiHandler {
 
     async removeCoupon(couponCode)
     {
-        const urlRoute = Routing.generate('site_api.remove_order_coupon_code', {
+        const urlRoute = Routing.generate(`site_api.remove_order_coupon_code.${LOCALE}`, {
             token: this.#orderStorageManipulator.getOrderToken(),
             code: couponCode
         })

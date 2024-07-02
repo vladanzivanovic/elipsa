@@ -37,12 +37,10 @@ final class ShopPageController extends AbstractController
     public function shopPage(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        Request $request
     ): array {
         return $this->generate(
             $shopPageOptionsDto,
             $shopListRequestDto,
-            $request
         );
     }
 
@@ -52,27 +50,23 @@ final class ShopPageController extends AbstractController
     public function trendyPage(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        Request $request
     ): array {
         return $this->generate(
             $shopPageOptionsDto,
             $shopListRequestDto,
-            $request
         );
     }
 
     private function generate(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
-        Request $request
     ): array {
         $data = $this->collectors->collect($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
-        $filters = $this->filterCollector->collect($shopPageOptionsDto->locale);
+        $filters = $this->filterCollector->collect($shopPageOptionsDto->locale, $shopPageOptionsDto->country);
 
         return $this->formatter->formatResponse(
             $data,
-            $shopPageOptionsDto->locale,
-            [$request->attributes->get('_route')],
+            [$shopPageOptionsDto->request->attributes->get('_route')],
             $shopListRequestDto,
             $shopPageOptionsDto,
             $filters,

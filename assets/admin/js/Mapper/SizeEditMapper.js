@@ -1,9 +1,19 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class SizeEditMapper {
     constructor() {
-        this.form = $('#edit_form');
-        this.title = $('#title', this.form);
-        this.submitBtn = $('#size_submit');
+        if (!SizeEditMapper.instance) {
+            this.title = '#size';
+
+            SizeEditMapper.instance = Object.assign(this, baseFormMapper);
+        }
+
+        return SizeEditMapper.instance;
     }
 }
 
-export default SizeEditMapper;
+const sizeEditMapper = new SizeEditMapper();
+
+Object.freeze(sizeEditMapper);
+
+export default sizeEditMapper;

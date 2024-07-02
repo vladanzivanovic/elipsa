@@ -25,6 +25,7 @@ export default (() => {
                 { data: 'status', name: 'status', title: 'Status', render: function (status, type, row, meta) {
                         return Translator.trans(status, null, 'messages', LOCALE);
                     } },
+                { data: 'country', name: 'country_code', title: 'Zamlja naručivanja'},
                 { data: 'visited', name: 'visited', title: 'Nova porudžbina', render: function (visited, type, row, meta) {
                         return true === visited ? 'Pregledana' : ' Nije pregledana';
                     } },

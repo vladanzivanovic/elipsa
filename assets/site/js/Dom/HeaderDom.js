@@ -15,7 +15,8 @@ class HeaderDom {
     updateLanguageDropDown(links)
     {
         for (const locale in links) {
-            $(`${this.#mapper.localeDropDown} #locale_${locale}`).attr('href', links[locale][ROUTE_NAME]);
+            $(`${this.#mapper.dropDown.locale} #locale_${locale}`).attr('href', links[locale][ROUTE_NAME]);
+            $(`${this.#mapper.dropDown.country} #country_${locale}`).attr('href', links[locale][ROUTE_NAME]);
         }
     }
 }

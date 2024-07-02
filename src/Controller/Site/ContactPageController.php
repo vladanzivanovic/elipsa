@@ -23,7 +23,11 @@ final class ContactPageController extends AbstractController
     }
 
     
-    #[Route(path: ['rs' => '/kontakt', 'en' => '/contact'], name: 'site.contact_page', methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/kontakt',
+        'en' => '/contact',
+        'ba' => '/kontakt',
+    ], name: 'site.contact_page', methods: ['GET'])]
     #[Template('Site/Pages/contactUsPage.html.twig')]
     public function renderPage(Request $request): array
     {

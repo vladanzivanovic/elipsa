@@ -10,7 +10,7 @@ class LoginApiHandler {
 
     async send(data)
     {
-        const urlRoute = Routing.generate(`site_api.login`);
+        const urlRoute = Routing.generate(`site_api.login.${LOCALE}`);
 
         return $.ajax({
             type: 'POST',

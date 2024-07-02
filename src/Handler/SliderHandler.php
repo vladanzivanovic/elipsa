@@ -6,7 +6,6 @@ namespace App\Handler;
 
 use App\Entity\Slider;
 use App\Helper\ValidatorHelper;
-use App\Repository\ImageRepository;
 use App\Repository\SliderRepository;
 use App\Services\ImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -15,27 +14,12 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class SliderHandler
 {
-    private \App\Repository\SliderRepository $sliderRepository;
-
-    private \App\Helper\ValidatorHelper $validator;
-
-    private \App\Services\ImageService $imageService;
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $bag;
-
-    /**
-     * SliderHandler constructor.
-     */
     public function __construct(
-        SliderRepository $sliderRepository,
-        ValidatorHelper $validator,
-        ImageService $imageService,
-        ParameterBagInterface $bag
-    ) {
-        $this->sliderRepository = $sliderRepository;
-        $this->validator = $validator;
-        $this->imageService = $imageService;
-        $this->bag = $bag;
-    }
+        private readonly SliderRepository $sliderRepository,
+        private readonly ValidatorHelper $validator,
+        private readonly ImageService $imageService,
+        private readonly ParameterBagInterface $bag
+    ) {}
 
     /**
      *

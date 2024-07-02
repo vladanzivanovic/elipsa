@@ -43,7 +43,7 @@ class SliderTextController {
 
              $(document).on('change', '.set-active-slider', e => {
                  const id = e.currentTarget.dataset.id;
-                 const status = e.currentTarget.checked ? 1 : 0;
+                 const status = e.currentTarget.checked ? ENTITY_STATUSES.STATUS_ACTIVE : ENTITY_STATUSES.STATUS_PENDING;
                  const handler = new SliderTextHandler();
 
                  handler.changeStatus(e.currentTarget, id, status);

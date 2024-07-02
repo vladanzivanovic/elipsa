@@ -7,26 +7,27 @@ namespace App\Formatter\Admin;
 use App\Entity\Image;
 use App\Entity\Slider;
 use App\Repository\ImageRepository;
+use App\View\SliderView;
 use Symfony\Component\Routing\RouterInterface;
 
 final class SliderEditResponseFormatter
 {
     use ImageTrait;
 
-    private \Symfony\Component\Routing\RouterInterface $router;
-    private \App\Repository\ImageRepository $imageRepository;
-
     public function __construct(
-        RouterInterface $router,
-        ImageRepository $imageRepository
-    ) {
-        $this->router = $router;
-        $this->imageRepository = $imageRepository;
-    }
+        private readonly RouterInterface $router,
+        private readonly ImageRepository $imageRepository,
+        private readonly SliderView $sliderView,
+    ) {}
 
-    
-    public function formatResponse(Slider $slider): array
+    public function formatResponse(Slider $slider = null): array
     {
+        $view = $this->sliderView->editView($slider);
+
+        return [
+            'payload' => $view,
+        ];
+
         $rsTrans = $slider->getByLocale('rs');
         $enTrans = $slider->getByLocale('en');
 

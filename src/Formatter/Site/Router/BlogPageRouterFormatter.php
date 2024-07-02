@@ -11,28 +11,20 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class BlogPageRouterFormatter
 {
-    private array $locales;
-
     public function __construct(
         private readonly BlogTranslationRepository $blogTranslationRepository,
         private readonly RouterInterface $router,
         private readonly TagTranslationRepository $tagTranslationRepository,
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly array $locales,
+    ) {}
 
-    /**
-     *
-     * @return string
-     */
     public function localeFormatter(string $slug, string $locale): ?string
     {
         $fromTrans = $this->blogTranslationRepository->findOneBy(['alias' => $slug]);
 
         $toTrans = $fromTrans->getBlog()->getBlogTranslationByLocale($locale);
 
-        return null !== $toTrans ? $toTrans->getAlias() : null;
+        return $toTrans?->getAlias();
     }
 
     public function createLocalizedLinks(
@@ -71,6 +63,8 @@ final class BlogPageRouterFormatter
             return null;
         }
 
-        return $this->tagTranslationRepository->getForLocalization($tagSlug, $locale);
+        $tag = $this->tagTranslationRepository->getForLocalization($tagSlug, $locale);
+
+        return $tag['slug'] ?? null;
     }
 }

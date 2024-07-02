@@ -46,7 +46,7 @@ final class CatalogImageService
 
         foreach ($data as $payload) {
             try {
-                $image = $this->imageParser->parse($payload, Image::DEVICE_DESKTOP);
+                $image = $this->imageParser->parse($payload);
 
                 if (isset($payload['id'])) {
                     $hasImage = $this->hasImagesRepository->findOneBy(['catalogue' => $catalogue, 'image' => $image]);

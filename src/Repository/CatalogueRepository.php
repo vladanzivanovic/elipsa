@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Catalogue;
+use App\Entity\CatalogueTranslation;
+use App\Entity\CategoryTranslation;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -41,12 +43,15 @@ class CatalogueRepository extends ExtendedEntityRepository
             ->select(
                 'c.id as id',
                 'ct.title as title',
-                'c.status as status'
+                'c.status as status',
+                'c.availableCountries as available_countries'
             )
-            ->innerJoin('c.catalogueTranslations', 'ct')
-            ->where('ct.locale = \'rs\'')
+            ->innerJoin(CatalogueTranslation::class, 'ct', 'WITH', 'ct.catalogue = c AND (ct.locale = :rsLocale OR ct.locale = :baLocale)')
+            ->setParameter('rsLocale', 'rs')
+            ->setParameter('baLocale', 'ba')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
+            ->groupBy('c.id')
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
@@ -54,14 +59,16 @@ class CatalogueRepository extends ExtendedEntityRepository
     }
 
     
-    public function getCatalogPage(string $locale): array
+    public function getCatalogPage(string $locale, string $countryCode): array
     {
         $query = $this->createQueryBuilder('c')
             ->innerJoin('c.catalogueTranslations', 'ct')
             ->where('ct.locale = :locale')
             ->andWhere('c.status = :activeStatus')
+            ->andWhere('c.availableCountries LIKE :country')
             ->setParameter('locale', $locale)
-            ->setParameter('activeStatus', Catalogue::STATUS_ACTIVE);
+            ->setParameter('activeStatus', Catalogue::STATUS_ACTIVE)
+            ->setParameter('country', '%'.$countryCode.'%');
 
         return $query->getQuery()->getResult();
     }

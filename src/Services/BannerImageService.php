@@ -41,7 +41,7 @@ final class BannerImageService
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setImages(Banner $banner, array $data, int $device): void
+    public function setImages(Banner $banner, array $data, string $device): void
     {
         $rootDir = $this->bag->get('upload_dir');
         $tmpDir = $this->bag->get('upload_tmp_dir');

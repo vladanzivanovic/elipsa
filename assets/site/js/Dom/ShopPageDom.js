@@ -36,7 +36,7 @@ class ShopPageDom {
                                     <p class="text-capitalize">${Translator.trans('available_colors', null, 'messages', LOCALE)}:</p>
                                     <ul class="sfi-data-color">${this.productColors(product.colors)}</ul>
                                     <p class="text-capitalize">${Translator.trans('available_sizes', null, 'messages', LOCALE)}:</p>
-                                    <ul>${this.listData(product.sizes, 'sizes')}</ul>
+                                    <ul>${this.listData(product.options[COUNTRY_DEFAULT_LOCALE].sizes, 'sizes')}</ul>
                                 </div>
                             </div>
                             <div class="sfi-content">
@@ -130,21 +130,21 @@ class ShopPageDom {
     }
 
     #setPriceDom(product) {
-        if (product.discount !== null) {
+        if (product.options[COUNTRY_DEFAULT_LOCALE].discount !== null) {
             return `
-                <p class="sfi-old-price">-${ product.price.amount } ${ product.price.currency }</p>
+                <p class="sfi-old-price">-${ product.options[COUNTRY_DEFAULT_LOCALE].price.amount } ${ product.options[COUNTRY_DEFAULT_LOCALE].price.currency }</p>
                 <div class="discount-price">
                     <p class="sfi-price text-uppercase">
-                        <span>${ product.discount.price.amount } ${ product.price.currency }</span>
+                        <span>${ product.options[COUNTRY_DEFAULT_LOCALE].discount.price.amount } ${ product.options[COUNTRY_DEFAULT_LOCALE].price.currency }</span>
                     </p>
-                    <p class="price-saving">${ Translator.trans('saving', null, 'messages', LOCALE) } ${ product.discount.saving.amount } ${ product.discount.saving.currency }</p>
+                    <p class="price-saving">${ Translator.trans('saving', null, 'messages', LOCALE) } ${ product.options[COUNTRY_DEFAULT_LOCALE].discount.saving.amount } ${ product.options[COUNTRY_DEFAULT_LOCALE].discount.saving.currency }</p>
                 </div>
             `;
         }
 
         return `
             <p class="sfi-price text-uppercase">
-                <span>${ product.price.amount } ${ product.price.currency }</span>
+                <span>${ product.options[COUNTRY_DEFAULT_LOCALE].price.amount } ${ product.options[COUNTRY_DEFAULT_LOCALE].price.currency }</span>
             </p>
         `;
     }
@@ -152,7 +152,7 @@ class ShopPageDom {
     #setBadgeHtml(product) {
         let html = '';
 
-        if (product.is_sold === true) {
+        if (product.options[COUNTRY_DEFAULT_LOCALE].is_sold === true) {
             html += `
                 <svg class='svg-stroke product-sold' viewBox='0 -0.2 6.5 15' preserveAspectRatio='none'>
                     <line x1="7" y1="-1" x2="-1" y2="11" stroke="#a70303" stroke-width=".6" stroke-opacity="1"></line>
@@ -161,10 +161,10 @@ class ShopPageDom {
             `;
         }
 
-        if (product.discount !== null) {
+        if (product.options[COUNTRY_DEFAULT_LOCALE].discount !== null) {
             html += `
                 <div class="sfi-img-banner product-discount">
-                    <span>-${product.discount.percentage} %</span>
+                    <span>-${product.options[COUNTRY_DEFAULT_LOCALE].discount.percentage} %</span>
                 </div>
             `;
         }

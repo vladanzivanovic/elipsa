@@ -4,28 +4,20 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductHasTagsRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ProductHasTagsRepository::class)]
 class ProductHasTags
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productHasTags")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'productHasTags')]
+    #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tags")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Tags::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Tags $tag;
 
     public function getId(): ?int

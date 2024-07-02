@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\CatalogueTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,22 @@ class CatalogueTranslationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CatalogueTranslation::class);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getByCountryCode(string $slug, string $countryCode): CatalogueTranslation
+    {
+        $query = $this->createQueryBuilder('ct')
+            ->innerJoin('ct.catalogue', 'c')
+            ->where('ct.slug = :slug')
+            ->andWhere('c.availableCountries LIKE :country')
+            ->setParameter('slug', $slug)
+            ->setParameter('country', '%'.$countryCode.'%');
+
+        return  $query->getQuery()->getSingleResult();
     }
 
     // /**

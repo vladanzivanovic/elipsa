@@ -3,22 +3,28 @@
 {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_product_page' %}
 {% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
 {% set title = titlePrefix ~ ' proizvoda' %}
+{% set routePath = 'admin.dashboard' %}
+{% set routeTitle = 'Početna' %}
 
 {% block title %}{{ title }}{% endblock %}
 {% block bodyClass %}product-edit{% endblock %}
 
-{% set productSizes = [
-    {'slug': '38', 'quantity': 20},
-    {'slug': '40', 'quantity': 20},
-    {'slug': '42', 'quantity': 20},
-    {'slug': '44', 'quantity': 20},
-    {'slug': '46', 'quantity': 20},
-    {'slug': '48', 'quantity': 20},
-] %}
+{% set productSizes = {} %}
 
-{% if true == IS_EDIT %}
-    {% set productSizes = payload.sizes %}
-{% endif %}
+{% for countryCode, country in countries %}
+    {% if true == IS_EDIT and payload.options[countryCode] is defined %}
+        {% set productSizes = productSizes|merge({(countryCode): payload.options[countryCode].sizes}) %}
+    {% else %}
+        {% set productSizes = productSizes|merge({(countryCode): [
+            {'slug': '38', 'quantity': 20},
+            {'slug': '40', 'quantity': 20},
+            {'slug': '42', 'quantity': 20},
+            {'slug': '44', 'quantity': 20},
+            {'slug': '46', 'quantity': 20},
+            {'slug': '48', 'quantity': 20},
+        ]}) %}
+    {% endif %}
+{% endfor %}
 
 {% block content %}
 
@@ -34,35 +40,51 @@
     </div>
 
     <form id="edit_form" enctype="multipart/form-data">
-        {% for locale, lang in app_params('languages') %}
-            <div class="row">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Odabir države</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Zemlja', 'country-select-box', 'available_countries[]', IS_EDIT ? payload.available_countries : '' , countries_options(), '', 'w-100', true) }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for locale, lang in languages %}
+            <div class="row country_{{ locale }} hide-country">
                 <div class="col-md-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
-                            <h6 class="card-title">{{ lang.name }}</h6>
+                            <h6 class="card-title">{{ lang.translation | trans }} - Opis</h6>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : '', locale~'[title]') }}
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT and payload.translations[locale] is defined ? payload.translations[locale]['title'] : '', 'translations['~locale~'][title]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.textarea('Kratak opis', 'short_description_'~locale, IS_EDIT ? payload.translations[locale]['short_description'] : '', locale~'[short_description]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Kratak opis', 'short_description_'~locale, IS_EDIT and payload.translations[locale] is defined ? payload.translations[locale]['short_description'] : '', 'translations['~locale~'][short_description]', 10, '', 'form-control') }}
                                     </div>
                                 </div><!-- Col -->
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.textarea('Opis', 'description_rs'~locale, IS_EDIT ? payload.translations[locale]['description'] : '', locale~'[description]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Opis', 'description_rs'~locale, IS_EDIT and payload.translations[locale] is defined ? payload.translations[locale]['description'] : '', 'translations['~locale~'][description]', 10, '', 'form-control') }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.textarea('Materijali i održavanje', 'cleaning_'~locale, IS_EDIT ? payload.translations[locale]['cleaning'] : '', locale~'[cleaning]', 10, '', 'form-control') }}
+                                        {{ form.textarea('Materijali i održavanje', 'cleaning_'~locale, IS_EDIT and payload.translations[locale] is defined ? payload.translations[locale]['cleaning'] : '', 'translations['~locale~'][cleaning]', 10, '', 'form-control') }}
                                     </div>
                                 </div><!-- Col -->
                             </div>
@@ -75,7 +97,7 @@
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Dodatne informacije</h6>
+                        <h6 class="card-title">Osnovne informacije</h6>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -95,71 +117,87 @@
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.input('Cena', 'price', IS_EDIT ? payload.price : '', 'price') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.discount : '', 'discount') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p>Prikaz na pocetnoj stranici</p>
-                                <div class="form-check form-check-flat form-check-primary">
-                                    {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}
-                                    {{ form.checkbox('Gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == upValue ? 'checked="checked"' : null ) }}
-                                </div>
-                                <div class="form-check form-check-flat form-check-primary">
-                                    {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}
-
-                                    {{ form.checkbox('Dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and payload['show_home_page'] == downValue ? 'checked="checked"' : null ) }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-3">
-                                <p>&nbsp;</p>
-                                <div class="form-check form-check-flat form-check-primary">
-                                    {{ form.checkbox('Rasprodato', 'sold', 1, 'sold', 'form-check-label', 'form-check-input', IS_EDIT and payload['is_sold'] == true ? 'checked="checked"' : null ) }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title row">
-                            <div class="col-md-6">
-                                Veličine
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <button class="btn btn-primary size-add-btn" type="button">Dodaj veličinu</button>
-                            </div>
-                        </h6>
 
-                        <div class="table-responsive">
-                            <table class="table table-hover size-table">
-                                <thead>
-                                <tr>
-                                    <th>Veličina</th>
-                                    <th>Količina</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+        <div class="row">
+            {% for countryCode, country in countries %}
+                {% set option = payload.options[countryCode] is defined ? payload.options[countryCode] : [] %}
+                <div class="col-md-6 grid-margin country_{{ countryCode }} hide-country">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Cene i prikaz - {{ country.translation | trans }}</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Cena', 'price_'~countryCode, IS_EDIT and 0 < option|length ? option.price.unformatted_amount : '', 'options['~countryCode~'][price]') }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Popust', 'discount_'~countryCode, IS_EDIT and 0 < option|length and null != option.discount ? option.discount.price.unformatted_amount : '', 'options['~countryCode~'][discount]') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p>Prikaz na pocetnoj stranici</p>
+                                    <div class="form-check form-check-flat form-check-primary">
+                                        {% set upValue = constant('App\\Entity\\ProductOptions::HOME_PAGE_UP') %}
+                                        {{ form.checkbox('Gore', 'home_page_checkbox_up_'~countryCode, upValue, 'options['~countryCode~'][show_home_page]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < option|length and option.show_home_page == upValue ? 'checked="checked"' : null ) }}
+                                    </div>
+                                    <div class="form-check form-check-flat form-check-primary">
+                                        {% set downValue = constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN') %}
+
+                                        {{ form.checkbox('Dole', 'home_page_checkbox_down_'~countryCode, downValue, 'options['~countryCode~'][show_home_page]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < option|length and option.show_home_page == downValue ? 'checked="checked"' : null ) }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-3">
+                                    <p>&nbsp;</p>
+                                    <div class="form-check form-check-flat form-check-primary">
+                                        {{ form.checkbox('Rasprodato', 'sold_'~countryCode, 1, 'options['~countryCode~'][sold]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < option|length and option.is_sold == true  ? 'checked="checked"' : null ) }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            {% for countryCode, country in countries %}
+                <div class="col-md-6 grid-margin country_{{ countryCode }} hide-country">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title row">
+                                <div class="col-md-6">
+                                    Veličine - {{ country.translation | trans }}
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <button class="btn btn-primary size-add-btn-{{ countryCode }}" type="button">Dodaj veličinu</button>
+                                </div>
+                            </h6>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover size-table-{{ countryCode }}">
+                                    <thead>
+                                    <tr>
+                                        <th>Veličina</th>
+                                        <th>Količina</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="row">
             <div class="col-md-12 grid-margin">
@@ -212,7 +250,7 @@
             </div>
         </div>
     </form>
-    {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    {{ include('Admin/Components/formButtons.html.twig') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">

@@ -2,19 +2,23 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\PromotionEligibilityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- */
-class Product implements EntityInterface, PromotionEligibilityInterface
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+class Product implements EntityInterface, PromotionEligibilityInterface, CountryResourceInterface
 {
     use ResourceTrait;
     use TimestampableEntity;
+    use CountryResourceTrait;
 
     const STATUS_PENDING = 1;
     const STATUS_ACTIVE = 2;
@@ -23,125 +27,72 @@ class Product implements EntityInterface, PromotionEligibilityInterface
     const HOME_PAGE_UP = 2;
     const HOME_PAGE_DOWN = 1;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $price;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $discount;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private ?int $status;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductTranslation", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasTags", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductHasTags::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productHasTags;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
+    #[ORM\Column(type: 'smallint', nullable: true)]
     private ?int $badge;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $code;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductHasCategories::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productHasCategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private Collection $productHasSizes;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasImages", mappedBy="product", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductHasImages::class, cascade: ['persist', 'remove'])]
     private Collection $productHasImages;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private ?int $showHomePage;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductCleaning", mappedBy="product", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductCleaning::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productCleanings;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Youtube", mappedBy="product", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Youtube::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $youtubes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="product")
-     */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderProduct::class)]
     private Collection $orderProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserWishes", mappedBy="product")
-     *
      * @var Collection<int, UserWishes>
      */
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: UserWishes::class)]
     private Collection $userWishes;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $sold;
-
     private ?int $promoDiscount = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductOptions::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $productOptions;
 
     public function __construct()
     {
         $this->productTranslations = new ArrayCollection();
         $this->productHasTags = new ArrayCollection();
         $this->productHasCategories = new ArrayCollection();
-        $this->productHasSizes = new ArrayCollection();
         $this->productHasImages = new ArrayCollection();
         $this->productCleanings = new ArrayCollection();
         $this->youtubes = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
         $this->userWishes = new ArrayCollection();
+        $this->productOptions = new ArrayCollection();
     }
 
-    public function getPrice(): ?int
+    public function getPrice(string $countryCode): ?int
     {
-        return $this->price;
+        $promotionOptions = $this->getOptionsByCountry($countryCode);
+
+        return $promotionOptions->getPrice();
     }
 
-    public function setPrice(int $price): self
+    public function getDiscount(string $countryCode): ?int
     {
-        $this->price = $price;
+        $promotionOptions = $this->getOptionsByCountry($countryCode);
 
-        return $this;
-    }
-
-    public function getDiscount(): ?int
-    {
-        return $this->discount;
-    }
-
-    public function setDiscount(?int $discount): self
-    {
-        $this->discount = $discount;
-
-        return $this;
+        return $promotionOptions->getDiscount();
     }
 
     public function getStatus(): ?int
@@ -312,69 +263,7 @@ class Product implements EntityInterface, PromotionEligibilityInterface
     }
 
     /**
-     * @return Collection|ProductHasSizes[]
-     */
-    public function getProductHasSizes(): Collection
-    {
-        return $this->productHasSizes;
-    }
-
-    public function addProductHasSize(ProductHasSizes $productHasSize): self
-    {
-        if (!$this->productHasSizes->contains($productHasSize)) {
-            $this->productHasSizes[] = $productHasSize;
-            $productHasSize->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductHasSize(ProductHasSizes $productHasSize): self
-    {
-        if ($this->productHasSizes->contains($productHasSize)) {
-            $this->productHasSizes->removeElement($productHasSize);
-            // set the owning side to null (unless already changed)
-            if ($productHasSize->getProduct() === $this) {
-                $productHasSize->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array<int, ProductHasSizes>
-     */
-    public function getAvailableSizes(): array
-    {
-        $sizes = [];
-
-        foreach ($this->productHasSizes as $productHasSize) {
-            if (0 === $productHasSize->getQuantity()) {
-                continue;
-            }
-
-            $sizes[$productHasSize->getSize()->getSize()] = $productHasSize;
-        }
-
-        ksort($sizes);
-
-        return $sizes;
-    }
-
-    public function isSizeAvailable(string $sizeSlug): bool
-    {
-        foreach ($this->getAvailableSizes() as $availableSize) {
-            if ($availableSize->getSize()->getSlug() === $sizeSlug) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return Collection|ProductHasImages[]
+     * @return Collection<int, ProductHasImages>
      */
     public function getProductHasImages(): Collection
     {
@@ -417,7 +306,7 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return null;
     }
 
-    public function getByLocale(string $locale): ?ProductTranslation
+    public function getByLocale(string $locale): null|ProductTranslation
     {
         $filteredTrans = $this->productTranslations->filter(function ($trans) use ($locale) {
             /** @var ProductTranslation $trans */
@@ -425,18 +314,6 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         });
 
         return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
-    }
-
-    public function getShowHomePage(): ?int
-    {
-        return $this->showHomePage;
-    }
-
-    public function setShowHomePage(int $showHomePage): self
-    {
-        $this->showHomePage = $showHomePage;
-
-        return $this;
     }
 
     public function getProductCleanings(): Collection
@@ -521,17 +398,17 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return $this->orderProducts;
     }
 
-    public function isSold(): ?bool
-    {
-        return $this->sold;
-    }
-
-    public function setSold(bool $sold): self
-    {
-        $this->sold = $sold;
-
-        return $this;
-    }
+//    public function isSold(): ?bool
+//    {
+//        return $this->sold;
+//    }
+//
+//    public function setSold(bool $sold): self
+//    {
+//        $this->sold = $sold;
+//
+//        return $this;
+//    }
 
     public function isUserWish(User $user): bool
     {
@@ -544,13 +421,57 @@ class Product implements EntityInterface, PromotionEligibilityInterface
         return false;
     }
 
-    public function getPromoDiscount(): ?int
+    public function getPromoDiscount(string $countryCode): null|int
     {
-        return $this->promoDiscount;
+        $productOptions = $this->getOptionsByCountry($countryCode);
+
+        return $productOptions->getPromoDiscount();
     }
 
-    public function setPromoDiscount(?int $promoDiscount): void
+    public function setPromoDiscount(null|int $promoDiscount, string $countryCode): void
     {
-        $this->promoDiscount = $promoDiscount;
+        $productOptions = $this->getOptionsByCountry($countryCode);
+
+        $productOptions->setPromoDiscount($promoDiscount);
+    }
+
+    /**
+     * @return Collection<int, ProductOptions>
+     */
+    public function getProductOptions(): Collection
+    {
+        return $this->productOptions;
+    }
+
+    public function addProductOption(ProductOptions $productOption): static
+    {
+        if (!$this->productOptions->contains($productOption)) {
+            $this->productOptions->add($productOption);
+            $productOption->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductOption(ProductOptions $productOption): static
+    {
+        if ($this->productOptions->removeElement($productOption)) {
+            // set the owning side to null (unless already changed)
+            if ($productOption->getProduct() === $this) {
+                $productOption->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOptionsByCountry(string $countryCode): null|ProductOptions
+    {
+        $filteredOptions = $this->productOptions->filter(function ($options) use ($countryCode) {
+            /** @var ProductOptions $options */
+            return $options->getCountry() === $countryCode;
+        });
+
+        return false !== $filteredOptions->first() ? $filteredOptions->first() : null;
     }
 }

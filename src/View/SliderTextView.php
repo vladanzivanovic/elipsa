@@ -9,20 +9,20 @@ use App\Entity\SliderTextTranslation;
 
 final class SliderTextView
 {
-    private array $locales;
-
     public function __construct(
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly string $defaultLocale,
+        private readonly array $locales,
+    ) {}
 
     public function editView(SliderText $sliderText): array
     {
         $view = [];
+        $view['available_countries'] = $sliderText->getAvailableCountries();
 
         foreach ($this->locales as $locale) {
-            $view[$locale] = $this->getDescAndLink($sliderText->getByLocale($locale));
+            $trans = $sliderText->getByLocale($locale);
+
+            $view['translations'][$locale] = $this->getDescAndLink($trans);
         }
 
         $view['position'] = $sliderText->getPosition();
@@ -32,15 +32,21 @@ final class SliderTextView
 
     public function siteView(SliderText $sliderText, string $locale): array
     {
-        return $this->getDescAndLink($sliderText->getByLocale($locale));
+        $trans = $sliderText->getByLocale($locale);
+
+        if (null === $trans) {
+            $trans = $sliderText->getByLocale($this->defaultLocale);
+        }
+
+        return $this->getDescAndLink($trans);
     }
 
-    private function getDescAndLink(SliderTextTranslation $sliderTextTranslation): array
+    private function getDescAndLink(null|SliderTextTranslation $sliderTextTranslation): array
     {
         return [
-            'title' => $sliderTextTranslation->getTitle(),
-            'description' => $sliderTextTranslation->getDescription(),
-            'link' => $sliderTextTranslation->getLink(),
+            'title' => $sliderTextTranslation?->getTitle(),
+            'description' => $sliderTextTranslation?->getDescription(),
+            'link' => $sliderTextTranslation?->getLink(),
         ];
     }
 }

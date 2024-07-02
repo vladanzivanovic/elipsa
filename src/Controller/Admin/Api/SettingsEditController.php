@@ -12,20 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SettingsEditController extends AbstractController
 {
-    private \App\Repository\SettingsRepository $settingsRepository;
-
     public function __construct(
-        SettingsRepository $settingsRepository
-    ) {
-        $this->settingsRepository = $settingsRepository;
-    }
+        private readonly SettingsRepository $settingsRepository
+    ) {}
 
-    /**
-     *
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     #[Route(path: 'api/update-settings', name: 'admin.update_settings_api', methods: ['POST'])]
     public function update(Request $request): JsonResponse
     {

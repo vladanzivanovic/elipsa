@@ -41,11 +41,10 @@ final class ShopListController extends AbstractController
         $locale = $request->getLocale();
 
         $data = $this->collectors->collectForApi($shopListRequestDto, $shopPageOptionsDto, $this->getUser());
-        $filters = $this->filterCollector->collect($locale);
+        $filters = $this->filterCollector->collect($locale, $shopPageOptionsDto->country);
 
         return $this->json($this->formatter->formatResponse(
             $data,
-            $locale,
             ['site.shop_page', 'site.trendy_page'],
             $shopListRequestDto,
             $shopPageOptionsDto,

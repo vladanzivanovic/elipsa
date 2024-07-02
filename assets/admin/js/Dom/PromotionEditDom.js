@@ -34,8 +34,14 @@ class PromotionEditDom {
                     const payload = [];
 
                     for (const product of data.payload) {
+                        let trans = product.translations.rs;
+
+                        if (trans === undefined) {
+                            trans = product.translations.ba;
+                        }
+
                         payload.push({
-                            text: product.translations.rs.title,
+                            text: trans.title,
                             id: product.id,
                         });
                     }

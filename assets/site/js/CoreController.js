@@ -71,16 +71,6 @@ class CoreController {
     }
 
     registerEvents() {
-
-        // $(document).on('click touchend', this.#mapper.newsLetterSubmitBtn, e => {
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //
-        //     const handler = new NewsLetterHandler();
-        //
-        //     handler.addUser(this.#mapper.newsLetterForm, true);
-        // });
-
         $(document).on('click touchend', this.#mapper.newsLetterSubmitBtnFooter, e => {
             e.preventDefault();
             e.stopPropagation();
@@ -104,18 +94,6 @@ class CoreController {
 
             $(listElm).removeClass('active-list');
         });
-
-        // $(document).euCookieLawPopup().init({
-        //     cookiePolicyUrl : Routing.generate(`site.cookie_policy.${LOCALE}`),
-        //     popupTitle : Translator.trans('eu.cookies.accept.title', null, 'messages', LOCALE),
-        //     popupText : Translator.trans('eu.cookies.accept.text', null, 'messages', LOCALE),
-        //     buttonContinueTitle : Translator.trans('eu.cookies.accept.btn', null, 'messages', LOCALE),
-        //     buttonLearnmoreTitle : Translator.trans('eu.cookies.learn_more.btn', null, 'messages', LOCALE),
-        //     buttonLearnmoreOpenInNewWindow : true,
-        //     agreementExpiresInDays : 30,
-        //     autoAcceptCookiePolicy : false,
-        //     htmlMarkup : null
-        // });
     }
 }
 

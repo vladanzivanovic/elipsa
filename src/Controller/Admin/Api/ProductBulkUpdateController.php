@@ -14,23 +14,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProductBulkUpdateController extends AbstractController
 {
-    private ProductRepository $productRepository;
-
     public function __construct(
-        ProductRepository $productRepository
-    ) {
-        $this->productRepository = $productRepository;
-    }
+        private readonly ProductRepository $productRepository
+    ) {}
 
-    #[Route(path: '/api/products/bulk/home-page-position/{position}', name: 'admin.api_bulk_product_home_page_position', methods: ['POST'], options: ['expose' => true])]
-    public function setBulkHomePagePosition(Request $request, int $position): JsonResponse
+    #[Route(path: '/api/products/bulk/home-page-position/{position}', name: 'admin.api_bulk_product_home_page_position', options: ['expose' => true], methods: ['POST'])]
+    public function setBulkHomePagePosition(Request $request, string $position): JsonResponse
     {
         $body = json_decode($request->getContent(), true);
 
         $products = $this->productRepository->findBy(['id' => $body['ids']]);
 
         foreach ($products as $product) {
-            $product->setShowHomePage($position);
+            $options = $product->getProductOptions();
+
+            foreach ($options as $option) {
+                $option->setShowHomePage($position === '0' ? null : $position);
+            }
         }
 
         $this->productRepository->flush();
@@ -38,15 +38,18 @@ class ProductBulkUpdateController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    #[Route(path: '/api/products/bulk/discount', name: 'admin.api_bulk_products_discount', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/products/bulk/discount', name: 'admin.api_bulk_products_discount', options: ['expose' => true], methods: ['POST'])]
     public function setBulkProductsDiscount(ProductsBulkRequestDto $bulkRequestDto): JsonResponse
     {
         $products = $this->productRepository->findBy(['id' => $bulkRequestDto->products]);
 
         foreach ($products as $product) {
-            $discountAmount = $product->getPrice() * ((100 - $bulkRequestDto->discount)/100);
+            $options = $product->getProductOptions();
+            foreach ($options as $option) {
+                $discountAmount = $option->getPrice() * ((100 - $bulkRequestDto->discount)/100);
 
-            $product->setDiscount((int) $discountAmount);
+                $option->setDiscount((int) $discountAmount);
+            }
         }
 
         $this->productRepository->flush();

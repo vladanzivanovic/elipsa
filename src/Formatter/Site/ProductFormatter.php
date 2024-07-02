@@ -7,7 +7,6 @@ namespace App\Formatter\Site;
 use App\Checker\PromotionCheckerTrait;
 use App\Collector\PromotionCollector;
 use App\Entity\Product;
-use App\Entity\Promotion;
 use App\Entity\User;
 use App\Parser\ProductPromotionParser;
 use App\Repository\PromotionRepository;
@@ -27,83 +26,43 @@ final class ProductFormatter
     use FormatterTrait;
     use PromotionCheckerTrait;
 
-    private RouterInterface $router;
-
-    private ProductView $productView;
-
-    private ImageView $imageView;
-
-    private ColorView $colorView;
-
-    private CategoryView $categoryView;
-
-    private CleaningView $cleaningView;
-
-    private TagsRepository $tagsRepository;
-
-    private TagView $tagView;
-
-    private YoutubeView $youtubeView;
-
-    private ProductSizeView $productSizeView;
-
-    private PromotionRepository $promotionRepository;
-
-    private ProductPromotionParser $productPromotionParser;
-
-    private PromotionCollector $promotionCollector;
-
     public function __construct(
-        RouterInterface $router,
-        ProductView $productView,
-        ImageView $imageView,
-        ColorView $colorView,
-        CategoryView $categoryView,
-        CleaningView $cleaningView,
-        TagsRepository $tagsRepository,
-        TagView $tagView,
-        YoutubeView $youtubeView,
-        ProductSizeView $productSizeView,
-        PromotionRepository $promotionRepository,
-        ProductPromotionParser $productPromotionParser,
-        PromotionCollector $promotionCollector
-    ) {
-        $this->router = $router;
-        $this->productView = $productView;
-        $this->imageView = $imageView;
-        $this->colorView = $colorView;
-        $this->categoryView = $categoryView;
-        $this->cleaningView = $cleaningView;
-        $this->tagsRepository = $tagsRepository;
-        $this->tagView = $tagView;
-        $this->youtubeView = $youtubeView;
-        $this->productSizeView = $productSizeView;
-        $this->promotionRepository = $promotionRepository;
-        $this->productPromotionParser = $productPromotionParser;
-        $this->promotionCollector = $promotionCollector;
-    }
+        private readonly RouterInterface $router,
+        private readonly ProductView $productView,
+        private readonly ImageView $imageView,
+        private readonly ColorView $colorView,
+        private readonly CategoryView $categoryView,
+        private readonly CleaningView $cleaningView,
+        private readonly TagsRepository $tagsRepository,
+        private readonly TagView $tagView,
+        private readonly YoutubeView $youtubeView,
+        private readonly ProductSizeView $productSizeView,
+        private readonly PromotionRepository $promotionRepository,
+        private readonly ProductPromotionParser $productPromotionParser,
+        private readonly PromotionCollector $promotionCollector
+    ) {}
 
-    public function formatResponse(array $data, string $locale, ?User $user = null): array
+    public function formatResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
     {
         return
-            ['payload' => $this->formatApiResponse($data, $locale, $user)] +
-            ['relatedProducts' => $this->getProducts($data['related_products'], $locale)]
+            ['payload' => $this->formatApiResponse($data, $locale, $countryCode, $user)] +
+            ['relatedProducts' => $this->getProducts($data['related_products'], $countryCode)]
         ;
     }
 
-    public function formatApiResponse(array $data, string $locale, ?User $user = null): array
+    public function formatApiResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
     {
         /** @var Product $product */
         $product = $data['product'];
 
-        $this->productPromotionParser->setProductPromotion($product);
+        $this->productPromotionParser->setProductPromotion($product, $countryCode);
 
-        $productView = $this->productView->view($product, $locale, $user);
+        $productView = $this->productView->view($product, $user);
 
         $productView['categories'] = $this->getCategories($product, $locale);
         $productView['media']['images'] = $this->getImages($product);
         $productView['colors'] = $this->getColors($product);
-        $productView['sizes'] = $this->getSizes($product);
+//        $productView['sizes'] = $this->getSizes($product);
         $productView['cleaningIcons'] = $this->getCleaningIcons($product);
         $productView['media']['youtubes'] = $this->getYoutubes($product);
         $productView['tags'] = $this->getTags($product);
@@ -113,20 +72,21 @@ final class ProductFormatter
 
     /**
      * @param array<int, Product> $products
-     * @return array<int, mixed>
+     * @param string $countryCode
+     * @param User|null $user
+     * @return array
      */
-    public function getProducts(array $products, string $locale, ?User $user = null): array
+    public function getProducts(array $products, string $countryCode, null|User $user = null): array
     {
         $productsView = [];
 
-//        $productPromotions = $this->promotionCollector->getPromotionsByproduct(Promotion::TYPE_PRODUCT);
+//        $productPromotions = $this->promotionCollector->getPromotionsByProduct(Promotion::TYPE_PRODUCT);
 
         foreach ($products as $product) {
-            $this->productPromotionParser->setProductPromotion($product);
+            $this->productPromotionParser->setProductPromotion($product, $countryCode);
 
-            $productView = $this->productView->view($product, $locale, $user);
+            $productView = $this->productView->view($product, $user);
             $productView['colors'] = $this->getColors($product);
-            $productView['sizes'] = $this->getSizes($product);
             $productView['tags'] = $this->getTags($product);
             $productView['image'] = $this->imageView->view($product->getMainImage(), 'product', 'list_thumb');
 
@@ -152,21 +112,10 @@ final class ProductFormatter
         $colors = [];
 
         foreach ($product->getProductColors() as $hex => $productColor) {
-            $colors[$hex] = $this->colorView->productPageView($productColor);
+            $colors[$hex] = $this->colorView->view($productColor);
         }
 
         return $colors;
-    }
-
-    private function getSizes(Product $product): array
-    {
-        $sizes = [];
-
-        foreach ($product->getProductHasSizes() as $productHasSize) {
-            $sizes[] = $this->productSizeView->view($productHasSize);
-        }
-
-        return $sizes;
     }
 
     private function getCategories(Product $product, string $locale): array

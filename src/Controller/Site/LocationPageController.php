@@ -26,11 +26,15 @@ final class LocationPageController extends AbstractController
     }
 
     
-    #[Route(path: ['rs' => '/prodavnica', 'en' => '/stores'], name: 'site.location_page', methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/prodavnica',
+        'en' => '/stores',
+        'ba' => '/prodavnica',
+    ], name: 'site.location_page', methods: ['GET'])]
     #[Template('Site/Pages/locationList.html.twig')]
     public function __invoke(Request $request): array
     {
-        $collections = $this->pageCollector->collect($request->getLocale());
+        $collections = $this->pageCollector->collect();
 
         return $this->responseFormatter->formatResponse($collections, $request->getLocale());
     }

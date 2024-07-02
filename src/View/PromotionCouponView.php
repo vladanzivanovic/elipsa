@@ -9,17 +9,11 @@ use App\Repository\ProductRepository;
 
 final class PromotionCouponView
 {
-    private PromotionOptionView $promotionOptionView;
-
-    private ProductRepository $productRepository;
-
     public function __construct(
-        PromotionOptionView $promotionOptionView,
-        ProductRepository $productRepository
-    ) {
-        $this->promotionOptionView = $promotionOptionView;
-        $this->productRepository = $productRepository;
-    }
+        private readonly PromotionOptionView $promotionOptionView,
+        private readonly ProductRepository $productRepository,
+        private readonly string $defaultLocale,
+    ) {}
 
     public function editView(Promotion $promotionCoupon): array
     {
@@ -36,7 +30,13 @@ final class PromotionCouponView
                 $products = $this->productRepository->findBy(['id' => $configuration]);
 
                 foreach ($products as $product) {
-                    $trans = $product->getByLocale('rs');
+                    $countryLocale = $this->defaultLocale;
+
+                    if (false === in_array($countryLocale, $product->getAvailableCountries(), true)) {
+                        $countryLocale = $product->getAvailableCountries()[0];
+                    }
+
+                    $trans = $product->getByLocale($countryLocale);
 
                     $option['configuration'][] = ['id' => $product->getId(), 'text' => $trans->getTitle()];
                 }
@@ -56,6 +56,7 @@ final class PromotionCouponView
             'valid_from' => $coupon->getValidFrom()->format('d.m.Y'),
             'valid_to' => $coupon->getValidTo()->format('d.m.Y'),
             'type' => $coupon->getType(),
+            'available_countries' => $coupon->getAvailableCountries(),
         ];
     }
 }

@@ -9,20 +9,51 @@ use App\Entity\CategoryTranslation;
 
 final class CategoryView
 {
-    public function productPageView(Category $category, string $locale): array
+    public function __construct(
+        private readonly string $defaultLocale,
+        private readonly array $locales,
+    ){}
+
+    public function view(Category $category): array
     {
         $view = [
-
+            'id' => $category->getId(),
+            'parent' => [],
+            'translations' => [],
         ];
 
-        return $view + $this->getTranslation($category->getByLocale($locale));
+        foreach ($this->locales as $locale) {
+            $view['translations'][$locale] = $this->getTranslation($category, $locale);
+        }
+
+        if (null !== $category->getParent()) {
+            $view['parent'] = $this->view($category->getParent());
+        }
+
+        return $view;
     }
 
-    private function getTranslation(CategoryTranslation $categoryTranslation): array
+    /**
+     * @deprecated
+     */
+    public function productPageView(Category $category, string $locale): array
     {
+        $view = [];
+
+        return $view + $this->getTranslation($category, $locale);
+    }
+
+    private function getTranslation(Category $category, string $locale): array
+    {
+        $trans = $category->getByLocale($locale);
+
+        if (null === $trans) {
+            $trans = $category->getByLocale($this->defaultLocale);
+        }
+
         return [
-            'title' => $categoryTranslation->getTitle(),
-            'slug' => $categoryTranslation->getSlug(),
+            'title' => $trans->getTitle(),
+            'slug' => $trans->getSlug(),
         ];
     }
 }

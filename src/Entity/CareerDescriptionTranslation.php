@@ -2,54 +2,35 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\CareerDescriptionTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CareerDescriptionTranslationRepository")
- */
-class CareerDescriptionTranslation
+#[ORM\Entity(repositoryClass: CareerDescriptionTranslationRepository::class)]
+class CareerDescriptionTranslation implements EntityInterface, LocaleInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
+    use LocaleTrait;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $description;
+    #[ORM\Column(type: 'text')]
+    private string $description;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $locale;
+    #[ORM\ManyToOne(targetEntity: CareerDescription::class, inversedBy: 'careerDescriptionTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private CareerDescription $careerDescription;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CareerDescription", inversedBy="careerDescriptionTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $careerDescription;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: true)]
+    private string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
-    private $slug;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -61,7 +42,7 @@ class CareerDescriptionTranslation
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -69,18 +50,6 @@ class CareerDescriptionTranslation
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
 
         return $this;
     }

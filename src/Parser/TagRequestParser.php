@@ -4,38 +4,20 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
-use App\Entity\ProductColor;
 use App\Entity\Tags;
 use App\Entity\TagTranslation;
-use App\Repository\ProductColorRepository;
-use App\Repository\TagsRepository;
 use App\Repository\TagTranslationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
+use App\Request\Dto\Admin\TagEditRequestDto;
 use Webmozart\Assert\Assert;
 
 final class TagRequestParser
 {
-    private TagTranslationRepository $translationRepository;
-
-    private array $locales;
-
-    /**
-     * TagRequestParser constructor.
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        TagsRepository $tagsRepository,
-        TagTranslationRepository $translationRepository,
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-        $this->translationRepository = $translationRepository;
-    }
+        private readonly TagTranslationRepository $translationRepository,
+        private readonly array $locales,
+    ) {}
 
-    public function parse(ParameterBag $bag, int $type, ?string $slug): Tags
+    public function parse(TagEditRequestDto $tagEditRequestDto, null|string $slug): Tags
     {
         $tags = new Tags();
 
@@ -45,28 +27,28 @@ final class TagRequestParser
             Assert::notNull($tags);
         }
 
-        $tags->setRelatedType($type);
+        $tags->setRelatedType($tagEditRequestDto->tagType);
 
-        if (Tags::TYPE_PRODUCT === $type) {
-            $tags->setProductType($bag->get('product_type'));
+        if (Tags::TYPE_PRODUCT === $tagEditRequestDto->tagType) {
+            $tags->setProductType($tagEditRequestDto->productType);
         }
 
-        $this->setLocales($bag, $tags);
+        $this->setLocales($tagEditRequestDto, $tags);
 
         return $tags;
     }
 
-    public function getTagBySlug(string $slug): ?Tags
+    public function getTagBySlug(string $slug): null|Tags
     {
         $trans = $this->translationRepository->findOneBy(['slug' => $slug]);
 
-        return null !== $trans ? $trans->getTag() : null;
+        return $trans?->getTag();
     }
 
-    private function setLocales(ParameterBag $bag, Tags $tags): void
+    private function setLocales(TagEditRequestDto $tagEditRequestDto, Tags $tags): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->all($locale);
+            $transCollection = $tagEditRequestDto->translations[$locale];
             $trans = $this->translationRepository->findOneBy(['tag' => $tags, 'locale' => $locale]);
 
 

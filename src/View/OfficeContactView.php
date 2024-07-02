@@ -11,13 +11,10 @@ use App\Entity\SliderTextTranslation;
 
 final class OfficeContactView
 {
-    private array $locales;
-
     public function __construct(
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
+        private readonly string $defaultLocale,
+        private readonly array $locales,
+    ) {}
 
     public function editView(OfficeContact $officeContact): array
     {
@@ -41,6 +38,7 @@ final class OfficeContactView
             'telephone' => $officeContact->getTelephone(),
             'show_in_footer' => $officeContact->isShownInFooter(),
             'use_in_email' => $officeContact->isUseInEmail(),
+            'available_countries' => $officeContact->getAvailableCountries(),
         ];
     }
 
@@ -49,7 +47,13 @@ final class OfficeContactView
         $translations = [];
 
         foreach ($this->locales as $locale) {
-            $translations[$locale] = $this->getDescAndLink($officeContact->getByLocale($locale));
+            $trans = $officeContact->getByLocale($locale);
+
+            if(null === $trans) {
+                $trans = $officeContact->getByLocale($this->defaultLocale);
+            }
+
+            $translations[$locale] = $this->getDescAndLink($trans);
         }
 
         return $translations;

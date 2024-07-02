@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use App\Repository\PromotionOptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PromotionOptionRepository::class)
- */
-class PromotionOption
+#[ORM\Entity(repositoryClass: PromotionOptionRepository::class)]
+class PromotionOption implements EntityInterface
 {
+    use ResourceTrait;
+
     const OPTION_CATEGORIES = 'categories';
 
     const OPTION_TAGS = 'tags';
@@ -18,33 +20,15 @@ class PromotionOption
 
     const OPTION_ALL_PRODUCTS = 'applicable_all_products';
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="promotionOptions")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'promotionOptions')]
+    #[ORM\JoinColumn(nullable: false)]
     private Promotion $promotionId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $type;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private array $configuration = [];
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getPromotionId(): Promotion
     {

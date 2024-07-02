@@ -13,13 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderEditPageController extends AbstractController
 {
-    private SliderEditResponseFormatter $responseFormatter;
-
     public function __construct(
-        SliderEditResponseFormatter $responseFormatter
-    ) {
-        $this->responseFormatter = $responseFormatter;
-    }
+        private readonly SliderEditResponseFormatter $responseFormatter
+    ) {}
 
     #[Route(path: '/add-slider', name: 'admin.add_slider_page', methods: ['GET'])]
     #[Template('Admin/Pages/sliderEdit.html.twig')]

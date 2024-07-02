@@ -1,27 +1,34 @@
+import categoryEditMapper from "../Mapper/CategoryEditMapper";
+
 require ('../../../js/Validators/ValidationRuleHelper');
 
 class CategoryEditValidator {
+    #mapper;
+
     constructor() {
         if (!CategoryEditValidator.instance) {
+            this.#mapper = categoryEditMapper;
+
             CategoryEditValidator.instance = this;
         }
 
         return CategoryEditValidator.instance;
     }
 
-    validate(form) {
+    validate() {
         let options;
 
         options = {
-            rules: {
-                rs_title: 'required',
-                en_title: 'required',
-            },
+            rules: {},
         };
+
+        for(const [locale, data] of Object.entries(LANGUAGES)) {
+            options.rules[`translations[${locale}][title]`] = 'required';
+        }
 
         $.extend(options, window.helpBlock);
 
-        return form.validate(options);
+        return $(this.#mapper.form).validate(options);
     }
 }
 

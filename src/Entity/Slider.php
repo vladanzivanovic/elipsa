@@ -2,57 +2,43 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\SliderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SliderRepository")
- */
-class Slider
+#[ORM\Entity(repositoryClass: SliderRepository::class)]
+class Slider implements EntityInterface, CountryResourceInterface
 {
+    use ResourceTrait;
+    use CountryResourceTrait;
+
     public const STATUS_PENDING = false;
     public const STATUS_ACTIVE = true;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Column(type: 'boolean')]
+    private bool $isActive;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isActive;
+    #[ORM\OneToMany(targetEntity: \App\Entity\SliderTranslation::class, mappedBy: 'slider', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $sliderTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SliderTranslation", mappedBy="slider", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $sliderTranslations;
+    #[ORM\OneToOne(targetEntity: \App\Entity\Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Image $image;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $image;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $position;
+    #[ORM\Column(type: 'integer')]
+    private int $position;
 
     public function __construct()
     {
         $this->sliderTranslations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getIsActive(): ?bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -65,7 +51,7 @@ class Slider
     }
 
     /**
-     * @return Collection|SliderTranslation[]
+     * @return Collection<int, SliderTranslation>
      */
     public function getSliderTranslations(): Collection
     {
@@ -95,12 +81,7 @@ class Slider
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return SliderTranslation
-     */
-    public function getByLocale(string $locale): SliderTranslation
+    public function getByLocale(string $locale): null|SliderTranslation
     {
         $transCollection = $this->sliderTranslations;
 
@@ -109,7 +90,7 @@ class Slider
             return $trans->getLocale() === $locale;
         });
 
-        return $filtered->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function getImage(): ?Image

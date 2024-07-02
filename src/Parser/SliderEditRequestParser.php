@@ -4,43 +4,29 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
-use App\Entity\Image;
 use App\Entity\Slider;
 use App\Entity\SliderTranslation;
 use App\Repository\SliderRepository;
+use App\Repository\SliderTranslationRepository;
+use App\Request\Dto\Admin\SliderEditRequestDto;
 use App\Services\SliderImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 final class SliderEditRequestParser
 {
-    use ParserTrait;
-
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-    private \App\Services\SliderImageService $imageService;
-    private \App\Repository\SliderRepository $sliderRepository;
-
-    /**
-     * SliderEditRequestParser constructor.
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        SliderImageService $imageService,
-        SliderRepository $sliderRepository
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->imageService = $imageService;
-        $this->sliderRepository = $sliderRepository;
-    }
+        private readonly SliderImageService $imageService,
+        private readonly SliderRepository $sliderRepository,
+        private readonly SliderTranslationRepository $translationRepository,
+        private readonly array $locales,
+    ) {}
 
     /**
-     * @param Slider|null  $slider
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws NonUniqueResultException
+     * @throws NoResultException
      */
-    public function parse(ParameterBag $bag, Slider $slider = null): Slider
+    public function parse(SliderEditRequestDto $sliderEditRequestDto, Slider $slider = null): Slider
     {
         if (!$slider instanceof Slider) {
             $lastPosition = $this->sliderRepository->getLastPosition();
@@ -51,27 +37,35 @@ final class SliderEditRequestParser
             $slider->setPosition($newPosition);
         }
 
-        $this->setLocale($bag, $slider);
+        $slider->setAvailableCountries($sliderEditRequestDto->availableCountries);
 
-        $this->imageService->setImages($slider, json_decode($bag->get('images'), true), Image::DEVICE_DESKTOP);
-        $this->imageService->setImages($slider, json_decode($bag->get('images_mobile'), true), Image::DEVICE_MOBILE);
+        $this->setLocale($sliderEditRequestDto->translations, $slider);
+
+        foreach ($sliderEditRequestDto->images as $device => $images) {
+            $this->imageService->setImages($slider, $images, $device);
+        }
 
         return $slider;
     }
 
-    private function setLocale(ParameterBag $bag, Slider $slider): void
+    private function setLocale(array $translations, Slider $slider): void
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
+        foreach ($this->locales as $locale) {
+            $transCollection = $translations[$locale] ?? null;
 
-        foreach ($locales as $locale => $lagBag) {
-            $trans = new SliderTranslation();
-
-            if (null !== $slider->getId()) {
-                $trans = $slider->getByLocale($locale);
+            if (null === $transCollection) {
+                continue;
             }
 
-            $trans->setDescription($lagBag->get('description'));
-            $trans->setButtonLink($lagBag->get('link'));
+            $trans = $this->translationRepository->findOneBy(['slider' => $slider, 'locale' => $locale]);
+
+
+            if (null === $trans) {
+                $trans = new SliderTranslation();
+            }
+
+            $trans->setDescription($transCollection['description'] ?? null);
+            $trans->setButtonLink($transCollection['link']);
             $trans->setLocale($locale);
 
             $slider->addSliderTranslation($trans);

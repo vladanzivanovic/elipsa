@@ -8,6 +8,7 @@ use App\Entity\Slider;
 use App\Handler\SliderHandler;
 use App\Helper\ConstantsHelper;
 use App\Parser\SliderEditRequestParser;
+use App\Request\Dto\Admin\SliderEditRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,28 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SliderEditController extends AbstractController
 {
-    private SliderEditRequestParser $requestParser;
-
-    private SliderHandler $sliderHandler;
-
     public function __construct(
-        SliderEditRequestParser $requestParser,
-        SliderHandler $sliderHandler
-    ) {
-        $this->requestParser = $requestParser;
-        $this->sliderHandler = $sliderHandler;
-    }
+        private readonly SliderEditRequestParser $requestParser,
+        private readonly SliderHandler $sliderHandler
+    ) {}
 
     /**
-     *
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     #[Route(path: '/api/app-slider', name: 'admin.add_slider_api', methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(SliderEditRequestDto $sliderEditRequestDto): JsonResponse
     {
-        $slider = $this->requestParser->parse($request->request);
+        $slider = $this->requestParser->parse($sliderEditRequestDto);
 
         $this->sliderHandler->save($slider);
 
@@ -49,12 +41,12 @@ final class SliderEditController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    #[Route(path: '/api/set-sliders-position', name: 'admin.set_sliders_position', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/set-sliders-position', name: 'admin.set_sliders_position', options: ['expose' => true], methods: ['POST'])]
     public function changeOrder(Request $request): JsonResponse
     {
         $this->sliderHandler->saveRowsPositions($request->request);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -64,14 +56,14 @@ final class SliderEditController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    #[Route(path: '/api/edit-slider/{id}', name: 'admin.edit_slider_api', methods: ['PUT'], options: ['expose' => true])]
-    public function update(Request $request, Slider $slider): JsonResponse
+    #[Route(path: '/api/edit-slider/{id}', name: 'admin.edit_slider_api', options: ['expose' => true], methods: ['PUT'])]
+    public function update(SliderEditRequestDto $sliderEditRequestDto, Slider $slider): JsonResponse
     {
-        $slider = $this->requestParser->parse($request->request, $slider);
+        $slider = $this->requestParser->parse($sliderEditRequestDto, $slider);
 
         $this->sliderHandler->save($slider);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
@@ -82,7 +74,7 @@ final class SliderEditController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
-    #[Route(path: '/api/toggle-slider-status/{id}/{status}', name: 'admin.api_toggle_slider_status', methods: ['PATCH'], options: ['expose' => true])]
+    #[Route(path: '/api/toggle-slider-status/{id}/{status}', name: 'admin.api_toggle_slider_status', options: ['expose' => true], methods: ['PATCH'])]
     public function toggleActivation(Slider $slider, int $status): JsonResponse
     {
         $slider->setIsActive((bool) $status);

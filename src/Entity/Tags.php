@@ -6,9 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TagsRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\TagsRepository::class)]
 class Tags
 {
     public const TYPE_PRODUCT = 1;
@@ -20,26 +18,18 @@ class Tags
 
     public const PRODUCT_TYPE_ATTRIBUTE = 'attribute';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $relatedType;
 
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private ?string $productType = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TagTranslation::class, mappedBy="tag", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: TagTranslation::class, mappedBy: 'tag', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $tagTranslations;
 
     public function __construct()
@@ -104,7 +94,7 @@ class Tags
         return $this;
     }
 
-    public function getByLocale(string $locale): ?TagTranslation
+    public function getByLocale(string $locale): null|TagTranslation
     {
         $filteredTrans = $this->tagTranslations->filter(function ($trans) use ($locale) {
             /** @var TagTranslation $trans */

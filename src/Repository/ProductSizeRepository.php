@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use App\Entity\ProductHasSizes;
+use App\Entity\ProductOptions;
 use App\Entity\ProductSize;
 use App\Entity\Tags;
 use App\Model\DataTableModel;
@@ -72,17 +73,19 @@ class ProductSizeRepository extends ExtendedEntityRepository
     }
 
     
-    public function getByProducts(array $products): array
+    public function getByProductOptions(array $productOptions): array
     {
         $query = $this->createQueryBuilder('ps')
             ->select(
-                'p.id as productId',
+                'po.id as productId',
                 'ps.size'
             )
             ->innerJoin(ProductHasSizes::class, 'phs', 'WITH', 'phs.size = ps')
-            ->innerJoin(Product::class, 'p', 'WITH', 'p = phs.product')
-            ->where('phs.product IN (:products)')
-            ->setParameter('products', $products)
+            ->innerJoin(ProductOptions::class, 'po', 'WITH', 'po = phs.productOption')
+//            ->innerJoin(Product::class, 'p', 'WITH', 'p = phs.product')
+            ->where('phs.productOption IN (:productOptions)')
+//            ->andWhere('po.product IN (:products)')
+            ->setParameter('productOptions', $productOptions)
             ->orderBy('ps.size');
 
         return $query->getQuery()->getArrayResult();

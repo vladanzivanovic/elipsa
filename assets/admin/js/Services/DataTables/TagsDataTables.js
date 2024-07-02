@@ -9,13 +9,13 @@ export default (() => {
 
     Public.init = () => {
         let title = 'Povezani proizvodi';
-        if (ROUTE_SUB_NAME === 'blog') {
+        if (TAG_TYPE === 'blog') {
             title = 'Povezani blogovi';
         }
 
         const options = Object.assign({}, window.DATATABLE_OPTIONS, {
             ajax: {
-                url: Routing.generate(`admin.get_${ROUTE_SUB_NAME}_tags_list`),
+                url: Routing.generate(`admin.get_${TAG_TYPE}_tags_list`),
                 type: 'POST'
             },
             columns: [
@@ -26,7 +26,7 @@ export default (() => {
                     return Translator.trans(productType, null, 'messages', LOCALE);
                 }},
                 { data: 'slug', orderable: false, render: function (data, type, row, meta) {
-                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(`admin.edit_${ROUTE_SUB_NAME}_tag_page`, {slug: data})}">Izmeni</a> ` : '';
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl(`admin.edit_${TAG_TYPE}_tag_page`, {slug: data})}">Izmeni</a> ` : '';
                         const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-slug="${data}" data-total-products="${row.total_products}">Ukloni</button>` : '';
 
                         return type === 'display' ?

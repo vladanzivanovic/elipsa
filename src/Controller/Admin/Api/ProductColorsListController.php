@@ -47,8 +47,8 @@ final class ProductColorsListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    #[Route(path: '/api/get-product-colors-list', name: 'admin.get_product_colors_list', methods: ['POST'], options: ['expose' => true])]
-    public function getList(Request $request)
+    #[Route(path: '/api/get-product-colors-list', name: 'admin.get_product_colors_list', options: ['expose' => true], methods: ['POST'])]
+    public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);
         $total = $this->colorRepository->countData();

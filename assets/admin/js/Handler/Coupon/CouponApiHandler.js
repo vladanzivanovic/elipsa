@@ -32,12 +32,8 @@ class CouponApiHandler {
             result = await $.ajax({
                 type,
                 url: route,
-                data: JSON.stringify(data),
+                data,
                 dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    'Content-Language': LOCALE,
-                }
             })
         }catch (error) {
             result = error;

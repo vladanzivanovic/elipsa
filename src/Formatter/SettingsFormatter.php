@@ -19,6 +19,13 @@ final class SettingsFormatter
 
         foreach ($settings as $setting) {
             $name = strtolower($setting->getSlug());
+
+            if (null !== $setting->getLocale()) {
+                $formatted[$name][$setting->getLocale()] = $setting;
+
+                continue;
+            }
+
             $formatted[$name] = $setting;
         }
 

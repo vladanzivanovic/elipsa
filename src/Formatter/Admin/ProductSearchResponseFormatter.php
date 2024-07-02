@@ -8,24 +8,16 @@ use App\View\ProductView;
 
 class ProductSearchResponseFormatter
 {
-    private ProductView $productView;
-
-    private string $defaultLocale;
-
     public function __construct(
-        ProductView $productView,
-        string $defaultLocale
-    ) {
-        $this->productView = $productView;
-        $this->defaultLocale = $defaultLocale;
-    }
+        private readonly ProductView $productView,
+    ) {}
 
     public function format(array $products): array
     {
         $formattedArray = [];
 
         foreach ($products as $product) {
-            $formattedArray[] = $this->productView->view($product, $this->defaultLocale);
+            $formattedArray[] = $this->productView->view($product);
         }
 
         return ['payload' => $formattedArray];

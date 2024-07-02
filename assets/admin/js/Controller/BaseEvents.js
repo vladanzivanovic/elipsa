@@ -12,6 +12,10 @@ class BaseEvents {
     }
 
     events() {
+        $(this.baseFormMapper.form).on("submit", function(event) {
+            return false;
+        });
+
         $('body').on('keyup', (e) => {
             e.preventDefault();
             e.stopPropagation();

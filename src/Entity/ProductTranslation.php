@@ -2,60 +2,44 @@
 
 namespace App\Entity;
 
+use App\Repository\ProductTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductTranslationRepository")
- * @ORM\Table(indexes={@ORM\Index(columns={"title"}, flags={"fulltext"})})
- */
+#[ORM\Entity(repositoryClass: ProductTranslationRepository::class)]
+#[ORM\Table]
+#[ORM\Index(columns: ['title'], flags: ['fulltext'])]
 class ProductTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: true)]
     private string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private string $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private string $description;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private string $shortDescription;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private string $cleaning;
 
-    public function getId(): ?int
+    public function getId(): null|int
     {
         return $this->id;
     }
@@ -72,7 +56,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -84,7 +68,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getLocale(): ?string
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -96,7 +80,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product
     {
         return $this->product;
     }
@@ -108,7 +92,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): null|string
     {
         return $this->description;
     }
@@ -120,7 +104,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getShortDescription(): ?string
+    public function getShortDescription(): null|string
     {
         return $this->shortDescription;
     }
@@ -132,7 +116,7 @@ class ProductTranslation
         return $this;
     }
 
-    public function getCleaning(): ?string
+    public function getCleaning(): null|string
     {
         return $this->cleaning;
     }

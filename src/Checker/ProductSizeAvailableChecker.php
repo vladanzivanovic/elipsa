@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace App\Checker;
 
 use App\Entity\Notification;
+use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
 use App\Request\Dto\NotificationRequestDto;
 
 final class ProductSizeAvailableChecker implements NotificationCheckerInterface
 {
-    private ProductRepository $productRepository;
-
     public function __construct(
-        ProductRepository $productRepository
-    ){
-        $this->productRepository = $productRepository;
-    }
+        private readonly ProductOptionsRepository $productOptionsRepository
+    ){}
 
     public function isNotifyEligible(NotificationRequestDto $notificationRequestDto): bool
     {
@@ -26,9 +23,9 @@ final class ProductSizeAvailableChecker implements NotificationCheckerInterface
 
         $productId = $payload['product'];
 
-        $product = $this->productRepository->find($productId);
+        $productOption = $this->productOptionsRepository->findOneBy(['product' => $productId, 'country' => $notificationRequestDto->country]);
 
-        return false === $product->isSizeAvailable($size);
+        return false === $productOption->isSizeAvailable($size);
     }
 
     public function getType(): string

@@ -2,50 +2,33 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryTranslationRepository")
- * @ORM\Table(indexes={@ORM\Index(columns={"title"}, flags={"fulltext"})})
- */
-class CategoryTranslation
+#[ORM\Entity(repositoryClass: \App\Repository\CategoryTranslationRepository::class)]
+#[ORM\Table]
+#[ORM\Index(columns: ['title'], flags: ['fulltext'])]
+class CategoryTranslation implements EntityInterface, LocaleInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
+    use LocaleTrait;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
-    private $slug;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['title'], updatable: true)]
+    private string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $locale;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'categoryTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Category $category;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="categoryTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -57,7 +40,7 @@ class CategoryTranslation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -69,24 +52,12 @@ class CategoryTranslation
         return $this;
     }
 
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
+    public function getCategory(): Category
     {
         return $this->category;
     }
 
-    public function setCategory(?Category $category): self
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 

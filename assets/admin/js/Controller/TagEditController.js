@@ -1,23 +1,36 @@
-import TagEditMapper from "../Mapper/TagEditMapper";
 import TagHandler from "../Handler/Product/TagHandler";
 import tagEditValidator from "../Validators/TagEditValidator";
+import tagEditMapper from "../Mapper/TagEditMapper";
+import baseEvents from "./BaseEvents";
 
 class TagEditController {
-    constructor() {
-        this.mapper = new TagEditMapper();
-        this.validator = tagEditValidator;
+    #mapper;
+    #validator;
+    #baseEvents;
 
-        this.validator.validate(this.mapper.form);
+    constructor() {
+        this.#mapper = tagEditMapper;
+        this.#validator = tagEditValidator;
+        this.#baseEvents = baseEvents;
+
+        this.#initForm();
 
         this.registerEvents();
     }
 
+    #initForm()
+    {
+        this.#validator.validate();
+    }
+
     registerEvents() {
-        this.mapper.submitBtn.on('click touchend', e => {
+        $(this.#mapper.submitBtn).on('click touchend', e => {
             const handler = new TagHandler();
 
-            handler.save(this.mapper);
+            handler.save();
         });
+
+        this.#baseEvents.events();
     }
 }
 

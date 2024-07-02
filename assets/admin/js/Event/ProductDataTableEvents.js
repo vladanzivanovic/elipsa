@@ -3,36 +3,26 @@ import productDataTables from "../Services/DataTables/ProductDataTables";
 import productBulkApiHandler from "../Handler/Product/ProductBulkApiHandler";
 import productListPageMapper from "../Mapper/ProductListPageMapper";
 import productListModal from "../Dom/ProductListModal";
+import BaseDataTableEvents from "./BaseDataTableEvents";
 
-class ProductDataTableEvents {
-    #dataTable;
-    #toastr;
+class ProductDataTableEvents extends BaseDataTableEvents{
     #bulkProductHandler;
     #mapper;
     #productModal;
+    #parent;
 
     constructor() {
-        this.#dataTable = productDataTables;
-        this.#toastr = toastrService;
+        const parent = super(productDataTables);
+
+        this.#parent = parent;
+
         this.#bulkProductHandler = productBulkApiHandler;
         this.#mapper = productListPageMapper;
         this.#productModal = productListModal;
-
-        this.#dataTable.init();
     }
 
     registerEvents()
     {
-        this.#dataTable.getDataTable()
-            .on('search.dt', () => {
-                this.#toastr.showLoadingMessage();
-            });
-
-        this.#dataTable.getDataTable()
-            .on('draw', () => {
-                this.#toastr.remove();
-            });
-
         $(document).on('change', '.action-box', e => {
             const position = e.currentTarget.value;
             const type = $(`.action-box option:selected`).data('actionType');
@@ -45,7 +35,7 @@ class ProductDataTableEvents {
         })
 
         $(document).on('click', '.home-page-status-apply', async e => {
-            const rows = this.#dataTable.getDataTable()
+            const rows = this.#parent.dataTable.getDataTable()
                 .rows({ selected: true })
                 .data();
             const productIds = [];
@@ -54,7 +44,7 @@ class ProductDataTableEvents {
                 productIds.push(rows[rowKey].id);
             }
 
-            this.#toastr.showLoadingMessage();
+            this.#parent.toastr.showLoadingMessage();
 
             await this.#bulkProductHandler.changeProductsHomePositions(productIds, $(e.currentTarget).data('position'));
 
@@ -64,7 +54,7 @@ class ProductDataTableEvents {
         })
 
         $(document).on('click', '.discount-apply', async e => {
-            const rows = this.#dataTable.getDataTable()
+            const rows = this.#parent.dataTable.getDataTable()
                 .rows({ selected: true })
                 .data();
             const productIds = [];
@@ -74,7 +64,7 @@ class ProductDataTableEvents {
                 productIds.push(rows[rowKey].id);
             }
 
-            this.#toastr.showLoadingMessage();
+            this.#parent.toastr.showLoadingMessage();
 
             await this.#bulkProductHandler.setProductsDiscount(productIds, discount);
 
@@ -82,6 +72,8 @@ class ProductDataTableEvents {
 
             $(this.#mapper.dataTable.actionBox).val(null);
         });
+
+        super.registerEvents();
     }
 }
 

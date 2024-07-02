@@ -1,5 +1,4 @@
 .idea
-migrations
 node_modules
 
 storage/cache

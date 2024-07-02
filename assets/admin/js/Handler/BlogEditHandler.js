@@ -1,39 +1,44 @@
 import DropZoneService from "../../../js/Services/DropZoneService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
-import BlogDataTables from "../Services/DataTables/BlogDataTables";
 import blogEditMapper from "../Mapper/BlogEditMapper";
 import FormHelperService from "../../../js/Helper/FormHelperService";
+import blogDataTables from "../Services/DataTables/BlogDataTables";
 
 class BlogEditHandler {
     #mapper;
+    #notification;
+    #dataTable;
 
     constructor() {
         this.#mapper = blogEditMapper;
-        this.notification = NotificationService();
+        this.#notification = NotificationService();
+        this.#dataTable = blogDataTables;
     }
 
     save()
     {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_blog_api');
         let type = 'POST';
-        const data = $(this.#mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
+        const images = DropZoneService().getFilesArray('blog');
 
         if (!$(this.#mapper.form).valid()) {
             return false;
         }
 
-        data.push({
-            name: 'images',
-            value: JSON.stringify(DropZoneService().getFilesArray('blog')),
-        });
+        data.images = [];
+
+        for (const index in images) {
+            data.images.push(images[index]);
+        }
 
         if (IS_EDIT) {
             urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_blog_api', {id: ID});
             type = 'PUT';
         }
 
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type,
@@ -44,7 +49,7 @@ class BlogEditHandler {
                 AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.blog'));
             },
             error: error => {
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
             }
         })
     }
@@ -73,7 +78,8 @@ class BlogEditHandler {
             url: Routing.generate('admin.remove_blog_api', {id}),
             dataType: 'json',
             success() {
-                BlogDataTables().reload();
+                this.#dataTable.reload();
+                this.#notification.remove();
             },
             error(error) {
                 notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE));

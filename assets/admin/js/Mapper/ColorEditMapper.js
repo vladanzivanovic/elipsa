@@ -1,11 +1,25 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class ColorEditMapper {
     constructor() {
-        this.form = $('#edit_form');
-        this.color = $('#color_field', this.form);
-        this.titleRs = $('#color_title_rs', this.form);
-        this.titleEn = $('#color_title_en', this.form);
-        this.submitBtn = $('#color_submit');
+        if (!ColorEditMapper.instance) {
+            this.color = '#color_field';
+
+            this.fields = {};
+
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.fields[`title_${locale}`] = '#title_'+locale;
+            }
+
+            ColorEditMapper.instance = Object.assign(this, baseFormMapper);
+        }
+
+        return ColorEditMapper.instance;
     }
 }
 
-export default ColorEditMapper;
+const colorEditMapper = new ColorEditMapper();
+
+Object.freeze(colorEditMapper);
+
+export default colorEditMapper;

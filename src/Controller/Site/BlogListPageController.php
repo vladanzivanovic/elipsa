@@ -20,13 +20,17 @@ class BlogListPageController extends AbstractController
         private readonly BlogOptionsCollector $blogOptionsCollector,
     ) {}
 
-    #[Route(path: ['rs' => '/blog/{page}/{tag}', 'en' => '/blog/{page}/{tag}'], name: 'site.blog_list_page', requirements: ['page' => '\d+'], options: ['expose' => true], defaults: ['page' => 1, 'tag' => null], methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/blog/{page}/{tag}',
+        'en' => '/blog/{page}/{tag}',
+        'ba' => '/blog/{page}/{tag}',
+    ], name: 'site.blog_list_page', requirements: ['page' => '\d+'], options: ['expose' => true], defaults: ['page' => 1, 'tag' => null], methods: ['GET'])]
     #[Template('Site/Pages/blog.html.twig')]
     public function index(Request $request, int $page, null|string $tag): array
     {
         $locale = $request->getLocale();
 
-        $collection = $this->pageCollector->collect($locale, $page, $tag);
+        $collection = $this->pageCollector->collect($locale, $request->attributes->get('_country'), $page, $tag);
         $optionsCollector = $this->blogOptionsCollector->collect();
 
         return $this->pageFormatter->formatResponse($collection, $optionsCollector, $tag);

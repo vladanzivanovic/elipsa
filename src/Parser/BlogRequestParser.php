@@ -9,54 +9,53 @@ use App\Entity\BlogHasTags;
 use App\Entity\BlogTranslation;
 use App\Repository\BlogTranslationRepository;
 use App\Repository\TagsRepository;
+use App\Request\Dto\Admin\BlogEditRequestDto;
 use App\Services\BlogImageService;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class BlogRequestParser
 {
-    private BlogTranslationRepository $translationRepository;
-
-    private BlogImageService $blogImageService;
-
-    private TagsRepository $tagsRepository;
-
-    private array $locales;
-
     public function __construct(
-        BlogTranslationRepository $translationRepository,
-        BlogImageService $blogImageService,
-        TagsRepository $tagsRepository,
-        string $locales
-    ) {
-        $this->translationRepository = $translationRepository;
-        $this->blogImageService = $blogImageService;
-        $this->locales = explode('|', $locales);
-        $this->tagsRepository = $tagsRepository;
-    }
+        private readonly BlogTranslationRepository $translationRepository,
+        private readonly BlogImageService $blogImageService,
+        private readonly TagsRepository $tagsRepository,
+        private readonly array $locales,
+        private readonly string $defaultLocale,
+    ) {}
 
     /**
      * @param Blog|null    $blog
      * @throws \Doctrine\ORM\ORMException
      */
-    public function parse(ParameterBag $bag, Blog $blog = null): Blog
+    public function parse(BlogEditRequestDto $blogEditRequestDto, Blog $blog = null): Blog
     {
         if (!$blog instanceof Blog) {
             $blog = new Blog();
             $blog->setStatus(Blog::STATUS_PENDING);
         }
 
-        $this->setBlogTranslation($blog, $bag);
-        $this->setTags($blog, $bag->all('tags'));
+        $this->setBlogTranslation($blog, $blogEditRequestDto);
+        $this->setTags($blog, $blogEditRequestDto);
+        $blog->setAvailableCountries($blogEditRequestDto->availableCountries);
 
-        $this->blogImageService->setImages($blog->getBlogTranslationByLocale('rs'), json_decode($bag->get('images'), true));
+        $countryLocale = $this->defaultLocale;
+
+        if (false === in_array($countryLocale, $blogEditRequestDto->availableCountries, true)) {
+            $countryLocale = $blogEditRequestDto->availableCountries[0];
+        }
+
+        $this->blogImageService->setImages($blog->getBlogTranslationByLocale($countryLocale), $blogEditRequestDto->images);
 
         return $blog;
     }
 
-    private function setBlogTranslation(Blog $blog, ParameterBag $bag): void
+    private function setBlogTranslation(Blog $blog, BlogEditRequestDto $blogEditRequestDto): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->all($locale);
+            $transCollection = $blogEditRequestDto->translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
 
             $blogTranslation = $this->translationRepository->findOneBy(['blog' => $blog, 'locale' => $locale]);
 
@@ -74,14 +73,11 @@ class BlogRequestParser
         }
     }
 
-    private function setTags(Blog $blog, array $tags): void
+    private function setTags(Blog $blog, BlogEditRequestDto $blogEditRequestDto): void
     {
-        if (!is_null($blog->getId())) {
-            $hasTags = $blog->getBlogHasTags();
-            $hasTags->clear();
-        }
+        $blog->getBlogHasTags()->clear();
 
-        foreach ($tags as $tagId) {
+        foreach ($blogEditRequestDto->tags as $tagId) {
             $tag = $this->tagsRepository->find($tagId);
 
             $hasTags = new BlogHasTags();

@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
-use App\Entity\Banner;
-use App\Entity\BannerTranslation;
 use App\Entity\Promotion;
 use App\Entity\PromotionOption;
-use App\Repository\BannerRepository;
-use App\Repository\PromotionRepository;
-use App\Request\Dto\PromotionCouponRequestDto;
-use App\Request\Dto\PromotionOptionRequestDto;
-use App\Services\BannerImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Request\Dto\Admin\PromotionCouponRequestDto;
+use App\Request\Dto\Admin\PromotionOptionRequestDto;
 
 final class CouponsEditRequestParser
 {
-    public function parse(PromotionCouponRequestDto $promotionCouponRequestDto, Promotion $promotion = null): Promotion
-    {
+    public function parse(
+        PromotionCouponRequestDto $promotionCouponRequestDto,
+        Promotion $promotion = null
+    ): Promotion {
         if (!$promotion instanceof Promotion) {
             $promotion = new Promotion();
         }
@@ -29,6 +24,7 @@ final class CouponsEditRequestParser
         $promotion->setValidTo($promotionCouponRequestDto->validTo);
         $promotion->setDiscount($promotionCouponRequestDto->discount);
         $promotion->setType($promotionCouponRequestDto->type);
+        $promotion->setAvailableCountries($promotionCouponRequestDto->availableCountries);
 
         $this->parseOptionData($promotionCouponRequestDto->options, $promotion);
 

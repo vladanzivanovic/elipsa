@@ -1,0 +1,10 @@
+{% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+<div class="row">
+    <div class="col-md-6">
+        {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    </div>
+    <div class="col-md-6 text-right">
+        <a href="{{ path(routePath) }}" class="btn btn-outline-warning cancel">Otkaži</a>
+    </div>
+</div>

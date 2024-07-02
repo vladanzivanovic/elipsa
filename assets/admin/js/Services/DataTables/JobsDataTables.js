@@ -1,17 +1,37 @@
+import DataTableOptions from "./DataTableOptions";
+import CoreDataTable from "./CoreDataTable";
+
 require('./DataTableOptions');
-import AppHelperService from "../../../../js/Helper/AppHelperService";
 
-export default (() => {
-    let Public = {},
-        Private = {};
+class JobsDataTables {
+    #dataTable;
+    #tableRef = '#data-table';
+    #dataTableOptionGenerator;
+    #coreDataTable
 
-    Private.tableRef = $('#data-table');
-    Private.dataTable = null;
+    constructor() {
+        this.#coreDataTable = new CoreDataTable();
+        this.#dataTableOptionGenerator = new DataTableOptions();
+    }
 
-    Public.init = () => {
-        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
+    reload()
+    {
+        this.#dataTable.ajax.reload(null, false);
+    }
+
+    getDataTable()
+    {
+        return this.#dataTable;
+    }
+
+
+    init()
+    {
+        const route = Routing.generate('admin.get_jobs_list');
+
+        const tableOptions = {
             ajax: {
-                url: Routing.generate('admin.get_jobs_list'),
+                url: route,
                 type: 'POST'
             },
             columns: [
@@ -25,7 +45,7 @@ export default (() => {
                     } },
                 { data: 'title', name: 'title', title: 'Pozicija' },
                 { data: 'status_text', name: 'status', title: 'Status', width: '200px', render: function (data, type, row, meta) {
-                        const checkedAttr = row.status === 2 ? 'checked' : '';
+                        const checkedAttr = row.status === ENTITY_STATUSES.STATUS_ACTIVE ? 'checked' : '';
                         const text = Translator.trans(data, null, 'messages', LOCALE);
 
                         let html = CAN_EDIT ? `<p class="status-text text-uppercase">${text}</p><input type="checkbox" class="set-active-job" data-id="${row.id}" ${checkedAttr}/>` : `<p class="status-text">${text}</p>`;
@@ -42,14 +62,17 @@ export default (() => {
                     } },
             ],
             order: [[2, 'asc']],
-        });
+        }
 
-        Private.dataTable = Private.tableRef.DataTable(options);
-    };
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
 
-    Public.reload = () => {
-        Private.tableRef.DataTable().ajax.reload(null, false);
-    };
+        this.#dataTable = $(this.#tableRef).DataTable(options);
+    }
+}
 
-    return Public;
-});
+const jobsDataTables = new JobsDataTables();
+
+export default jobsDataTables;

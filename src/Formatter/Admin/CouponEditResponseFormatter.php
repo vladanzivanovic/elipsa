@@ -54,7 +54,7 @@ final class CouponEditResponseFormatter
             'promotion_types' => $this->promotionTypeOptions->format(),
         ];
 
-        if ($coupon instanceof \App\Entity\Promotion) {
+        if ($coupon instanceof Promotion) {
             $payload = $this->couponView->editView($coupon);
         }
 

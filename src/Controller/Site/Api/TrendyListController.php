@@ -38,6 +38,6 @@ final class TrendyListController extends AbstractController
 
         $data = $this->collectors->collectForApi($locale, $page, $this->getUser());
 
-        return $this->json($this->formatter->formatResponse($data, $locale, 'site.trendy_page', $this->getUser()));
+        return $this->json($this->formatter->formatResponse($data, 'site.trendy_page', $this->getUser()));
     }
 }

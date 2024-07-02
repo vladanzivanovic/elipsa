@@ -38,10 +38,7 @@ final class SliderTextEditResponseFormatter
             'positionOptions' => $this->formatPositions(),
         ];
 
-        if ($sliderText instanceof \App\Entity\SliderText) {
-            $rsTrans = $sliderText->getByLocale('rs');
-            $enTrans = $sliderText->getByLocale('en');
-
+        if ($sliderText instanceof SliderText) {
             $response['payload'] = $this->sliderTextView->editView($sliderText);
         }
 

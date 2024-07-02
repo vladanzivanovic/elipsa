@@ -6,42 +6,17 @@ namespace App\Parser;
 
 use App\Entity\Category;
 use App\Entity\CategoryTranslation;
-use App\Entity\ProductColor;
-use App\Repository\CategoryRepository;
 use App\Repository\CategoryTranslationRepository;
-use App\Repository\ProductColorRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
+use App\Request\Dto\Admin\CategoryEditRequestDto;
 
 final class CategoryRequestParser
 {
-    use ParserTrait;
-
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-
-    private \App\Repository\CategoryRepository $categoryRepository;
-    private \App\Repository\CategoryTranslationRepository $translationRepository;
-
-    /**
-     * CategoryRequestParser constructor.
-     */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        CategoryRepository $categoryRepository,
-        CategoryTranslationRepository $translationRepository
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->categoryRepository = $categoryRepository;
-        $this->translationRepository = $translationRepository;
-    }
+        private readonly CategoryTranslationRepository $translationRepository,
+        private readonly array $locales,
+    ) {}
 
-    /**
-     * @param Category|null $category
-     *
-     */
-    public function parse(ParameterBag $bag, ?Category $category = null): Category
+    public function parse(CategoryEditRequestDto $categoryEditRequestDto, Category $category = null): Category
     {
         if (!$category instanceof Category) {
             $category = new Category();
@@ -49,34 +24,32 @@ final class CategoryRequestParser
 
         $category->setParent(null);
 
-        if (!empty($bag->get('parent_category')) && $bag->get('parent_category') !== '-1') {
-            $parentTranslation = $this->translationRepository->findOneBy(['slug' => $bag->get('parent_category')]);
+        if (null !== $categoryEditRequestDto->parent) {
+            $parentTranslation = $this->translationRepository->findOneBy(['slug' => $categoryEditRequestDto->parent]);
 
             $category->setParent($parentTranslation->getCategory());
         }
 
-        $this->setTranslation($category, $bag);
+        $this->setTranslation($category, $categoryEditRequestDto);
 
         return $category;
     }
 
-    private function setTranslation(Category $category, ParameterBag $bag): void
+    private function setTranslation(Category $category, CategoryEditRequestDto $categoryEditRequestDto): void
     {
+        foreach ($this->locales as $locale) {
+            $transCollection = $categoryEditRequestDto->translations[$locale];
 
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
+            $trans = $this->translationRepository->findOneBy(['category' => $category, 'locale' => $locale]);
 
-        foreach (array_keys($locales) as $locale) {
-            $translation = $this->translationRepository->findOneBy(['category' => $category, 'locale' => $locale]);
-
-            if (!$translation instanceof CategoryTranslation) {
-                $translation = new CategoryTranslation();
+            if (null === $trans) {
+                $trans = new CategoryTranslation();
+                $trans->setLocale($locale);
             }
 
-            $translation->setTitle($bag->get($locale.'_title'))
-                ->setLocale($locale)
-                ->setCategory($category);
+            $trans->setTitle($transCollection['title']);
 
-            $category->addCategoryTranslation($translation);
+            $category->addCategoryTranslation($trans);
         }
     }
 }

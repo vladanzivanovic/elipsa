@@ -20,44 +20,41 @@ final class CatalogResponseFormatter
 {
     use ImageTrait;
 
-    private \App\Repository\CategoryTranslationRepository $categoryTranslationRepository;
-
-    private \App\Repository\TagsRepository $tagsRepository;
-
-    private \App\Repository\ProductSizeRepository $sizeRepository;
-
-    private \App\Repository\ProductHasImagesRepository $hasImagesRepository;
-
-    private \App\Repository\ImageRepository $imageRepository;
-
-    private \Symfony\Component\Routing\RouterInterface $router;
-
     public function __construct(
-        CategoryTranslationRepository $categoryTranslationRepository,
-        TagsRepository $tagsRepository,
-        ProductSizeRepository $sizeRepository,
-        ProductHasImagesRepository $hasImagesRepository,
-        ImageRepository $imageRepository,
-        RouterInterface $router
-    ) {
-        $this->categoryTranslationRepository = $categoryTranslationRepository;
-        $this->tagsRepository = $tagsRepository;
-        $this->sizeRepository = $sizeRepository;
-        $this->hasImagesRepository = $hasImagesRepository;
-        $this->imageRepository = $imageRepository;
-        $this->router = $router;
-    }
+        private readonly CategoryTranslationRepository $categoryTranslationRepository,
+        private readonly TagsRepository $tagsRepository,
+        private readonly ProductSizeRepository $sizeRepository,
+        private readonly ProductHasImagesRepository $hasImagesRepository,
+        private readonly ImageRepository $imageRepository,
+        private readonly RouterInterface $router,
+        private readonly string $defaultLocale,
+        private readonly array $locales,
+    ) {}
 
     
     public function formatResponse(Catalogue $catalogue): array
     {
-        $transRs = $catalogue->getByLocale('rs');
-        $transEn = $catalogue->getByLocale('en');
-
-        return [
-            'rs_title' => $transRs->getTitle(),
-            'en_title' => $transEn->getTitle(),
+        $view = [
             'selectedImages' => $this->imagesFormatter($this->router, $this->imageRepository->getByCatalog($catalogue), 'catalog'),
+            'available_countries' => $catalogue->getAvailableCountries(),
         ];
+
+        $translations = [];
+
+        foreach ($this->locales as $locale) {
+            $trans = $catalogue->getByLocale($locale);
+
+            if (null === $trans) {
+                $trans = $catalogue->getByLocale($this->defaultLocale);
+            }
+
+            $translations[$locale] = [
+                'title' => $trans->getTitle(),
+            ];
+        }
+
+        $view['translations'] = $translations;
+
+        return $view;
     }
 }

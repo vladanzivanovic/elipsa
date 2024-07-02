@@ -20,18 +20,22 @@ final class AboutUsPageController extends AbstractController
         $this->settingsRepository = $settingsRepository;
     }
 
-    /**
-     *
-     * @return string[]
-     */
-    #[Route(path: ['rs' => '/o-nama', 'en' => '/about-us'], name: 'site.about_us_page', methods: ['GET'])]
-    #[Template('Site/Pages/aboutUsPage.html.twig')]
-    public function renderPage(Request $request)
-    {
-        $settings = $this->settingsRepository->findOneBy(['locale' => $request->getSession()->get('_locale'), 'slug' => 'ABOUT_US']);
-
-        return [
-            'aboutUs' => null !== $settings ? $settings->getValue() : '',
-        ];
-    }
+//    /**
+//     *
+//     * @return string[]
+//     */
+//    #[Route(path: [
+//        'rs' => '/o-nama',
+//        'en' => '/about-us',
+//        'ba' => '/o-nama',
+//    ], name: 'site.about_us_page', methods: ['GET'])]
+//    #[Template('Site/Pages/aboutUsPage.html.twig')]
+//    public function renderPage(Request $request)
+//    {
+//        $settings = $this->settingsRepository->findOneBy(['locale' => $request->getSession()->get('_locale'), 'slug' => 'ABOUT_US']);
+//
+//        return [
+//            'aboutUs' => null !== $settings ? $settings->getValue() : '',
+//        ];
+//    }
 }

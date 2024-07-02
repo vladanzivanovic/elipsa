@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Checker;
 
 use App\Entity\Product;
+use App\Entity\ProductOptions;
 use App\Entity\Promotion;
-use App\Entity\PromotionEligibilityInterface;
 use App\Entity\PromotionOption;
+use App\Entity\Resources\PromotionEligibilityInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
 final class PromotionProductChecker extends AbstractPromotionChecker
@@ -17,15 +19,13 @@ final class PromotionProductChecker extends AbstractPromotionChecker
      */
     private array $promotionOptionCheckers;
 
-    private PromotionOptionDiscountChecker $promotionOptionDiscountChecker;
-
     public function __construct(
         iterable $promotionCheckers,
         iterable $promotionOptionCheckers,
-        PromotionOptionDiscountChecker $promotionOptionDiscountChecker
+        private readonly PromotionOptionDiscountChecker $promotionOptionDiscountChecker,
+        private readonly RequestStack $requestStack
     ){
         $this->promotionOptionCheckers = iterator_to_array($promotionOptionCheckers);
-        $this->promotionOptionDiscountChecker = $promotionOptionDiscountChecker;
 
         parent::__construct($promotionCheckers);
     }
@@ -34,12 +34,17 @@ final class PromotionProductChecker extends AbstractPromotionChecker
     {
         Assert::isInstanceOf($product, Product::class);
 
+        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
+
         if (false === $this->checkCouponIsEligible($promotionCoupon)) {
             return false;
         }
 
+        /** @var ProductOptions $productOption */
+        $productOption = $product->getOptionsByCountry($countryCode);
+
         if (
-            null !== $product->getDiscount() &&
+            null !== $productOption->getDiscount() &&
             false === $this->promotionOptionDiscountChecker->isEligible($product, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
         ) {
             return false;

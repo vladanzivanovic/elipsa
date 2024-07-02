@@ -9,7 +9,7 @@
 {% macro selectbox(id, name, selected, options, placeholder = "", class = "", multiple = false) %}
     <select id="{{ id }}" name="{{ name }}" class="{{ class }}" {{ true == multiple ? 'multiple="multiple"' }}>
         {% if multiple == false %}
-            <option value="-1">Izaberite...</option>
+            <option value="">Izaberite...</option>
         {% endif %}
         {% for option in options %}
             {% set isSelected = multiple == true ? option.value in selected : option.value == selected %}

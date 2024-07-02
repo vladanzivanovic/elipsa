@@ -78,7 +78,7 @@ final class SizeAvailableMailer
 
         $product = $this->productRepository->find($notification->getPayload()['product']);
 
-        $productView = $this->productView->view($product, $notification->getLocale());
+        $productView = $this->productView->view($product);
 
         $viewData['product'] = $productView;
 

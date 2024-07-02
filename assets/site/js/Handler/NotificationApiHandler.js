@@ -1,5 +1,3 @@
-import AppHelperService from "../../../js/Helper/AppHelperService";
-
 class NotificationApiHandler {
     constructor() {
         if(!NotificationApiHandler.instance) {
@@ -14,7 +12,7 @@ class NotificationApiHandler {
         const data = {type, payload, email};
         await $.ajax({
             type: 'POST',
-            url: AppHelperService.generateLocalizedUrl('site_api.set_notification'),
+            url: Routing.generate(`site_api.set_notification.${LOCALE}`),
             data: JSON.stringify(data),
         })
     }

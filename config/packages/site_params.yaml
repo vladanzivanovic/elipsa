@@ -1,4 +1,6 @@
 parameters:
+  host_rs: '%env(resolve:HOST_RS)%'
+  host_ba: '%env(resolve:HOST_BA)%'
   site_info:
     url: '%env(resolve:SITE_URL)%'
   shop:
@@ -108,25 +110,33 @@ parameters:
     - pe-ly-wring
   languages:
     rs:
-      name: Srpski
       code: rs
       currencyCode: RSD
       locale: sr_RS
-      translation: serbian
+      translation: serbian_lang
     en:
-      name: Engleski
       code: en
       currencyCode: RSD
       locale: en_AT
-      translation: english
-#    ba:
-#      name: Bosanski
-#      code: ba
-#      currencyCode: BAM
+      translation: english_lang
+    ba:
+      code: ba
+      currencyCode: BAM
+      locale: bs_BA
+      translation: bosnia_lang
   countries:
     rs:
-      name: serbia
-      code: rs
+      host: '%host_rs%'
+      translation: serbia
+      languages:
+        - rs
+        - en
+    ba:
+      translation: bosnia_and_herzegovina
+      host: '%host_ba%'
+      languages:
+        - ba
+        - en
   site_info_texts:
     cookie_policy:
       title: navi.cookie_policy
@@ -135,75 +145,88 @@ parameters:
       slug:
         rs: politika-kolacica
         en: cookie-policy
+        ba: politika-kolacica
     policy_and_privacy:
       title: navi.policy_and_privacy
       type: policy_and_privacy
       slug:
         rs: politika-privatnosti
         en: privacy-policy
+        ba: politika-privatnosti
     use_conditions:
       title: navi.use_conditions
       type: use_conditions
       slug:
         rs: uslovi-koriscenja
         en: use-conditions
+        ba: pravila-koriscenja
     withdraw_policy:
       title: navi.withdraw_policy
       type: withdraw_policy
       slug:
         rs: pravo-na-odustajanje
         en: withdraw-policy
+        ba: pravo-na-povlacenje
     complaint:
       title: navi.complaint
       type: complaint
       slug:
         rs: reklamacije
         en: complaint
+        ba: zalbe
     payment_methods:
       title: navi.payment_methods
       type: payment_methods
       slug:
         rs: nacin-placanja
         en: payment-methods
+        ba: nacini-placanja
     delivery:
       title: navi.delivery
       type: delivery
       slug:
         rs: dostava
         en: delivery
+        ba: isporuka
     free_delivery:
       title: navi.free_delivery
       type: free_delivery
       slug:
         rs: besplatna-dostava
         en: Free delivery
+        ba: besplatna-dostava
     in_store_pickup:
       title: navi.in_store_pickup
       type: in_store_pickup
       slug:
         rs: preuzimanje-u-radnji
         en: in-store-pickup
+        ba: preuzimanje-u-prodavnici
     product_rehearsal:
       title: navi.product_rehearsal
       type: product_rehearsal
       slug:
         rs: proba-proizvoda
         en: product-rehearsal
+        ba: proba-proizvoda
     product_return_and_exchange:
       title: navi.product_return_and_exchange
       type: product_return_and_exchange
       slug:
         rs: zamena-i-povrat-robe
         en: product-return-and-exchange
+        ba: zamjena-i-povracaj-robe
     refund:
       title: navi.refund
       type: refund
       slug:
         rs: povracaj-novca
         en: refund
+        ba: povrat-novca
     about_us:
       title: navi.about_us
       type: about_us
       slug:
         rs: o-nama
         en: about-us
+        ba: o-nama

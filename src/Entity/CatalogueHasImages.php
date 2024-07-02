@@ -5,28 +5,20 @@ namespace App\Entity;
 use App\Repository\CatalogueHasImagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CatalogueHasImagesRepository::class)
- */
+#[ORM\Entity(repositoryClass: CatalogueHasImagesRepository::class)]
 class CatalogueHasImages
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $image;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Catalogue::class, inversedBy="catalogueHasImages")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Catalogue::class, inversedBy: 'catalogueHasImages')]
+    #[ORM\JoinColumn(nullable: false)]
     private $catalogue;
 
     public function getId(): ?int

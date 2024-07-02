@@ -12,3 +12,4 @@ twig:
         siteInfoText: '%site_info_texts%'
         countries: '%countries%'
         adminLocale: '%env(DEFAULT_LOCALE)%'
+        default_locale: '%kernel.default_locale%'

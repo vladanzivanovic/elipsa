@@ -4,6 +4,15 @@ class BaseFormMapper {
             this.form = '#edit_form';
             this.submitBtn = '#submit_btn';
 
+            this.countrySelection = {
+                selectBox: '#country-select-box',
+                countryClassPrefix: 'country_',
+            }
+
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.countrySelection[`country_${locale}`] = '.country_'+locale;
+            }
+
             BaseFormMapper.instance = this;
         }
 

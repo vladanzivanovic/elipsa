@@ -9,22 +9,18 @@ use App\Entity\TagTranslation;
 
 final class TagView
 {
-    private array $locales;
+    public function __construct(
+        private readonly string $defaultLocale,
+        private readonly array $locales,
+    ) {}
 
-    public function __construct(string $locales)
-    {
-        $this->locales = explode('|', $locales);
-    }
     public function view(Tags $tags): array
     {
         $view = [
             'related_type' => $tags->getRelatedType(),
             'product_type' => $tags->getProductType(),
+            'translations' => $this->getTranslationValues($tags),
         ];
-
-        foreach ($this->locales as $locale) {
-            $view[$locale] = $this->getTranslationValues($tags->getByLocale($locale));
-        }
 
         return $view;
     }
@@ -40,20 +36,23 @@ final class TagView
         ];
     }
 
-    private function getTranslationValues(?TagTranslation $tagTranslation): array
+    private function getTranslationValues(Tags $tag): array
     {
-        $data = [
-            'title' => null,
-            'slug' => null,
-        ];
+        $translations = [];
 
-        if ($tagTranslation instanceof \App\Entity\TagTranslation) {
-            $data = [
-                'title' => $tagTranslation->getTitle(),
-                'slug' => $tagTranslation->getSlug(),
+        foreach ($this->locales as $locale) {
+            $trans = $tag->getByLocale($locale);
+
+            if (null === $trans) {
+                $trans = $tag->getByLocale($this->defaultLocale);
+            }
+
+            $translations[$locale] = [
+                'title' => $trans->getTitle(),
+                'slug' => $trans->getSlug(),
             ];
         }
 
-        return $data;
+        return $translations;
     }
 }

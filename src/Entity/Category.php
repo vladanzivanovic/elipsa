@@ -2,62 +2,55 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleTranslatorInterface;
+use App\Entity\Resources\LocaleTranslatorTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use SiteBundle\Entity\BlogTranslation;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- */
-class Category
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category implements EntityInterface, LocaleTranslatorInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
+    use LocaleTranslatorTrait;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children')]
+    private null|Category $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="children")
+     * @var Collection<int, CategoryTranslation>
      */
-    private $parent;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CategoryTranslation", mappedBy="category", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $categoryTranslations;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $translations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
+     * @var Collection<int, Category>
      */
-    private $children;
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Category::class)]
+    private Collection $children;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasCategories", mappedBy="category")
+     * @var Collection<int, ProductHasCategories>
      */
-    private $productHasCategories;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: ProductHasCategories::class)]
+    private Collection $productHasCategories;
 
     public function __construct()
     {
-        $this->categoryTranslations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->productHasCategories = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getParent(): ?self
+    public function getParent(): null | self
     {
         return $this->parent;
     }
 
-    public function setParent(?self $category): self
+    public function setParent(null|self $category): self
     {
         $this->parent = $category;
 
@@ -65,17 +58,17 @@ class Category
     }
 
     /**
-     * @return Collection|CategoryTranslation[]
+     * @return Collection<int, CategoryTranslation>
      */
     public function getCategoryTranslations(): Collection
     {
-        return $this->categoryTranslations;
+        return $this->translations;
     }
 
     public function addCategoryTranslation(CategoryTranslation $categoryTranslation): self
     {
-        if (!$this->categoryTranslations->contains($categoryTranslation)) {
-            $this->categoryTranslations[] = $categoryTranslation;
+        if (!$this->translations->contains($categoryTranslation)) {
+            $this->translations[] = $categoryTranslation;
             $categoryTranslation->setCategory($this);
         }
 
@@ -84,8 +77,8 @@ class Category
 
     public function removeCategoryTranslation(CategoryTranslation $categoryTranslation): self
     {
-        if ($this->categoryTranslations->contains($categoryTranslation)) {
-            $this->categoryTranslations->removeElement($categoryTranslation);
+        if ($this->translations->contains($categoryTranslation)) {
+            $this->translations->removeElement($categoryTranslation);
             // set the owning side to null (unless already changed)
             if ($categoryTranslation->getCategory() === $this) {
                 $categoryTranslation->setCategory(null);
@@ -96,20 +89,7 @@ class Category
     }
 
     /**
-     * @param string $locale
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslationByLocale(string $locale): ArrayCollection
-    {
-        return $this->categoryTranslations->filter(function ($item) use ($locale) {
-            /** @var CategoryTranslation $item */
-            return $item->getLocale() == $locale;
-        });
-    }
-
-    /**
-     * @return Collection|self[]
+     * @return Collection<int, Category>
      */
     public function getChildren(): Collection
     {
@@ -140,7 +120,7 @@ class Category
     }
 
     /**
-     * @return Collection|ProductHasCategories[]
+     * @return Collection<int, ProductHasCategories>
      */
     public function getProductHasCategories(): Collection
     {
@@ -168,15 +148,5 @@ class Category
         }
 
         return $this;
-    }
-
-    public function getByLocale(string $locale): CategoryTranslation
-    {
-        $filteredTrans = $this->categoryTranslations->filter(function ($trans) use ($locale) {
-            /** @var CategoryTranslation $trans */
-            return $trans->getLocale() === $locale;
-        });
-
-        return $filteredTrans->first();
     }
 }

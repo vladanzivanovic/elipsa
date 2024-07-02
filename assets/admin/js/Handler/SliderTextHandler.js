@@ -2,6 +2,7 @@ import NotificationService from "../../../js/NotificationService";
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import sliderTextEditMapper from "../Mapper/SliderTextEditMapper";
 import SliderTextDataTables from "../Services/DataTables/SliderTextDataTables";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class SliderTextHandler {
     constructor() {
@@ -12,7 +13,7 @@ class SliderTextHandler {
     save() {
         let urlRoute = Routing.generate('admin.add_slider_text_api');
         let type = 'POST';
-        const data = $(this.mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.mapper.form));
 
         if (IS_EDIT) {
             urlRoute = Routing.generate('admin.edit_slider_text_api', {id: ID});

@@ -3,9 +3,11 @@ import baseFormMapper from "./BaseFormMapper";
 class SliderTextEditMapper {
     constructor() {
         if (!SliderTextEditMapper.instance) {
+            this.fields = {};
+
             for(const [locale, data] of Object.entries(LANGUAGES)) {
-                this[`description_${locale}`] = '#description_'+locale;
-                this[`link_${locale}`] = '#link_'+locale;
+                this.fields[`description_${locale}`] = '#description_'+locale;
+                this.fields[`link_${locale}`] = '#link_'+locale;
             }
 
             SliderTextEditMapper.instance = Object.assign(this, baseFormMapper);

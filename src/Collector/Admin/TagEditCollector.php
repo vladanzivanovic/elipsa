@@ -12,24 +12,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TagEditCollector
 {
-    private TranslatorInterface $translator;
-
-    private RequestStack $requestStack;
-
-    private string $locales;
-
     public function __construct(
-        TranslatorInterface $translator,
-        TagsRepository $tagsRepository,
-        RequestStack $requestStack,
-        string $locales
-    ) {
-        $this->translator = $translator;
-        $this->locales = $locales;
-        $this->requestStack = $requestStack;
-    }
+        private readonly TranslatorInterface $translator,
+    ) {}
 
-    public function collect(?Tags $tag = null): array
+    public function collect(null|Tags $tag = null): array
     {
         $data = [
             'productTagsOptions' => [
@@ -48,12 +35,8 @@ final class TagEditCollector
             ]
         ];
 
-        if ($tag instanceof \App\Entity\Tags) {
-            $relatedType = $this->requestStack->getMainRequest()->attributes->get('_route') === 'admin.edit_blog_tag_page' ? Tags::TYPE_BLOG : Tags::TYPE_PRODUCT;
-
-            $locales = explode('|', $this->locales);
-
-            $data['tag'] = $tag;
+        if ($tag instanceof Tags) {
+            $data['payload'] = $tag;
         }
 
         return $data;

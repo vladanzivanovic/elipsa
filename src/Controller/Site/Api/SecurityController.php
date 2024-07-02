@@ -21,7 +21,11 @@ final class SecurityController extends AbstractController
     {
         $this->userRepository = $userRepository;
     }
-    #[Route(path: ['rs' => '/api/login', 'en' => '/api/login'], name: 'site_api.login', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: [
+        'rs' => '/api/login',
+        'en' => '/api/login',
+        'ba' => '/api/login',
+    ], name: 'site_api.login', methods: ['POST'], options: ['expose' => true])]
     public function login(Request $request): JsonResponse
     {
         $body = json_decode($request->getContent(), true);

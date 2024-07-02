@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Checker;
 
-use App\Entity\Product;
 use App\Entity\Promotion;
-use App\Entity\PromotionEligibilityInterface;
+use App\Entity\Resources\PromotionEligibilityInterface;
 
 abstract class AbstractPromotionChecker
 {

@@ -16,16 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class CatalogPageController extends AbstractController
 {
-    private \App\Formatter\Admin\CatalogResponseFormatter $responseFormatter;
-
-    /**
-     * @param ParameterBagInterface    $bag
-     */
     public function __construct(
-        CatalogResponseFormatter $responseFormatter
-    ) {
-        $this->responseFormatter = $responseFormatter;
-    }
+        private readonly CatalogResponseFormatter $responseFormatter
+    ) {}
 
     #[Route(path: '/add-catalog', name: 'admin.add_catalog_page', methods: ['GET'])]
     #[Template('Admin/Pages/catalogEdit.html.twig')]

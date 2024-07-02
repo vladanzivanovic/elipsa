@@ -16,17 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class LocationEditController extends AbstractController
 {
-    private LocationEditRequestParser $requestParser;
-
-    private LocationHandler $locationHandler;
-
     public function __construct(
-        LocationEditRequestParser $requestParser,
-        LocationHandler $locationHandler
-    ) {
-        $this->requestParser = $requestParser;
-        $this->locationHandler = $locationHandler;
-    }
+        private readonly LocationEditRequestParser $requestParser,
+        private readonly LocationHandler $locationHandler
+    ) {}
 
     /**
      *
@@ -47,7 +40,7 @@ final class LocationEditController extends AbstractController
     /**
      * @throws \Doctrine\ORM\ORMException
      */
-    #[Route(path: '/api/edit-location/{id}', name: 'admin.edit_location_api', methods: ['PUT'], options: ['expose' => true])]
+    #[Route(path: '/api/edit-location/{id}', name: 'admin.edit_location_api', options: ['expose' => true], methods: ['PUT'])]
     public function update(Request $request, Location $location): JsonResponse
     {
         $location = $this->requestParser->parse($request->request, $location);

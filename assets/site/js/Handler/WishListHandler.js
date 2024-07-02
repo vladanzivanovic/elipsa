@@ -3,7 +3,7 @@ class WishListHandler {
         const productId = $(elm).data('product-id');
         const page = $(elm).data('page');
 
-        let urlRoute = Routing.generate('site_api.toggle_wish', {productId: productId});
+        let urlRoute = Routing.generate(`site_api.toggle_wish.${LOCALE}`, {productId: productId});
         let type = 'POST';
         let result;
 

@@ -184,7 +184,10 @@ class CoreDataTable {
     {
         const dataTableInstance = this.table.DataTable(this.options)
             .on('search.dt', () => {
-                dataTableInstance.context[0].jqXHR.abort();
+                if (null !== dataTableInstance.context[0].jqXHR) {
+                    dataTableInstance.context[0].jqXHR.abort();
+                }
+
                 this.notification.showLoadingMessage();
             })
             .on('draw', () => {

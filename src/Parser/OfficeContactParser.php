@@ -6,41 +6,39 @@ namespace App\Parser;
 
 use App\Entity\OfficeContact;
 use App\Entity\OfficeContactTranslation;
+use App\Request\Dto\Admin\OfficeContactEditRequestDto;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class OfficeContactParser
 {
-    private array $locales;
-
     public function __construct(
-        string $locales
-    ) {
-        $this->locales = explode('|', $locales);
-    }
-    public function parse(ParameterBag $bag, OfficeContact $officeContact = null): OfficeContact
+        private readonly array $locales,
+    ) {}
+
+    public function parse(OfficeContactEditRequestDto $officeContactEditRequestDto, OfficeContact $officeContact = null): OfficeContact
     {
-        if (!$officeContact instanceof \App\Entity\OfficeContact) {
+        if (!$officeContact instanceof OfficeContact) {
             $officeContact = new OfficeContact();
         }
 
-        $officeContact->setTelephone($bag->get('telephone'));
-        $officeContact->setShowInFooter($bag->getBoolean('show_in_footer'));
-        $officeContact->setUseInEmail($bag->getBoolean('use_in_email'));
+        $officeContact->setTelephone($officeContactEditRequestDto->telephone);
+        $officeContact->setShowInFooter($officeContactEditRequestDto->showInFooter);
+        $officeContact->setUseInEmail($officeContactEditRequestDto->useInEmail);
+        $officeContact->setAvailableCountries($officeContactEditRequestDto->availableCountries);
 
-        $this->setLocale($bag, $officeContact);
+        $this->setLocale($officeContactEditRequestDto, $officeContact);
 
         return $officeContact;
     }
 
-    private function setLocale(ParameterBag $bag, OfficeContact $officeContact): void
+    private function setLocale(OfficeContactEditRequestDto $officeContactEditRequestDto, OfficeContact $officeContact): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->all($locale);
+            $transCollection = $officeContactEditRequestDto->translations[$locale];
+            $trans = $officeContact->getByLocale($locale);
 
-            $trans = new OfficeContactTranslation();
-
-            if (null !== $officeContact->getId()) {
-                $trans = $officeContact->getByLocale($locale);
+            if (null === $trans) {
+                $trans = new OfficeContactTranslation();
             }
 
             $trans->setTitle($transCollection['title']);

@@ -5,58 +5,38 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LocationTranslationRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\LocationTranslationRepository::class)]
 class LocationTranslation
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private string $title;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private string $street;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private string $city;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private string $country;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private string $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="locationTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Location::class, inversedBy: 'locationTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private Location $location;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $shortDescription = null;
 
     public function getId(): ?int
@@ -100,7 +80,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): null|string
     {
         return $this->city;
     }

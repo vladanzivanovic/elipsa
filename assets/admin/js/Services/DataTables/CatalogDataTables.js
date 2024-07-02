@@ -1,17 +1,35 @@
+import DataTableOptions from "./DataTableOptions";
+
 require('./DataTableOptions');
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 
-export default (() => {
-    let Public = {},
-        Private = {};
+class CatalogDataTables {
+    #dataTable;
+    #tableRef = '#data-table';
+    #dataTableOptionGenerator;
 
-    Private.tableRef = $('#data-table');
-    Private.dataTable = null;
+    constructor() {
+        this.#dataTableOptionGenerator = new DataTableOptions();
+    }
 
-    Public.init = () => {
-        const options = Object.assign({}, window.DATATABLE_OPTIONS, {
+    reload()
+    {
+        this.#dataTable.ajax.reload(null, false);
+    }
+
+    getDataTable()
+    {
+        return this.#dataTable;
+    }
+
+
+    init()
+    {
+        const route = Routing.generate('admin.get_catalog_list');
+
+        const tableOptions = {
             ajax: {
-                url: Routing.generate('admin.get_catalog_list'),
+                url: route,
                 type: 'POST'
             },
             columns: [
@@ -34,15 +52,18 @@ export default (() => {
                             data;
                     } },
             ],
-            order: [[2, 'asc']],
-        });
+            order: [[0, 'desc']],
+        }
 
-        Private.dataTable = Private.tableRef.DataTable(options);
-    };
+        const options = this.#dataTableOptionGenerator
+            .setTableOptions(tableOptions)
+            .setAvailableCountries(3)
+            .getOptions();
 
-    Public.reload = () => {
-        Private.tableRef.DataTable().ajax.reload(null, false);
-    };
+        this.#dataTable = $(this.#tableRef).DataTable(options);
+    }
+}
 
-    return Public;
-});
+const catalogDataTables = new CatalogDataTables();
+
+export default catalogDataTables;

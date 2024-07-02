@@ -34,16 +34,17 @@ final class HomePageCollector
     /**
      * @return array<string, mixed>
      */
-    public function collect(string $locale, ?User $user): array
+    public function collect(string $locale, string $host): array
     {
-        $sliders = $this->sliderRepository->getRandomActiveSlider($locale);
-        $banners = $this->bannerRepository->getActiveByType(Banner::TYPE_SPEED_LINKS);
-        $products = $this->productRepository->getForHomePage($user);
+        $sliders = $this->sliderRepository->getRandomActiveSlider($host);
+        $banners[Banner::TYPE_SPEED_LINKS] = $this->bannerRepository->getActiveByType(Banner::TYPE_SPEED_LINKS, $host);
+        $banners[Banner::TYPE_LOYALTY] = $this->bannerRepository->getActiveByType(Banner::TYPE_LOYALTY, $host);
+        $products = $this->productRepository->getForHomePage($host);
 
         return [
-            'sliders'           => $sliders,
-            'banners'           => $banners,
-            'products'          => $products,
+            'sliders' => $sliders,
+            'banners' => $banners,
+            'products' => $products,
         ];
     }
 }

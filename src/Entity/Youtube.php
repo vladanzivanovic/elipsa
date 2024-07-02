@@ -6,37 +6,26 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Youtube
- *
- * @ORM\Entity(repositoryClass="App\Repository\YouTubeRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\YouTubeRepository::class)]
 class Youtube
 {
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     private string $youtubeId;
 
-    /**
-     * @ORM\Column(type="string", length=250, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 250, nullable: false)]
     private string $title;
 
-    /**
-     * @ORM\Column(type="json", length=65535, nullable=false)
-     */
+    #[ORM\Column(type: 'json', length: 65535, nullable: false)]
     private array $images;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="youtubeIds")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'youtubeIds')]
+    #[ORM\JoinColumn(referencedColumnName: 'id')]
     private Product $product;
 
     public function getId(): ?int

@@ -7,6 +7,7 @@ namespace App\Controller\Site;
 use App\Collector\ProductPageCollector;
 use App\Entity\ProductTranslation;
 use App\Formatter\Site\ProductFormatter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,16 @@ final class ProductPageController extends AbstractController
     }
 
     #[Template('Site/Pages/product.html.twig')]
-    public function index(ProductTranslation $productTranslation, Request $request): array
-    {
+    public function index(
+        #[MapEntity(expr: 'repository.getByCountryCode(slug, request.attributes.get("_country"))')]
+        ProductTranslation $productTranslation,
+        Request $request
+    ): array {
         $locale = $request->getLocale();
+        $countryCode = $request->attributes->get('_country');
 
-        $collection = $this->pageCollector->collect($productTranslation, $locale, $this->getUser());
+        $collection = $this->pageCollector->collect($productTranslation, $locale, $countryCode, $this->getUser());
 
-        return $this->pageFormatter->formatResponse($collection, $locale, $this->getUser());
+        return $this->pageFormatter->formatResponse($collection, $locale, $countryCode, $this->getUser());
     }
 }

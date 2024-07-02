@@ -1,18 +1,24 @@
 import AppHelperService from "../../../js/Helper/AppHelperService";
 import NotificationService from "../../../js/NotificationService";
 import CategoryDataTables from "../Services/DataTables/CategoryDataTables";
+import categoryEditMapper from "../Mapper/CategoryEditMapper";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class CategoryHandler {
+    #mapper;
+    #notification;
+    
     constructor() {
-        this.notification = NotificationService();
+        this.#mapper = categoryEditMapper;
+        this.#notification = NotificationService();
     }
 
-    save(mapper) {
+    save() {
         let urlRoute = AppHelperService.generateLocalizedUrl('admin.add_category_api');
         let type = 'POST';
-        const data = mapper.form.serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
 
-        if (! mapper.form.valid()) {
+        if (! $(this.#mapper.form).valid()) {
             return false;
         }
 
@@ -21,7 +27,7 @@ class CategoryHandler {
             type = 'PUT';
         }
 
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type,
@@ -32,13 +38,13 @@ class CategoryHandler {
                 AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.categories'));
             },
             error: error => {
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE), true);
             }
         })
     }
 
     remove(slug) {
-        this.notification.showLoadingMessage();
+        this.#notification.showLoadingMessage();
 
         $.ajax({
             type: 'DELETE',
@@ -46,18 +52,18 @@ class CategoryHandler {
             dataType: 'json',
             success: () => {
                 CategoryDataTables().reload();
-                this.notification.remove();
+                this.#notification.remove();
             },
             error: jxHR => {
                 const errors = jxHR.responseJSON;
 
                 if (errors.hasOwnProperty('message')) {
-                    this.notification.show('error', Translator.trans(errors.message, {item: 'Kategorija'}, 'messages', LOCALE), true);
+                    this.#notification.show('error', Translator.trans(errors.message, {item: 'Kategorija'}, 'messages', LOCALE), true);
 
                     return;
                 }
 
-                this.notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE+'_RS'), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'messages', LOCALE+'_RS'), true);
             }
         })
     }
@@ -72,12 +78,12 @@ class CategoryHandler {
                 const errors = error.responseJSON;
 
                 if (errors.hasOwnProperty('message')) {
-                    this.notification.show('error', errors.message, true);
+                    this.#notification.show('error', errors.message, true);
 
                     return;
                 }
 
-                this.notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
+                this.#notification.show('error', Translator.trans('generic_error', null, 'message', LOCALE), true);
             }
         })
     }

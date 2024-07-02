@@ -21,49 +21,20 @@ class LocalizationUrlExtension extends AbstractExtension
 {
     use ShopTrait;
 
-    private RouterInterface $router;
-
-    private ParameterBagInterface $bag;
-
-    private TranslatorInterface $translator;
-
-    private ShopPageRouterFormatter $shopPageRouterFormatter;
-
-    private TagUrlLocalizationFormatter $tagUrlLocalizationFormatter;
-
-    private ProductPageRouterFormatter $productPageRouterFormatter;
-
-    private BlogPageRouterFormatter $blogPageRouterFormatter;
-
-    private JobPageRouterFormatter $jobPageRouterFormatter;
-    private array $siteInfoText;
-
     public function __construct(
-        RouterInterface $router,
-        ParameterBagInterface $bag,
-        TranslatorInterface $translator,
-        ShopPageRouterFormatter $shopPageRouterFormatter,
-        TagUrlLocalizationFormatter $tagUrlLocalizationFormatter,
-        ProductPageRouterFormatter $productPageRouterFormatter,
-        BlogPageRouterFormatter $blogPageRouterFormatter,
-        JobPageRouterFormatter $jobPageRouterFormatter,
-        array $siteInfoText
-    ) {
-        $this->router = $router;
-        $this->bag = $bag;
-        $this->translator = $translator;
-        $this->shopPageRouterFormatter = $shopPageRouterFormatter;
-        $this->tagUrlLocalizationFormatter = $tagUrlLocalizationFormatter;
-        $this->productPageRouterFormatter = $productPageRouterFormatter;
-        $this->blogPageRouterFormatter = $blogPageRouterFormatter;
-        $this->jobPageRouterFormatter = $jobPageRouterFormatter;
-        $this->siteInfoText = $siteInfoText;
-    }
+        private readonly RouterInterface $router,
+        private readonly ParameterBagInterface $bag,
+        private readonly TranslatorInterface $translator,
+        private readonly ShopPageRouterFormatter $shopPageRouterFormatter,
+        private readonly TagUrlLocalizationFormatter $tagUrlLocalizationFormatter,
+        private readonly ProductPageRouterFormatter $productPageRouterFormatter,
+        private readonly BlogPageRouterFormatter $blogPageRouterFormatter,
+        private readonly JobPageRouterFormatter $jobPageRouterFormatter,
+        private readonly array $siteInfoText,
+        private readonly string $defaultLocale,
+    ) {}
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('url_locale', [$this, 'generateUrlLocale']),
@@ -72,44 +43,38 @@ class LocalizationUrlExtension extends AbstractExtension
 
     public function generateUrlLocale(string $routeName, array $routeParams, string $fromLocale, string $toLocale): string
     {
-        if (($routeName === 'site.shop_page' || $routeName === 'site.trendy_page') && isset($routeParams['searchData'])) {
-            $routeParams['searchData'] = $this->shopPageRouterFormatter->localeFormatter($routeParams['searchData'], $toLocale);
-        }
+        match ($routeName) {
+            'site.product_page' => $this->productPage($routeParams, $toLocale),
+            'site.blog_detailed_page' => $this->blogDetailPage($routeParams, $toLocale),
+            'site.jobs_detail_page' => $routeParams['slug'] = $this->jobPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale),
+            'site.company_text' => $routeParams['type'] = $this->getTextLocaleSlug($routeParams['type'], $fromLocale, $toLocale),
+            default => $this->default($routeName, $routeParams, $toLocale),
+        };
 
-        if ($routeName === 'site.product_page') {
-            $slug = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
-            $routeParams['slug'] = $slug ?? '#';
-        }
-
-        if ($routeName === 'site.blog_detailed_page') {
-            $tag = $this->blogPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
-
-            $routeParams['slug'] = $tag ?? '#';
-        }
-
-        if ($routeName === 'site.jobs_detail_page') {
-            $routeParams['slug'] = $this->jobPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
-        }
-
-        if ($routeName === 'site.company_text') {
-            $routeParams['type'] = $this->getTextLocaleSlug($routeParams['type'], $fromLocale, $toLocale);
-        }
-
-        if ($toLocale !== 'rs') {
-            $routeParams['_locale'] = $toLocale;
-            $routeName = $this->getRouteName($routeName, $toLocale);
-
-        }
-
-        if ($toLocale === 'rs') {
-            unset($routeParams['_locale']);
-            $routeName = $this->getRouteName(str_replace('site_locale_', '', $routeName), 'rs');
-        }
+        $routeParams['_locale'] = $toLocale;
 
         return $this->router->generate($routeName, $routeParams);
     }
 
-    private function getRouteName(string $routeName, string $locale)
+    private function productPage(array &$routeParams, string $toLocale): void
+    {
+        $slug = $this->productPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+        $routeParams['slug'] = $slug ?? '#';
+    }
+
+    private function default(string &$routeName, array &$routeParams, string $toLocale): void
+    {
+        $routeParams['_locale'] = $toLocale;
+        $routeName = $this->getRouteName(str_replace('site_locale_', '', $routeName), $toLocale);
+    }
+
+    private function blogDetailPage(array &$routeParams, string $toLocale): void
+    {
+        $tag = $this->blogPageRouterFormatter->localeFormatter($routeParams['slug'], $toLocale);
+        $routeParams['slug'] = $tag ?? '#';
+    }
+
+    private function getRouteName(string $routeName, string $locale): string
     {
         $routeCollection = $this->router->getRouteCollection();
         $route = $routeCollection->get($routeName);
@@ -122,7 +87,7 @@ class LocalizationUrlExtension extends AbstractExtension
         return $routeName;
     }
 
-    private function getTextLocaleSlug(string $slug, string $fromLocale, string $toLocale): ?string
+    private function getTextLocaleSlug(string $slug, string $fromLocale, string $toLocale): null|string
     {
         foreach ($this->siteInfoText as $infoText) {
             if ($infoText['slug'][$fromLocale] === $slug) {

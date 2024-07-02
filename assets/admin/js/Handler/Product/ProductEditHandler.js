@@ -3,6 +3,7 @@ import AppHelperService from "../../../../js/Helper/AppHelperService";
 import toastrService from "../../../../js/Services/ToastrService";
 import productEditMapper from "../../Mapper/ProductEditMapper";
 import productDataTables from "../../Services/DataTables/ProductDataTables";
+import FormHelperService from "../../../../js/Helper/FormHelperService";
 
 class ProductEditHandler {
     #mapper;
@@ -20,12 +21,28 @@ class ProductEditHandler {
     save() {
         let urlRoute = Routing.generate('admin.add_product_api');
         let type = 'POST';
-        const data = $(this.#mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
+        const images = DropZoneService().getFilesArray('mainImages');
+        const selectedColors = $('.image-color').find(':selected');
 
-        data.push({
-            name: 'images',
-            value: JSON.stringify(DropZoneService().getFilesArray('mainImages')),
-        });
+        data.images = [];
+        data.youtubes = [];
+
+        for (const index in images) {
+            const image = images[index];
+
+            data.images.push(image);
+
+            if (image.hasOwnProperty('deleted') && true === image.deleted) {
+                continue;
+            }
+
+            image.color_id = selectedColors[index].value;
+        }
+
+        for (const youtube of this.#youtube.getLists()) {
+            data.youtubes.push(youtube);
+        }
 
         if (IS_EDIT) {
             urlRoute = Routing.generate('admin.edit_product_api', {slug: SLUG});
@@ -34,15 +51,6 @@ class ProductEditHandler {
 
         if (! $(this.#mapper.form).valid()) {
             return false;
-        }
-
-        for (const youtube of this.#youtube.getLists()) {
-            if (!youtube.isDeleted) {
-                data.push({
-                    name: 'youtube[]',
-                    value: JSON.stringify(youtube)
-                });
-            }
         }
 
         this.#notification.showLoadingMessage();

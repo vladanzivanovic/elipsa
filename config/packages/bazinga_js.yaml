@@ -1,9 +1,7 @@
 bazinga_js_translation:
-  locale_fallback: rs
+  locale_fallback: '%env(resolve:DEFAULT_LOCALE)%'
   default_domain: messages
-  active_locales:
-    - rs
-    - en
+  active_locales: '%locales%'
   active_domains:
     - messages
     - validators

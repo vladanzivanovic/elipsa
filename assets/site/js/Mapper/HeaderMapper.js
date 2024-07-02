@@ -5,8 +5,6 @@ class HeaderMapper {
     constructor() {
         if (!HeaderMapper.instance) {
             this.registrationForm = '#registration-form';
-            this.registrationSubmitBtn = '#registration-btn';
-            this.localeDropDown = '#locale-dropdown';
 
             this.login = loginMapper;
             this.reset = resetPasswordMapper;
@@ -24,6 +22,14 @@ class HeaderMapper {
                 close: '.search-close',
                 area: '.search-area',
                 input: '#search-input',
+            };
+
+            this.dropDown = {
+                close: '.close-drop-down',
+                area: '.drop-down-area',
+                button: '.mobile-user-item > a',
+                locale: '#locale-dropdown',
+                country: '#country-dropdown',
             };
 
             HeaderMapper.instance = this;

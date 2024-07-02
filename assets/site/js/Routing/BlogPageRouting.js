@@ -5,7 +5,7 @@ class BlogPageRouting {
         this.dom = blogPageDom;
 
         this.url = Routing.generate(`site.blog_list_page.${LOCALE}`);
-        this.apiUrl = Routing.generate('site_api.blog_list_page');
+        this.apiUrl = Routing.generate(`site_api.blog_list_page.${LOCALE}`);
 
         if (IS_FIRST_PAGE) {
             this.url += '/1';

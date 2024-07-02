@@ -43,7 +43,7 @@ final class NotificationRequestParser
             $notificationRequestDto->payload
         );
 
-        if ($notification instanceof \App\Entity\Notification) {
+        if ($notification instanceof Notification) {
             throw new NotificationException('notification.already_set_notification');
         }
 
@@ -52,6 +52,7 @@ final class NotificationRequestParser
         $notification->setType($notificationRequestDto->type);
         $notification->setPayload($notificationRequestDto->payload);
         $notification->setLocale($locale);
+        $notification->setCountry($notificationRequestDto->country);
         return $notification;
     }
 

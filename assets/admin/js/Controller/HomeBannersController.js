@@ -3,16 +3,18 @@ import NotificationService from "../../../js/NotificationService";
 import SliderHandler from "../Handler/SliderHandler";
 import HomeBannersDataTables from "../Services/DataTables/HomeBannersDataTables";
 import BannerHandler from "../Handler/BannerHandler";
+import SliderDataTableEvents from "../Event/SliderDataTableEvents";
+import HomeBannersDataTableEvents from "../Event/HomeBannersDataTableEvents";
 
 const Private = Symbol('private');
 
 class HomeBannersController {
     constructor() {
-        if (CAN_VIEW) {
-            HomeBannersDataTables().init();
-        }
+        const dataTable = new HomeBannersDataTableEvents();
+
         this.notification = NotificationService();
 
+        dataTable.registerEvents();
         this[Private]().registerEvents();
     }
 

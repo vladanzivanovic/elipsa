@@ -76,11 +76,11 @@ class ShopFilterManipulator {
             max: PRICES[1],
             values: price,
             slide: (event, ui) => {
-                $(this.#filterMapper.priceInput).val(`${ui.values[0]} RSD - ${ui.values[1]} RSD`);
+                $(this.#filterMapper.priceInput).val(`${ui.values[0]} - ${ui.values[1]}`);
             }
         });
 
-        $(this.#filterMapper.priceInput).val(`${$(this.#filterMapper.priceRange).slider("values", 0)} RSD - ${$(this.#filterMapper.priceRange).slider("values", 1)} RSD`);
+        $(this.#filterMapper.priceInput).val(`${$(this.#filterMapper.priceRange).slider("values", 0)} - ${$(this.#filterMapper.priceRange).slider("values", 1)}`);
 
         this.#shopFilterDom.setFilterCounterByElement($(this.#filterMapper.priceRange), length);
     }
@@ -169,7 +169,6 @@ class ShopFilterManipulator {
 
             this.#headerDom.updateLanguageDropDown(filteredData._web_links);
         } catch (e) {
-            console.log(e);
         }
     }
 

@@ -25,7 +25,11 @@ final class SiteTextController extends AbstractController
         $this->siteTextFormatter = $siteTextFormatter;
     }
 
-    #[Route(path: ['rs' => '/kompanija/{type}', 'en' => '/company/{type}'], name: 'site.company_text', options: ['expose' => true], methods: ['GET'])]
+    #[Route(path: [
+        'rs' => '/kompanija/{type}',
+        'en' => '/company/{type}',
+        'ba' => '/kompanija/{type}',
+    ], name: 'site.company_text', options: ['expose' => true], methods: ['GET'])]
     #[Template('Site/Pages/siteText.html.twig')]
     public function index(string $type, Request $request): array
     {

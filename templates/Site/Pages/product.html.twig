@@ -28,18 +28,18 @@
                 <div class="col-md-6 col-xs-12">
                     <div class="single-product-description-area">
                         <h2 class="spd-title">{{ payload.translations[locale].title }}</h2>
-                        <p class="spd-price">{{ payload.discount is not null ? payload.discount.price.amount : payload.price.amount }} {{ payload.price.currency }}
+                        <p class="spd-price">{{ payload.options[countryDefaultLocale].discount is not null ? payload.options[countryDefaultLocale].discount.price.amount : payload.options[countryDefaultLocale].price.amount }} {{ payload.options[countryDefaultLocale].price.currency }}
 
-                            {% if payload.discount is not null %}
-                                <span class="spd-old-price">-{{ payload.price.amount }} {{ payload.price.currency }}</span>
+                            {% if payload.options[countryDefaultLocale].discount is not null %}
+                                <span class="spd-old-price">-{{ payload.options[countryDefaultLocale].price.amount }} {{ payload.options[countryDefaultLocale].price.currency }}</span>
                             {% endif %}
                         </p>
-                        {% if payload.discount is not null %}
+                        {% if payload.options[countryDefaultLocale].discount is not null %}
                             <div class="spd-meta">
                                 <div class="spd-meta-type">
                                     <p class="saving-price">{{ 'saving' | trans }}
-                                        <span>{{ payload.discount.saving.amount }} {{ payload.discount.saving.currency }}</span>
-                                        <span>({{ payload.discount.percentage }}%)</span>
+                                        <span>{{ payload.options[countryDefaultLocale].discount.saving.amount }} {{ payload.options[countryDefaultLocale].discount.saving.currency }}</span>
+                                        <span>({{ payload.options[countryDefaultLocale].discount.percentage }}%)</span>
                                     </p>
                                 </div>
                             </div>
@@ -55,11 +55,11 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="spd-select-size {{ payload.sizes[0].slug == constant('App\\Entity\\ProductSize::NO_SIZE') ? 'hide' : '' }}">
+                        <div class="spd-select-size {{ payload.options[countryDefaultLocale].sizes[0].slug == constant('App\\Entity\\ProductSize::NO_SIZE') ? 'hide' : '' }}">
                             <span class="letter-capitalize">{{ 'select.size' | trans }}:</span>
                             <ul>
-                                {% for size in payload.sizes %}
-                                    <li><a href="#" class="size-btn {{ payload.sizes | length == 1 ? 'active' : '' }} {{ size.quantity == 0 ? 'unavailable' : '' }}" data-slug="{{ size.slug }}" data-quantity="{{ size.quantity }}">{{ size.size }}</a></li>
+                                {% for size in payload.options[countryDefaultLocale].sizes %}
+                                    <li><a href="#" class="size-btn {{ payload.options[countryDefaultLocale].sizes | length == 1 ? 'active' : '' }} {{ size.quantity == 0 ? 'unavailable' : '' }}" data-slug="{{ size.slug }}" data-quantity="{{ size.quantity }}">{{ size.size }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -67,7 +67,7 @@
                             <p class="quantity cart-plus-minus">
                                 <input type="text" id="product-quantity" value="1" />
                             </p>
-                            <button type="button" class="spd-add-to hvr-bs letter-capitalize add-to-cart {{ true == payload.is_sold ? 'disabled' : '' }}" {{ true == payload.is_sold ? 'disabled="disabled"' : '' }}>
+                            <button type="button" class="spd-add-to hvr-bs letter-capitalize add-to-cart {{ true == payload.options[countryDefaultLocale].is_sold ? 'disabled' : '' }}" {{ true == payload.options[countryDefaultLocale].is_sold ? 'disabled="disabled"' : '' }}>
                                 {{ 'product.add_to_cart' | trans }}
                             </button>
                         </div>
@@ -101,7 +101,7 @@
                                 <ul>
                                     {% for tag in payload.tags %}
                                         <li>
-                                            <a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag[locale].slug }) }}" target="_blank">{{ tag[locale].title }}</a>
+                                            <a href="{{ path('site.trendy_page', {'searchData': 'tags' | trans ~ '/' ~ tag.translations[locale].slug }) }}" target="_blank">{{ tag.translations[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -177,7 +177,7 @@
                 <div class="related-pro-carousel owl-carousel">
                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
                     {% for relatedProduct in relatedProducts %}
-                        {{ productGrid.productGrid(relatedProduct, 'col-xs-12', locale) }}
+                        {{ productGrid.productGrid(relatedProduct, 'col-xs-12', locale, countryDefaultLocale) }}
                     {% endfor %}
                 </div>
             </div>
@@ -194,6 +194,6 @@
         const PRODUCT_ID = '{{ payload.id }}';
         const SLUG = '{{ app.request.attributes.get('slug') }}';
         const MEDIA = JSON.parse('{{ payload.media | json_encode() | raw }}');
-        const SIZES = JSON.parse('{{ payload.sizes | json_encode | raw }}');
+        const SIZES = JSON.parse('{{ payload.options[countryDefaultLocale].sizes | json_encode | raw }}');
     </script>
 {% endblock %}

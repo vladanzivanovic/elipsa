@@ -4,74 +4,60 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
-use App\Entity\Blog;
-use App\Entity\BlogHasTags;
-use App\Entity\BlogTranslation;
 use App\Entity\CareerDescription;
 use App\Entity\CareerDescriptionTranslation;
-use App\Repository\BlogHasTagsRepository;
-use App\Repository\BlogTranslationRepository;
+use App\Entity\Resources\StatusInterface;
 use App\Repository\CareerDescriptionTranslationRepository;
-use App\Services\BlogImageService;
+use App\Request\Dto\Admin\CareerDescriptionEditRequestDto;
 use App\Services\JobImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class JobRequestParser
 {
-    use ParserTrait;
-
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-
-    private \App\Repository\CareerDescriptionTranslationRepository $descriptionTranslationRepository;
-
-    private \App\Services\JobImageService $imageService;
-
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        CareerDescriptionTranslationRepository $descriptionTranslationRepository,
-        JobImageService $imageService
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->descriptionTranslationRepository = $descriptionTranslationRepository;
-        $this->imageService = $imageService;
-    }
+        private readonly CareerDescriptionTranslationRepository $descriptionTranslationRepository,
+        private readonly JobImageService $imageService,
+        private readonly array $locales,
+    ) {}
 
     /**
      * @param CareerDescription|null $careerDescription
      * @throws \Doctrine\ORM\ORMException
      */
-    public function parse(ParameterBag $bag, CareerDescription $careerDescription = null): CareerDescription
+    public function parse(CareerDescriptionEditRequestDto $careerDescriptionEditRequestDto, CareerDescription $careerDescription = null): CareerDescription
     {
         if (!$careerDescription instanceof CareerDescription) {
             $careerDescription = new CareerDescription();
-            $careerDescription->setStatus(CareerDescription::STATUS_PENDING);
+            $careerDescription->setStatus(StatusInterface::STATUS_PENDING);
         }
 
-        $this->setTranslation($careerDescription, $bag);
+        $careerDescription->setAvailableCountries($careerDescriptionEditRequestDto->availableCountries);
 
-        $this->imageService->setImages($careerDescription->getTranslationByLocale('rs'), json_decode($bag->get('images'), true));
+        $this->setTranslation($careerDescriptionEditRequestDto->translations, $careerDescription);
+
+        $this->imageService->setImages($careerDescription->getCareerDescriptionTranslations()->first(), $careerDescriptionEditRequestDto->images);
 
         return $careerDescription;
     }
 
-    private function setTranslation(CareerDescription $careerDescription, ParameterBag $bag): void
+    private function setTranslation(array $translations, CareerDescription $careerDescription): void
     {
-        $languages = $this->setLanguageArray($this->parameterBag, $bag);
-
-        foreach (array_keys($languages) as $locale) {
-            $careerTranslation = $this->descriptionTranslationRepository->findOneBy(['careerDescription' => $careerDescription, 'locale' => $locale]);
-
-            if (!$careerTranslation instanceof CareerDescriptionTranslation) {
-                $careerTranslation = new CareerDescriptionTranslation();
+        foreach ($this->locales as $locale) {
+            if (!isset($translations[$locale])) {
+                continue;
             }
 
-            $careerTranslation->setTitle($bag->get($locale.'_title'))
-                ->setDescription($bag->get($locale.'_description'))
-                ->setLocale($locale)
-                ->setCareerDescription($careerDescription);
+            $transCollection = $translations[$locale];
+            $trans = $this->descriptionTranslationRepository->findOneBy(['careerDescription' => $careerDescription, 'locale' => $locale]);
 
-            $careerDescription->addCareerDescriptionTranslation($careerTranslation);
+            if (null === $trans) {
+                $trans = new CareerDescriptionTranslation();
+            }
+
+            $trans->setDescription($transCollection['description']);
+            $trans->setTitle($transCollection['title']);
+            $trans->setLocale($locale);
+
+            $careerDescription->addCareerDescriptionTranslation($trans);
         }
     }
 }

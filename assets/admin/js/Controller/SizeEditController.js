@@ -1,23 +1,36 @@
-import SizeEditMapper from "../Mapper/SizeEditMapper";
 import SizeHandler from "../Handler/SizeHandler";
 import sizeEditValidator from "../Validators/SizeEditValidator";
+import sizeEditMapper from "../Mapper/SizeEditMapper";
+import baseEvents from "./BaseEvents";
 
 class SizeEditController {
-    constructor() {
-        this.mapper = new SizeEditMapper();
-        this.validator = sizeEditValidator;
+    #mapper;
+    #validator;
+    #baseEvents;
 
-        this.validator.validate(this.mapper.form);
+    constructor() {
+        this.#mapper = sizeEditMapper;
+        this.#validator = sizeEditValidator;
+        this.#baseEvents = baseEvents;
+
+        this.#initForm();
 
         this.registerEvents();
     }
 
+    #initForm()
+    {
+        this.#validator.validate();
+    }
+
     registerEvents() {
-        this.mapper.submitBtn.on('click touchend', e => {
+        $(this.#mapper.submitBtn).on('click', e => {
             const handler = new SizeHandler();
 
-            handler.save(this.mapper);
+            handler.save();
         });
+
+        this.#baseEvents.events();
     }
 }
 

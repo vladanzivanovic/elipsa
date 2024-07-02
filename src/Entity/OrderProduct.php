@@ -2,88 +2,66 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\PromotionEligibilityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\OrderProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\OrderProductRepository")
- */
+#[ORM\Entity(repositoryClass: OrderProductRepository::class)]
 class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ShopOrder", inversedBy="orderProducts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: ShopOrder::class, inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
     private ShopOrder $orderId;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="product.size")
-     */
+    
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(message: 'product.size')]
     private string $size;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductColor", inversedBy="orderProducts")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank(message="product.color")
-     */
+    
+    #[ORM\ManyToOne(targetEntity: ProductColor::class, inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'product.color')]
     private ProductColor $color;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="product.quantity")
-     * @Assert\Positive(message="product.quantity_positive_number")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank(message: 'product.quantity')]
+    #[Assert\Positive(message: 'product.quantity_positive_number')]
     private int $quantity;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $price;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProductTranslation", mappedBy="orderProduct", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy: 'orderProduct', targetEntity: \App\Entity\OrderProductTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProductTranslations;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderProducts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'orderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $code;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Image")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Image::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Image $image;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $discount = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $promotionPrice = null;
 
     private int $total = 0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="orderProducts")
-     */
+    #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'orderProducts')]
     private ?Promotion $promotion = null;
 
     public function __construct()
@@ -184,12 +162,12 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
 
@@ -220,7 +198,7 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return $this;
     }
 
-    public function getDiscount(): ?int
+    public function getDiscount(): null|int
     {
         return $this->discount;
     }
@@ -234,19 +212,14 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return OrderProductTranslation
-     */
-    public function getByLocale(string $locale): OrderProductTranslation
+    public function getByLocale(string $locale): null|OrderProductTranslation
     {
-        $filteredTrans = $this->orderProductTranslations->filter(function ($trans) use ($locale) {
+        $filtered = $this->orderProductTranslations->filter(function ($trans) use ($locale) {
             /** @var OrderProductTranslation $trans */
             return $trans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function getBySlug(string $slug): ?OrderProductTranslation
@@ -322,7 +295,13 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 
     public function isProductAvailable(): bool
     {
-        foreach ($this->product->getAvailableSizes() as $availableSize) {
+        $productOption = $this->product->getOptionsByCountry($this->orderId->getCountry());
+
+        if (null === $productOption) {
+            return false;
+        }
+
+        foreach ($productOption->getAvailableSizes() as $availableSize) {
             if (
                 ($availableSize->getSize()->getSlug() === $this->size) &&
                 ($this->quantity <= $availableSize->getQuantity())

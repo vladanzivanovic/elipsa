@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Checker;
 
-use App\Entity\OrderProduct;
 use App\Entity\Promotion;
-use App\Entity\PromotionEligibilityInterface;
 use App\Entity\PromotionOption;
+use App\Entity\Resources\PromotionEligibilityInterface;
 use App\Entity\ShopOrder;
 use Webmozart\Assert\Assert;
 

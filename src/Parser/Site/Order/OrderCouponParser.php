@@ -38,10 +38,10 @@ final class OrderCouponParser
     {
         $order = $this->orderRequestParser->findOrder($orderToken);
 
-        $coupon = $this->promotionCouponRepository->findOneBy(['code' => $couponCode]);
+        $coupon = $this->promotionCouponRepository->getByCode($couponCode);
 
         if ($removeCoupon) {
-            $this->removePromotion($order, $coupon);
+            $this->removePromotion($order);
 
             return $order;
         }
@@ -76,7 +76,7 @@ final class OrderCouponParser
         ShopOrder $order,
         ?Promotion $promotionCoupon
     ): void {
-        if (!$promotionCoupon instanceof \App\Entity\Promotion) {
+        if (!$promotionCoupon instanceof Promotion) {
             throw new OrderException('promo_coupon.not_found');
         }
 
@@ -99,14 +99,11 @@ final class OrderCouponParser
      * @throws OrderException
      */
     private function removePromotion(
-        ShopOrder $order,
-        Promotion $promotionCoupon
+        ShopOrder $order
     ): void {
-        if(!$order->getCoupon() instanceof \App\Entity\Promotion) {
+        if(!$order->getCoupon() instanceof Promotion) {
             throw new OrderException('order.promo_coupon_not_exists');
         }
-
-        Assert::same($order->getCoupon(), $promotionCoupon);
 
         $order->setCoupon(null);
 

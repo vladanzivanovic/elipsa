@@ -29,12 +29,12 @@ final class MyAccountFormatter
         $this->productFormatter = $productFormatter;
     }
 
-    public function formatResponse(User $user, array $data, string $locale): array
+    public function formatResponse(User $user, string $locale, string $country): array
     {
-        $orders = null;
+        $orders = [];
         $products = [];
 
-        foreach ($user->getShopOrders() as $shopOrder) {
+        foreach ($user->getShopOrders($country) as $shopOrder) {
             $orders[] = $this->orderView->view($shopOrder, $locale);
         }
 
@@ -42,6 +42,7 @@ final class MyAccountFormatter
             $products[] = $userWish->getProduct();
         }
 
+        //todo check this
         $wishes = $this->productFormatter->getProducts($products, $locale, $user);
 
 //        $wishes = array_map(function ($order) {

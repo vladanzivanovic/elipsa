@@ -6,25 +6,23 @@ namespace App\Controller\Admin\Api;
 
 use App\Entity\Blog;
 use App\Entity\CareerDescription;
+use App\Entity\Resources\StatusInterface;
 use App\Handler\BlogHandler;
 use App\Handler\JobHandler;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class JobRemoveController extends AbstractController
 {
-    private \Symfony\Contracts\Translation\TranslatorInterface $translator;
-
     public function __construct(
-        JobHandler $handler,
-        TranslatorInterface $translator
-    ) {
-        $this->translator = $translator;
-    }
+        private readonly JobHandler $handler,
+        private readonly TranslatorInterface $translator
+    ) {}
 
     /**
      *
@@ -32,14 +30,18 @@ final class JobRemoveController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    #[Route(path: '/api/job-remove/{id}', name: 'admin.remove_job_api', methods: ['DELETE'], options: ['expose' => true])]
+    #[Route(path: '/api/job-remove/{id}', name: 'admin.remove_job_api', options: ['expose' => true], methods: ['DELETE'])]
     public function remove(CareerDescription $careerDescription): JsonResponse
     {
-        $careerDescription->setStatus(CareerDescription::STATUS_ARCHIVED);
-
         if ($careerDescription->getCareers()->count() > 0) {
-            return $this->json(['message' => $this->translator->trans('error.in_use', ['%item%' => 'Radno mesto'])], JsonResponse::HTTP_BAD_REQUEST);
+            $careerDescription->setStatus(StatusInterface::STATUS_ARCHIVED);
+
+            $this->handler->save($careerDescription);
+
+            return $this->json(['message' => $this->translator->trans('error.in_use', ['%item%' => 'Radno mesto'])], Response::HTTP_BAD_REQUEST);
         }
+
+        $this->handler->remove($careerDescription);
 
         return $this->json(null);
     }

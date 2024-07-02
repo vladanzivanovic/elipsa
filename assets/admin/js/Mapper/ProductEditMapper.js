@@ -13,11 +13,21 @@ class ProductEditMapper {
             this.badge = $('#badge', baseFormMapper.form);
             this.category = $('#categories', baseFormMapper.form);
             this.tags = $('#tags', baseFormMapper.form);
-            this.sizes = '.size-table';
-            this.sizeAddBtn = '.size-add-btn';
-            this.sizeRemoveBtn = '.size-remove-btn';
+            // this.sizes = '.size-table';
+            // this.sizeAddBtn = '.size-add-btn';
+            // this.sizeRemoveBtn = '.size-remove-btn';
             this.price = $('#price', baseFormMapper.form);
             this.discount = $('#discount', baseFormMapper.form);
+
+            this.sizes = {};
+
+            for(const countryCode in COUNTRIES) {
+                this.sizes[countryCode] = {};
+
+                this.sizes[countryCode].table =  `.size-table-${countryCode}`;
+                this.sizes[countryCode].addBtn =  `.size-add-btn-${countryCode}`;
+                this.sizes[countryCode].removeBtn =  `.size-remove-btn-${countryCode}`;
+            }
 
             ProductEditMapper.instance = Object.assign(this, baseFormMapper);
         }

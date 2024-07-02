@@ -22,7 +22,7 @@ final class OrderSinglePageController extends AbstractController
     }
 
     
-    #[Route(path: '/view-single-order/{token}', name: 'admin.view_single_order', methods: ['GET'], options: ['expose' => true])]
+    #[Route(path: '/view-single-order/{token}', name: 'admin.view_single_order', options: ['expose' => true], methods: ['GET'])]
     #[Template('Admin/Pages/invoice.html.twig')]
     public function renderPage(ShopOrder $order): array
     {

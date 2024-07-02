@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Api;
 use App\Entity\OfficeContact;
 use App\Handler\OfficeContactHandler;
 use App\Parser\OfficeContactParser;
+use App\Request\Dto\Admin\OfficeContactEditRequestDto;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,25 +18,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class OfficeContactEditApiController extends AbstractController
 {
-    private OfficeContactParser $OfficeContactParser;
-
-    private OfficeContactHandler $officeContactHandler;
-
     public function __construct(
-        OfficeContactParser $OfficeContactParser,
-        OfficeContactHandler $OfficeContactHandler
-    ) {
-        $this->OfficeContactParser = $OfficeContactParser;
-        $this->officeContactHandler = $OfficeContactHandler;
-    }
+        private readonly OfficeContactParser $officeContactParser,
+        private readonly OfficeContactHandler $officeContactHandler
+    ) {}
 
     /**
      * @throws \Exception
      */
-    #[Route(path: '/api/add-office-contact', name: 'admin.add_office_contact_api', methods: ['POST'], options: ['expose' => true])]
-    public function insert(Request $request): JsonResponse
+    #[Route(path: '/api/add-office-contact', name: 'admin.add_office_contact_api', options: ['expose' => true], methods: ['POST'])]
+    public function insert(OfficeContactEditRequestDto $officeContactEditRequestDto): JsonResponse
     {
-        $officeContact = $this->OfficeContactParser->parse($request->request);
+        $officeContact = $this->officeContactParser->parse($officeContactEditRequestDto);
 
         $this->officeContactHandler->save($officeContact);
 
@@ -45,10 +39,10 @@ final class OfficeContactEditApiController extends AbstractController
     /**
      * @throws \Exception
      */
-    #[Route(path: '/api/edit-office-contact/{id}', name: 'admin.edit_office_contact_api', methods: ['PUT'], options: ['expose' => true])]
-    public function update(Request $request, OfficeContact $officeContact): JsonResponse
+    #[Route(path: '/api/edit-office-contact/{id}', name: 'admin.edit_office_contact_api', options: ['expose' => true], methods: ['PUT'])]
+    public function update(OfficeContactEditRequestDto $officeContactEditRequestDto, OfficeContact $officeContact): JsonResponse
     {
-        $officeContact = $this->OfficeContactParser->parse($request->request, $officeContact);
+        $officeContact = $this->officeContactParser->parse($officeContactEditRequestDto, $officeContact);
 
         $this->officeContactHandler->save($officeContact);
 
@@ -61,7 +55,7 @@ final class OfficeContactEditApiController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    #[Route(path: '/api/remove-office-contact/{id}', name: 'admin.remove_office_contact_api', methods: ['DELETE'], options: ['expose' => true])]
+    #[Route(path: '/api/remove-office-contact/{id}', name: 'admin.remove_office_contact_api', options: ['expose' => true], methods: ['DELETE'])]
     public function remove(OfficeContact $officeContact): JsonResponse
     {
         $this->officeContactHandler->remove($officeContact);

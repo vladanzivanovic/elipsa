@@ -2,15 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\BannerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\BannerRepository")
- */
-class Banner
+#[ORM\Entity(repositoryClass: BannerRepository::class)]
+class Banner implements EntityInterface, CountryResourceInterface
 {
+    use ResourceTrait;
+    use CountryResourceTrait;
+
     public const POSITION_HOME_LEFT = 1;
 
     public const POSITION_HOME_MIDDLE_UP = 2;
@@ -35,37 +41,20 @@ class Banner
 
     public const STATUS_ACTIVE = true;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private Image $image;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $isActive;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $position;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\BannerTranslation", mappedBy="banner", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(mappedBy: 'banner', targetEntity: BannerTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bannerTranslations;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     private int $type;
 
     public function __construct()
@@ -73,12 +62,7 @@ class Banner
         $this->bannerTranslations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getImage(): ?Image
+    public function getImage(): null|Image
     {
         return $this->image;
     }
@@ -115,7 +99,7 @@ class Banner
     }
 
     /**
-     * @return Collection|BannerTranslation[]
+     * @return Collection<int, BannerTranslation>
      */
     public function getBannerTranslations(): Collection
     {
@@ -145,12 +129,7 @@ class Banner
         return $this;
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return BannerTranslation
-     */
-    public function getByLocale(string $locale): BannerTranslation
+    public function getByLocale(string $locale): BannerTranslation|null
     {
         $trans = $this->bannerTranslations;
 
@@ -159,10 +138,10 @@ class Banner
             return $bannerTrans->getLocale() === $locale;
         });
 
-        return $filteredTrans->first();
+        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 
-    public function getType(): ?int
+    public function getType(): null|int
     {
         return $this->type;
     }

@@ -59,25 +59,6 @@ class ImageService
         return new UploadedFile($image['file'], $image['fileName'], null, null, true);
     }
 
-    /**
-     * Check if directory exist and thumb inside
-     * If not exist then create new folders
-     *
-     * @return bool
-     * @throws IOException
-     */
-    public function checkExistsAndCreateFolder($folder, $setThumb = false)
-    {
-        if (!$this->fs->exists($folder)) {
-            $this->fs->mkdir($folder, 0775);
-        }
-        if (true === $setThumb && !$this->fs->exists($folder . '/thumb')) {
-            $this->fs->mkdir($folder . '/thumb', 0775);
-        }
-
-        return true;
-    }
-
     public function deleteImage(UploadedFile $file): void
     {
         $path = $file->getPathname();

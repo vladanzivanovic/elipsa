@@ -12,7 +12,7 @@ class OrderApiProvider {
 
     async getOrder(token)
     {
-        const urlRoute = AppHelperService.generateLocalizedUrl('site_api.get_order', {
+        const urlRoute = AppHelperService.generateLocalizedUrl(`site_api.get_order.${LOCALE}`, {
             token: token
         });
 
@@ -33,7 +33,7 @@ class OrderApiProvider {
 
     async getPayment(token)
     {
-        const urlRoute = Routing.generate('site_api.get_order_payment', {
+        const urlRoute = Routing.generate(`site_api.get_order_payment.${LOCALE}`, {
             token: token
         });
 

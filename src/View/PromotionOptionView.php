@@ -12,6 +12,7 @@ final class PromotionOptionView
     public function view(PromotionOption $promotionOption): array
     {
         return [
+            'id' => $promotionOption->getId(),
             'type' => $promotionOption->getType(),
             'configuration' => $promotionOption->getConfiguration(),
         ];

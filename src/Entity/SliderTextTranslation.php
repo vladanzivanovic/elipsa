@@ -2,50 +2,35 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\SliderTextTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SliderTextTranslationRepository")
- */
-class SliderTextTranslation
+#[ORM\Entity(repositoryClass: SliderTextTranslationRepository::class)]
+class SliderTextTranslation implements EntityInterface, LocaleInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    use ResourceTrait;
+    use LocaleTrait;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private string $title;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $link;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     private string $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SliderText", inversedBy="sliderTextTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: SliderText::class, inversedBy: 'sliderTextTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private SliderText $sliderText;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getTitle(): string
     {
@@ -71,36 +56,24 @@ class SliderTextTranslation
         return $this;
     }
 
-    public function getLocale(): string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
     public function getSliderText(): SliderText
     {
         return $this->sliderText;
     }
 
-    public function setSliderText(?SliderText $sliderText): self
+    public function setSliderText(SliderText $sliderText): self
     {
         $this->sliderText = $sliderText;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): null|string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(null|string $description): void
     {
         $this->description = $description;
     }

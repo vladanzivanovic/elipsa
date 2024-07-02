@@ -9,6 +9,7 @@ use App\Entity\Slider;
 use App\Handler\BannerHandler;
 use App\Helper\ConstantsHelper;
 use App\Parser\BannerEditRequestParser;
+use App\Request\Dto\Admin\BannerEditRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,28 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class BannerEditController extends AbstractController
 {
-    private BannerEditRequestParser $requestParser;
-
-    private BannerHandler $bannerHandler;
-
     public function __construct(
-        BannerEditRequestParser $requestParser,
-        BannerHandler $bannerHandler
-    ) {
-        $this->requestParser = $requestParser;
-        $this->bannerHandler = $bannerHandler;
-    }
+        private readonly BannerEditRequestParser $requestParser,
+        private readonly BannerHandler $bannerHandler,
+    ) {}
 
-    /**
-     *
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Exception
-     */
     #[Route(path: '/api/add-banner', name: 'admin.add_banner_api', methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(BannerEditRequestDto $bannerEditRequestDto): JsonResponse
     {
-        $banner = $this->requestParser->parse($request->request);
+        $banner = $this->requestParser->parse($bannerEditRequestDto);
 
         $this->bannerHandler->save($banner);
 
@@ -51,10 +39,10 @@ final class BannerEditController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      */
-    #[Route(path: '/api/edit-banner/{id}', name: 'admin.edit_banner_api', methods: ['PUT'], options: ['expose' => true])]
-    public function update(Request $request, Banner $banner): JsonResponse
+    #[Route(path: '/api/edit-banner/{id}', name: 'admin.edit_banner_api', options: ['expose' => true], methods: ['PUT'])]
+    public function update(BannerEditRequestDto $bannerEditRequestDto, Banner $banner): JsonResponse
     {
-        $banner = $this->requestParser->parse($request->request, $banner);
+        $banner = $this->requestParser->parse($bannerEditRequestDto, $banner);
 
         $this->bannerHandler->save($banner);
 
@@ -66,7 +54,7 @@ final class BannerEditController extends AbstractController
      *
      * @throws \ReflectionException
      */
-    #[Route(path: '/api/toggle-banner-status/{id}/{status}', name: 'admin.api_toggle_banner_status', methods: ['PATCH'], options: ['expose' => true])]
+    #[Route(path: '/api/toggle-banner-status/{id}/{status}', name: 'admin.api_toggle_banner_status', options: ['expose' => true], methods: ['PATCH'])]
     public function toggleActivation(Banner $banner, int $status): JsonResponse
     {
         $banner->setIsActive((bool) $status);

@@ -19,11 +19,11 @@ class HeaderEvents {
     }
 
     #registerEvents() {
-        $(document).on('click touchend', this.#mapper.login.submitBtn, async e => {
+        $(document).on('click', this.#mapper.login.submitBtn, async e => {
             await loginHandler.login();
         });
 
-        $(this.#mapper.reset.resetPasswordBtn).on('click touchend', e => {
+        $(this.#mapper.reset.resetPasswordBtn).on('click', e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -35,7 +35,7 @@ class HeaderEvents {
             $(this.#mapper.login.loginShowWrapper).fadeIn();
         });
 
-        $(this.#mapper.login.loginShowBtn).on('click touchend', e => {
+        $(this.#mapper.login.loginShowBtn).on('click', e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -47,14 +47,14 @@ class HeaderEvents {
             $(this.#mapper.login.loginShowWrapper).fadeOut();
         });
 
-        $(document).on('click touchend', this.#mapper.reset.resetPasswordSubmitBtn, async e => {
+        $(document).on('click', this.#mapper.reset.resetPasswordSubmitBtn, async e => {
 
             $(this.#mapper.reset.form).valid();
 
             await resetPasswordHandler.reset();
         });
 
-        $(document).on('click touchend', this.#mapper.search.opener, e => {
+        $(document).on('click', this.#mapper.search.opener, e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -64,7 +64,7 @@ class HeaderEvents {
             }
         })
 
-        $(document).on('click touchend', this.#mapper.search.close, e => {
+        $(document).on('click', this.#mapper.search.close, e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -85,6 +85,39 @@ class HeaderEvents {
             location.href = Routing.generate(
                 `site.shop_page.${LOCALE}`, params);
         })
+
+        $(this.#mapper.dropDown.close).on('click', e => {
+            const parent = $(e.currentTarget).parents('.drop-down-area');
+
+            parent.removeClass('drop-down-area-active');
+        });
+
+        $(document).on('click', e => {
+            $.each($('.drop-down-area-active'), (index, element) => {
+                if (0 === $(e.target).parents('.mobile-user-item').length) {
+                    $(element).removeClass('drop-down-area-active');
+                }
+            });
+        });
+
+        $(this.#mapper.dropDown.button).on('click', e => {
+            const parent = $(e.currentTarget).parent('.mobile-user-item');
+
+            if (parent.hasClass('go-to-link')) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            $.each($('.drop-down-area-active'), (index, element) => {
+                if (0 === $(e.target).parents('.mobile-user-item').closest($(element)).length) {
+                    $(element).removeClass('drop-down-area-active');
+                }
+            });
+
+            parent.find(this.#mapper.dropDown.area).addClass('drop-down-area-active');
+        });
     }
 
     #registerValidators()

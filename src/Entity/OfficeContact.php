@@ -2,41 +2,34 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use App\Repository\OfficeContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=OfficeContactRepository::class)
- */
-class OfficeContact
+#[ORM\Entity(repositoryClass: OfficeContactRepository::class)]
+class OfficeContact implements EntityInterface, CountryResourceInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    use ResourceTrait;
+    use CountryResourceTrait;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=OfficeContactTranslation::class, mappedBy="officeContact", orphanRemoval=true, cascade={"persist", "remove"})
+     * @var Collection<int, OfficeContactTranslation>
      */
+    #[ORM\OneToMany(mappedBy: 'officeContact', targetEntity: OfficeContactTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $officeContactTranslations;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private bool $showInFooter;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $useInEmail = false;
 
     public function __construct()
@@ -89,7 +82,7 @@ class OfficeContact
         return $this;
     }
 
-    public function getByLocale(string $locale): OfficeContactTranslation
+    public function getByLocale(string $locale): OfficeContactTranslation|null
     {
         $transCollection = $this->officeContactTranslations;
 
@@ -98,7 +91,7 @@ class OfficeContact
             return $trans->getLocale() === $locale;
         });
 
-        return $filtered->first();
+        return 0 < $filtered->count() ? $filtered->first() : null;
     }
 
     public function isShownInFooter(): bool

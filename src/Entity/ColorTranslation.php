@@ -2,47 +2,30 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\ColorTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ColorTranslationRepository")
- */
-class ColorTranslation
+#[ORM\Entity(repositoryClass: ColorTranslationRepository::class)]
+class ColorTranslation implements EntityInterface, LocaleInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
+    use LocaleTrait;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 50)]
+    private string $title;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
-    private $slug;
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Gedmo\Slug(fields: ['title'], updatable: true)]
+    private string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $locale;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductColor", inversedBy="colorTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $color;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    #[ORM\ManyToOne(targetEntity: ProductColor::class, inversedBy: 'colorTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ProductColor $color;
 
     public function getTitle(): ?string
     {
@@ -56,7 +39,7 @@ class ColorTranslation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): null|string
     {
         return $this->slug;
     }
@@ -68,24 +51,12 @@ class ColorTranslation
         return $this;
     }
 
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    public function getColor(): ?ProductColor
+    public function getColor(): ProductColor
     {
         return $this->color;
     }
 
-    public function setColor(?ProductColor $color): self
+    public function setColor(ProductColor $color): self
     {
         $this->color = $color;
 

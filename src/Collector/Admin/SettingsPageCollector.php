@@ -23,8 +23,10 @@ final class SettingsPageCollector
         ]]);
 
         $siteSettings = $this->settingsRepository->findBy(['slug' => [
-            'SITE_NAME', 'MAIN_EMAIL', 'SHIPPING_PRICE', 'FREE_SHIPPING', 'FREE_SHIPPING_STORE'
+            'SITE_NAME', 'MAIN_EMAIL'
         ]]);
+
+        $shippingPriceSettings = $this->settingsRepository->findBy(['slug' => ['SHIPPING_PRICE', 'FREE_SHIPPING', 'FREE_SHIPPING_STORE']]);
 
         $footerText = $this->settingsRepository->findBy(['slug' => 'FOOTER_BOTTOM_TEXT']);
 
@@ -32,6 +34,7 @@ final class SettingsPageCollector
             'settings' => [
                 'company' => $companySettings,
                 'site' => $siteSettings,
+                'shipping_prices' => $shippingPriceSettings,
                 'footer' => $footerText,
             ]
         ];

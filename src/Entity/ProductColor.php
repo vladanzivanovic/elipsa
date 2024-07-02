@@ -2,49 +2,42 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleTranslatorInterface;
+use App\Entity\Resources\LocaleTranslatorTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\ProductColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductColorRepository")
- */
-class ProductColor
+#[ORM\Entity(repositoryClass: ProductColorRepository::class)]
+class ProductColor implements EntityInterface, LocaleTranslatorInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use ResourceTrait;
+    use LocaleTranslatorTrait;
+
+    #[ORM\Column(type: 'string', length: 7)]
+    #[Assert\NotBlank(message: 'field.not_blank', groups: ['SetColor'])]
+    private string $hex;
 
     /**
-     * @ORM\Column(type="string", length=7)
-     * @Assert\NotBlank(message="field.not_blank", groups={"SetColor"})
+     * @var Collection<int, ColorTranslation>
      */
-    private $hex;
+    #[ORM\OneToMany(targetEntity: ColorTranslation::class, mappedBy: 'color', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $translations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ColorTranslation", mappedBy="color", orphanRemoval=true, cascade={"persist", "remove"})
+     * @var Collection<int, OrderProduct>
      */
-    private $colorTranslations;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="color")
-     */
-    private $orderProducts;
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'color')]
+    private Collection $orderProducts;
 
     public function __construct()
     {
-        $this->colorTranslations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getHex(): ?string
@@ -60,17 +53,17 @@ class ProductColor
     }
 
     /**
-     * @return Collection|ColorTranslation[]
+     * @return Collection<int, ColorTranslation>
      */
     public function getColorTranslations(): Collection
     {
-        return $this->colorTranslations;
+        return $this->translations;
     }
 
     public function addColorTranslation(ColorTranslation $colorTranslation): self
     {
-        if (!$this->colorTranslations->contains($colorTranslation)) {
-            $this->colorTranslations[] = $colorTranslation;
+        if (!$this->translations->contains($colorTranslation)) {
+            $this->translations[] = $colorTranslation;
             $colorTranslation->setColor($this);
         }
 
@@ -79,34 +72,15 @@ class ProductColor
 
     public function removeColorTranslation(ColorTranslation $colorTranslation): self
     {
-        if ($this->colorTranslations->contains($colorTranslation)) {
-            $this->colorTranslations->removeElement($colorTranslation);
-            // set the owning side to null (unless already changed)
-            if ($colorTranslation->getColor() === $this) {
-                $colorTranslation->setColor(null);
-            }
+        if ($this->translations->contains($colorTranslation)) {
+            $this->translations->removeElement($colorTranslation);
         }
 
         return $this;
     }
 
     /**
-     * @param string $locale
-     *
-     * @return ColorTranslation
-     */
-    public function getByLocale(string $locale): ColorTranslation
-    {
-        $filteredTrans = $this->colorTranslations->filter(function ($trans) use ($locale) {
-            /** @var ColorTranslation $trans */
-            return $trans->getLocale() === $locale;
-        });
-
-        return $filteredTrans->first();
-    }
-
-    /**
-     * @return Collection|OrderProduct[]
+     * @return Collection<int, OrderProduct>
      */
     public function getOrderProducts(): Collection
     {

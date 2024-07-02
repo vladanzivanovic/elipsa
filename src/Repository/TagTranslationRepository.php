@@ -24,12 +24,9 @@ class TagTranslationRepository extends ExtendedEntityRepository
     }
 
     /**
-     *
-     * @return int|mixed|string
-     * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getForLocalization(string $slug, string $locale)
+    public function getForLocalization(string $slug, string $locale): null|array
     {
         $query = $this->createQueryBuilder('tt')
             ->select(
@@ -41,6 +38,6 @@ class TagTranslationRepository extends ExtendedEntityRepository
             ->setParameter('slug', $slug)
             ->setParameter('locale', $locale);
 
-        return $query->getQuery()->getSingleScalarResult();
+        return $query->getQuery()->getOneOrNullResult();
     }
 }

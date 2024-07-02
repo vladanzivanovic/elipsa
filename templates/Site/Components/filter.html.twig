@@ -60,7 +60,7 @@
             </button>
             <ul id="collection" class="sidebar-list collapse">
                 {% for collectionTag in filters.collections %}
-                    <li><a href="#" class="{{ search.collections is not null and collectionTag[locale].slug in search.collections ? 'active' : '' }}" data-search-name="collections" data-search="{{ collectionTag[locale].slug }}">{{ collectionTag[locale].title }}</a></li>
+                    <li><a href="#" class="{{ search.collections is not null and collectionTag.translations[locale].slug in search.collections ? 'active' : '' }}" data-search-name="collections" data-search="{{ collectionTag.translations[locale].slug }}">{{ collectionTag.translations[locale].title }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -71,7 +71,7 @@
             </button>
             <ul id="season" class="sidebar-list collapse">
                 {% for seasonTag in filters.seasons %}
-                    <li><a href="#" class="{{ search.seasons is not null and seasonTag[locale].title in search.seasons ? 'active' : '' }}" data-search-name="seasons" data-search="{{ seasonTag[locale].slug }}">{{ seasonTag[locale].title }}</a></li>
+                    <li><a href="#" class="{{ search.seasons is not null and seasonTag.translations[locale].title in search.seasons ? 'active' : '' }}" data-search-name="seasons" data-search="{{ seasonTag.translations[locale].slug }}">{{ seasonTag.translations[locale].title }}</a></li>
                 {% endfor %}
             </ul>
         </div>

@@ -26,12 +26,12 @@ final class ProductDetailsController extends AbstractController
         $this->pageFormatter = $pageFormatter;
     }
 
-    #[Route(path: '/api/products/{slug}', name: 'site_api.product', methods: ['GET'], options: ['expose' => true])]
+    #[Route(path: '/api/products/{slug}', name: 'site_api.product', options: ['expose' => true], methods: ['GET'])]
     public function index(ProductTranslation $productTranslation, Request $request): Response
     {
         $locale = $request->getLocale();
 
-        $collection = $this->pageCollector->collect($productTranslation, $locale, $this->getUser());
+        $collection = $this->pageCollector->collect($productTranslation, $locale, $request->attributes->get('_country'), $this->getUser());
 
         return $this->json(
             $this->pageFormatter->formatApiResponse($collection, $locale, $this->getUser()),

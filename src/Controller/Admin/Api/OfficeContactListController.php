@@ -40,7 +40,7 @@ final class OfficeContactListController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    #[Route(path: '/api/get-office-contact-list', name: 'admin.get_office_contact_list', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/get-office-contact-list', name: 'admin.get_office_contact_list', options: ['expose' => true], methods: ['POST'])]
     public function getList(Request $request): JsonResponse
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

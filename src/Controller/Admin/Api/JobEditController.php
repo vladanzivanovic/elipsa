@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Entity\CareerDescription;
+use App\Entity\Resources\StatusInterface;
 use App\Handler\JobHandler;
 use App\Parser\JobRequestParser;
+use App\Request\Dto\Admin\CareerDescriptionEditRequestDto;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use ReflectionException;
@@ -36,9 +38,9 @@ class JobEditController extends AbstractController
      * @throws OptimisticLockException
      */
     #[Route(path: '/api/job-create', name: 'admin.add_job_api', options: ['expose' => true], methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(CareerDescriptionEditRequestDto $careerDescriptionEditRequestDto): JsonResponse
     {
-        $blog = $this->requestParser->parse($request->request);
+        $blog = $this->requestParser->parse($careerDescriptionEditRequestDto);
 
         $this->handler->save($blog);
 
@@ -48,28 +50,28 @@ class JobEditController extends AbstractController
 
     /** todo investigate this */
     #[Route(path: '/api/job-edit/{id}', name: 'admin.edit_job_api', options: ['expose' => true], methods: ['PUT'])]
-    public function edit(CareerDescription $careerDescription, Request $request): JsonResponse
+    public function edit(CareerDescription $careerDescription, CareerDescriptionEditRequestDto $careerDescriptionEditRequestDto): JsonResponse
     {
-        $this->requestParser->parse($request->request, $careerDescription);
+        $this->requestParser->parse($careerDescriptionEditRequestDto, $careerDescription);
 
         $this->handler->save($careerDescription);
 
-        return $this->json(null, JsonResponse::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     /**
      *
      * @throws ReflectionException
      */
-    #[Route(path: '/api/job-set-status/{status}/{id}', name: 'admin.set_job_status_api', methods: ['PATCH'], options: ['expose' => true])]
-    public function changeStatus(CareerDescription $careerDescription, int $status): JsonResponse
+    #[Route(path: '/api/job-set-status/{status}/{id}', name: 'admin.set_job_status_api', options: ['expose' => true], methods: ['PATCH'])]
+    public function changeStatus(CareerDescription $careerDescription, string $status): JsonResponse
     {
         $careerDescription->setStatus($status);
         $careerDescription->setActivationDate(new \DateTime());
 
         $this->handler->save($careerDescription);
 
-        $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', CareerDescription::class);
+        $statusText = ConstantsHelper::getConstantName((string) $status, 'STATUS', StatusInterface::class);
 
         return $this->json(['text' => $statusText], JsonResponse::HTTP_CREATED);
     }

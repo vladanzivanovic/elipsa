@@ -1,12 +1,21 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Dodavanje/Izmena slider{% endblock %}
-{% block bodyClass %}slider-edit{% endblock %}
 {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_slider_page' %}
+{% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
+{% set title = titlePrefix ~ ' slidera' %}
+{% set routePath = 'admin.sliders' %}
+{% set routeTitle = 'Slider' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block bodyClass %}slider-edit{% endblock %}
+
 {% block content %}
 
-
-    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena slidera' } %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {
+        activePage: title,
+        pages: [
+            {routeName: routePath, name: routeTitle}
+        ]} %}
 
     {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
 
@@ -17,6 +26,22 @@
     </div>
 
     <form id="edit_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Odabir države</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Zemlja', 'country-select-box', 'available_countries[]', IS_EDIT ? payload.available_countries : '' , countries_options(), '', 'w-100', true) }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
@@ -36,22 +61,23 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        {% for locale, lang in languages %}
+        <div class="row country_{{ locale }} hide-country">
             <div class="col-md-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Srpski</h6>
+                        <h6 class="card-title">{{ lang.translation | trans }}</h6>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'description_rs', IS_EDIT ? rs_description : '', 'rs_description', 10, '', 'form-control') }}
+                                    {{ form.textarea('Kratak opis', 'description_'~locale, IS_EDIT ? payload.translations[locale].description : '', 'translations['~locale~'][description]', 10, '', 'form-control') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.input('Link', 'link_rs', IS_EDIT ? rs_link : '', 'rs_link') }}
+                                    {{ form.input('Link', 'link_'~locale, IS_EDIT ? payload.translations[locale].button_link : '', 'translations['~locale~'][link]') }}
                                 </div>
                             </div><!-- Row -->
                         </div>
@@ -59,31 +85,9 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title">Engleski</h6>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    {{ form.textarea('Kratak opis', 'description_en', IS_EDIT ? en_description : '', 'en_description', 10, '', 'form-control') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    {{ form.input('Link', 'link_en', IS_EDIT ? en_link : '', 'en_link') }}
-                                </div>
-                            </div><!-- Row -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </form>
-    {{ form.button('slider_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+    {{ form.button('submit_btn', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
 {% endblock %}
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
@@ -91,7 +95,7 @@
         const ID = '{{ app.request.attributes.get('id') }}';
 
         {% if IS_EDIT %}
-            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+            const IMAGES = JSON.parse('{{ payload.media.images|json_encode()|raw }}');
         {% endif %}
     </script>
 {% endblock %}

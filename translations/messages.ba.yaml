@@ -1,0 +1,689 @@
+pending: Na čekanju
+active: Aktivan
+archived: Arhivirano
+disabled: Zaključan
+
+scroll_top_page: Vrh stranice
+
+view: pogledaj
+
+default_title: Modna Kuća Elipsa
+
+new: novo
+discount: popust
+down: dolje
+up: gore
+
+season: Sezona
+collection: Kolekcija
+attribute: Atributi
+
+choose: Odaberite
+choose_gender: Odaberite spol
+choose_language: Odaberite jezik
+
+information:
+  basic: Osnovne informacije
+  additional: Dodatne informacije
+  contact: Kontakt informacije
+
+data:
+  success_send: 'Podaci su uspješno poslani.'
+  success_deleted: 'Podaci su uspješno izbrisani.'
+
+generic_error: 'Došlo je do greške prilikom slanja zahtjeva.'
+
+error:
+  in_use: '%item% je u upotrebi'
+
+notifications:
+  please_wait: 'Pričekajte.'
+
+price: cijena
+
+navi:
+  home: Početna
+  about_us: O nama
+  locations: Prodavnice
+  loyalty: Loyalty
+  catalogue: Katalog
+  shop: Online Shop
+  blog: Blog
+  ask_us: Pitajte nas
+  contact: Kontakt
+  account: Moj račun
+  trends: Trendovi
+  collaborator: Saradnici
+  career_form: Obrasci za zapošljavanje
+  policy_and_privacy: Politika privatnosti
+  use_conditions: Pravila korištenja
+  withdraw_policy: Pravo na povlačenje
+  complaint: Pritužbe
+  payment_methods: Metoda plaćanja
+  delivery: Dostava
+  free_delivery: Besplatna dostava
+  in_store_pickup: Preuzimanje u prodavnici
+  product_rehearsal: Proba artikala
+  product_return_and_exchange: Zamjena i povraćaj predmeta
+  refund: Povrat novca
+  career: Zapošljavanje
+  cookie_policy: Politika kolačića
+  seasons: Sezone
+  orders: Naredbe
+  shopping: Kupovina
+
+serbian_lang: Srpski jezik
+english_lang: Engleski jezik
+bosnia_lang: Bosanksi jezik
+serbia: Srbija
+bosnia_and_herzegovina: Bosna i Hercegovina
+
+size: veličina
+color: boja
+categories: kategorije
+filters: filteri
+sort: sortiranje
+limit: limit
+show_per_page: prikaži
+search: traži
+
+next_page: sljedeći
+prev_page: prethodni
+last_page: posljednji
+first_page: prvi
+
+available_sizes: dostupne veličine
+available_colors: dostupne boje
+
+most_selled: najprodavaniji
+from_lowest_price: prvo najjeftinije
+from_highest_price: prvo najskuplje
+on_sale: na rasprodaji
+first_new: najnovije
+sold: Rasporodato
+saving: Ušteda
+
+select.color: odaberite boju
+select.size: odaberite veličinu
+product.add_to_cart: dodaj u korpu
+product.notify_me: Obavijesti me
+product.notify_me_text: Veličina nije dostupna. Unesite svoju e-mail adresu i mi ćemo vas obavijestiti kada veličina bude ponovo na zalihama.
+
+tags: oznake
+
+share_link: Link za dijeljenje
+
+product.description: opis proizvoda
+product.material_cleaning: materijala i održavanja
+product.size_table: tabela veličina
+product.unavailable: Proizvod više nije dostupan
+
+related_products: slični proizvodi
+
+cart.name: Korpa
+cart.total_products: Ukupno
+cart.total_shipping: Ukupno sa poštarinom
+cart.view: Pogledaj korpu
+cart.checkout: Naručite
+cart.personal_data: vaše podatke
+cart.order_completed_successful: uspješna narudžba
+cart.continue_shopping: nastaviti kupovinu
+cart.update: osvežite korpu
+cart.next_step: sljedeći korak
+cart.shipping: otprema
+cart.empty: Vaša korpa je prazna
+cart.total_cost: iznos vaše korpe
+cart.promo_coupon: promotivni kod
+cart.promo_coupon_text: unesite promotivni kod ako ga imate.
+cart.add_coupon_btn: dodati kod
+cart.remove_coupon_btn: Uklonite kod
+
+cart.table.image: slika
+cart.table.product_name: proizvod
+cart.table.price: cijena
+cart.table.quantity: količina
+cart.table.total: ukupno
+
+title.your_cart: Vaša korpa
+title.cart_personal_data: Vaša korpa - unos ličnih podataka
+title.checkout_completed_successful: Uspješna narudžba
+title.checkout_completed_unsuccessful: Narudžba nije uspjela
+title.location: Lokacije
+title.blog_detailed_page: Blog stranica
+title.shop_page: Proizvodi
+title.account_activation_page: Aktivacija računa
+title.my_account: Moj račun
+title.ask_us: Pitajte nas
+title.catalog: Katalog
+title.about_us: O nama
+title.contact_us: Kontakt
+title.privacy_policy: Politika privatnosti
+title.reset_password: Promijenite lozinku
+title.not_exits_page: Nepostojeća stranica
+title.career: Radna mjesta
+title.trends: Trendovi
+title.registration_confirmation: Potvrda registracije
+
+checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovdje</a> da bi ste se prijavili
+checkout.billing_address: podake o platiocu
+checkout.order_notes: Dodatni tekst o narudžbi
+checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
+checkout.your_order: vašu narudžbu
+checkout.product_total: proizvodi <span>ukupno</span>
+checkout.create_account: kreirajte nalog
+checkout.payment_type.select_label: Odaberite način plaćanja
+checkout.shipping_type.select_label: Odaberite način isporuke
+checkout.payment.on_delivery: Pouzećem
+checkout.payment.credit_card: Karticom
+checkout.shipping.on_delivery: Kurirskom službom
+checkout.shipping.in_store: Preuzimanje u prodavnici
+checkout.shipping.store_list_label: Prodavnica
+checkout.shipping.in_store_not_available: Iznos narudžbe mora biti jednak ili veći od %shipping_price_store% RSD za dostavu i preuzimanje u željenoj radnji.
+checkout.complete_order: dovršite narudžbu
+checkout.account_exists: Račun sa e-mail adresom %email% je već registrovan.
+checkout.account_deactivated: Račun sa e-mail adresom %email% je deaktiviran.
+checkout.finish.title: Informacije o narudžbi
+checkout.finish.transaction_detail: Podaci o transakciji
+checkout.finish.product_title: Pregled naručenih proizvoda
+checkout.finish.data.payment_type: Način plaćanja
+checkout.finish.data.shipping_type: Način dostave
+checkout.finish.data.shipping_store_address: Adresa prodavnice
+checkout.finish.data.shipping_store_telephone: Broj tel prodavnice
+checkout.finish.data.checkout_date: Datum narudžbe
+checkout.finish.data.carrier_link: Praćenje pošiljke
+checkout.finish.data.carrier_ref_no: Broj paketa
+checkout.finish.address_title: Adresa
+checkout.finish.mobile_phone_title: Mobilni telefon
+checkout.finish.transaction_status_label: Status transakcije
+checkout.finish.tracking_info_title: Status vaše narudžbe
+checkout.finish.transaction_status_success: Uspješno ste izvršili uplatu - vaš račun platne kartice je zadužen.
+checkout.finish.transaction_status_failed: Uplata nije uspjela, vaš račun nije zadužen, najčešći uzrok je netačan unos broja kartice, datuma isteka ili sigurnosnog koda, pokušajte ponovo, u slučaju ponovljenih grešaka nazovite svoju banku
+checkout.finish.transaction_date_time: Datum transakcije
+checkout.finish.auth_code: Autorizacijski kod
+checkout.finish.order_id: Broj narudžbe
+checkout.finish.response: Status transakcije
+checkout.finish.proc_return_code: Šifra statusa transakcije
+checkout.finish.transaction_id: Broj transakcije
+checkout.finish.md_status: 3D statusni kod transakcije
+checkout.finish.payment_id: Broj plaćanja
+checkout.finish.credit_card_no: Broj platne kartice
+checkout.checkbox.terms_and_conditions: Klikom na dugme prihvatate naše <strong>"Opšti uslovi korišćenja i prodaje"</strong>.
+
+checkout_completed.title: uspješno ste naručili proizvode.
+checkout_completed.details: detalji vaše narudžbe su vam poslani e-poštom.
+checkout_fail.title: Narudžba nije uspjela.
+
+Approved: Odobreno
+Declined: Odbijeno
+
+country: zemlja
+countries: zemlje
+first_name: ime
+First_name: Ime
+Last_name: Prezime
+last_name: prezime
+address: adresa
+street_and_number: Ulica i broj
+city: mjesto
+zip_code: poštanski broj
+email: E-mail adresa
+mobile_telephone: mobilni telefon
+telephone: telefon
+create_account: kreirajte nalog
+password: lozinka
+Password: Lozinka
+Re_password: Ponovite lozinku
+occupation: profesija
+message: poruka
+birth_date: datum rođenja
+subject: tema
+website: web stranica
+position: pozicija
+about_company: podaci o kampaniji
+
+email.order.title: Narudžbenica %orderId%
+email.order.text: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Hvala vam što ste naručili sa %site_name%. Bićete kontaktirani u roku od 24 sata da potvrdite vašu narudžbu. Provjeravamo status veličine. Pretraga veličine može potrajati. Hvala na strpljenju.</p>
+  <p>Ako imate pitanja ili želite promijeniti narudžbu, kliknite na dugme za odgovor. Molimo vas da ne mijenjate naslov narudžbe, kako bismo lakše pronašli vašu narudžbu u sistemu. Hvala.</p>
+   <p class="last-child">Detalji narudžbe su prikazani ispod</p>'
+email.order.failedText: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Plaćanje nije uspjelo.<br> Vaš račun nije zadužen, najčešći uzrok je pogrešno uneseni broj kartice, datum isteka ili sigurnosni kod. Pokušajte ponovo, u slučaju uzastopnih grešaka pozovite svoju banku.</p>
+  <p class="last-child">Ako imate problema sa kupovinom, kontaktirajte nas putem e-pošte ili telefona. Hvala.</p>'
+email.order.overview: Pregled narudžbe
+email.order.seller: Prodavač
+email.order.seller.name: Naziv
+email.order.seller.account: Bankovni račun
+email.order.seller.address: Adresa
+email.order.seller.telephone: Telefon
+email.order.seller.mobile: Mobilni telefon
+#email.order.failed.message: Plaćanje nije uspešno.<br> Vas racun nije zaduze, najcesci uzrok je pogresano unet brtoj kartice, datum isteka ili sigurnosni kod. Pokusajte ponovo, u slucaju uzastopnih gresaka pozovite vasu banku.
+email.order.thanks_text: Hvala vam na kupnji.
+
+email.order.buyer: Kupac
+email.order.buyer.full_name: Ime i prezime
+email.order.buyer.city: Grad
+email.order.buyer.street_number: Ulica i broj
+email.order.buyer.payment_type: Plaćanje
+
+email.order.data.title: Narudžba na čekanju %orderId%
+email.order.data.title_unsuccessful: Narudžba %orderId% nije uspjela
+email.order.table.product_name: Naziv proizvoda
+email.order.table.size: Veličina
+email.order.table.color: Boja
+email.order.table.quantity: Količina
+email.order.table.shipping: Poštarina
+email.order.table.unit_price: Jedinična cijena
+email.order.table.total_price: Ukupna cijena
+email.order.table.promo_coupon: Promocija
+email.order.total_shipping: Ukupno sa dostavom
+email.order.products_total_price: Međuzbroj
+email.order.payment_info: Informacije o plaćanju
+email.order.payment_details: Detalji plaćanja
+email.order.delivery_info: Informacije o isporuci
+email.order.note_title: O narudžbi
+email.order.status_info: Status narudžbe
+email.order.payment_type: Vrsta plaćanja
+email.order.shipping_type: Način dostave
+email.order.store_address: Adresa prodavnice
+email.order.store_telephone: Sačuvajte broj telefona
+email.order.career_link_label: Link za praćenje pošiljke
+
+email.order_status.title: 'Promjena statusa vaše narudžbe #%id%'
+email.order_status.change_label: '<h3>Poštovani/a %first_name%,</h3>
+  <p>Status vaše narudžbe je promijenjen.</p>
+  <p class="last-child">Status Vaše narudžbe: <strong>"%status_text%"</strong>.</p>'
+email.order_status.tracking_info_label: '<p class="last-child">Link za praćenje pošiljke je: <a href="%tracking_link%">%tracking_link%</a>, Vaš broj pošiljke je: %tracking_ref_no%.</p>'
+
+email.registration.title: Registracija na sajtu %siteName%
+email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
+  <p>uspješno ste se registrovali.</p>
+  <p class="last-child">Da biste završili proces registracije, potrebno je da aktivirate svoj nalog, kliknite na dugme ispod, ili kopirajte link u pretraživač.</p>'
+email.registration.linkText: Potvrdite registraciju
+
+email.reset_password.title: Poništi lozinku na stranici %siteName%
+email.reset_password.headline.text: Zahtjev za promjenu lozinke
+email.reset_password.message: Da biste dovršili proces promjene lozinke, kliknite na link ispod.
+
+email.notification.size.subject: Proizvod je ponovo dostupan
+email.notification.size.title: Proizvod %product_name% ponovo je dostupan
+email.notification.size.text: '<div>
+                                  <div contenteditable="true"
+                                       translate="no" tabindex="-1"
+                                       class="ProseMirror"><h3>
+                                          Poštovani/a,</h3>
+                                      <p>Obaveštavamo vas da je
+                                          veličina %size% za proizvod
+                                          %product_name% ponovo
+                                          dostupna.</p>
+                                      <p>Ukoliko želite možete je
+                                          poručiti.</p>
+                                      <p>Klikom na link <a href="%link%">%link%</a> bićete
+                                          preusmereni na stranicu sa
+                                          proizvodom</p></div>
+                              </div>'
+
+payment_type.on_delivering: Prilikom isporuke
+payment_type.credit_card: Platna kartica
+
+location.modal.work_time: Radno vrijeme
+location.modal.work_time_saturday: subota
+location.modal.work_time_sunday: nedelja
+location.look_btn: pogledajte
+lokacija.mapa: mapa
+location.search_text: Tražite trgovine
+
+all: sve
+
+read_more: detaljnije
+
+blog.posted: postavljeno
+
+form: forma
+submit: Pošalji
+cancel: Otkaži
+
+loyalty.rate: Ocijenite brend ELIPSA od 1-5
+loyalty.message.success: Uspješno ste se registrovali za program lojalnosti.
+loyalty.message.user_exists: Već ste se prijavili za program lojalnosti.
+loyalty.btn: Prijavite se
+
+January: Januar
+February: Februar
+March: Mart
+April: April
+May: Maj
+June: Jun
+July: Jul
+August: Avgust
+September: Septembar
+October: Oktobar
+November: Novembar
+December: Decembar
+
+login.text: Prijava
+login.btn: Prijavi se
+login.remember_me: Zapamti me
+login.successful: Uspješno ste se prijavili
+login.via: Ulogijte se putem
+
+reset_password.text: Zaboravili ste lozinku?
+reset_password.label: resetirajte lozinku
+reset_password.successful: Link za poništavanje lozinke je poslan na vašu email adresu
+reset_password.user_not_exists: Nepostojeći korisnik.
+reset_password.page.text: Unesite novu lozinku.
+reset_password.page.error.expired_token: Zahtjev za poništavanje lozinke je istekao. Zatražite novu.
+reset_password.page.success: Uspješno ste promijenili lozinku.
+
+logout.text: odjaviti se
+
+registration.text: Registracija
+registration.btn: Registracija
+registration.via: Registracija putem
+registration.error.user_exists: Već ste registrovani
+registration.success.title: Uspješno ste se registrovali.
+registration.success.message: E-mail za potvrdu registracije je poslan na vašu adresu e-pošte. Slijedite vezu u e-poruci da aktivirate svoj račun
+registration.activation.title: Vaš nalog je aktiviran
+registration.activation.message: Sada se možete prijaviti
+registration.dont_have_account: Nemate račun
+registration.page.title: Kreirajte svoj Ellipsa nalog
+registration.page.text: Registrirajte se i uživajte u posebnim pogodnostima online kupovine
+
+user.inactive_user: Vaša e-mail adresa nije aktivirana.<br/> Molimo slijedite link u e-poruci da aktivirate svoj račun.
+
+my_account.welcome_text: dobrodošli
+my_account.personal_info.user: Lični podaci
+my_account.personal_info.success.message: podaci su uspješno promijenjeni
+my_account.personal_info.address: Adresa
+my_account.personal_info.phone: Telefon
+my_account.personal_info.change_btn: Promjena informacija
+my_account.wish_list: Lista želja
+my_account.order_list: Narudžbe
+my_account.order_table.image: slika
+my_account.order_table.number: Broj narudžbe
+my_account.order_table.products: Proizvodi
+my_account.order_table.price: cijena
+my_account.order_table.color: boja
+my_account.order_table.size: veličina
+my_account.order_table.payment: Način plaćanja
+my_account.order_table.status: Status narudžbe
+my_account.order_table.view_product: pogledajte proizvod
+
+wish_list.success.add.message: Proizvod je dodat na listu želja
+wish_list.success.remove.message: Proizvod je uklonjen sa liste
+
+login_required: Morate biti prijavljeni
+
+'Bad credentials.': Uneseni podaci su netačni
+
+ask_us.message.success: Uspješno ste poslali upit.
+
+newsletter.text: budite prvi koji će saznati za sve
+newsletter.notShowBtn: ne prikazuj više
+newsletter.existingUser: Već ste se prijavili za newsletter
+newsletter.success.add.message: Uspješno ste se prijavili za newsletter
+
+contact.telephone.mobile: Mobilni telefon
+contact.company_activity: Aktivnost
+contact.company_id: Identifikacioni broj
+contact.title.address: Adresa
+contact.title.telephone: Kontakt telefoni
+contact.box.street: Ulica
+contact.box.city: Grad
+contact.box.post_code: Poštanski broj
+contact.box.country: Država
+contact.box.telephone_main: Sjedište
+contact.tax_id: PIB
+contact.form.first_name: Ime
+contact.form.last_name: Prezime
+contact.form.email: Email
+contact.form.telephone: Telefon
+contact.form.how_to_contact_you: Kako da vas kontaktiram
+contact.form.order_number: Broj narudžbe
+contact.form.subject: Predmet
+contact.form.message: Poruka
+contact.form.answer_email: putem e-pošte
+contact.form.answer_phone: Telefonom
+
+links: linkovi
+store: prodavnica
+info: informacije
+shopping: Kupovina
+
+yes: da
+no: ne
+
+all_rights: Sva prava zadržana.
+
+ROLE_USER: korisnika
+ROLE_ADMIN: administrator
+ROLE_SUPER_ADMIN: super admin
+
+chat.message.greeting: Dobrodošli. Kako vam možemo pomoći?
+
+text.type.loyalty: Lojalnost
+text.type.policy_and_privacy: Politika privatnosti
+text.type.use_conditions: Uslovi korištenja
+text.type.collaborator: Saradnici
+text.type.career_form: Obrazac za karijeru
+text.type.career: Poslovi
+text.type.cookie_policy: Politika kolačića
+text.type.about_us: O nama
+text.type.delivery: Isporuka
+text.type.in_store_pickup: Dostava
+
+collaborator.form.basic_data: osnovni podaci
+collaborator.form.where_open_store: gdje ste zainteresirani za otvaranje franšizne radnje?
+collaborator.form.have_space: imate prostora
+collaborator.form.location: lokacija
+collaborator.form.presentation: prezentacija kompanije
+collaborator.form.plan: Fotografije ili plan
+collaborator.form.space_size: ukupna kvadratura
+collaborator.form.number_of_floors: ukupno spratova
+collaborator.message.already_applied: Već ste se prijavili na program saradnje.
+collaborator.message.success: Uspješno ste podnijeli zahtjev za suradnju.
+
+career.form.accompanying_letter: propratno pismo
+career.message.already_applied: Već ste se prijavili.
+career.message.success: Uspješno ste predali svoju prijavu.
+
+not_exists_page.description: Žao nam je, ali stranica koju tražite ne postoji.
+
+main_street: glavna ulica
+shopping_mall: tržni centar
+
+pe-ly-bleach-non-chlorine: 'Dozvolite izbjeljivanje bez klora (sa kisikom) ako je potrebno.'
+pe-ly-bleach: 'Izbjeljivači koji sadrže hlor ili ne sadrže hlor su dozvoljeni.'
+pe-ly-dry-clean-any-delicate: 'Sintetički proizvodi za kemijsko čišćenje s bilo kojom vrstom otapala.'
+pe-ly-dry-clean-any-low-h: 'Svaka vrsta rastvarača može se koristiti za kemijsko čišćenje na niskoj temperaturi.'
+pe-ly-dry-clean-any-low-m: 'Svaka vrsta rastvarača može se koristiti za kemijsko čišćenje sa smanjenom vlagom.'
+pe-ly-dry-clean-any-no-steam: 'Svaka vrsta rastvarača može se koristiti za kemijsko čišćenje bez pare.'
+pe-ly-dry-clean-any-proof: 'Kemično čišćenje svile ili vune bilo kojom vrstom otapala.'
+pe-ly-dry-clean-any-short: 'Svaka vrsta rastvarača može se koristiti za kemijsko čišćenje. Kratak ciklus.'
+pe-ly-dry-clean-any-solvent: 'Svaka vrsta rastvarača može se koristiti prilikom kemijskog čišćenja.'
+pe-ly-dry-clean-low-heat: 'Dopušteno je svako hemijsko čišćenje na niskoj temperaturi.'
+pe-ly-dry-clean-low-moisture: 'Dopušteno je svako kemijsko čišćenje s malo vlage.'
+pe-ly-dry-clean-no-steam: 'Dopušteno je svako hemijsko čišćenje bez pare.'
+pe-ly-dry-clean-not-trichlo-delicate: 'Sintetički proizvodi za hemijsko čišćenje sa bilo kojim rastvaračem osim trihloretilena.'
+pe-ly-dry-clean-not-trichlo-rezistent: 'Kemično čišćenje svile ili vune bilo kojim rastvaračem osim trikloretilena.'
+pe-ly-dry-clean-not-trichlo: 'Može se koristiti bilo koji rastvarač osim trikloretilena.'
+pe-ly-dry-clean-petro-delicate: 'Prilikom kemijskog čišćenja sintetičkih proizvoda koristite samo naftni rastvarač.'
+pe-ly-dry-clean-petro-proof: 'Kada čistite svilu ili vunu, koristite samo naftni rastvarač.'
+pe-ly-dry-clean-petro: 'Tokom hemijskog čišćenja može se koristiti samo naftni rastvarač.'
+pe-ly-dry-clean-short-cycle: 'Svako hemijsko čišćenje je dozvoljeno. Kratak ciklus.'
+pe-ly-dry-clean: 'Svako hemijsko čišćenje je dozvoljeno.'
+pe-ly-dry-drip-shade: 'Prirodno sušenje u hladu, uspravno kapanje.'
+pe-ly-dry-drip: 'Prirodno sušenje vertikalnim kapanjem, bez dodatnog cijeđenja.'
+pe-ly-dry-flat-shade: 'Prirodno sušenje u hladu, na ravnoj površini.'
+pe-ly-dry-flat: 'Prirodno sušenje na ravnom horizontalnom položaju.'
+pe-ly-dry-line-shade: 'Prirodno sušenje u hladu, na liniji.'
+pe-ly-dry-line: 'Prirodno sušenje linije, iznutra ili izvana.'
+pe-ly-hand-wash: 'Ručno pranje do 40°C.'
+pe-ly-iron-high-not-steam: 'Peglanje na visokoj temperaturi do 200°C, bez pare.'
+pe-ly-iron-high: 'Peglanje na visokoj temperaturi do 200°C, sa ili bez pare.'
+pe-ly-iron-low-not-steam: 'Peglanje na niskoj temperaturi do 110°C, bez pare.'
+pe-ly-iron-low: 'Peglanje na niskoj temperaturi do 110°C, sa ili bez pare.'
+pe-ly-iron-med-not-steam: 'Peglanje na srednjoj temperaturi do 150°C, bez pare.'
+pe-ly-iron-medium: 'Peglanje na srednjoj temperaturi do 150°C, sa ili bez pare.'
+pe-ly-iron-not-steam: 'Peglanje na bilo kojoj temperaturi, bez pare.'
+pe-ly-iron-steam: 'Peglanje na bilo kojoj temperaturi, sa parom.'
+pe-ly-iron: 'Peglanje na bilo kojoj temperaturi, sa ili bez pare.'
+pe-ly-machine-30: 'Mašinsko pranje do 30°C.'
+pe-ly-machine-40: 'Mašinsko pranje do 40°C.'
+pe-ly-machine-50: 'Mašinsko pranje do 50°C.'
+pe-ly-machine-60: 'Mašinsko pranje do 60°C.'
+pe-ly-machine-70: 'Mašinsko pranje do 70°C.'
+pe-ly-machine-95: 'Mašinsko pranje do 95°C.'
+pe-ly-machine-delicate-30: 'Proizvode od svile ili vune perite na temperaturi do 30°C.'
+pe-ly-machine-delicate-40: 'Proizvode od svile ili vune perite na temperaturi do 40°C.'
+pe-ly-machine-delicate-50: 'Pranje proizvoda od svile ili vune na temperaturi do 50°C.'
+pe-ly-machine-delicate-60: 'Pranje proizvoda od svile ili vune na temperaturi do 60°C.'
+pe-ly-machine-delicate-70: 'Pranje proizvoda od svile ili vune na temperaturi do 70°C.'
+pe-ly-machine-delicate-95: 'Pranje proizvoda od svile ili vune na temperaturi do 95°C.'
+pe-ly-machine-proof-30: 'Prati sintetičke proizvode na temperaturi do 30°C.'
+pe-ly-machine-proof-40: 'Prati sintetičke proizvode na temperaturi do 40°C.'
+pe-ly-machine-proof-50: 'Prati sintetičke proizvode na temperaturi do 50°C.'
+pe-ly-machine-proof-60: 'Pranje sintetičkih proizvoda na temperaturi do 60°C.'
+pe-ly-machine-proof-70: 'Pranje sintetičkih proizvoda na temperaturi do 70°C.'
+pe-ly-machine-proof-95: 'Pranje sintetičkih proizvoda na temperaturi do 95°C.'
+pe-ly-machine-wash: 'Standardno pranje u mašini bez posebnog tretmana.'
+pe-ly-not-bleach-1: 'Bez izbjeljivača. Dozvoljeno pranje sa obojenim deterdžentom za rublje ili drugim blagim deterdžentom.'
+pe-ly-not-dry-clean-1: 'Odjevni predmet se ne smije čistiti na suhom.'
+pe-ly-not-iron: 'Peglanje nije dozvoljeno.'
+pe-ly-not-dry: 'Ne sušiti u sušilici'
+pe-ly-not-wash: 'Dozvoljeno samo hemijsko čišćenje.'
+pe-ly-not-wring: 'Odjeća se nikada ne smije cediti.'
+pe-ly-dry-dry-delicate: 'Nežno sušite na bilo kojoj temperaturi.'
+pe-ly-dry-dry-high-delicate: 'Sušiti visoko osjetljivo.'
+pe-ly-tumble-dry-high-resistant: 'Mašinsko sušenje na visokoj temperaturi pod konstantnim pritiskom.'
+pe-ly-dry-high: 'Sušite na visokoj temperaturi.'
+pe-ly-dry-low-delicate: 'Malo sušenje u sušilici.'
+pe-ly-dry-low-proof: 'Mašinsko sušenje na niskoj temperaturi pod konstantnim pritiskom.'
+pe-ly-tumble-dry-low: 'Nisko sušiti u sušilici.'
+pe-ly-dry-med-delicate: 'Srednje sušenje u sušilici za kosu.'
+pe-ly-dry-med-proof: 'Sušiti na srednjoj temperaturi pod konstantnim pritiskom.'
+pe-ly-dry-medium: 'Sušite na srednjem nivou.'
+pe-ly-dry-no-heat-delicate: 'Sušiti bez topline pod stalnim pritiskom.'
+pe-ly-tumble-dry-no-heat-resistant: 'Sušenje u sušilici bez topline.'
+pe-ly-dry-dry-no-heat: 'Sušiti bez grijanja.'
+pe-ly-tumble-dry-resistant: 'Mašinski suši na bilo kojoj temperaturi pod konstantnim pritiskom.'
+pe-ly-dry-dry: 'Mašinsko sušenje na bilo kojoj temperaturi.'
+pe-ly-wring: 'Odjeća se može iscijediti uvrtanjem.'
+
+banner.loyalty: lojalnost
+banner.news_letter: bilten
+banner.pop_up: Normalan popup
+banner.menu: Veliki meni
+banner.season: Godišnja doba
+
+banner_text.header: Header
+banner_text.footer: Footer
+
+job.applied_for_form: Postanite dio našeg tima
+job.application_form: Popunite prijavu
+job.form.personal_data: lični podaci
+job.form.education: obrazovanje
+job.form.job_place_apply: posao za koji se prijavljujete
+job.form.school: naziv završene škole/fakulteta
+job.form.school_level: stručno obrazovanje
+job.form.school_title: stečena titula
+job.form.position: pozicija
+job.form.policy_accept: Prihvatam navedene uslove i način prijave i saglasan sam da se moji podaci koriste u svrhu odabira i zapošljavanja
+
+eu.cookies.accept.title: Ova web stranica koristi kolačiće.
+eu.cookies.accept.text: Kako bismo omogućili korisnicima da lakše i bolje koriste našu stranicu, koristimo kolačiće. Korišćenjem sajta elipsa.rs saglasni ste sa upotrebom kolačića.
+eu.cookies.accept.btn: Slažem se
+eu.cookies.learn_more.btn: Više detalja
+
+intesa.already_paid: Transakcija je već plaćena.
+intesa.already_refunded: Transakcija je već vraćena.
+intesa.already_void: Transakcija je već otkazana.
+
+order.status.new: Nova narudžba
+order.status.awaiting_authorization: Račun je zadužen
+order.status.post_auth: Naplaćeno
+order.status.completed: Završeno
+order.status.refund: Sredstva su vraćena
+order.status.void: Narudžba je otkazana
+order.status.failed: Greška pri postavljanju narudžbe
+order.type.on_delivering: pouzećem
+order.type.credit_card: platna kartica
+order.status.pending: Na čekanju
+order.status.preparing: U pripremi
+order.status.shipped: Otpremljeno
+order.overview.tracking_info_label: Vaša narudžba se trenutno nalazi ovdje
+order.shipping.on_delivery: Kurirskom službom
+order.shipping.in_store: Preuzimanje u trgovini
+
+search_site: Pretražite stranicu
+
+company_head_office_and_development: Sjedište kompanije i proizvodnja
+company_identification_number: Matični broj
+
+youtube:
+  id_required: 'Molimo unesite Id'
+  exists: 'Video je već postavljen.'
+  url_not_valid: 'Youtube url nije važeći'
+  link_button: Pogledajte video proizvoda
+
+filter:
+  sizes: velicine
+  colors: boje
+  collections: kolekcije
+  seasons: sezone
+  attributes: karakteristike
+  categories: kategorije
+  price: cijena
+  search: pretraga
+  sort: sortiranje
+  limit: broj_proizvoda
+  velicine: sizes
+  boje: colors
+  kolekcije: collections
+  sezone: seasons
+  osobine: attributes
+  kategorije: categories
+  cena: price
+  pretraga: search
+  broj_proizvoda: limit
+  sortiranje: sort
+
+filter_text:
+  sizes: Veličine
+  colors: Boje
+  collections: Zbirke
+  seasons: Sezone
+  attributes: Osobine
+  categories: Kategorije
+  price: Cijena
+  search: Pretraga
+  velicine: Sizes
+  boje: Colors
+  kolekcije: Collections
+  osobine: Attributes
+  sezone: Seasons
+  kategorije: Categories
+  cena: Price
+  pretraga: Search
+
+all_items_are_loaded: Svi proizvodi prema navedenim kriterijima su učitani.
+load_more_products: Učitavanje proizvoda
+
+notification.success: Vaša prijava je uspješno poslana. Obavijestit ćemo vas putem e-pošte kada veličina ponovo bude dostupna.
+
+male: Muško
+female: Dame
+
+closed: Zatvoreno
+
+product.is_archived: Proizvod "%item%" je arhiviran
+product.is_deleted: Proizvod "%item%" je obrisan
+
+promotion.type.coupon: Kupon
+promotion.type.product: Proizvod
+promotion.type.free_shipping: Besplatna dostava
+
+header.choose_country_label: Odaberite državu
+header.choose_lang_label: Odaberite jezik
+
+belgrade: Beograd
+banja_luka: Banja Luka

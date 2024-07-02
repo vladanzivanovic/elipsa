@@ -16,30 +16,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class OrderController extends AbstractController
 {
-    private OrderRequestParser $requestParser;
-
-    private OrderHandler $orderHandler;
-
-    private OrderEditResponseFormatter $responseFormatter;
-
-    private ExceptionView $exceptionView;
-
     public function __construct(
-        OrderRequestParser $requestParser,
-        OrderHandler $orderHandler,
-        OrderEditResponseFormatter $responseFormatter,
-        ExceptionView $exceptionView
-    ) {
-        $this->requestParser = $requestParser;
-        $this->orderHandler = $orderHandler;
-        $this->responseFormatter = $responseFormatter;
-        $this->exceptionView = $exceptionView;
-    }
+        private readonly OrderRequestParser $requestParser,
+        private readonly OrderHandler $orderHandler,
+        private readonly OrderEditResponseFormatter $responseFormatter,
+        private readonly ExceptionView $exceptionView
+    ) {}
 
-    #[Route(path: '/api/order/create', name: 'site_api.create_order', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/order/create', name: 'site_api.create_order', options: ['expose' => true], methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        $order = $this->requestParser->create();
+        $order = $this->requestParser->create($request->attributes->get('_country'));
 
         $this->orderHandler->save($order, 'CreateOrder');
 
@@ -49,7 +36,7 @@ final class OrderController extends AbstractController
         ), Response::HTTP_CREATED);
     }
 
-    #[Route(path: '/api/order/remove/{token}', name: 'site_api.remove_order', methods: ['DELETE'], options: ['expose' => true])]
+    #[Route(path: '/api/order/remove/{token}', name: 'site_api.remove_order', options: ['expose' => true], methods: ['DELETE'])]
     public function remove(Request $request, string $token): JsonResponse
     {
         try {
@@ -66,7 +53,7 @@ final class OrderController extends AbstractController
         }
     }
 
-    #[Route(path: '/api/order/{token}', name: 'site_api.get_order', methods: ['GET'], options: ['expose' => true])]
+    #[Route(path: '/api/order/{token}', name: 'site_api.get_order', options: ['expose' => true], methods: ['GET'])]
     public function getOrder(Request $request, string $token): JsonResponse
     {
         $order = $this->requestParser->findOrder($token);

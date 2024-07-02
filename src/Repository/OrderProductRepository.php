@@ -52,7 +52,7 @@ class OrderProductRepository extends ExtendedEntityRepository
     }
 
     
-    public function getByUser(User $user, string $locale): array
+    public function getByUser(User $user, string $locale, string $country): array
     {
         $query = $this->createQueryBuilder('op')
             ->select(
@@ -67,7 +67,7 @@ class OrderProductRepository extends ExtendedEntityRepository
                 'op.quantity',
                 'color.hex'
             )
-            ->innerJoin('op.orderId', 'o')
+            ->innerJoin( ShopOrder::class, 'o', 'WITH',  'o.id = op.orderId and o.country = :country')
             ->innerJoin(OrderProductTranslation::class, 'opt', 'WITH', 'opt.orderProduct = op')
             ->innerJoin('op.image', 'image')
             ->innerJoin('op.color', 'color')
@@ -77,6 +77,7 @@ class OrderProductRepository extends ExtendedEntityRepository
             ->setParameter('user', $user)
             ->setParameter('locale', $locale)
             ->setParameter('completedStatus', ShopOrder::STATUS_COMPLETED)
+            ->setParameter('country', $country)
             ->orderBy('o.completedAt', 'DESC')
             ->groupBy('op.id');
 

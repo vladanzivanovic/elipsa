@@ -5,32 +5,22 @@ namespace App\Entity;
 use App\Repository\OfficeContactTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=OfficeContactTranslationRepository::class)
- */
+#[ORM\Entity(repositoryClass: OfficeContactTranslationRepository::class)]
 class OfficeContactTranslation
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=3)
-     */
+    #[ORM\Column(type: 'string', length: 3)]
     private $locale;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OfficeContact::class, inversedBy="officeContactTranslations")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: OfficeContact::class, inversedBy: 'officeContactTranslations')]
+    #[ORM\JoinColumn(nullable: false)]
     private $officeContact;
 
     public function getId(): ?int

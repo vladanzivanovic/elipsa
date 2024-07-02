@@ -2,52 +2,41 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\BlogRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
- */
-class Blog
+#[ORM\Entity(repositoryClass: BlogRepository::class)]
+class Blog implements EntityInterface, CountryResourceInterface
 {
+    use ResourceTrait;
+    use CountryResourceTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_PENDING = 2;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: BlogTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $blogTranslations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\BlogTranslation", mappedBy="blog", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $blogTranslations;
+    #[ORM\Column(type: 'smallint')]
+    private int $status;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $status;
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
+    private \DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $createdAt;
+    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: BlogHasTags::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $blogHasTags;
 
-    /**
-     * @ORM\OneToMany(targetEntity="BlogHasTags", mappedBy="blog", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $blogHasTags;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $image;
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Image $image;
 
     public function __construct()
     {
@@ -55,13 +44,8 @@ class Blog
         $this->blogHasTags = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     /**
-     * @return Collection|BlogTranslation[]
+     * @return Collection<int, BlogTranslation>
      */
     public function getBlogTranslations(): Collection
     {
@@ -83,7 +67,7 @@ class Blog
         return $this;
     }
 
-    public function getBlogTranslationByLocale(string $locale): ?BlogTranslation
+    public function getBlogTranslationByLocale(string $locale): null|BlogTranslation
     {
         $filteredTrans = $this->blogTranslations->filter(function ($blogTrans) use ($locale) {
             /** @var BlogTranslation $blogTrans */
@@ -111,7 +95,7 @@ class Blog
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -123,7 +107,7 @@ class Blog
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -136,7 +120,7 @@ class Blog
     }
 
     /**
-     * @return Collection|BlogHasTags[]
+     * @return Collection<int, BlogHasTags>
      */
     public function getBlogHasTags(): Collection
     {
@@ -166,7 +150,7 @@ class Blog
         return $this;
     }
 
-    public function getImage(): ?Image
+    public function getImage(): Image
     {
         return $this->image;
     }

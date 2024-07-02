@@ -6,34 +6,15 @@ namespace App\Parser;
 
 use App\Entity\Location;
 use App\Entity\LocationTranslation;
-use App\Repository\BannerRepository;
 use App\Services\LocationImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class LocationEditRequestParser
 {
-    use ParserTrait;
-
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-
-    private \App\Services\LocationImageService $imageService;
-
-    private \App\Repository\BannerRepository $bannerRepository;
-
-    private array $locales;
-
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        LocationImageService $imageService,
-        BannerRepository $bannerRepository,
-        string $locales
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->imageService = $imageService;
-        $this->bannerRepository = $bannerRepository;
-        $this->locales = explode('|', $locales);
-    }
+        private readonly LocationImageService $imageService,
+        private readonly array $locales
+    ) {}
 
     /**
      * @param Location|null $location
@@ -65,10 +46,11 @@ final class LocationEditRequestParser
     {
         foreach ($this->locales as $locale) {
             $transCollection = $bag->all($locale);
-            $trans = new LocationTranslation();
 
-            if (null !== $location->getId()) {
-                $trans = $location->getByLocale($locale);
+            $trans = $location->getByLocale($locale);
+
+            if (null === $trans) {
+                $trans = new LocationTranslation();
             }
 
             $trans->setStreet($transCollection['street'])

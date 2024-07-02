@@ -1,5 +1,5 @@
     {% import 'Site/Macros/navigation.html.twig' as childNavList %}
-    {% set menuBanners = menu_banners(locale) %}
+    {% set menuBanners = menu_banners(countryDefaultLocale) %}
     {% set seasonBanner = season_banner(locale) %}
 <div class="menu-area hidden-sm hidden-xs">
     <div class="container">
@@ -34,8 +34,8 @@
                                                 </div>
                                                 <div class="mega-menu-img">
                                                     {% if menuBanners[0] is defined %}
-                                                        <a href="{{ menuBanners[0]['buttonLink'] }}">
-                                                            <img src="{{ menuBanners[0]['imageLink'] }}" alt="{{ default_alt_tag }}">
+                                                        <a href="{{ menuBanners[0].translations[locale].button_link }}">
+                                                            <img src="{{ menuBanners[0].media.images.desktop.file }}" alt="{{ default_alt_tag }}">
                                                         </a>
                                                     {% endif %}
                                                 </div>
@@ -45,13 +45,13 @@
                                             <div class="mega-menu-part">
                                                 <div class="mega-menu-content">
                                                     {% for tag in navigationTagsCollection %}
-                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {('filter.collections' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a>
+                                                        <a class="mega-menu-title" href="{{ path('site.shop_page', {('filter.collections' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a>
                                                     {% endfor %}
                                                 </div>
                                                 <div class="mega-menu-img">
                                                     {% if menuBanners[1] is defined %}
-                                                        <a href="{{ menuBanners[1]['buttonLink'] }}">
-                                                            <img src="{{ menuBanners[1]['imageLink'] }}" alt="{{ default_alt_tag }}">
+                                                        <a href="{{ menuBanners[1].translations[locale].button_link }}">
+                                                            <img src="{{ menuBanners[1].media.images.desktop.file }}" alt="{{ default_alt_tag }}">
                                                         </a>
                                                     {% endif %}
                                                 </div>
@@ -64,12 +64,12 @@
                                 <div class="menu-dropdown with-img">
                                     <ul>
                                         {% for tag in navigationTagsSeasson %}
-                                            <li><a href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a></li>
+                                            <li><a href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a></li>
                                         {% endfor %}
                                     </ul>
                                     {% if seasonBanner is not null %}
-                                        <a href="{{ seasonBanner['buttonLink'] }}">
-                                            <img src="{{ seasonBanner['imageLink'] }}" alt="{{ default_alt_tag }}">
+                                        <a href="{{ seasonBanner.translations[locale].button_link }}">
+                                            <img src="{{ seasonBanner.media.images.desktop.file }}" alt="{{ default_alt_tag }}">
                                         </a>
                                     {% endif %}
                                 </div>
@@ -99,7 +99,7 @@
                     <nav id="mobile_menu_active">
                         <ul class="menu-list">
                             <li><a href="{{ path('site.home_page') }}">{{ 'navi.home' | trans }}</a></li>
-                            <li><a href="{{ path('site.about_us_page', {'_locale': locale}) }}">{{ 'navi.about_us' | trans }}</a>
+                            <li><a href="{{ path('site.company_text', {'_locale': locale, 'type': siteInfoText.about_us.slug[locale]}) }}">{{ 'navi.about_us' | trans }}</a>
                                 <ul>
                                     <li><a href="{{ path('site.loyalty') }}">{{ 'navi.loyalty' | trans }}</a></li>
                                 </ul>
@@ -124,7 +124,7 @@
                                     {% endfor %}
                                     {% for tag in navigationTagsCollection %}
                                         <li>
-                                            <a href="{{ path('site.shop_page', {('filter.collections' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a>
+                                            <a href="{{ path('site.shop_page', {('filter.collections' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -132,7 +132,7 @@
                             <li><a href="{{ path('site.trendy_page') }}">{{ 'navi.seasons' | trans }}</a>
                                 <ul>
                                     {% for tag in navigationTagsSeasson %}
-                                        <li><a class="mega-menu-title" href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag[locale].slug }) }}">{{ tag[locale].title }}</a>
+                                        <li><a class="mega-menu-title" href="{{ path('site.trendy_page', {('filter.seasons' | trans): tag.translations[locale].slug }) }}">{{ tag.translations[locale].title }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -152,7 +152,7 @@
     </div>
 </div>
 <!-- mobile-menu-end -->
-    {% set sliderTexts = slider_text(locale, constant('App\\Entity\\SliderText::POSITION_HEADER')) %}
+    {% set sliderTexts = slider_text(locale, constant('App\\Entity\\SliderText::POSITION_HEADER'), countryDefaultLocale) %}
 
     {% if sliderTexts | length > 0 %}
         <div class="slider-text-area">

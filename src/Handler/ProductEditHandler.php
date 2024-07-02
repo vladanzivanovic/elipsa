@@ -18,33 +18,14 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 final class ProductEditHandler
 {
-    private ValidatorHelper $validator;
-
-    private ProductRepository $productRepository;
-
-    private NotificationRepository $notificationRepository;
-
-    private NotificationHandler $notificationHandler;
-
-    private SizeAvailableMailer $sizeAvailableMailer;
-
-    private ImageParser $imageParser;
-
     public function __construct(
-        ValidatorHelper $validator,
-        ProductRepository $productRepository,
-        NotificationRepository $notificationRepository,
-        NotificationHandler $notificationHandler,
-        SizeAvailableMailer $sizeAvailableMailer,
-        ImageParser $imageParser
-    ) {
-        $this->validator = $validator;
-        $this->productRepository = $productRepository;
-        $this->notificationRepository = $notificationRepository;
-        $this->notificationHandler = $notificationHandler;
-        $this->sizeAvailableMailer = $sizeAvailableMailer;
-        $this->imageParser = $imageParser;
-    }
+        private readonly ValidatorHelper $validator,
+        private readonly ProductRepository $productRepository,
+        private readonly NotificationRepository $notificationRepository,
+        private readonly NotificationHandler $notificationHandler,
+        private readonly SizeAvailableMailer $sizeAvailableMailer,
+        private readonly ImageParser $imageParser
+    ) {}
 
     /**
      *
@@ -126,8 +107,9 @@ final class ProductEditHandler
 
         foreach ($notifications as $notification) {
             $size = $notification->getPayload()['size'];
+            $productOption = $product->getOptionsByCountry($notification->getCountry());
 
-            if (false === $product->isSizeAvailable($size)) {
+            if (false === $productOption->isSizeAvailable($size)) {
                 continue;
             }
 

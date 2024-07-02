@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
-use App\Entity\Banner;
 use App\Entity\Promotion;
 use App\Handler\CouponHandler;
-use App\Helper\ConstantsHelper;
 use App\Parser\CouponsEditRequestParser;
-use App\Request\Dto\PromotionCouponRequestDto;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use App\Request\Dto\Admin\PromotionCouponRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class PromotionCouponsEditController extends AbstractController
 {

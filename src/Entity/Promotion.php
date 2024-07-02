@@ -2,17 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PromotionRepository")
- * @ORM\Table(name="promotion", uniqueConstraints={@ORM\UniqueConstraint(name="promo_code", columns={"code"})})
- */
-class Promotion implements EntityInterface
+#[ORM\Entity(repositoryClass: \App\Repository\PromotionRepository::class)]
+#[ORM\Table(name: 'promotion')]
+#[ORM\UniqueConstraint(name: 'promo_code', columns: ['code'])]
+class Promotion implements EntityInterface, CountryResourceInterface
 {
     use ResourceTrait;
+    use CountryResourceTrait;
 
     const CHECKER_TYPE_VALIDITY = 'date_valid';
 
@@ -22,46 +26,31 @@ class Promotion implements EntityInterface
 
     const TYPE_FREE_SHIPPING = 'free_shipping';
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private string $code;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $validFrom;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $validTo;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $discount;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ShopOrder", mappedBy="coupon")
-     */
+    #[ORM\OneToMany(targetEntity: \App\Entity\ShopOrder::class, mappedBy: 'coupon')]
     private Collection $shopOrders;
 
     /**
-     * @ORM\OneToMany(targetEntity=PromotionOption::class, mappedBy="promotionId", cascade={"persist", "remove"}, orphanRemoval=true)
-     *
      * @var Collection<int, PromotionOption>
      */
+    #[ORM\OneToMany(targetEntity: PromotionOption::class, mappedBy: 'promotionId', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $promotionOptions;
 
-    /**
-     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="promotion")
-     */
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'promotion')]
     private Collection $orderProducts;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $type;
 
     public function __construct()

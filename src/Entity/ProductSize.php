@@ -2,40 +2,33 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\ProductSizeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProductSizeRepository")
- */
-class ProductSize
+#[ORM\Entity(repositoryClass: ProductSizeRepository::class)]
+class ProductSize implements EntityInterface
 {
+    use ResourceTrait;
+
     public const NO_SIZE = 'no-sizes';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Column(type: 'string')]
+    private string $size;
 
     /**
-     * @ORM\Column(type="string")
+     * @var Collection<int, ProductHasSizes>
      */
-    private $size;
+    #[ORM\OneToMany(mappedBy: 'size', targetEntity: ProductHasSizes::class)]
+    private Collection $productHasSizes;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductHasSizes", mappedBy="size")
-     */
-    private $productHasSizes;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"size"}, updatable=false)
-     */
-    private $slug;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Gedmo\Slug(fields: ['size'], updatable: true)]
+    private string $slug;
 
     public function __construct()
     {
@@ -60,7 +53,7 @@ class ProductSize
     }
 
     /**
-     * @return Collection|ProductHasSizes[]
+     * @return Collection<int, ProductHasSizes>
      */
     public function getProductHasSizes(): Collection
     {

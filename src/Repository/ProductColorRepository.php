@@ -21,16 +21,16 @@ class ProductColorRepository extends ExtendedEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
+        private readonly string $defaultLocale,
     ){
         parent::__construct($registry, ProductColor::class);
     }
 
     /**
-     * @return mixed
-     * @throws NoResultException
      * @throws NonUniqueResultException
+     * @throws NoResultException
      */
-    public function countData()
+    public function countData(): mixed
     {
         $query = $this->createQueryBuilder('pc')
             ->select('COUNT(pc.id) as total');
@@ -64,30 +64,16 @@ class ProductColorRepository extends ExtendedEntityRepository
         $query = $this->createQueryBuilder('pc')
             ->select(
                 'pc.hex',
+                'pct.title',
                 'pc.id as value'
-            );
-
-        return $query->getQuery()->getArrayResult();
-    }
-
-    
-    public function getByColorForAdmin(ProductColor $productColor): array
-    {
-        $query = $this->createQueryBuilder('pc')
-            ->select(
-                'pc.hex',
-                'ctRs.title as rs_title',
-                'ctEn.title as en_title',
             )
-            ->innerJoin(ColorTranslation::class, 'ctRs', 'WITH', 'ctRs.locale = \'rs\' AND ctRs.color = pc')
-            ->innerJoin(ColorTranslation::class, 'ctEn', 'WITH', 'ctEn.locale = \'en\' AND ctEn.color = pc')
-            ->where('pc = :productColor')
-            ->setParameter('productColor', $productColor);
+            ->innerJoin('pc.translations', 'pct')
+            ->where('pct.locale = :defaultLocale')
+            ->setParameter('defaultLocale', $this->defaultLocale);
 
         return $query->getQuery()->getArrayResult();
     }
 
-    
     public function getByLocale(string $locale): array
     {
         $query = $this->createQueryBuilder('pc')
@@ -97,7 +83,7 @@ class ProductColorRepository extends ExtendedEntityRepository
                 'ct.title',
                 'ct.slug'
             )
-            ->innerJoin('pc.colorTranslations', 'ct')
+            ->innerJoin('pc.translations', 'ct')
             ->where('ct.locale = :locale')
             ->setParameter('locale', $locale);
 
@@ -114,7 +100,7 @@ class ProductColorRepository extends ExtendedEntityRepository
                 'p.id as productId',
                 'pc.id'
             )
-            ->innerJoin('pc.colorTranslations', 'ct')
+            ->innerJoin('pc.translations', 'ct')
             ->innerJoin(ProductHasImages::class, 'phi', 'WITH', 'phi.color = pc')
             ->innerJoin(Product::class, 'p', 'WITH', 'p = phi.product')
             ->where('phi.product IN (:products)')

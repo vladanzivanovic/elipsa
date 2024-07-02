@@ -7,60 +7,51 @@ namespace App\Parser;
 use App\Entity\Catalogue;
 use App\Entity\CatalogueTranslation;
 use App\Repository\CatalogueTranslationRepository;
+use App\Request\Dto\Admin\CatalogEditRequestDto;
 use App\Services\CatalogImageService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class CatalogEditRequestParser
 {
-    use ParserTrait;
-
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
-
-    private \App\Repository\CatalogueTranslationRepository $translationRepository;
-
-    private \App\Services\CatalogImageService $imageService;
-
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        CatalogueTranslationRepository $translationRepository,
-        CatalogImageService $imageService
-    ) {
-        $this->parameterBag = $parameterBag;
-        $this->translationRepository = $translationRepository;
-        $this->imageService = $imageService;
-    }
+        private readonly CatalogueTranslationRepository $translationRepository,
+        private readonly CatalogImageService $imageService,
+        private readonly array $locales,
+    ) {}
 
-    /**
-     * @param Catalogue|null $catalogue
-     * @throws \Doctrine\ORM\ORMException
-     */
-    public function parse(ParameterBag $bag, ?Catalogue $catalogue = null): Catalogue
+    public function parse(CatalogEditRequestDto $catalogEditRequestDto, null|Catalogue $catalogue = null): Catalogue
     {
         if (!$catalogue instanceof Catalogue) {
             $catalogue = new Catalogue();
             $catalogue->setStatus(Catalogue::STATUS_PENDING);
         }
 
-        $this->setLocales($bag, $catalogue);
+        $catalogue->setAvailableCountries($catalogEditRequestDto->availableCountries);
 
-        $this->imageService->setImages($catalogue->getCatalogueTranslations()->first(), json_decode($bag->get('images'), true));
+        $this->setLocales($catalogEditRequestDto, $catalogue);
+
+        $this->imageService->setImages($catalogue->getCatalogueTranslations()->first(), $catalogEditRequestDto->images);
 
         return $catalogue;
     }
 
-    private function setLocales(ParameterBag $bag, Catalogue $catalogue): void
+    private function setLocales(CatalogEditRequestDto $catalogEditRequestDto, Catalogue $catalogue): void
     {
-        $locales = $this->setLanguageArray($this->parameterBag, $bag);
+        $catalogue->getCatalogueTranslations()->clear();
 
-        foreach (array_keys($locales) as $locale) {
-            $trans = new CatalogueTranslation();
+        foreach ($this->locales as $locale) {
+            $transCollection = $catalogEditRequestDto->translations[$locale] ?? null;
 
-            if (!is_null($catalogue->getId())) {
-                $trans = $this->translationRepository->findOneBy(['catalogue' => $catalogue, 'locale' => $locale]);
+            if (null === $transCollection) {
+                continue;
             }
 
-            $trans->setTitle($bag->get($locale.'_title'));
+            $trans = $this->translationRepository->findOneBy(['catalogue' => $catalogue, 'locale' => $locale]);
+
+            if (null === $trans) {
+                $trans = new CatalogueTranslation();
+            }
+
+            $trans->setTitle($transCollection['title']);
             $trans->setLocale($locale);
 
             $catalogue->addCatalogueTranslation($trans);

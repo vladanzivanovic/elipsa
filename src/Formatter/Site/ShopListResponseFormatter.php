@@ -23,14 +23,13 @@ final class ShopListResponseFormatter
 
     public function formatResponse(
         array $data,
-        string $locale,
         array $routeNames,
         ShopListRequestDto $shopListRequestDto,
         ShopPageOptionsDto $shopPageOptionsDto,
         array $filters,
         ?User $user = null
     ): array {
-        $products = $this->productFormatter->getProducts($data['data'], $locale, $user);
+        $products = $this->productFormatter->getProducts($data['data'], $shopPageOptionsDto->country, $user);
 
         $localizedUrls = $this->shopPageRouterFormatter->createLocalizedLinks(
             $shopPageOptionsDto,

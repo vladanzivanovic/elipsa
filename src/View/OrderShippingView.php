@@ -9,39 +9,22 @@ use App\Checker\PromotionFreeShippingChecker;
 use App\Collector\PromotionCollector;
 use App\Entity\ShopOrder;
 use App\Repository\SettingsRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderShippingView
 {
     use PromotionCheckerTrait;
 
-    private PriceView $priceView;
-
-    private SettingsRepository $settingsRepository;
-
-    private TranslatorInterface $translator;
-
-    private LocationView $locationView;
-
-    private PromotionCollector $promotionCollector;
-
-    private PromotionFreeShippingChecker $promotionFreeShippingChecker;
-
     public function __construct(
-        PriceView $priceView,
-        SettingsRepository $settingsRepository,
-        TranslatorInterface $translator,
-        LocationView $locationView,
-        PromotionCollector $promotionCollector,
-        PromotionFreeShippingChecker $promotionFreeShippingChecker
-    ) {
-        $this->priceView = $priceView;
-        $this->settingsRepository = $settingsRepository;
-        $this->translator = $translator;
-        $this->locationView = $locationView;
-        $this->promotionCollector = $promotionCollector;
-        $this->promotionFreeShippingChecker = $promotionFreeShippingChecker;
-    }
+        private readonly PriceView $priceView,
+        private readonly SettingsRepository $settingsRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly LocationView $locationView,
+        private readonly PromotionCollector $promotionCollector,
+        private readonly PromotionFreeShippingChecker $promotionFreeShippingChecker,
+        private readonly RequestStack $requestStack
+    ) {}
 
     public function view(ShopOrder $order, int $total, string $locale): array
     {
@@ -67,8 +50,10 @@ final class OrderShippingView
 
     private function setShippingPrice(ShopOrder $order, int $total, string $locale): array
     {
-        $freeShippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING']);
-        $shippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE']);
+        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
+
+        $freeShippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING', 'country' => $countryCode]);
+        $shippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE', 'country' => $countryCode]);
 
         $shippingPrice = (int) $shippingPriceConfig->getValue();
 

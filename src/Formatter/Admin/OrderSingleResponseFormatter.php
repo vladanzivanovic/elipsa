@@ -9,22 +9,25 @@ use App\View\OrderView;
 
 final class OrderSingleResponseFormatter
 {
-    private OrderView $orderView;
-
-    private string $adminLocale;
-
     public function __construct(
-        OrderView $orderView,
-        string $adminLocale
-    ) {
-        $this->orderView = $orderView;
-        $this->adminLocale = $adminLocale;
-    }
+        private readonly OrderView $orderView,
+        private readonly string $adminLocale,
+        private readonly array $countries
+    ) {}
 
-    
     public function formatResponse(ShopOrder $order): array
     {
-        $payload = $this->orderView->view($order, $this->adminLocale);
+        $locale = $this->adminLocale;
+
+        foreach ($this->countries as $countryCode => $country) {
+            if ($order->getCountry() !== $countryCode) {
+                continue;
+            }
+
+            $locale = $order->getCountry();
+        }
+
+        $payload = $this->orderView->view($order, $locale);
 
         return ['payload' => $payload];
     }

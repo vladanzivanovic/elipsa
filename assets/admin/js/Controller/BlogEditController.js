@@ -5,6 +5,7 @@ import DropZone from "../../../js/Services/DropZoneService";
 import blogEditValidator from "../Validators/BlogEditValidator";
 import blogEditMapper from "../Mapper/BlogEditMapper";
 import baseEvents from "./BaseEvents";
+import countrySelectionEvents from "../Event/CountrySelectionEvents";
 require ('select2/dist/js/select2.full.min');
 
 class BlogEditController {
@@ -13,6 +14,7 @@ class BlogEditController {
     #editService;
     #validator;
     #dropZone;
+    #countrySelectionEvents;
     
     constructor() {
         this.#baseEvents = baseEvents;
@@ -20,6 +22,8 @@ class BlogEditController {
         this.#editService = new BlogEditService();
         this.#validator = blogEditValidator;
         this.#dropZone = DropZone();
+        this.#countrySelectionEvents = countrySelectionEvents;
+
         this.#dropZone.init($('[data-files="blog"]'));
 
         this.summernote = new SummerNote();
@@ -34,7 +38,7 @@ class BlogEditController {
         }
         $('.dropdown-toggle').dropdown();
 
-        $(this.#mapper.fields.tags).select2();
+        $(`${this.#mapper.form} select`).select2();
 
         if (IS_EDIT) {
             this.#dropZone.setFiles(IMAGES, 'blog');
@@ -70,7 +74,8 @@ class BlogEditController {
             handler.save(this.#mapper);
         });
 
-        // this.#baseEvents.events();
+        this.#countrySelectionEvents.registerEvents();
+        this.#baseEvents.events();
     }
 }
 

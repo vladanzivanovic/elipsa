@@ -19,12 +19,13 @@ use Doctrine\ORM\NoResultException;
  */
 class CategoryTranslationRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly string $defaultLocale,
+    ) {
         parent::__construct($registry, CategoryTranslation::class);
     }
 
-    
     public function getByProduct(Product $product): array
     {
         $query = $this->createQueryBuilder('ct')
@@ -40,12 +41,10 @@ class CategoryTranslationRepository extends ExtendedEntityRepository
     }
 
     /**
-     *
-     * @return int|mixed|string
-     * @throws NoResultException
      * @throws NonUniqueResultException
+     * @throws NoResultException
      */
-    public function getForLocalization(string $slug, string $locale)
+    public function getForLocalization(string $slug, string $locale): bool|float|int|string|null
     {
         $query = $this->createQueryBuilder('ct')
             ->select(

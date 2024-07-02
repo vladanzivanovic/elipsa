@@ -5,6 +5,7 @@ import SliderTextDataTables from "../Services/DataTables/SliderTextDataTables";
 import OfficeContactEditMapper from "../Mapper/OfficeContactEditMapper";
 import OfficeContactDataTables from "../Services/DataTables/OfficeContactDataTables";
 import officeContactDataTables from "../Services/DataTables/OfficeContactDataTables";
+import FormHelperService from "../../../js/Helper/FormHelperService";
 
 class OfficeContactHandler {
     #mapper;
@@ -20,7 +21,7 @@ class OfficeContactHandler {
     save() {
         let urlRoute = Routing.generate('admin.add_office_contact_api');
         let type = 'POST';
-        const data = $(this.#mapper.form).serializeArray();
+        const data = FormHelperService.formToJson($(this.#mapper.form));
 
         if (IS_EDIT) {
             urlRoute = Routing.generate('admin.edit_office_contact_api', {id: ID});

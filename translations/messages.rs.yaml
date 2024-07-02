@@ -72,9 +72,11 @@ navi:
   orders: Narudžbine
   shopping: Kupovina
 
-serbian: Srpski
-english: Engleski
+serbian_lang: Srpski jezik
+english_lang: Engleski jezik
+bosnia_lang: Bosanksi jezik
 serbia: Srbija
+bosnia_and_herzegovina: Bosna i Hercegovina
 
 size: veličina
 color: boja
@@ -102,7 +104,7 @@ sold: Rasporodato
 saving: Ušteda
 
 select.color: izaberite boju
-select.size: izberite veličinu
+select.size: izaberite veličinu
 product.add_to_cart: dodaj u korpu
 product.notify_me: Obavesti me
 product.notify_me_text: Veličina nije dostupna. Upišite email adresu i mi ćemo vas obavestiti kada veličina bude ponovo dostupna.
@@ -164,7 +166,7 @@ title.registration_confirmation: Potvrda registracije
 
 checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
 checkout.billing_address: podaci o platiocu
-checkout.order_notes: Dodatni tekst o naružbini
+checkout.order_notes: Dodatni tekst o narudžbini
 checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
 checkout.your_order: vaša porudžbina
 checkout.product_total: proizvodi <span>ukupno</span>
@@ -177,7 +179,7 @@ checkout.shipping.on_delivery: Kurirskom službom
 checkout.shipping.in_store: Preuzimanje u radnji
 checkout.shipping.store_list_label: Prodavnica
 checkout.shipping.in_store_not_available: Iznos porudžbine mora biti jednak ili veći od %shipping_price_store% RSD za isporuku i preuzimanje u željenoj prodavnici.
-checkout.complete_order: završi narudžbinu
+checkout.complete_order: završi porudžbinu
 checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
 checkout.finish.title: Podaci o porudžbini
@@ -237,7 +239,7 @@ birth_date: datum rođenja
 subject: tema
 website: websajt
 position: pozicija
-about_company: podaci o kampaniji
+about_company: podaci o kompaniji
 
 email.order.title: Porudžbenica %orderId%
 email.order.text: '<h3>Poštovani/a %first_name%,</h3>
@@ -295,8 +297,8 @@ email.order_status.tracking_info_label: '<p class="last-child">Link za praćenje
 email.registration.title: Registracija na sajtu %siteName%
 email.registration.success.text: '<h3>Poštovani/a %first_name%,</h3>
   <p>uspešno ste izvršili registraciju.</p>
-  <p class="last-child">Kako bi ste završili proces registracije neophodno je da akivirate nalog, molimo vas kliknite na dugme u nastavku, ili prekopirajte link u pretraživač.</p>'
-email.registration.linkText: Potvrdite reigstraciju
+  <p class="last-child">Kako bi ste završili proces registracije neophodno je da aktivirate nalog, molimo vas kliknite na dugme u nastavku, ili prekopirajte link u pretraživač.</p>'
+email.registration.linkText: Potvrdite registraciju
 
 email.reset_password.title: Reset lozinke na sajtu %siteName%
 email.reset_password.headline.text: Zahtev za promenu lozinke
@@ -679,3 +681,9 @@ product.is_deleted: Proizvod "%item%" je obrisan
 promotion.type.coupon: Kupon
 promotion.type.product: Proizvod
 promotion.type.free_shipping: Besplatna dostava
+
+header.choose_country_label: Izaberite državu
+header.choose_lang_label: Izaberite jezik
+
+belgrade: Beograd
+banja_luka: Banja Luka

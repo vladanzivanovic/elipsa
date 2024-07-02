@@ -4,46 +4,25 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
-use App\Helper\ConstantsHelper;
-use App\Repository\SettingsRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderView
 {
-    private OrderProductView $orderProductView;
-
-    private PromotionCouponView $promotionCouponView;
-
-    private PriceView $priceView;
-
-    private AddressView $addressView;
-
-    private OrderPaymentView $orderPaymentView;
-
-    private TranslatorInterface $translator;
-
-    private OrderShippingView $orderShippingView;
-
     public function __construct(
-        OrderProductView $orderProductView,
-        PromotionCouponView $promotionCouponView,
-        PriceView $priceView,
-        SettingsRepository $settingsRepository,
-        AddressView $addressView,
-        OrderPaymentView $orderPaymentView,
-        TranslatorInterface $translator,
-        OrderShippingView $orderShippingView
-    ) {
-        $this->orderProductView = $orderProductView;
-        $this->promotionCouponView = $promotionCouponView;
-        $this->priceView = $priceView;
-        $this->addressView = $addressView;
-        $this->orderPaymentView = $orderPaymentView;
-        $this->translator = $translator;
-        $this->orderShippingView = $orderShippingView;
-    }
+        private readonly OrderProductView $orderProductView,
+        private readonly PromotionCouponView $promotionCouponView,
+        private readonly PriceView $priceView,
+        private readonly AddressView $addressView,
+        private readonly OrderPaymentView $orderPaymentView,
+        private readonly TranslatorInterface $translator,
+        private readonly OrderShippingView $orderShippingView
+    ) {}
 
+    /**
+     * @throws \ReflectionException
+     */
     public function view(ShopOrder $order, string $locale): array
     {
         $total = 0;
@@ -75,7 +54,7 @@ final class OrderView
             }
         }
 
-        if ($order->getCoupon() instanceof \App\Entity\Promotion) {
+        if ($order->getCoupon() instanceof Promotion) {
             $view['promotion'] = $this->promotionCouponView->view($order->getCoupon());
         }
 

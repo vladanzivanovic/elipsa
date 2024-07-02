@@ -10,7 +10,7 @@ class AskUsApiHandler {
 
     async send(data)
     {
-        const urlRoute = Routing.generate(`site_api.ask_us`);
+        const urlRoute = Routing.generate(`site_api.ask_us.${LOCALE}`);
 
         return $.ajax({
             type: 'POST',
