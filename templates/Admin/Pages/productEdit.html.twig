@@ -16,12 +16,12 @@
         {% set productSizes = productSizes|merge({(countryCode): payload.options[countryCode].sizes}) %}
     {% else %}
         {% set productSizes = productSizes|merge({(countryCode): [
-            {'slug': '38', 'quantity': 20},
-            {'slug': '40', 'quantity': 20},
-            {'slug': '42', 'quantity': 20},
-            {'slug': '44', 'quantity': 20},
-            {'slug': '46', 'quantity': 20},
-            {'slug': '48', 'quantity': 20},
+            {'slug': '38', 'quantity': countryCode == default_locale ? 20 : 1},
+            {'slug': '40', 'quantity': countryCode == default_locale ? 20 : 1},
+            {'slug': '42', 'quantity': countryCode == default_locale ? 20 : 1},
+            {'slug': '44', 'quantity': countryCode == default_locale ? 20 : 1},
+            {'slug': '46', 'quantity': countryCode == default_locale ? 20 : 1},
+            {'slug': '48', 'quantity': countryCode == default_locale ? 20 : 1},
         ]}) %}
     {% endif %}
 {% endfor %}
@@ -124,7 +124,7 @@
 
         <div class="row">
             {% for countryCode, country in countries %}
-                {% set option = payload.options[countryCode] is defined ? payload.options[countryCode] : [] %}
+                {% set productOption = payload.options[countryCode] is defined ? payload.options[countryCode] : [] %}
                 <div class="col-md-6 grid-margin country_{{ countryCode }} hide-country">
                     <div class="card">
                         <div class="card-body">
@@ -132,32 +132,123 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.input('Cena', 'price_'~countryCode, IS_EDIT and 0 < option|length ? option.price.unformatted_amount : '', 'options['~countryCode~'][price]') }}
+                                        {{ form.input('Cena', 'price_'~countryCode, IS_EDIT and 0 < productOption|length ? productOption.price.unformatted_amount/100 : '', 'options['~countryCode~'][price]') }}
                                     </div>
                                 </div><!-- Col -->
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.input('Popust', 'discount_'~countryCode, IS_EDIT and 0 < option|length and null != option.discount ? option.discount.price.unformatted_amount : '', 'options['~countryCode~'][discount]') }}
+                                        {{ form.input('Popust', 'discount_'~countryCode, IS_EDIT and 0 < productOption|length and null != productOption.discount ? productOption.discount.price.unformatted_amount/100 : '', 'options['~countryCode~'][discount]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p>Prikaz na pocetnoj stranici</p>
-                                    <div class="form-check form-check-flat form-check-primary">
-                                        {% set upValue = constant('App\\Entity\\ProductOptions::HOME_PAGE_UP') %}
-                                        {{ form.checkbox('Gore', 'home_page_checkbox_up_'~countryCode, upValue, 'options['~countryCode~'][show_home_page]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < option|length and option.show_home_page == upValue ? 'checked="checked"' : null ) }}
-                                    </div>
-                                    <div class="form-check form-check-flat form-check-primary">
-                                        {% set downValue = constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN') %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-                                        {{ form.checkbox('Dole', 'home_page_checkbox_down_'~countryCode, downValue, 'options['~countryCode~'][show_home_page]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < option|length and option.show_home_page == downValue ? 'checked="checked"' : null ) }}
+        <div class="row">
+            {% for countryCode, country in countries %}
+                {% set productOption = payload.options[countryCode] is defined ? payload.options[countryCode] : [] %}
+                <div class="col-md-6 grid-margin country_{{ countryCode }} hide-country">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Dodatna podešavanja - {{ country.translation | trans }}</h6>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-check form-check-flat form-check-primary">
+                                                        {% set upKey = constant('App\\Entity\\ProductOptions::HOME_PAGE_UP') %}
+
+                                                        {% set upKeyCheckedAttr = null %}
+
+                                                        {% if IS_EDIT and 0 < productOption|length and (upKey in productOption.show_home_page|keys) %}
+                                                            {% set upKeyCheckedAttr = 'checked="checked"' %}
+                                                        {% endif %}
+
+                                                        {{ form.checkbox(
+                                                            'Početna stranica - gore',
+                                                            'home_page_checkbox_up_'~countryCode,
+                                                            upKey,
+                                                            'options['~countryCode~'][show_home_page][up][home_page_position]',
+                                                            'form-check-label',
+                                                            'form-check-input',
+                                                            upKeyCheckedAttr)
+                                                        }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    {% set upValue = null != options.homePagePosition[countryCode][upKey] ? options.homePagePosition[countryCode][upKey] : 1 %}
+
+                                                    {% if IS_EDIT and 0 < productOption|length and (upKey in productOption.show_home_page|keys) %}
+                                                        {% set upValue = productOption.show_home_page[upKey] %}
+                                                    {% endif %}
+
+                                                    {{ form.input(
+                                                        'Slider pozicija',
+                                                        'home_page_slider_position_up_'~countryCode,
+                                                        upValue+1,
+                                                        'options['~countryCode~'][show_home_page][up][slider_position]',
+                                                        '',
+                                                        'number',
+                                                        null != upKeyCheckedAttr ? '' : 'disabled="disabled"')
+                                                    }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-check form-check-flat form-check-primary">
+                                                        {% set downKey = constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN') %}
+
+                                                        {% set downKeyCheckedAttr = null %}
+
+                                                        {% if IS_EDIT and 0 < productOption|length and (downKey in productOption.show_home_page|keys) %}
+                                                            {% set downKeyCheckedAttr = 'checked="checked"' %}
+                                                        {% endif %}
+
+                                                        {{ form.checkbox(
+                                                            'Početna stranica - dole',
+                                                            'home_page_checkbox_down_'~countryCode,
+                                                            downKey,
+                                                            'options['~countryCode~'][show_home_page][down][home_page_position]',
+                                                            'form-check-label',
+                                                            'form-check-input',
+                                                            downKeyCheckedAttr)
+                                                        }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    {% set downValue = null != options.homePagePosition[countryCode][downKey] ? options.homePagePosition[countryCode][downKey] : 1 %}
+
+                                                    {% if IS_EDIT and 0 < productOption|length and (downKey in productOption.show_home_page|keys) %}
+                                                        {% set downValue = productOption.show_home_page[downKey] %}
+                                                    {% endif %}
+
+                                                    {{ form.input(
+                                                        'Slider pozicija',
+                                                        'home_page_slider_position_down_'~countryCode,
+                                                        downValue+1,
+                                                        'options['~countryCode~'][show_home_page][down][slider_position]',
+                                                        '',
+                                                        'number',
+                                                        null != downKeyCheckedAttr ? '' : 'disabled="disabled"')
+                                                    }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div><!-- Col -->
-                                <div class="col-sm-3">
+                                <div class="col-sm-12">
                                     <p>&nbsp;</p>
                                     <div class="form-check form-check-flat form-check-primary">
-                                        {{ form.checkbox('Rasprodato', 'sold_'~countryCode, 1, 'options['~countryCode~'][sold]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < option|length and option.is_sold == true  ? 'checked="checked"' : null ) }}
+                                        {{ form.checkbox('Rasprodato', 'sold_'~countryCode, 1, 'options['~countryCode~'][sold]', 'form-check-label', 'form-check-input', IS_EDIT and 0 < productOption|length and productOption.is_sold == true  ? 'checked="checked"' : null ) }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->

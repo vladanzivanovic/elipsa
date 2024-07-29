@@ -12,9 +12,12 @@ final class SettingsEditPageFormatter
     {
         $formattedPrices = [];
 
-        /** @var Settings $price */
-        foreach ($data['settings']['shipping_prices'] as $price) {
-            $formattedPrices[$price->getCountry()][] = $price;
+        /** @var Settings $priceSettings */
+        foreach ($data['settings']['shipping_prices'] as $priceSettings) {
+            $price = number_format($priceSettings->getValue()/100, 2, '.', '');
+            $priceSettings->setValue((string) $price);
+
+            $formattedPrices[$priceSettings->getCountry()][] = $priceSettings;
         }
 
         $data['settings']['shipping_prices'] = $formattedPrices;

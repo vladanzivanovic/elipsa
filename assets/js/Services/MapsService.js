@@ -220,6 +220,10 @@ class MapsService {
                         this.#map.setCenter(position);
                         this.mapper.latInput.val(this.coordinates[0]);
                         this.mapper.lngInput.val(this.coordinates[1]);
+
+                        this.#marker.setPosition(position);
+                        this.#marker.setDraggable(this.mapOptions.marker.draggable);
+                        this.#marker.setMap(this.#map);
                     }
 
                     resolve(results);
@@ -243,8 +247,8 @@ class MapsService {
 
         }
         google.maps.event.addListener(this.#marker, 'dragend', evt => {
-            this.mapper.latInput.val(evt.latLng.lat().toFixed(3));
-            this.mapper.lngInput.val(evt.latLng.lng().toFixed(3));
+            this.mapper.latInput.val(evt.latLng.lat());
+            this.mapper.lngInput.val(evt.latLng.lng());
         });
 
         google.maps.event.addListener(this.#marker, 'dragstart', function(evt){

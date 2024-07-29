@@ -63,10 +63,10 @@ final class SizeAvailableMailer
         $model->setTemplate('sizeAvailable');
         $model->setTo($viewData['email_address']);
         $model->setSubject($this->translator->trans('email.notification.size.subject'));
-        $model->setFrom($officeInfo['settings']['main_email']->getValue());
-        $model->setFromName($officeInfo['settings']['site_name']->getValue());
-        $model->setReplyTo($officeInfo['settings']['main_email']->getValue());
-        $model->setReplyToName($officeInfo['settings']['site_name']->getValue());
+        $model->setFrom($officeInfo['settings']['main_email']['value']);
+        $model->setFromName($officeInfo['settings']['site_name']['value']);
+        $model->setReplyTo($officeInfo['settings']['main_email']['value']);
+        $model->setReplyToName($officeInfo['settings']['site_name']['value']);
         $model->setTemplateData($viewData);
 
         return $model;

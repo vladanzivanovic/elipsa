@@ -140,10 +140,10 @@ class YoutubeService {
     };
     
     #registerEvents() {
-        $(document).on('click touchend', this.#mapper.youtubeButton, e => {
+        $(document).on('click', this.#mapper.youtubeButton, e => {
             this.createVideo();
         });
-        $(document).on('click touchend', this.#mapper.youtubeButtonClose, e => {
+        $(document).on('click', this.#mapper.youtubeButtonClose, e => {
             let li = $(e.currentTarget).parent(),
                 id = li.data('id');
 

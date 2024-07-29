@@ -26,11 +26,11 @@ final class OrderFinishView
         $view = $this->orderView->view($order, $locale);
 
         $view['seller'] = [
-            'name'      => $officeInfo['settings']['site_name']->getValue(),
-            'pib'       => $officeInfo['settings']['pib']->getValue(),
-            'account'   => $officeInfo['settings']['account_number']->getValue(),
-            'email'     => $officeInfo['settings']['main_email']->getValue(),
-            'address'   => $officeInfo['settings']['street']->getValue().', '.$officeInfo['settings']['zip_code']->getValue().' '.$officeInfo['settings']['city']->getValue(),
+            'name'      => $officeInfo['settings']['site_name']['value'],
+            'pib'       => $officeInfo['settings']['pib']['value'],
+            'account'   => $officeInfo['settings']['account_number']['value'],
+            'email'     => $officeInfo['settings']['main_email']['value'],
+            'address'   => $officeInfo['settings']['street']['value'].', '.$officeInfo['settings']['zip_code']['value'].' '.$officeInfo['settings']['city']['value'],
             'contacts' => $officeInfo['office_contacts']
         ];
 

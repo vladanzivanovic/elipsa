@@ -4,65 +4,85 @@ import DropZoneService from "../../../js/Services/DropZoneService";
 import LocationHandler from "../Handler/LocationHandler";
 import productEditValidator from "../Validators/ProductEditValidator";
 import locationEditValidator from "../Validators/LocationEditValidator";
+import baseEvents from "./BaseEvents";
 
 class LocationEditController {
+    #mapper;
+    #validator;
+    #gmapApi;
+    #dropZone;
+    #baseEvents
+
     constructor() {
-        this.mapper = locationEditMapper;
-        this.validator = locationEditValidator;
+        this.#baseEvents = baseEvents;
+        this.#mapper = locationEditMapper;
+        this.#validator = locationEditValidator;
 
-        this.gmapApi = new MapsService();
+        this.#gmapApi = new MapsService();
 
-        this.dropZone = DropZoneService();
-        this.dropZone.init($('[data-files="location"]'));
+        this.#dropZone = DropZoneService();
 
-        this.gmapApi.load().then(() => {
+        this.#initForm();
+
+        this.#registerEvents();
+    }
+
+    #initForm()
+    {
+        $(`${this.#mapper.form} select`).select2({
+            minimumResultsForSearch: -1
+        });
+
+        this.#dropZone.init($('[data-files="location"]'));
+
+        this.#gmapApi.load().then(() => {
             if (IS_EDIT) {
-                this.gmapApi.setCoordinates(LAT, LNG);
+                this.#gmapApi.setCoordinates(LAT, LNG);
             }
 
-            this.gmapApi.showMap();
-            this.gmapApi.registerEvents();
+            this.#gmapApi.showMap();
+            this.#gmapApi.registerEvents();
         });
 
         if (IS_EDIT) {
-            this.dropZone.setFiles(IMAGES, 'location');
+            this.#dropZone.setFiles(IMAGES, 'location');
         }
 
-        this.validator.validate(this.mapper.form);
-
-        this.registerEvents();
+        this.#validator.validate(this.#mapper.form);
     }
 
-    registerEvents() {
-        $(this.mapper.submitBtn).on('click touchend', e => {
+    #registerEvents() {
+        $(this.#mapper.submitBtn).on('click touchend', e => {
             const handler = new LocationHandler();
 
             handler.save();
         });
 
-        $(this.mapper.city).on('keyup', () => {
+        $(this.#mapper.fields.city_en).on('keyup', () => {
             this.getMapByAddress();
         });
-        $(this.mapper.street).on('keyup', () => {
+        $(this.#mapper.fields.street_en).on('keyup', () => {
             this.getMapByAddress();
         });
-        $(this.mapper.country).on('keyup', () => {
+        $(this.#mapper.fields.country_en).on('keyup', () => {
             this.getMapByAddress();
         });
+
+        this.#baseEvents.events();
     }
 
     getMapByAddress() {
         let addressArray = [
-            $(this.mapper.street).val(),
-            $(this.mapper.city).val(),
-            $(this.mapper.country).val(),
+            $(this.#mapper.fields.street_en).val(),
+            $(this.#mapper.fields.city_en).val(),
+            $(this.#mapper.fields.country_en).val(),
         ];
 
         if (!addressArray[0] || !addressArray[1] || !addressArray[2]) {
             return ;
         }
 
-        this.gmapApi.getMapsDataByAddress(addressArray, true);
+        this.#gmapApi.getMapsDataByAddress(addressArray, true);
     }
 }
 

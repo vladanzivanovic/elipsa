@@ -1,8 +1,13 @@
 import ConfirmationModalService from "../Services/ConfirmationModalService";
+import productDataTables from "../Services/DataTables/ProductDataTables";
 
 class ProductListModal {
+    #productDataTable;
+
     constructor() {
         if (!ProductListModal.instance) {
+            this.#productDataTable = productDataTables;
+
             ProductListModal.instance = this;
         }
 
@@ -28,19 +33,20 @@ class ProductListModal {
 
                 break;
             case 'home_page_status':
-                this.#statusModal(data.position);
+                this.#statusModal(data);
 
                 break;
         }
     }
 
-    #statusModal(position) {
+    #statusModal(data) {
         const buttons = [
             {
                 type: 'button',
                 text: 'Primeni',
                 'class': 'btn btn-primary home-page-status-apply',
-                'data-position': position,
+                'data-position': data.position,
+                'data-country': data.country,
                 'data-dismiss': "modal"
             },
         ];

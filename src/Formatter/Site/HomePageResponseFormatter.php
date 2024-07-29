@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Formatter\Site;
 
 use App\Entity\Banner;
+use App\Entity\ProductOptions;
 use App\Entity\User;
 use App\View\BannerView;
 use App\View\SliderView;
@@ -39,7 +40,8 @@ final class HomePageResponseFormatter
             );
         }
 
-        $data['products'] = $this->productFormatter->getProducts($data['products'], $countryCode, $user);
+        $data['products'][ProductOptions::HOME_PAGE_UP] = $this->productFormatter->getProducts($data['products'][ProductOptions::HOME_PAGE_UP], $countryCode, $user);
+        $data['products'][ProductOptions::HOME_PAGE_DOWN] = $this->productFormatter->getProducts($data['products'][ProductOptions::HOME_PAGE_DOWN], $countryCode, $user);
 
         return $data;
     }

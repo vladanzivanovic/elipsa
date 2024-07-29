@@ -11,13 +11,20 @@
     </div>
     <div class="sidebar-body">
         <ul class="nav">
-            <li class="nav-item nav-category">Stranice</li>
+            <li class="nav-item nav-category">Proizvodi</li>
             <li class="nav-item {{ routeName() == 'admin.dashboard' ? 'active' : '' }}">
                 <a href="{{ path('admin.dashboard') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">Proizvodi</span>
+                    <span class="link-title">Upravljanje proizvodima</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName() == 'admin.get_products_home_page_list' ? 'active' : '' }}">
+                <a href="{{ path('admin.get_products_home_page_list') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Sortiranje</span>
+                </a>
+            </li>
+            <li class="nav-item nav-category">Stranice</li>
             <li class="nav-item {{ routeName() == 'admin.locations' ? 'active' : '' }}">
                 <a href="{{ path('admin.locations') }}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>

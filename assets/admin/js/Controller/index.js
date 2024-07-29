@@ -39,6 +39,7 @@ import CatalogController from "./CatalogController";
 import CatalogEditController from "./CatalogEditController";
 import OfficeContactEditController from "./OfficeContactEditController";
 import OfficeContactsController from "./OfficeContactsController";
+import ProductHomePageController from "./ProductHomePageController";
 
 let routes = [
     {
@@ -284,6 +285,10 @@ let routes = [
     {
         name: 'admin.edit_office_contact_page',
         controller: OfficeContactEditController,
+    },
+    {
+        name: 'admin.get_products_home_page_list',
+        controller: ProductHomePageController,
     },
 ];
 

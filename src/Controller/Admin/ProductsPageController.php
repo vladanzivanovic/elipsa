@@ -7,7 +7,7 @@ namespace App\Controller\Admin;
 use App\Formatter\Admin\ProductsPageResponseFormatter;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductsPageController extends AbstractController
 {

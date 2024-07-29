@@ -9,7 +9,7 @@ use App\Formatter\Admin\SettingsEditPageFormatter;
 use Symfony\Bridge\Twig\Attribute\Template;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class SettingsEditPageController extends AbstractController
 {

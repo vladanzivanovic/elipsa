@@ -23,7 +23,7 @@ final class OrderView
     /**
      * @throws \ReflectionException
      */
-    public function view(ShopOrder $order, string $locale): array
+    public function view(ShopOrder $order, string $locale, string $countryCode = null): array
     {
         $total = 0;
 
@@ -59,7 +59,7 @@ final class OrderView
         }
 
 
-        $view['shipping'] = $this->orderShippingView->view($order, $total, $locale);
+        $view['shipping'] = $this->orderShippingView->view($order, $locale);
         $view['total'] = $this->priceView->view($total, $locale);
         $view['total_with_shipping'] = $this->priceView->view(
             $total + $view['shipping']['price']['unformatted_amount'],

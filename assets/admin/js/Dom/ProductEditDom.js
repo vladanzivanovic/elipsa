@@ -23,7 +23,7 @@ class ProductEditDom {
                         </select>
                     </td>
                     <td class="col-sm-4">
-                        <input type="number" name="options[${countryCode}][sizes][quantity][]" class="form-control" value="${null !== quantity ? quantity : 0}" min="0">
+                        <input type="number" name="options[${countryCode}][sizes][quantity][]" class="form-control" value="${null !== quantity ? quantity : 1}" min="0">
                     </td>
                     <td class="col-sm-4 text-center"><button class="btn btn-danger size-remove-btn-${ countryCode }" type="button">Ukloni</button></td>
                 </tr>`;

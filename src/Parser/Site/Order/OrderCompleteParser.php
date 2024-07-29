@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Parser\Site\Order;
 
+use App\Checker\PromotionFreeShippingChecker;
+use App\Collector\PromotionCollector;
 use App\Entity\Address;
 use App\Entity\OrderProduct;
 use App\Entity\ShopOrder;
@@ -11,30 +13,21 @@ use App\Entity\User;
 use App\Exception\OrderException;
 use App\Parser\Site\AddressParser;
 use App\Repository\LocationRepository;
+use App\Repository\SettingsRepository;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 final class OrderCompleteParser
 {
-    private OrderRequestParser $orderRequestParser;
-
-    private AddressParser $addressParser;
-
-    private OrderUserParser $orderUserParser;
-
-    private LocationRepository $locationRepository;
-
     public function __construct(
-        OrderRequestParser $orderRequestParser,
-        AddressParser $addressParser,
-        OrderUserParser $orderUserParser,
-        LocationRepository $locationRepository
-    ) {
-        $this->orderRequestParser = $orderRequestParser;
-        $this->addressParser = $addressParser;
-        $this->orderUserParser = $orderUserParser;
-        $this->locationRepository = $locationRepository;
-    }
+        private readonly OrderRequestParser $orderRequestParser,
+        private readonly AddressParser $addressParser,
+        private readonly OrderUserParser $orderUserParser,
+        private readonly LocationRepository $locationRepository,
+        private readonly SettingsRepository $settingsRepository,
+        private readonly PromotionCollector $promotionCollector,
+        private readonly PromotionFreeShippingChecker $promotionFreeShippingChecker,
+    ) {}
 
     /**
      * @throws OrderException

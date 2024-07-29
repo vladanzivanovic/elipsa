@@ -15,9 +15,9 @@ final class LocationOptionsFormatter
         private readonly string $defaultLocale
     ) {}
 
-    public function format($locale = null): array
+    public function format(string $country, string $locale = null): array
     {
-        $locations = $this->locationRepository->getForOptions($locale ?? $this->defaultLocale);
+        $locations = $this->locationRepository->getForOptions($country, $locale ?? $this->defaultLocale);
 
         $formattedLocations = [];
 

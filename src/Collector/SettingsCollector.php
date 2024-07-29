@@ -47,7 +47,7 @@ final class SettingsCollector
                 $officeMapper = ['showInFooter' => true, 'useInEmail' => true];
                 break;
             default:
-                $settingsMapper = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'STREET', 'ZIP_CODE', 'CITY', 'FULL_COMPANY_NAME', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT', 'FREE_SHIPPING_STORE'];
+                $settingsMapper = ['MAIN_EMAIL', 'SITE_NAME', 'PIB', 'ACCOUNT_NUMBER', 'STREET', 'ZIP_CODE', 'CITY', 'FULL_COMPANY_NAME', 'COMPANY_ID', 'FOOTER_BOTTOM_TEXT', 'FREE_SHIPPING_STORE', 'SHIPPING_PRICE'];
                 $officeMapper = ['showInFooter' => true, 'useInEmail' => true];
         }
 
@@ -72,8 +72,11 @@ final class SettingsCollector
 
     private function settingsCollection(array $fields): array
     {
-        $fields = $this->settingsRepository->findBy(['slug' => $fields]);
+        $settings = $this->settingsRepository->getSettingsByLocaleAndFields(
+            $fields,
+            $this->requestStack->getCurrentRequest()->attributes->get('_country')
+        );
 
-        return $this->settingsFormatter->formatResponse($fields);
+        return $this->settingsFormatter->formatResponse($settings);
     }
 }

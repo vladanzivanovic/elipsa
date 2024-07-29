@@ -19,6 +19,7 @@ final class LocationView
         $view = $this->defaultData($location);
         $view['translations'] = $this->getTranslationValues($location, false);
         $view['selected_images'] = $this->getImages($location);
+        $view['available_countries'] = $location->getAvailableCountries();
 
         return $view;
     }

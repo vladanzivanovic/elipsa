@@ -70,9 +70,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: NewsLetter::class)]
     private Collection $newsLetters;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
-    private Collection $notifications;
-
     #[ORM\Column(type: 'string', length: 255)]
     private string $loginType = self::LOGIN_TYPE_INTERN;
 
@@ -87,7 +84,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         $this->shopOrders = new ArrayCollection();
         $this->userWishes = new ArrayCollection();
         $this->newsLetters = new ArrayCollection();
-        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,7 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -356,36 +352,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
             // set the owning side to null (unless already changed)
             if ($newsLetter->getUser() === $this) {
                 $newsLetter->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Notification>
-     */
-    public function getNotifications(): Collection
-    {
-        return $this->notifications;
-    }
-
-    public function addNotification(Notification $notification): self
-    {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications[] = $notification;
-            $notification->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNotification(Notification $notification): self
-    {
-        if ($this->notifications->removeElement($notification)) {
-            // set the owning side to null (unless already changed)
-            if ($notification->getUser() === $this) {
-                $notification->setUser(null);
             }
         }
 

@@ -38,7 +38,7 @@ final class OrderPaymentRequestView
     {
         $orgClientId = $this->parameterBag->get('intesa_merchant_id');
         $oid = $order->getToken();
-        $orgAmount = $order->getTotal().'.00';
+        $orgAmount = (string)($order->getTotal() + $order->getShippingPrice())/100;
         $orgOkUrl = $this->router->generate('site.checkout_completed_successful', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
         $orgFailUrl = $this->router->generate('site.checkout_failed', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
         $orgCancelUrl = $this->router->generate('site.checkout_page', ['_locale' => $locale, ], UrlGeneratorInterface::ABSOLUTE_URL);

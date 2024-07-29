@@ -5,48 +5,29 @@ declare(strict_types=1);
 namespace App\Formatter\Admin;
 
 use App\Entity\Product;
+use App\Entity\ProductOptions;
 use App\Formatter\Options\TagOptionsFormatter;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductCleaningRepository;
+use App\Repository\ProductOptionsRepository;
 use App\Repository\TagsRepository;
 use App\View\ImageView;
 use App\View\ProductView;
-use App\View\SizeView;
 use App\View\YoutubeView;
 
 final class ProductEditResponseFormatter
 {
-    private CategoryTranslationRepository $categoryTranslationRepository;
-
-    private TagsRepository $tagsRepository;
-
-    private ProductCleaningRepository $cleaningRepository;
-
-    private ProductView $productView;
-
-    private ImageView $imageView;
-
-    private YoutubeView $youtubeView;
-
-    private TagOptionsFormatter $tagOptionsFormatter;
-
     public function __construct(
-        CategoryTranslationRepository $categoryTranslationRepository,
-        TagsRepository $tagsRepository,
-        ProductCleaningRepository $cleaningRepository,
-        ProductView $productView,
-        ImageView $imageView,
-        YoutubeView $youtubeView,
-        TagOptionsFormatter $tagOptionsFormatter
-    ) {
-        $this->categoryTranslationRepository = $categoryTranslationRepository;
-        $this->tagsRepository = $tagsRepository;
-        $this->cleaningRepository = $cleaningRepository;
-        $this->productView = $productView;
-        $this->imageView = $imageView;
-        $this->youtubeView = $youtubeView;
-        $this->tagOptionsFormatter = $tagOptionsFormatter;
-    }
+        private readonly CategoryTranslationRepository $categoryTranslationRepository,
+        private readonly TagsRepository $tagsRepository,
+        private readonly ProductCleaningRepository $cleaningRepository,
+        private readonly ProductView $productView,
+        private readonly ImageView $imageView,
+        private readonly YoutubeView $youtubeView,
+        private readonly TagOptionsFormatter $tagOptionsFormatter,
+        private readonly ProductOptionsRepository $productOptionsRepository,
+        private readonly array $countries,
+    ) {}
 
     public function formatResponse(array $options, null|Product $product = null): array
     {
@@ -70,7 +51,10 @@ final class ProductEditResponseFormatter
             'categories' => $options['categories'],
             'sizes' => $options['sizes'],
             'colors' => $options['colors'],
+            'homePagePosition' => $this->getHighestHomePagePosition(),
         ];
+
+
 
         return [
             'payload' => $payload,
@@ -100,5 +84,21 @@ final class ProductEditResponseFormatter
         return ['youtubes' => $youtubes];
     }
 
+    private function getHighestHomePagePosition(): array
+    {
+        $homePagePositions = [];
 
+        foreach ($this->countries as $countryCode => $country) {
+            $optionUp = $this->productOptionsRepository->getHighestHomePagePosition(ProductOptions::HOME_PAGE_UP, $countryCode);
+            $optionDown = $this->productOptionsRepository->getHighestHomePagePosition(ProductOptions::HOME_PAGE_DOWN, $countryCode);
+
+            $homePagePositions[$countryCode] = [
+                ProductOptions::HOME_PAGE_UP => $optionUp['showHomePage'][ProductOptions::HOME_PAGE_UP] ?? null,
+                ProductOptions::HOME_PAGE_DOWN => $optionDown['showHomePage'][ProductOptions::HOME_PAGE_DOWN] ?? null,
+            ];
+        }
+
+
+        return $homePagePositions;
+    }
 }

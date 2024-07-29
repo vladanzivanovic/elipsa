@@ -59,6 +59,18 @@ class SettingsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
+    public function getSettingsByLocaleAndFields(array $slugs, string $country): array
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.slug IN (:settingsSlug)')
+            ->andWhere('s.country = :country')
+            ->orWhere('s.country IS NULL')
+            ->setParameter('settingsSlug', $slugs)
+            ->setParameter('country', $country);
+
+        return $query->getQuery()->getResult();
+    }
+
     public function getSettingsForUserRegistrationEmail(): array
     {
         $query = $this->createQueryBuilder('s')

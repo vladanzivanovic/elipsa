@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\PromotionEligibilityInterface;
 use App\Entity\Resources\ResourceTrait;
+use App\EventListener\OrderShippingPriceEventListener;
 use App\Repository\ShopOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity(repositoryClass: ShopOrderRepository::class)]
+#[ORM\EntityListeners([OrderShippingPriceEventListener::class])]
 class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 {
     use ResourceTrait;
@@ -31,8 +33,6 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     public const STATUS_CANCELED = 'canceled';
 
     public const STATUS_FAILED = 'failed';
-
-//    public const STATUS_COMPLETED = 2;
 
     public const CARD_STATUS_PRE_AUTH = 'PreAuth'; //4
     public const CARD_STATUS_POST_AUTH = 'PostAuth';
@@ -111,6 +111,9 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 
     #[ORM\Column(length: 5)]
     private ?string $country = null;
+
+    #[ORM\Column(nullable: true)]
+    private null|int $shippingPrice = null;
 
     public function __construct()
     {
@@ -382,6 +385,18 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     public function setCountry(string $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getShippingPrice(): null|int
+    {
+        return $this->shippingPrice;
+    }
+
+    public function setShippingPrice(int $shippingPrice): static
+    {
+        $this->shippingPrice = $shippingPrice;
 
         return $this;
     }

@@ -178,7 +178,7 @@ checkout.payment.credit_card: Karticom
 checkout.shipping.on_delivery: Kurirskom službom
 checkout.shipping.in_store: Preuzimanje u radnji
 checkout.shipping.store_list_label: Prodavnica
-checkout.shipping.in_store_not_available: Iznos porudžbine mora biti jednak ili veći od %shipping_price_store% RSD za isporuku i preuzimanje u željenoj prodavnici.
+checkout.shipping.in_store_not_available: Iznos porudžbine mora biti jednak ili veći od %shipping_price_store% %shipping_price_currency% za isporuku i preuzimanje u željenoj prodavnici.
 checkout.complete_order: završi porudžbinu
 checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
 checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.

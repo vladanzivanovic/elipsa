@@ -21,9 +21,9 @@ final class LocationOptionsExtension extends AbstractExtension
         ];
     }
 
-    public function getOptions(string $locale): array
+    public function getOptions(string $country, string $locale): array
     {
-        return $this->locationOptionsFormatter->format($locale);
+        return $this->locationOptionsFormatter->format($country, $locale);
     }
 
     public function getName(): string

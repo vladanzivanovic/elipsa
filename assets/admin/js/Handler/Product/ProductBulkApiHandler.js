@@ -7,14 +7,14 @@ class ProductBulkApiHandler {
         return ProductBulkApiHandler.instance;
     }
 
-    async changeProductsHomePositions(productIds, position)
+    async changeProductsHomePositions(productIds, position, country)
     {
         let result;
 
         try {
             result = await $.ajax({
                 type: 'POST',
-                'url': Routing.generate('admin.api_bulk_product_home_page_position', {position}),
+                'url': Routing.generate('admin.api_bulk_product_home_page_position', {position, country}),
                 data: JSON.stringify({'ids': productIds}),
                 dataType: 'json',
                 contentType: 'application/json',
@@ -49,6 +49,15 @@ class ProductBulkApiHandler {
         }
 
         return result;
+    }
+
+    async changeHomePagePosition(products) {
+       return  $.ajax({
+            type: 'POST',
+            'url': Routing.generate('admin.api_bulk_products_home_page_position'),
+            data: JSON.stringify({ids: products}),
+            dataType: 'json',
+        })
     }
 }
 const productBulkApiHandler = new ProductBulkApiHandler();

@@ -40,6 +40,30 @@ class ProductEditEvents {
 
                 this.#productEditManipulator.removeSizeRow(row);
             });
+
+            $(document).on('change', this.#productEditMapper.homePagePosition[countryCode].up, e => {
+                const checkbox = $(e.currentTarget);
+
+                if (checkbox.is(':checked')) {
+                    $(this.#productEditMapper.homePagePosition[countryCode].upPosition).removeAttr('disabled');
+
+                    return;
+                }
+
+                $(this.#productEditMapper.homePagePosition[countryCode].upPosition).attr('disabled', 'disabled');
+            });
+
+            $(document).on('change', this.#productEditMapper.homePagePosition[countryCode].down, e => {
+                const checkbox = $(e.currentTarget);
+
+                if (checkbox.is(':checked')) {
+                    $(this.#productEditMapper.homePagePosition[countryCode].downPosition).removeAttr('disabled');
+
+                    return;
+                }
+
+                $(this.#productEditMapper.homePagePosition[countryCode].downPosition).attr('disabled', 'disabled');
+            });
         }
 
         this.#countrySelectionEvents.registerEvents();

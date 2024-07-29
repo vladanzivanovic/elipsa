@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductEditController extends AbstractController
 {
@@ -69,12 +69,16 @@ final class ProductEditController extends AbstractController
         return $this->json(['text' => $statusText]);
     }
 
-    #[Route(path: '/api/product/home-page-position/{slug}/{status}', name: 'admin.api_product_home_page_position', options: ['expose' => true], methods: ['PATCH'])]
-    public function setHomePagePosition(ProductTranslation $productTranslation, int $status): JsonResponse
+    #[Route(path: '/api/product/home-page-position/{country}', name: 'admin.api_product_home_page_position', options: ['expose' => true], methods: ['PATCH'])]
+    public function setHomePagePosition(Product $product, string $country, Request $request): JsonResponse
     {
-//        $productTranslation->getProduct()->setShowHomePage($status);
+        $position = $request->request->all('position');
 
-        $this->editHandler->save($productTranslation->getProduct());
+        $option = $product->getOptionsByCountry($country);
+
+        $option->setShowHomePage($position);
+
+        $this->editHandler->save($product);
 
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }

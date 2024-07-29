@@ -23,7 +23,7 @@ class ProductOptionsView
         $view = [
             'id' => $productOptions->getId(),
             'price' => $this->priceView->view($price, $locale),
-            'show_home_page' => $productOptions->getShowHomePage(),
+            'show_home_page' => $productOptions->getShowHomePage() ?? [],
             'is_sold' => $productOptions->isSold(),
             'discount' => null,
             'sizes' => $this->getSizes($productOptions),

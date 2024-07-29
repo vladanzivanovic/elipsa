@@ -2,16 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\LocationTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Entity(repositoryClass: \App\Repository\LocationTranslationRepository::class)]
-class LocationTranslation
+#[ORM\Entity(repositoryClass: LocationTranslationRepository::class)]
+class LocationTranslation implements EntityInterface, LocaleInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use ResourceTrait;
+    use LocaleTrait;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $title;
@@ -29,22 +32,14 @@ class LocationTranslation
     #[ORM\Column(type: 'string', length: 100)]
     private string $country;
 
-    #[ORM\Column(type: 'string', length: 2)]
-    private string $locale;
-
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Location::class, inversedBy: 'locationTranslations')]
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'translations')]
     #[ORM\JoinColumn(nullable: false)]
     private Location $location;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $shortDescription = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
+    public function getTitle(): null|string
     {
         return $this->title;
     }
@@ -56,7 +51,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): null|string
     {
         return $this->slug;
     }
@@ -68,7 +63,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getStreet(): ?string
+    public function getStreet(): null|string
     {
         return $this->street;
     }
@@ -92,7 +87,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getCountry(): null|string
     {
         return $this->country;
     }
@@ -104,19 +99,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    public function getLocation(): ?Location
+    public function getLocation(): null|Location
     {
         return $this->location;
     }
@@ -128,7 +111,7 @@ class LocationTranslation
         return $this;
     }
 
-    public function getShortDescription(): ?string
+    public function getShortDescription(): null|string
     {
         return $this->shortDescription;
     }

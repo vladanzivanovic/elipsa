@@ -87,20 +87,6 @@ class ProductEditHandler {
         })
     }
 
-    changeHomePagePosition(checkbox, slug, status) {
-        $.ajax({
-            type: 'PATCH',
-            'url': Routing.generate('admin.api_product_home_page_position', {slug, status}),
-            dataType: 'json',
-            success: (response) => {},
-            error: () => {
-                checkbox.prop('checked', false);
-
-                this.#notification.error(Translator.trans('generic_error', null, 'message', LOCALE));
-            }
-        })
-    }
-
     toggleIsSold(checkbox, slug) {
         const isChecked = checkbox.is(':checked');
 

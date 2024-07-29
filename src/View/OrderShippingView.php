@@ -7,6 +7,7 @@ namespace App\View;
 use App\Checker\PromotionCheckerTrait;
 use App\Checker\PromotionFreeShippingChecker;
 use App\Collector\PromotionCollector;
+use App\Entity\Location;
 use App\Entity\ShopOrder;
 use App\Repository\SettingsRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,12 +27,12 @@ final class OrderShippingView
         private readonly RequestStack $requestStack
     ) {}
 
-    public function view(ShopOrder $order, int $total, string $locale): array
+    public function view(ShopOrder $order, string $locale): array
     {
         $view = [
             'type' => $order->getShippingType(),
             'human_type' => $this->translator->trans('order.shipping.'.$order->getShippingType()),
-            'price' => $this->setShippingPrice($order, $total, $locale),
+            'price' => $this->priceView->view($order->getShippingPrice(), $locale),
         ];
 
         $view['store'] = $this->setStoreLocation($order);
@@ -39,43 +40,12 @@ final class OrderShippingView
         return $view;
     }
 
-    private function setStoreLocation(ShopOrder $order): ?array
+    private function setStoreLocation(ShopOrder $order): null|array
     {
-        if ($order->getStoreId() instanceof \App\Entity\Location) {
+        if ($order->getStoreId() instanceof Location) {
             return $this->locationView->view($order->getStoreId());
         }
 
         return null;
-    }
-
-    private function setShippingPrice(ShopOrder $order, int $total, string $locale): array
-    {
-        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
-
-        $freeShippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'FREE_SHIPPING', 'country' => $countryCode]);
-        $shippingPriceConfig = $this->settingsRepository->findOneBy(['slug' => 'SHIPPING_PRICE', 'country' => $countryCode]);
-
-        $shippingPrice = (int) $shippingPriceConfig->getValue();
-
-        if ($total >= $freeShippingPriceConfig->getValue() || $this->isFreeShippingPromotionEligible($order)) {
-            $shippingPrice = 0;
-        }
-
-        return $this->priceView->view($shippingPrice, $locale);
-    }
-
-    private function isFreeShippingPromotionEligible(ShopOrder $order): bool
-    {
-        $promotions = $this->promotionCollector->collectFreeShippingPromotions();
-
-        foreach ($promotions as $promotionElements) {
-            $isEligible = $this->promotionFreeShippingChecker->checkEligibility($order, $promotionElements);
-
-            if (true === $isEligible) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

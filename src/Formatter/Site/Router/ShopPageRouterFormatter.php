@@ -202,6 +202,6 @@ final class ShopPageRouterFormatter
             }
         }
 
-        $searchCriteria[$transName] = implode('+', $trans);
+        $searchCriteria[$transName] = implode('+', array_column($trans, 'slug'));
     }
 }

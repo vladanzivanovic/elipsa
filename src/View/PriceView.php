@@ -29,7 +29,7 @@ final class PriceView
         $numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
 
         return [
-            'amount' => $numberFormatter->format($price),
+            'amount' => $numberFormatter->format($price/100),
             'currency' => $language['currencyCode'],
             'unformatted_amount' => $price,
         ];

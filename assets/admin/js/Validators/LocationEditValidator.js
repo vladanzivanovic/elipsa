@@ -14,26 +14,23 @@ class LocationEditValidator {
 
         options = {
             rules: {
-                rs_title: 'required',
-                rs_street: 'required',
-                rs_city: 'required',
-                zip_code: 'required',
-                rs_country: 'required',
-                rs_description: 'required',
-                en_title: 'required',
-                en_street: 'required',
-                en_city: 'required',
-                en_country: 'required',
-                en_description: 'required',
                 working_hours: 'required',
-                working_hours_weekend: 'required',
+                working_hours_saturday: 'required',
                 email: 'email',
+                zip_code: 'required',
                 location: {
                     dropZoneHasImage: true,
                     dropZoneHasMainImage: true,
                 }
             },
         };
+
+        for(const [locale, data] of Object.entries(LANGUAGES)) {
+            options.rules[`translations[${locale}][title]`] = 'required';
+            options.rules[`translations[${locale}][street]`] = 'required';
+            options.rules[`translations[${locale}][city]`] = 'required';
+            options.rules[`translations[${locale}][country]`] = 'required';
+        }
 
         $.extend(options, window.helpBlock);
 

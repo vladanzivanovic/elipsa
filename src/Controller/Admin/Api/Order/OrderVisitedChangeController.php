@@ -11,7 +11,7 @@ use App\View\OrderView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderVisitedChangeController extends AbstractController
 {
@@ -39,7 +39,7 @@ final class OrderVisitedChangeController extends AbstractController
 
             $this->orderHandler->save($order, 'SetVisited');
 
-            $viewData = $this->orderView->view($order, $orderRequestDto->locale);
+//            $viewData = $this->orderView->view($order, $orderRequestDto->locale);
 
             return $this->json(null, Response::HTTP_NO_CONTENT);
         } catch (\Throwable $throwable) {

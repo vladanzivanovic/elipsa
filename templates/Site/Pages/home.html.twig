@@ -4,6 +4,7 @@
 
 {% block content %}
     {% set bannerSpeedLinksType = constant('App\\Entity\\Banner::TYPE_SPEED_LINKS') %}
+    {% set homePageProducts = get_class_constants('App\\Entity\\ProductOptions') %}
 
     <!-- home2-slider-start -->
     <div class="home3-slider-container">
@@ -64,10 +65,8 @@
                             <div class="row">
                                 <div id="top_carousel" class="feature-pro-carousel owl-carousel">
                                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                    {% for product in products %}
-                                        {% if product.options[countryDefaultLocale].show_home_page == constant('App\\Entity\\ProductOptions::HOME_PAGE_UP') %}
-                                            {{ productGrid.productGrid(product, 'col-xs-12', locale, countryDefaultLocale) }}
-                                        {% endif %}
+                                    {% for product in products[homePageProducts.HOME_PAGE_UP] %}
+                                        {{ productGrid.productGrid(product, 'col-xs-12', locale, countryDefaultLocale) }}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -190,10 +189,8 @@
                             <div class="row">
                                 <div id="bottom_carousel" class="feature-pro-carousel owl-carousel">
                                     {% import 'Site/Macros/productGrid.html.twig' as productGrid %}
-                                    {% for product in products %}
-                                        {% if product.options[countryDefaultLocale].show_home_page == constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN') %}
-                                            {{ productGrid.productGrid(product, 'col-xs-12', locale, countryDefaultLocale) }}
-                                        {% endif %}
+                                    {% for product in products[homePageProducts.HOME_PAGE_DOWN] %}
+                                        {{ productGrid.productGrid(product, 'col-xs-12', locale, countryDefaultLocale) }}
                                     {% endfor %}
                                 </div>
                             </div>

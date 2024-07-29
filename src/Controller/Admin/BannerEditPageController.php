@@ -6,9 +6,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Banner;
 use App\Formatter\Admin\BannerEditResponseFormatter;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class BannerEditPageController extends AbstractController
 {
@@ -24,7 +25,9 @@ final class BannerEditPageController extends AbstractController
         return [];
     }
 
-    
+    /**
+     * @throws NonUniqueResultException
+     */
     #[Route(path: '/edit-home-banner/{id}', name: 'admin.edit_home_banner_page', methods: ['GET'])]
     #[Template('Admin/Pages/homeBannerEdit.html.twig')]
     public function updateHome(Banner $banner): array
@@ -39,7 +42,9 @@ final class BannerEditPageController extends AbstractController
         return [];
     }
 
-    
+    /**
+     * @throws NonUniqueResultException
+     */
     #[Route(path: '/edit-banner/{id}', name: 'admin.edit_banner_page', methods: ['GET'])]
     #[Template('Admin/Pages/bannerEdit.html.twig')]
     public function update(Banner $banner): array

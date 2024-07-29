@@ -20,6 +20,7 @@ class ProductEditMapper {
             this.discount = $('#discount', baseFormMapper.form);
 
             this.sizes = {};
+            this.homePagePosition = {};
 
             for(const countryCode in COUNTRIES) {
                 this.sizes[countryCode] = {};
@@ -27,6 +28,13 @@ class ProductEditMapper {
                 this.sizes[countryCode].table =  `.size-table-${countryCode}`;
                 this.sizes[countryCode].addBtn =  `.size-add-btn-${countryCode}`;
                 this.sizes[countryCode].removeBtn =  `.size-remove-btn-${countryCode}`;
+
+                this.homePagePosition[countryCode] = {};
+
+                this.homePagePosition[countryCode].up = `#home_page_checkbox_up_${countryCode}`;
+                this.homePagePosition[countryCode].upPosition = `#home_page_slider_position_up_${countryCode}`;
+                this.homePagePosition[countryCode].down = `#home_page_checkbox_down_${countryCode}`;
+                this.homePagePosition[countryCode].downPosition = `#home_page_slider_position_down_${countryCode}`;
             }
 
             ProductEditMapper.instance = Object.assign(this, baseFormMapper);

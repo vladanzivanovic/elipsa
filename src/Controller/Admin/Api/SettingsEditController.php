@@ -8,7 +8,7 @@ use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class SettingsEditController extends AbstractController
 {
@@ -23,6 +23,11 @@ final class SettingsEditController extends AbstractController
             $setting = $this->settingsRepository->find($id);
 
             $setting->setValue($value);
+
+            if (true === in_array($setting->getSlug(), ['FREE_SHIPPING', 'FREE_SHIPPING_STORE', 'SHIPPING_PRICE'])) {
+                $price = $value*100;
+                $setting->setValue((string) $price);
+            }
         }
 
         $this->settingsRepository->flush();

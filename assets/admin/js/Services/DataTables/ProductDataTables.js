@@ -103,30 +103,6 @@ class ProductDataTables {
                     }
                 },
                 {
-                    data: 'show_home_page',
-                    name: 'show_home_page',
-                    title: 'Početna stranica',
-                    width: '200px',
-                    render: function (show_home_page, type, row, meta) {
-                        let html = '';
-
-                        for (const countryCode in show_home_page) {
-                            const countryName = Translator.trans(COUNTRIES[countryCode].translation, null, 'messages', LOCALE);
-                            const position = show_home_page[countryCode] === PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP ? 'Gore' : 'Dole';
-
-                            html +=
-                                `<div class="row">
-                                    <div class="col-md-12">
-                                        <p class="status-text">${countryName} - ${position}</p>
-                                    </div>
-                                </div>
-                            `;
-                        }
-
-                        return html;
-                    }
-                },
-                {
                     data: 'sold',
                     name: 'is_sold',
                     title: 'Rasprodato',
@@ -196,9 +172,12 @@ class ProductDataTables {
         let dom = $('<select class="action-box"></select>');
 
         dom.append('<option value="">Izaberite akciju...</option>');
-        dom.append(`<option value="0" data-action-type="home_page_status">Početna strana - ukloni</option>`);
-        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status">Početna strana - gore</option>`);
-        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status">Početna strana - dole</option>`);
+        dom.append(`<option value="0" data-action-type="home_page_status" data-country="rs">Početna strana - ukloni - RS</option>`);
+        dom.append(`<option value="0" data-action-type="home_page_status" data-country="ba">Početna strana - ukloni - BiH</option>`);
+        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status" data-country="rs">Početna strana - gore - RS</option>`);
+        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status" data-country="rs">Početna strana - dole - RS</option>`);
+        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status" data-country="ba">Početna strana - gore - BiH</option>`);
+        dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status" data-country="ba">Početna strana - dole - BiH</option>`);
         dom.append(`<option value="discount-modal" data-action-type="set_bulk_discount">Popust na izabranim proizvodima</option>`);
 
         return dom;

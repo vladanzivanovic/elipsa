@@ -1,0 +1,70 @@
+{% extends('Admin/base.html.twig') %}
+
+{% set title = 'Sortiranje proizvoda na početnoj stranici' %}
+{% set routePath = 'admin.dashboard' %}
+{% set routeTitle = 'Početna' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block bodyClass %}product-home-page-position{% endblock %}
+
+{% block content %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: title} %}
+
+    {% set productOptionsConstants = get_class_constants('App\\Entity\\ProductOptions') %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Sortiranje proizvoda na početnoj stranici</h4>
+        </div>
+    </div>
+
+    {% for countryCode, country in countries %}
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Pozicija gore - {{ country.translation | trans }}</h4>
+                        {% if payload[productOptionsConstants.HOME_PAGE_UP][countryCode] is defined %}
+                            <div id="position-{{ productOptionsConstants.HOME_PAGE_UP }}-{{ countryCode }}" class="row position-wrapper" data-home-position="{{ productOptionsConstants.HOME_PAGE_UP }}" data-country="{{ countryCode }}">
+                                {% for product in payload[productOptionsConstants.HOME_PAGE_UP][countryCode] %}
+                                    <div class="col-sm-2" data-product-option-id="{{ product.id }}">
+                                        <img src="{{ product.media.image.file }}">
+                                        <p>{{ product.title }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for countryCode, country in countries %}
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Pozicija dole - {{ country.translation | trans }}</h4>
+                        {% if payload[productOptionsConstants.HOME_PAGE_DOWN][countryCode] is defined %}
+                            <div id="position-{{ productOptionsConstants.HOME_PAGE_DOWN }}-{{ countryCode }}" class="row position-wrapper" data-home-position="{{ productOptionsConstants.HOME_PAGE_DOWN }}" data-country="{{ countryCode }}">
+                                {% for product in payload[productOptionsConstants.HOME_PAGE_DOWN][countryCode] %}
+                                    <div class="col-sm-2" data-product-option-id="{{ product.id }}">
+                                        <img src="{{ product.media.image.file }}">
+                                        <p>{{ product.title }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {{ include('Admin/Components/formButtons.html.twig') }}
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        {#const PRODUCT_OPTIONS_CONSTANTS = JSON.parse('{{ productOptionsConstants | json_encode() | raw }}');#}
+    </script>
+{% endblock %}

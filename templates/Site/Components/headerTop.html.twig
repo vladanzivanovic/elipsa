@@ -7,7 +7,7 @@
             <div class="row header-area">
                 <div class="col-xs-4">
                     <div class="logo">
-                        <a href="{{ path('site.home_page') }}"><img src="{{ asset('build/site/images/logo/logo_header.png') }}" alt="{{ default_alt_tag }}"></a>
+                        <a href="{{ path('site.home_page') }}"><img src="{{ asset('build/site/images/logo/logo_header_'~countryDefaultLocale~'.png') }}" alt="{{ default_alt_tag }}"></a>
                     </div>
                 </div>
                 <div class="col-xs-8 mobile-user-area">
@@ -224,7 +224,7 @@
             <div class="col-md-3 col-sm-4 hidden-xs">
                 <div class="header-top-left">
                     <div class="logo">
-                        <a href="{{ path('site.home_page') }}"><img src="{{ asset('build/site/images/logo/logo_header.png') }}" alt="{{ default_alt_tag }}"></a>
+                        <a href="{{ path('site.home_page') }}"><img src="{{ asset('build/site/images/logo/logo_header_'~countryDefaultLocale~'.png') }}" alt="{{ default_alt_tag }}"></a>
                     </div>
                 </div>
             </div>

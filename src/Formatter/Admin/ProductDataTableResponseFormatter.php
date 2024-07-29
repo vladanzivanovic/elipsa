@@ -45,7 +45,6 @@ final class ProductDataTableResponseFormatter
 
             foreach ($options as $productOptions) {
                 $this->setSold($productOptions, $product['sold']);
-                $this->setHomePagePosition($productOptions, $product['show_home_page']);
                 $this->setPrices($productOptions, $product['prices']);
                 $this->setDiscounts($productOptions, $product['discounts']);
             }
@@ -72,21 +71,14 @@ final class ProductDataTableResponseFormatter
         $sold[$options->getCountry()] = $options->isSold();
     }
 
-    private function setHomePagePosition(ProductOptions $options, array &$showHomePage): void
-    {
-        if (null !== $options->getShowHomePage()) {
-            $showHomePage[$options->getCountry()] = ConstantsHelper::getConstantName($options->getShowHomePage(), 'HOME_PAGE', ProductOptions::class);;
-        }
-    }
-
     private function setPrices(ProductOptions $options, array &$prices): void
     {
-        $prices[$options->getCountry()] = $options->getPrice();
+        $prices[$options->getCountry()] = floatval($options->getPrice()/100);
     }
 
     private function setDiscounts(ProductOptions $options, array &$discounts): void
     {
-        $discounts[$options->getCountry()] = $options->getDiscount();
+        $discounts[$options->getCountry()] = floatval($options->getDiscount()/100);
     }
 
     private function setTitleAndSlug(ProductTranslation $productTranslation, array &$item): void

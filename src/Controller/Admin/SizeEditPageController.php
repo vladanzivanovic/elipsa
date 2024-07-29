@@ -15,7 +15,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class SizeEditPageController extends AbstractController
 {

@@ -3,7 +3,10 @@
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Flex\Configurator\ContainerConfigurator;
 
 class Kernel extends BaseKernel
 {
@@ -26,7 +29,7 @@ class Kernel extends BaseKernel
         return \dirname(__DIR__);
     }
 
-//    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+//    protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
 //    {
 //        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
 //        $container->setParameter('container.dumper.inline_class_loader', \PHP_VERSION_ID < 70400 || $this->debug);

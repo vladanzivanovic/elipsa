@@ -1,20 +1,25 @@
+import baseFormMapper from "./BaseFormMapper";
+
 class LocationEditMapper {
     constructor() {
         if (!LocationEditMapper.instance) {
-            this.form = '#edit_form';
-            this.submitBtn = '#location_submit';
-            this.street = '#street_rs';
-            this.city = '#city_rs';
-            this.country = '#country_rs';
-            this.countryNorthLat = '#country_north_lat';
-            this.countryNorthLng = '#country_north_lng';
-            this.countrySouthLat = '#country_south_lat';
-            this.countrySouthLng = '#country_south_lng';
-            this.countryLat = '#country_lat';
-            this.countryLng = '#country_lng';
-            this.countryShortCode = '#country_short_code';
+            this.fields = {
+                zip_code: '#zip_code',
+                working_hours: '#working_hours',
+                working_hours_saturday: '#working_hours_saturday',
+                working_hours_sunday: '#working_hours_sunday',
+                email: '#email',
+                telephone: '#telephone',
+            };
 
-            LocationEditMapper.instance = this;
+            for(const [locale, data] of Object.entries(LANGUAGES)) {
+                this.fields[`title_${locale}`] = '#title_'+locale;
+                this.fields[`street_${locale}`] = '#street_'+locale;
+                this.fields[`city_${locale}`] = '#city_'+locale;
+                this.fields[`country_${locale}`] = '#country_'+locale;
+            }
+
+            LocationEditMapper.instance = Object.assign(this, baseFormMapper);
         }
 
         return LocationEditMapper.instance

@@ -15,7 +15,6 @@ final class BlogView
     public function __construct(
         private readonly TagView $tagView,
         private readonly ImageView $imageView,
-        private readonly string $defaultLocale,
         private readonly array $locales,
         private readonly RouterInterface $router,
     ){}

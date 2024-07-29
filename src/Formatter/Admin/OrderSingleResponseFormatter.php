@@ -27,7 +27,7 @@ final class OrderSingleResponseFormatter
             $locale = $order->getCountry();
         }
 
-        $payload = $this->orderView->view($order, $locale);
+        $payload = $this->orderView->view($order, $locale, $order->getCountry());
 
         return ['payload' => $payload];
     }

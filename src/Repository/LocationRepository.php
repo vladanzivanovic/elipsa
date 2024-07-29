@@ -21,8 +21,6 @@ class LocationRepository extends ExtendedEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private readonly TranslatorInterface $translator,
-        private readonly array $countries,
     ) {
         parent::__construct($registry, Location::class);
     }
@@ -66,7 +64,7 @@ class LocationRepository extends ExtendedEntityRepository
                 'DISTINCT(l.countryCode) as country_code',
                 'lt.country as name'
             )
-            ->innerJoin('l.locationTranslations', 'lt')
+            ->innerJoin('l.translations', 'lt')
             ->where('lt.locale = :locale')
             ->setParameter('locale', $locale);
 
@@ -88,12 +86,16 @@ class LocationRepository extends ExtendedEntityRepository
     /**
      * @return array<int, Location>
      */
-    public function getForOptions(string $locale = 'rs'): array
-    {
+    public function getForOptions(
+        string $country,
+        string $locale = 'rs'
+    ): array {
         $query = $this->createQueryBuilder('l')
-            ->innerJoin('l.locationTranslations', 'lt')
+            ->innerJoin('l.translations', 'lt')
             ->where('lt.locale = :locale')
-            ->setParameter('locale', $locale);
+            ->andWhere('l.availableCountries LIKE :country')
+            ->setParameter('locale', $locale)
+            ->setParameter('country', $country);
 
         return $query->getQuery()->getResult();
     }
@@ -113,7 +115,7 @@ class LocationRepository extends ExtendedEntityRepository
                 'l.saturday as saturday',
                 'l.sunday as sunday'
             )
-            ->innerJoin('l.locationTranslations', 'lt')
+            ->innerJoin('l.translations', 'lt')
             ->where('lt.locale = :locale')
             ->setParameter('locale', $locale)
         ;

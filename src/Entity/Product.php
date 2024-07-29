@@ -293,7 +293,7 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
         return $this;
     }
 
-    public function getMainImage(): ?Image
+    public function getMainImage(): null|Image
     {
         foreach ($this->getProductHasImages() as $productHasImage) {
             $image = $productHasImage->getImage();

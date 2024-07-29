@@ -17,34 +17,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderFinishPageController extends AbstractController
 {
-    private OrderHandler $handler;
-
-    private OrderFinishPageFormatter $pageFormatter;
-
-    private OrderCompleteMailer $orderCompleteMailer;
-
-    private OrderFinishParser $orderFinishParser;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        OrderHandler $handler,
-        OrderFinishPageFormatter $pageFormatter,
-        OrderCompleteMailer $orderCompleteMailer,
-        OrderFinishParser $orderFinishParser,
-        TranslatorInterface $translator
-    ) {
-        $this->handler = $handler;
-        $this->pageFormatter = $pageFormatter;
-        $this->orderCompleteMailer = $orderCompleteMailer;
-        $this->orderFinishParser = $orderFinishParser;
-        $this->translator = $translator;
-    }
+        private readonly OrderHandler $handler,
+        private readonly OrderFinishPageFormatter $pageFormatter,
+        private readonly OrderCompleteMailer $orderCompleteMailer,
+        private readonly OrderFinishParser $orderFinishParser,
+        private readonly TranslatorInterface $translator,
+    ) {}
 
     /**
      *

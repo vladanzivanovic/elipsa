@@ -2,17 +2,24 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\CountryResourceInterface;
+use App\Entity\Resources\CountryResourceTrait;
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleTranslatorInterface;
+use App\Entity\Resources\LocaleTranslatorTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\LocationRepository::class)]
-class Location
+#[ORM\Entity(repositoryClass: LocationRepository::class)]
+class Location implements EntityInterface, CountryResourceInterface, LocaleTranslatorInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use ResourceTrait;
+    use CountryResourceTrait;
+    use LocaleTranslatorTrait;
+
 
     #[ORM\Column(type: 'string')]
     private string $lat;
@@ -35,10 +42,10 @@ class Location
     #[ORM\Column(type: 'string', length: 5)]
     private string $zipCode;
 
-    #[ORM\OneToMany(targetEntity: \App\Entity\LocationTranslation::class, mappedBy: 'location', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $locationTranslations;
+    #[ORM\OneToMany(mappedBy: 'location', targetEntity: LocationTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $translations;
 
-    #[ORM\OneToMany(targetEntity: \App\Entity\LocationHasImages::class, mappedBy: 'location', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'location', targetEntity: LocationHasImages::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $locationHasImages;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -46,16 +53,11 @@ class Location
 
     public function __construct()
     {
-        $this->locationTranslations = new ArrayCollection();
+        $this->translations = new ArrayCollection();
         $this->locationHasImages = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getLat(): ?string
+    public function getLat(): null|string
     {
         return $this->lat;
     }
@@ -67,7 +69,7 @@ class Location
         return $this;
     }
 
-    public function getLng(): ?string
+    public function getLng(): null|string
     {
         return $this->lng;
     }
@@ -79,7 +81,7 @@ class Location
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): null|string
     {
         return $this->email;
     }
@@ -91,7 +93,7 @@ class Location
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function getTelephone(): null|string
     {
         return $this->telephone;
     }
@@ -103,7 +105,7 @@ class Location
         return $this;
     }
 
-    public function getWorkingTime(): ?string
+    public function getWorkingTime(): null|string
     {
         return $this->workingTime;
     }
@@ -115,7 +117,7 @@ class Location
         return $this;
     }
 
-    public function getSaturday(): ?string
+    public function getSaturday(): null|string
     {
         return $this->saturday;
     }
@@ -127,7 +129,7 @@ class Location
         return $this;
     }
 
-    public function getZipCode(): ?string
+    public function getZipCode(): null|string
     {
         return $this->zipCode;
     }
@@ -142,15 +144,15 @@ class Location
     /**
      * @return Collection|LocationTranslation[]
      */
-    public function getLocationTranslations(): Collection
+    public function getTranslations(): Collection
     {
-        return $this->locationTranslations;
+        return $this->translations;
     }
 
     public function addLocationTranslation(LocationTranslation $locationTranslation): self
     {
-        if (!$this->locationTranslations->contains($locationTranslation)) {
-            $this->locationTranslations[] = $locationTranslation;
+        if (!$this->translations->contains($locationTranslation)) {
+            $this->translations[] = $locationTranslation;
             $locationTranslation->setLocation($this);
         }
 
@@ -159,8 +161,8 @@ class Location
 
     public function removeLocationTranslation(LocationTranslation $locationTranslation): self
     {
-        if ($this->locationTranslations->contains($locationTranslation)) {
-            $this->locationTranslations->removeElement($locationTranslation);
+        if ($this->translations->contains($locationTranslation)) {
+            $this->translations->removeElement($locationTranslation);
             // set the owning side to null (unless already changed)
             if ($locationTranslation->getLocation() === $this) {
                 $locationTranslation->setLocation(null);
@@ -168,18 +170,6 @@ class Location
         }
 
         return $this;
-    }
-
-    public function getByLocale(string $locale): null|LocationTranslation
-    {
-        $trans = $this->locationTranslations;
-
-        $filteredTrans = $trans->filter(function ($locationTrans) use ($locale) {
-            /** @var LocationTranslation $locationTrans */
-            return $locationTrans->getLocale() === $locale;
-        });
-
-        return 0 < $filteredTrans->count() ? $filteredTrans->first() : null;
     }
 
     /**
@@ -213,7 +203,7 @@ class Location
         return $this;
     }
 
-    public function getSunday(): ?string
+    public function getSunday(): null|string
     {
         return $this->sunday;
     }

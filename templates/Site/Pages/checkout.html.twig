@@ -117,18 +117,22 @@
                                         {% set firstChecked = true == loop.first ? 'checked="checked"' : '' %}
                                         {{ inputs.input('shipping_' ~ shippingType, shippingType, 'shipping_type', '', 'radio', 'radio-button', erroMessage ~ ' ' ~ firstChecked) }}
                                         {% set shippingTransId = 'checkout.shipping.' ~ shippingType %}
+
                                         <label for="{{ 'shipping_' ~ shippingType }}" class="letter-capitalize">{{ shippingTransId | trans }}</label>
                                     </div>
                                 {% endfor %}
 
                                 <div class="billing-address-input clearfix m-t-2 location-select hide">
-                                    {% set locations = location_options(locale) %}
+                                    {% set locations = location_options(countryDefaultLocale, locale) %}
 
                                     {{ form.select('checkout.shipping.store_list_label' | trans ~ ' *', 'store_location', 'store_location', '', locations, '', 'text-uppercase', false, 'custom-select') }}
                                 </div>
 
                                 <div class="billing-address-input clearfix m-t-2">
-                                    <p>{{ 'checkout.shipping.in_store_not_available' | trans({'%shipping_price_store%' : siteSettings.settings.free_shipping_store.value}) }}</p>
+                                    <p>{{ 'checkout.shipping.in_store_not_available' | trans({
+                                            '%shipping_price_store%' : siteSettings.settings.free_shipping_store.value.amount,
+                                            '%shipping_price_currency%' : siteSettings.settings.free_shipping_store.value.currency,
+                                        }) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -179,6 +183,6 @@
     <script nonce="{{ csp_nonce('script') }}">
         const INTESA_GATEWAY = '{{ intesa_gateway }}';
         const IN_STORE_SHIPPING_METHOD = '{{ constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') }}';
-        const SHIPPING_STORE_MIN_PRICE = {{ siteSettings.settings.free_shipping_store.value }};
+        const SHIPPING_STORE_MIN_PRICE = {{ siteSettings.settings.free_shipping_store.value.unformatted_amount }};
     </script>
 {% endblock %}

@@ -43,19 +43,19 @@ class DashboardController {
             this.#productEditHandler.changeStatus(slug, status);
         });
 
-        $(document).on('change', '.set-home-page', e => {
-            const slug = e.currentTarget.dataset.slug;
-            const value = e.currentTarget.value;
-            const status = e.currentTarget.checked ? value  : 0;
-
-            for (const checkbox of $('.set-home-page', $(e.currentTarget).parent().parent())) {
-                if (value !== $(checkbox).val()) {
-                    $(checkbox).prop('checked', false);
-                }
-            }
-
-            this.#productEditHandler.changeHomePagePosition($(e.currentTarget), slug, status);
-        });
+        // $(document).on('change', '.set-home-page', e => {
+        //     const slug = e.currentTarget.dataset.slug;
+        //     const value = e.currentTarget.value;
+        //     const status = e.currentTarget.checked ? value  : 0;
+        //
+        //     for (const checkbox of $('.set-home-page', $(e.currentTarget).parent().parent())) {
+        //         if (value !== $(checkbox).val()) {
+        //             $(checkbox).prop('checked', false);
+        //         }
+        //     }
+        //
+        //     this.#productEditHandler.changeHomePagePosition($(e.currentTarget), slug, status);
+        // });
 
         $(document).on('change', '.toggle-product-is-sold', e => {
             const slug = e.currentTarget.dataset.slug;

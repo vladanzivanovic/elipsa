@@ -17,8 +17,8 @@ class ProductOptions
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $showHomePage = null;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $showHomePage = null;
 
     #[ORM\Column]
     private bool $sold = false;
@@ -51,12 +51,12 @@ class ProductOptions
         return $this->id;
     }
 
-    public function getShowHomePage(): null|string
+    public function getShowHomePage(): null|array
     {
         return $this->showHomePage;
     }
 
-    public function setShowHomePage(null|string $showHomePage): static
+    public function setShowHomePage(null|array $showHomePage): static
     {
         $this->showHomePage = $showHomePage;
 

@@ -12,9 +12,11 @@ use App\Entity\ProductHasSizes;
 use App\Entity\ProductHasTags;
 use App\Entity\ProductOptions;
 use App\Entity\ProductTranslation;
+use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Entity\Tags;
 use App\Entity\Youtube;
+use App\Parser\Site\Order\OrderCouponParser;
 use App\Parser\Site\Order\OrderProductTranslationParser;
 use App\Repository\CategoryTranslationRepository;
 use App\Repository\ProductSizeRepository;
@@ -34,6 +36,7 @@ final class ProductEditRequestParser
         private readonly YouTubeParser $youTubeParser,
         private readonly TagsRepository $tagsRepository,
         private readonly OrderProductTranslationParser $orderProductTranslationParser,
+        private readonly OrderCouponParser $orderCouponParser,
         private readonly array $locales,
     ) {}
 
@@ -64,7 +67,6 @@ final class ProductEditRequestParser
 
         $this->setYoutube($productEditRequestDto, $product);
 
-        //todo fix this when order is refactored for country option
         $this->updateOrderProducts($product);
 
         return $product;
@@ -75,7 +77,7 @@ final class ProductEditRequestParser
         $product->getYoutubes()->clear();
 
         foreach ($productEditRequestDto->youtubeUrl as $youtube) {
-            $youtube = $this->youTubeParser->parse(json_decode($youtube, true));
+            $youtube = $this->youTubeParser->parse($youtube);
 
             if (!$youtube instanceof Youtube) {
                 continue;
@@ -186,6 +188,10 @@ final class ProductEditRequestParser
             $orderProduct->setPrice($product->getPrice($order->getCountry()));
             $orderProduct->setDiscount($product->getDiscount($order->getCountry()));
 
+            if ($order->getCoupon() instanceof Promotion) {
+                $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
+            }
+
             $this->setTranslations($product, $orderProduct);
         }
     }
@@ -203,23 +209,32 @@ final class ProductEditRequestParser
     {
         $product->getProductOptions()->clear();
 
-        foreach ($productEditRequestDto->options as $countryCode => $options) {
+        foreach ($productEditRequestDto->options as $countryCode => $optionsDto) {
             if (false === in_array($countryCode, $productEditRequestDto->availableCountries)) {
                 continue;
             }
 
-            if (!isset($options['price'])) {
+            if (null === $optionsDto->price) {
                 continue;
             }
 
             $productOptions = new ProductOptions();
-            $productOptions->setPrice((int) $options['price']);
-            $productOptions->setDiscount(isset($options['discount']) ? (int) $options['discount'] : 0);
-            $productOptions->setSold(isset($options['sold']) ? filter_var($options['sold'], FILTER_VALIDATE_BOOLEAN) : false);
-            $productOptions->setShowHomePage($options['show_home_page'] ?? null);
+            $productOptions->setPrice($optionsDto->price);
+            $productOptions->setDiscount($optionsDto->discount);
+            $productOptions->setSold($optionsDto->isSold);
             $productOptions->setCountry($countryCode);
 
-            $this->setSizes($productOptions, $options['sizes']);
+            $this->setSizes($productOptions, $optionsDto->sizes);
+
+            $homePageArray = [];
+
+            if (null !== $optionsDto->showHomePage) {
+                foreach ($optionsDto->showHomePage as $homePage) {
+                    $homePageArray[$homePage['home_page_position']] = (int)$homePage['slider_position'];
+                }
+            }
+
+            $productOptions->setShowHomePage($homePageArray);
 
             $product->addProductOption($productOptions);
         }

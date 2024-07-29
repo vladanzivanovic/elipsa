@@ -1,6 +1,6 @@
 controllers_site:
     resource: ../../src/Controller/Site/
-    type: annotation
+    type: attribute
     host:
         rs: '%host_rs%'
         ba: '%host_ba%'
@@ -12,7 +12,7 @@ controllers_site:
 
 controllers_unique:
     resource: ../../src/Controller/Unique/
-    type: annotation
+    type: attribute
     host:
         rs: '%host_rs%'
         ba: '%host_ba%'
@@ -24,11 +24,11 @@ controllers_unique:
 
 controllers_admin:
     resource: ../../src/Controller/Admin/
-    type: annotation
+    type: attribute
     prefix: /admin
     options:
         expose: true
 
 kernel:
     resource: ../../src/Kernel.php
-    type: annotation
+    type: attribute

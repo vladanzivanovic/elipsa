@@ -10,7 +10,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class HomePageController extends AbstractController
 {
@@ -34,7 +34,9 @@ final class HomePageController extends AbstractController
         $locale = $request->getLocale();
         $countryCode = $request->attributes->get('_country');
 
-        $data = $this->pageCollectors->collect($locale, $countryCode);
+        $data = $this->pageCollectors->collect($countryCode);
+
+//        dd($this->responseFormatter->formatResponse($data, $locale, $countryCode, $this->getUser()));
 
         return $this->responseFormatter->formatResponse($data, $locale, $countryCode, $this->getUser());
     }

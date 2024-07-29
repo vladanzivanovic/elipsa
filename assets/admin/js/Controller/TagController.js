@@ -31,7 +31,7 @@ class TagController {
                  if (totalProducts > 0) {
                      let linkWith = 'proizvodima';
 
-                     if (ROUTE_SUB_NAME === 'blog') {
+                     if (TAG_TYPE === 'blog') {
                          linkWith = 'blogovima';
                      }
 

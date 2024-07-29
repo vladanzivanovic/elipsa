@@ -206,15 +206,19 @@ class ProductRepository extends ExtendedEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function getForHomePage(string $host): array
-    {
+    public function getForHomePage(
+        string $homePagePosition,
+        string $host
+    ): array {
         $query = $this->createQueryBuilder('p')
-            ->innerJoin(ProductOptions::class, 'po', 'WITH', 'po.product = p AND po.country = :country AND po.showHomePage IS NOT NULL')
+            ->innerJoin(ProductOptions::class, 'po', 'WITH', 'po.product = p AND po.country = :country')
+            ->andWhere('po.showHomePage LIKE :homePagePositionKey')
             ->andWhere('p.status = :activeStatus')
             ->setParameter('activeStatus', Product::STATUS_ACTIVE)
+            ->setParameter('homePagePositionKey', '%"'.$homePagePosition.'":%')
             ->setParameter('country', $host)
             ->groupBy('p.id')
-            ->orderBy('RAND()');
+            ->orderBy('CAST(JSON_EXTRACT(po.showHomePage, \'$.'.$homePagePosition.'\') AS UNSIGNED)', 'ASC');
 
         return $query->getQuery()->getResult();
     }
@@ -326,12 +330,13 @@ class ProductRepository extends ExtendedEntityRepository
         if (isset($searchParams['home_page_show'])) {
             if ('all' === $searchParams['home_page_show']) {
                 $query
-                    ->andWhere('po.showHomePage IN (:showHomePage)')
-                    ->setParameter('showHomePage', [ProductOptions::HOME_PAGE_UP, ProductOptions::HOME_PAGE_DOWN]);
+                    ->andWhere('(po.showHomePage LIKE :upShowHomePage OR po.showHomePage LIKE :downShowHomePage)')
+                    ->setParameter('upShowHomePage', '%"'.ProductOptions::HOME_PAGE_UP.'":%')
+                    ->setParameter('downShowHomePage', '%"'.ProductOptions::HOME_PAGE_DOWN.'":%');
             } else {
                 $query
-                    ->andWhere('po.showHomePage = (:showHomePage)')
-                    ->setParameter('showHomePage', $searchParams['home_page_show']);
+                    ->andWhere('po.showHomePage LIKE :showHomePage')
+                    ->setParameter('showHomePage', '{"'.$searchParams['home_page_show'].'":%');
             }
         }
 
@@ -339,6 +344,11 @@ class ProductRepository extends ExtendedEntityRepository
 
         if (isset($searchParams['product_status'])) {
             $statuses = explode(',', $searchParams['product_status']);
+        }
+
+        if (isset($searchParams['country'])) {
+            $query->andWhere('p.availableCountries LIKE :country')
+                ->setParameter('country', '%'.$searchParams['country'].'%');
         }
 
         $query->andWhere('p.status IN (:statuses)')

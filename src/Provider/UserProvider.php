@@ -10,6 +10,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class UserProvider implements OAuthAwareUserProviderInterface
 {
@@ -29,7 +30,7 @@ final class UserProvider implements OAuthAwareUserProviderInterface
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function loadUserByOAuthUserResponse(UserResponseInterface $response)
+    public function loadUserByOAuthUserResponse(UserResponseInterface $response): UserInterface
     {
         $user = $this->registrationRequestParser->parseFromSocial($response);
 

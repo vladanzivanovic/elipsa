@@ -12,7 +12,7 @@ use App\View\ExceptionView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AskUsController extends AbstractController
@@ -42,7 +42,7 @@ final class AskUsController extends AbstractController
     }
 
     
-    #[Route(path: '/api/ask-us', name: 'site_api.ask_us', methods: ['POST'], options: ['expose' => true])]
+    #[Route(path: '/api/ask-us', name: 'site_api.ask_us', options: ['expose' => true], methods: ['POST'])]
     public function insert(AskUsRequestDto $askUsRequestDto): JsonResponse
     {
         if (false === $this->isCsrfTokenValid('ask_us_form', $askUsRequestDto->csrf)) {

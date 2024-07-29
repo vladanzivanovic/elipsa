@@ -15,29 +15,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderCompleteMailer
 {
-    private EventDispatcherInterface $dispatcher;
-
-    private TranslatorInterface $translator
-    ;
-    private UserRegistrationFormatter $userRegistrationFormatter;
-
-    private UserRegistrationMailer $userRegistrationMailer;
-
-    private SettingsCollector $settingsCollector;
-
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        TranslatorInterface $translator,
-        UserRegistrationFormatter $userRegistrationFormatter,
-        UserRegistrationMailer $userRegistrationMailer,
-        SettingsCollector $settingsCollector
-    ) {
-        $this->dispatcher = $dispatcher;
-        $this->translator = $translator;
-        $this->userRegistrationFormatter = $userRegistrationFormatter;
-        $this->userRegistrationMailer = $userRegistrationMailer;
-        $this->settingsCollector = $settingsCollector;
-    }
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly TranslatorInterface $translator,
+        private readonly UserRegistrationFormatter $userRegistrationFormatter,
+        private readonly UserRegistrationMailer $userRegistrationMailer,
+        private readonly SettingsCollector $settingsCollector,
+    ) {}
 
     public function sendEmail(
         array $viewData,
@@ -90,11 +74,11 @@ final class OrderCompleteMailer
         $model->setTemplate(true === $isSuccessfulTransaction ? 'order' : 'failedOrder');
         $model->setTo($user->getEmail());
         $model->setToName($user->getFirstName().' '.$user->getLastName());
-        $model->setSubject($settings['site_name']->getValue() .' - '. $subject);
-        $model->setFrom($settings['main_email']->getValue());
-        $model->setFromName($settings['site_name']->getValue());
-        $model->setReplyTo($settings['main_email']->getValue());
-        $model->setReplyToName($settings['site_name']->getValue());
+        $model->setSubject($settings['site_name']['value'] .' - '. $subject);
+        $model->setFrom($settings['main_email']['value']);
+        $model->setFromName($settings['site_name']['value']);
+        $model->setReplyTo($settings['main_email']['value']);
+        $model->setReplyToName($settings['site_name']['value']);
         $model->setTemplateData($viewData);
 
         return $model;

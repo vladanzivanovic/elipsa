@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Services\ImportProductsExcel;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:import:excel-products')]
 final class ImportProducts extends Command
 {
-    protected static $defaultName = 'app:import:excel-products';
-
-    private \App\Services\ImportProductsExcel $importProductsExcel;
+    private ImportProductsExcel $importProductsExcel;
 
     public function __construct(
         ImportProductsExcel $importProductsExcel

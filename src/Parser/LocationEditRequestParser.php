@@ -6,6 +6,7 @@ namespace App\Parser;
 
 use App\Entity\Location;
 use App\Entity\LocationTranslation;
+use App\Request\Dto\Admin\LocationEditRequestDto;
 use App\Services\LocationImageService;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -20,32 +21,37 @@ final class LocationEditRequestParser
      * @param Location|null $location
      * @throws \Doctrine\ORM\ORMException
      */
-    public function parse(ParameterBag $bag, Location $location = null): Location
+    public function parse(LocationEditRequestDto $locationEditRequestDto, Location $location = null): Location
     {
         if (!$location instanceof Location) {
             $location = new Location();
         }
 
-        $location->setTelephone($bag->get('telephone'))
-            ->setEmail($bag->get('email'))
-            ->setZipCode($bag->get('zip_code'))
-            ->setLat($bag->get('lat'))
-            ->setLng($bag->get('lng'))
-            ->setWorkingTime($bag->get('working_hours'))
-            ->setSaturday($bag->get('working_hours_saturday'))
-            ->setSunday($bag->get('working_hours_sunday'));
+        $location->setTelephone($locationEditRequestDto->telephone)
+            ->setEmail($locationEditRequestDto->email)
+            ->setZipCode($locationEditRequestDto->zipCode)
+            ->setLat($locationEditRequestDto->lat)
+            ->setLng($locationEditRequestDto->lng)
+            ->setWorkingTime($locationEditRequestDto->workingHours)
+            ->setSaturday($locationEditRequestDto->workingHoursSaturday)
+            ->setSunday($locationEditRequestDto->workingHoursSunday)
+            ->setAvailableCountries($locationEditRequestDto->availableCountries);
 
-        $this->setLocale($bag, $location);
+        $this->setLocale($locationEditRequestDto, $location);
 
-        $this->imageService->setImages($location, json_decode($bag->get('images'), true));
+        $this->imageService->setImages($location, $locationEditRequestDto->images);
 
         return $location;
     }
 
-    private function setLocale(ParameterBag $bag, Location $location): void
+    private function setLocale(LocationEditRequestDto $locationEditRequestDto, Location $location): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $bag->all($locale);
+            $transCollection = $locationEditRequestDto->translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
 
             $trans = $location->getByLocale($locale);
 
