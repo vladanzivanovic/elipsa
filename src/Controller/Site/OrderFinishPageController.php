@@ -52,7 +52,7 @@ final class OrderFinishPageController extends AbstractController
         $isSuccessfulTransaction = true;
 
         try {
-            $order = $this->orderFinishParser->parse($token, $isSuccessfulTransaction, $request->getMethod() === Request::METHOD_POST ? $request->request : null);
+            $order = $this->orderFinishParser->parse($token, $isSuccessfulTransaction);
         } catch (OrderException $orderException) {
             $request->getSession()->getFlashBag()->add(
                 'message',
@@ -84,7 +84,7 @@ final class OrderFinishPageController extends AbstractController
         'rs' => '/korpa/neuspesna-narudzbina/{token}',
         'en' => '/cart/unsuccessful-order/{token}',
         'ba' => '/korpa/neuspjesna-narudzba/{token}'
-    ], name: 'site.checkout_failed', options: ['expose' => true], methods: ['POST', 'GET'])]
+    ], name: 'site.checkout_completed_unsuccessful', options: ['expose' => true], methods: ['POST', 'GET'])]
     #[Template('Site/Pages/checkoutFinish.html.twig')]
     public function unsuccessfulPage(Request $request, string $token)
     {
@@ -93,7 +93,7 @@ final class OrderFinishPageController extends AbstractController
         $isSuccessfulTransaction = false;
 
         try {
-            $order = $this->orderFinishParser->parse($token, $isSuccessfulTransaction, $request->getMethod() === Request::METHOD_POST ? $request->request : null);
+            $order = $this->orderFinishParser->parse($token, $isSuccessfulTransaction);
         } catch (OrderException $orderException) {
             $request->getSession()->getFlashBag()->add(
                 'message',

@@ -63,31 +63,53 @@
                                         }
                                     ]
                                     %}
-                                    {{ form.select('Prikaz proizvoda po statusu', 'product_status', 'product_status', defaultSelection, productStatusOptions, '', 'w-100') }}
+                                    {{ form.selectNew(
+                                        productStatusOptions,
+                                        defaultSelection,
+                                        false,
+                                        {'class': 'w-100', 'labelTitle': 'Prikaz proizvoda po statusu', 'id': 'product_status'},
+                                        null
+                                    ) }}
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags', 'tags[]', '', options.tags, '', 'w-100', true) }}
+                                    {{ form.selectNew(
+                                        options.tags,
+                                        '',
+                                        true,
+                                        {'class': 'w-100', 'labelTitle': 'Tagovi', 'id': 'tags', 'name': 'tags[]'}
+                                    ) }}
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    {{ form.select('Kategorije', 'categories', 'categories[]', '', options.categories, '', 'w-100', true) }}
+                                    {{ form.selectNew(
+                                        options.categories,
+                                        '',
+                                        true,
+                                        {'class': 'w-100', 'labelTitle': 'Kategorije', 'id': 'categories', 'name': 'categories[]'}
+                                    ) }}
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     {%
                                         set homePageOptions = [
-                                        {'title': 'Sve pozicije', 'value': 'all'},
+                                        {'title': 'Sve pozicije', 'value': ''},
                                         {'title': 'Gore', 'value': constant('App\\Entity\\ProductOptions::HOME_PAGE_UP')},
                                         {'title': 'Dole', 'value': constant('App\\Entity\\ProductOptions::HOME_PAGE_DOWN')}
                                     ]
                                     %}
-                                    {{ form.select('Prikaz na početnoj stranici', 'home_page_show', 'home_page_show', '', homePageOptions, '', 'w-100') }}
+                                    {{ form.selectNew(
+                                        homePageOptions,
+                                        '',
+                                        false,
+                                        {'class': 'w-100', 'labelTitle': 'Prikaz na početnoj stranici', 'id': 'home_page_show'},
+                                        null
+                                    ) }}
                                 </div>
                             </div>
                         </div>
@@ -96,12 +118,18 @@
                                 <div class="form-group">
                                     {%
                                         set countryOptions = [
-                                        {'title': 'Sve', 'value': 'all'},
+                                        {'title': 'Sve', 'value': ''},
                                         {'title': 'Srbija', 'value': 'rs'},
                                         {'title': 'BiH', 'value': 'ba'}
                                     ]
                                     %}
-                                    {{ form.select('Zemlja', 'country', 'country', '', countryOptions, '', 'w-100') }}
+                                    {{ form.selectNew(
+                                        countryOptions,
+                                        '',
+                                        false,
+                                        {'class': 'w-100', 'labelTitle': 'Zemlja', 'id': 'country'},
+                                        null
+                                    ) }}
                                 </div>
                             </div>
                             <div class="col-sm-4">

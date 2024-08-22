@@ -9,33 +9,22 @@ use App\View\ExceptionView;
 use App\View\OrderPaymentRequestView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderPaymentController extends AbstractController
 {
-    private OrderRequestParser $orderRequestParser;
-
-    private ExceptionView $exceptionView;
-
-    private OrderPaymentRequestView $orderPaymentView;
-
     public function __construct(
-        OrderRequestParser $orderRequestParser,
-        ExceptionView $exceptionView,
-        OrderPaymentRequestView $orderPaymentView
-    ) {
-        $this->orderRequestParser = $orderRequestParser;
-        $this->exceptionView = $exceptionView;
-        $this->orderPaymentView = $orderPaymentView;
-    }
+        private readonly OrderRequestParser $orderRequestParser,
+        private readonly ExceptionView $exceptionView,
+        private readonly OrderPaymentRequestView $orderPaymentView
+    ) {}
 
     /**
      * @return JsonResponse
      */
-    #[Route(path: '/api/order/payment/{token}', name: 'site_api.get_order_payment', methods: ['GET'], options: ['expose' => true])]
+    #[Route(path: '/api/order/payment/{token}', name: 'site_api.get_order_payment', options: ['expose' => true], methods: ['GET'])]
     public function getPayment(string $token, Request $request): Response
     {
         try {

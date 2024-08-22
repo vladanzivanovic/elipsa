@@ -58,20 +58,30 @@ class CheckoutHandler {
                 this.#orderApiHandler.completeOrder(data)
                     .then(async order => {
                         const paymentData = await this.#orderApiProvider.getPayment(this.#orderStorageManipulator.getOrderToken('order'));
+
+                        if (0 < Object.keys(paymentData).length) {
+                            switch (COUNTRY_DEFAULT_LOCALE) {
+                                case 'ba':
+                                    this.#redirectToBankArtPayment(paymentData);
+                                    break;
+                                case 'rs':
+                                    this.#redirectToIntesaPayment(paymentData);
+                                    break;
+                                default:
+                                    throw Error('not supported payment for given country');
+                            }
+
+                            return;
+                        }
+
+                        this.#orderStorageManipulator.removeOrder();
+
                         const redirectUrl = Routing.generate(
                             `site.checkout_completed_successful.${LOCALE}`,
                             {
                                 'token': this.#orderStorageManipulator.getOrderToken('order')
                             }
                         );
-
-                        if (0 < Object.keys(paymentData).length) {
-                            this.#redirectToIntesaPayment(paymentData);
-
-                            return;
-                        }
-
-                        this.#orderStorageManipulator.removeOrder();
 
                         AppHelperService.redirect(redirectUrl);
                     })
@@ -96,6 +106,11 @@ class CheckoutHandler {
             INTESA_GATEWAY,
             response
         )
+    }
+
+    #redirectToBankArtPayment(response)
+    {
+        AppHelperService.redirect(response.redirect_url);
     }
 }
 

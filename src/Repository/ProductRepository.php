@@ -338,6 +338,11 @@ class ProductRepository extends ExtendedEntityRepository
                     ->andWhere('po.showHomePage LIKE :showHomePage')
                     ->setParameter('showHomePage', '{"'.$searchParams['home_page_show'].'":%');
             }
+
+            if (isset($searchParams['country'])) {
+                $query->andWhere('po.country = :countryOption')
+                    ->setParameter('countryOption', $searchParams['country']);
+            }
         }
 
         $statuses = [Product::STATUS_ACTIVE, Product::STATUS_PENDING];

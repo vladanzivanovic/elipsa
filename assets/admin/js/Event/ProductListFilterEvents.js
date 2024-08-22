@@ -32,8 +32,9 @@ class ProductListFilterEvents {
             $(this.#mapper.form)[0].reset();
             $(this.#mapper.filter.categories).val(null).trigger('change');
             $(this.#mapper.filter.tags).val(null).trigger('change');
-            $(this.#mapper.filter.homePageShow).val('-1').trigger('change');
+            $(this.#mapper.filter.homePageShow).val('').trigger('change');
             $(this.#mapper.filter.productStatus).val(`${PRODUCT_CONSTANTS.STATUS_ACTIVE},${PRODUCT_CONSTANTS.STATUS_PENDING}`).trigger('change');
+            $(this.#mapper.filter.country).val(``).trigger('change');
 
             this.#filterHandler.search();
         });

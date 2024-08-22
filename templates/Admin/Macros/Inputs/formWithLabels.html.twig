@@ -10,6 +10,12 @@
     {{ form.selectbox(id, name, selected, options, placeholder, class, multiple) }}
 {% endmacro %}
 
+{% macro selectNew(selectOptions, selected, isMultiple, selectAttributes, defaultOption = {"value": "", "label": "Izaberite..."}) %}
+    <label for="{{ selectAttributes.id }}">{{ selectAttributes.labelTitle }}</label>
+    {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
+    {{ form.selectboxNew(selectOptions, selected, isMultiple, selectAttributes, defaultOption) }}
+{% endmacro %}
+
 {% macro radio(title, id, value, name, class, radioClass, additionalAttributes = null) %}
     <label class="{{ class }}" for="{{ id }}">
         {% import 'Admin/Macros/Inputs/input.html.twig' as form %}

@@ -5,12 +5,16 @@
                 <div class="col-md-8 col-sm-8 col-xs-12">
                     <div class="payment-method">
                         <ul>
-                            <li><a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a></li>
+                            {% if countries[countryDefaultLocale].host == hostRs %}
+                                <li><a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a></li>
+                            {% endif %}
                             <li><img src="{{ asset('build/site/images/intesa/visa_pos_fc.png') }}" alt="Visa card logo"></li>
                             <li><img src="{{ asset('build/site/images/intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo"></li>
                             <li><img src="{{ asset('build/site/images/intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo"></li>
                             <li><img src="{{ asset('build/site/images/intesa/american_express.png') }}" alt="Master card logo"></li>
-                            <li><img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo"></li>
+                            {% if countries[countryDefaultLocale].host == hostRs %}
+                                <li><img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo"></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

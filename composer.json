@@ -21,6 +21,7 @@
         "friendsofsymfony/jsrouting-bundle": "*",
         "gedmo/doctrine-extensions": "*",
         "hwi/oauth-bundle": "^2.1",
+        "ixopay/ixopay-php-client": "^3.16",
         "liip/imagine-bundle": "*",
         "nelexa/request-dto-bundle": "^1.3",
         "nelmio/security-bundle": "*",

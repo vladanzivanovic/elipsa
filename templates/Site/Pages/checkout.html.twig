@@ -83,24 +83,28 @@
 
                                 {% for paymentType in paymentTypes %}
                                     {% set bankPayment = constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
-                                    {% if 'ba' == countryDefaultLocale and paymentType == bankPayment %}
-                                    {% else %}
+{#                                    {% if 'ba' == countryDefaultLocale and paymentType == bankPayment %}#}
+{#                                    {% else %}#}
                                         <div class="select-payment-method">
                                             {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
                                             {{ inputs.input('payment_' ~ paymentType, paymentType, 'payment_type', '', 'radio', 'radio-button', erroMessage) }}
                                             {% set paymentTransId = 'checkout.payment.' ~ paymentType %}
                                             <label for="{{ 'payment_' ~ paymentType }}" class="letter-capitalize">{{ paymentTransId | trans }}</label>
                                         </div>
-                                    {% endif %}
+{#                                    {% endif %}#}
                                 {% endfor %}
 
                                 <div class="billing-address-input clearfix m-t-2 m-t-2-xss payment-type-images">
+                                    {% if countries[countryDefaultLocale].host == hostRs %}
                                     <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a>
+                                    {% endif %}
                                     <img src="{{ asset('build/site/images/intesa/visa_pos_fc.png') }}" alt="Visa card logo">
                                     <img src="{{ asset('build/site/images/intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo">
                                     <img src="{{ asset('build/site/images/intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo">
                                     <img src="{{ asset('build/site/images/intesa/american_express.png') }}" alt="Master card logo">
-                                    <img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo">
+                                    {% if countries[countryDefaultLocale].host == hostRs %}
+                                        <img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo">
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

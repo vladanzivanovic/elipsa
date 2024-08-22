@@ -13,3 +13,4 @@ twig:
         countries: '%countries%'
         adminLocale: '%env(DEFAULT_LOCALE)%'
         default_locale: '%kernel.default_locale%'
+        hostRs: '%env(resolve:HOST_RS)%'

@@ -21,7 +21,7 @@ final class OrderFinishParser
     /**
      * @throws OrderException
      */
-    public function parse(string $orderToken, bool $isSuccessfulTransaction, ?ParameterBag $bag = null): ShopOrder
+    public function parse(string $orderToken, bool $isSuccessfulTransaction): ShopOrder
     {
         $order = $this->orderRequestParser->findOrder($orderToken);
 
@@ -30,35 +30,26 @@ final class OrderFinishParser
         }
 
         if ($isSuccessfulTransaction) {
-            $this->setSuccessfulTransactionData($order, $bag);
+            $this->setSuccessfulTransactionData($order);
         } else {
-            $this->setFailedTransactionData($order, $bag);
+            $this->setFailedTransactionData($order);
         }
 
         return $order;
     }
 
-    private function setSuccessfulTransactionData(ShopOrder $order, ?ParameterBag $bag = null): void
+    private function setSuccessfulTransactionData(ShopOrder $order): void
     {
         $order->setStatus(ShopOrder::STATUS_PENDING);
         $order->setCompletedAt(new \DateTime());
-
-        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $order->setTransactionData([ShopOrder::CARD_STATUS_PRE_AUTH => $bag->all()]);
-            $order->setStatus(ShopOrder::STATUS_PENDING);
-        }
     }
 
-    private function setFailedTransactionData(ShopOrder $order, ?ParameterBag $bag = null): void
+    private function setFailedTransactionData(ShopOrder $order): void
     {
         $order->setStatus(ShopOrder::STATUS_FAILED);
 
         $user = $order->getUser();
         $user->setResetToken(null);
         $user->setResetRequestAt(null);
-
-        if ($order->getPaymentType() === ShopOrder::PAYMENT_TYPE_CREDIT_CARD) {
-            $order->setTransactionData([ShopOrder::CART_STATUS_REJECT => $bag->all()]);
-        }
     }
 }
