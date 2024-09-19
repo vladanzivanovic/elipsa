@@ -179,6 +179,7 @@
     <!-- checkout-area-end -->
 
 {#    {{ include('Site/Components/intesaPaymentForm.html.twig') }}#}
+    {% include('Admin/Components/confirmationModal.html.twig') with {dialogClass: 'alert-pop-up'} %}
 {% endblock %}
 {% block pageStyleSheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/checkout.css') }}">

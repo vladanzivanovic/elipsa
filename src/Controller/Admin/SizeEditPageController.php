@@ -37,7 +37,7 @@ final class SizeEditPageController extends AbstractController
     }
 
     
-    #[Route(path: '/edit-size/{slug}', name: 'admin.edit_size_page', methods: ['GET'])]
+    #[Route(path: '/edit-size/{id}', name: 'admin.edit_size_page', methods: ['GET'])]
     #[Template('Admin/Pages/sizeEdit.html.twig')]
     public function update(ProductSize $productSize): array
     {

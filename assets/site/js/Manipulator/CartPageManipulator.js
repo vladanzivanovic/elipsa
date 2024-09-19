@@ -3,8 +3,9 @@ import cartPageDom from "../Dom/CartPageDom";
 import cartPageMapper from "../Mapper/CartPageMapper";
 import cartPageErrorDom from "../Dom/CartPageErrorDom";
 import orderStorageManipulator from "./OrderStorageManipulator";
+import OrderPageRelatedManipulator from "./OrderPageRelatedManipulator";
 
-class CartPageManipulator {
+class CartPageManipulator extends OrderPageRelatedManipulator{
     #orderApiProvider;
     #cartPageDom;
     #mapper;
@@ -13,6 +14,7 @@ class CartPageManipulator {
 
     constructor() {
         if (!CartPageManipulator.instance) {
+            super();
             this.#orderApiProvider = orderApiProvider;
             this.#cartPageDom = cartPageDom;
             this.#mapper = cartPageMapper;
@@ -25,35 +27,19 @@ class CartPageManipulator {
         return CartPageManipulator.instance;
     }
 
-    setCartPage()
-    {
-        const orderToken = this.#orderStorageManipulator.getOrderToken();
-
-        if (!orderToken) {
-            this.#cartPageDom.resetCartPage();
-
-            return;
-        }
-
-        this.#orderApiProvider.getOrder(orderToken)
-            .then(order => {
-                this.updatePage(order);
-            });
-    }
-
     updatePage(order)
     {
-        if (null === order || null !== order.checkout_completed_at) {
+        if (this.shouldRemoveOrder(order)) {
             this.#cartPageDom.resetCartPage();
 
-            this.#orderStorageManipulator.removeOrder();
+            this.removeOrder();
 
             return;
         }
 
-        this.#orderStorageManipulator.setOrderData(order);
+        this.#cartPageDom.manageOrderData(order);
 
-        this.#cartPageDom.manageOrderData(order)
+        this.showPriceChangeDialog(order);
     }
 
     showError(error, type)

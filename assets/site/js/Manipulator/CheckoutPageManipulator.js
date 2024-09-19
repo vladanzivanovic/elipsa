@@ -1,20 +1,20 @@
 import cartPageMapper from "../Mapper/CartPageMapper";
 import orderApiProvider from "../Provider/OrderApiProvider";
 import checkoutPageDom from "../Dom/CheckoutPageDom";
-import orderStorageManipulator from "./OrderStorageManipulator";
+import OrderPageRelatedManipulator from "./OrderPageRelatedManipulator";
 
-class CheckoutPageManipulator {
+class CheckoutPageManipulator extends OrderPageRelatedManipulator{
     #orderApiProvider;
     #pageMapper;
     #pageDom;
-    #orderStorageManipulator;
 
     constructor() {
         if(!CheckoutPageManipulator.instance) {
+            super();
+
             this.#orderApiProvider = orderApiProvider;
             this.#pageMapper = cartPageMapper;
             this.#pageDom = checkoutPageDom;
-            this.#orderStorageManipulator = orderStorageManipulator;
 
             CheckoutPageManipulator.instance = this;
         }
@@ -22,31 +22,18 @@ class CheckoutPageManipulator {
         return CheckoutPageManipulator.instance;
     }
 
-    setPage()
-    {
-        const orderToken = this.#orderStorageManipulator.getOrderToken();
-
-        if (!orderToken) {
-            return;
-        }
-
-        this.#orderApiProvider.getOrder(orderToken)
-            .then(order => {
-                this.updatePage(order);
-            });
-    }
-
     updatePage(order)
     {
-        if (null === order || null !== order.checkout_completed_at) {
-            this.#orderStorageManipulator.removeOrder();
+        if (this.shouldRemoveOrder(order)) {
+            this.removeOrder(order);
 
             return;
         }
 
-        this.#orderStorageManipulator.setOrderData(order);
         this.#pageDom.manageOrderData(order)
         this.#pageDom.toggleStoreShipping(order);
+
+        this.showPriceChangeDialog(order);
     }
 }
 

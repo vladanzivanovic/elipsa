@@ -50,7 +50,7 @@ final class SizeEditController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    #[Route(path: '/api/edit-size/{slug}', name: 'admin.edit_size_api', options: ['expose' => true], methods: ['PUT'])]
+    #[Route(path: '/api/edit-size/{id}', name: 'admin.edit_size_api', options: ['expose' => true], methods: ['PUT'])]
     public function update(SizeEditRequestDto $sizeEditRequestDto, ProductSize $productSize)
     {
         $productSize = $this->requestParser->parse($sizeEditRequestDto, $productSize);

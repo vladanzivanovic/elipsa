@@ -1,13 +1,16 @@
 import cartPageMapper from "../Mapper/CartPageMapper";
 import CartHandler from "../Handler/CartHandler";
+import cartPageManipulator from "../Manipulator/CartPageManipulator";
 
 class CartPageEvents {
     #pageMapper;
     #cartHandler;
+    #pageManipulator;
 
     constructor() {
         if (!CartPageEvents.instance) {
             this.#pageMapper = cartPageMapper;
+            this.#pageManipulator = cartPageManipulator;
             this.#cartHandler = new CartHandler();
 
             CartPageEvents.instance = this;
@@ -44,6 +47,10 @@ class CartPageEvents {
 
             await this.#cartHandler.removeProduct(e);
         });
+
+        $(document).on('order:fetch', (e, order) => {
+            this.#pageManipulator.setPage(order);
+        })
     }
 }
 

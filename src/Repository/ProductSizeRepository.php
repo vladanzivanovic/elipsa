@@ -6,9 +6,8 @@ use App\Entity\Product;
 use App\Entity\ProductHasSizes;
 use App\Entity\ProductOptions;
 use App\Entity\ProductSize;
-use App\Entity\Tags;
+use App\Entity\Resources\StatusInterface;
 use App\Model\DataTableModel;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -35,6 +34,8 @@ class ProductSizeRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('ps')
             ->select('COUNT(ps.id) as total')
+            ->where('ps.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
         ;
 
         return $query->getQuery()->getSingleScalarResult();
@@ -51,6 +52,8 @@ class ProductSizeRepository extends ExtendedEntityRepository
                 'COUNT(phs.id) as total_used'
             )
             ->leftJoin('ps.productHasSizes', 'phs')
+            ->where('ps.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())

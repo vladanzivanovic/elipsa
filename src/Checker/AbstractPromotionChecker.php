@@ -27,7 +27,7 @@ abstract class AbstractPromotionChecker
         Promotion $promotionCoupon
     );
 
-    protected function checkCouponIsEligible(Promotion $promotionCoupon)
+    protected function checkCouponIsEligible(Promotion $promotionCoupon): void
     {
         $checkerTypes = [Promotion::CHECKER_TYPE_VALIDITY];
 

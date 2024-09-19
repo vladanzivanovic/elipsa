@@ -6,17 +6,21 @@ use App\Entity\Resources\CountryResourceInterface;
 use App\Entity\Resources\CountryResourceTrait;
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\ResourceTrait;
+use App\Entity\Resources\StatusInterface;
+use App\Entity\Resources\StatusTrait;
+use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\PromotionRepository::class)]
+#[ORM\Entity(repositoryClass: PromotionRepository::class)]
 #[ORM\Table(name: 'promotion')]
 #[ORM\UniqueConstraint(name: 'promo_code', columns: ['code'])]
-class Promotion implements EntityInterface, CountryResourceInterface
+class Promotion implements EntityInterface, CountryResourceInterface, StatusInterface
 {
     use ResourceTrait;
     use CountryResourceTrait;
+    use StatusTrait;
 
     const CHECKER_TYPE_VALIDITY = 'date_valid';
 
@@ -38,16 +42,16 @@ class Promotion implements EntityInterface, CountryResourceInterface
     #[ORM\Column(type: 'integer')]
     private int $discount;
 
-    #[ORM\OneToMany(targetEntity: \App\Entity\ShopOrder::class, mappedBy: 'coupon')]
+    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: ShopOrder::class)]
     private Collection $shopOrders;
 
     /**
      * @var Collection<int, PromotionOption>
      */
-    #[ORM\OneToMany(targetEntity: PromotionOption::class, mappedBy: 'promotionId', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'promotionId', targetEntity: PromotionOption::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $promotionOptions;
 
-    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'promotion')]
+    #[ORM\OneToMany(mappedBy: 'promotion', targetEntity: OrderProduct::class)]
     private Collection $orderProducts;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -101,7 +105,7 @@ class Promotion implements EntityInterface, CountryResourceInterface
     }
 
     /**
-     * @return Collection|ShopOrder[]
+     * @return Collection<int, ShopOrder>
      */
     public function getShopOrders(): Collection
     {
@@ -149,7 +153,7 @@ class Promotion implements EntityInterface, CountryResourceInterface
     }
 
     /**
-     * @return PromotionOption[]|null
+     * @return PromotionOption[]
      */
     public function getOptionTypes(): array
     {
@@ -177,7 +181,7 @@ class Promotion implements EntityInterface, CountryResourceInterface
 
     /**
      * @param string $type
-     * @return Collection| PromotionOption[]
+     * @return Collection<int, PromotionOption>
      */
     public function getOptionsByType(string $type): Collection
     {
@@ -216,5 +220,10 @@ class Promotion implements EntityInterface, CountryResourceInterface
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function isPromotionInUse(): bool
+    {
+        return $this->shopOrders->count() > 0 || $this->orderProducts->count() > 0;
     }
 }

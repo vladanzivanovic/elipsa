@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Api;
 
 use App\Entity\Banner;
 use App\Entity\ProductColor;
+use App\Entity\Resources\StatusInterface;
 use App\Entity\Tags;
 use App\Entity\Promotion;
 use App\Entity\Slider;
@@ -33,14 +34,20 @@ final class PromotionRemoveController extends AbstractController
     }
 
     /**
-     *
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    #[Route(path: '/api/promotion/remove/{id}', name: 'admin.remove_promotion_api', methods: ['DELETE'], options: ['expose' => true])]
+    #[Route(path: '/api/promotion/remove/{id}', name: 'admin.remove_promotion_api', options: ['expose' => true], methods: ['DELETE'])]
     public function remove(Promotion $coupon): JsonResponse
     {
+        if ($coupon->isPromotionInUse()) {
+            $coupon->setStatus(StatusInterface::STATUS_ARCHIVED);
+
+            $this->couponHandler->save($coupon);
+
+            return $this->json(null);
+        }
+
         $this->couponHandler->remove($coupon);
 
         return $this->json(null);

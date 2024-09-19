@@ -18,28 +18,76 @@ class ProductEditValidator {
     validate() {
         let options;
 
+        // options = {
+        //     rules: {
+        //         rs_title: 'required',
+        //         rs_short_description: 'required',
+        //         rs_description: 'required',
+        //         en_title: 'required',
+        //         en_short_description: 'required',
+        //         en_description: 'required',
+        //         en_link: 'required',
+        //         'categories[]': 'isMultiSelectBoxEmpty',
+        //         'tags[]': 'isMultiSelectBoxEmpty',
+        //         'sizes[]': 'isMultiSelectBoxEmpty',
+        //         code: 'required',
+        //         price: 'required',
+        //         discount: 'integer',
+        //         'cleaning[]': 'required',
+        //         mainImages: {
+        //             dropZoneHasImage: true,
+        //             dropZoneHasMainImage: true,
+        //         }
+        //     },
+        // };
+
         options = {
             rules: {
-                rs_title: 'required',
-                rs_short_description: 'required',
-                rs_description: 'required',
-                en_title: 'required',
-                en_short_description: 'required',
-                en_description: 'required',
-                en_link: 'required',
-                'categories[]': 'isMultiSelectBoxEmpty',
-                'tags[]': 'isMultiSelectBoxEmpty',
-                'sizes[]': 'isMultiSelectBoxEmpty',
-                code: 'required',
-                price: 'required',
-                discount: 'integer',
-                'cleaning[]': 'required',
+                'available_countries[]': {
+                    isMultiSelectBoxEmpty: true,
+                },
+                'categories[]': {
+                    isMultiSelectBoxEmpty: true,
+                },
+                'tags[]': {
+                    isMultiSelectBoxEmpty: true,
+                },
+                code: {
+                    required: true,
+                },
+                'cleaning[]': {
+                    required: true,
+                },
                 mainImages: {
                     dropZoneHasImage: true,
                     dropZoneHasMainImage: true,
                 }
-            },
-        };
+            }
+        }
+
+        for(const [locale, data] of Object.entries(LANGUAGES)) {
+            options.rules[`translations[${locale}][title]`] = {
+                required: true,
+            };
+            options.rules[`translations[${locale}][short_description]`] = {
+                required: true,
+            };
+            options.rules[`translations[${locale}][description]`] = {
+                required: true,
+            };
+
+            options.rules[`options[${locale}][price]`] = {
+                required: true,
+            };
+
+            //todo not working
+            options.rules[`options[${locale}][sizes][quantity][]`] = {
+                required: true,
+            };
+            options.rules[`options[${locale}][sizes][slug][]`] = {
+                isSelectBoxEmpty: true,
+            };
+        }
 
         $.extend(options, window.helpBlock);
 

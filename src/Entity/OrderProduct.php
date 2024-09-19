@@ -39,7 +39,7 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
     #[ORM\Column(type: 'integer')]
     private int $price;
 
-    #[ORM\OneToMany(mappedBy: 'orderProduct', targetEntity: \App\Entity\OrderProductTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'orderProduct', targetEntity: OrderProductTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProductTranslations;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'orderProducts')]
@@ -49,7 +49,7 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
     #[ORM\Column(type: 'string', length: 255)]
     private string $code;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Image::class)]
+    #[ORM\ManyToOne(targetEntity: Image::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Image $image;
 
@@ -270,17 +270,6 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         return 0 < $this->discount ? $this->discount : $this->price;
     }
 
-    private function recalculateTotal(bool $considerPromotion = true): int
-    {
-        $price = 0 < $this->discount ? $this->discount : $this->price;
-
-        if (true === $considerPromotion && null !== $this->promotionPrice) {
-            $price = $price + $this->promotionPrice;
-        }
-
-        return $price * $this->quantity;
-    }
-
     public function getPromotion(): ?Promotion
     {
         return $this->promotion;
@@ -311,5 +300,16 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
         }
 
         return false;
+    }
+
+    private function recalculateTotal(bool $considerPromotion = true): int
+    {
+        $price = 0 < $this->discount ? $this->discount : $this->price;
+
+        if (true === $considerPromotion && null !== $this->promotionPrice) {
+            $price = $price + $this->promotionPrice;
+        }
+
+        return $price * $this->quantity;
     }
 }

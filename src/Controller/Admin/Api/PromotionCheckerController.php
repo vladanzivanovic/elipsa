@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Entity\Promotion;
+use App\Entity\Resources\StatusInterface;
 use App\Repository\PromotionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +36,7 @@ final class PromotionCheckerController extends AbstractController
         $code = $request->query->get('code');
         $id = $request->query->getInt('id');
 
-        $promotion = $this->promotionRepository->findOneBy(['code' => $code]);
+        $promotion = $this->promotionRepository->findOneBy(['code' => $code, 'status' => StatusInterface::STATUS_ACTIVE]);
 
         return $this->json(null !== $promotion && $promotion->getId() !== $id ?
             $this->translator->trans('promotion.code_exists', [], 'validators', $this->adminLocale) :

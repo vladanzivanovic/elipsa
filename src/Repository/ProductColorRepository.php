@@ -6,6 +6,7 @@ use App\Entity\ColorTranslation;
 use App\Entity\Product;
 use App\Entity\ProductColor;
 use App\Entity\ProductHasImages;
+use App\Entity\Resources\StatusInterface;
 use App\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
@@ -33,7 +34,9 @@ class ProductColorRepository extends ExtendedEntityRepository
     public function countData(): mixed
     {
         $query = $this->createQueryBuilder('pc')
-            ->select('COUNT(pc.id) as total');
+            ->select('COUNT(pc.id) as total')
+            ->where('pc.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE);
 
         return $query->getQuery()->getSingleScalarResult();
     }
@@ -50,6 +53,8 @@ class ProductColorRepository extends ExtendedEntityRepository
             )
             ->innerJoin(ColorTranslation::class, 'ctRs', 'WITH', 'ctRs.locale = \'rs\' AND ctRs.color = pc')
             ->innerJoin(ColorTranslation::class, 'ctEn', 'WITH', 'ctEn.locale = \'en\' AND ctEn.color = pc')
+            ->where('pc.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
@@ -69,7 +74,9 @@ class ProductColorRepository extends ExtendedEntityRepository
             )
             ->innerJoin('pc.translations', 'pct')
             ->where('pct.locale = :defaultLocale')
-            ->setParameter('defaultLocale', $this->defaultLocale);
+            ->andWhere('pc.status = :status')
+            ->setParameter('defaultLocale', $this->defaultLocale)
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE);
 
         return $query->getQuery()->getArrayResult();
     }
@@ -85,7 +92,9 @@ class ProductColorRepository extends ExtendedEntityRepository
             )
             ->innerJoin('pc.translations', 'ct')
             ->where('ct.locale = :locale')
-            ->setParameter('locale', $locale);
+            ->andWhere('pc.status = :status')
+            ->setParameter('locale', $locale)
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE);
 
         return $query->getQuery()->getArrayResult();
     }

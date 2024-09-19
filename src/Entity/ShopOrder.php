@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\PromotionEligibilityInterface;
 use App\Entity\Resources\ResourceTrait;
+use App\EventListener\OrderProductPromotionEventListener;
 use App\EventListener\OrderShippingPriceEventListener;
 use App\Repository\ShopOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,6 +34,12 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     public const STATUS_CANCELED = 'canceled';
 
     public const STATUS_FAILED = 'failed';
+
+    public const STATUS_NOT_PURCHASED = [
+        self::STATUS_NEW,
+        self::STATUS_FAILED,
+        self::STATUS_CANCELED,
+    ];
 
     public const CARD_STATUS_PRE_AUTH = 'PreAuth'; //4
     public const CARD_STATUS_POST_AUTH = 'PostAuth';
@@ -64,31 +71,31 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     private string $status;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $completedAt = null;
+    private null|\DateTimeInterface $completedAt = null;
 
-    #[ORM\OneToOne(targetEntity: \App\Entity\Address::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
     private ?Address $billingAddress = null;
 
-    #[ORM\OneToOne(targetEntity: \App\Entity\Address::class, cascade: ['persist', 'remove'])]
-    private ?Address $shippingAddress = null;
+    #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
+    private null|Address $shippingAddress = null;
 
     /**
      * @var Collection<int, OrderProduct>
      */
-    #[ORM\OneToMany(targetEntity: \App\Entity\OrderProduct::class, mappedBy: 'orderId', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: OrderProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderProducts;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'shopOrders', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist', 'remove'], inversedBy: 'shopOrders')]
+    private null|User $user = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $paymentType = null;
+    private null|string $paymentType = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $note = null;
+    private null|string $note = null;
 
-    #[ORM\ManyToOne(targetEntity: \Promotion::class, inversedBy: 'shopOrders')]
-    private ?Promotion $coupon = null;
+    #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'shopOrders')]
+    private null|Promotion $coupon = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     private array $transactionData = [];
@@ -116,6 +123,8 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 
     #[ORM\Column(nullable: true)]
     private null|int $shippingPrice = null;
+
+    private bool $orderPriceChanged = false;
 
     public function __construct()
     {
@@ -401,5 +410,15 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
         $this->shippingPrice = $shippingPrice;
 
         return $this;
+    }
+
+    public function isOrderPriceChanged(): bool
+    {
+        return $this->orderPriceChanged;
+    }
+
+    public function setOrderPriceChanged(bool $orderPriceChanged): void
+    {
+        $this->orderPriceChanged = $orderPriceChanged;
     }
 }

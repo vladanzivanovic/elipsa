@@ -613,6 +613,7 @@ order.status.shipped: Otpremljeno
 order.overview.tracking_info_label: Vaša narudžba se trenutno nalazi ovdje
 order.shipping.on_delivery: Kurirskom službom
 order.shipping.in_store: Preuzimanje u trgovini
+order.price_has_changed: Došlo je do promjene u cijeni proizvoda.
 
 search_site: Pretražite stranicu
 

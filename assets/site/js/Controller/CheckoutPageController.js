@@ -19,8 +19,6 @@ class CheckoutPageController {
 
         RecaptchaLoader.loadRecaptcha();
 
-        this.#pageManipulator.setPage();
-
         this.#validator.validate();
 
         this.#pageEvents.registerEvents();
