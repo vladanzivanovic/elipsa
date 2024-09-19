@@ -1,0 +1,32 @@
+.alert-pop-up {
+  margin: 200px auto;
+
+  .modal-content {
+    padding: 20px 10px;
+    position: relative;
+  }
+
+  button.close {
+    background: #a70303 none repeat scroll 0 0;
+    color: #fff;
+    height: 40px;
+    opacity: 1;
+    position: absolute;
+    right: 20px;
+    top: 27px;
+    width: 40px;
+    z-index: 1;
+  }
+
+  .modal-header {
+    border: none;
+  }
+
+  .modal-body {
+    padding: 0;
+  }
+
+  .modal-footer {
+    border: none;
+  }
+}

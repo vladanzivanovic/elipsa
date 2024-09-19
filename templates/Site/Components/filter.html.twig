@@ -82,7 +82,7 @@
             </button>
             <ul id="attribute" class="sidebar-list collapse">
                 {% for attribute in filters.attributes %}
-                    <li><a href="#" class="{{ search.attributes is not null and attribute[locale].title in search.attributes ? 'active' : '' }}" data-search-name="attributes" data-search="{{ attribute[locale].slug }}">{{ attribute[locale].title }}</a></li>
+                    <li><a href="#" class="{{ search.attributes is not null and attribute.translations[locale].title in search.attributes ? 'active' : '' }}" data-search-name="attributes" data-search="{{ attribute.translations[locale].slug }}">{{ attribute.translations[locale].title }}</a></li>
                 {% endfor %}
             </ul>
         </div>

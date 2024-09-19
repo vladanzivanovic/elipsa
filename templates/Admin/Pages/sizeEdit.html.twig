@@ -47,6 +47,6 @@
 {% block pageJavascript %}
     <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ app.request.attributes.has('slug') ? 1 : 0 }};
-        const SLUG = '{{ app.request.attributes.get('slug') }}';
+        const ID = '{{ app.request.attributes.get('id') }}';
     </script>
 {% endblock %}

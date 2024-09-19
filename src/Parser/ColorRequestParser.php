@@ -6,6 +6,7 @@ namespace App\Parser;
 
 use App\Entity\ColorTranslation;
 use App\Entity\ProductColor;
+use App\Entity\Resources\StatusInterface;
 use App\Repository\ColorTranslationRepository;
 use App\Request\Dto\Admin\ColorEditRequestDto;
 
@@ -24,6 +25,7 @@ final class ColorRequestParser
     {
         if (!$productColor instanceof ProductColor) {
             $productColor = new ProductColor();
+            $productColor->setStatus(StatusInterface::STATUS_ACTIVE);
         }
 
         $productColor->setHex($colorEditRequestDto->hex);

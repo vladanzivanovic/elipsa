@@ -6,6 +6,8 @@ use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\LocaleTranslatorInterface;
 use App\Entity\Resources\LocaleTranslatorTrait;
 use App\Entity\Resources\ResourceTrait;
+use App\Entity\Resources\StatusInterface;
+use App\Entity\Resources\StatusTrait;
 use App\Repository\ProductColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,10 +15,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductColorRepository::class)]
-class ProductColor implements EntityInterface, LocaleTranslatorInterface
+class ProductColor implements EntityInterface, LocaleTranslatorInterface, StatusInterface
 {
     use ResourceTrait;
     use LocaleTranslatorTrait;
+    use StatusTrait;
 
     #[ORM\Column(type: 'string', length: 7)]
     #[Assert\NotBlank(message: 'field.not_blank', groups: ['SetColor'])]
@@ -25,13 +28,13 @@ class ProductColor implements EntityInterface, LocaleTranslatorInterface
     /**
      * @var Collection<int, ColorTranslation>
      */
-    #[ORM\OneToMany(targetEntity: ColorTranslation::class, mappedBy: 'color', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'color', targetEntity: ColorTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $translations;
 
     /**
      * @var Collection<int, OrderProduct>
      */
-    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'color')]
+    #[ORM\OneToMany(mappedBy: 'color', targetEntity: OrderProduct::class)]
     private Collection $orderProducts;
 
     public function __construct()
@@ -108,5 +111,10 @@ class ProductColor implements EntityInterface, LocaleTranslatorInterface
         }
 
         return $this;
+    }
+
+    public function isInUseByOrderProduct(): bool
+    {
+        return $this->orderProducts->count() > 0;
     }
 }

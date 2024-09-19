@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\ResourceTrait;
+use App\Entity\Resources\StatusInterface;
+use App\Entity\Resources\StatusTrait;
 use App\Repository\ProductSizeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,9 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ProductSizeRepository::class)]
-class ProductSize implements EntityInterface
+class ProductSize implements EntityInterface, StatusInterface
 {
     use ResourceTrait;
+    use StatusTrait;
 
     public const NO_SIZE = 'no-sizes';
 

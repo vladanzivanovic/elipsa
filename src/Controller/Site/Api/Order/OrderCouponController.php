@@ -16,29 +16,17 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderCouponController extends AbstractController
 {
-    private OrderCouponParser $orderCouponParser;
-
-    private OrderEditResponseFormatter $responseFormatter;
-
-    private ExceptionView $exceptionView;
-    private OrderHandler $orderHandler;
-
     public function __construct(
-        OrderCouponParser $orderCouponParser,
-        OrderEditResponseFormatter $responseFormatter,
-        ExceptionView $exceptionView,
-        OrderHandler $orderHandler
-    ) {
-        $this->orderCouponParser = $orderCouponParser;
-        $this->responseFormatter = $responseFormatter;
-        $this->exceptionView = $exceptionView;
-        $this->orderHandler = $orderHandler;
-    }
+        private readonly OrderCouponParser $orderCouponParser,
+        private readonly OrderEditResponseFormatter $responseFormatter,
+        private readonly ExceptionView $exceptionView,
+        private readonly OrderHandler $orderHandler
+    ) {}
 
     /**
      * @return JsonResponse
      */
-    #[Route(path: '/api/order/coupon/{token}/{code}', name: 'site_api.add_order_coupon_code', methods: ['PUT'], options: ['expose' => true])]
+    #[Route(path: '/api/order/coupon/{token}/{code}', name: 'site_api.add_order_coupon_code', options: ['expose' => true], methods: ['PUT'])]
     public function manage(Request $request, string $token, string $code): Response
     {
         try {
@@ -61,7 +49,7 @@ final class OrderCouponController extends AbstractController
     /**
      * @return JsonResponse
      */
-    #[Route(path: '/api/order/coupon/{token}/{code}', name: 'site_api.remove_order_coupon_code', methods: ['DELETE'], options: ['expose' => true])]
+    #[Route(path: '/api/order/coupon/{token}/{code}', name: 'site_api.remove_order_coupon_code', options: ['expose' => true], methods: ['DELETE'])]
     public function remove(Request $request, string $token, string $code): Response
     {
         try {

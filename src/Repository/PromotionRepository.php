@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Promotion;
+use App\Entity\Resources\StatusInterface;
 use App\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
@@ -33,6 +34,8 @@ class PromotionRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('pc')
             ->select('COUNT(pc.id) as total')
+            ->where('pc.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
         ;
 
         return $query->getQuery()->getSingleScalarResult();
@@ -53,8 +56,10 @@ class PromotionRepository extends ExtendedEntityRepository
                 'pc.discount as discount',
                 'pc.type as type'
             )
+            ->where('pc.status = :status')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
 
@@ -75,15 +80,17 @@ class PromotionRepository extends ExtendedEntityRepository
     /**
      * @throws NonUniqueResultException
      */
-    public function getByCode(string $code): null|Promotion
+    public function getByCodeAndStatus(string $code, string $status = StatusInterface::STATUS_ACTIVE): null|Promotion
     {
         $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
 
         $query = $this->createQueryBuilder('p')
             ->where('p.code = :code')
             ->andWhere('p.availableCountries LIKE :countryCode')
+            ->andWhere('p.status = :status')
             ->setParameter('code', $code)
-            ->setParameter('countryCode', '%'.$countryCode.'%');
+            ->setParameter('countryCode', '%'.$countryCode.'%')
+            ->setParameter('status', $status);
 
         return $query->getQuery()->getOneOrNullResult();
     }

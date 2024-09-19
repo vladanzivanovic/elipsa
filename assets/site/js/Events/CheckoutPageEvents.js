@@ -1,17 +1,20 @@
 import checkoutPageMapper from "../Mapper/CheckoutPageMapper";
 import userService from "../Service/UserService";
 import checkoutHandler from "../Handler/CheckoutHandler";
+import checkoutPageManipulator from "../Manipulator/CheckoutPageManipulator";
 
 class CheckoutPageEvents {
     #pageMapper;
     #userService;
     #handler;
+    #pageManipulator;
 
     constructor() {
         if(!CheckoutPageEvents.instance) {
             this.#pageMapper = checkoutPageMapper;
             this.#userService = userService;
             this.#handler = checkoutHandler;
+            this.#pageManipulator = checkoutPageManipulator;
 
             CheckoutPageEvents.instance = this;
         }
@@ -81,6 +84,10 @@ class CheckoutPageEvents {
                 $(this.#pageMapper.shipping.locations).removeClass('hide');
             }
         });
+
+        $(document).on('order:fetch', (e, order) => {
+            this.#pageManipulator.setPage(order);
+        })
     }
 }
 

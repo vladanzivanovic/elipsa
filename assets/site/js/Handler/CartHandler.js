@@ -13,7 +13,7 @@ class CartHandler {
     #pageManipulator;
     #pageMapper;
     #orderApiChecker;
-    #orderStorageMaipulator;
+    #orderStorageManipulator;
 
     constructor() {
         this.#pageMapper = cartPageMapper;
@@ -21,7 +21,7 @@ class CartHandler {
         this.#orderApiHandler = orderApiHandler;
         this.#pageManipulator = cartPageManipulator;
         this.#orderApiChecker = orderApiChecker;
-        this.#orderStorageMaipulator = orderStorageManipulator;
+        this.#orderStorageManipulator = orderStorageManipulator;
     }
 
     async removeProduct(event)
@@ -41,7 +41,7 @@ class CartHandler {
             ) {
                 await this.#orderApiHandler.removeOrder();
 
-                this.#orderStorageMaipulator.removeOrder();
+                this.#orderStorageManipulator.removeOrder();
 
                 order = null;
             }
@@ -71,7 +71,7 @@ class CartHandler {
             let order;
 
             if (true === removeCoupon) {
-                const localOrder = this.#orderStorageMaipulator.getOrderData('orderData');
+                const localOrder = this.#orderStorageManipulator.getOrderData('orderData');
 
                 order = await this.#orderApiHandler.removeCoupon(
                     localOrder.promotion.code
@@ -113,7 +113,7 @@ class CartHandler {
         try {
             let order;
 
-            const localOrder = this.#orderStorageMaipulator.getOrderData('orderData');
+            const localOrder = this.#orderStorageManipulator.getOrderData('orderData');
 
             for(let orderProduct of localOrder.products) {
                 const productRow = $(`tr[data-id="${orderProduct.id}"]`);

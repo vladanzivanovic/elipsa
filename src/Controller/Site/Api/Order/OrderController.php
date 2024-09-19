@@ -20,7 +20,7 @@ final class OrderController extends AbstractController
         private readonly OrderRequestParser $requestParser,
         private readonly OrderHandler $orderHandler,
         private readonly OrderEditResponseFormatter $responseFormatter,
-        private readonly ExceptionView $exceptionView
+        private readonly ExceptionView $exceptionView,
     ) {}
 
     #[Route(path: '/api/order/create', name: 'site_api.create_order', options: ['expose' => true], methods: ['POST'])]

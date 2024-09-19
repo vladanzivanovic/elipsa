@@ -34,7 +34,7 @@ data:
 generic_error: 'Došlo je do greške prilikom slanja zahteva.'
 
 error:
-  in_use: '%item% je u upotrebi'
+  in_use: '"%item%" je u upotrebi'
 
 notifications:
   please_wait: 'Molimo vas sačekajte.'
@@ -613,6 +613,7 @@ order.status.shipped: Poslato
 order.overview.tracking_info_label: Vaša porudžbina se trenutno nalazi ovde
 order.shipping.on_delivery: Kurirskom službom
 order.shipping.in_store: Preuzimanje u radnji
+order.price_has_changed: Došlo je do promene u ceni proizvoda.
 
 search_site: Pretražite sajt
 

@@ -615,6 +615,7 @@ order.status.shipped: Shipped
 order.overview.tracking_info_label: Your order is currently here
 order.shipping.on_delivery: Career service
 order.shipping.in_store: In store
+order.price_has_changed: Product prices have been changed
 
 search_site: Search site
 

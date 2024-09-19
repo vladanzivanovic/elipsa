@@ -23,7 +23,7 @@ class SizeHandler {
         }
 
         if (IS_EDIT) {
-            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_size_api', {slug: SLUG});
+            urlRoute = AppHelperService.generateLocalizedUrl('admin.edit_size_api', {id: ID});
             type = 'PUT';
         }
 
@@ -43,12 +43,12 @@ class SizeHandler {
         })
     }
 
-    remove(slug) {
+    remove(id) {
         this.#notification.showLoadingMessage();
 
         $.ajax({
             type: 'DELETE',
-            url: Routing.generate('admin.remove_size_api', {slug}),
+            url: Routing.generate('admin.remove_size_api', {id}),
             dataType: 'json',
             success: () => {
                 SizesDataTables().reload();
@@ -57,8 +57,8 @@ class SizeHandler {
             error: jxHR => {
                 const errors = jxHR.responseJSON;
 
-                if (errors.hasOwnProperty('message')) {
-                    this.#notification.show('error', Translator.trans(errors.message, {item: 'Veličina'}, 'messages', LOCALE), true);
+                if (errors.hasOwnProperty('error')) {
+                    this.#notification.show('error', errors.error.message, true);
 
                     return;
                 }

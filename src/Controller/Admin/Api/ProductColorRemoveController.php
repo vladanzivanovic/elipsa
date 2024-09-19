@@ -4,32 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Api;
 
+use App\Entity\Product;
 use App\Entity\ProductColor;
+use App\Entity\Resources\StatusInterface;
+use App\Exception\GenericTranslationException;
 use App\Handler\ProductColorHandler;
-use App\Repository\ProductHasColorRepository;
 use App\Repository\ProductHasImagesRepository;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use App\View\ExceptionView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductColorRemoveController extends AbstractController
 {
-    private \App\Handler\ProductColorHandler $colorHandler;
-
-    private \App\Repository\ProductHasImagesRepository $hasImagesRepository;
-
-    /**
-     * ProductColorRemoveController constructor.
-     */
     public function __construct(
-        ProductColorHandler $colorHandler,
-        ProductHasImagesRepository $hasImagesRepository
-    ) {
-        $this->colorHandler = $colorHandler;
-        $this->hasImagesRepository = $hasImagesRepository;
-    }
+        private readonly ProductColorHandler $colorHandler,
+        private readonly ProductHasImagesRepository $hasImagesRepository,
+        private readonly ExceptionView $exceptionView,
+        private readonly string $adminLocale,
+    ) {}
 
     /**
      *
@@ -38,17 +33,42 @@ final class ProductColorRemoveController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    #[Route(path: '/api/remove-color/{id}', name: 'admin.remove_color_api', methods: ['DELETE'], options: ['expose' => true])]
-    public function remove(ProductColor $productColor)
+    #[Route(path: '/api/remove-color/{id}', name: 'admin.remove_color_api', options: ['expose' => true], methods: ['DELETE'])]
+    public function remove(ProductColor $productColor): JsonResponse
     {
-        $productCount = $this->hasImagesRepository->count(['color' => $productColor]);
+        try {
+            $hasActiveProducts = $this->hasImagesRepository->colorsInUseByProductStatus($productColor, Product::STATUS_ACTIVE);
 
-        if ($productCount > 0) {
-            throw new BadRequestHttpException(json_encode(['message' => 'error.in_use']));
+            if ($hasActiveProducts) {
+                $trans = $productColor->getByLocale($this->adminLocale);
+
+                $genericException = new GenericTranslationException('error.in_use');
+                $genericException->setDomain('messages');
+                $genericException->setParameters(['%item%' => $trans->getTitle()]);
+
+                throw $genericException;
+            }
+
+            $hasArchivedProducts = $this->hasImagesRepository->colorsInUseByProductStatus($productColor, Product::STATUS_ARCHIVED);
+            $hasPendingProducts = $this->hasImagesRepository->colorsInUseByProductStatus($productColor, Product::STATUS_PENDING);
+
+
+            if ($productColor->isInUseByOrderProduct() || $hasArchivedProducts || $hasPendingProducts) {
+                $productColor->setStatus(StatusInterface::STATUS_ARCHIVED);
+
+                $this->colorHandler->save($productColor);
+
+                return $this->json([]);
+            }
+
+            $this->colorHandler->remove($productColor);
+
+            return $this->json([]);
+        } catch (\Throwable $throwable) {
+            return $this->json(
+                ['error' => $this->exceptionView->view($throwable, $this->adminLocale)],
+                Response::HTTP_BAD_REQUEST
+            );
         }
-
-        $this->colorHandler->remove($productColor);
-
-        return $this->json([]);
     }
 }

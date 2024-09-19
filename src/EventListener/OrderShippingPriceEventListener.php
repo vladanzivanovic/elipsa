@@ -11,7 +11,6 @@ use App\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 final class OrderShippingPriceEventListener
 {

@@ -16,13 +16,13 @@ export default (() => {
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
                 { data: 'size', name: 'size', title: 'Veličina'},
-                { data: 'slug', orderable: false, render: function (data, type, row, meta) {
-                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_size_page', {slug: data})}">Izmeni</a> ` : '';
-                        const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-alias="${data}">Ukloni</button>` : '';
+                { data: 'id', orderable: false, render: function (id, type, row, meta) {
+                        const editLink = CAN_EDIT ? `<a class="btn btn-outline-primary" href="${AppHelperService.generateLocalizedUrl('admin.edit_size_page', {id})}">Izmeni</a> ` : '';
+                        const removeButton = CAN_REMOVE ?`<button class="btn btn-outline-danger remove-item-button" data-id="${id}">Ukloni</button>` : '';
 
                         return type === 'display' ?
                             editLink+removeButton :
-                            data;
+                            id;
                     } },
             ],
             order: [[0, 'desc']],

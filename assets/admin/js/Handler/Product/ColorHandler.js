@@ -38,6 +38,14 @@ class ColorHandler {
                 AppHelperService.redirect(AppHelperService.generateLocalizedUrl('admin.colors'));
             },
             error: error => {
+                const errors = error.responseJSON;
+
+                if (errors.hasOwnProperty('message')) {
+                    this.#notification.show('error', errors.message, true);
+
+                    return;
+                }
+
                 this.#notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
             }
         })
@@ -54,6 +62,15 @@ class ColorHandler {
                 this.#notification.remove();
             },
             error: (error) => {
+
+                const errors = error.responseJSON;
+
+                if (errors.hasOwnProperty('error')) {
+                    this.#notification.show('error', errors.error.message, true);
+
+                    return;
+                }
+
                 this.#notification.show('error', Translator.trans('generic_error', null, 'messages'. LOCALE), true);
             }
         })

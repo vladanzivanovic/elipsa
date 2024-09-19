@@ -28,6 +28,8 @@ class OrderApiProvider {
             result = error;
         }
 
+        $(document).trigger('order:fetch', result);
+
         return result;
     }
 

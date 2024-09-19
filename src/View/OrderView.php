@@ -38,6 +38,7 @@ final class OrderView
             'note' => $order->getNote(),
             'checkout_completed_at' => $order->getCompletedAt() instanceof \DateTimeInterface ? $order->getCompletedAt()->format('d.m.Y H:i:s') : null,
             'tracking_info' => $order->getTrackingInfo(),
+            'isPriceChanged' => $order->isOrderPriceChanged(), // used when user has already set products in cart but promotion expired
         ];
 
         if (false === $order->getOrderProducts()->isEmpty()) {
@@ -66,9 +67,7 @@ final class OrderView
             $locale
         );
 
-//        $view = $this->setShippingPriceAndUpdateTotal($view, $total, $locale);
-
-        if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
+        if (false === in_array($order->getStatus(), ShopOrder::STATUS_NOT_PURCHASED, true)) {
             $view += $this->addCheckoutInformation($order);
         }
 

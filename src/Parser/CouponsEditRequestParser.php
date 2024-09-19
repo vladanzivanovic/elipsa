@@ -6,6 +6,7 @@ namespace App\Parser;
 
 use App\Entity\Promotion;
 use App\Entity\PromotionOption;
+use App\Entity\Resources\StatusInterface;
 use App\Request\Dto\Admin\PromotionCouponRequestDto;
 use App\Request\Dto\Admin\PromotionOptionRequestDto;
 
@@ -17,6 +18,7 @@ final class CouponsEditRequestParser
     ): Promotion {
         if (!$promotion instanceof Promotion) {
             $promotion = new Promotion();
+            $promotion->setStatus(StatusInterface::STATUS_ACTIVE);
         }
 
         $promotion->setCode($promotionCouponRequestDto->code);
