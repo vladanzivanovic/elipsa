@@ -126,6 +126,10 @@
             "rm prod.zip",
             "zip -r prod.zip ./vendor ./config/ ./src ./public ./templates ./translations"
         ],
+        "zip": [
+            "rm prod.zip",
+            "zip -r prod.zip ./vendor ./config/ ./src ./public ./templates ./translations"
+        ],
         "cache:clear": [
             "php bin/console cache:clear --no-warmup --ansi",
             "php bin/console cache:warmup"

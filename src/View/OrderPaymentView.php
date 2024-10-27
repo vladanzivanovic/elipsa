@@ -47,17 +47,17 @@ final class OrderPaymentView
 
     private function setRsPaymentData(array $transactionData): array
     {
-        if (isset($transactionData[ShopOrder::CARD_STATUS_REJECTED])) {
-            $cardData = $transactionData[ShopOrder::CARD_STATUS_REJECTED];
+        if (isset($transactionData[ShopOrder::CARD_STATUS_FAILED])) {
+            $cardData = $transactionData[ShopOrder::CARD_STATUS_FAILED];
 
             return [
-                strtolower(ShopOrder::CARD_STATUS_REJECTED) => [
-                    'transaction_date_time' => $cardData['EXTRA_TRXDATE'] ? new \DateTime($cardData['EXTRA_TRXDATE']) : null,
-                    'transaction_id' => $cardData['TransId'],
-                    'auth_code' => $cardData['AuthCode'],
-                    'payment_response' => $cardData['Response'],
-                    'proc_return_code' => $cardData['ProcReturnCode'],
-                    'md_status' => $cardData['mdStatus'],
+                strtolower(ShopOrder::CARD_STATUS_FAILED) => [
+                    'transaction_date_time' => new \DateTime(),
+                    'transaction_id' => null,
+                    'auth_code' => null,
+                    'payment_response' => null,
+                    'proc_return_code' => null,
+                    'md_status' => null,
                 ]
             ];
         }
@@ -83,27 +83,31 @@ final class OrderPaymentView
 
             return [
                 strtolower(ShopOrder::CARD_STATUS_REJECTED) => [
-                    'transaction_date_time' => $cardData['EXTRA_TRXDATE'] ? new \DateTime($cardData['EXTRA_TRXDATE']) : null,
-                    'transaction_id' => $cardData['TransId'],
-                    'auth_code' => $cardData['AuthCode'],
-                    'payment_response' => $cardData['Response'],
+                    'transaction_date_time' => new \DateTime(),
+                    'transaction_id' => $cardData['merchantTransactionId'],
+                    'auth_code' => $cardData['purchaseId'],
+                    'payment_response' => $cardData['result'],
                     'proc_return_code' => $cardData['ProcReturnCode'],
-                    'md_status' => $cardData['mdStatus'],
+                    'md_status' => $cardData['returnData']['eci'],
                 ]
             ];
         }
 
-        $cardData = $transactionData[ShopOrder::CARD_STATUS_PRE_AUTH];
+        if (isset($transactionData[ShopOrder::CARD_STATUS_PRE_AUTH])) {
+            $cardData = $transactionData[ShopOrder::CARD_STATUS_PRE_AUTH];
 
-         return [
-            strtolower(ShopOrder::CARD_STATUS_PRE_AUTH) => [
-                'transaction_date_time' => $cardData['EXTRA_TRXDATE'] ? new \DateTime($cardData['EXTRA_TRXDATE']) : null,
-                'transaction_id' => $cardData['TransId'],
-                'auth_code' => $cardData['AuthCode'],
-                'payment_response' => $cardData['Response'],
-                'proc_return_code' => $cardData['ProcReturnCode'],
-                'md_status' => $cardData['mdStatus'],
-            ]
-        ];
+            return [
+                strtolower(ShopOrder::CARD_STATUS_PRE_AUTH) => [
+                    'transaction_date_time' => new \DateTime(),
+                    'transaction_id' => $cardData['merchantTransactionId'],
+                    'auth_code' => $cardData['purchaseId'],
+                    'payment_response' => $cardData['result'],
+                    'proc_return_code' => null,
+                    'md_status' => $cardData['returnData']['eci'],
+                ]
+            ];
+        }
+
+        return [];
     }
 }

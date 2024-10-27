@@ -82,21 +82,17 @@
                                 {% set paymentTypes = get_class_constants('App\\Entity\\ShopOrder', 'PAYMENT_TYPE') %}
 
                                 {% for paymentType in paymentTypes %}
-                                    {% set bankPayment = constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
-{#                                    {% if 'ba' == countryDefaultLocale and paymentType == bankPayment %}#}
-{#                                    {% else %}#}
-                                        <div class="select-payment-method">
-                                            {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
-                                            {{ inputs.input('payment_' ~ paymentType, paymentType, 'payment_type', '', 'radio', 'radio-button', erroMessage) }}
-                                            {% set paymentTransId = 'checkout.payment.' ~ paymentType %}
-                                            <label for="{{ 'payment_' ~ paymentType }}" class="letter-capitalize">{{ paymentTransId | trans }}</label>
-                                        </div>
-{#                                    {% endif %}#}
+                                    <div class="select-payment-method">
+                                        {% set erroMessage = true == loop.last ? 'data-show-error-after=yes' : '' %}
+                                        {{ inputs.input('payment_' ~ paymentType, paymentType, 'payment_type', '', 'radio', 'radio-button', erroMessage) }}
+                                        {% set paymentTransId = 'checkout.payment.' ~ paymentType %}
+                                        <label for="{{ 'payment_' ~ paymentType }}" class="letter-capitalize">{{ paymentTransId | trans }}</label>
+                                    </div>
                                 {% endfor %}
 
                                 <div class="billing-address-input clearfix m-t-2 m-t-2-xss payment-type-images">
                                     {% if countries[countryDefaultLocale].host == hostRs %}
-                                    <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a>
+                                        <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a>
                                     {% endif %}
                                     <img src="{{ asset('build/site/images/intesa/visa_pos_fc.png') }}" alt="Visa card logo">
                                     <img src="{{ asset('build/site/images/intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo">
@@ -189,5 +185,6 @@
         const INTESA_GATEWAY = '{{ intesa_gateway }}';
         const IN_STORE_SHIPPING_METHOD = '{{ constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') }}';
         const SHIPPING_STORE_MIN_PRICE = {{ siteSettings.settings.free_shipping_store.value.unformatted_amount }};
+        const ON_DELIVERY_PAYMENT = '{{ constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') }}';
     </script>
 {% endblock %}

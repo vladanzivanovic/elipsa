@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Site\Api\Order;
 
 use App\Parser\Site\Order\OrderRequestParser;
+use App\Provider\BankArtPaymentProvider;
 use App\View\ExceptionView;
 use App\View\OrderPaymentRequestView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,8 @@ final class OrderPaymentController extends AbstractController
     public function __construct(
         private readonly OrderRequestParser $orderRequestParser,
         private readonly ExceptionView $exceptionView,
-        private readonly OrderPaymentRequestView $orderPaymentView
+        private readonly OrderPaymentRequestView $orderPaymentView,
+        private readonly BankArtPaymentProvider $bankArtPaymentProvider,
     ) {}
 
     /**
@@ -30,9 +32,16 @@ final class OrderPaymentController extends AbstractController
         try {
             $order = $this->orderRequestParser->findOrder($token);
 
+            $bankArtResult = null;
+
+            if ($order->getCountry() === 'ba') {
+                $bankArtResult = $this->bankArtPaymentProvider->getRequestDataForPayment($order, $request->getLocale());
+            }
+
             return $this->json($this->orderPaymentView->view(
                 $order,
-                $request->getLocale()
+                $request->getLocale(),
+                $bankArtResult,
             ), Response::HTTP_OK);
         } catch (\Throwable $throwable) {
             return $this->json(

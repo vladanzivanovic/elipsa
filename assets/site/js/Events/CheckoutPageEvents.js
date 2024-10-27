@@ -85,6 +85,17 @@ class CheckoutPageEvents {
             }
         });
 
+        $(`${this.#pageMapper.paymentType}`).on('change', e => {
+            const selectedMethod = $(e.currentTarget).val();
+
+            $('#shipping_in_store').attr('disabled', 'disabled');
+            $('#shipping_on_delivery').click();
+
+            if (selectedMethod === ON_DELIVERY_PAYMENT) {
+                $('#shipping_in_store').removeAttr('disabled');
+            }
+        });
+
         $(document).on('order:fetch', (e, order) => {
             this.#pageManipulator.setPage(order);
         })

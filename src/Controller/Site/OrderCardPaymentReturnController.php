@@ -24,7 +24,15 @@ final class OrderCardPaymentReturnController extends AbstractController
     {
         $order = $this->orderRequestParser->findOrder($token);
 
-        $order->setTransactionData([ShopOrder::CARD_STATUS_PRE_AUTH => json_decode($request->getContent(), true)]);
+        $payload = json_decode($request->getContent(), true);
+
+        $cardStatus = match ($payload['result']) {
+            'ERROR' => ShopOrder::CARD_STATUS_FAILED,
+            'OK' => ShopOrder::CARD_STATUS_PRE_AUTH,
+            default => ShopOrder::CARD_STATUS_DECLINED
+        };
+
+        $order->setTransactionData([$cardStatus => $payload]);
 
         $this->orderHandler->save($order);
     }
@@ -35,12 +43,37 @@ final class OrderCardPaymentReturnController extends AbstractController
         $order = $this->orderRequestParser->findOrder($token);
 
         $order->setStatus(ShopOrder::STATUS_PENDING);
-        $order->setTransactionData([$request->request->getString('Response') => $request->request->all()]);
+        $order->setCardStatus(ShopOrder::CARD_STATUS_FAILED);
+        $order->setTransactionData([ShopOrder::CARD_STATUS_FAILED => $request->request->all()]);
 
         $redirectUrl = $this->redirectToRoute('site.checkout_completed_unsuccessful', ['_locale' => $request->getLocale(), 'token' => $token]);
 
         if ($request->request->getString('Response') === 'Approved') {
+            $order->setCardStatus(ShopOrder::CARD_STATUS_PRE_AUTH);
             $order->setTransactionData([ShopOrder::CARD_STATUS_PRE_AUTH => $request->request->all()]);
+            $redirectUrl =  $this->redirectToRoute('site.checkout_completed_successful', ['_locale' => $request->getLocale(), 'token' => $token]);
+        }
+
+        $this->orderHandler->save($order);
+
+        return $redirectUrl;
+    }
+
+    #[Route(path: '/checkout/card/return/bank-art/{token}', name: 'site.checkout_completed_card_return.bank-art', options: ['expose' => true], methods: ['GET'])]
+    public function bankArtSuccess(Request $request, string $token): RedirectResponse
+    {
+        $order = $this->orderRequestParser->findOrder($token);
+
+        $order->setStatus(ShopOrder::STATUS_PENDING);
+        $order->setCardStatus(ShopOrder::CARD_STATUS_FAILED);
+
+        $redirectUrl = $this->redirectToRoute('site.checkout_completed_unsuccessful', ['_locale' => $request->getLocale(), 'token' => $token]);
+
+        if (
+            isset($order->getTransactionData()[ShopOrder::CARD_STATUS_PRE_AUTH]) &&
+            $order->getTransactionData()[ShopOrder::CARD_STATUS_PRE_AUTH]['result'] === 'OK'
+        ) {
+            $order->setCardStatus(ShopOrder::CARD_STATUS_PRE_AUTH);
             $redirectUrl =  $this->redirectToRoute('site.checkout_completed_successful', ['_locale' => $request->getLocale(), 'token' => $token]);
         }
 

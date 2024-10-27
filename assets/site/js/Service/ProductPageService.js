@@ -1,10 +1,10 @@
 import productPageMapper from "../Mapper/ProductPageMapper";
 import Fotorama from "./Fotorama";
 import Tipped from "@staaky/tipped";
-import FlexSliderService from "./FlexSliderService";
+
 
 require('flexslider');
-
+require('jquery-cropper');
 
 class ProductPageService {
     #mapper;
@@ -44,6 +44,25 @@ class ProductPageService {
         }
 
         for (const youtube of MEDIA.youtubes) {
+            const $image = $('<img />', {
+                src: youtube.Thumbnails.standard.url
+            });
+
+            $image.appendTo('body');
+
+
+            $image.cropper({
+                aspectRatio: 16 / 9,
+                crop: function(event) {
+                    console.log(event.detail.x);
+                    console.log(event.detail.y);
+                    console.log(event.detail.width);
+                    console.log(event.detail.height);
+                    console.log(event.detail.rotate);
+                    console.log(event.detail.scaleX);
+                    console.log(event.detail.scaleY);
+                }
+            });
             data.push({
                 video: youtube.link,
                 img: youtube.Thumbnails.standard.url,

@@ -41,6 +41,8 @@ final class OrderView
             'isPriceChanged' => $order->isOrderPriceChanged(), // used when user has already set products in cart but promotion expired
         ];
 
+        $view += $this->addCheckoutInformation($order);
+
         if (false === $order->getOrderProducts()->isEmpty()) {
             foreach ($order->getOrderProducts() as $orderProduct) {
                 $productView = $this->orderProductView->view($orderProduct, $locale);
@@ -67,18 +69,21 @@ final class OrderView
             $locale
         );
 
-        if (false === in_array($order->getStatus(), ShopOrder::STATUS_NOT_PURCHASED, true)) {
-            $view += $this->addCheckoutInformation($order);
-        }
+//        if (false === in_array($order->getStatus(), ShopOrder::STATUS_NOT_PURCHASED, true)) {
+//            $view += $this->addCheckoutInformation($order);
+//        }
 
         return $view;
     }
 
     private function addCheckoutInformation(ShopOrder $order): array
     {
+        $shippingAddress = $order->getShippingAddress();
+        $nillingAddress = $order->getBillingAddress();
+
         return [
-            'shipping_address' => $this->addressView->view($order->getShippingAddress()),
-            'billing_address' => $this->addressView->view($order->getBillingAddress()),
+            'shipping_address' => null !== $shippingAddress ? $this->addressView->view($shippingAddress) : [],
+            'billing_address' => null !== $nillingAddress ? $this->addressView->view($nillingAddress) : [],
         ];
     }
 }
