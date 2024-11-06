@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Api;
 
 use App\Formatter\Admin\OfficeContactDataTableResponseFormatter;
-use App\Formatter\Admin\SliderTextDataTableResponseFormatter;
 use App\Parser\DataTableRequestParser;
 use App\Repository\OfficeContactRepository;
-use App\Repository\SliderTextRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,25 +16,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class OfficeContactListController extends AbstractController
 {
-    private DataTableRequestParser $requestParser;
-
-    private OfficeContactDataTableResponseFormatter $responseFormatter;
-
-    private OfficeContactRepository $repository;
-
     public function __construct(
-        DataTableRequestParser $requestParser,
-        OfficeContactRepository $repository,
-        OfficeContactDataTableResponseFormatter $responseFormatter
-    ) {
-        $this->requestParser = $requestParser;
-        $this->responseFormatter = $responseFormatter;
-        $this->repository = $repository;
-    }
+        private readonly DataTableRequestParser $requestParser,
+        private readonly OfficeContactRepository $repository,
+        private readonly OfficeContactDataTableResponseFormatter $responseFormatter
+    ) {}
 
     /**
-     *
-     *
      * @throws NonUniqueResultException
      * @throws NoResultException
      */

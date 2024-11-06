@@ -34,7 +34,12 @@ final class OfficeContactParser
     private function setLocale(OfficeContactEditRequestDto $officeContactEditRequestDto, OfficeContact $officeContact): void
     {
         foreach ($this->locales as $locale) {
-            $transCollection = $officeContactEditRequestDto->translations[$locale];
+            $transCollection = $officeContactEditRequestDto->translations[$locale] ?? null;
+
+            if (null === $transCollection) {
+                continue;
+            }
+
             $trans = $officeContact->getByLocale($locale);
 
             if (null === $trans) {

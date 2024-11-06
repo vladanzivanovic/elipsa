@@ -13,21 +13,21 @@ use Symfony\Component\Routing\Attribute\Route;
 final class OfficeContactEditPageController extends AbstractController
 {
     public function __construct(
-        private readonly OfficeContactEditResponseFormatter $OfficeContactEditResponseFormatter
+        private readonly OfficeContactEditResponseFormatter $officeContactEditResponseFormatter
     ) {}
 
     #[Route(path: '/add-office-contact', name: 'admin.add_office_contact_page', methods: ['GET'])]
     #[Template('Admin/Pages/officeContactEdit.html.twig')]
     public function insert(): array
     {
-        return $this->OfficeContactEditResponseFormatter->formatResponse();
+        return $this->officeContactEditResponseFormatter->formatResponse();
     }
 
     
     #[Route(path: '/edit-office-contact/{id}', name: 'admin.edit_office_contact_page', methods: ['GET'])]
-    #[Template('Admin/Pages/OfficeContactEdit.html.twig')]
+    #[Template('Admin/Pages/officeContactEdit.html.twig')]
     public function update(OfficeContact $officeContact): array
     {
-        return $this->OfficeContactEditResponseFormatter->formatResponse($officeContact);
+        return $this->officeContactEditResponseFormatter->formatResponse($officeContact);
     }
 }

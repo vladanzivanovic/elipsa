@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\OfficeContact;
+use App\Entity\OfficeContactTranslation;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -21,7 +22,7 @@ class OfficeContactRepository extends ExtendedEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private readonly string $defaultLocale
+        private readonly array $countries
     ) {
         parent::__construct($registry, OfficeContact::class);
     }
@@ -49,13 +50,18 @@ class OfficeContactRepository extends ExtendedEntityRepository
                 'oct.title as title',
                 'oc.availableCountries as available_countries'
             )
-            ->innerJoin('oc.officeContactTranslations', 'oct')
-            ->where('oct.locale = :defaultLocale')
-            ->setParameter('defaultLocale', $this->defaultLocale)
+            ->innerJoin(OfficeContactTranslation::class, 'oct', 'WITH', 'oct.officeContact = oc AND oct.locale IN (:countries)')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
+            ->groupBy('oc.id')
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
         ;
+
+        foreach ($this->countries as $countryCode => $country) {
+            $countries[] = $countryCode;
+        }
+
+        $query->setParameter('countries', $countries);
 
         return $query->getQuery()->getArrayResult();
     }
