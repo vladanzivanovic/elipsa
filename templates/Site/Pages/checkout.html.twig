@@ -91,15 +91,20 @@
                                 {% endfor %}
 
                                 <div class="billing-address-input clearfix m-t-2 m-t-2-xss payment-type-images">
-                                    {% if countries[countryDefaultLocale].host == hostRs %}
-                                        <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a>
-                                    {% endif %}
-                                    <img src="{{ asset('build/site/images/intesa/visa_pos_fc.png') }}" alt="Visa card logo">
-                                    <img src="{{ asset('build/site/images/intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo">
-                                    <img src="{{ asset('build/site/images/intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo">
-                                    <img src="{{ asset('build/site/images/intesa/american_express.png') }}" alt="Master card logo">
-                                    {% if countries[countryDefaultLocale].host == hostRs %}
-                                        <img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo">
+                                    {% if countries[countryDefaultLocale].host != hostRs %}
+                                        <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/Logo_NLB_Banka_sponzorski_10mm_RGB.png') }}" alt="NLB Bank logo"></a>
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/visa-secure_blu_72dpi.jpg') }}" alt="Visa card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/ms_vrt_opt_pos_73_3x.png') }}" alt="Maestro card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/mc_idcheck_vrt_pos.png') }}" alt="Master card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/mc_vrt_opt_pos_63_3x.png') }}" alt="Master card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/visa_pos_fc.png') }}" alt="Visa pos logo">
+                                    {% else %}
+                                        <a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/logo.png') }}" alt="Intesa logo"></a>
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/Intesa/visa_pos_fc.png') }}" alt="Visa card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/Intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/Intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/Intesa/american_express.png') }}" alt="Master card logo">
+                                        <img src="{{ asset('build/site/images/CreditCardLogo/Intesa/dina_card.png') }}" alt="Master card logo">
                                     {% endif %}
                                 </div>
                             </div>
