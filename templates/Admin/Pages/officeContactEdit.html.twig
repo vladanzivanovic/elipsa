@@ -45,7 +45,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT ? payload.translations[locale]['title'] : '', 'translations['~locale~'][title]') }}
+                                        {{ form.input('Naziv', 'title_'~locale, IS_EDIT and payload.translations[locale]['title'] is defined ? payload.translations[locale]['title'] : '', 'translations['~locale~'][title]') }}
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->

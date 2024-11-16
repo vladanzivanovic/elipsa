@@ -59,7 +59,6 @@ final class SliderEditRequestParser
 
             $trans = $this->translationRepository->findOneBy(['slider' => $slider, 'locale' => $locale]);
 
-
             if (null === $trans) {
                 $trans = new SliderTranslation();
             }

@@ -151,13 +151,16 @@ class ShopPageDom {
 
     #setBadgeHtml(product) {
         let html = '';
+        const productLink = product._links[LOCALE];
 
         if (product.options[COUNTRY_DEFAULT_LOCALE].is_sold === true) {
             html += `
-                <svg class='svg-stroke product-sold' viewBox='0 -0.2 6.5 15' preserveAspectRatio='none'>
-                    <line x1="7" y1="-1" x2="-1" y2="11" stroke="#a70303" stroke-width=".6" stroke-opacity="1"></line>
-                    <text x="0" y="8" font-size="0.04em" textLength="9em" transform="translate(-4.25, 1.8) rotate(303)" font-family="'Montserrat', sans-serif" fill="white">${Translator.trans('sold', null, 'messages', LOCALE)}</text>
-                </svg>
+                <a href="${productLink}">
+                    <svg class='svg-stroke product-sold' viewBox='0 -0.2 6.5 15' preserveAspectRatio='none'>
+                        <line x1="7" y1="-1" x2="-1" y2="11" stroke="#a70303" stroke-width=".6" stroke-opacity="1"></line>
+                        <text x="0" y="8" font-size="0.04em" textLength="9em" transform="translate(-4.25, 1.8) rotate(303)" font-family="'Montserrat', sans-serif" font-weight="bold" letter-spacing="0" fill="white">${Translator.trans('sold', null, 'messages', LOCALE)}</text>
+                    </svg>
+                </a>
             `;
         }
 
