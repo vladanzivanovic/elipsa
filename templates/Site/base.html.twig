@@ -146,7 +146,7 @@
         <script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': 'rs,en' }) }}"></script>
         <script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': 'rs,en' }) }}"></script>
         {{ encore_entry_script_tags('js/site/core') }}
-        <script type="text/javascript" src="{{ asset('js/router.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
         <script type="text/javascript" src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% endblock %}
     {% block pageJavascript %}{% endblock %}

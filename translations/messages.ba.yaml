@@ -641,6 +641,7 @@ filter:
   boje: colors
   kolekcije: collections
   sezone: seasons
+  karakteristike: attributes
   osobine: attributes
   kategorije: categories
   cena: price
