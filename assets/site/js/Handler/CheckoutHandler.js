@@ -74,14 +74,14 @@ class CheckoutHandler {
                             return;
                         }
 
-                        this.#orderStorageManipulator.removeOrder();
-
                         const redirectUrl = Routing.generate(
                             `site.checkout_completed_successful.${LOCALE}`,
                             {
                                 'token': this.#orderStorageManipulator.getOrderToken('order')
                             }
                         );
+
+                        this.#orderStorageManipulator.removeOrder();
 
                         AppHelperService.redirect(redirectUrl);
                     })

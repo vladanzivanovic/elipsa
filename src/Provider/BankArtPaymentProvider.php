@@ -9,6 +9,9 @@ use App\Exception\PaymentRequestException;
 use Ixopay\Client\Client;
 use Ixopay\Client\Data\Customer;
 use Ixopay\Client\Data\ThreeDSecureData;
+use Ixopay\Client\Exception\GeneralErrorException;
+use Ixopay\Client\Exception\RateLimitException;
+use Ixopay\Client\Http\Exception\ClientException;
 use Ixopay\Client\Transaction\Debit;
 use Ixopay\Client\Transaction\Preauthorize;
 use Ixopay\Client\Transaction\Result;
@@ -19,73 +22,33 @@ final class BankArtPaymentProvider
 {
     public function __construct(
         private readonly RouterInterface $router,
+        private readonly array $countries,
     ) {}
 
+    /**
+     * @throws ClientException
+     * @throws \Ixopay\Client\Exception\ClientException
+     * @throws GeneralErrorException
+     * @throws PaymentRequestException
+     * @throws RateLimitException
+     */
     public function getRequestDataForPayment(ShopOrder $order, string $locale): Result
     {
-        $client = new Client('API3004051002ELIPSAMP', 'Elipsabih123!', '3004051002IB350030-SIM', 'a16daba95307e28560bdb34407e4285e30b8f9e20f5c348728');
+        $cardCredentials = $this->countries['ba']['card_payment'];
 
-//        $customer = $this->setCustomer($order);
+        $client = new Client($cardCredentials['username'], $cardCredentials['password'], $cardCredentials['apiKey'], $cardCredentials['sharedSecret']);
 
-        // define your unique transaction ID, e.g.
-//        $merchantTransactionId = uniqid('myId', true) . '-' . date('YmdHis');
-
-//        $debit = new Debit();
-//        $debit->setMerchantTransactionId($merchantTransactionId)
-//            ->setSuccessUrl($this->router->generate('site.checkout_completed_successful', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL))
-//            ->setCancelUrl($this->router->generate('site.checkout_failed', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL))
-//            ->setCallbackUrl($this->router->generate('site.checkout_completed_successful', ['_locale' => $locale, 'token' => $order->getToken()], UrlGeneratorInterface::ABSOLUTE_URL))
-//            ->setAmount(10.00)
-//            ->setCurrency('BAM')
-//            ->setCustomer($customer);
-
-// send the transaction
         $result = $client->debit($this->debit($order, $locale));
 
-// handle the result
-        if ($result->isSuccess()) {
-
-            // store the uuid you receive from the gateway for future references
-//            $gatewayReferenceId = $result->getUuid();
-
-            if ($result->getReturnType() == Result::RETURN_TYPE_REDIRECT) {
-                return $result;
-            }
-
-            $paymentException = new PaymentRequestException('generic_error');
-            $paymentException->setResult($result);
-
-            throw $paymentException;
-
-            // handle result based on it's returnType
-//            if ($result->getReturnType() == Result::RETURN_TYPE_ERROR) {
-//
-//                // read errors on error handling
-//                $errors = $result->getErrors();
-//
-//                throw new PaymentRequestException('generic_error');
-//
-//                // handle the error
-//                // e.g. cancelCart();
-//
-//            } elseif ($result->getReturnType() == Result::RETURN_TYPE_REDIRECT) {
-//
-//                return ['redirect_url' => $result->getRedirectUrl()];
-//                // redirect the user
-//
-//            } elseif ($result->getReturnType() == Result::RETURN_TYPE_PENDING) {
-//
-//                // payment is pending: wait for callback to complete
-//
-//                // handle pending
-//                // e.g. setCartToPending();
-//
-//            } elseif ($result->getReturnType() == Result::RETURN_TYPE_FINISHED) {
-//
-//                //payment is finished, update your cart/payment transaction
-//                // e.g. finishCart();
-//            }
+        if ($result->isSuccess() && $result->getReturnType() == Result::RETURN_TYPE_REDIRECT)
+        {
+            return $result;
         }
+
+        $paymentException = new PaymentRequestException('generic_error');
+        $paymentException->setResult($result);
+
+        throw $paymentException;
     }
 
     private function customer(ShopOrder $order): Customer

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Api\Order;
 
+use App\Entity\User;
 use App\Formatter\Site\OrderEditResponseFormatter;
+use App\Formatter\Site\UserRegistrationFormatter;
 use App\Handler\Site\OrderHandler;
+use App\Mailer\UserRegistrationMailer;
 use App\Parser\Site\Order\OrderCompleteParser;
 use App\View\ExceptionView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,33 +22,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class OrderCompleteController extends AbstractController
 {
-    private ExceptionView $exceptionView;
-
-    private OrderCompleteParser $orderCompleteParser;
-
-    private OrderHandler $orderHandler;
-
-    private OrderEditResponseFormatter $responseFormatter;
-
-    private HttpClientInterface $client;
-
-    private string $googleRecaptchaSecret;
-
     public function __construct(
-        ExceptionView $exceptionView,
-        OrderCompleteParser $orderCompleteParser,
-        OrderHandler $orderHandler,
-        OrderEditResponseFormatter $responseFormatter,
-        HttpClientInterface $client,
-        string $googleRecaptchaSecret
-    ) {
-        $this->exceptionView = $exceptionView;
-        $this->orderCompleteParser = $orderCompleteParser;
-        $this->orderHandler = $orderHandler;
-        $this->responseFormatter = $responseFormatter;
-        $this->client = $client;
-        $this->googleRecaptchaSecret = $googleRecaptchaSecret;
-    }
+        private readonly ExceptionView $exceptionView,
+        private readonly OrderCompleteParser $orderCompleteParser,
+        private readonly OrderHandler $orderHandler,
+        private readonly OrderEditResponseFormatter $responseFormatter,
+        private readonly HttpClientInterface $client,
+        private readonly UserRegistrationFormatter $userRegistrationFormatter,
+        private readonly UserRegistrationMailer $userRegistrationMailer,
+        private readonly string $googleRecaptchaSecret
+    ) {}
 
     /**
      * @return JsonResponse
@@ -53,6 +39,8 @@ final class OrderCompleteController extends AbstractController
     #[Route(path: '/api/order/complete/{token}', name: 'site_api.order_complete', options: ['expose' => true], methods: ['POST'])]
     public function complete(Request $request, string $token): Response
     {
+        $locale = $request->attributes->get('_locale');
+
         try {
             $body = json_decode($request->getContent(), true);
             $requestBag = new ParameterBag($body);
@@ -63,10 +51,16 @@ final class OrderCompleteController extends AbstractController
 
             $this->orderHandler->save($order, 'SetCoupon');
 
-            return $this->json($this->responseFormatter->formatResponse(
+            $response =  $this->responseFormatter->formatResponse(
                 $order,
                 $request->getLocale()
-            ), Response::HTTP_OK);
+            );
+
+            if ( null !== $order->getUser()->getResetToken()) {
+                $this->sendUserRegistrationEmail($order->getUser(), $locale);
+            }
+
+            return $this->json($response, Response::HTTP_OK);
         } catch (\Throwable $throwable) {
             return $this->json(
                 ['error' => $this->exceptionView->view($throwable, $request->getLocale())],
@@ -97,5 +91,12 @@ final class OrderCompleteController extends AbstractController
         }
 
         $this->createAccessDeniedException();
+    }
+
+    private function sendUserRegistrationEmail(User $user, string $locale): void
+    {
+        $userFormattedData = $this->userRegistrationFormatter->formatResponse($user, $locale);
+
+        $this->userRegistrationMailer->sendEmail($userFormattedData, $user);
     }
 }

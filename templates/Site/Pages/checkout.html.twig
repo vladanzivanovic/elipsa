@@ -190,6 +190,6 @@
         const INTESA_GATEWAY = '{{ intesa_gateway }}';
         const IN_STORE_SHIPPING_METHOD = '{{ constant('App\\Entity\\ShopOrder::SHIPPING_TYPE_IN_STORE') }}';
         const SHIPPING_STORE_MIN_PRICE = {{ siteSettings.settings.free_shipping_store.value.unformatted_amount }};
-        const ON_DELIVERY_PAYMENT = '{{ constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_ON_DELIVERING') }}';
+        const PAYMENT_TYPE = JSON.parse('{{ get_class_constants('App\\Entity\\ShopOrder', 'PAYMENT_TYPE') | json_encode() | raw }}');
     </script>
 {% endblock %}
