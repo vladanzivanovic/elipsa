@@ -10,6 +10,7 @@ use App\Parser\Site\Order\OrderRequestParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderCardPaymentReturnController extends AbstractController
@@ -20,7 +21,7 @@ final class OrderCardPaymentReturnController extends AbstractController
     ){}
 
     #[Route(path: '/checkout/card/callback/{token}', name: 'site.checkout_completed_card_callback', options: ['expose' => true], methods: ['POST', 'GET'])]
-    public function bankArtCallback(Request $request, string $token): void
+    public function bankArtCallback(Request $request, string $token): Response
     {
         $order = $this->orderRequestParser->findOrder($token);
 
@@ -35,6 +36,8 @@ final class OrderCardPaymentReturnController extends AbstractController
         $order->setTransactionData([$cardStatus => $payload]);
 
         $this->orderHandler->save($order);
+
+        return $this->json('OK', Response::HTTP_OK);
     }
 
     #[Route(path: '/checkout/card/return/intesa/{token}', name: 'site.checkout_completed_card_return.intesa', options: ['expose' => true], methods: ['POST'])]
