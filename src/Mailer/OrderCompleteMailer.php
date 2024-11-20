@@ -45,10 +45,6 @@ final class OrderCompleteMailer
 
         $event = new EmailEvent($emailModelAdmin);
         $this->dispatcher->dispatch($event, EmailEvent::SEND_EMAIL);
-
-        if ( null !== $user->getResetToken() && true === $isSuccessfulTransaction) {
-            $this->sendUserRegistrationEmail($user, $locale);
-        }
     }
 
     private function prepareEmail(

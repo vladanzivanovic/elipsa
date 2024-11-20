@@ -49,7 +49,9 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
 //    public const CARD_STATUS_VOID = 'void'; //6;
     public const CARD_STATUS_FAILED = 'Failed'; //3;
 
-    public const CART_STATUS_REJECT = 'Reject';
+    public const CARD_STATUS_DECLINED = 'Declined';
+
+    public const CARD_STATUS_REJECTED = 'Rejected';
 
     public const PAYMENT_TYPE_ON_DELIVERING = 'on_delivery'; //1;
     public const PAYMENT_TYPE_CREDIT_CARD = 'credit_card'; //2;
@@ -292,7 +294,7 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
         return $this->transactionData;
     }
 
-    public function setTransactionData(?array $transactionData): self
+    public function setTransactionData(null|array $transactionData): self
     {
         $this->transactionData = $transactionData;
 

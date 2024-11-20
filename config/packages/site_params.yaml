@@ -137,6 +137,11 @@ parameters:
       languages:
         - ba
         - en
+      card_payment:
+        username: '%env(resolve:NLB_USERNAME)%'
+        password: '%env(resolve:NLB_PASSWORD)%'
+        apiKey: '%env(resolve:NLB_API_KEY)%'
+        sharedSecret: '%env(resolve:NLB_SHARED_SECRET)%'
   site_info_texts:
     cookie_policy:
       title: navi.cookie_policy

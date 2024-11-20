@@ -1,24 +1,26 @@
 {% set shippingStatus = get_class_constants('App\\Entity\\ShopOrder', 'SHIPPING_STATUS') %}
 
-<div class="tracking-info-area shopping-head-area">
-    <div class="container">
-        <div class="row">
-            <h4>{{ 'checkout.finish.tracking_info_title' | trans }}</h4>
-        </div>
-        <div class="row">
-            <div class="tracking-info-box col-xs-12">
-                <div class="tracking-info-list shopping-head">
-                    {% for availableStatus in shippingStatus %}
-                        {% set statusTrans = 'order.status.'~availableStatus %}
-                        <div class="sh-menu-item {{ status == availableStatus ? 'active' : '' }} {{ loop.last == true ? 'last-item' : '' }}">
-                            <p class="letter-capitalize">{{ statusTrans | trans }}</p>
-                        </div>
-                    {% endfor %}
+{% if true == is_successful_transaction %}
+    <div class="tracking-info-area shopping-head-area">
+        <div class="container">
+            <div class="row">
+                <h4>{{ 'checkout.finish.tracking_info_title' | trans }}</h4>
+            </div>
+            <div class="row">
+                <div class="tracking-info-box col-xs-12">
+                    <div class="tracking-info-list shopping-head">
+                        {% for availableStatus in shippingStatus %}
+                            {% set statusTrans = 'order.status.'~availableStatus %}
+                            <div class="sh-menu-item {{ status == availableStatus ? 'active' : '' }} {{ loop.last == true ? 'last-item' : '' }}">
+                                <p class="letter-capitalize">{{ statusTrans | trans }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
 
 <!-- order-tracker-area-start -->
 <div class="order-tracker-area">
@@ -66,9 +68,11 @@
                             <div class="user-info-address-row clearfix">
                                 <p><span>{{ 'checkout.finish.response' | trans }}:</span> {{ payment.preauth.payment_response | trans }}</p>
                             </div>
+                            {% if payment.preauth.proc_return_code is not null %}
                             <div class="user-info-address-row clearfix">
                                 <p><span>{{ 'checkout.finish.proc_return_code' | trans }}:</span> {{ payment.preauth.proc_return_code }}</p>
                             </div>
+                            {% endif %}
                             <div class="user-info-address-row clearfix">
                                 <p><span>{{ 'checkout.finish.transaction_id' | trans }}:</span> {{ payment.preauth.transaction_id }}</p>
                             </div>

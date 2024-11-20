@@ -12,6 +12,7 @@ class ProductListPageMapper {
                 sold: '#sold',
                 homePageShow: '#home_page_show',
                 productStatus: '#product_status',
+                country: '#country'
             };
 
             this.dataTable = {

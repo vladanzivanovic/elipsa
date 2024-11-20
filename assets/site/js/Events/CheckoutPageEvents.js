@@ -85,6 +85,19 @@ class CheckoutPageEvents {
             }
         });
 
+        $(`${this.#pageMapper.paymentType}`).on('change', e => {
+            const selectedMethod = $(e.currentTarget).val();
+
+            $('#shipping_in_store').attr('disabled', 'disabled');
+            $(`label[for="shipping_in_store"]`).addClass('disabled');
+            $('#shipping_on_delivery').click();
+
+            if (selectedMethod === PAYMENT_TYPE.PAYMENT_TYPE_CREDIT_CARD) {
+                $('#shipping_in_store').removeAttr('disabled');
+                $(`label[for="shipping_in_store"]`).removeClass('disabled');
+            }
+        });
+
         $(document).on('order:fetch', (e, order) => {
             this.#pageManipulator.setPage(order);
         })

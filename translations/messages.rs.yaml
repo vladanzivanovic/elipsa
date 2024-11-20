@@ -247,7 +247,7 @@ email.order.text: '<h3>Poštovani/a %first_name%,</h3>
   <p>Ukoliko imate neka pitanja ili želite da izmenite porudžbinu, kliknite na dugme reply. Molimo vas da ne menjate naslov porudžbine, kako bi smo lakše pronašli vašu porudžbinu u sistemu. Hvala.</p>
    <p class="last-child">Detalji porudžbine su prikazani ispod</p>'
 email.order.failedText: '<h3>Poštovani/a %first_name%,</h3>
-  <p>Plaćanje nije uspelo.<br> Vaš račun nije zaduže, najcesci uzrok je pogrešano unet broj kartice, datum isteka ili sigurnosni kod. Pokušajte ponovo, u slucaju uzastopnih gresaka pozovite vašu banku.</p>
+  <p>Plaćanje nije uspelo.<br> Vaš račun nije zaduže, najčešći uzrok je pogrešano unet broj kartice, datum isteka ili sigurnosni kod. Pokušajte ponovo, u slucaju uzastopnih gresaka pozovite vašu banku.</p>
   <p class="last-child">Ukoliko imate problema sa kupovinom molimo vas da nas kontaktirate putem email-a ili telefona. Hvala.</p>'
 email.order.overview: Pregled porudžbine
 email.order.seller: Prodavac

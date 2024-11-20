@@ -1,10 +1,9 @@
 import productPageMapper from "../Mapper/ProductPageMapper";
 import Fotorama from "./Fotorama";
 import Tipped from "@staaky/tipped";
-import FlexSliderService from "./FlexSliderService";
+
 
 require('flexslider');
-
 
 class ProductPageService {
     #mapper;

@@ -47,11 +47,11 @@ final class UserRegistrationMailer
         $model->setTemplate('registration');
         $model->setTo($user->getEmail());
         $model->setToName($user->getFirstName().' '.$user->getLastName());
-        $model->setSubject($this->translator->trans('email.registration.title', ['%siteName%' => $officeInfo['settings']['site_name']->getValue()]));
-        $model->setFrom($officeInfo['settings']['main_email']->getValue());
-        $model->setFromName($officeInfo['settings']['site_name']->getValue());
-        $model->setReplyTo($officeInfo['settings']['main_email']->getValue());
-        $model->setReplyToName($officeInfo['settings']['site_name']->getValue());
+        $model->setSubject($this->translator->trans('email.registration.title', ['%siteName%' => $officeInfo['settings']['site_name']['value']]));
+        $model->setFrom($officeInfo['settings']['main_email']['value']);
+        $model->setFromName($officeInfo['settings']['site_name']['value']);
+        $model->setReplyTo($officeInfo['settings']['main_email']['value']);
+        $model->setReplyToName($officeInfo['settings']['site_name']['value']);
         $model->setTemplateData($viewData);
 
         return $model;

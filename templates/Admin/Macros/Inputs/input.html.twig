@@ -17,3 +17,20 @@
         {% endfor %}
     </select>
 {% endmacro %}
+
+{% macro selectboxNew(selectOptions, selected, isMultiple, selectAttributes, defaultOption) %}
+    <select
+            id="{{ selectAttributes.id }}"
+            name="{{ selectAttributes.name ?? selectAttributes.id }}"
+            class="{{ selectAttributes.class ?? '' }}"
+            {{ true == isMultiple ? 'multiple="multiple"' }}
+    >
+        {% if isMultiple == false and defaultOption is not empty %}
+            <option value="{{ defaultOption.value }}">{{ defaultOption.label }}</option>
+        {% endif %}
+        {% for option in selectOptions %}
+            {% set isSelected = isMultiple == true ? option.value in selected : option.value == selected %}
+            <option value="{{ option.value }}" {{ isSelected ? 'selected="selected"' : '' }}>{{ option.title }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}

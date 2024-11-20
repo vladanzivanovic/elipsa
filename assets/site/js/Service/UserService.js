@@ -14,7 +14,7 @@ class UserService {
         try {
             result = await $.ajax({
                 type: 'GET',
-                url: Routing.generate('site_api.user_exists', {email}),
+                url: Routing.generate(`site_api.user_exists.${LOCALE}`, {email}),
                 dataType: 'json',
             })
         } catch (error) {

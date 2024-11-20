@@ -5,20 +5,32 @@
                 <div class="col-md-8 col-sm-8 col-xs-12">
                     <div class="payment-method">
                         <ul>
-                            <li><a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/intesa/logo.png') }}" alt="Intesa logo"></a></li>
-                            <li><img src="{{ asset('build/site/images/intesa/visa_pos_fc.png') }}" alt="Visa card logo"></li>
-                            <li><img src="{{ asset('build/site/images/intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo"></li>
-                            <li><img src="{{ asset('build/site/images/intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo"></li>
-                            <li><img src="{{ asset('build/site/images/intesa/american_express.png') }}" alt="Master card logo"></li>
-                            <li><img src="{{ asset('build/site/images/intesa/dina_card.png') }}" alt="Master card logo"></li>
+                            {% if countries[countryDefaultLocale].host != hostRs %}
+                                <li><a href="https://www.nlb.ba/" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/Logo_NLB_Banka_sponzorski_10mm_RGB.png') }}" alt="NLB Bank logo"></a></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/dark/ms_vrt_opt_rev_63_3x.png') }}" alt="Maestro card logo"></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/dark/mc_idcheck_vrt_rev.png') }}" alt="Master card logo"></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/dark/visa_pos_fc.png') }}" alt="Visa pos logo"></li>
+                            {% else %}
+                            <li><a href="http://www.bancaintesabeograd.com" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/logo.png') }}" alt="Intesa logo"></a></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/visa_pos_fc.png') }}" alt="Visa card logo"></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/ms_acc_opt_70_1x.png') }}" alt="Maestro card logo"></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/mc_acc_opt_70_1x.png') }}" alt="Master card logo"></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/american_express.png') }}" alt="Master card logo"></li>
+                            <li><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/dina_card.png') }}" alt="Master card logo"></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-12 text-right">
                     <div class="payment-method">
                         <ul>
-                            <li><a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank"><img src="{{ asset('build/site/images/intesa/sclogo_140x75.jpg') }}" alt="Master card secure code logo"></a></li>
-                            <li><a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html" target="_blank"><img src="{{ asset('build/site/images/intesa/Ver-by-VBM-2c-JPG.jpg') }}" alt="Verified by visa logo"></a></li>
+                            {% if countries[countryDefaultLocale].host != hostRs %}
+                                <li><a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/mc_vrt_opt_pos_63_3x.png') }}" alt="Master card secure code logo"></a></li>
+                                <li><a href="https://www.visasoutheasteurope.com/" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/NLBBank/dark/visa-secure_dkbg_blu_72dpi.jpg') }}" alt="Verified by visa logo"></a></li>
+                            {% else %}
+                                <li><a href="http://www.mastercard.com/rs/consumer/credit-cards.html" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/sclogo_140x75.jpg') }}" alt="Master card secure code logo"></a></li>
+                                <li><a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html" target="_blank"><img src="{{ asset('build/site/images/CreditCardLogo/Intesa/Ver-by-VBM-2c-JPG.jpg') }}" alt="Verified by visa logo"></a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
