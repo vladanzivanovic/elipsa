@@ -37,7 +37,7 @@ final class OrderCardPaymentReturnController extends AbstractController
 
         $this->orderHandler->save($order);
 
-        return $this->json('OK', Response::HTTP_OK);
+        return new Response('OK', Response::HTTP_NO_CONTENT);
     }
 
     #[Route(path: '/checkout/card/return/intesa/{token}', name: 'site.checkout_completed_card_return.intesa', options: ['expose' => true], methods: ['POST'])]
