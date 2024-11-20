@@ -6,6 +6,10 @@ liip_imagine :
             web_path:
                 web_root: "%kernel.project_dir%/storage"
                 cache_prefix: "/cache"
+        youtube_photos:
+            web_path:
+                web_root: "%kernel.project_dir%/storage/youtube"
+                cache_prefix: "/cache"
     loaders:
         default:
             filesystem:

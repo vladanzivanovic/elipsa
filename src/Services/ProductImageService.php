@@ -50,7 +50,7 @@ final class ProductImageService
             try {
                 $color = $this->colorRepository->find($payload['color_id']);
 
-                $payload['fileName'] = $payload['fileName'] ?? $payload['file_name']; //f todo fix this
+                $payload['fileName'] = $payload['fileName'] ?? $payload['file_name']; // todo fix this
 
                 $image = $this->imageParser->parse($payload);
 
