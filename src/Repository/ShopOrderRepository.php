@@ -50,12 +50,17 @@ class ShopOrderRepository extends ExtendedEntityRepository
                 'o.paymentType as payment_type',
                 'o.status as status',
                 'o.visited as visited',
-                'o.country as country_code'
+                'o.country as country_code',
+                'DATE_FORMAT(o.completedAt, \'%d.%m.%Y\') as completed_at'
             )
             ->innerJoin('o.billingAddress', 'ba')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
+
+        if ($tableModel->getOrderColumn() === 'completed_at') {
+            $query->orderBy('o.completedAt', $tableModel->getOrderDirection());
+        }
 
         return $query->getQuery()->getArrayResult();
     }

@@ -17,6 +17,7 @@ export default (() => {
             },
             columns: [
                 { data: 'id', name: 'id', title: 'Id' },
+                { data: 'completed_at', name: 'completed_at', title: 'Datum naručivanja' },
                 { data: 'full_name', name: 'full_name', title: 'Ime i prezime' },
                 { data: 'email', name: 'email', title: 'Email' },
                 { data: 'payment_type', name: 'payment_type', title: 'Tip plaćanja', render: function (payment_type, type, row, meta) {
@@ -36,7 +37,7 @@ export default (() => {
                             viewLink : token;
                     } },
             ],
-            order: [[0, 'desc']],
+            order: [[1, 'desc']],
         });
 
         Private.dataTable = Private.tableRef.DataTable(options);
