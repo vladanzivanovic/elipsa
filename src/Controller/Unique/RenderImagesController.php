@@ -29,7 +29,6 @@ class RenderImagesController extends AbstractController
         $this->imageRepository = $imageRepository;
     }
 
-    
     #[Route(path: '/{entity}-image/{filter}/{name}.jpeg', methods: ['GET'], name: 'app.image_show', requirements: ['entity' => 'product|blog|slider|location|banner|catalog|about-us|job|description'])]
     public function getImage(string $filter, string $name): BinaryFileResponse
     {
@@ -53,11 +52,16 @@ class RenderImagesController extends AbstractController
         }
     }
 
-    /**
-     *
-     * @param string $filter
-     *
-     */
+    #[Route(path: '/{entity}-youtube-image/{filter}/{name}.jpeg', methods: ['GET'], name: 'app.youtube_image_show', requirements: ['entity' => 'product'])]
+    public function getYoutubeImage(string $filter, string $name): BinaryFileResponse
+    {
+        $response = $this->imageResizer->renderImageWithFilter('youtube/'.$name.'.jpg', $filter);
+
+        $response->setPublic();
+
+        return $response;
+    }
+
     #[Route(path: '/{entity}-image/summernote_images/{name}', methods: ['GET'], name: 'app.summernote_image_show', requirements: ['entity' => 'product|blog|slider|location|banner|catalog|about-us|job|description'])]
     public function getSummernoteImage(string $name): BinaryFileResponse
     {

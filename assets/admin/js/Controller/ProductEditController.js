@@ -3,10 +3,10 @@ import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 import ProductDropZoneService from "../../../js/Services/ProductDropZoneService";
 import productEditValidator from "../Validators/ProductEditValidator";
 import Tipped from "@staaky/tipped";
-import YoutubeService from "../Services/YouTubeService";
 import productEditMapper from "../Mapper/ProductEditMapper";
 import productEditEvents from "../Event/ProductEditEvents";
 import productEditManipulator from "../Manipulator/ProductEditManipulator";
+import youtubeService from "../Services/YouTubeService";
 require ('select2/dist/js/select2.full.min');
 
 class ProductEditController {
@@ -22,7 +22,7 @@ class ProductEditController {
         this.#mapper = productEditMapper;
         this.#dropZone = new ProductDropZoneService(DropZoneService());
         this.#validator = productEditValidator;
-        this.#youtube = new YoutubeService();
+        this.#youtube = youtubeService;
         this.#handler = new ProductEditHandler(this.#youtube);
         this.#productEditEvents = productEditEvents;
         this.#productEditManipulator = productEditManipulator;

@@ -6,6 +6,10 @@ liip_imagine :
             web_path:
                 web_root: "%kernel.project_dir%/storage"
                 cache_prefix: "/cache"
+        youtube_photos:
+            web_path:
+                web_root: "%kernel.project_dir%/storage"
+                cache_prefix: "/cache/youtube"
     loaders:
         default:
             filesystem:
@@ -191,3 +195,15 @@ liip_imagine :
             filters :
                 thumbnail: { size: [280, 400], mode: outbound }
                 background: { size: [280, 400], position: center, color: '#ffffff' }
+        youtube_image :
+            cache: youtube_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [500, 746], mode : outbound }
+                background : { size : [500, 746], position : center, color : '#ffffff' }
+        youtube_image_thumb :
+            cache: youtube_photos
+            quality : 100
+            filters :
+                thumbnail  : { size : [94, 140], mode : outbound }
+                background : { size : [94, 140], position : center, color : '#ffffff' }

@@ -45,9 +45,8 @@ class ProductPageService {
         for (const youtube of MEDIA.youtubes) {
             data.push({
                 video: youtube.link,
-                img: youtube.Thumbnails.standard.url,
-                full: youtube.Thumbnails.maxres.url,
-                thumb: youtube.Thumbnails.default.url,
+                img: youtube.images.cropped.main,
+                thumb: youtube.images.cropped.thumbnail,
             });
         }
 

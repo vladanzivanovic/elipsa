@@ -6,39 +6,21 @@ namespace App\Services;
 
 use App\Entity\Image;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Data\DataManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Liip\ImagineBundle\Service\FilterService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Routing\RouterInterface;
 
 class ImageService
 {
-    private \Symfony\Component\Filesystem\Filesystem $fs;
-    private bool|string|int|float|\UnitEnum|array|null $tmpDir;
-    private \Liip\ImagineBundle\Imagine\Cache\CacheManager $cacheManager;
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
+    private string $tmpDir;
 
-    /**
-     * @param FilterService         $filterService
-     * @param RouterInterface       $router
-     * @param DataManager           $dataManager
-     * @param FilterManager         $filterManager
-     */
     public function __construct(
-        Filesystem $filesystem,
-        ParameterBagInterface $parameterBag,
-        CacheManager $cacheManager
+        private readonly Filesystem $fs,
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly CacheManager $cacheManager,
     ) {
-        $this->fs = $filesystem;
         $this->tmpDir = $parameterBag->get('upload_tmp_dir');
-        $this->cacheManager = $cacheManager;
-        $this->parameterBag = $parameterBag;
     }
 
     public function moveImageToFinalPath($file, $destination, $newName = null)
@@ -53,7 +35,10 @@ class ImageService
         $this->deleteTmpImage($file->getClientOriginalName());
     }
 
-    
+    /**
+     * @param array<string, string> $image
+     * @return UploadedFile
+     */
     public function setFileObject(array $image): UploadedFile
     {
         return new UploadedFile($image['file'], $image['fileName'], null, null, true);

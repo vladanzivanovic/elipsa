@@ -11,13 +11,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ImageView
 {
-    private RouterInterface $router;
-
     public function __construct(
-        RouterInterface $router
-    ) {
-        $this->router = $router;
-    }
+        private readonly RouterInterface $router,
+    ) {}
 
     public function editProductView(ProductHasImages $productHasImages, string $entity, string $filter = 'tmp_image_thumb'): array
     {

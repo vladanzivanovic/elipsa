@@ -1,8 +1,8 @@
 import productEditMapper from "../Mapper/ProductEditMapper";
-import YoutubeService from "../Services/YouTubeService";
 import ProductEditHandler from "../Handler/Product/ProductEditHandler";
 import productEditManipulator from "../Manipulator/ProductEditManipulator";
 import countrySelectionEvents from "./CountrySelectionEvents";
+import youtubeService from "../Services/YouTubeService";
 
 class ProductEditEvents {
     #productEditMapper;
@@ -14,7 +14,7 @@ class ProductEditEvents {
     constructor() {
         if(!ProductEditEvents.instance) {
             this.#productEditMapper = productEditMapper;
-            this.#youtube = new YoutubeService();
+            this.#youtube = youtubeService;
             this.#handler = new ProductEditHandler(this.#youtube);
             this.#productEditManipulator = productEditManipulator;
             this.#countrySelectionEvents = countrySelectionEvents;

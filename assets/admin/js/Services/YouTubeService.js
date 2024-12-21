@@ -163,4 +163,8 @@ class YoutubeService {
     };
 }
 
-export default YoutubeService;
+const youtubeService = new YoutubeService();
+
+Object.freeze(youtubeService);
+
+export default youtubeService;
