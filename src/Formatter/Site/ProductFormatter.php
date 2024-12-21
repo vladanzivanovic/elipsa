@@ -62,7 +62,6 @@ final class ProductFormatter
         $productView['categories'] = $this->getCategories($product, $locale);
         $productView['media']['images'] = $this->getImages($product);
         $productView['colors'] = $this->getColors($product);
-//        $productView['sizes'] = $this->getSizes($product);
         $productView['cleaningIcons'] = $this->getCleaningIcons($product);
         $productView['media']['youtubes'] = $this->getYoutubes($product);
         $productView['tags'] = $this->getTags($product);

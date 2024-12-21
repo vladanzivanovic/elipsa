@@ -41,6 +41,19 @@ class ProductPageEvents {
         $(this.#mapper.notifyMeBtn).on('click', async e => {
             await this.#productPageHandler.sizeNotification();
         });
+
+        $('.fotorama').on('fotorama:load', (e, fotorama, extra) => {
+            $('.fotorama__nav__frame--thumb .fotorama__video-play').addClass('hide');
+        });
+
+        $('.fotorama').on('fotorama:showend', (e, fotorama, extra) => {
+            $('.fotorama__fullscreen-icon').removeClass('hide');
+
+            if (fotorama.activeFrame.video) {
+                $('.fotorama__fullscreen-icon').addClass('hide');
+                fotorama.playVideo();
+            }
+        });
     }
 }
 

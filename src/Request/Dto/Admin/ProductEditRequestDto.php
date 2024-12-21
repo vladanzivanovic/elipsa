@@ -29,7 +29,7 @@ final class ProductEditRequestDto extends AbstractEditRequestDto
 
         $this->code = $payload->get('code');
         $this->tags = $payload->all('tags');
-        $this->youtubeUrl = $payload->all('youtubes');
+        $this->youtubeUrl = $this->fixYoutubeBooleanValues($payload->all('youtubes'));
         $this->categories = $payload->all('categories');
         $this->cleaning = $payload->all('cleaning');
 
@@ -43,5 +43,16 @@ final class ProductEditRequestDto extends AbstractEditRequestDto
         foreach ($options as $countryCode => $option) {
             $this->options[$countryCode] = new ProductOptionsRequestDto($option);
         }
+    }
+
+    private function fixYoutubeBooleanValues(array $youtubes): array
+    {
+        foreach ($youtubes as &$youtube) {
+            if (isset($youtube['isDeleted'])) {
+                $youtube['isDeleted'] = boolval($youtube['isDeleted']);
+            }
+        }
+
+        return $youtubes;
     }
 }

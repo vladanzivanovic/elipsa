@@ -24,6 +24,7 @@ use App\Repository\ProductTranslationRepository;
 use App\Repository\TagsRepository;
 use App\Request\Dto\Admin\ProductEditRequestDto;
 use App\Services\ProductImageService;
+use App\Services\YoutubeThumbnailService;
 use Gedmo\Sluggable\Util\Urlizer;
 
 final class ProductEditRequestParser
@@ -37,6 +38,7 @@ final class ProductEditRequestParser
         private readonly TagsRepository $tagsRepository,
         private readonly OrderProductTranslationParser $orderProductTranslationParser,
         private readonly OrderCouponParser $orderCouponParser,
+        private readonly YoutubeThumbnailService $youtubeThumbnailService,
         private readonly array $locales,
     ) {}
 
@@ -76,12 +78,16 @@ final class ProductEditRequestParser
     {
         $product->getYoutubes()->clear();
 
-        foreach ($productEditRequestDto->youtubeUrl as $youtube) {
-            $youtube = $this->youTubeParser->parse($youtube);
+        foreach ($productEditRequestDto->youtubeUrl as $youtubeItem) {
+            $youtube = $this->youTubeParser->parse($youtubeItem);
 
             if (!$youtube instanceof Youtube) {
+                $this->youtubeThumbnailService->removeThumbnail($youtubeItem['YouTubeId']);
+
                 continue;
             }
+
+            $this->youtubeThumbnailService->downloadThumbnail($youtube);
 
             $product->addYoutube($youtube);
         }
