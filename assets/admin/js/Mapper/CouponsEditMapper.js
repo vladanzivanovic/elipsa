@@ -11,6 +11,7 @@ class CouponsEditMapper {
                 categories: '#categories',
                 tags: '#tags',
                 products: '#products',
+                colors: '#colors',
                 code: '#code',
                 type: '#type',
                 discount: '#discount',

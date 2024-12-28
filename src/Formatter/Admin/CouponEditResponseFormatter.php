@@ -7,6 +7,7 @@ namespace App\Formatter\Admin;
 use App\Entity\Banner;
 use App\Entity\Promotion;
 use App\Formatter\Options\CategoryOptionsFormatter;
+use App\Formatter\Options\ColorsOptionsFormatter;
 use App\Formatter\Options\PromotionTypeOptions;
 use App\Formatter\Options\TagOptionsFormatter;
 use App\View\PromotionCouponView;
@@ -14,29 +15,14 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CouponEditResponseFormatter
 {
-    private PromotionCouponView $couponView;
-
-    private CategoryOptionsFormatter $categoryOptionsFormatter;
-
-    private TagOptionsFormatter $tagOptionsFormatter;
-
-    private PromotionTypeOptions $promotionTypeOptions;
-
-    private string $defaultLocale;
-
     public function __construct(
-        PromotionCouponView $couponView,
-        CategoryOptionsFormatter $categoryOptionsFormatter,
-        TagOptionsFormatter $tagOptionsFormatter,
-        PromotionTypeOptions $promotionTypeOptions,
-        string $defaultLocale
-    ) {
-        $this->couponView = $couponView;
-        $this->defaultLocale = $defaultLocale;
-        $this->categoryOptionsFormatter = $categoryOptionsFormatter;
-        $this->tagOptionsFormatter = $tagOptionsFormatter;
-        $this->promotionTypeOptions = $promotionTypeOptions;
-    }
+        private readonly PromotionCouponView $couponView,
+        private readonly CategoryOptionsFormatter $categoryOptionsFormatter,
+        private readonly TagOptionsFormatter $tagOptionsFormatter,
+        private readonly PromotionTypeOptions $promotionTypeOptions,
+        private readonly ColorsOptionsFormatter $colorsOptionsFormatter,
+        private readonly string $defaultLocale
+    ) {}
 
     public function formatResponse(Promotion $coupon = null): array
     {
@@ -51,6 +37,7 @@ final class CouponEditResponseFormatter
         $options = [
             'categories' => $categories,
             'tags' => $this->tagOptionsFormatter->formatTagOptions(),
+            'colors' => $this->colorsOptionsFormatter->format(),
             'promotion_types' => $this->promotionTypeOptions->format(),
         ];
 

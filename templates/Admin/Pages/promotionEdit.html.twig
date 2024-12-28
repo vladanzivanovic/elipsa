@@ -4,6 +4,8 @@
 {% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
 {% set title = titlePrefix ~ ' promocija' %}
 {% set OPTION_TYPES = get_class_constants('App\\Entity\\PromotionOption') %}
+{% set routePath = 'admin.promotions' %}
+{% set routeTitle = 'Promocije' %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -81,19 +83,31 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    {{ form.select('Kategorije', 'categories', 'options['~OPTION_TYPES.OPTION_CATEGORIES~'][]', IS_EDIT and payload.options[OPTION_TYPES.OPTION_CATEGORIES] is defined ? payload.options[OPTION_TYPES.OPTION_CATEGORIES].configuration : '', options.categories, '', 'w-100', true) }}
+                                                    {{ form.select('Proizvodi - 100', 'products', 'options['~OPTION_TYPES.OPTION_PRODUCTS~'][]', '', [], '', 'w-100', true) }}
                                                 </div>
                                             </div><!-- Col -->
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    {{ form.select('Tagovi', 'tags', 'options['~OPTION_TYPES.OPTION_TAGS~'][]', IS_EDIT and payload.options[OPTION_TYPES.OPTION_TAGS] is defined ? payload.options[OPTION_TYPES.OPTION_TAGS].configuration : '', options.tags, '', 'w-100', true) }}
+                                                    {{ form.select('Tagovi - 50', 'tags', 'options['~OPTION_TYPES.OPTION_TAGS~'][]', IS_EDIT and payload.options[OPTION_TYPES.OPTION_TAGS] is defined ? payload.options[OPTION_TYPES.OPTION_TAGS].configuration : '', options.tags, '', 'w-100', true) }}
                                                 </div>
                                             </div><!-- Col -->
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    {{ form.select('Proizvodi', 'products', 'options['~OPTION_TYPES.OPTION_PRODUCTS~'][]', '', [], '', 'w-100', true) }}
+                                                    <label for="colors">Boje - 30</label>
+                                                    <select id="colors" name="options[{{ OPTION_TYPES.OPTION_COLORS }}][]" multiple="multiple">
+                                                        {% for color in options.colors %}
+                                                            {% set selected = IS_EDIT and payload.options[OPTION_TYPES.OPTION_COLORS] is defined ? color.value in payload.options[OPTION_TYPES.OPTION_COLORS].configuration : '' %}
+
+                                                            <option value="{{ color.value }}" data-title="{{ color.title }}" data-hex="{{ color.hex }}" {{ selected ? 'selected="selected"' : '' }}>{{ color.title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div><!-- Col -->
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    {{ form.select('Kategorije - 10', 'categories', 'options['~OPTION_TYPES.OPTION_CATEGORIES~'][]', IS_EDIT and payload.options[OPTION_TYPES.OPTION_CATEGORIES] is defined ? payload.options[OPTION_TYPES.OPTION_CATEGORIES].configuration : '', options.categories, '', 'w-100', true) }}
                                                 </div>
                                             </div><!-- Col -->
                                         </div><!-- Row -->
@@ -110,7 +124,7 @@
                             </div>
                         </div>
                     </form>
-                    {{ form.button('submit_btn', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
+                    {{ include('Admin/Components/formButtons.html.twig') }}
                 </div>
             </div>
         </div>

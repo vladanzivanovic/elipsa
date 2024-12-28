@@ -8,13 +8,9 @@ use App\Repository\CategoryRepository;
 
 final class CategoryOptionsFormatter
 {
-    private CategoryRepository $categoryRepository;
-
     public function __construct(
-        CategoryRepository $categoryRepository
-    ){
-        $this->categoryRepository = $categoryRepository;
-    }
+        private readonly CategoryRepository $categoryRepository
+    ){}
 
     public function format(string $locale): array
     {

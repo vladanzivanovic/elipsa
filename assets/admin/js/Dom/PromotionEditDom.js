@@ -53,6 +53,11 @@ class PromotionEditDom {
             }
         });
 
+        $(this.#mapper.fields.colors).select2({
+            templateSelection: this.#optionCallback,
+            templateResult: this.#optionCallback,
+        });
+
         this.manageFieldsByPromotionType();
     }
 
@@ -96,6 +101,20 @@ class PromotionEditDom {
         if (!IS_EDIT) {
             elm.datepicker('setDate', today);
         }
+    }
+
+    #optionCallback(state)
+    {
+        let $state = null;
+        if (state.element) {
+            $state = $(
+                `<div class="d-flex justify-content-start align-items-center">
+                    <span style="background: ${state.element.dataset.hex};width: 20px; height: 20px; display: block; border: 1px solid #000; margin-right: 15px"></span>
+                    ${state.element.dataset.title}
+                </div>`
+            );
+        }
+        return $state;
     }
 }
 const promotionEditDom = new PromotionEditDom();

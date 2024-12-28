@@ -18,6 +18,8 @@ class PromotionOption implements EntityInterface
 
     const OPTION_PRODUCTS = 'products';
 
+    const OPTION_COLORS = 'colors';
+
     const OPTION_ALL_PRODUCTS = 'applicable_all_products';
 
     #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'promotionOptions')]
