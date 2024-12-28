@@ -79,8 +79,6 @@ final class ProductFormatter
     {
         $productsView = [];
 
-//        $productPromotions = $this->promotionCollector->getPromotionsByProduct(Promotion::TYPE_PRODUCT);
-
         foreach ($products as $product) {
             $this->productPromotionParser->setProductPromotion($product, $countryCode);
 

@@ -1,6 +1,5 @@
 import AppHelperService from "../../../../js/Helper/AppHelperService";
 import couponsEditMapper from "../../Mapper/CouponsEditMapper";
-import CouponsDataTables from "../../Services/DataTables/PromotionDataTables";
 import toastrService from "../../../../js/Services/ToastrService";
 import couponApiHandler from "./CouponApiHandler";
 import promotionDataTables from "../../Services/DataTables/PromotionDataTables";

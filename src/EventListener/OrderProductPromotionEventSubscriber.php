@@ -33,7 +33,7 @@ final class OrderProductPromotionEventSubscriber implements EventSubscriberInter
     {
         $order = $orderProductPromotionEvent->getOrder();
 
-        $isCouponExpired = false;
+        $isCouponInvalid = false;
         $isPriceChanged = false;
 
         foreach ($order->getOrderProducts() as $orderProduct) {
@@ -53,21 +53,30 @@ final class OrderProductPromotionEventSubscriber implements EventSubscriberInter
             }
 
             if ($order->getCoupon() instanceof Promotion) {
+                $oldPromotionPrice = $orderProduct->getPromotionPrice();
                 try {
-                    $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
+                    $isSetPromotionPrice = $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
+
+                    if (false === $isSetPromotionPrice) {
+                        $orderProduct->setPromotionPrice(null);
+                        $isCouponInvalid = true;
+                    }
+
                 } catch (CouponCheckerException $couponCheckerException) {
                     $orderProduct->setPromotionPrice(null);
 
-                    $isCouponExpired = true;
+                    $isCouponInvalid = true;
                 }
 
-                $isPriceChanged = true;
+                if ($oldPromotionPrice !== $orderProduct->getPromotionPrice()) {
+                    $isPriceChanged = true;
+                }
             }
 
             $order->addOrderProduct($orderProduct);
         }
 
-        if (true === $isCouponExpired) {
+        if (true === $isCouponInvalid) {
             $order->setCoupon(null);
         }
 
