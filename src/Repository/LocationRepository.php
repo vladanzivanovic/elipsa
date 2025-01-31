@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Location;
+use App\Entity\Resources\StatusInterface;
 use App\Model\DataTableModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,51 +31,39 @@ class LocationRepository extends ExtendedEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countData()
+    public function countData(): mixed
     {
         $query = $this->createQueryBuilder('l')
             ->select('COUNT(l.id) as total')
+            ->where('l.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
         ;
 
         return $query->getQuery()->getSingleScalarResult();
     }
     
-    public function getList(string $locale): array
-    {
-        $query = $this->getDqlForList($locale)
-            ->addSelect(
-                'l.lat',
-                'l.lng',
-                'GROUP_CONCAT(image.name) as images',
-                'lt.shortDescription as short_description',
-                'lt.country'
-            )
-            ->innerJoin('l.locationHasImages', 'lhi')
-            ->innerJoin('lhi.image', 'image')
-            ->groupBy('l.id');
-
-        return $query->getQuery()->getArrayResult();
-    }
-
-    
-    public function getCountryList(string $locale): array
-    {
-        $query = $this->createQueryBuilder('l')
-            ->select(
-                'DISTINCT(l.countryCode) as country_code',
-                'lt.country as name'
-            )
-            ->innerJoin('l.translations', 'lt')
-            ->where('lt.locale = :locale')
-            ->setParameter('locale', $locale);
-
-        return $query->getQuery()->getArrayResult();
-    }
-
+//    public function getList(string $locale): array
+//    {
+//        $query = $this->getDqlForList($locale)
+//            ->addSelect(
+//                'l.lat',
+//                'l.lng',
+//                'GROUP_CONCAT(image.name) as images',
+//                'lt.shortDescription as short_description',
+//                'lt.country'
+//            )
+//            ->innerJoin('l.locationHasImages', 'lhi')
+//            ->innerJoin('lhi.image', 'image')
+//            ->groupBy('l.id');
+//
+//        return $query->getQuery()->getArrayResult();
+//    }
     
     public function getAdminList(DataTableModel $tableModel): array
     {
         $query = $this->getDqlForList('rs')
+            ->andWhere('l.status = :status')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection())
@@ -94,8 +83,10 @@ class LocationRepository extends ExtendedEntityRepository
             ->innerJoin('l.translations', 'lt')
             ->where('lt.locale = :locale')
             ->andWhere('l.availableCountries LIKE :country')
+            ->andWhere('l.status = :status')
             ->setParameter('locale', $locale)
-            ->setParameter('country', $country);
+            ->setParameter('country', $country)
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE);
 
         return $query->getQuery()->getResult();
     }
@@ -113,7 +104,8 @@ class LocationRepository extends ExtendedEntityRepository
                 'l.email as email',
                 'l.workingTime as working_time',
                 'l.saturday as saturday',
-                'l.sunday as sunday'
+                'l.sunday as sunday',
+                'l.status as status'
             )
             ->innerJoin('l.translations', 'lt')
             ->where('lt.locale = :locale')

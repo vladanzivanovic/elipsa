@@ -8,18 +8,20 @@ use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\LocaleTranslatorInterface;
 use App\Entity\Resources\LocaleTranslatorTrait;
 use App\Entity\Resources\ResourceTrait;
+use App\Entity\Resources\StatusInterface;
+use App\Entity\Resources\StatusTrait;
 use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
-class Location implements EntityInterface, CountryResourceInterface, LocaleTranslatorInterface
+class Location implements EntityInterface, CountryResourceInterface, LocaleTranslatorInterface, StatusInterface
 {
     use ResourceTrait;
     use CountryResourceTrait;
     use LocaleTranslatorTrait;
-
+    use StatusTrait;
 
     #[ORM\Column(type: 'string')]
     private string $lat;
@@ -50,6 +52,9 @@ class Location implements EntityInterface, CountryResourceInterface, LocaleTrans
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $sunday = null;
+
+    #[ORM\OneToMany(mappedBy: 'storeId', targetEntity: ShopOrder::class)]
+    private Collection $orders;
 
     public function __construct()
     {
@@ -213,5 +218,10 @@ class Location implements EntityInterface, CountryResourceInterface, LocaleTrans
         $this->sunday = $sunday;
 
         return $this;
+    }
+
+    public function hasOrders(): bool
+    {
+        return $this->orders->count() > 0;
     }
 }

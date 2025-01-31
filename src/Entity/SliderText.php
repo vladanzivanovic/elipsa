@@ -23,14 +23,8 @@ class SliderText implements EntityInterface, CountryResourceInterface, LocaleTra
     use LocaleTranslatorTrait;
     use StatusTrait;
 
-//    public const STATUS_PENDING = false;
-//    public const STATUS_ACTIVE = true;
-
     public const POSITION_HEADER = 'header';
     public const POSITION_FOOTER = 'footer';
-
-//    #[ORM\Column(type: 'boolean')]
-//    private ?bool $isActive = null;
 
     #[ORM\OneToMany(mappedBy: 'sliderText', targetEntity: SliderTextTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $translations;
@@ -42,18 +36,6 @@ class SliderText implements EntityInterface, CountryResourceInterface, LocaleTra
     {
         $this->translations = new ArrayCollection();
     }
-
-//    public function getIsActive(): ?bool
-//    {
-//        return $this->isActive;
-//    }
-//
-//    public function setIsActive(bool $isActive): self
-//    {
-//        $this->isActive = $isActive;
-//
-//        return $this;
-//    }
 
     /**
      * @return Collection<int, SliderTranslation>

@@ -74,7 +74,7 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     private null|\DateTimeInterface $completedAt = null;
 
     #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    private ?Address $billingAddress = null;
+    private null|Address $billingAddress = null;
 
     #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
     private null|Address $shippingAddress = null;
@@ -104,19 +104,19 @@ class ShopOrder implements EntityInterface, PromotionEligibilityInterface
     private string $token;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $trackingInfo = null;
+    private null|array $trackingInfo = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $cardStatus = null;
+    private null|string $cardStatus = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $shippingType = null;
+    private null|string $shippingType = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $visited = false;
 
     #[ORM\ManyToOne(targetEntity: Location::class)]
-    private ?Location $storeId = null;
+    private null|Location $storeId = null;
 
     #[ORM\Column(length: 5)]
     private ?string $country = null;
