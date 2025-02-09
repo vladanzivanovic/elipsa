@@ -44,6 +44,7 @@ Encore
         jQuery         : 'jquery',
         'window.jQuery': 'jquery',
         'window.$'     : 'jquery',
+        'moment'       : 'moment',
     })
     .addLoader({
         test: /\.(htc)$/,

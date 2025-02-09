@@ -23,7 +23,7 @@ final class OrderView
     /**
      * @throws \ReflectionException
      */
-    public function view(ShopOrder $order, string $locale, string $countryCode = null): array
+    public function view(ShopOrder $order, string $locale): array
     {
         $total = 0;
 
@@ -68,10 +68,6 @@ final class OrderView
             $total + $view['shipping']['price']['unformatted_amount'],
             $locale
         );
-
-//        if (false === in_array($order->getStatus(), ShopOrder::STATUS_NOT_PURCHASED, true)) {
-//            $view += $this->addCheckoutInformation($order);
-//        }
 
         return $view;
     }

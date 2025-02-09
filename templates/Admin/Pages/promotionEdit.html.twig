@@ -66,12 +66,12 @@
                             </div><!-- Col -->
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
-                                    {{ form.datePicker('Važi od', 'valid_from', IS_EDIT ? payload.valid_from : '', 'valid_from') }}
+                                    {{ form.datePicker('Važi od', 'valid_from', IS_EDIT ? payload.valid_from.date ~' '~ payload.valid_from.time : '', 'valid_from') }}
                                 </div>
                             </div><!-- Col -->
                             <div class="col-sm-6 col-md-4">
                                 <div class="form-group">
-                                    {{ form.datePicker('Važi do', 'valid_to', IS_EDIT ? payload.valid_to : '', 'valid_to') }}
+                                    {{ form.datePicker('Važi do', 'valid_to', IS_EDIT ? payload.valid_to.date ~' '~ payload.valid_to.time : '', 'valid_to') }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->

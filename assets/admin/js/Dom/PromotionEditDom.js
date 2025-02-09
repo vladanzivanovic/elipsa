@@ -1,4 +1,5 @@
 import couponsEditMapper from "../Mapper/CouponsEditMapper";
+import 'tempusdominus-bootstrap-4';
 
 class PromotionEditDom {
     #mapper;
@@ -92,15 +93,12 @@ class PromotionEditDom {
         const date = new Date();
         const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-        elm.datepicker({
-            format: "dd.mm.yyyy",
-            todayHighlight: true,
-            autoclose: true
+        elm.datetimepicker({
+            format: 'D.M.Y HH:mm',
+            defaultDate: moment().format(),
+            locale: 'sr',
+            allowInputToggle: true,
         });
-
-        if (!IS_EDIT) {
-            elm.datepicker('setDate', today);
-        }
     }
 
     #optionCallback(state)

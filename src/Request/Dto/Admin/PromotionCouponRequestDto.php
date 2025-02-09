@@ -31,8 +31,12 @@ class PromotionCouponRequestDto extends AbstractEditRequestDto
         $this->type = $body->get('type');
         $this->code = $body->get('code');
         $this->discount = $body->getInt('discount');
-        $this->validFrom = new \DateTimeImmutable($body->get('valid_from') . '00:00:00');
-        $this->validTo = new \DateTimeImmutable($body->get('valid_to') . '23:59:59');
+        $this->validFrom = new \DateTimeImmutable($body->get('valid_from'));
+        $this->validTo = new \DateTimeImmutable($body->get('valid_to'));
+
+        if ('00:00:00' === $this->validTo->format('H:i:s')) {
+            $this->validTo = $this->validTo->setTime(23, 59, 59);
+        }
 
         $this->options = new PromotionOptionRequestDto($body->all('options') ?? null);
 
