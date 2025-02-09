@@ -38,9 +38,12 @@
 
 {% macro datePicker(title, id, value, name, placeholder = "", type = "text", additionalAttributes = null) %}
     <label for="{{ id }}">{{ title }}</label>
-    <div class="input-group date datepicker" id="datePicker_{{ id }}">
+    <div class="input-group date" id="datePicker_{{ id }}" data-target-input="nearest">
         {% import 'Admin/Macros/Inputs/input.html.twig' as form %}
-        {{ form.input(id, value, name, placeholder, type, 'form-control', additionalAttributes) }}<span class="input-group-addon"><i data-feather="calendar"></i></span>
+        {{ form.input(id, value, name, placeholder, type, 'form-control datetimepicker-input', 'data-target="#datePicker_' ~ id ~ '"') }}
+        <div class="input-group-append" data-target="#datePicker_{{ id }}" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
     </div>
 {% endmacro %}
 

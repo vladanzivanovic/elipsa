@@ -53,8 +53,14 @@ final class PromotionCouponView
         return [
             'code' => $coupon->getCode(),
             'percentage' => $coupon->getDiscount(),
-            'valid_from' => $coupon->getValidFrom()->format('d.m.Y'),
-            'valid_to' => $coupon->getValidTo()->format('d.m.Y'),
+            'valid_from' => [
+                'date' => $coupon->getValidFrom()->format('d.m.Y'),
+                'time' => $coupon->getValidFrom()->format('H:i'),
+            ],
+            'valid_to' => [
+                'date' => $coupon->getValidTo()->format('d.m.Y'),
+                'time' => $coupon->getValidTo()->format('H:i'),
+            ],
             'type' => $coupon->getType(),
             'available_countries' => $coupon->getAvailableCountries(),
         ];

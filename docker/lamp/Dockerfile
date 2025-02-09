@@ -2,6 +2,7 @@ FROM ubuntu:focal
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG PHP_VERSION=8.1
+ENV TZ=Europe/Belgrade
 
 RUN apt-get update -y
 RUN apt-get install -y apt-utils

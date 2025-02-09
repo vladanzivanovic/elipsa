@@ -35,7 +35,7 @@ final class PromotionValidityChecker implements PromotionCheckerInterface
     {
         $now = new \DateTimeImmutable();
 
-        if ($coupon->getValidTo() >= $now && $coupon->getValidFrom() <= $now) {
+        if ($coupon->getValidTo()->getTimestamp() >= $now->getTimestamp() && $coupon->getValidFrom()->getTimestamp() <= $now->getTimestamp()) {
             return;
         }
 

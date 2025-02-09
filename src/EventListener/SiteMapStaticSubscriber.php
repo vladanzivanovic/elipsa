@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Repository\DescriptionRepository;
 use DateTime;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Sitemap\Url\GoogleMultilangUrlDecorator;
@@ -13,22 +14,14 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class SiteMapStaticSubscriber implements EventSubscriberInterface
 {
-    private \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator;
-
-    private \Symfony\Component\Routing\RouterInterface $router;
-
     private string $baseUrl;
-    private \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag;
 
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        RouterInterface $router,
-        ParameterBagInterface $parameterBag
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly RouterInterface $router,
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly DescriptionRepository $descriptionRepository,
     ) {
-        $this->urlGenerator = $urlGenerator;
-        $this->router = $router;
-        $this->parameterBag = $parameterBag;
-
         $this->baseUrl = $this->router->getContext()->getScheme().'://'.$this->router->getContext()->getHost().'/';
     }
 
@@ -43,37 +36,58 @@ final class SiteMapStaticSubscriber implements EventSubscriberInterface
 
     public function registerStaticUrl(SitemapPopulateEvent $event): void
     {
-       $this->_registerStaticUrl($event, 'site.home_page', UrlConcrete::CHANGEFREQ_WEEKLY, 0.7);
-       $this->_registerStaticUrl($event, 'site.loyalty', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
-       $this->_registerStaticUrl($event, 'site.collaborator', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
-       $this->_registerStaticUrl($event, 'site.career_page', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
-       $this->_registerStaticUrl($event, 'site.policy_page', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
-       $this->_registerStaticUrl($event, 'site.use_conditions', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
-       $this->_registerStaticUrl($event, 'site.ask_us', UrlConcrete::CHANGEFREQ_NEVER, 0.1);
+        $this->_registerStaticUrl($event, 'site.home_page', UrlConcrete::CHANGEFREQ_WEEKLY, 0.7);
+
+        $this->registerStaticTexts($event);
     }
 
-    private function _registerStaticUrl(SitemapPopulateEvent $event, string $routeName, $changeFreq, $priority): void
+    private function registerStaticTexts(SitemapPopulateEvent $event)
     {
-        $locales = explode('|', $this->parameterBag->get('locales'));
+        $textList = $this->descriptionRepository->findAll();
+        $siteInfoText = $this->parameterBag->get('site_info_texts');
+
+        foreach ($textList as $text) {
+            $url = $this->urlGenerator->generate(
+                'site.company_text',
+                ['_locale' => $text->getLocale(), 'type' => $siteInfoText[$text->getType()]['slug'][$text->getLocale()]],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+            $urlConcrete = new UrlConcrete(
+                $url,
+                new DateTime(),
+                UrlConcrete::CHANGEFREQ_NEVER,
+                0.1
+            );
+
+            $decoratedUrl = new GoogleMultilangUrlDecorator($urlConcrete);
+            $decoratedUrl->addLink(
+                $url,
+                $text->getLocale()
+            );
+
+            $event->getUrlContainer()->addUrl($decoratedUrl, 'default');
+        }
+    }
+
+    private function _registerStaticUrl(SitemapPopulateEvent $event, string $routeName, string $changeFreq, float $priority): void
+    {
+        $locales = $this->parameterBag->get('locales');
 
         foreach ($locales as $locale) {
-            if ($locale === 'rs') {
-                continue;
-            }
-            $url = new UrlConcrete($this->baseUrl.$this->urlGenerator->generate(
+            $url = new UrlConcrete( $this->urlGenerator->generate(
                 $routeName,
-                [],
-                UrlGeneratorInterface::RELATIVE_PATH
+                ['_locale' => $locale],
+                UrlGeneratorInterface::ABSOLUTE_URL
             ),
                 new DateTime(),
                 $changeFreq,
                 $priority
             );
             $decoratedUrl = new GoogleMultilangUrlDecorator($url);
-            $decoratedUrl->addLink($this->baseUrl.$this->urlGenerator->generate(
+            $decoratedUrl->addLink($this->urlGenerator->generate(
                 $routeName,
                 ['_locale' => $locale],
-                UrlGeneratorInterface::RELATIVE_PATH
+                UrlGeneratorInterface::ABSOLUTE_URL
             ), $locale);
 
             $event->getUrlContainer()->addUrl($decoratedUrl, 'default');
