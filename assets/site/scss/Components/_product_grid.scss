@@ -36,6 +36,25 @@
         right: unset;
       }
 
+      &.free-shipping {
+        right: 20px;
+        line-height: normal;
+        text-align: center;
+        padding: 5px 5px;
+        background: #28a745 none repeat scroll 0 0;
+        background-image: linear-gradient(to bottom, transparent, rgba(21,21,21,0.5));
+        max-width: 65px;
+        word-wrap: break-word;
+
+        &::before {
+          border-left: 1.6vw solid #1f5e2d;
+        }
+
+        &::after {
+          border-right: 1.6vw solid #1f5e2d;
+        }
+      }
+
       &::before {
         border-left: 1.6vw solid #a70303;
       }

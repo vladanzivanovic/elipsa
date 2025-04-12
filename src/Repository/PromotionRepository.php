@@ -109,9 +109,11 @@ class PromotionRepository extends ExtendedEntityRepository
             ->andWhere('p.validFrom <= :now')
             ->andWhere('p.type = :type')
             ->andWhere('p.availableCountries LIKE :countryCode')
+            ->andWhere('p.status = :status')
             ->setParameter('now', $now)
             ->setParameter('type', $type)
-            ->setParameter('countryCode', '%'.$countryCode.'%');
+            ->setParameter('countryCode', '%'.$countryCode.'%')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE);
 
         return $query->getQuery()->getResult();
     }

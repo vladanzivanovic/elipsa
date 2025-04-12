@@ -15,7 +15,7 @@
 
 {% set languageOptionsByCountry = languages_options(countryDefaultLocale) %}
 
-{% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_bottom.png') %}
+{% set defaultOgImage = app.request.schemeAndHttpHost ~ asset('build/site/images/logo/logo_og_'~countryDefaultLocale~'.jpg') %}
 
 {% if routeName is null %}
     {% set routeName = 'site.home_page' %}

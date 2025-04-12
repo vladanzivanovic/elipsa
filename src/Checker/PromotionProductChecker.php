@@ -23,7 +23,7 @@ final class PromotionProductChecker extends AbstractPromotionChecker
         iterable $promotionCheckers,
         iterable $promotionOptionCheckers,
         private readonly PromotionOptionDiscountChecker $promotionOptionDiscountChecker,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
     ){
         $this->promotionOptionCheckers = iterator_to_array($promotionOptionCheckers);
 

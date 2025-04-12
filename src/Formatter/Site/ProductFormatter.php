@@ -39,7 +39,7 @@ final class ProductFormatter
         private readonly ProductSizeView $productSizeView,
         private readonly PromotionRepository $promotionRepository,
         private readonly ProductPromotionParser $productPromotionParser,
-        private readonly PromotionCollector $promotionCollector
+        private readonly PromotionCollector $promotionCollector,
     ) {}
 
     public function formatResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
@@ -56,6 +56,7 @@ final class ProductFormatter
         $product = $data['product'];
 
         $this->productPromotionParser->setProductPromotion($product, $countryCode);
+        $this->productPromotionParser->setFreeShippingPromotionEnabled($product);
 
         $productView = $this->productView->view($product, $user);
 
@@ -81,6 +82,7 @@ final class ProductFormatter
 
         foreach ($products as $product) {
             $this->productPromotionParser->setProductPromotion($product, $countryCode);
+            $this->productPromotionParser->setFreeShippingPromotionEnabled($product);
 
             $productView = $this->productView->view($product, $user);
             $productView['colors'] = $this->getColors($product);

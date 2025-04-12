@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser;
 
+use App\Checker\PromotionFreeShippingChecker;
 use App\Checker\PromotionProductChecker;
 use App\Collector\PromotionCollector;
 use App\Entity\Product;
@@ -14,6 +15,7 @@ final class ProductPromotionParser
     public function __construct(
         private readonly PromotionCollector $promotionCollector,
         private readonly PromotionProductChecker $promotionProductChecker,
+        private readonly PromotionFreeShippingChecker $promotionFreeShippingChecker,
     ){}
 
     /**
@@ -52,5 +54,21 @@ final class ProductPromotionParser
         }
 
         return null;
+    }
+
+    public function setFreeShippingPromotionEnabled(Product $product): void
+    {
+        $collection = $this->promotionCollector->collectFreeShippingPromotions();
+
+        $product->setIsFreeShippingEnabled(false);
+
+        foreach ($collection as $promotion) {
+            $isEligible = $this->promotionFreeShippingChecker->checkProductEligibility($product, $promotion);
+
+            if (true === $isEligible) {
+                $product->setIsFreeShippingEnabled(true);
+                return;
+            }
+        }
     }
 }
