@@ -110,6 +110,7 @@ on_sale: on sale
 first_new: new
 sold: SOLD
 saving: Saving
+free_shipping: Free Shipping
 
 select.color: select color
 select.size: select size

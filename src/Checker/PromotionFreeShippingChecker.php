@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Checker;
 
+use App\Entity\Product;
+use App\Entity\ProductOptions;
 use App\Entity\Promotion;
 use App\Entity\PromotionOption;
 use App\Entity\Resources\PromotionEligibilityInterface;
 use App\Entity\ShopOrder;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
 final class PromotionFreeShippingChecker extends AbstractPromotionChecker
@@ -22,7 +25,8 @@ final class PromotionFreeShippingChecker extends AbstractPromotionChecker
     public function __construct(
         iterable $promotionCheckers,
         iterable $promotionOptionCheckers,
-        PromotionOptionDiscountChecker $promotionOptionDiscountChecker
+        PromotionOptionDiscountChecker $promotionOptionDiscountChecker,
+        private readonly RequestStack $requestStack,
     ){
         $this->promotionOptionCheckers = iterator_to_array($promotionOptionCheckers);
         $this->promotionOptionDiscountChecker = $promotionOptionDiscountChecker;
@@ -30,7 +34,7 @@ final class PromotionFreeShippingChecker extends AbstractPromotionChecker
         parent::__construct($promotionCheckers);
     }
 
-    public function checkEligibility(PromotionEligibilityInterface $order, Promotion $promotionCoupon)
+    public function checkEligibility(PromotionEligibilityInterface $order, Promotion $promotionCoupon): bool
     {
         Assert::isInstanceOf($order, ShopOrder::class);
 
@@ -62,5 +66,42 @@ final class PromotionFreeShippingChecker extends AbstractPromotionChecker
                 }
             }
         }
+
+        return false;
+    }
+
+    public function checkProductEligibility(PromotionEligibilityInterface $product, Promotion $promotionCoupon): bool
+    {
+        Assert::isInstanceOf($product, Product::class);
+
+        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
+
+        $checkerTypes = $promotionCoupon->getOptionTypes();
+
+        if ([] === $checkerTypes) {
+            return true;
+        }
+
+        /** @var ProductOptions $productOption */
+        $productOption = $product->getOptionsByCountry($countryCode);
+
+        if (
+            null !== $productOption->getDiscount() &&
+            false === $this->promotionOptionDiscountChecker->isEligible($product, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+        ) {
+            return false;
+        }
+
+        foreach ($this->promotionOptionCheckers as $promotionOptionChecker) {
+            if (in_array($promotionOptionChecker->getType(), $checkerTypes)) {
+                $isOptionApplicable = $promotionOptionChecker->isProductEligible($product, $promotionCoupon->getOptionByType($promotionOptionChecker->getType()));
+
+                if (true === $isOptionApplicable) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

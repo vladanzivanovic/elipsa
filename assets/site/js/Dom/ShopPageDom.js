@@ -172,6 +172,14 @@ class ShopPageDom {
             `;
         }
 
+        if (product.has_free_shipping === true) {
+            html += `
+                <div class="sfi-img-banner free-shipping">
+                    <span>${Translator.trans('free_shipping', null, 'messages', LOCALE)}</span>
+                </div>
+            `;
+        }
+
         return html;
     }
 }

@@ -43,8 +43,8 @@ final class OrderShippingPriceEventListener
     {
         $promotions = $this->promotionCollector->collectFreeShippingPromotions();
 
-        foreach ($promotions as $promotionElements) {
-            $isEligible = $this->promotionFreeShippingChecker->checkEligibility($order, $promotionElements);
+        foreach ($promotions as $promotion) {
+            $isEligible = $this->promotionFreeShippingChecker->checkEligibility($order, $promotion);
 
             if (true === $isEligible) {
                 return true;

@@ -34,6 +34,7 @@ final class ProductView
             'id' => $product->getId(),
             'code' => $product->getCode(),
             'is_wish' => $user instanceof User && $product->isUserWish($user),
+            'has_free_shipping' => $product->isFreeShippingEnabled(),
             'options' => [],
         ];
 

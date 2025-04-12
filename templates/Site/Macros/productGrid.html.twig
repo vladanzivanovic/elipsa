@@ -18,6 +18,11 @@
                         <span>-{{ product.options[countryDefaultLocale].discount.percentage }} %</span>
                     </div>
                 {% endif %}
+                {% if product.has_free_shipping %}
+                    <div class="sfi-img-banner free-shipping">
+                        <span>{{ 'free_shipping' | trans }}</span>
+                    </div>
+                {% endif %}
                 <div class="sfi-img-content sfi-data-content">
                     <p class="letter-capitalize">{{ 'available_colors' | trans }}:</p>
                     <ul class="sfi-data-color">

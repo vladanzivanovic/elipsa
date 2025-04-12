@@ -44,6 +44,13 @@
                                 </div>
                             </div>
                         {% endif %}
+                        {% if payload.has_free_shipping == true %}
+                            <div class="spd-meta">
+                                <div class="spd-meta-type">
+                                    <p class="saving-price">{{ 'free_shipping' | trans }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
                         <p class="spd-text">{{ payload.translations[locale].short_description }}</p>
                         <div class="spd-select-color">
                             <span class="letter-capitalize">{{ 'select.color' | trans }}:</span>

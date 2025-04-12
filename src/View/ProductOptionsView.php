@@ -52,4 +52,9 @@ class ProductOptionsView
 
         return $sizes;
     }
+
+    private function hasFreeShipping(ProductOptions $productOptions): bool
+    {
+
+    }
 }

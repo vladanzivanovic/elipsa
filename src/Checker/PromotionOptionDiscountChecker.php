@@ -20,11 +20,6 @@ final class PromotionOptionDiscountChecker
         return $this->checkEligibility($promotionEligibility, $promotionOption);
     }
 
-    public function isProductEligible(Product $product, PromotionOption $promotionOption): bool
-    {
-        return $this->checkEligibility($product, $promotionOption);
-    }
-
     public function getType(): string
     {
         return PromotionOption::OPTION_ALL_PRODUCTS;

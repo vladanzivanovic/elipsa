@@ -65,6 +65,8 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
 
     private ?int $promoDiscount = null;
 
+    private bool $freeShippingEnabled = false;
+
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductOptions::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productOptions;
 
@@ -473,5 +475,15 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
         });
 
         return false !== $filteredOptions->first() ? $filteredOptions->first() : null;
+    }
+
+    public function isFreeShippingEnabled(): bool
+    {
+        return $this->freeShippingEnabled;
+    }
+
+    public function setIsFreeShippingEnabled(bool $freeShippingEnabled): void
+    {
+        $this->freeShippingEnabled = $freeShippingEnabled;
     }
 }
