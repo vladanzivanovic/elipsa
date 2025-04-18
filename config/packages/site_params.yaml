@@ -17,9 +17,9 @@ parameters:
       - 48
     sort_mapping:
       most_selled: ['p.id', 'DESC']
-      from_lowest_price: ['p.price', 'ASC']
-      from_highest_price: ['p.price', 'DESC']
-      on_sale: ['p.discount', 'ASC']
+      from_lowest_price: ['po.price', 'ASC']
+      from_highest_price: ['po.price', 'DESC']
+      on_sale: ['po.discount', 'DESC']
       first_new: ['p.createdAt', 'DESC']
   badge:
     1: new
