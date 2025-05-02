@@ -3,21 +3,16 @@
 namespace App\Repository;
 
 use App\Entity\PromotionOption;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Resources\StatusInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @extends ServiceEntityRepository<PromotionOption>
- *
- * @method PromotionOption|null find($id, $lockMode = null, $lockVersion = null)
- * @method PromotionOption|null findOneBy(array $criteria, array $orderBy = null)
- * @method PromotionOption[]    findAll()
- * @method PromotionOption[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class PromotionOptionRepository extends ServiceEntityRepository
+class PromotionOptionRepository extends ExtendedEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly RequestStack $requestStack
+    ) {
         parent::__construct($registry, PromotionOption::class);
     }
 
@@ -39,28 +34,28 @@ class PromotionOptionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return PromotionOption[] Returns an array of PromotionOption objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getActivePromotionsBar(): PromotionOption|null
+    {
+        $now = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
+        $countryCode = $this->requestStack->getCurrentRequest()->attributes->get('_country');
 
-//    public function findOneBySomeField($value): ?PromotionOption
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query = $this->createQueryBuilder('po')
+            ->select('po')
+            ->innerJoin('po.promotionId', 'p')
+            ->where('p.validTo >= :now')
+            ->andWhere('p.validFrom <= :now')
+            ->andWhere('po.type = :optionType')
+            ->andWhere('p.availableCountries LIKE :countryCode')
+            ->andWhere('p.status = :status')
+            ->andWhere('po.configuration LIKE :configuration')
+            ->setParameter('now', $now)
+            ->setParameter('countryCode', '%'.$countryCode.'%')
+            ->setParameter('status', StatusInterface::STATUS_ACTIVE)
+            ->setParameter('optionType', PromotionOption::OPTION_HOME_SCREEN_BAR)
+            ->setParameter('configuration', '%true%')
+            ->setMaxResults(1)
+        ;
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

@@ -22,7 +22,7 @@ final class PromotionOptionColorChecker implements PromotionOptionCheckerInterfa
 
     public function getType(): string
     {
-        return PromotionOption::OPTION_COLORS;
+        return PromotionOption::RULE_COLORS;
     }
 
     public static function getDefaultPriority(): int

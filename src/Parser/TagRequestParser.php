@@ -51,7 +51,6 @@ final class TagRequestParser
             $transCollection = $tagEditRequestDto->translations[$locale];
             $trans = $this->translationRepository->findOneBy(['tag' => $tags, 'locale' => $locale]);
 
-
             if (null === $trans) {
                 $trans = new TagTranslation();
             }

@@ -15,7 +15,7 @@ import HomeBannersController from "./HomeBannersController";
 import BannerEditController from "./BannerEditController";
 import SettingsPageController from "./SettingsPageController";
 import CouponsController from "./CouponsController";
-import CouponsEditController from "./CouponsEditController";
+import PromotionsEditController from "./PromotionsEditController";
 import LocationsController from "./LocationsController";
 import LocationEditController from "./LocationEditController";
 import BlogController from "./BlogController";
@@ -136,11 +136,11 @@ let routes = [
     },
     {
         name: 'admin.add_promotions_page',
-        controller: CouponsEditController,
+        controller: PromotionsEditController,
     },
     {
         name: 'admin.edit_promotions_page',
-        controller: CouponsEditController,
+        controller: PromotionsEditController,
     },
     {
         name: 'admin.locations',

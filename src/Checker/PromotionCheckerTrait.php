@@ -32,8 +32,8 @@ trait PromotionCheckerTrait
 
         foreach ($this->promotionCheckers as $promotionChecker) {
             if (
-                $promotionChecker->getType() === PromotionOption::OPTION_ALL_PRODUCTS &&
-                false === $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+                $promotionChecker->getType() === PromotionOption::RULE_ALL_PRODUCTS &&
+                false === $promotionChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType(PromotionOption::RULE_ALL_PRODUCTS))
             ) {
                 return false;
             }

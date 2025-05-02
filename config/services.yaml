@@ -136,6 +136,11 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener }
 
+
+    App\EventListener\PromotionTagEventListener:
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
     App\Parser\Site\NotificationRequestParser:
         arguments:
             $checkers: !tagged_iterator app.checker.notification

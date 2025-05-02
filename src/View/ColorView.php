@@ -30,9 +30,10 @@ final class ColorView
         $translations = [];
 
         foreach ($this->locales as $locale) {
+
             $trans = $color->getByLocale($locale);
 
-            if(null === $trans) {
+            if (null === $trans) {
                 $trans = $color->getByLocale($this->defaultLocale);
             }
 

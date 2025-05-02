@@ -6,10 +6,15 @@ namespace App\Formatter\Site;
 
 use App\Entity\Banner;
 use App\Entity\ProductOptions;
+use App\Entity\Promotion;
+use App\Entity\PromotionOption;
+use App\Entity\Tags;
 use App\Entity\User;
 use App\View\BannerView;
 use App\View\SliderView;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class HomePageResponseFormatter
 {
@@ -19,7 +24,8 @@ final class HomePageResponseFormatter
         private readonly RouterInterface $router,
         private readonly SliderView $sliderView,
         private readonly BannerView $bannerView,
-        private readonly ProductFormatter $productFormatter
+        private readonly ProductFormatter $productFormatter,
+        private readonly TranslatorInterface $translator,
     ) {}
 
     public function formatResponse(array $data, string $locale, string $countryCode, null|User $user = null): array
@@ -43,6 +49,8 @@ final class HomePageResponseFormatter
         $data['products'][ProductOptions::HOME_PAGE_UP] = $this->productFormatter->getProducts($data['products'][ProductOptions::HOME_PAGE_UP], $countryCode, $user);
         $data['products'][ProductOptions::HOME_PAGE_DOWN] = $this->productFormatter->getProducts($data['products'][ProductOptions::HOME_PAGE_DOWN], $countryCode, $user);
 
+        $data['promotion'] = $this->setPromotionData($data['promotion']);
+
         return $data;
     }
 
@@ -65,5 +73,60 @@ final class HomePageResponseFormatter
     private function createBannerView(Banner $banner, array $filters): array
     {
         return $this->bannerView->view($banner, $filters);
+    }
+
+    private function setPromotionData(PromotionOption|null $promotionOption): array|null
+    {
+        if (null === $promotionOption) {
+            return null;
+        }
+
+        $promotion = $promotionOption->getPromotionId();
+
+        return [
+            'valid_to' => $promotion->getValidTo()->format('Y/m/d H:i:s'),
+            'translations' => $this->generatePromotionTagTranslations($promotion->getTags()),
+            '_links' => $this->generateLinks($promotion->getTags()),
+        ];
+    }
+
+    private function generateLinks(Tags $tags): array
+    {
+        $linkLocales = [];
+
+        foreach ($tags->getTagTranslations() as $tagTranslation) {
+
+            $locale = $tagTranslation->getLocale();
+
+            $promotionTranslationKey = $this->translator->trans('filter.promotions', [], 'messages', $locale);
+
+            $urlParams = [
+                $promotionTranslationKey => $tagTranslation->getSlug(),
+                '_locale' => $locale,
+            ];
+
+            $linkLocales[$locale] = $this->router->generate(
+                'site.shop_page',
+                $urlParams,
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
+        return $linkLocales;
+    }
+
+    private function generatePromotionTagTranslations(Tags $tags): array
+    {
+        $translations = [];
+
+        foreach ($tags->getTagTranslations() as $tagTranslation) {
+
+            $locale = $tagTranslation->getLocale();
+
+
+            $translations[$locale] = $tagTranslation->getTitle();
+        }
+
+        return $translations;
     }
 }

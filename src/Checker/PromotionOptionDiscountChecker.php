@@ -22,7 +22,7 @@ final class PromotionOptionDiscountChecker
 
     public function getType(): string
     {
-        return PromotionOption::OPTION_ALL_PRODUCTS;
+        return PromotionOption::RULE_ALL_PRODUCTS;
     }
 
     public static function getDefaultPriority(): int

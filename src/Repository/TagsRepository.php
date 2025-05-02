@@ -76,18 +76,23 @@ class TagsRepository extends ExtendedEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
-    
-    public function getByTranslation(string $mainSlug, array $locales, int $type): array
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function getProductTagByTitleAndType(string $title, string $locale, string $type): null|Tags
     {
         $query = $this->createQueryBuilder('t')
-            ->where('t.mainSlug = :mainSlug')
-            ->andWhere('t.locale IN (:locales)')
-            ->andWhere('t.relatedType = :relatedType')
-            ->setParameter('relatedType', $type)
-            ->setParameter('mainSlug', $mainSlug)
-            ->setParameter('locales', $locales);
+            ->innerJoin(TagTranslation::class, 'tt', 'WITH', 'tt.tag = t.id')
+            ->where('tt.title = :title')
+            ->andWhere('tt.locale = :locale')
+            ->andWhere('t.productType = :productType')
+            ->setParameter('title', $title)
+            ->setParameter('locale', $locale)
+            ->setParameter('productType', $type)
+        ;
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     

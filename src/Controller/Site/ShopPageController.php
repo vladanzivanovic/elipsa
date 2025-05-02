@@ -44,7 +44,6 @@ final class ShopPageController extends AbstractController
         );
     }
 
-    
     #[Route(path: ['rs' => '/trendovi', 'en' => '/trends', 'ba' => '/trendovi'], name: 'site.trendy_page', options: ['expose' => true], defaults: ['page' => 1], methods: ['GET'])]
     #[Template('Site/Pages/shop.html.twig')]
     public function trendyPage(

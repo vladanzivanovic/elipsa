@@ -18,6 +18,8 @@ class Tags
 
     public const PRODUCT_TYPE_ATTRIBUTE = 'attribute';
 
+    public const PRODUCT_TYPE_PROMOTION = 'promotion';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -29,12 +31,16 @@ class Tags
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private ?string $productType = null;
 
-    #[ORM\OneToMany(targetEntity: TagTranslation::class, mappedBy: 'tag', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'tag', targetEntity: TagTranslation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $tagTranslations;
+
+    #[ORM\OneToMany(mappedBy: 'tag', targetEntity: ProductHasTags::class, cascade: ['remove'], orphanRemoval: true)]
+    private Collection $productHasTags;
 
     public function __construct()
     {
         $this->tagTranslations = new ArrayCollection();
+        $this->productHasTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,5 +108,10 @@ class Tags
         });
 
         return false !== $filteredTrans->first() ? $filteredTrans->first() : null;
+    }
+
+    public function getProductHasTags(): Collection
+    {
+        return $this->productHasTags;
     }
 }

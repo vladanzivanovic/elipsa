@@ -8,6 +8,7 @@ use App\Entity\Banner;
 use App\Entity\ProductOptions;
 use App\Repository\BannerRepository;
 use App\Repository\ProductRepository;
+use App\Repository\PromotionOptionRepository;
 use App\Repository\SliderRepository;
 
 final class HomePageCollector
@@ -16,6 +17,7 @@ final class HomePageCollector
         private readonly SliderRepository $sliderRepository,
         private readonly BannerRepository $bannerRepository,
         private readonly ProductRepository $productRepository,
+        private readonly PromotionOptionRepository $promotionOptionRepository,
     ) {}
 
     /**
@@ -30,11 +32,13 @@ final class HomePageCollector
             ProductOptions::HOME_PAGE_UP => $this->productRepository->getForHomePage(ProductOptions::HOME_PAGE_UP, $host),
             ProductOptions::HOME_PAGE_DOWN => $this->productRepository->getForHomePage(ProductOptions::HOME_PAGE_DOWN, $host),
         ];
+        $promotion = $this->promotionOptionRepository->getActivePromotionsBar();
 
         return [
             'sliders' => $sliders,
             'banners' => $banners,
             'products' => $products,
+            'promotion' => $promotion,
         ];
     }
 }

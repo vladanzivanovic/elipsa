@@ -6,6 +6,15 @@
     {% set bannerSpeedLinksType = constant('App\\Entity\\Banner::TYPE_SPEED_LINKS') %}
     {% set homePageProducts = get_class_constants('App\\Entity\\ProductOptions') %}
 
+    <div id="promotion-bar" data-valid-to="{{ promotion.valid_to }}">
+        <div class="container">
+            <a id="promotion-link" href="{{ promotion._links[locale] }}">
+            <h2 id="promotion-title">{{ promotion.translations[locale] }}</h2>
+{#            <div id="countdown"></div>#}
+            <div id="countdown"><p><span>4</span> <span>Nedelje</span> </p><p><span>1</span> <span>Dan</span> </p><p><span>10</span> <span>Sati</span> </p><p><span>47</span> <span>Minuti</span> </p><p><span>07</span> <span>Sekunde</span> </p></div>
+            </a>
+        </div>
+    </div>
     <!-- home2-slider-start -->
     <div class="home3-slider-container">
         <!-- Slider Image -->

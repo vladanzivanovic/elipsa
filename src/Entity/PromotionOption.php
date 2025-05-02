@@ -12,15 +12,17 @@ class PromotionOption implements EntityInterface
 {
     use ResourceTrait;
 
-    const OPTION_CATEGORIES = 'categories';
+    const RULE_CATEGORIES = 'categories';
 
-    const OPTION_TAGS = 'tags';
+    const RULE_TAGS = 'tags';
 
-    const OPTION_PRODUCTS = 'products';
+    const RULE_PRODUCTS = 'products';
 
-    const OPTION_COLORS = 'colors';
+    const RULE_COLORS = 'colors';
 
-    const OPTION_ALL_PRODUCTS = 'applicable_all_products';
+    const RULE_ALL_PRODUCTS = 'applicable_all_products';
+
+    const OPTION_HOME_SCREEN_BAR = 'home_screen_bar';
 
     #[ORM\ManyToOne(targetEntity: Promotion::class, inversedBy: 'promotionOptions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -64,6 +66,15 @@ class PromotionOption implements EntityInterface
     public function setConfiguration(array $configuration): self
     {
         $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    public function addConfiguration(mixed $value): self
+    {
+        $currentConfiguration = $this->getConfiguration();
+
+        $this->configuration = array_merge_recursive($currentConfiguration, $value);
 
         return $this;
     }

@@ -39,13 +39,13 @@ final class PromotionCollector
             $optionTypes = $productPromotion->getOptionTypes();
 
             switch (true) {
-                case in_array(PromotionOption::OPTION_PRODUCTS, $optionTypes):
+                case in_array(PromotionOption::RULE_PRODUCTS, $optionTypes):
                     $priority = 100;
                     break;
-                case in_array(PromotionOption::OPTION_TAGS, $optionTypes):
+                case in_array(PromotionOption::RULE_TAGS, $optionTypes):
                     $priority += 50;
                     break;
-                case in_array(PromotionOption::OPTION_CATEGORIES, $optionTypes):
+                case in_array(PromotionOption::RULE_CATEGORIES, $optionTypes):
                     $priority += 10;
             }
 

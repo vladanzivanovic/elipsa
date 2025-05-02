@@ -35,5 +35,6 @@
         const CAN_REMOVE = true;
 
         const PROMOTION_TYPES = JSON.parse('{{ get_class_constants('App\\Entity\\Promotion', 'TYPE') | json_encode | raw }}');
+        const PROMOTION_OPTIONS = JSON.parse('{{ get_class_constants('App\\Entity\\PromotionOption', 'OPTION') | json_encode | raw }}')
     </script>
 {% endblock %}

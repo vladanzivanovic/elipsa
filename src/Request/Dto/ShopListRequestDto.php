@@ -11,21 +11,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ShopListRequestDto implements ConstructRequestObjectInterface
 {
 
-    public ?array $size = null;
+    public null|array $size = null;
 
-    public ?array $color = null;
+    public null|array $color = null;
 
-    public ?array $collection = null;
+    public null|array $collection = null;
 
-    public ?array $season = null;
+    public null|array $season = null;
 
-    public ?array $attribute = null;
+    public null|array $attribute = null;
 
-    public ?array $price = null;
+    public null|array $promotions = null;
 
-    public ?array $categories = null;
+    public null|array $price = null;
 
-    public ?string $search = null;
+    public null|array $categories = null;
+
+    public null|string $search = null;
 
     public function __construct(Request $request = null)
     {
@@ -50,6 +52,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
             'collections' => $this->collection,
             'seasons' => $this->season,
             'attributes' => $this->attribute,
+            'promotions' => $this->promotions,
             'price' => $this->price,
             'colors' => $this->color,
             'search' => $this->search,
@@ -72,6 +75,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
         $this->collection = isset($body['collections']) ? explode('+', $body['collections']) : null;
         $this->season = isset($body['seasons']) ? explode('+', $body['seasons']) : null;
         $this->attribute = isset($body['attributes']) ? explode('+', $body['attributes']) : null;
+        $this->promotions = isset($body['promotions']) ? explode('+', $body['promotions']) : null;
         $this->price = isset($body['price']) ? explode('+', $body['price']) : null;
         $this->categories = isset($body['categories']) ? explode('+', $body['categories']) : null;
     }
@@ -87,6 +91,7 @@ class ShopListRequestDto implements ConstructRequestObjectInterface
         $this->collection = $body['collections'] ?? null;
         $this->season = $body['seasons'] ?? null;
         $this->attribute = $body['attributes'] ?? null;
+        $this->promotions = $body['promotions'] ?? null;
         $this->price = $body['price'] ?? null;
         $this->categories = $body['categories'] ?? null;
     }

@@ -5,7 +5,7 @@ disabled: Zaključan
 
 scroll_top_page: Vrh stranice
 
-view: pogledaj
+view: Pogledaj
 
 default_title: Modna Kuća Elipsa
 
@@ -631,6 +631,7 @@ filter:
   sizes: velicine
   colors: boje
   collections: kolekcije
+  promotions: promocije
   seasons: sezone
   attributes: karakteristike
   categories: kategorije
@@ -641,6 +642,7 @@ filter:
   velicine: sizes
   boje: colors
   kolekcije: collections
+  promocije: promotions
   sezone: seasons
   karakteristike: attributes
   osobine: attributes
@@ -657,6 +659,7 @@ filter_text:
   seasons: Sezone
   attributes: Osobine
   categories: Kategorije
+  promotions: Promocije
   price: Cijena
   search: Pretraga
   velicine: Sizes
@@ -665,6 +668,7 @@ filter_text:
   osobine: Attributes
   sezone: Seasons
   kategorije: Categories
+  promocije: Promotions
   cena: Price
   pretraga: Search
 
@@ -690,3 +694,15 @@ header.choose_lang_label: Odaberite jezik
 
 belgrade: Beograd
 banja_luka: Banja Luka
+
+promotion.view_button_label: Pogledaj
+promotion.timer.weeks: Sedmice
+promotion.timer.week: Sedmica
+promotion.timer.days: Dani
+promotion.timer.day: Dan
+promotion.timer.hour: Sati
+promotion.timer.hours: Sat
+promotion.timer.minutes: Minuti
+promotion.timer.minute: Minut
+promotion.timer.seconds: Sekunde
+promotion.timer.second: Sekunda

@@ -486,4 +486,14 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
     {
         $this->freeShippingEnabled = $freeShippingEnabled;
     }
+
+    public function isProductHasTag(Tags $tag): bool
+    {
+        $filteredOptions = $this->productHasTags->filter(function ($hasTags) use ($tag) {
+            /** @var ProductHasTags $hasTags */
+            return $hasTags->getTag() === $tag;
+        });
+
+        return $filteredOptions->count() > 0;
+    }
 }

@@ -3,7 +3,8 @@
 {% set IS_EDIT = 'admin.edit_promotion' in app.request.attributes.get('_route') %}
 {% set titlePrefix = IS_EDIT == true ? 'Izmena' : 'Dodavanje' %}
 {% set title = titlePrefix ~ ' promocija' %}
-{% set OPTION_TYPES = get_class_constants('App\\Entity\\PromotionOption') %}
+{% set RULES = get_class_constants('App\\Entity\\PromotionOption', 'RULE') %}
+{% set OPTIONS = get_class_constants('App\\Entity\\PromotionOption', 'OPTION') %}
 {% set routePath = 'admin.promotions' %}
 {% set routeTitle = 'Promocije' %}
 
@@ -49,46 +50,55 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.select('Tip promocije', 'type', 'type', IS_EDIT ? payload.type : '', options.promotion_types, '', 'w-100') }}
+                            <div class="col-md-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Osnovna podešavanja</h6>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="form-group">
+                                                    {{ form.select('Tip promocije', 'type', 'type', IS_EDIT ? payload.type : '', options.promotion_types, '', 'w-100') }}
+                                                </div>
+                                            </div><!-- Col -->
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="form-group">
+                                                    {{ form.input('Promo kod', 'code', IS_EDIT ? payload.code : '', 'code') }}
+                                                </div>
+                                            </div><!-- Col -->
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="form-group">
+                                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.percentage : '', 'discount', '', 'number') }}
+                                                </div>
+                                            </div><!-- Col -->
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="form-group">
+                                                    {{ form.datePicker('Važi od', 'valid_from', IS_EDIT ? payload.valid_from.date ~' '~ payload.valid_from.time : '', 'valid_from') }}
+                                                </div>
+                                            </div><!-- Col -->
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="form-group">
+                                                    {{ form.datePicker('Važi do', 'valid_to', IS_EDIT ? payload.valid_to.date ~' '~ payload.valid_to.time : '', 'valid_to') }}
+                                                </div>
+                                            </div><!-- Col -->
+                                        </div><!-- Row -->
+                                    </div>
                                 </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.input('Promo kod', 'code', IS_EDIT ? payload.code : '', 'code') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.input('Popust', 'discount', IS_EDIT ? payload.percentage : '', 'discount', '', 'number') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.datePicker('Važi od', 'valid_from', IS_EDIT ? payload.valid_from.date ~' '~ payload.valid_from.time : '', 'valid_from') }}
-                                </div>
-                            </div><!-- Col -->
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    {{ form.datePicker('Važi do', 'valid_to', IS_EDIT ? payload.valid_to.date ~' '~ payload.valid_to.time : '', 'valid_to') }}
-                                </div>
-                            </div><!-- Col -->
-                        </div><!-- Row -->
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-12 grid-margin">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h6 class="card-title">Opcije</h6>
+                                        <h6 class="card-title">Pravila</h6>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    {{ form.select('Proizvodi - 100', 'products', 'options['~OPTION_TYPES.OPTION_PRODUCTS~'][]', '', [], '', 'w-100', true) }}
+                                                    {{ form.select('Proizvodi - 100', 'products', 'options['~RULES.RULE_PRODUCTS~'][]', '', [], '', 'w-100', true) }}
                                                 </div>
                                             </div><!-- Col -->
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    {{ form.select('Tagovi - 50', 'tags', 'options['~OPTION_TYPES.OPTION_TAGS~'][]', IS_EDIT and payload.options[OPTION_TYPES.OPTION_TAGS] is defined ? payload.options[OPTION_TYPES.OPTION_TAGS].configuration : '', options.tags, '', 'w-100', true) }}
+                                                    {{ form.select('Tagovi - 50', 'tags', 'options['~RULES.RULE_TAGS~'][]', IS_EDIT and payload.options[RULES.RULE_TAGS] is defined ? payload.options[RULES.RULE_TAGS].configuration : '', options.tags, '', 'w-100', true) }}
                                                 </div>
                                             </div><!-- Col -->
                                         </div>
@@ -96,9 +106,9 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="colors">Boje - 30</label>
-                                                    <select id="colors" name="options[{{ OPTION_TYPES.OPTION_COLORS }}][]" multiple="multiple">
+                                                    <select id="colors" name="options[{{ RULES.RULE_COLORS }}][]" multiple="multiple">
                                                         {% for color in options.colors %}
-                                                            {% set selected = IS_EDIT and payload.options[OPTION_TYPES.OPTION_COLORS] is defined ? color.value in payload.options[OPTION_TYPES.OPTION_COLORS].configuration : '' %}
+                                                            {% set selected = IS_EDIT and payload.options[RULES.RULE_COLORS] is defined ? color.value in payload.options[RULES.RULE_COLORS].configuration : '' %}
 
                                                             <option value="{{ color.value }}" data-title="{{ color.title }}" data-hex="{{ color.hex }}" {{ selected ? 'selected="selected"' : '' }}>{{ color.title }}</option>
                                                         {% endfor %}
@@ -107,7 +117,7 @@
                                             </div><!-- Col -->
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    {{ form.select('Kategorije - 10', 'categories', 'options['~OPTION_TYPES.OPTION_CATEGORIES~'][]', IS_EDIT and payload.options[OPTION_TYPES.OPTION_CATEGORIES] is defined ? payload.options[OPTION_TYPES.OPTION_CATEGORIES].configuration : '', options.categories, '', 'w-100', true) }}
+                                                    {{ form.select('Kategorije - 10', 'categories', 'options['~RULES.RULE_CATEGORIES~'][]', IS_EDIT and payload.options[RULES.RULE_CATEGORIES] is defined ? payload.options[RULES.RULE_CATEGORIES].configuration : '', options.categories, '', 'w-100', true) }}
                                                 </div>
                                             </div><!-- Col -->
                                         </div><!-- Row -->
@@ -115,10 +125,41 @@
                                             <div class="col-sm-3">
                                                 <p>&nbsp;</p>
                                                 <div class="form-check form-check-flat form-check-primary">
-                                                    {{ form.checkbox('Primeni i na snižene proizvode', 'applicableAllProducts', 1, 'options['~OPTION_TYPES.OPTION_ALL_PRODUCTS~']', 'form-check-label', 'form-check-input', IS_EDIT and payload.options[OPTION_TYPES.OPTION_ALL_PRODUCTS] is defined and payload.options[OPTION_TYPES.OPTION_ALL_PRODUCTS].configuration[0] == true ? 'checked="checked"' : null ) }}
+                                                    {{ form.checkbox('Primeni i na snižene proizvode', 'applicableAllProducts', 1, 'options['~RULES.RULE_ALL_PRODUCTS~']', 'form-check-label', 'form-check-input', IS_EDIT and payload.options[RULES.RULE_ALL_PRODUCTS] is defined and payload.options[RULES.RULE_ALL_PRODUCTS].configuration[0] == true ? 'checked="checked"' : null ) }}
                                                 </div>
                                             </div><!-- Col -->
                                         </div><!-- Row -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Bar na početnoj stranici - podešavanje</h6>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p>&nbsp;</p>
+                                                <div class="form-check form-check-flat form-check-primary">
+                                                    {{ form.checkbox('Prikaži bar na početnoj stranici', 'homePageBar', 1, 'options['~OPTIONS.OPTION_HOME_SCREEN_BAR~']', 'form-check-label', 'form-check-input', IS_EDIT and payload.options[OPTIONS.OPTION_HOME_SCREEN_BAR] is defined and payload.options[OPTIONS.OPTION_HOME_SCREEN_BAR].configuration[0] == true ? 'checked="checked"' : null ) }}
+                                                </div>
+                                            </div><!-- Col -->
+                                        </div>
+                                        <div class="row">
+                                            {% for locale, lang in languages %}
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="form-group">
+                                                    {{ form.input(
+                                                        'Naziv - '~lang.translation | trans,
+                                                        'title_'~locale,
+                                                        IS_EDIT and payload.options[OPTIONS.OPTION_HOME_SCREEN_BAR] is defined and payload.options[OPTIONS.OPTION_HOME_SCREEN_BAR].configuration['tag_translations'] is defined ? payload.options[OPTIONS.OPTION_HOME_SCREEN_BAR].configuration['tag_translations'][locale]['title'] : '',
+                                                        'translations['~locale~'][title]')
+                                                    }}
+                                                </div>
+                                            </div><!-- Col -->
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +175,7 @@
     <script nonce="{{ csp_nonce('script') }}">
         const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
         const ID = {{ IS_EDIT ? app.request.attributes.get('id') : 0 }};
-        const PRODUCTS = {{ IS_EDIT and payload.options[OPTION_TYPES.OPTION_PRODUCTS] is defined ? payload.options[OPTION_TYPES.OPTION_PRODUCTS].configuration | json_encode | raw : '[]' }};
+        const PRODUCTS = {{ IS_EDIT and payload.options[RULES.RULE_PRODUCTS] is defined ? payload.options[RULES.RULE_PRODUCTS].configuration | json_encode | raw : '[]' }};
 
         const PROMOTION_TYPE = '{{ payload.type ?? '' }}';
 

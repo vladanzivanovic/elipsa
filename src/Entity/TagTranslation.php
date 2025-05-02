@@ -17,7 +17,7 @@ class TagTranslation
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'field.not_blank', groups: ['SetTag'])]
-    #[Assert\Length(maxMessage: 'field.max_length', groups: ['SetTag'], max: '50')]
+    #[Assert\Length(max: '50', maxMessage: 'field.max_length', groups: ['SetTag'])]
     private string $title;
 
     #[ORM\Column(type: 'string', length: 255)]

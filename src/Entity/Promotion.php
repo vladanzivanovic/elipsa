@@ -8,6 +8,7 @@ use App\Entity\Resources\EntityInterface;
 use App\Entity\Resources\ResourceTrait;
 use App\Entity\Resources\StatusInterface;
 use App\Entity\Resources\StatusTrait;
+use App\EventListener\PromotionTagEventListener;
 use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PromotionRepository::class)]
 #[ORM\Table(name: 'promotion')]
 #[ORM\UniqueConstraint(name: 'promo_code', columns: ['code'])]
+#[ORM\EntityListeners([PromotionTagEventListener::class])]
 class Promotion implements EntityInterface, CountryResourceInterface, StatusInterface
 {
     use ResourceTrait;
@@ -56,6 +58,11 @@ class Promotion implements EntityInterface, CountryResourceInterface, StatusInte
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $type;
+
+    #[ORM\OneToOne(targetEntity: Tags::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private null|Tags $tags = null;
+
+    private array $tagTranslations = [];
 
     public function __construct()
     {
@@ -160,7 +167,7 @@ class Promotion implements EntityInterface, CountryResourceInterface, StatusInte
         $types = [];
 
         foreach ($this->promotionOptions as $promotionOption) {
-            if (PromotionOption::OPTION_ALL_PRODUCTS === $promotionOption->getType()) {
+            if (PromotionOption::RULE_ALL_PRODUCTS === $promotionOption->getType()) {
                 continue;
             }
 
@@ -183,10 +190,18 @@ class Promotion implements EntityInterface, CountryResourceInterface, StatusInte
      * @param string $type
      * @return Collection<int, PromotionOption>
      */
-    public function getOptionsByType(string $type): Collection
+    public function getOptionRules(): Collection
     {
-        $filteredCollection = $this->promotionOptions->filter(function (PromotionOption $promotionOption) use ($type) : bool {
-            return $promotionOption->getType() === $type;
+        $filteredCollection = $this->promotionOptions->filter(function (PromotionOption $promotionOption) : bool {
+            return  in_array(
+                $promotionOption->getType(),
+                [
+                    PromotionOption::RULE_PRODUCTS,
+                    PromotionOption::RULE_COLORS,
+                    PromotionOption::RULE_TAGS,
+                    PromotionOption::RULE_CATEGORIES
+                ]
+            );
         });
 
         return $filteredCollection;
@@ -225,5 +240,25 @@ class Promotion implements EntityInterface, CountryResourceInterface, StatusInte
     public function isPromotionInUse(): bool
     {
         return $this->shopOrders->count() > 0 || $this->orderProducts->count() > 0;
+    }
+
+    public function getTagTranslations(): array
+    {
+        return $this->tagTranslations;
+    }
+
+    public function setTagTranslations(array $tagTranslations): void
+    {
+        $this->tagTranslations = $tagTranslations;
+    }
+
+    public function getTags(): Tags|null
+    {
+        return $this->tags;
+    }
+
+    public function setTags(Tags|null $tags): void
+    {
+        $this->tags = $tags;
     }
 }
