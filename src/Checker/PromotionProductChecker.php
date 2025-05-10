@@ -45,7 +45,7 @@ final class PromotionProductChecker extends AbstractPromotionChecker
 
         if (
             null !== $productOption->getDiscount() &&
-            false === $this->promotionOptionDiscountChecker->isEligible($product, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+            false === $this->promotionOptionDiscountChecker->isEligible($product, $promotionCoupon->getOptionByType(PromotionOption::RULE_ALL_PRODUCTS))
         ) {
             return false;
         }

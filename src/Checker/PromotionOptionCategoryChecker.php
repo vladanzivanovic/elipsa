@@ -39,7 +39,7 @@ final class PromotionOptionCategoryChecker implements PromotionOptionCheckerInte
 
     public function getType(): string
     {
-        return PromotionOption::OPTION_CATEGORIES;
+        return PromotionOption::RULE_CATEGORIES;
     }
 
     public static function getDefaultPriority(): int

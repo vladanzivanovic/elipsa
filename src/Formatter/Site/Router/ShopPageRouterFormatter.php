@@ -34,13 +34,6 @@ final class ShopPageRouterFormatter
         private readonly array $locales,
     ) {}
 
-    public function localeFormatter(string $searchData, string $locale): string
-    {
-//        $searchData = $this->parseSearchData($searchData);
-//
-//        return $this->createUrlString($searchData, $locale);
-    }
-
     public function createLocalizedLinks(
         ShopPageOptionsDto $shopPageOptionsDto,
         ShopListRequestDto $shopListRequestDto,
@@ -58,6 +51,7 @@ final class ShopPageRouterFormatter
             $this->getTags($searchCriteria, $shopListRequestDto->season, 'filter.seasons', $locale);
             $this->getTags($searchCriteria, $shopListRequestDto->season, 'filter.seasons', $locale);
             $this->getTags($searchCriteria, $shopListRequestDto->attribute, 'filter.attributes', $locale);
+            $this->getTags($searchCriteria, $shopListRequestDto->promotions, 'filter.promotions', $locale);
             $this->getPrices($searchCriteria, $shopListRequestDto->price, $locale);
             $this->getSearch($searchCriteria, $shopListRequestDto->search, $locale);
             $this->getSort($searchCriteria, $shopPageOptionsDto->sort, $locale);

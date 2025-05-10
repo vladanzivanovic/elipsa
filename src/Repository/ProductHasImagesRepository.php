@@ -35,4 +35,15 @@ class ProductHasImagesRepository extends ExtendedEntityRepository
 
         return $result > 0;
     }
+
+    public function getProductsByColors(array $colors): array
+    {
+        $query = $this->createQueryBuilder('phi')
+            ->select('phi.color')
+            ->where('phi.color IN (:colors)')
+            ->setParameter('colors', $colors)
+        ;
+
+        return $query->getQuery()->getResult();
+    }
 }

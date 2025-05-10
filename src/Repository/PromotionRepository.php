@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Promotion;
+use App\Entity\PromotionOption;
 use App\Entity\Resources\StatusInterface;
 use App\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
@@ -42,7 +43,7 @@ class PromotionRepository extends ExtendedEntityRepository
     }
 
     
-    public function getAdminList(DataTableModel $tableModel, string $type): array
+    public function getAdminList(DataTableModel $tableModel): array
     {
         $generalSearch = $tableModel->getGeneralSearch();
         $typeSearch = $tableModel->getColumnSearchValue('type');

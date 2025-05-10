@@ -33,7 +33,7 @@ final class PromotionsListController extends AbstractController
         $formattedRequest = $this->requestParser->formatRequest($request);
         $total = $this->couponsRepository->countData();
 
-        $data = $this->couponsRepository->getAdminList($formattedRequest, Promotion::TYPE_COUPON);
+        $data = $this->couponsRepository->getAdminList($formattedRequest);
 
         $response = $this->responseFormatter->formatResponse($formattedRequest, $data, (int)$total);
 

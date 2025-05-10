@@ -22,7 +22,7 @@ final class PromotionOptionProductChecker implements PromotionOptionCheckerInter
 
     public function getType(): string
     {
-        return PromotionOption::OPTION_PRODUCTS;
+        return PromotionOption::RULE_PRODUCTS;
     }
 
     public static function getDefaultPriority(): int

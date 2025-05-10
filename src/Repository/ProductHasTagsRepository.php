@@ -18,32 +18,14 @@ class ProductHasTagsRepository extends ExtendedEntityRepository
         parent::__construct($registry, ProductHasTags::class);
     }
 
-    // /**
-    //  * @return ProductHasTags[] Returns an array of ProductHasTags objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getProductsByTags(array $tags): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $query = $this->createQueryBuilder('pht')
+            ->select('pht.product')
+            ->where('pht.tag IN (:tags)')
+            ->setParameter('tags', $tags)
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ProductHasTags
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getQuery()->getResult();
     }
-    */
 }

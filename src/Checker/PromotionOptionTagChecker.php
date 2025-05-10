@@ -22,7 +22,7 @@ final class PromotionOptionTagChecker implements PromotionOptionCheckerInterface
 
     public function getType(): string
     {
-        return PromotionOption::OPTION_TAGS;
+        return PromotionOption::RULE_TAGS;
     }
 
     public static function getDefaultPriority(): int

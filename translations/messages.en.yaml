@@ -5,7 +5,7 @@ disabled: Disabled
 
 scroll_top_page: Page top
 
-view: view
+view: View
 
 default_title: Fashion House Elipsa
 
@@ -636,6 +636,7 @@ filter:
   seasons: seasons
   attributes: attributes
   categories: categories
+  promotions: promotions
   price: price
   search: search
   limit: limit
@@ -643,6 +644,7 @@ filter:
   velicine: sizes
   boje: sizes
   kolekcije: collections
+  promocije: promotions
   sezone: seasons
   osobine: attributes
   kategorije: categories
@@ -658,6 +660,7 @@ filter_text:
   seasons: Seasons
   attributes: Attributes
   categories: Categories
+  promotions: Promotions
   price: Price
   velicine: Sizes
   boje: Colors
@@ -665,6 +668,7 @@ filter_text:
   sezone: Seasons
   osobine: Attributes
   kategorije: Categories
+  promocije: Promotions
   cena: Price
 
 all_items_are_loaded: All products are loaded by given filters
@@ -686,5 +690,17 @@ promotion.type.free_shipping: Free shipping
 
 header.choose_country_label: Choose country
 header.choose_lang_label: Choose language
+
+promotion.view_button_label: View
+promotion.timer.weeks: Weeks
+promotion.timer.week: Week
+promotion.timer.days: Days
+promotion.timer.day: Day
+promotion.timer.hours: Hours
+promotion.timer.hour: Hour
+promotion.timer.minutes: Minutes
+promotion.timer.minute: Minute
+promotion.timer.seconds: Seconds
+promotion.timer.second: Second
 
 

@@ -147,6 +147,14 @@ class ProductRepository extends ExtendedEntityRepository
             );
         }
 
+        if ($shopListRequestDto->promotions) {
+            $this->createTagQueryForSearch(
+                $query,
+                $shopListRequestDto->promotions,
+                Tags::PRODUCT_TYPE_PROMOTION
+            );
+        }
+
         if ($shopListRequestDto->color) {
             $colorQuery = $this->_em->createQueryBuilder()
                 ->select('1')
@@ -358,6 +366,81 @@ class ProductRepository extends ExtendedEntityRepository
 
         $query->andWhere('p.status IN (:statuses)')
             ->setParameter('statuses', $statuses);
+    }
+
+    public function getProductsByCategoriesFromPromotion(array $categories, array $availableCountries, bool $withDiscount): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->innerJoin('p.productHasCategories', 'phc')
+            ->where('phc.category IN (:categories)')
+            ->andWhere('p.availableCountries IN (:availableCountries)')
+            ->setParameter('categories', $categories)
+            ->setParameter('availableCountries', $availableCountries);
+        ;
+
+        if (false === $withDiscount) {
+            $query->leftJoin('p.productOptions', 'po')
+                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getProductsByTagsFromPromotion(array $tags, array $availableCountries, bool $withDiscount): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->innerJoin('p.productHasTags', 'pht')
+            ->where('pht.tag IN (:tags)')
+            ->andWhere('p.availableCountries IN (:availableCountries)')
+            ->setParameter('tags', $tags)
+            ->setParameter('availableCountries', $availableCountries);
+        ;
+
+        if (false === $withDiscount) {
+            $query->leftJoin('p.productOptions', 'po')
+                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getProductsByColorsFromPromotion(array $colors, array $availableCountries, bool $withDiscount): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->innerJoin('p.productHasImages', 'phi')
+            ->where('phi.color IN (:colors)')
+            ->andWhere('p.availableCountries IN (:availableCountries)')
+            ->setParameter('colors', $colors)
+            ->setParameter('availableCountries', $availableCountries);
+        ;
+
+        if (false === $withDiscount) {
+            $query->leftJoin('p.productOptions', 'po')
+                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getProductsByIDsFromPromotion(array $productIds, array $availableCountries, bool $withDiscount): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.id IN (:productIds)')
+            ->andWhere('p.availableCountries IN (:availableCountries)')
+            ->setParameter('productIds', $productIds)
+            ->setParameter('availableCountries', $availableCountries);
+        ;
+
+        if (false === $withDiscount) {
+            $query->leftJoin('p.productOptions', 'po')
+                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
+            ;
+        }
+
+        return $query->getQuery()->getResult();
     }
 
     private function createTagQueryForSearch(

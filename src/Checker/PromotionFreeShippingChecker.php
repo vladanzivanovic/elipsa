@@ -51,7 +51,7 @@ final class PromotionFreeShippingChecker extends AbstractPromotionChecker
         foreach ($order->getOrderProducts() as $orderProduct) {
             if (
                 null !== $orderProduct->getDiscount() &&
-                false === $this->promotionOptionDiscountChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+                false === $this->promotionOptionDiscountChecker->isEligible($orderProduct, $promotionCoupon->getOptionByType(PromotionOption::RULE_ALL_PRODUCTS))
             ) {
                 continue;
             }
@@ -87,7 +87,7 @@ final class PromotionFreeShippingChecker extends AbstractPromotionChecker
 
         if (
             null !== $productOption->getDiscount() &&
-            false === $this->promotionOptionDiscountChecker->isEligible($product, $promotionCoupon->getOptionByType(PromotionOption::OPTION_ALL_PRODUCTS))
+            false === $this->promotionOptionDiscountChecker->isEligible($product, $promotionCoupon->getOptionByType(PromotionOption::RULE_ALL_PRODUCTS))
         ) {
             return false;
         }
