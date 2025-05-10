@@ -55,7 +55,7 @@ class HomePageController {
             this.#setFontSizeForMobile();
         }
 
-        // this.#setPromotionCountDown();
+        this.#setPromotionCountDown();
     }
 
     #setFontSizeForMobile()
@@ -78,19 +78,19 @@ class HomePageController {
     {
         $('#countdown').countdown($('#promotion-bar').data('validTo'))
             .on('update.countdown', function(event) {
-                let weekLabel = event.offset.weeks > 1 ?
+                let weekLabel = event.offset.weeks > 1 || event.offset.weeks === 0 ?
                     Translator.trans('promotion.timer.weeks', null, 'messages', LOCALE) :
                     Translator.trans('promotion.timer.week', null, 'messages', LOCALE);
-                let dayLabel = event.offset.days > 1 ?
+                let dayLabel = event.offset.days > 1 || event.offset.days === 0 ?
                     Translator.trans('promotion.timer.days', null, 'messages', LOCALE) :
                     Translator.trans('promotion.timer.day', null, 'messages', LOCALE);
-                let hourLabel = event.offset.hours > 1 ?
+                let hourLabel = event.offset.hours > 1 || event.offset.hours === 0 ?
                     Translator.trans('promotion.timer.hours', null, 'messages', LOCALE) :
                     Translator.trans('promotion.timer.hour', null, 'messages', LOCALE);
-                let minuteLabel = event.offset.minutes > 1 ?
+                let minuteLabel = event.offset.minutes > 1 || event.offset.minutes === 0 ?
                     Translator.trans('promotion.timer.minutes', null, 'messages', LOCALE) :
                     Translator.trans('promotion.timer.minute', null, 'messages', LOCALE);
-                let secondLabel = event.offset.minutes > 1 ?
+                let secondLabel = event.offset.seconds > 1 || event.offset.seconds === 0 ?
                     Translator.trans('promotion.timer.seconds', null, 'messages', LOCALE) :
                     Translator.trans('promotion.timer.second', null, 'messages', LOCALE);
 
