@@ -110,16 +110,27 @@
                                 </div>
                             </div><!-- Col -->
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for countryCode, country in countries %}
+            <div class="col-md-6 grid-margin country_{{ countryCode }} hide-country">
+                <div class="card">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags', 'tags[]', IS_EDIT ? payload['selectedTags'] : '', options.tags, '', 'w-100', true) }}
+                                    {{ form.select('Tagovi', 'tags_'~countryCode, 'tags['~countryCode~'][]', IS_EDIT ? payload['selectedTags'] : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
 
         <div class="row">
