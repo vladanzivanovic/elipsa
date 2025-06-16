@@ -88,14 +88,35 @@ final class PromotionTagEventListener
                 continue;
             }
 
-            $productHasTag = new ProductHasTags();
+            $shouldSetTag = false;
 
-            $productHasTag->setProduct($product);
-            $productHasTag->setTag($tag);
+            foreach ($promotion->getAvailableCountries() as $availableCountry) {
+                if (true === $shouldSetTag) {
+                    continue;
+                }
 
-            $product->addProductHasTag($productHasTag);
+                $productOption = $product->getOptionsByCountry($availableCountry);
 
-            $this->productRepository->persist($product);
+                if (
+                    false === $isApplicableToDiscountedProducts &&
+                    ($productOption?->getDiscount() > 0)
+                ) {
+                    continue;
+                }
+
+                $shouldSetTag = true;
+            }
+
+            if (true === $shouldSetTag) {
+                $productHasTag = new ProductHasTags();
+
+                $productHasTag->setProduct($product);
+                $productHasTag->setTag($tag);
+
+                $product->addProductHasTag($productHasTag);
+
+                $this->productRepository->persist($product);
+            }
         }
 
         $promotion->setTags($tag);
