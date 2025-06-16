@@ -368,77 +368,83 @@ class ProductRepository extends ExtendedEntityRepository
             ->setParameter('statuses', $statuses);
     }
 
-    public function getProductsByCategoriesFromPromotion(array $categories, array $availableCountries, bool $withDiscount): array
+    public function getProductsByCategoriesFromPromotion(array $categories, array $availableCountries): array
     {
+        $countriesWhere = [];
+
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.productHasCategories', 'phc')
             ->where('phc.category IN (:categories)')
-            ->andWhere('p.availableCountries IN (:availableCountries)')
             ->setParameter('categories', $categories)
-            ->setParameter('availableCountries', $availableCountries);
         ;
 
-        if (false === $withDiscount) {
-            $query->leftJoin('p.productOptions', 'po')
-                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
-            ;
+        foreach ($availableCountries as $index => $availableCountry) {
+            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
+            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
         }
+
+        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
 
-    public function getProductsByTagsFromPromotion(array $tags, array $availableCountries, bool $withDiscount): array
+    public function getProductsByTagsFromPromotion(array $tags, array $availableCountries): array
     {
+        $countriesWhere = [];
+
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.productHasTags', 'pht')
             ->where('pht.tag IN (:tags)')
-            ->andWhere('p.availableCountries IN (:availableCountries)')
             ->setParameter('tags', $tags)
-            ->setParameter('availableCountries', $availableCountries);
         ;
 
-        if (false === $withDiscount) {
-            $query->leftJoin('p.productOptions', 'po')
-                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
-            ;
+        foreach ($availableCountries as $index => $availableCountry) {
+            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
+            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
         }
+
+        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
 
-    public function getProductsByColorsFromPromotion(array $colors, array $availableCountries, bool $withDiscount): array
+    public function getProductsByColorsFromPromotion(array $colors, array $availableCountries): array
     {
+        $countriesWhere = [];
+
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.productHasImages', 'phi')
             ->where('phi.color IN (:colors)')
-            ->andWhere('p.availableCountries IN (:availableCountries)')
+            ->andWhere('p.status = :status')
             ->setParameter('colors', $colors)
-            ->setParameter('availableCountries', $availableCountries);
+            ->setParameter('status', Product::STATUS_ACTIVE)
         ;
 
-        if (false === $withDiscount) {
-            $query->leftJoin('p.productOptions', 'po')
-                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
-            ;
+        foreach ($availableCountries as $index => $availableCountry) {
+            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
+            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
         }
+
+        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
 
-    public function getProductsByIDsFromPromotion(array $productIds, array $availableCountries, bool $withDiscount): array
+    public function getProductsByIDsFromPromotion(array $productIds, array $availableCountries): array
     {
+        $countriesWhere = [];
+
         $query = $this->createQueryBuilder('p')
             ->where('p.id IN (:productIds)')
-            ->andWhere('p.availableCountries IN (:availableCountries)')
             ->setParameter('productIds', $productIds)
-            ->setParameter('availableCountries', $availableCountries);
         ;
 
-        if (false === $withDiscount) {
-            $query->leftJoin('p.productOptions', 'po')
-                ->andWhere('(po.discount IS NULL OR po.discount = 0)')
-            ;
+        foreach ($availableCountries as $index => $availableCountry) {
+            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
+            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
         }
+
+        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
