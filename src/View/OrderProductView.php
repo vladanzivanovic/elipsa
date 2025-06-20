@@ -6,6 +6,7 @@ namespace App\View;
 
 use App\Entity\OrderProduct;
 use App\Entity\OrderProductTranslation;
+use App\View\Product\ProductView;
 
 final class OrderProductView
 {

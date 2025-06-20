@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\View;
+namespace App\View\Product;
 
 use App\Entity\ProductHasSizes;
+use App\View\SizeView;
 
 class ProductSizeView
 {

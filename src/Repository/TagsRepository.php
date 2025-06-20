@@ -158,16 +158,18 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     
-    public function getByProduct(Product $product): array
+    public function getByProductAdmin(Product $product, string $locale = 'rs'): array
     {
         $query = $this->createQueryBuilder('t')
             ->select(
                 't.id'
             )
             ->innerJoin('t.tagTranslations', 'tt')
-            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id AND pht.product = :product')
+            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id AND pht.product = :product AND pht.locale = :locale')
             ->where('tt.locale = \'rs\'')
-            ->setParameter('product', $product);
+            ->setParameter('product', $product)
+            ->setParameter('locale', $locale)
+        ;
 
         return $query->getQuery()->getArrayResult();
     }

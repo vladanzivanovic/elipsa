@@ -6,7 +6,7 @@ namespace App\Formatter\Admin;
 
 use App\Entity\ProductOptions;
 use App\View\ImageView;
-use App\View\ProductOptionsView;
+use App\View\Product\ProductOptionsView;
 
 final class ProductHomePageFormatter
 {

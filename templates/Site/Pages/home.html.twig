@@ -6,6 +6,7 @@
     {% set bannerSpeedLinksType = constant('App\\Entity\\Banner::TYPE_SPEED_LINKS') %}
     {% set homePageProducts = get_class_constants('App\\Entity\\ProductOptions') %}
 
+    {% if null != promotion %}
     <div id="promotion-bar" data-valid-to="{{ promotion.valid_to }}">
         <div class="container">
             <a id="promotion-link" href="{{ promotion._links[locale] }}">
@@ -14,6 +15,7 @@
             </a>
         </div>
     </div>
+    {% endif %}
     <!-- home2-slider-start -->
     <div class="home3-slider-container">
         <!-- Slider Image -->

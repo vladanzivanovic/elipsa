@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Formatter\Admin;
 
-use App\View\ProductView;
+use App\View\Product\ProductView;
 
 class ProductSearchResponseFormatter
 {

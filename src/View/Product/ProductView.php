@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\View;
+namespace App\View\Product;
 
 use App\Entity\Product;
 use App\Entity\User;
@@ -96,10 +96,5 @@ final class ProductView
         if (null !== $productOptions) {
             $options[$countryCode] = $this->productOptionsView->view($productOptions, $countryCode);
         }
-    }
-
-    private function getTags(Product $product, string $countryCode, array &$tags): void
-    {
-
     }
 }

@@ -120,10 +120,11 @@
             <div class="col-md-6 grid-margin country_{{ countryCode }} hide-country">
                 <div class="card">
                     <div class="card-body">
+                        <h6 class="card-title">Tagovi - {{ country.translation | trans }}</h6>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('Tagovi', 'tags_'~countryCode, 'tags['~countryCode~'][]', IS_EDIT ? payload['selectedTags'] : '', options.tags, '', 'w-100', true) }}
+                                    {{ form.select('', 'tags_'~countryCode, 'tags['~countryCode~'][]', IS_EDIT ? payload['selectedTags'][countryCode] : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->
