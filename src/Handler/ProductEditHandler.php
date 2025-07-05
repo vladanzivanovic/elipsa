@@ -107,7 +107,7 @@ final class ProductEditHandler
 
         foreach ($notifications as $notification) {
             $size = $notification->getPayload()['size'];
-            $productOption = $product->getOptionsByCountry($notification->getCountry());
+            $productOption = $product->getOptionByCountry($notification->getCountry());
 
             if (false === $productOption->isSizeAvailable($size)) {
                 continue;

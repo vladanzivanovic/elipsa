@@ -85,14 +85,14 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
 
     public function getPrice(string $countryCode): ?int
     {
-        $promotionOptions = $this->getOptionsByCountry($countryCode);
+        $promotionOptions = $this->getOptionByCountry($countryCode);
 
         return $promotionOptions->getPrice();
     }
 
     public function getDiscount(string $countryCode): ?int
     {
-        $promotionOptions = $this->getOptionsByCountry($countryCode);
+        $promotionOptions = $this->getOptionByCountry($countryCode);
 
         return $promotionOptions->getDiscount();
     }
@@ -425,14 +425,14 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
 
     public function getPromoDiscount(string $countryCode): null|int
     {
-        $productOptions = $this->getOptionsByCountry($countryCode);
+        $productOptions = $this->getOptionByCountry($countryCode);
 
         return $productOptions->getPromoDiscount();
     }
 
     public function setPromoDiscount(null|int $promoDiscount, string $countryCode): void
     {
-        $productOptions = $this->getOptionsByCountry($countryCode);
+        $productOptions = $this->getOptionByCountry($countryCode);
 
         $productOptions->setPromoDiscount($promoDiscount);
     }
@@ -467,7 +467,7 @@ class Product implements EntityInterface, PromotionEligibilityInterface, Country
         return $this;
     }
 
-    public function getOptionsByCountry(string $countryCode): null|ProductOptions
+    public function getOptionByCountry(string $countryCode): null|ProductOptions
     {
         $filteredOptions = $this->productOptions->filter(function ($options) use ($countryCode) {
             /** @var ProductOptions $options */

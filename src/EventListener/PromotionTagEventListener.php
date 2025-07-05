@@ -14,9 +14,6 @@ use App\Event\PromotionTagEvent;
 use App\Repository\ProductRepository;
 use App\Repository\TagsRepository;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsEventListener]
 final class PromotionTagEventListener
@@ -24,8 +21,6 @@ final class PromotionTagEventListener
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly TagsRepository $tagsRepository,
-        private readonly TranslatorInterface $translator,
-        private readonly RouterInterface $router,
         private readonly array $locales,
     ) {}
 
@@ -53,69 +48,76 @@ final class PromotionTagEventListener
         $products = [];
 
         foreach ($options as $option) {
-            $matchedProducts = match ($option->getType()) {
-                PromotionOption::RULE_PRODUCTS => $this->productRepository->getProductsByIDsFromPromotion(
-                    $option->getConfiguration(),
-                    $promotion->getAvailableCountries(),
-                    $isApplicableToDiscountedProducts
-                ),
-                PromotionOption::RULE_CATEGORIES => $this->productRepository->getProductsByCategoriesFromPromotion(
-                    $option->getConfiguration(),
-                    $promotion->getAvailableCountries(),
-                    $isApplicableToDiscountedProducts
-                ),
-                PromotionOption::RULE_TAGS => $this->productRepository->getProductsByTagsFromPromotion(
-                    $option->getConfiguration(),
-                    $promotion->getAvailableCountries(),
-                    $isApplicableToDiscountedProducts
-                ),
-                PromotionOption::RULE_COLORS => $this->productRepository->getProductsByColorsFromPromotion(
-                    $option->getConfiguration(),
-                    $promotion->getAvailableCountries(),
-                    $isApplicableToDiscountedProducts
-                ),
-            };
+            foreach ($promotion->getAvailableCountries() as $availableCountry) {
+                $matchedProducts = match ($option->getType()) {
+                    PromotionOption::RULE_PRODUCTS => $this->productRepository->getProductsByIDsFromPromotion(
+                        $option->getConfiguration(),
+                        $availableCountry,
+                    ),
+                    PromotionOption::RULE_CATEGORIES => $this->productRepository->getProductsByCategoriesFromPromotion(
+                        $option->getConfiguration(),
+                        $availableCountry,
+                    ),
+                    PromotionOption::RULE_TAGS => $this->productRepository->getProductsByTagsFromPromotion(
+                        $option->getConfiguration(),
+                        $availableCountry,
+                    ),
+                    PromotionOption::RULE_COLORS => $this->productRepository->getProductsByColorsFromPromotion(
+                        $option->getConfiguration(),
+                        $availableCountry,
+                    ),
+                };
 
-            $products = \array_merge_recursive(
-                $products,
-                $matchedProducts,
-            );
+                if (isset($products[$availableCountry])) {
+                    $products[$availableCountry] = \array_merge_recursive(
+                        $products[$availableCountry],
+                        $matchedProducts,
+                    );
+
+                    continue;
+                }
+
+                $products[$availableCountry] = $matchedProducts;
+            }
         }
 
         /** @var Product $product */
-        foreach ($products as $product) {
-            if (true === $product->isProductHasTag($tag)) {
-                continue;
-            }
+        foreach ($products as $locale => $productsByLocale) {
+            foreach ($productsByLocale as $product) {
+                if (true === $product->isProductHasTag($tag)) {
+                    continue;
+                }
 
-            $shouldSetTag = false;
+                $shouldSetTag = false;
 
-            foreach ($promotion->getAvailableCountries() as $availableCountry) {
+                foreach ($promotion->getAvailableCountries() as $availableCountry) {
+                    if (true === $shouldSetTag) {
+                        continue;
+                    }
+
+                    $productOption = $product->getOptionByCountry($availableCountry);
+
+                    if (
+                        false === $isApplicableToDiscountedProducts &&
+                        ($productOption?->getDiscount() > 0)
+                    ) {
+                        continue;
+                    }
+
+                    $shouldSetTag = true;
+                }
+
                 if (true === $shouldSetTag) {
-                    continue;
+                    $productHasTag = new ProductHasTags();
+
+                    $productHasTag->setProduct($product);
+                    $productHasTag->setTag($tag);
+                    $productHasTag->setLocale($locale);
+
+                    $product->addProductHasTag($productHasTag);
+
+                    $this->productRepository->persist($product);
                 }
-
-                $productOption = $product->getOptionsByCountry($availableCountry);
-
-                if (
-                    false === $isApplicableToDiscountedProducts &&
-                    ($productOption?->getDiscount() > 0)
-                ) {
-                    continue;
-                }
-
-                $shouldSetTag = true;
-            }
-
-            if (true === $shouldSetTag) {
-                $productHasTag = new ProductHasTags();
-
-                $productHasTag->setProduct($product);
-                $productHasTag->setTag($tag);
-
-                $product->addProductHasTag($productHasTag);
-
-                $this->productRepository->persist($product);
             }
         }
 
@@ -139,7 +141,7 @@ final class PromotionTagEventListener
         $this->tagsRepository->removeWithFlush($tag);
     }
 
-    private function createTag(Promotion $promotion)
+    private function createTag(Promotion $promotion): Tags
     {
         $tag = new Tags();
         $tag->setProductType(Tags::PRODUCT_TYPE_PROMOTION);

@@ -26,7 +26,7 @@ final class OrderProductView
 
         $isSizeAvailable = $orderProduct->isProductAvailable();
 
-        $productOption = $product->getOptionsByCountry($orderProduct->getOrderId()->getCountry());
+        $productOption = $product->getOptionByCountry($orderProduct->getOrderId()->getCountry());
 
         $view = [
             'id' => $orderProduct->getId(),

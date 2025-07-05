@@ -127,6 +127,7 @@ class ProductRepository extends ExtendedEntityRepository
             $this->createTagQueryForSearch(
                 $query,
                 $shopListRequestDto->attribute,
+                $countryCode,
                 Tags::PRODUCT_TYPE_ATTRIBUTE
             );
         }
@@ -135,6 +136,7 @@ class ProductRepository extends ExtendedEntityRepository
             $this->createTagQueryForSearch(
                 $query,
                 $shopListRequestDto->season,
+                $countryCode,
                 Tags::PRODUCT_TYPE_SEASON
             );
         }
@@ -143,6 +145,7 @@ class ProductRepository extends ExtendedEntityRepository
             $this->createTagQueryForSearch(
                 $query,
                 $shopListRequestDto->collection,
+                $countryCode,
                 Tags::PRODUCT_TYPE_COLLECTION
             );
         }
@@ -151,6 +154,7 @@ class ProductRepository extends ExtendedEntityRepository
             $this->createTagQueryForSearch(
                 $query,
                 $shopListRequestDto->promotions,
+                $countryCode,
                 Tags::PRODUCT_TYPE_PROMOTION
             );
         }
@@ -299,7 +303,7 @@ class ProductRepository extends ExtendedEntityRepository
         $searchParams = $tableModel->getGeneralSearch();
 
         if (isset($searchParams['tags'])) {
-            $this->createTagQueryForSearch($query, $searchParams['tags']);
+            $this->createTagQueryForSearch($query, $searchParams['tags'], $this->defaultLocale);
         }
 
         if (isset($searchParams['categories'])) {
@@ -368,83 +372,56 @@ class ProductRepository extends ExtendedEntityRepository
             ->setParameter('statuses', $statuses);
     }
 
-    public function getProductsByCategoriesFromPromotion(array $categories, array $availableCountries): array
+    public function getProductsByCategoriesFromPromotion(array $categories, string $availableCountry): array
     {
-        $countriesWhere = [];
-
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.productHasCategories', 'phc')
             ->where('phc.category IN (:categories)')
+            ->andWhere('p.availableCountries LIKE :availableCountry')
             ->setParameter('categories', $categories)
+            ->setParameter('availableCountry', '%'.$availableCountry.'%');
         ;
-
-        foreach ($availableCountries as $index => $availableCountry) {
-            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
-            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
-        }
-
-        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
 
-    public function getProductsByTagsFromPromotion(array $tags, array $availableCountries): array
+    public function getProductsByTagsFromPromotion(array $tags, string $availableCountry): array
     {
-        $countriesWhere = [];
-
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.productHasTags', 'pht')
             ->where('pht.tag IN (:tags)')
+            ->andWhere('pht.locale LIKE :availableCountry')
+            ->andWhere('p.availableCountries LIKE :availableCountry')
             ->setParameter('tags', $tags)
+            ->setParameter('availableCountry', '%'.$availableCountry.'%');
         ;
-
-        foreach ($availableCountries as $index => $availableCountry) {
-            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
-            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
-        }
-
-        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
 
-    public function getProductsByColorsFromPromotion(array $colors, array $availableCountries): array
+    public function getProductsByColorsFromPromotion(array $colors, string $availableCountry): array
     {
-        $countriesWhere = [];
-
         $query = $this->createQueryBuilder('p')
             ->innerJoin('p.productHasImages', 'phi')
             ->where('phi.color IN (:colors)')
             ->andWhere('p.status = :status')
+            ->andWhere('p.availableCountries LIKE :availableCountry')
             ->setParameter('colors', $colors)
             ->setParameter('status', Product::STATUS_ACTIVE)
+            ->setParameter('availableCountry', '%'.$availableCountry.'%')
         ;
-
-        foreach ($availableCountries as $index => $availableCountry) {
-            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
-            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
-        }
-
-        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
 
-    public function getProductsByIDsFromPromotion(array $productIds, array $availableCountries): array
+    public function getProductsByIDsFromPromotion(array $productIds, string $availableCountry): array
     {
-        $countriesWhere = [];
-
         $query = $this->createQueryBuilder('p')
             ->where('p.id IN (:productIds)')
+            ->andWhere('p.availableCountries LIKE :availableCountry')
             ->setParameter('productIds', $productIds)
+            ->setParameter('availableCountry', '%'.$availableCountry.'%')
         ;
-
-        foreach ($availableCountries as $index => $availableCountry) {
-            $countriesWhere[] = 'p.availableCountries LIKE :availableCountry_'.$index;
-            $query->setParameter('availableCountry_'.$index, '%'.$availableCountry.'%');
-        }
-
-        $query->andWhere('('.implode(' OR ', $countriesWhere).')');
 
         return $query->getQuery()->getResult();
     }
@@ -452,15 +429,17 @@ class ProductRepository extends ExtendedEntityRepository
     private function createTagQueryForSearch(
         QueryBuilder $query,
         array $tags,
+        string $countryCode,
         string $productType = null
     ): void {
         $tagQuery = $this->_em->createQueryBuilder()
             ->select('1')
             ->from(TagTranslation::class, 'tt')
             ->innerJoin('tt.tag', 't')
-            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = tt.tag')
+            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = tt.tag AND pht.locale = :locale')
             ->where('tt.slug IN (:tagsSlug)')
-            ->andWhere('pht.product = p');
+            ->andWhere('pht.product = p')
+        ;
 
         if (null !== $productType) {
             $tagQuery->andWhere('t.productType = :productType');
@@ -469,7 +448,9 @@ class ProductRepository extends ExtendedEntityRepository
         }
 
         $query->andWhere('EXISTS ('.$tagQuery->getDQL().')')
-            ->setParameter('tagsSlug', $tags);
+            ->setParameter('tagsSlug', $tags)
+            ->setParameter('locale', $countryCode);
+        ;
     }
 
     private function createCategoriesQuery(QueryBuilder $query, array $categories): void

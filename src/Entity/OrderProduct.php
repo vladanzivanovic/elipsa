@@ -284,7 +284,7 @@ class OrderProduct implements EntityInterface, PromotionEligibilityInterface
 
     public function isProductAvailable(): bool
     {
-        $productOption = $this->product->getOptionsByCountry($this->orderId->getCountry());
+        $productOption = $this->product->getOptionByCountry($this->orderId->getCountry());
 
         if (null === $productOption) {
             return false;

@@ -124,7 +124,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{ form.select('', 'tags_'~countryCode, 'tags['~countryCode~'][]', IS_EDIT ? payload['selectedTags'][countryCode] : '', options.tags, '', 'w-100', true) }}
+                                    {{ form.select('', 'tags_'~countryCode, 'tags['~countryCode~'][]', IS_EDIT and payload['selectedTags'][countryCode] is defined  ? payload['selectedTags'][countryCode] : '', options.tags, '', 'w-100', true) }}
                                 </div>
                             </div><!-- Col -->
                         </div><!-- Row -->

@@ -70,7 +70,10 @@ class TagsRepository extends ExtendedEntityRepository
 
         if ($type === Tags::TYPE_PRODUCT) {
             $query->addSelect('COUNT(pht.id) as total_products')
-                ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id');
+                ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id')
+                ->andWhere('t.productType != :productType')
+                ->setParameter('productType', Tags::PRODUCT_TYPE_PROMOTION)
+            ;
         }
 
         return $query->getQuery()->getArrayResult();

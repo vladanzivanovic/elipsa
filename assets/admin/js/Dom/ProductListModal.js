@@ -29,7 +29,7 @@ class ProductListModal {
     {
         switch (type) {
             case 'set_bulk_discount':
-                this.#discountModal();
+                this.#discountModal(data);
 
                 break;
             case 'home_page_status':
@@ -56,7 +56,7 @@ class ProductListModal {
         this.#generate(title, buttons);
     }
 
-    #discountModal()
+    #discountModal(data)
     {
         const title = 'Popust na izabranim proizvodima';
         const buttons = [
@@ -64,6 +64,7 @@ class ProductListModal {
                 type: 'button',
                 text: 'Primeni',
                 'class': 'btn btn-primary discount-apply',
+                'data-country': data.country,
                 'data-dismiss': "modal"
             },
         ];

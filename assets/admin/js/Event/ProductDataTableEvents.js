@@ -68,6 +68,7 @@ class ProductDataTableEvents extends BaseDataTableEvents{
                 .data();
             const productIds = [];
             const discount = parseInt($('#discount-input').val());
+            const country = $(e.currentTarget).data('country');
 
             for (const rowKey in rows) {
                 productIds.push(rows[rowKey].id);
@@ -75,7 +76,7 @@ class ProductDataTableEvents extends BaseDataTableEvents{
 
             this.#parent.toastr.showLoadingMessage();
 
-            await this.#bulkProductHandler.setProductsDiscount(productIds, discount);
+            await this.#bulkProductHandler.setProductsDiscount(productIds, discount, country);
 
             $(this.#mapper.submitBtn).trigger('click');
 

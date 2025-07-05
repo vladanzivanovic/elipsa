@@ -91,7 +91,7 @@ final class ProductView
 
     private function getOptions(Product $product, string $countryCode, array &$options): void
     {
-        $productOptions = $product->getOptionsByCountry($countryCode);
+        $productOptions = $product->getOptionByCountry($countryCode);
 
         if (null !== $productOptions) {
             $options[$countryCode] = $this->productOptionsView->view($productOptions, $countryCode);

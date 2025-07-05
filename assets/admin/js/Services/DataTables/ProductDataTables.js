@@ -178,7 +178,8 @@ class ProductDataTables {
         dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status" data-country="rs">Početna strana - dole - RS</option>`);
         dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_UP}" data-action-type="home_page_status" data-country="ba">Početna strana - gore - BiH</option>`);
         dom.append(`<option value="${PRODUCT_OPTIONS_CONSTANTS.HOME_PAGE_DOWN}" data-action-type="home_page_status" data-country="ba">Početna strana - dole - BiH</option>`);
-        dom.append(`<option value="discount-modal" data-action-type="set_bulk_discount">Popust na izabranim proizvodima</option>`);
+        dom.append(`<option value="discount-modal" data-action-type="set_bulk_discount" data-country="rs">Popust na izabranim proizvodima - RS</option>`);
+        dom.append(`<option value="discount-modal" data-action-type="set_bulk_discount" data-country="ba">Popust na izabranim proizvodima - BA</option>`);
 
         return dom;
     }

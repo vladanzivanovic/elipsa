@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Api;
+namespace App\Controller\Admin\Api\Product;
 
 use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
@@ -31,7 +31,7 @@ class ProductBulkUpdateController extends AbstractController
         $highestPosition = $highestPositionResult['showHomePage'][$position] ?? 0;
 
         foreach ($products as $index => $product) {
-            $option = $product->getOptionsByCountry($country);
+            $option = $product->getOptionByCountry($country);
 
             if (null === $option) {
                 continue;
@@ -57,18 +57,26 @@ class ProductBulkUpdateController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    #[Route(path: '/api/products/bulk/discount', name: 'admin.api_bulk_products_discount', options: ['expose' => true], methods: ['POST'])]
+    #[Route(path: '/api/products/bulk/discount/{country}', name: 'admin.api_bulk_products_discount', options: ['expose' => true], methods: ['POST'])]
     public function setBulkProductsDiscount(ProductsBulkRequestDto $bulkRequestDto): JsonResponse
     {
         $products = $this->productRepository->findBy(['id' => $bulkRequestDto->products]);
 
         foreach ($products as $product) {
-            $options = $product->getProductOptions();
-            foreach ($options as $option) {
-                $discountAmount = $option->getPrice() * ((100 - $bulkRequestDto->discount)/100);
+            $option = $product->getOptionByCountry($bulkRequestDto->country);
 
-                $option->setDiscount((int) $discountAmount);
+            if (null === $option) {
+                continue;
             }
+
+            if (0 === $bulkRequestDto->discount) {
+                $option->setDiscount(null);
+                continue;
+            }
+
+            $discountAmount = $option->getPrice() * ((100 - $bulkRequestDto->discount)/100);
+
+            $option->setDiscount((int) $discountAmount);
         }
 
         $this->productRepository->flush();

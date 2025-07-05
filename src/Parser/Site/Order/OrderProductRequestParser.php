@@ -51,7 +51,7 @@ final class OrderProductRequestParser
         );
 
         $product = $orderProduct->getProduct();
-        $productOption = $product->getOptionsByCountry($orderProductRequestDto->country);
+        $productOption = $product->getOptionByCountry($orderProductRequestDto->country);
 
         $promotion = $this->productPromotionParser->setProductPromotion($product, $orderProductRequestDto->country);
 
@@ -110,7 +110,7 @@ final class OrderProductRequestParser
 
             $product = $productTranslation->getProduct();
 
-            $productOption = $product->getOptionsByCountry($country);
+            $productOption = $product->getOptionByCountry($country);
 
             if (null === $productOption) {
                 throw new ProductManipulationException('product.not_available_for_country');

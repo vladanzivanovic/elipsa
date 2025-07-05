@@ -85,7 +85,7 @@ final class OrderCompleteParser
                 continue;
             }
 
-            $productOption = $orderProduct->getProduct()->getOptionsByCountry($order->getCountry());
+            $productOption = $orderProduct->getProduct()->getOptionByCountry($order->getCountry());
 
             if (true === $productOption->isSold()) {
                 $order->removeOrderProduct($orderProduct);

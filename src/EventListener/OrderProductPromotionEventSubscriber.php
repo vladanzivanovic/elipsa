@@ -38,7 +38,7 @@ final class OrderProductPromotionEventSubscriber implements EventSubscriberInter
 
         foreach ($order->getOrderProducts() as $orderProduct) {
             $product = $orderProduct->getProduct();
-            $productOption = $product->getOptionsByCountry($order->getCountry());
+            $productOption = $product->getOptionByCountry($order->getCountry());
 
             $originDiscountPrice = $orderProduct->getDiscount();
 

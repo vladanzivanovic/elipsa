@@ -83,7 +83,7 @@ final class PromotionFreeShippingChecker extends AbstractPromotionChecker
         }
 
         /** @var ProductOptions $productOption */
-        $productOption = $product->getOptionsByCountry($countryCode);
+        $productOption = $product->getOptionByCountry($countryCode);
 
         if (
             null !== $productOption->getDiscount() &&

@@ -29,14 +29,14 @@ class ProductBulkApiHandler {
         return result;
     }
 
-    async setProductsDiscount(productIds, discount)
+    async setProductsDiscount(productIds, discount, country)
     {
         let result;
 
         try {
             result = await $.ajax({
                 type: 'POST',
-                'url': Routing.generate('admin.api_bulk_products_discount'),
+                'url': Routing.generate('admin.api_bulk_products_discount', {country}),
                 data: JSON.stringify({'ids': productIds, discount}),
                 dataType: 'json',
                 contentType: 'application/json',
