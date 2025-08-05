@@ -74,7 +74,7 @@ class ProductBulkUpdateController extends AbstractController
                 continue;
             }
 
-            $discountAmount = $option->getPrice() * ((100 - $bulkRequestDto->discount)/100);
+            $discountAmount = round($option->getPrice() * ((100 - $bulkRequestDto->discount)/100));
 
             $option->setDiscount((int) $discountAmount);
         }
