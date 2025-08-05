@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Api;
+namespace App\Controller\Admin\Api\Product;
 
 use App\Formatter\Admin\ProductDataTableResponseFormatter;
 use App\Parser\DataTableRequestParser;

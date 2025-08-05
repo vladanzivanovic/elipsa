@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Api;
+namespace App\Controller\Admin\Api\Product;
 
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
@@ -74,7 +74,7 @@ final class ProductEditController extends AbstractController
     {
         $position = $request->request->all('position');
 
-        $option = $product->getOptionsByCountry($country);
+        $option = $product->getOptionByCountry($country);
 
         $option->setShowHomePage($position);
 

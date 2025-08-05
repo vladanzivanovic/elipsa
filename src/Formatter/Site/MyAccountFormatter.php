@@ -6,7 +6,6 @@ namespace App\Formatter\Site;
 
 use App\Entity\User;
 use App\View\OrderView;
-use App\View\ProductView;
 use App\View\UserView;
 use Symfony\Component\Routing\RouterInterface;
 

@@ -24,9 +24,6 @@ class SliderTextTranslation implements EntityInterface, LocaleInterface
     #[ORM\Column(type: 'string', length: 255)]
     private string $link;
 
-    #[ORM\Column(type: 'string', length: 2)]
-    private string $locale;
-
     #[ORM\ManyToOne(targetEntity: SliderText::class, inversedBy: 'sliderTextTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private SliderText $sliderText;

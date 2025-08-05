@@ -31,8 +31,11 @@ class SummerNote {
            options.callbacks = callBacks;
         }
 
-        el.summernote(options);
-        el.summernote('fontSizeUnit', 'px');
+        $(document).ready(function () {
+            el.summernote(options);
+            el.summernote('fontSizeUnit', 'px');
+        })
+
     }
 
     createCallBacksSummernote(el, entity)

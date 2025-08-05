@@ -12,7 +12,7 @@ use App\Repository\ProductCleaningRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\TagsRepository;
 use App\View\ImageView;
-use App\View\ProductView;
+use App\View\Product\ProductView;
 use App\View\YoutubeView;
 
 final class ProductEditResponseFormatter
@@ -36,7 +36,7 @@ final class ProductEditResponseFormatter
         if ($product instanceof Product) {
             $response = [
                 'selectedCategories' => array_column($this->categoryTranslationRepository->getByProduct($product), 'slug'),
-                'selectedTags' => array_column($this->tagsRepository->getByProduct($product), 'id'),
+                'selectedTags' => $this->getSelectedTags($product),
                 'cleaning_box' => array_column($this->cleaningRepository->getByProduct($product), 'icon'),
             ];
 
@@ -98,7 +98,17 @@ final class ProductEditResponseFormatter
             ];
         }
 
-
         return $homePagePositions;
+    }
+
+    private function getSelectedTags(Product $product): array
+    {
+        $selectedTags = [];
+
+        foreach ($product->getAvailableCountries() as $country) {
+            $selectedTags[$country] = array_column($this->tagsRepository->getByProductAdmin($product, $country), 'id');
+        }
+
+        return $selectedTags;
     }
 }

@@ -10,7 +10,7 @@ use App\Event\EmailEvent;
 use App\Model\EmailModel;
 use App\Repository\ProductRepository;
 use App\View\NotificationView;
-use App\View\ProductView;
+use App\View\Product\ProductView;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

@@ -13,6 +13,8 @@ class ProductsBulkRequestDto implements ConstructRequestObjectInterface
 
     public ?int $discount = null;
 
+    public ?string $country = null;
+
     public function __construct(Request $request = null)
     {
         if (!$request instanceof \Symfony\Component\HttpFoundation\Request) {
@@ -25,6 +27,10 @@ class ProductsBulkRequestDto implements ConstructRequestObjectInterface
 
         if (isset($body['discount'])) {
             $this->discount = $body['discount'];
+        }
+
+        if (true === $request->attributes->has('country')) {
+            $this->country = $request->attributes->get('country');
         }
     }
 }

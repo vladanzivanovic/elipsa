@@ -70,7 +70,10 @@ class TagsRepository extends ExtendedEntityRepository
 
         if ($type === Tags::TYPE_PRODUCT) {
             $query->addSelect('COUNT(pht.id) as total_products')
-                ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id');
+                ->leftJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id')
+                ->andWhere('t.productType != :productType')
+                ->setParameter('productType', Tags::PRODUCT_TYPE_PROMOTION)
+            ;
         }
 
         return $query->getQuery()->getArrayResult();
@@ -158,16 +161,18 @@ class TagsRepository extends ExtendedEntityRepository
     }
 
     
-    public function getByProduct(Product $product): array
+    public function getByProductAdmin(Product $product, string $locale = 'rs'): array
     {
         $query = $this->createQueryBuilder('t')
             ->select(
                 't.id'
             )
             ->innerJoin('t.tagTranslations', 'tt')
-            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id AND pht.product = :product')
+            ->innerJoin(ProductHasTags::class, 'pht', 'WITH', 'pht.tag = t.id AND pht.product = :product AND pht.locale = :locale')
             ->where('tt.locale = \'rs\'')
-            ->setParameter('product', $product);
+            ->setParameter('product', $product)
+            ->setParameter('locale', $locale)
+        ;
 
         return $query->getQuery()->getArrayResult();
     }

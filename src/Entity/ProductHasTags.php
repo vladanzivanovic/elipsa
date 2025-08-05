@@ -2,28 +2,26 @@
 
 namespace App\Entity;
 
+use App\Entity\Resources\EntityInterface;
+use App\Entity\Resources\LocaleInterface;
+use App\Entity\Resources\LocaleTrait;
+use App\Entity\Resources\ResourceTrait;
+use App\Repository\ProductHasTagsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: \App\Repository\ProductHasTagsRepository::class)]
-class ProductHasTags
+#[ORM\Entity(repositoryClass: ProductHasTagsRepository::class)]
+class ProductHasTags implements EntityInterface, LocaleInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    use ResourceTrait;
+    use LocaleTrait;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Product::class, inversedBy: 'productHasTags')]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productHasTags')]
     #[ORM\JoinColumn(nullable: false)]
     private Product $product;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Tags::class)]
+    #[ORM\ManyToOne(targetEntity: Tags::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Tags $tag;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getProduct(): Product
     {

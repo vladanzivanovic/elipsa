@@ -6,6 +6,7 @@ namespace App\View;
 
 use App\Entity\OrderProduct;
 use App\Entity\OrderProductTranslation;
+use App\View\Product\ProductView;
 
 final class OrderProductView
 {
@@ -25,7 +26,7 @@ final class OrderProductView
 
         $isSizeAvailable = $orderProduct->isProductAvailable();
 
-        $productOption = $product->getOptionsByCountry($orderProduct->getOrderId()->getCountry());
+        $productOption = $product->getOptionByCountry($orderProduct->getOrderId()->getCountry());
 
         $view = [
             'id' => $orderProduct->getId(),

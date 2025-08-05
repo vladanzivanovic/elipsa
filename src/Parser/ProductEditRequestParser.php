@@ -16,6 +16,7 @@ use App\Entity\Promotion;
 use App\Entity\ShopOrder;
 use App\Entity\Tags;
 use App\Entity\Youtube;
+use App\Exception\CouponCheckerException;
 use App\Parser\Site\Order\OrderCouponParser;
 use App\Parser\Site\Order\OrderProductTranslationParser;
 use App\Repository\CategoryTranslationRepository;
@@ -144,14 +145,18 @@ final class ProductEditRequestParser
             $hasTags->clear();
         }
 
-        $tags = $this->tagsRepository->findBy(['id' => $tagIds]);
+        foreach ($tagIds as $locale => $tagIdsByLocale) {
+            $tags = $this->tagsRepository->findBy(['id' => $tagIdsByLocale]);
 
-        foreach ($tags as $tag) {
-            $hasTags = new ProductHasTags();
-            $hasTags->setTag($tag);
+            foreach ($tags as $tag) {
+                $hasTags = new ProductHasTags();
+                $hasTags->setTag($tag);
+                $hasTags->setLocale($locale);
 
-            $product->addProductHasTag($hasTags);
+                $product->addProductHasTag($hasTags);
+            }
         }
+
     }
 
     private function setSizes(ProductOptions $productOptions, array $sizes): void

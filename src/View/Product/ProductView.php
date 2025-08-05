@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\View;
+namespace App\View\Product;
 
 use App\Entity\Product;
 use App\Entity\User;
@@ -41,13 +41,7 @@ final class ProductView
         $view['translations'] = $this->getTranslationValues($product);
 
         foreach ($this->countries as $countryCode => $country) {
-            $productOptions = $product->getOptionsByCountry($countryCode);
-
-            if (null === $productOptions) {
-                continue;
-            }
-
-            $view['options'][$countryCode] = $this->productOptionsView->view($productOptions, $countryCode);
+            $this->getOptions($product, $countryCode, $view['options']);
         }
 
         $view['_links'] = $this->getLinks($view['translations']);
@@ -93,5 +87,14 @@ final class ProductView
         }
 
         return $links;
+    }
+
+    private function getOptions(Product $product, string $countryCode, array &$options): void
+    {
+        $productOptions = $product->getOptionByCountry($countryCode);
+
+        if (null !== $productOptions) {
+            $options[$countryCode] = $this->productOptionsView->view($productOptions, $countryCode);
+        }
     }
 }
