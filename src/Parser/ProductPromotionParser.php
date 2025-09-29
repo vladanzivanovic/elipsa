@@ -46,7 +46,7 @@ final class ProductPromotionParser
         if (false !== $eligiblePromotion) {
             $price = $product->getDiscount($countryCode) > 0 ? $product->getDiscount($countryCode) : $product->getPrice($countryCode);
 
-            $discountAmount = $price * ((100 - $eligiblePromotion->getDiscount()) / 100);
+            $discountAmount = round($price * ((100 - $eligiblePromotion->getDiscount()) / 100));
 
             $product->setPromoDiscount((int)$discountAmount, $countryCode);
 
