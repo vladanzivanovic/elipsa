@@ -48,6 +48,8 @@ final class ProductPromotionParser
 
             $discountAmount = round($price * ((100 - $eligiblePromotion->getDiscount()) / 100));
 
+            $discountAmount = round ($discountAmount/100) * 100;
+
             $product->setPromoDiscount((int)$discountAmount, $countryCode);
 
             return $eligiblePromotion;

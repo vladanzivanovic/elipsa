@@ -190,20 +190,25 @@ final class ProductEditRequestParser
     private function updateOrderProducts(Product $product): void
     {
         foreach ($product->getOrderProducts() as $orderProduct) {
-            $order = $orderProduct->getOrderId();
+            try {
+                $order = $orderProduct->getOrderId();
 
-            if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
+                if (ShopOrder::STATUS_NEW !== $order->getStatus()) {
+                    continue;
+                }
+
+                $orderProduct->setPrice($product->getPrice($order->getCountry()));
+                $orderProduct->setDiscount($product->getDiscount($order->getCountry()));
+
+                if ($order->getCoupon() instanceof Promotion) {
+                    $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
+                }
+
+                $this->setTranslations($product, $orderProduct);
+            } catch (CouponCheckerException $e) {
+                // Log exception if needed
                 continue;
             }
-
-            $orderProduct->setPrice($product->getPrice($order->getCountry()));
-            $orderProduct->setDiscount($product->getDiscount($order->getCountry()));
-
-            if ($order->getCoupon() instanceof Promotion) {
-                $this->orderCouponParser->setPromotionPriceOnOrderItems($order->getCoupon(), $orderProduct);
-            }
-
-            $this->setTranslations($product, $orderProduct);
         }
     }
 
