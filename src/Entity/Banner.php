@@ -25,6 +25,8 @@ class Banner implements EntityInterface, CountryResourceInterface
 
     public const POSITION_HOME_RIGHT = 4;
 
+    public const POSITION_HOME_ALONE = 5;
+
     public const TYPE_SPEED_LINKS = 1;
 
     public const TYPE_LOYALTY = 2;

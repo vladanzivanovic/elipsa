@@ -168,7 +168,7 @@
                         </a>
                     {% endif %}
                 </div>
-                    <div class="hidden-lg hidden-md col-xs-12 home3-banner-column home-middle-banners">
+                <div class="hidden-lg hidden-md col-xs-12 home3-banner-column home-middle-banners">
                     {% if banners[bannerSpeedLinksType][3] is defined %}
                         {% set thirdBanner = banners[bannerSpeedLinksType][3] %}
                         <a href="{{ thirdBanner.media.images.desktop.file }}">
@@ -181,12 +181,17 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    {% if banners[bannerSpeedLinksType][5] is defined %}
+        {% set bannerLink = "background: rgba(0, 0, 0, 0) url("~ banners[bannerSpeedLinksType][5].media.images.desktop.file ~") no-repeat scroll left top / cover; height: 50vw !important" %}
+        <a href="{{ banners[bannerSpeedLinksType][5].translations[locale].button_link }}" class="home3-newsletter-area" style="{{ bannerLink }}"></a>
+    {% endif %}
+
     <!-- home3-banner-area-end -->
     <!-- featured-itema-area-start -->
     <div class="home-2-featured-item-area">

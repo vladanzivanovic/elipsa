@@ -64,6 +64,10 @@ final class HomePageResponseFormatter
         foreach ($banners as $banner) {
             $filter = in_array($banner->getPosition(), [1,4]) ? 'home_banner_side' : 'home_banner_center';
 
+            if ($banner->getPosition() === Banner::POSITION_HOME_ALONE  ) {
+                $filter = 'site_slider';
+            }
+
             $formattedBanners[$banner->getPosition()] = $this->createBannerView($banner, ['desktop' => $filter, 'mobile' => $filter]);
         }
 

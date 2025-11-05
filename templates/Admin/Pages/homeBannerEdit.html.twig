@@ -33,6 +33,7 @@
                     <ul>
                         <li>Levo/Desno - 1000x1300 </li>
                         <li>Sredina - 1000x610 </li>
+                        <li>Samostalan - 2500x1230 </li>
                     </ul>
                 </div>
             </div>
@@ -105,24 +106,29 @@
                     <div class="card-body">
                         <h6 class="card-title">Pozicija banera</h6>
                         <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="form-check form-check-inline">
                                     {{ form.radio('Levo', 'position_1', 1, 'position', 'form-check-label', 'form-check-input', IS_EDIT and payload.position == 1 ? 'checked=checked' : null) }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="form-check form-check-inline">
                                     {{ form.radio('Sredina gore', 'position_2', 2, 'position', 'form-check-label', 'form-check-input', IS_EDIT and payload.position == 2 ? 'checked=checked' : null) }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="form-check form-check-inline">
                                     {{ form.radio('Sredina dole', 'position_3', 3, 'position', 'form-check-label', 'form-check-input', IS_EDIT and payload.position == 3 ? 'checked=checked' : null) }}
                                 </div>
                             </div><!-- Col -->
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="form-check form-check-inline">
                                     {{ form.radio('Desno', 'position_4', 4, 'position', 'form-check-label', 'form-check-input', IS_EDIT and payload.position == 4 ? 'data-show-error-after=yes checked=checked' : 'data-show-error-after=yes') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-2">
+                                <div class="form-check form-check-inline">
+                                    {{ form.radio('Samostalan', 'position_5', 5, 'position', 'form-check-label', 'form-check-input', IS_EDIT and payload.position == 5 ? 'data-show-error-after=yes checked=checked' : 'data-show-error-after=yes') }}
                                 </div>
                             </div><!-- Col -->
                         </div>
