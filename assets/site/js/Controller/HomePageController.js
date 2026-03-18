@@ -43,7 +43,7 @@ class HomePageController {
             directionNav: false,
             animSpeed: 1000,
             slices: 18,
-            pauseTime: 6000,
+            pauseTime: 2000,
             pauseOnHover: false,
             controlNav: false,
             controlNavThumbs: false,
